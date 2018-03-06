@@ -1,0 +1,17 @@
+*.pyc
+
+dist/
+build/
+*.egg-info/
+
+.tox/
+.coverage
+
+# OSX junk
+.DS_Store
+
+# Pytest
+.pytest_cache/
+
+# JetBrains
+.idea/
