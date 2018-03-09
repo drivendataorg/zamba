@@ -38,14 +38,13 @@ class Model(object):
         with tf.Session() as sess:
 
             # load metagraph
-            loader = tf.train.import_meta_graph(self.metagraph_path)
+            loader = tf.train.import_meta_graph(str(self.metagraph_path))
 
             # load checkpoint
             loader.restore(
                            sess,
                            tf.train.latest_checkpoint(str(self.modeldir))
             )
-
             # access graph
             graph = tf.get_default_graph()
 
@@ -74,7 +73,7 @@ class Model(object):
         """
         mgp = [f for f in self.modeldir.resolve().iterdir() if str(f.suffix)
                == ".meta"]
-        return str(mgp[0])
+        return mgp[0]
 
     # def get_checkpoint_path(self):
     #     """

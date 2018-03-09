@@ -13,6 +13,6 @@ def test_predict_modelpath():
     """This needs work"""
 
     runner = CliRunner()
-    result = runner.invoke(predict, ['--modelpath', str(modeldir)])
-    print(f"this is it: {result.output}")
+    result = runner.invoke(predict, ['--modelpath', modeldir])
+    click.echo(f"this is it: {result.output}")
     # assert isinstance(result.output, pd.DataFrame)
