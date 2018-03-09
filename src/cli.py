@@ -22,12 +22,12 @@ def main():
                 type=click.Path(exists=True,
                                 file_okay=True,
                                 dir_okay=True),
-                default=str(Path('.').resolve()))
+                default=Path('.').resolve())
 @click.argument('predpath',
                 type=click.Path(exists=True,
                                 file_okay=True,
                                 dir_okay=True),
-                default=str(Path('.').resolve()))
+                default=Path('.').resolve())
 @click.option('--tmpdir',
               type=click.Path(exists=True),
               default=None)
@@ -66,7 +66,7 @@ def predict(datapath, predpath, tmpdir, proba_threshold, modelpath, verbose):
     assert isinstance(preds, pd.DataFrame)
     # TODO check if predpath is file or dir and save appropriately
     preds.to_csv(
-        str(Path(predpath, "output.csv").resolve()),
+        Path(predpath, "output.csv").resolve(),
         index_label='id',
     )
 

@@ -49,7 +49,7 @@ def test_create_and_save_model():
 
         # Now, save the graph
         saver.save(sess,
-                   str(Path(models_dir, model_name, model_name)),
+                   Path(models_dir, model_name, model_name),
                    global_step=global_step,
                    )
 
