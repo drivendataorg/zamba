@@ -5,7 +5,7 @@ import pandas as pd
 
 # from src.models.winning_model import WinningModel
 from src import config
-from src.src.models.load_model import load_model
+from src.src.models.loading import load_model
 
 # This is the main click group
 
