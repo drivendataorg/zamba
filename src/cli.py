@@ -83,7 +83,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
 
 # ######### TUNE #########
 # this is the tune command
-# TODO still not sure how tune will differ from fit
 @main.command()
 @click.argument('datapath',
                 type=click.Path(exists=True,
