@@ -9,16 +9,17 @@ def load_model(modeldir):
     Return model object with saved tensorflow graph
     """
 
-    # Check that modelpath dir exists
     modeldir = Path(modeldir)
-    assert modeldir.exists()
+    if not modeldir.exists():
+        raise FileNotFoundError
 
-    # Check that modelpath dir contains metagraph (to load network)
     suffixes = [str(f.suffix) for f in modeldir.resolve().iterdir()]
-    assert ".meta" in suffixes
+    if ".meta" not in suffixes:
+        raise FileNotFoundError("Model requires metagraph")
 
-    # Check that modelpath dir contains checkpoint (to load weights)
     stems = [str(f.stem) for f in modeldir.resolve().iterdir()]
-    assert "checkpoint" in stems
+    if "checkpoint" not in stems:
+        msg = "Expected model weights to be in checkpoint dir"
+        raise FileNotFoundError(msg)
 
     return Model(modeldir)
