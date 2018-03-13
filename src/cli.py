@@ -7,16 +7,12 @@ import pandas as pd
 from src import config
 from src.src.models.io import load_model
 
-# This is the main click group
-
 
 @click.group()
 def main():
     pass
 
 
-# ######### PREDICT #########
-# this is the predict command
 @main.command()
 @click.argument('datapath',
                 type=click.Path(exists=True),
@@ -81,8 +77,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
     click.echo(preds)
 
 
-# ######### TUNE #########
-# this is the tune command
 @main.command()
 @click.argument('datapath',
                 type=click.Path(exists=True,
@@ -102,8 +96,6 @@ def tune(datapath, labels):
     pass
 
 
-# ######### TRAIN #########
-# this is the train command
 @main.command()
 @click.argument('datapath',
                 type=click.Path(exists=True,
