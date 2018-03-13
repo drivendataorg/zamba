@@ -19,7 +19,7 @@ def main():
 # this is the predict command
 @main.command()
 @click.argument('datapath',
-                type=click.Path(),
+                type=click.Path(exists=True),
                 default=Path('.').resolve())
 @click.argument('predsout',
                 type=click.Path(),
