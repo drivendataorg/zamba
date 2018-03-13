@@ -9,8 +9,6 @@ def load_model(modeldir):
     Return model object with saved tensorflow graph
     """
 
-    # TODO load test model for now and hardcode data into cli predict
-
     # Check that modelpath dir exists
     modeldir = Path(modeldir)
     assert modeldir.exists()

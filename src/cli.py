@@ -7,16 +7,12 @@ import pandas as pd
 from src import config
 from src.src.models.io import load_model
 
-# This is the main click group
-
 
 @click.group()
 def main():
     pass
 
 
-# ######### PREDICT #########
-# this is the predict command
 @main.command()
 @click.argument('datapath',
                 type=click.Path(exists=True),
@@ -56,7 +52,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
         click.echo(f"Using predpath:\t{predsout}")
 
     # Process the data
-    # TODO process data in 'datapath', store results in 'tmpdir'
 
     # Load the model
     model = load_model(modelpath)
@@ -73,7 +68,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
 
     # Save the result
     assert isinstance(preds, pd.DataFrame)
-    # TODO check if predpath is file or dir and save appropriately
     preds.to_csv(
         Path(predsout).resolve(),
         index_label='id',
@@ -83,9 +77,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
     click.echo(preds)
 
 
-# ######### TUNE #########
-# this is the tune command
-# TODO still not sure how tune will differ from fit
 @main.command()
 @click.argument('datapath',
                 type=click.Path(exists=True,
@@ -105,8 +96,6 @@ def tune(datapath, labels):
     pass
 
 
-# ######### TRAIN #########
-# this is the train command
 @main.command()
 @click.argument('datapath',
                 type=click.Path(exists=True,

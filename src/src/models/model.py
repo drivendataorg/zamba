@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-# TODO remove once data flow is live
 from src.tests import test_model_config as test_config
 input_names = test_config.input_names
 op_to_restore_name = test_config.op_to_restore_name
@@ -32,8 +31,6 @@ class Model(object):
         """
         Predict class probabilities
         """
-
-        # TODO read in live data, not harcoded, will use tmp
 
         with tf.Session() as sess:
 
