@@ -19,15 +19,11 @@ def main():
 # this is the predict command
 @main.command()
 @click.argument('datapath',
-                type=click.Path(exists=True,
-                                file_okay=True,
-                                dir_okay=True),
+                type=click.Path(),
                 default=Path('.').resolve())
-@click.argument('predpath',
-                type=click.Path(exists=True,
-                                file_okay=True,
-                                dir_okay=True),
-                default=Path('.').resolve())
+@click.argument('predsout',
+                type=click.Path(),
+                default=Path('.', 'output.csv').resolve())
 @click.option('--tmpdir',
               type=click.Path(exists=True),
               default=None)
@@ -40,11 +36,24 @@ def main():
                               dir_okay=True),
               default=config.default_model_dir)
 @click.option('--verbose', type=bool, default=True)
-def predict(datapath, predpath, tmpdir, proba_threshold, modelpath, verbose):
+def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
+
+    datapath = Path(datapath)
+    predsout = Path(predsout)
+
+    if not predsout.exists():
+        if predsout.suffix == '.csv':
+            predsout.parent.mkdir(parents=True, exist_ok=True)
+        else:
+            predsout.mkdir(parents=True, exist_ok=True)
+            predsout = Path(predsout, 'output.csv')
+    else:
+        if predsout.is_dir():
+            predsout = Path(predsout, 'output.csv')
 
     if verbose:
         click.echo(f"Using datapath:\t{datapath}")
-        click.echo(f"Using prepath:\t{predpath}")
+        click.echo(f"Using prepath:\t{predsout}")
 
     # Process the data
     # TODO process data in 'datapath', store results in 'tmpdir'
@@ -66,7 +75,7 @@ def predict(datapath, predpath, tmpdir, proba_threshold, modelpath, verbose):
     assert isinstance(preds, pd.DataFrame)
     # TODO check if predpath is file or dir and save appropriately
     preds.to_csv(
-        Path(predpath, "output.csv").resolve(),
+        Path(predsout).resolve(),
         index_label='id',
     )
 
