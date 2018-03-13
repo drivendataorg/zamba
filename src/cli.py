@@ -72,7 +72,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
 
     # Save the result
     assert isinstance(preds, pd.DataFrame)
-    # TODO check if predpath is file or dir and save appropriately
     preds.to_csv(
         Path(predsout).resolve(),
         index_label='id',
