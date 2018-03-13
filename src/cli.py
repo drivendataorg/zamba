@@ -67,7 +67,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
         preds = model.predict_proba(tmpdir)
 
     # Save the result
-    assert isinstance(preds, pd.DataFrame)
     preds.to_csv(
         Path(predsout).resolve(),
         index_label='id',
