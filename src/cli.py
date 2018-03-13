@@ -53,7 +53,7 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
 
     if verbose:
         click.echo(f"Using datapath:\t{datapath}")
-        click.echo(f"Using prepath:\t{predsout}")
+        click.echo(f"Using predpath:\t{predsout}")
 
     # Process the data
     # TODO process data in 'datapath', store results in 'tmpdir'
