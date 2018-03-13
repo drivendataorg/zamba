@@ -56,7 +56,6 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
         click.echo(f"Using predpath:\t{predsout}")
 
     # Process the data
-    # TODO process data in 'datapath', store results in 'tmpdir'
 
     # Load the model
     model = load_model(modelpath)
