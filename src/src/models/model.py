@@ -33,8 +33,6 @@ class Model(object):
         Predict class probabilities
         """
 
-        # TODO read in live data, not harcoded, will use tmp
-
         with tf.Session() as sess:
 
             # load metagraph
