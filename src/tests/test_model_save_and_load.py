@@ -58,7 +58,6 @@ def test_load_and_predict():
 
     # Session to load
     with tf.Session() as sess:
-        # TODO load into model cls from cli--in diff file with click.tests
 
         # Load the metagraph to restore graph into current session
         metagraph_name = f"{model_name}-{global_step}.meta"
