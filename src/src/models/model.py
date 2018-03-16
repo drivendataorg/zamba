@@ -1,7 +1,6 @@
 """
 All models in our tool inherit from this class
 """
-
 from pathlib import Path
 import tempfile
 
@@ -15,19 +14,56 @@ input_names = test_config.input_names
 op_to_restore_name = test_config.op_to_restore_name
 
 class Model(object):
-    def __init__(self, modeldir):
-        """Instantiate model object"""
-
-        # Store model dir as path object
+    def __init__(self, modeldir, tempdir=None):
         self.modeldir = Path(modeldir)
 
+        self.delete_tempdir = tempdir is None
+
+        self.tempdir = Path(tempfile.TemporaryDirectory()) if self.delete_tempdir else Path(tempdir)
+
         # Use modeldir to get metagraph path
-        self.metagraph_path = self.get_metagraph_path()
+        self.metagraph_path = self._get_metagraph_path()
+        # self.checkpoint_path = self.get_checkpoint_path()
+
+    def __del__(self):
+        """ If we use the default temporary directory, clean this
+            up when the model is removed.
+        """
+        if self.delete_tempdir:
+            rmtree(self.tempdir)
+
+    def predict_proba(self, X):
+        """
+        Predict class probabilities
+        """
+        pass
+
+    def fit(self, X, y):
+        """ Use the same architecture, but train the weights from scratch using
+            the provided X and y.
+        """
+        pass
+
+    def finetune(self, X, y):
+        """ Finetune the network for a different task by keeping the
+            trained weights, replacing the top layer with one that outputs
+            the new classes, and re-training for a few epochs to have the
+            model output the new classes instead.
+        """
+        pass
+
+
+
+class SampleModel(Model):
+    def __init__(self, modeldir, tempdir=None):
+        super().__init__(modeldir, tempdir=tempdir)
+
+        # Use modeldir to get metagraph path
+        self.metagraph_path = self._get_metagraph_path()
         # self.checkpoint_path = self.get_checkpoint_path()
 
 
-
-    def predict_proba(self, tmp):
+    def predict_proba(self, X):
         """
         Predict class probabilities
         """
@@ -58,12 +94,8 @@ class Model(object):
 
             return pd.DataFrame(dict(output=[predictions]))
 
-    def fit(self):
-        """Fit to data"""
 
-        pass
-
-    def get_metagraph_path(self):
+    def _get_metagraph_path(self):
         """
         If utils.load_model is used to instantiate object,
         this file is guaranteed to exist.
@@ -80,3 +112,4 @@ class Model(object):
     #     ckptp = [f for f in self.modeldir.resolve().iterdir() if str(f.stem)
     #              == "checkpoint"]
     #     return str(ckptp[0])
+
