@@ -11,8 +11,8 @@ import pandas as pd
 import tensorflow as tf
 
 from src.tests import conftest as test_config
-input_names = test_config.input_names
-op_to_restore_name = test_config.op_to_restore_name
+input_names = ["w1", "w2", "bias"]
+op_to_restore_name = "op_to_restore"
 
 class Model(object):
     def __init__(self, modeldir):

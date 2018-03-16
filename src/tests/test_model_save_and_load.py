@@ -66,6 +66,7 @@ def test_load_and_predict(model_subdir,
 
         # Access placeholders to create new feed dict
         # NOTE: accessing graph requires knowing name of tensors as written
+        input_names = list(input_names)
         w1 = graph.get_tensor_by_name(f"{input_names[0]}:0")
         w2 = graph.get_tensor_by_name(f"{input_names[1]}:0")
         new_feed_dict = {w1: 5, w2: 9}
