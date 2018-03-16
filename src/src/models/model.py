@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from src.tests import test_model_config as test_config
+from src.tests import conftest as test_config
 input_names = test_config.input_names
 op_to_restore_name = test_config.op_to_restore_name
 

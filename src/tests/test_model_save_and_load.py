@@ -2,26 +2,30 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from src.tests import test_model_config as test_config
+# from src.tests.test_model_config import *
 
-# Get relevant paths
-project_src = test_config.project_src
-models_dir = test_config.models_dir
-model_name = test_config.model_name
+# # Get relevant paths
+# project_src = test_config.project_src
+# models_dir = test_config.models_dir
+# model_name = test_config.model_name
+#
+# # Create new subdir for model_name's files
+# model_subdir = test_config.model_subdir
+# model_subdir.mkdir(exist_ok=True)
+#
+# # Store global step, which will be baked into metagraph file name
+# global_step = test_config.global_step
+#
+# # Store names of input layer tensors and operation (eg predict) to restore
+# input_names = test_config.input_names
+# op_to_restore_name = test_config.op_to_restore_name
 
-# Create new subdir for model_name's files
-model_subdir = test_config.model_subdir
-model_subdir.mkdir(exist_ok=True)
 
-# Store global step, which will be baked into metagraph file name
-global_step = test_config.global_step
-
-# Store names of input layer tensors and operation (eg predict) to restore
-input_names = test_config.input_names
-op_to_restore_name = test_config.op_to_restore_name
-
-
-def test_create_and_save_model():
+def test_create_and_save_model(input_names,
+                               op_to_restore_name,
+                               models_dir,
+                               model_name,
+                               global_step):
 
     # Prepare input placeholders
     w1 = tf.placeholder("float", name=input_names[0])
@@ -54,7 +58,11 @@ def test_create_and_save_model():
                    )
 
 
-def test_load_and_predict():
+def test_load_and_predict(model_subdir,
+                          model_name,
+                          global_step,
+                          input_names,
+                          op_to_restore_name):
 
     # Session to load
     with tf.Session() as sess:
