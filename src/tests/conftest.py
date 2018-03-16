@@ -41,3 +41,8 @@ def input_names():
 def op_to_restore_name():
     """operation (eg predict) to restore"""
     return "op_to_restore"
+
+@pytest.fixture
+def predsout():
+    """Default out for test preds"""
+    return Path('.', 'output.csv').resolve()
