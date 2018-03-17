@@ -5,6 +5,8 @@ the
 application. The `cmd` command will be the entry point for users (see 
 example usage below).
 
+[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
+
 ## Install
 To install for development, `pip install --editable .` from project root `cmd`.
 
