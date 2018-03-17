@@ -2,9 +2,9 @@ from pathlib import Path
 
 import tensorflow as tf
 
-from src.src.models.model import Model
+from src.src.models.model import Model, SampleModel
 
-def load_model(modeldir):
+def load_model(modeldir, sample_model=False):
     """
     Return model object with saved tensorflow graph
     """
@@ -22,4 +22,7 @@ def load_model(modeldir):
         msg = "Expected model weights to be in checkpoint dir"
         raise FileNotFoundError(msg)
 
-    return Model(modeldir)
+    if sample_model:
+        return SampleModel(modeldir)
+    else:
+        return Model(modeldir)

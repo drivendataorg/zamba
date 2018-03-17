@@ -1,17 +1,9 @@
-"""
-All models in our tool inherit from this class
-"""
 from pathlib import Path
+from shutil import rmtree
 import tempfile
 
-
-import numpy as np
 import pandas as pd
 import tensorflow as tf
-
-from src.tests import conftest as test_config
-input_names = ["w1", "w2", "bias"]
-op_to_restore_name = "op_to_restore"
 
 class Model(object):
     def __init__(self, modeldir, tempdir=None):
@@ -19,7 +11,7 @@ class Model(object):
 
         self.delete_tempdir = tempdir is None
 
-        self.tempdir = Path(tempfile.TemporaryDirectory()) if self.delete_tempdir else Path(tempdir)
+        self.tempdir = Path(tempfile.mkdtemp()) if self.delete_tempdir else Path(tempdir)
 
         # Use modeldir to get metagraph path
         self.metagraph_path = self._get_metagraph_path()
@@ -61,6 +53,8 @@ class SampleModel(Model):
         # Use modeldir to get metagraph path
         self.metagraph_path = self._get_metagraph_path()
         # self.checkpoint_path = self.get_checkpoint_path()
+        self.input_names = ["w1", "w2", "bias"]
+        self.op_to_restore_name = "op_to_restore"
 
 
     def predict_proba(self, X):
@@ -81,19 +75,19 @@ class SampleModel(Model):
             # access graph
             graph = tf.get_default_graph()
 
-            # create feed dict by accessing input names
-            w1 = graph.get_tensor_by_name(f"{input_names[0]}:0")
-            w2 = graph.get_tensor_by_name(f"{input_names[1]}:0")
-            feed_dict = {w1: 5, w2: 9}
-
             # Access the operation to run
-            op_to_restore = graph.get_tensor_by_name(f"{op_to_restore_name}:0")
+            op = f"{self.op_to_restore_name}:0"
+            op_to_restore = graph.get_tensor_by_name(op)
 
             # run operation
-            predictions = sess.run(op_to_restore, feed_dict)
+            predictions = sess.run(op_to_restore, X)
 
             return pd.DataFrame(dict(output=[predictions]))
 
+    def make_sample_data(self):
+        graph = tf.get_default_graph()
+        return {graph.get_tensor_by_name(f"{n}:0"):i for i,n in enumerate(
+            self.input_names)}
 
     def _get_metagraph_path(self):
         """
@@ -112,4 +106,3 @@ class SampleModel(Model):
     #     ckptp = [f for f in self.modeldir.resolve().iterdir() if str(f.stem)
     #              == "checkpoint"]
     #     return str(ckptp[0])
-
