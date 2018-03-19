@@ -1,5 +1,3 @@
-from shutil import rmtree
-
 import numpy as np
 
 from src.src.models.io import save_model, load_model

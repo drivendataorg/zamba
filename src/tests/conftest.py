@@ -5,6 +5,7 @@ import pytest
 
 from src.src.models.model import SampleModel
 
+
 @pytest.fixture
 def model_path():
     project_src = Path(__file__).absolute().parent.parent
@@ -15,6 +16,7 @@ def model_path():
     model_subdir.mkdir(exist_ok=True)
 
     return model_subdir / model_name
+
 
 @pytest.fixture
 def sample_model():
