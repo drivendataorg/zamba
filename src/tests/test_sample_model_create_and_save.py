@@ -15,7 +15,7 @@ def test_create_and_save(model_path):
     data = [np.array([4, 5]),
             np.array([8, 9])]
 
-    # "predict" (add, multiply), return DataFrame
+    # "predict" (add, multiply), return exact values since no thresh given
     result = model.predict_proba(data)
 
     # 4 + 8 == 12

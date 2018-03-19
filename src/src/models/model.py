@@ -63,14 +63,19 @@ class SampleModel(Model):
         self.model.save(self.modeldir)
 
 
-    def predict_proba(self, X):
+    def predict_proba(self, X, proba_threshold=None):
         """
         Predict class probabilities
         """
 
         model = keras.models.load_model(str(self.modeldir))
         predictions = model.predict(X)
-        print(predictions.shape)
 
-        return pd.DataFrame(dict(added=predictions[:, 0],
+        preds = pd.DataFrame(dict(added=predictions[:, 0],
                                  multiplied=predictions[:, 1]))
+
+        if proba_threshold is None:
+            return preds
+
+        else:
+            return preds >= proba_threshold
