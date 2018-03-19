@@ -7,6 +7,7 @@ from src.src.models.io import load_model
 
 default_model_dir = Path('models', 'assets')
 
+
 @click.group()
 def main():
     pass

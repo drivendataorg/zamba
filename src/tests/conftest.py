@@ -1,6 +1,7 @@
 from pathlib import Path
 import pytest
 
+
 @pytest.fixture
 def model_path():
     project_src = Path(__file__).absolute().parent.parent

@@ -3,6 +3,7 @@ import numpy as np
 from src.src.models.io import save_model
 from src.src.models.model import SampleModel
 
+
 def test_create_and_save(model_path):
 
     # instantiate new model

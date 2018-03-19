@@ -5,6 +5,7 @@ import tempfile
 import pandas as pd
 from tensorflow.python import keras
 
+
 class Model(object):
     def __init__(self, modeldir, tempdir=None):
         self.modeldir = Path(modeldir)
@@ -41,7 +42,6 @@ class Model(object):
         pass
 
 
-
 class SampleModel(Model):
     def __init__(self, modeldir, tempdir=None):
         super().__init__(modeldir, tempdir=tempdir)
@@ -64,7 +64,6 @@ class SampleModel(Model):
         # save the graph
         self.model.save(self.modeldir)
 
-
     def predict(self, X, proba_threshold=None):
         """
         Predict class probabilities
@@ -78,7 +77,7 @@ class SampleModel(Model):
         predictions = model.predict(X)
 
         preds = pd.DataFrame(dict(added=predictions[:, 0],
-                                 multiplied=predictions[:, 1]))
+                                  multiplied=predictions[:, 1]))
 
         if proba_threshold is None:
             return preds

@@ -2,6 +2,7 @@ import numpy as np
 
 from src.src.models.io import load_model
 
+
 def test_load_and_predict(model_path):
     """
     Simple load of Model object using graph
@@ -23,13 +24,13 @@ def test_load_and_predict(model_path):
                           proba_threshold)
 
     # 6 + 3 == 9 >= 0.5 --> True
-    assert preds.iloc[0].added == True
+    assert preds.iloc[0].added
 
     # 6 * 3 == 18 >= 0.5 --> True
-    assert preds.iloc[0].multiplied == True
+    assert preds.iloc[0].multiplied
 
     # 0.3 + 0.1 == 0.4 <= 0.5 --> False
-    assert preds.iloc[1].added == False
+    assert not preds.iloc[1].added
 
     # 0.3 * 0.1 == 0.03 <= 0.5 --> False
-    assert preds.iloc[1].multiplied == False
+    assert not preds.iloc[1].multiplied

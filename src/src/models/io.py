@@ -2,6 +2,7 @@ from pathlib import Path
 
 from src.src.models.model import Model, SampleModel
 
+
 def load_model(modelpath, sample_model=False):
     """
     Return model object with saved keras graph
@@ -15,6 +16,7 @@ def load_model(modelpath, sample_model=False):
         return SampleModel(modelpath)
     else:
         return Model(modelpath)
+
 
 def save_model(model):
     """Only saves keras model currently"""
