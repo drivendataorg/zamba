@@ -1,12 +1,11 @@
 from pathlib import Path
 
 import click
-import pandas as pd
 
 # from src.models.winning_model import WinningModel
-from src import config
 from src.src.models.io import load_model
 
+default_model_dir = Path('models', 'assets')
 
 @click.group()
 def main():
@@ -30,7 +29,7 @@ def main():
               type=click.Path(exists=True,
                               file_okay=False,
                               dir_okay=True),
-              default=config.default_model_dir)
+              default=default_model_dir)
 @click.option('--verbose', type=bool, default=True)
 def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
 
