@@ -5,13 +5,13 @@ import tempfile
 import pandas as pd
 from tensorflow.python import keras
 
+from src.src.models import io
+
 
 class Model(object):
-    def __init__(self, modeldir, tempdir=None):
-        self.modeldir = Path(modeldir)
-
+    def __init__(self, modeldir=None, tempdir=None):
+        self.modeldir = Path(modeldir) if modeldir is not None else None
         self.delete_tempdir = tempdir is None
-
         self.tempdir = Path(tempfile.mkdtemp()) if self.delete_tempdir else Path(tempdir)
 
     def __del__(self):
@@ -43,12 +43,12 @@ class Model(object):
 
 
 class SampleModel(Model):
-    def __init__(self, modeldir, tempdir=None):
+    def __init__(self, modeldir=None, tempdir=None):
         super().__init__(modeldir, tempdir=tempdir)
 
-        self.model = None
+        self.model = self._build_graph() if self.modeldir is None else keras.models.load_model(self.modeldir)
 
-    def build_graph(self):
+    def _build_graph(self):
 
         # build simple architecture to multiply two numbers
         w1 = keras.layers.Input(shape=(1,), name="w1")
@@ -58,29 +58,18 @@ class SampleModel(Model):
         mult = keras.layers.multiply([w1, w2])
         out = keras.layers.concatenate([add, mult])
 
-        # assign this keras model as attribute
-        self.model = keras.models.Model(inputs=[w1, w2], outputs=out)
-
-        # save the graph
-        self.model.save(self.modeldir)
+        return keras.models.Model(inputs=[w1, w2], outputs=out)
 
     def predict(self, X, proba_threshold=None):
         """
         Predict class probabilities
         """
 
-        if self.model is None:
-            model = keras.models.load_model(str(self.modeldir))
-        else:
-            model = self.model
-
-        predictions = model.predict(X)
-
-        preds = pd.DataFrame(dict(added=predictions[:, 0],
-                                  multiplied=predictions[:, 1]))
+        predictions = self.model.predict(X)
+        preds_df = pd.DataFrame(dict(added=predictions[:, 0],
+                                     multiplied=predictions[:, 1]))
 
         if proba_threshold is None:
-            return preds
-
+            return preds_df
         else:
-            return preds >= proba_threshold
+            return preds_df >= proba_threshold

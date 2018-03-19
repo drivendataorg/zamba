@@ -18,8 +18,22 @@ def load_model(modelpath, sample_model=False):
         return Model(modelpath)
 
 
-def save_model(model):
+def save_model(model, model_path=None):
     """Only saves keras model currently"""
 
-    # save keras model
+    # check for save paths
+    if model.modeldir is None:
+        if model_path is not None:
+            if not isinstance(model_path, Path):
+                model_path = Path(model_path)
+
+                # create if neccessary
+                if not model_path.exists():
+                    model_path.mkdir(exist_ok=True)
+
+            model.modeldir = model_path
+        else:
+            raise AttributeError(f"model.modeldir is {model.modeldir}, please provide model_path")
+
+
     model.model.save(model.modeldir)
