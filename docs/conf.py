@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# cmd documentation build configuration file, created by
+# djamba documentation build configuration file, created by
 # sphinx-quickstart on Tue Feb  6 13:08:50 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -51,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'cmd'
+project = 'djamba'
 copyright = '2018, DrivenData'
 author = 'DrivenData'
 
@@ -144,7 +144,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'cmd.tex', 'cmd Documentation',
+    (master_doc, 'djamba.tex', 'djamba Documentation',
      'DrivenData', 'manual'),
 ]
 
@@ -154,7 +154,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'cmd', 'cmd Documentation',
+    (master_doc, 'djamba', 'djamba Documentation',
      [author], 1)
 ]
 
@@ -165,7 +165,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'cmd', 'cmd Documentation',
-     author, 'cmd', 'One line description of project.',
+    (master_doc, 'djamba', 'djamba Documentation',
+     author, 'djamba', 'One line description of project.',
      'Miscellaneous'),
 ]

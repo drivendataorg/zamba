@@ -5,13 +5,13 @@ with open('requirements.txt', 'r') as f:
 
 
 setup(
-    name='ChimpsTool',
+    name='djamba',
     version='0.0',
-    # py_modules=['cmd'],
+    # py_modules=['djamba'],
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'cmd=src.cli:main',
+            'djamba=djamba.cli:main',
         ],
     },
 )
