@@ -7,8 +7,8 @@ from tensorflow.python import keras
 
 
 class Model(object):
-    def __init__(self, modeldir=None, tempdir=None):
-        self.modeldir = Path(modeldir) if modeldir is not None else None
+    def __init__(self, model_path=None, tempdir=None):
+        self.modeldir = Path(model_path) if model_path is not None else None
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp()) if self.delete_tempdir else Path(tempdir)
 
@@ -41,8 +41,8 @@ class Model(object):
 
 
 class SampleModel(Model):
-    def __init__(self, modeldir=None, tempdir=None):
-        super().__init__(modeldir, tempdir=tempdir)
+    def __init__(self, model_path=None, tempdir=None):
+        super().__init__(model_path, tempdir=tempdir)
 
         self.model = self._build_graph() if self.modeldir is None else keras.models.load_model(self.modeldir)
 
