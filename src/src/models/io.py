@@ -35,5 +35,4 @@ def save_model(model, model_path=None):
         else:
             raise AttributeError(f"model.modeldir is {model.modeldir}, please provide model_path")
 
-
     model.model.save(model.modeldir)

@@ -5,8 +5,6 @@ import tempfile
 import pandas as pd
 from tensorflow.python import keras
 
-from src.src.models import io
-
 
 class Model(object):
     def __init__(self, modeldir=None, tempdir=None):

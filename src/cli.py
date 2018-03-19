@@ -28,11 +28,15 @@ def main():
               default=None)
 @click.option('--modelpath',
               type=click.Path(exists=True,
-                              file_okay=False,
+                              file_okay=True,
                               dir_okay=True),
               default=default_model_dir)
+@click.option('--sample_model',
+              type=bool,
+              default=False)
+@click.option('--rawdata', default=None)
 @click.option('--verbose', type=bool, default=True)
-def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
+def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, sample_model, rawdata, verbose):
 
     datapath = Path(datapath)
     predsout = Path(predsout)
@@ -54,23 +58,15 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
     # Process the data
 
     # Load the model
-    model = load_model(modelpath)
+    model = load_model(modelpath, sample_model)
 
     # Make predictions, return a DataFrame
-    if proba_threshold is not None:
-
-        # binary labels if threshold given
-        preds = model.predict(tmpdir) >= proba_threshold
-
+    if rawdata is not None:
+        preds = model.predict(rawdata)
     else:
-        # probability if threshold not given
-        preds = model.predict(tmpdir)
-
-    # Save the result
-    preds.to_csv(
-        Path(predsout).resolve(),
-        index_label='id',
-    )
+        # load data from datapath
+        # predict on data
+        pass
 
     # Output for now
     click.echo(preds)
