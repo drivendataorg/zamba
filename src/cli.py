@@ -34,9 +34,8 @@ def main():
 @click.option('--sample_model',
               type=bool,
               default=False)
-@click.option('--rawdata', default=None)
 @click.option('--verbose', type=bool, default=True)
-def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, sample_model, rawdata, verbose):
+def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, sample_model, verbose):
 
     datapath = Path(datapath)
     predsout = Path(predsout)
@@ -61,12 +60,7 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, sample_model
     model = load_model(modelpath, sample_model)
 
     # Make predictions, return a DataFrame
-    if rawdata is not None:
-        preds = model.predict(rawdata)
-    else:
-        # load data from datapath
-        # predict on data
-        pass
+    preds = model.predict()
 
     # Output for now
     click.echo(preds)
