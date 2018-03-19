@@ -46,6 +46,8 @@ class SampleModel(Model):
     def __init__(self, modeldir, tempdir=None):
         super().__init__(modeldir, tempdir=tempdir)
 
+        self.model = None
+
     def build_graph(self):
 
         # build simple architecture to multiply two numbers
@@ -68,7 +70,11 @@ class SampleModel(Model):
         Predict class probabilities
         """
 
-        model = keras.models.load_model(str(self.modeldir))
+        if self.model is None:
+            model = keras.models.load_model(str(self.modeldir))
+        else:
+            model = self.model
+
         predictions = model.predict(X)
 
         preds = pd.DataFrame(dict(added=predictions[:, 0],
