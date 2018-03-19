@@ -8,7 +8,7 @@ def test_create_and_save(model_path):
     # instantiate new model
     model = SampleModel(model_path)
 
-    # build graph that multiplies 2 inputs
+    # build graph that adds 2 inputs, multiplies 2 inputs, returns each in DF
     model.build_graph()
 
     # create some sample data
