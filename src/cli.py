@@ -59,11 +59,11 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
     if proba_threshold is not None:
 
         # binary labels if threshold given
-        preds = model.predict_proba(tmpdir) >= proba_threshold
+        preds = model.predict(tmpdir) >= proba_threshold
 
     else:
         # probability if threshold not given
-        preds = model.predict_proba(tmpdir)
+        preds = model.predict(tmpdir)
 
     # Save the result
     preds.to_csv(

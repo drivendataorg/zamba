@@ -16,7 +16,7 @@ def test_create_and_save(model_path):
             np.array([8, 9])]
 
     # "predict" (add, multiply), return exact values since no thresh given
-    result = model.predict_proba(data)
+    result = model.predict(data)
 
     # 4 + 8 == 12
     assert result.iloc[0].added == 12

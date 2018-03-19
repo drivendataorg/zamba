@@ -19,8 +19,8 @@ def test_load_and_predict(model_path):
     proba_threshold = 0.5
 
     # # "predict" (add, multiply), return binary since thresh given
-    preds = model.predict_proba(new_data,
-                                proba_threshold)
+    preds = model.predict(new_data,
+                          proba_threshold)
 
     # 6 + 3 == 9 >= 0.5 --> True
     assert preds.iloc[0].added == True

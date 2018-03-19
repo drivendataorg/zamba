@@ -20,7 +20,7 @@ class Model(object):
         if self.delete_tempdir:
             rmtree(self.tempdir)
 
-    def predict_proba(self, X):
+    def predict(self, X):
         """
         Predict class probabilities
         """
@@ -65,7 +65,7 @@ class SampleModel(Model):
         self.model.save(self.modeldir)
 
 
-    def predict_proba(self, X, proba_threshold=None):
+    def predict(self, X, proba_threshold=None):
         """
         Predict class probabilities
         """

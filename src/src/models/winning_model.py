@@ -13,7 +13,7 @@ class WinningModel(Model):
         # use the model object's defaults
         super().__init__(modeldir, tempdir=tempdir)
 
-    def predict_proba(self, X):
+    def predict(self, X):
         """ Predict class probabilities for each input, X
         """
         pass
