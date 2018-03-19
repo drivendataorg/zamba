@@ -24,12 +24,9 @@ def save_model(model, model_path=None):
     # check for save paths
     if model.modeldir is None:
         if model_path is not None:
-            if not isinstance(model_path, Path):
-                model_path = Path(model_path)
 
-                # create if neccessary
-                if not model_path.exists():
-                    model_path.mkdir(exist_ok=True)
+            # create if necessary
+            model_path.parent.mkdir(exist_ok=True)
 
             model.modeldir = model_path
         else:

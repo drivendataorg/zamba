@@ -1,6 +1,9 @@
 from pathlib import Path
+from shutil import rmtree
+
 import pytest
 
+from src.src.models.model import SampleModel
 
 @pytest.fixture
 def model_path():
@@ -12,3 +15,9 @@ def model_path():
     model_subdir.mkdir(exist_ok=True)
 
     return model_subdir / model_name
+
+@pytest.fixture
+def sample_model():
+    model = SampleModel()
+    yield model
+    rmtree(model.modeldir.parent)
