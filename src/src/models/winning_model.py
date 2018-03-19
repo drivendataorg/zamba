@@ -1,19 +1,12 @@
-from pathlib import Path
-from shutil import rmtree
-import tempfile
-
-import pandas as pd
-import tensorflow as tf
-
 from .model import Model
 
 
 class WinningModel(Model):
-    def __init__(self, modeldir, tempdir=None):
+    def __init__(self, model_path, tempdir=None):
         # use the model object's defaults
-        super().__init__(modeldir, tempdir=tempdir)
+        super().__init__(model_path, tempdir=tempdir)
 
-    def predict_proba(self, X):
+    def predict(self, X):
         """ Predict class probabilities for each input, X
         """
         pass

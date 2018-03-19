@@ -1,11 +1,11 @@
 from pathlib import Path
 
 import click
-import pandas as pd
 
 # from src.models.winning_model import WinningModel
-from src import config
 from src.src.models.io import load_model
+
+default_model_dir = Path('models', 'assets')
 
 
 @click.group()
@@ -28,11 +28,14 @@ def main():
               default=None)
 @click.option('--modelpath',
               type=click.Path(exists=True,
-                              file_okay=False,
+                              file_okay=True,
                               dir_okay=True),
-              default=config.default_model_dir)
+              default=default_model_dir)
+@click.option('--sample_model',
+              type=bool,
+              default=False)
 @click.option('--verbose', type=bool, default=True)
-def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
+def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, sample_model, verbose):
 
     datapath = Path(datapath)
     predsout = Path(predsout)
@@ -54,23 +57,10 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, verbose):
     # Process the data
 
     # Load the model
-    model = load_model(modelpath)
+    model = load_model(modelpath, sample_model)
 
     # Make predictions, return a DataFrame
-    if proba_threshold is not None:
-
-        # binary labels if threshold given
-        preds = model.predict_proba(tmpdir) >= proba_threshold
-
-    else:
-        # probability if threshold not given
-        preds = model.predict_proba(tmpdir)
-
-    # Save the result
-    preds.to_csv(
-        Path(predsout).resolve(),
-        index_label='id',
-    )
+    preds = model.predict()
 
     # Output for now
     click.echo(preds)

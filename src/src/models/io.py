@@ -1,25 +1,35 @@
 from pathlib import Path
 
-import tensorflow as tf
+from src.src.models.model import Model, SampleModel
 
-from src.src.models.model import Model
 
-def load_model(modeldir):
+def load_model(modelpath, sample_model=False):
     """
-    Return model object with saved tensorflow graph
+    Return model object with saved keras graph
     """
 
-    modeldir = Path(modeldir)
-    if not modeldir.exists():
+    modelpath = Path(modelpath)
+    if not modelpath.exists():
         raise FileNotFoundError
 
-    suffixes = [str(f.suffix) for f in modeldir.resolve().iterdir()]
-    if ".meta" not in suffixes:
-        raise FileNotFoundError("Model requires metagraph")
+    if sample_model:
+        return SampleModel(modelpath)
+    else:
+        return Model(modelpath)
 
-    stems = [str(f.stem) for f in modeldir.resolve().iterdir()]
-    if "checkpoint" not in stems:
-        msg = "Expected model weights to be in checkpoint dir"
-        raise FileNotFoundError(msg)
 
-    return Model(modeldir)
+def save_model(model, model_path=None):
+    """Only saves keras model currently"""
+
+    # check for save paths
+    if model.modeldir is None:
+        if model_path is not None:
+
+            # create if necessary
+            model_path.parent.mkdir(exist_ok=True)
+
+            model.modeldir = model_path
+        else:
+            raise AttributeError(f"model.modeldir is {model.modeldir}, please provide model_path")
+
+    model.model.save(model.modeldir)

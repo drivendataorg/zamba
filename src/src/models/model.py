@@ -1,29 +1,16 @@
-"""
-All models in our tool inherit from this class
-"""
 from pathlib import Path
+from shutil import rmtree
 import tempfile
 
-
-import numpy as np
 import pandas as pd
-import tensorflow as tf
+from tensorflow.python import keras
 
-from src.tests import test_model_config as test_config
-input_names = test_config.input_names
-op_to_restore_name = test_config.op_to_restore_name
 
 class Model(object):
-    def __init__(self, modeldir, tempdir=None):
-        self.modeldir = Path(modeldir)
-
+    def __init__(self, model_path=None, tempdir=None):
+        self.modeldir = Path(model_path) if model_path is not None else None
         self.delete_tempdir = tempdir is None
-
-        self.tempdir = Path(tempfile.TemporaryDirectory()) if self.delete_tempdir else Path(tempdir)
-
-        # Use modeldir to get metagraph path
-        self.metagraph_path = self._get_metagraph_path()
-        # self.checkpoint_path = self.get_checkpoint_path()
+        self.tempdir = Path(tempfile.mkdtemp()) if self.delete_tempdir else Path(tempdir)
 
     def __del__(self):
         """ If we use the default temporary directory, clean this
@@ -32,7 +19,7 @@ class Model(object):
         if self.delete_tempdir:
             rmtree(self.tempdir)
 
-    def predict_proba(self, X):
+    def predict(self, X):
         """
         Predict class probabilities
         """
@@ -53,63 +40,34 @@ class Model(object):
         pass
 
 
-
 class SampleModel(Model):
-    def __init__(self, modeldir, tempdir=None):
-        super().__init__(modeldir, tempdir=tempdir)
+    def __init__(self, model_path=None, tempdir=None):
+        super().__init__(model_path, tempdir=tempdir)
 
-        # Use modeldir to get metagraph path
-        self.metagraph_path = self._get_metagraph_path()
-        # self.checkpoint_path = self.get_checkpoint_path()
+        self.model = self._build_graph() if self.modeldir is None else keras.models.load_model(self.modeldir)
 
+    def _build_graph(self):
 
-    def predict_proba(self, X):
+        # build simple architecture to multiply two numbers
+        w1 = keras.layers.Input(shape=(1,), name="w1")
+        w2 = keras.layers.Input(shape=(1,), name="w2")
+
+        add = keras.layers.add([w1, w2])
+        mult = keras.layers.multiply([w1, w2])
+        out = keras.layers.concatenate([add, mult])
+
+        return keras.models.Model(inputs=[w1, w2], outputs=out)
+
+    def predict(self, X, proba_threshold=None):
         """
         Predict class probabilities
         """
 
-        with tf.Session() as sess:
+        predictions = self.model.predict(X)
+        preds_df = pd.DataFrame(dict(added=predictions[:, 0],
+                                     multiplied=predictions[:, 1]))
 
-            # load metagraph
-            loader = tf.train.import_meta_graph(str(self.metagraph_path))
-
-            # load checkpoint
-            loader.restore(
-                           sess,
-                           tf.train.latest_checkpoint(str(self.modeldir))
-            )
-            # access graph
-            graph = tf.get_default_graph()
-
-            # create feed dict by accessing input names
-            w1 = graph.get_tensor_by_name(f"{input_names[0]}:0")
-            w2 = graph.get_tensor_by_name(f"{input_names[1]}:0")
-            feed_dict = {w1: 5, w2: 9}
-
-            # Access the operation to run
-            op_to_restore = graph.get_tensor_by_name(f"{op_to_restore_name}:0")
-
-            # run operation
-            predictions = sess.run(op_to_restore, feed_dict)
-
-            return pd.DataFrame(dict(output=[predictions]))
-
-
-    def _get_metagraph_path(self):
-        """
-        If utils.load_model is used to instantiate object,
-        this file is guaranteed to exist.
-        """
-        mgp = [f for f in self.modeldir.resolve().iterdir() if str(f.suffix)
-               == ".meta"]
-        return mgp[0]
-
-    # def get_checkpoint_path(self):
-    #     """
-    #     If utils.load_model is used to instantiate object,
-    #     this file is guaranteed to exist.
-    #     """
-    #     ckptp = [f for f in self.modeldir.resolve().iterdir() if str(f.stem)
-    #              == "checkpoint"]
-    #     return str(ckptp[0])
-
+        if proba_threshold is None:
+            return preds_df
+        else:
+            return preds_df >= proba_threshold
