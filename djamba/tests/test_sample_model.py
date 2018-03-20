@@ -1,6 +1,6 @@
 import numpy as np
 
-from djamba.djamba.models.io import save_model, load_model
+from djamba.models.io import save_model, load_model
 
 
 def test_create_and_save(model_path, sample_model):

@@ -3,7 +3,7 @@ from shutil import rmtree
 
 import pytest
 
-from djamba.djamba.models.model import SampleModel
+from djamba.models.model import SampleModel
 
 
 @pytest.fixture

@@ -3,8 +3,8 @@ from shutil import rmtree
 from click.testing import CliRunner
 
 from djamba.cli import predict
-from djamba.djamba.models.io import save_model
-from djamba.djamba.models.model import SampleModel
+from djamba.models.io import save_model
+from djamba.models.model import SampleModel
 
 
 def test_predict_modelpath(model_path, mocker):

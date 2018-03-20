@@ -3,7 +3,7 @@ from pathlib import Path
 import click
 
 # from djamba.models.winning_model import WinningModel
-from djamba.djamba.models.io import load_model
+from djamba.models.io import load_model
 
 default_model_dir = Path('models', 'assets')
 
