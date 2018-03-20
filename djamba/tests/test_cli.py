@@ -2,9 +2,9 @@ from shutil import rmtree
 
 from click.testing import CliRunner
 
-from src.cli import predict
-from src.src.models.io import save_model
-from src.src.models.model import SampleModel
+from djamba.cli import predict
+from djamba.models.io import save_model
+from djamba.models.model import SampleModel
 
 
 def test_predict_modelpath(model_path, mocker):

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.src.models.model import Model, SampleModel
+from djamba.models.model import Model, SampleModel
 
 
 def load_model(modelpath, sample_model=False):

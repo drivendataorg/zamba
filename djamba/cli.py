@@ -2,8 +2,8 @@ from pathlib import Path
 
 import click
 
-# from src.models.winning_model import WinningModel
-from src.src.models.io import load_model
+# from djamba.models.winning_model import WinningModel
+from djamba.models.io import load_model
 
 default_model_dir = Path('models', 'assets')
 

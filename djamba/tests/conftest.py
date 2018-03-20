@@ -3,13 +3,13 @@ from shutil import rmtree
 
 import pytest
 
-from src.src.models.model import SampleModel
+from djamba.models.model import SampleModel
 
 
 @pytest.fixture
 def model_path():
     project_src = Path(__file__).absolute().parent.parent
-    model_dir = project_src / "src" / "models" / "assets"
+    model_dir = project_src / "models" / "assets"
 
     model_name = Path("test-model.h5")
     model_subdir = model_dir / model_name.stem
