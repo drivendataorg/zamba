@@ -8,7 +8,7 @@ from tensorflow.python import keras
 
 class Model(object):
     def __init__(self, model_path=None, tempdir=None):
-        self.modeldir = Path(model_path) if model_path is not None else None
+        self.model_path = Path(model_path) if model_path is not None else None
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp()) if self.delete_tempdir else Path(tempdir)
 
@@ -44,7 +44,7 @@ class SampleModel(Model):
     def __init__(self, model_path=None, tempdir=None):
         super().__init__(model_path, tempdir=tempdir)
 
-        self.model = self._build_graph() if self.modeldir is None else keras.models.load_model(self.modeldir)
+        self.model = self._build_graph() if self.model_path is None else keras.models.load_model(self.model_path)
 
     def _build_graph(self):
 
@@ -58,7 +58,7 @@ class SampleModel(Model):
 
         return keras.models.Model(inputs=[w1, w2], outputs=out)
 
-    def predict(self, X, proba_threshold=None):
+    def predict(self, X, proba_thresh=None):
         """
         Predict class probabilities
         """
@@ -67,7 +67,37 @@ class SampleModel(Model):
         preds_df = pd.DataFrame(dict(added=predictions[:, 0],
                                      multiplied=predictions[:, 1]))
 
-        if proba_threshold is None:
+        if proba_thresh is None:
             return preds_df
         else:
-            return preds_df >= proba_threshold
+            return preds_df >= proba_thresh
+
+
+# class ModelManager(object):
+#     def __init__(self, modelpath, tempdir=None, proba_thresh=None):
+#         self.model = load_model(modelpath)
+#         self.proba_thresh = proba_thresh
+#
+#     def predict(self, datapath, outputpath):
+#         data = load_data(datapath)
+#
+#         if self.proba_thresh:
+#             preds = self.model.predict(data) >= self.proba_thresh
+#         else:
+#             preds = self.model.predict(data)
+#
+#         preds.to_csv(outputpath)
+#
+#     def train(self):
+#         pass
+#
+#     def tune(self):
+#         pass
+#
+#     def load_model(self, modelpath, sample_model=False):
+#         """move from io"""
+#         pass
+#
+#     def save_model(self, model, model_path=None):
+#         """move from io"""
+#         pass

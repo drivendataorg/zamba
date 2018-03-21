@@ -22,14 +22,14 @@ def save_model(model, model_path=None):
     """Only saves keras model currently"""
 
     # check for save paths
-    if model.modeldir is None:
+    if model.model_path is None:
         if model_path is not None:
 
             # create if necessary
             model_path.parent.mkdir(exist_ok=True)
 
-            model.modeldir = model_path
+            model.model_path = model_path
         else:
-            raise AttributeError(f"model.modeldir is {model.modeldir}, please provide model_path")
+            raise AttributeError(f"model.model_path is {model.model_path}, please provide model_path")
 
-    model.model.save(model.modeldir)
+    model.model.save(model.model_path)

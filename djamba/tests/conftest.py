@@ -22,4 +22,4 @@ def model_path():
 def sample_model():
     model = SampleModel()
     yield model
-    rmtree(model.modeldir.parent)
+    rmtree(model.model_path.parent)
