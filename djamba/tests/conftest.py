@@ -40,5 +40,6 @@ def sample_data_path():
     with open(data_path, 'wb') as f:
         pickle.dump(sample_data, f)
 
+    assert data_path.resolve().exists()
     yield data_path
     rmtree(data_path.parent)

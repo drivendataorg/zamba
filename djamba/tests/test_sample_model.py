@@ -36,7 +36,7 @@ def test_load_and_predict(sample_model_path, sample_data_path):
     # load the sample model in the ModelManager
     manager = ModelManager(sample_model_path,
                            model_class='sample',
-                           proba_thresh=0.5)
+                           proba_threshold=0.5)
 
     # "predict" (add, multiply), return binary since thresh given
     preds = manager.predict(sample_data_path)

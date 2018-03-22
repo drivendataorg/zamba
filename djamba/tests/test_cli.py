@@ -1,17 +1,16 @@
 from click.testing import CliRunner
 
 from djamba.cli import predict
-from djamba.models.manager import ModelManager
 
 
-def test_predict_modelpath(sample_model_path, mocker):
+def test_predict_modelpath(sample_model_path, sample_data_path):
     """This needs work"""
 
-    # configure mocker
-    mocker.patch.object(ModelManager, 'predict')
-    ModelManager.predict.return_value = 1
+    assert sample_model_path.resolve().exists()
+    assert sample_data_path.resolve().exists()
 
     runner = CliRunner()
-    result = runner.invoke(predict, ['--modelpath', sample_model_path,
+    result = runner.invoke(predict, [str(sample_data_path),
+                                     '--model_path', sample_model_path,
                                      '--model_class', "sample"])
     assert result.exit_code == 0
