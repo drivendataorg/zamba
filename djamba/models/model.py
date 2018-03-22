@@ -1,3 +1,4 @@
+import pickle
 from pathlib import Path
 from shutil import rmtree
 import tempfile
@@ -85,3 +86,11 @@ class SampleModel(Model):
 
         # keras' save
         self.model.save(save_path)
+
+    def load_data(self, data_path):
+        """SampleModel loads pickled data"""
+
+        with open(data_path, 'rb') as f:
+            data = pickle.load(f)
+
+        return data

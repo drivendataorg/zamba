@@ -35,13 +35,15 @@ class ModelManager(object):
         self.model = self.model_class(model_path)
         self.proba_thresh = proba_thresh
 
-    def predict(self, X, data_path=None, output_path=None):
+    def predict(self, data_path=None, output_path=None):
 
         """
         Handle prediction
         """
 
-        preds = self.model.predict(X)
+        data = self.model.load_data(data_path)
+
+        preds = self.model.predict(data)
 
         if self.proba_thresh is None:
             return preds
