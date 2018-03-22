@@ -3,6 +3,7 @@ from click.testing import CliRunner
 from djamba.cli import predict
 from djamba.models.manager import ModelManager
 
+
 def test_predict_modelpath(sample_model_path, mocker):
     """This needs work"""
 
