@@ -28,7 +28,7 @@ def sample_model_path():
     yield path
     rmtree(path.parent)
 
-
+@pytest.fixture
 def sample_data_path():
     sample_data = [np.array([6, 0.3]),
                    np.array([3, 0.1])]
