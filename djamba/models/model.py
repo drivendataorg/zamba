@@ -21,7 +21,7 @@ class Model(object):
 
     def predict(self, X):
         """
-        Predict class probabilities
+        Predict class probabilities.
         """
         pass
 
@@ -38,6 +38,10 @@ class Model(object):
             model output the new classes instead.
         """
         pass
+
+    def save_model(self):
+        """Save the model weights, checkpoints, to model_path.
+        """
 
 
 class SampleModel(Model):
@@ -67,3 +71,15 @@ class SampleModel(Model):
         preds = pd.DataFrame(dict(added=preds[:, 0],
                                   multiplied=preds[:, 1]))
         return preds
+
+    def save_model(self, path=None):
+        """Only saves keras model currently"""
+
+        # save to user-specified, current model path, or default to cwd
+        save_path = Path(path) if path is not None else self.model_path if self.model_path is not None else Path('.')
+
+        # create if necessary
+        save_path.parent.mkdir(exist_ok=True)
+
+        # keras' save
+        self.model.save(save_path)

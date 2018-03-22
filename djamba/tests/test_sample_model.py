@@ -1,17 +1,15 @@
 import numpy as np
 
-# from djamba.models.io import save_model, load_model
 from djamba.models.manager import ModelManager
 
 
-def test_create_and_save(model_path, sample_model):
+def test_create_and_save(sample_model_path):
 
     # create some sample data
     data = [np.array([4, 5]),
             np.array([8, 9])]
 
-    manager = ModelManager(model_path, model_class='sample')
-    manager.add_model(sample_model)
+    manager = ModelManager(sample_model_path, model_class='sample')
 
     # "predict" (add, multiply), return exact values since no thresh given
     result = manager.predict(data)
@@ -28,21 +26,18 @@ def test_create_and_save(model_path, sample_model):
     # 5 * 9 == 45
     assert result.iloc[1].multiplied == 45
 
-    manager.save_model()
+    manager.model.save_model()
 
 
-def test_load_and_predict(model_path, sample_model):
+def test_load_and_predict(sample_model_path):
     """
     Simple load of Model object using graph
     in test_model_save_and_load to predict
     and save out
     """
 
-    # save sample model from scratch
-    sample_model.model.save(model_path)
-
     # load the sample model in the ModelManager
-    model_manager = ModelManager(model_path,
+    model_manager = ModelManager(sample_model_path,
                                  model_class='sample',
                                  proba_thresh=0.5)
 

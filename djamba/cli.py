@@ -2,8 +2,7 @@ from pathlib import Path
 
 import click
 
-# from djamba.models.winning_model import WinningModel
-from djamba.models.io import load_model
+from djamba.models.manager import ModelManager
 
 default_model_dir = Path('models', 'assets')
 
@@ -31,11 +30,11 @@ def main():
                               file_okay=True,
                               dir_okay=True),
               default=default_model_dir)
-@click.option('--sample_model',
-              type=bool,
-              default=False)
+@click.option('--model_class',
+              type=str,
+              default="winning")
 @click.option('--verbose', type=bool, default=True)
-def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, sample_model, verbose):
+def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, model_class, verbose):
 
     datapath = Path(datapath)
     predsout = Path(predsout)
@@ -57,7 +56,7 @@ def predict(datapath, predsout, tmpdir, proba_threshold, modelpath, sample_model
     # Process the data
 
     # Load the model
-    model = load_model(modelpath, sample_model)
+    model = ModelManager(modelpath, model_class)
 
     # Make predictions, return a DataFrame
     preds = model.predict()

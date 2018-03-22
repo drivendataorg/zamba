@@ -1,28 +1,16 @@
-from shutil import rmtree
-
 from click.testing import CliRunner
 
 from djamba.cli import predict
-from djamba.models.io import save_model
-from djamba.models.model import SampleModel
+from djamba.models.manager import ModelManager
 
-
-def test_predict_modelpath(model_path, mocker):
+def test_predict_modelpath(sample_model_path, mocker):
     """This needs work"""
 
-    # instantiate new model
-    model = SampleModel()
-
-    # save model
-    save_model(model, model_path)
-
-    mocker.patch.object(SampleModel, 'predict')
-    SampleModel.predict.return_value = 1
+    # configure mocker
+    mocker.patch.object(ModelManager, 'predict')
+    ModelManager.predict.return_value = 1
 
     runner = CliRunner()
-    result = runner.invoke(predict, ['--modelpath', model_path,
-                                     '--sample_model', True])
+    result = runner.invoke(predict, ['--modelpath', sample_model_path,
+                                     '--model_class', "sample"])
     assert result.exit_code == 0
-
-    # delete test model
-    rmtree(model_path.parent)

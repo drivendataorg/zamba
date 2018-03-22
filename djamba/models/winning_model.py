@@ -24,3 +24,7 @@ class WinningModel(Model):
             model output the new classes instead.
         """
         pass
+
+    def save_model(self):
+        """Save the model weights, checkpoints, to model_path.
+        """

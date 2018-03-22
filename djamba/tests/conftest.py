@@ -19,8 +19,9 @@ def model_path():
 
 
 @pytest.fixture
-def sample_model():
+def sample_model_path():
     model = SampleModel()
-    model.model_path = model_path()
-    yield model
-    rmtree(model.model_path.parent)
+    path = model_path()
+    model.save_model(path=path)
+    yield path
+    rmtree(path.parent)

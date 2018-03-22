@@ -32,9 +32,7 @@ class ModelManager(object):
                 self.model_class = model.model
 
         self.tempdir = tempdir
-
-        self.model = self.load_model(model_path) if self.model_path.exists() else None
-        self.has_model = self.model is not None
+        self.model = self.model_class(model_path)
         self.proba_thresh = proba_thresh
 
     def predict(self, X, data_path=None, output_path=None):
@@ -55,39 +53,3 @@ class ModelManager(object):
 
     def tune(self):
         pass
-
-    def add_model(self, model):
-        if isinstance(model, self.model_class):
-            self.model = model
-            self.has_model = True
-        else:
-            raise TypeError(f"Model is type {type(model)}, ModelManager expecting type {self.model_class})")
-
-    def load_model(self, model_path):
-        """
-        Return model object with saved keras graph
-        """
-
-        if not model_path.exists():
-            raise FileNotFoundError
-
-        return self.model_class(model_path)
-
-    def save_model(self):
-        """Only saves keras model currently"""
-
-        if not self.has_model:
-            raise AttributeError("Manager has no model.")
-
-        # check for save paths
-        if self.model.model_path is None:
-            if self.model_path is not None:
-
-                # create if necessary
-                self.model_path.parent.mkdir(exist_ok=True)
-
-                self.model.model_path = self.model_path
-            else:
-                raise AttributeError(f"model.model_path is {model.model_path}, please provide model_path")
-
-        self.model.model.save(self.model.model_path)
