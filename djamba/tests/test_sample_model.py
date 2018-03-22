@@ -1,3 +1,5 @@
+import numpy as np
+
 from djamba.models.manager import ModelManager
 
 
@@ -15,10 +17,10 @@ def test_create_and_save(sample_model_path, sample_data_path):
     assert result.iloc[0].multiplied == 18
 
     # 0.3 + 0.1 == 0.4
-    assert result.iloc[1].added == 0.4
+    assert result.iloc[1].added == np.float32(0.3) + np.float32(0.1)
 
     # 0.3 * 0.1 == 0.03
-    assert result.iloc[1].multiplied == 0.03
+    assert result.iloc[1].multiplied == np.float32(0.3) * np.float32(0.1)
 
     manager.model.save_model()
     assert manager.model_path.exists()
