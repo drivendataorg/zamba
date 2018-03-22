@@ -21,5 +21,6 @@ def model_path():
 @pytest.fixture
 def sample_model():
     model = SampleModel()
+    model.model_path = model_path()
     yield model
     rmtree(model.model_path.parent)

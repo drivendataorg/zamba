@@ -58,46 +58,12 @@ class SampleModel(Model):
 
         return keras.models.Model(inputs=[w1, w2], outputs=out)
 
-    def predict(self, X, proba_thresh=None):
+    def predict(self, X):
         """
         Predict class probabilities
         """
 
-        predictions = self.model.predict(X)
-        preds_df = pd.DataFrame(dict(added=predictions[:, 0],
-                                     multiplied=predictions[:, 1]))
-
-        if proba_thresh is None:
-            return preds_df
-        else:
-            return preds_df >= proba_thresh
-
-
-# class ModelManager(object):
-#     def __init__(self, modelpath, tempdir=None, proba_thresh=None):
-#         self.model = load_model(modelpath)
-#         self.proba_thresh = proba_thresh
-#
-#     def predict(self, datapath, outputpath):
-#         data = load_data(datapath)
-#
-#         if self.proba_thresh:
-#             preds = self.model.predict(data) >= self.proba_thresh
-#         else:
-#             preds = self.model.predict(data)
-#
-#         preds.to_csv(outputpath)
-#
-#     def train(self):
-#         pass
-#
-#     def tune(self):
-#         pass
-#
-#     def load_model(self, modelpath, sample_model=False):
-#         """move from io"""
-#         pass
-#
-#     def save_model(self, model, model_path=None):
-#         """move from io"""
-#         pass
+        preds = self.model.predict(X)
+        preds = pd.DataFrame(dict(added=preds[:, 0],
+                                  multiplied=preds[:, 1]))
+        return preds

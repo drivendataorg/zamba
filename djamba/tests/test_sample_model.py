@@ -1,6 +1,7 @@
 import numpy as np
 
-from djamba.models.io import save_model, load_model
+# from djamba.models.io import save_model, load_model
+from djamba.models.manager import ModelManager
 
 
 def test_create_and_save(model_path, sample_model):
@@ -9,8 +10,11 @@ def test_create_and_save(model_path, sample_model):
     data = [np.array([4, 5]),
             np.array([8, 9])]
 
+    manager = ModelManager(model_path, model_class='sample')
+    manager.add_model(sample_model)
+
     # "predict" (add, multiply), return exact values since no thresh given
-    result = sample_model.predict(data)
+    result = manager.predict(data)
 
     # 4 + 8 == 12
     assert result.iloc[0].added == 12
@@ -24,7 +28,7 @@ def test_create_and_save(model_path, sample_model):
     # 5 * 9 == 45
     assert result.iloc[1].multiplied == 45
 
-    save_model(sample_model, model_path)
+    manager.save_model()
 
 
 def test_load_and_predict(model_path, sample_model):
@@ -34,22 +38,20 @@ def test_load_and_predict(model_path, sample_model):
     and save out
     """
 
-    # save model
-    save_model(sample_model, model_path)
+    # save sample model from scratch
+    sample_model.model.save(model_path)
 
-    # load test model
-    model = load_model(model_path,
-                       sample_model=True)
+    # load the sample model in the ModelManager
+    model_manager = ModelManager(model_path,
+                                 model_class='sample',
+                                 proba_thresh=0.5)
 
     # sample data
     new_data = [np.array([6, 0.3]),
                 np.array([3, 0.1])]
 
-    proba_threshold = 0.5
-
     # # "predict" (add, multiply), return binary since thresh given
-    preds = model.predict(new_data,
-                          proba_threshold)
+    preds = model_manager.predict(new_data)
 
     # 6 + 3 == 9 >= 0.5 --> True
     assert preds.iloc[0].added
