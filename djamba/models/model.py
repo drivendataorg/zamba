@@ -75,8 +75,10 @@ class SampleModel(Model):
     def save_model(self, path=None):
         """Only saves keras model currently"""
 
-        # save to user-specified, current model path, or default to cwd
-        save_path = Path(path) if path is not None else self.model_path if self.model_path is not None else Path('.')
+        # save to user-specified, current model path
+        save_path = Path(path) if path is not None else self.model_path if self.model_path is not None else None
+        if save_path is None:
+            raise FileNotFoundError("Must provide save_path")
 
         # create if necessary
         save_path.parent.mkdir(exist_ok=True)

@@ -27,6 +27,7 @@ def test_create_and_save(sample_model_path):
     assert result.iloc[1].multiplied == 45
 
     manager.model.save_model()
+    assert manager.model_path.exists()
 
 
 def test_load_and_predict(sample_model_path):
