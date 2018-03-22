@@ -1,11 +1,20 @@
-from enum import Enum
+from enum import Enum, EnumMeta
 from pathlib import Path
 
 from djamba.models.model import SampleModel
 from djamba.models.winning_model import WinningModel
 
 
-class ModelName(Enum):
+class GetItemMeta(EnumMeta):
+    def __getitem__(cls, name):
+        for e in cls:
+            if e.string == name:
+                return e
+
+        raise ValueError(f"Key '{name}' not in ModelName Enum.")
+
+
+class ModelName(Enum, metaclass=GetItemMeta):
     WINNING = ('winning', WinningModel)
     SAMPLE = ('sample', SampleModel)
 
@@ -26,10 +35,7 @@ class ModelManager(object):
     def __init__(self, model_path, model_class='winning', tempdir=None, proba_thresh=None):
 
         self.model_path = Path(model_path)
-
-        for model in ModelName:
-            if model_class.lower() == model.string:
-                self.model_class = model.model
+        self.model_class = ModelName[model_class].model
 
         self.tempdir = tempdir
         self.model = self.model_class(model_path)
