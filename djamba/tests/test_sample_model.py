@@ -1,13 +1,7 @@
-import numpy as np
-
 from djamba.models.manager import ModelManager
 
 
 def test_create_and_save(sample_model_path, sample_data_path):
-
-    # create some sample data
-    # data = [np.array([4, 5]),
-    #         np.array([8, 9])]
 
     manager = ModelManager(sample_model_path, model_class='sample')
 
@@ -39,14 +33,10 @@ def test_load_and_predict(sample_model_path, sample_data_path):
 
     # load the sample model in the ModelManager
     manager = ModelManager(sample_model_path,
-                                 model_class='sample',
-                                 proba_thresh=0.5)
+                           model_class='sample',
+                           proba_thresh=0.5)
 
-    # # sample data
-    # new_data = [np.array([6, 0.3]),
-    #             np.array([3, 0.1])]
-
-    # # "predict" (add, multiply), return binary since thresh given
+    # "predict" (add, multiply), return binary since thresh given
     preds = manager.predict(sample_data_path)
 
     # 6 + 3 == 9 >= 0.5 --> True
