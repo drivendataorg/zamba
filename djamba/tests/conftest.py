@@ -1,6 +1,8 @@
 from pathlib import Path
+import pickle
 from shutil import rmtree
 
+import numpy as np
 import pytest
 
 from djamba.models.model import SampleModel
@@ -19,7 +21,24 @@ def model_path():
 
 
 @pytest.fixture
-def sample_model():
+def sample_model_path():
     model = SampleModel()
-    yield model
-    rmtree(model.modeldir.parent)
+    path = model_path()
+    model.save_model(path=path)
+    yield path
+    rmtree(path.parent)
+
+
+@pytest.fixture
+def sample_data_path():
+    sample_data = [np.array([6, 0.3]),
+                   np.array([3, 0.1])]
+
+    data_path = Path(__file__).parent / "data" / "sample_data.pkl"
+    data_path.parent.mkdir(exist_ok=True)
+    with open(data_path, 'wb') as f:
+        pickle.dump(sample_data, f)
+
+    assert data_path.resolve().exists()
+    yield data_path
+    rmtree(data_path.parent)

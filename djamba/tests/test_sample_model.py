@@ -1,55 +1,45 @@
 import numpy as np
 
-from djamba.models.io import save_model, load_model
+from djamba.models.manager import ModelManager
 
 
-def test_create_and_save(model_path, sample_model):
+def test_create_and_save(sample_model_path, sample_data_path):
 
-    # create some sample data
-    data = [np.array([4, 5]),
-            np.array([8, 9])]
+    manager = ModelManager(sample_model_path, model_class='sample')
 
     # "predict" (add, multiply), return exact values since no thresh given
-    result = sample_model.predict(data)
+    result = manager.predict(sample_data_path)
 
-    # 4 + 8 == 12
-    assert result.iloc[0].added == 12
+    # 6 + 3 == 9
+    assert result.iloc[0].added == 9
 
-    # 4 * 8 == 32
-    assert result.iloc[0].multiplied == 32
+    # 6 * 3 == 18
+    assert result.iloc[0].multiplied == 18
 
-    # 5 + 9 == 14
-    assert result.iloc[1].added == 14
+    # 0.3 + 0.1 == 0.4
+    assert result.iloc[1].added == np.float32(0.3) + np.float32(0.1)
 
-    # 5 * 9 == 45
-    assert result.iloc[1].multiplied == 45
+    # 0.3 * 0.1 == 0.03
+    assert result.iloc[1].multiplied == np.float32(0.3) * np.float32(0.1)
 
-    save_model(sample_model, model_path)
+    manager.model.save_model()
+    assert manager.model_path.exists()
 
 
-def test_load_and_predict(model_path, sample_model):
+def test_load_and_predict(sample_model_path, sample_data_path):
     """
     Simple load of Model object using graph
     in test_model_save_and_load to predict
     and save out
     """
 
-    # save model
-    save_model(sample_model, model_path)
+    # load the sample model in the ModelManager
+    manager = ModelManager(sample_model_path,
+                           model_class='sample',
+                           proba_threshold=0.5)
 
-    # load test model
-    model = load_model(model_path,
-                       sample_model=True)
-
-    # sample data
-    new_data = [np.array([6, 0.3]),
-                np.array([3, 0.1])]
-
-    proba_threshold = 0.5
-
-    # # "predict" (add, multiply), return binary since thresh given
-    preds = model.predict(new_data,
-                          proba_threshold)
+    # "predict" (add, multiply), return binary since thresh given
+    preds = manager.predict(sample_data_path)
 
     # 6 + 3 == 9 >= 0.5 --> True
     assert preds.iloc[0].added

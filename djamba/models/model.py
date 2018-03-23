@@ -1,3 +1,4 @@
+import pickle
 from pathlib import Path
 from shutil import rmtree
 import tempfile
@@ -8,7 +9,7 @@ from tensorflow.python import keras
 
 class Model(object):
     def __init__(self, model_path=None, tempdir=None):
-        self.modeldir = Path(model_path) if model_path is not None else None
+        self.model_path = Path(model_path) if model_path is not None else None
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp()) if self.delete_tempdir else Path(tempdir)
 
@@ -21,7 +22,7 @@ class Model(object):
 
     def predict(self, X):
         """
-        Predict class probabilities
+        Predict class probabilities.
         """
         pass
 
@@ -39,12 +40,16 @@ class Model(object):
         """
         pass
 
+    def save_model(self):
+        """Save the model weights, checkpoints, to model_path.
+        """
+
 
 class SampleModel(Model):
     def __init__(self, model_path=None, tempdir=None):
         super().__init__(model_path, tempdir=tempdir)
 
-        self.model = self._build_graph() if self.modeldir is None else keras.models.load_model(self.modeldir)
+        self.model = self._build_graph() if self.model_path is None else keras.models.load_model(self.model_path)
 
     def _build_graph(self):
 
@@ -58,16 +63,35 @@ class SampleModel(Model):
 
         return keras.models.Model(inputs=[w1, w2], outputs=out)
 
-    def predict(self, X, proba_threshold=None):
+    def predict(self, X):
         """
         Predict class probabilities
         """
 
-        predictions = self.model.predict(X)
-        preds_df = pd.DataFrame(dict(added=predictions[:, 0],
-                                     multiplied=predictions[:, 1]))
+        preds = self.model.predict(X)
+        preds = pd.DataFrame(dict(added=preds[:, 0],
+                                  multiplied=preds[:, 1]))
+        return preds
 
-        if proba_threshold is None:
-            return preds_df
-        else:
-            return preds_df >= proba_threshold
+    def save_model(self, path=None):
+        """Only saves keras model currently"""
+
+        # save to user-specified, or model's path
+        path = Path(path) if path else None
+        save_path = path or self.model_path
+        if save_path is None:
+            raise FileNotFoundError("Must provide save_path")
+
+        # create if necessary
+        save_path.parent.mkdir(exist_ok=True)
+
+        # keras' save
+        self.model.save(save_path)
+
+    def load_data(self, data_path):
+        """SampleModel loads pickled data"""
+
+        with open(data_path, 'rb') as f:
+            data = pickle.load(f)
+
+        return data
