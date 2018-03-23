@@ -78,9 +78,8 @@ class ModelManager(object):
 
     def predict(self, data_path=None, pred_path=None):
         """
-
         Args:
-            data_path (str | Path) : path to data, checks model_path attr if ``None`
+            data_path (str | Path) : path to data, checks model_path attr if ``None``
             pred_path (str | Path) : where predictions will be saved
 
         Returns: DataFrame of predictions
