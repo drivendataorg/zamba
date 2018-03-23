@@ -1,0 +1,3 @@
+zamba:
+  build: .
+  cached: true

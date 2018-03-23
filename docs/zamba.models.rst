@@ -22,10 +22,10 @@ zamba.models.model module
     :undoc-members:
     :show-inheritance:
 
-zamba.models.winning\_model module
+zamba.models.cnnensemble module
 -----------------------------------
 
-.. automodule:: zamba.models.winning_model
+.. automodule:: zamba.models.cnnensemble
     :members:
     :undoc-members:
     :show-inheritance:

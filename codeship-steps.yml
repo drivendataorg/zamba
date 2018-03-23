@@ -1,0 +1,11 @@
+- type: parallel
+  steps:
+    - name: test
+      service: zamba
+      command: make test
+    - name: flake8
+      service: zamba
+      command: flake8 zamba
+    - name: docs
+      service: zamba
+      command: bash /app/docs/make_html.sh
