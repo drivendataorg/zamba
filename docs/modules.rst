@@ -7,4 +7,3 @@ djamba
    :maxdepth: 4
 
    djamba
-   setup
