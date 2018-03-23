@@ -8,6 +8,24 @@ from tensorflow.python import keras
 
 
 class Model(object):
+    """Abstract class implementing required methods for any model in the api.
+
+        Args:
+            model_path (str | Path) : path to model files
+                Converted to ``Path`` object in ``__init__``. Defaults to ``None``.
+            tempdir (str | Path) : path to temporary diretory
+                Path to temporary directory, if used. Defaults to ``None``.
+
+        Attributes:
+            model_path (str | Path) : path to model files
+                Converted to ``Path`` object in ``__init__``. Defaults to ``None``.
+            tempdir (str | Path) : path to temporary diretory
+                Path to temporary directory, if used. Defaults to ``None``.
+            delete_tempdir (bool) : whether to clean up tempdir
+                Clean up tempdir if used.
+
+    """
+
     def __init__(self, model_path=None, tempdir=None):
         self.model_path = Path(model_path) if model_path is not None else None
         self.delete_tempdir = tempdir is None
@@ -22,36 +40,73 @@ class Model(object):
 
     def predict(self, X):
         """
-        Predict class probabilities.
+
+        Args:
+            X: Input to model.
+
+        Returns: DataFrame of class probabilities.
+
         """
         pass
 
     def fit(self, X, y):
-        """ Use the same architecture, but train the weights from scratch using
-            the provided X and y.
+        """Use the same architecture, but train the weights from scratch using
+        the provided X and y.
+
+        Args:
+            X: training inputs
+                Numpy arrays probably
+            y: training labels
+                Class labels
+
+        Returns:
+
         """
         pass
 
     def finetune(self, X, y):
-        """ Finetune the network for a different task by keeping the
-            trained weights, replacing the top layer with one that outputs
-            the new classes, and re-training for a few epochs to have the
-            model output the new classes instead.
+        """Finetune the network for a different task by keeping the
+        trained weights, replacing the top layer with one that outputs
+        the new classes, and re-training for a few epochs to have the
+        model output the new classes instead.
+
+        Args:
+            X:
+            y:
+
+        Returns:
+
         """
         pass
 
     def save_model(self):
         """Save the model weights, checkpoints, to model_path.
+
+        Returns:
+
         """
 
 
 class SampleModel(Model):
+    """Sample model for testing.
+
+        Args:
+            model_path:
+            tempdir:
+    """
     def __init__(self, model_path=None, tempdir=None):
         super().__init__(model_path, tempdir=tempdir)
 
         self.model = self._build_graph() if self.model_path is None else keras.models.load_model(self.model_path)
 
     def _build_graph(self):
+        """Simple keras graph for testing api.
+
+        Takes two numbers, adds them, also multiplies them, outputs both results.
+
+        Returns: keras model for testing
+
+        """
 
         # build simple architecture to multiply two numbers
         w1 = keras.layers.Input(shape=(1,), name="w1")
@@ -65,7 +120,12 @@ class SampleModel(Model):
 
     def predict(self, X):
         """
-        Predict class probabilities
+
+        Args:
+            X (list | numpy array) : data for test computation
+
+        Returns: DataFrame with two columns, ``added`` and ``multiplied``.
+
         """
 
         preds = self.model.predict(X)
@@ -74,7 +134,16 @@ class SampleModel(Model):
         return preds
 
     def save_model(self, path=None):
-        """Only saves keras model currently"""
+        """Save the SampleModel.
+
+        If no path is passed, tries to use model_path attribute.
+
+        Args:
+            path:
+
+        Returns:
+
+        """
 
         # save to user-specified, or model's path
         path = Path(path) if path else None
@@ -89,7 +158,14 @@ class SampleModel(Model):
         self.model.save(save_path)
 
     def load_data(self, data_path):
-        """SampleModel loads pickled data"""
+        """SampleModel loads pickled data
+
+        Args:
+            data_path:
+
+        Returns:
+
+        """
 
         with open(data_path, 'rb') as f:
             data = pickle.load(f)
