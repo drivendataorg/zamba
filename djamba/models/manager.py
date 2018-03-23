@@ -48,12 +48,11 @@ class ModelManager(object):
         self.model = self.model_class(model_path)
         self.proba_threshold = proba_threshold
 
-        self.data_path = data_path
+        self.data_path = Path(data_path) if data_path else None
         self.pred_path = pred_path
         self.verbose = verbose
 
     def predict(self, data_path=None, pred_path=None):
-
         """
         Handle prediction
         """
@@ -63,6 +62,8 @@ class ModelManager(object):
                 data_path = self.data_path
             else:
                 raise FileNotFoundError("No data provided.")
+        else:
+            data_path = Path(data_path)
 
         data = self.model.load_data(data_path)
 

@@ -34,8 +34,7 @@ def sample_data_path():
     sample_data = [np.array([6, 0.3]),
                    np.array([3, 0.1])]
 
-    project_src = Path(__file__).absolute().parent.parent
-    data_path = project_src / "tests" / "data" / "sample_data.pkl"
+    data_path = Path(__file__).parent / "data" / "sample_data.pkl"
     data_path.parent.mkdir(exist_ok=True)
     with open(data_path, 'wb') as f:
         pickle.dump(sample_data, f)

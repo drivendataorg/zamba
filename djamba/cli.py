@@ -37,23 +37,31 @@ def main():
               default="winning")
 @click.option('--verbose', type=bool, default=True)
 def predict(data_path, pred_path, tempdir, proba_threshold, model_path, model_class, verbose):
+    """
 
-    data_path = Path(data_path)
-    pred_path = Path(pred_path)
+    :param data_path:
+    :param pred_path:
+    :param tempdir:
+    :param proba_threshold:
+    :param model_path:
+    :param model_class:
+    :param verbose:
+    :return:
+    """
 
     if verbose:
         click.echo(f"Using data_path:\t{data_path}")
         click.echo(f"Using pred_path:\t{pred_path}")
 
     # Load the model in manager
-    model = ModelManager(model_path=model_path,
-                         model_class=model_class,
-                         data_path=data_path,
-                         proba_threshold=proba_threshold,
-                         tempdir=tempdir)
+    manager = ModelManager(model_path=model_path,
+                           model_class=model_class,
+                           data_path=data_path,
+                           proba_threshold=proba_threshold,
+                           tempdir=tempdir)
 
     # Make predictions, return a DataFrame
-    model.predict()
+    manager.predict()
 
 
 @main.command()
