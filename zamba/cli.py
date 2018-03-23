@@ -59,12 +59,11 @@ def predict(data_path, pred_path, tempdir, proba_threshold, model_path, model_cl
     # Load the model into manager
     manager = ModelManager(model_path=model_path,
                            model_class=model_class,
-                           data_path=data_path,
                            proba_threshold=proba_threshold,
                            tempdir=tempdir)
 
     # Make predictions, return a DataFrame
-    manager.predict()
+    manager.predict(data_path)
 
 
 @main.command()

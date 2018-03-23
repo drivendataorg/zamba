@@ -44,10 +44,6 @@ class ModelManager(object):
         Args:
             model_path (str | Path) : path to model weights and architecture
                 Required argument. Will be instantiated as Model object.
-            data_path (str | Path) : path to data
-                Defaults to ``None`` in case ModelManager is not yet used for prediction
-            pred_path (str | Path) : output path where predictions will be saved
-                Defaults to ``None``. Can also be passed to predict method.
             proba_threshold (float) : probability threshold for classification
                 Defaults to ``None``, in which case class probabilities are returned.
             tempdir (str | Path) : path to temporary directory
@@ -59,8 +55,6 @@ class ModelManager(object):
     """
     def __init__(self,
                  model_path,
-                 data_path=None,
-                 pred_path=None,
                  proba_threshold=None,
                  tempdir=None,
                  verbose=True,
@@ -73,28 +67,19 @@ class ModelManager(object):
         self.model = self.model_class(model_path)
         self.proba_threshold = proba_threshold
 
-        self.data_path = Path(data_path) if data_path else None
-        self.pred_path = pred_path
         self.verbose = verbose
 
-    def predict(self, data_path=None, pred_path=None):
+    def predict(self, data_path, pred_path=None):
         """
         Args:
-            data_path (str | Path) : path to data, checks model_path attr if ``None``
+            data_path (str | Path) : path to input data
             pred_path (str | Path) : where predictions will be saved
 
         Returns: DataFrame of predictions
 
         """
 
-        if data_path is None:
-            if self.data_path is not None:
-                data_path = self.data_path
-            else:
-                raise FileNotFoundError("No data provided.")
-        else:
-            data_path = Path(data_path)
-
+        data_path = Path(data_path)
         data = self.model.load_data(data_path)
 
         preds = self.model.predict(data)
