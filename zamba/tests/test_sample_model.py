@@ -4,15 +4,6 @@ from zamba.models.manager import ModelManager
 
 
 def test_create_and_save(sample_model_path, sample_data_path):
-    """Create a model. Use it. Save it.
-
-    Args:
-        sample_model_path (pytest fixture):
-        sample_data_path (pytest fixture):
-
-    Returns:
-
-    """
 
     manager = ModelManager(sample_model_path, model_class='sample')
 
@@ -36,15 +27,6 @@ def test_create_and_save(sample_model_path, sample_data_path):
 
 
 def test_load_and_predict(sample_model_path, sample_data_path):
-    """Load a model. Predict with it.
-
-    Args:
-        sample_model_path (pytest fixture):
-        sample_data_path (pytest fixture):
-
-    Returns:
-
-    """
 
     # load the sample model in the ModelManager
     manager = ModelManager(sample_model_path,

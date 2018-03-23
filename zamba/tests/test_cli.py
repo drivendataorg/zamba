@@ -4,17 +4,11 @@ from zamba.cli import predict
 
 
 def test_predict_modelpath(sample_model_path, sample_data_path):
-    """
 
-    Args:
-        sample_model_path (pytest fixture) :
-        sample_data_path (pytest fixture) :
-
-    Returns:
-
-    """
-
+    # click's cli testing object
     runner = CliRunner()
+
+    # test the predict cli function
     result = runner.invoke(predict, [str(sample_data_path),
                                      '--model_path', sample_model_path,
                                      '--model_class', "sample"])
