@@ -39,21 +39,24 @@ def main():
 def predict(data_path, pred_path, tempdir, proba_threshold, model_path, model_class, verbose):
     """
 
-    :param data_path:
-    :param pred_path:
-    :param tempdir:
-    :param proba_threshold:
-    :param model_path:
-    :param model_class:
-    :param verbose:
-    :return:
+    Args:
+        data_path:
+        pred_path:
+        tempdir:
+        proba_threshold:
+        model_path:
+        model_class:
+        verbose:
+
+    Returns:
+
     """
 
     if verbose:
         click.echo(f"Using data_path:\t{data_path}")
         click.echo(f"Using pred_path:\t{pred_path}")
 
-    # Load the model in manager
+    # Load the model into manager
     manager = ModelManager(model_path=model_path,
                            model_class=model_class,
                            data_path=data_path,
@@ -65,31 +68,53 @@ def predict(data_path, pred_path, tempdir, proba_threshold, model_path, model_cl
 
 
 @main.command()
-@click.argument('datapath',
+@click.argument('data_path',
                 type=click.Path(exists=True,
                                 file_okay=True,
                                 dir_okay=True))
 @click.argument('labels',
                 type=click.File())
-@click.option('--tmpdir',
+@click.option('--tempdir',
               type=click.Path(exists=True))
-@click.option('--batchsize',
+@click.option('--batch_size',
               default=8,
               type=click.IntRange(min=1,
                                   max=256,
                                   clamp=True))
 @click.option('--weights_out', type=click.Path(exists=True))
-def tune(datapath, labels):
+def tune(data_path, labels, tempdir, batch_size, weights_out):
+    """
+
+    Args:
+        data_path:
+        labels:
+        tempdir:
+        batch_size:
+        weights_out:
+
+    Returns:
+
+    """
     pass
 
 
 @main.command()
-@click.argument('datapath',
+@click.argument('data_path',
                 type=click.Path(exists=True,
                                 file_okay=True,
                                 dir_okay=True))
 @click.argument('labels',
                 type=click.File())
-@click.option('--tmpdir', type=click.Path(exists=True))
-def train():
+@click.option('--tempdir', type=click.Path(exists=True))
+def train(data_path, labels, tempdir):
+    """
+
+    Args:
+        data_path:
+        labels:
+        tempdir:
+
+    Returns:
+
+    """
     pass

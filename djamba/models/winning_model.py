@@ -7,21 +7,41 @@ class WinningModel(Model):
         super().__init__(model_path, tempdir=tempdir)
 
     def predict(self, X):
-        """ Predict class probabilities for each input, X
+        """Predict class probabilities for each input, X
+
+        Args:
+            X:
+
+        Returns:
+
         """
         pass
 
     def fit(self, X, y):
-        """ Use the same architecture, but train the weights from scratch using
-            the provided X and y.
+        """Use the same architecture, but train the weights from scratch using
+        the provided X and y.
+
+        Args:
+            X:
+            y:
+
+        Returns:
+
         """
         pass
 
     def finetune(self, X, y):
-        """ Finetune the network for a different task by keeping the
-            trained weights, replacing the top layer with one that outputs
-            the new classes, and re-training for a few epochs to have the
-            model output the new classes instead.
+        """Finetune the network for a different task by keeping the
+        trained weights, replacing the top layer with one that outputs
+        the new classes, and re-training for a few epochs to have the
+        model output the new classes instead.
+
+        Args:
+            X:
+            y:
+
+        Returns:
+
         """
         pass
 
