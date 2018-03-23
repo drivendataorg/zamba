@@ -10,7 +10,9 @@ Welcome to zamba's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+.. automodule:: djamba
 
+.. autoclass:: Model
 
 Indices and tables
 ==================
