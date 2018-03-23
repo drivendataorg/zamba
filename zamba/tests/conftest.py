@@ -5,7 +5,7 @@ from shutil import rmtree
 import numpy as np
 import pytest
 
-from djamba.models.model import SampleModel
+from zamba.models.model import SampleModel
 
 
 @pytest.fixture

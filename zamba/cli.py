@@ -2,7 +2,7 @@ from pathlib import Path
 
 import click
 
-from djamba.models.manager import ModelManager
+from zamba.models.manager import ModelManager
 
 default_model_dir = Path('models', 'assets')
 

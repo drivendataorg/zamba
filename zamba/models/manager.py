@@ -1,8 +1,8 @@
 from enum import Enum, EnumMeta
 from pathlib import Path
 
-from djamba.models.model import SampleModel
-from djamba.models.winning_model import WinningModel
+from zamba.models.model import SampleModel
+from zamba.models.winning_model import WinningModel
 
 
 class GetItemMeta(EnumMeta):

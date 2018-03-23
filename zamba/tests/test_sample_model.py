@@ -1,6 +1,6 @@
 import numpy as np
 
-from djamba.models.manager import ModelManager
+from zamba.models.manager import ModelManager
 
 
 def test_create_and_save(sample_model_path, sample_data_path):

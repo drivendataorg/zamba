@@ -15,7 +15,7 @@
 import os
 from pathlib import Path
 import sys
-sys.path.insert(0, os.path.abspath(Path('..', 'djamba')))
+sys.path.insert(0, os.path.abspath(Path('..', 'zamba')))
 
 
 # -- Project information -----------------------------------------------------

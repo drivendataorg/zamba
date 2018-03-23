@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 
-from djamba.cli import predict
+from zamba.cli import predict
 
 
 def test_predict_modelpath(sample_model_path, sample_data_path):

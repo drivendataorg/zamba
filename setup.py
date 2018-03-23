@@ -8,13 +8,13 @@ with open(req_path, 'r') as f:
 
 
 setup(
-    name='djamba',
+    name='zamba',
     version='0.0',
-    # py_modules=['djamba'],
+    # py_modules=['zamba'],
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'djamba=djamba.cli:main',
+            'zamba=zamba.cli:main',
         ],
     },
 )
