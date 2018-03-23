@@ -24,25 +24,27 @@ def main():
 @click.option('--tempdir',
               type=click.Path(exists=True),
               default=None,
-              help="path to temporary directory")
+              help="Path to temporary directory. If not specified, OS temporary directory is used.")
 @click.option('--proba_threshold',
               type=float,
               default=None,
-              help="probability threshold for classification")
+              help="Probability threshold for classification. if specified binary predictions are returned with 1 "
+                   "being greater than the threshold, 0 being less than or equal to. If not specified, probabilities "
+                   "between 0 and 1 are returned.")
 @click.option('--model_path',
               type=click.Path(exists=True,
                               file_okay=True,
                               dir_okay=True),
               default=default_model_dir,
-              help="path to model files to be loaded into model object")
+              help="Path to model files to be loaded into model object.")
 @click.option('--model_class',
               type=str,
               default="winning",
-              help="class of model, controls whether or not sample model is used")
+              help="Class of model, controls whether or not sample model is used.")
 @click.option('--verbose',
               type=bool,
               default=True,
-              help="controls verbosity of the command line predict function")
+              help="Controls verbosity of the command line predict function.")
 def predict(data_path, pred_path, tempdir, proba_threshold, model_path, model_class, verbose):
     """This is a command line interface for prediction on camera trap footage. Given a path to camera trap footage,
     the predict function use a deep learning model to predict the presence or absense of a variety of species of
@@ -74,16 +76,16 @@ def predict(data_path, pred_path, tempdir, proba_threshold, model_path, model_cl
                 type=click.File())
 @click.option('--tempdir',
               type=click.Path(exists=True),
-              help="path to temporary directory")
+              help="Path to temporary directory. If not specified, OS temporary directory is used")
 @click.option('--batch_size',
               default=8,
               type=click.IntRange(min=1,
                                   max=256,
                                   clamp=True),
-              help="batch size for model inputs, defaults to 8 samples")
+              help="Batch size for model inputs, defaults to 8 samples.")
 @click.option('--weights_out',
               type=click.Path(exists=True),
-              help="output path for saved weights")
+              help="Output path for saved weights.")
 def tune(data_path, labels, tempdir, batch_size, weights_out):
     """Finetune the network for a different task by keeping the
         trained weights, replacing the top layer with one that outputs
@@ -101,7 +103,9 @@ def tune(data_path, labels, tempdir, batch_size, weights_out):
                                 dir_okay=True))
 @click.argument('labels',
                 type=click.File())
-@click.option('--tempdir', type=click.Path(exists=True))
+@click.option('--tempdir',
+              type=click.Path(exists=True),
+              help="Path to temporary directory. If not specified, OS temporary directory is used")
 def train(data_path, labels, tempdir):
     """Train the weights from scratch using
         the provided data_path and labels.
