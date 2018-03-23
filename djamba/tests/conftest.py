@@ -10,6 +10,11 @@ from djamba.models.model import SampleModel
 
 @pytest.fixture
 def model_path():
+    """This fixture creates a path to and filename for a test model.
+
+    Returns (Path): path to sample model
+
+    """
     project_src = Path(__file__).absolute().parent.parent
     model_dir = project_src / "models" / "assets"
 
@@ -22,6 +27,14 @@ def model_path():
 
 @pytest.fixture
 def sample_model_path():
+    """This fixture creates a sample model, saves it to the sample path,
+    then yields the path to the sample.
+
+    Removes model once test is complete or fails.
+
+    Returns (Path): path to test model
+
+    """
     model = SampleModel()
     path = model_path()
     model.save_model(path=path)
@@ -31,6 +44,13 @@ def sample_model_path():
 
 @pytest.fixture
 def sample_data_path():
+    """This fixture creates sample data, saves it, yields path to load it.
+
+    Removes the data once test is complete or if test fails.
+
+    Returns:
+
+    """
     sample_data = [np.array([6, 0.3]),
                    np.array([3, 0.1])]
 

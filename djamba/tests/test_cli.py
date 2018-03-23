@@ -4,7 +4,15 @@ from djamba.cli import predict
 
 
 def test_predict_modelpath(sample_model_path, sample_data_path):
-    """This needs work"""
+    """
+
+    Args:
+        sample_model_path (pytest fixture) :
+        sample_data_path (pytest fixture) :
+
+    Returns:
+
+    """
 
     runner = CliRunner()
     result = runner.invoke(predict, [str(sample_data_path),
