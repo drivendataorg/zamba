@@ -1,9 +1,9 @@
 :orphan:
 
-djamba
+zamba
 ======
 
 .. toctree::
    :maxdepth: 4
 
-   djamba
+   zamba

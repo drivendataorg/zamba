@@ -1,13 +1,13 @@
-djamba package
+zamba package
 ==============
 
 Submodules
 ----------
 
-djamba.cli module
+zamba.cli module
 -----------------
 
-.. automodule:: djamba.cli
+.. automodule:: zamba.cli
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,7 +16,7 @@ djamba.cli module
 Module contents
 ---------------
 
-.. automodule:: djamba
+.. automodule:: zamba
     :members:
     :undoc-members:
     :show-inheritance:

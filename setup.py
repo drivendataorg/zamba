@@ -10,7 +10,6 @@ with open(req_path, 'r') as f:
 setup(
     name='zamba',
     version='0.0',
-    # py_modules=['zamba'],
     install_requires=requirements,
     entry_points={
         'console_scripts': [
