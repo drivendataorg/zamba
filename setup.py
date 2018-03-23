@@ -1,6 +1,9 @@
+from pathlib import Path
 from setuptools import setup
 
-with open('requirements.txt', 'r') as f:
+
+req_path = Path(Path(__file__).parent, 'requirements.txt')
+with open(req_path, 'r') as f:
     requirements = f.read().splitlines()
 
 
