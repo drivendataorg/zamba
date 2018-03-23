@@ -1,6 +1,6 @@
 import numpy as np
 
-from djamba.models.manager import ModelManager
+from zamba.models.manager import ModelManager
 
 
 def test_create_and_save(sample_model_path, sample_data_path):
@@ -27,11 +27,6 @@ def test_create_and_save(sample_model_path, sample_data_path):
 
 
 def test_load_and_predict(sample_model_path, sample_data_path):
-    """
-    Simple load of Model object using graph
-    in test_model_save_and_load to predict
-    and save out
-    """
 
     # load the sample model in the ModelManager
     manager = ModelManager(sample_model_path,

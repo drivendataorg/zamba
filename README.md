@@ -1,34 +1,25 @@
-# cmd - a command line interface for species classification
+# zamba - a command line interface for species classification
 
-Lacking a name as of yet, we're using `cmd`, short for "command" to refer to 
-the 
-application. The `cmd` command will be the entry point for users (see 
+The `zamba` command will be the entry point for users (see 
 example usage below).
 
 [ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
 
 ## Install
-To install for development, `pip install --editable .` from project root `cmd`.
+To install for development, `pip install --editable .` from project root `zamba`.
 
 ## Test
 
-Run tests and coverage report (output to terminal) from project root `cmd` 
+Run tests and coverage report (output to terminal) from project root `zamba` 
 with `python -m pytest --cov=. --cov-report=term`.
 
-Note that the tests contained in `src/tests/test_model_save_and_load.py` are
- currently **required** to run in order for the `test-model` referenced in the 
- example below to exist.
+Tests contained in `zamba/zamba/tests`
 
 ## Example usage
-To call a test prediction from e.g. a directory that sits next to `cmd`, use
-`cmd predict --modelpath ../cmd/src/src/models/assets/test-model/`
 
-This will print the returned DataFrame (one element) and save the DataFrame 
-as a csv into the current directory (here assumed to sit outside of `cmd`). 
+`zamba predict path/to/vids`
 
-The path given for `modelpath` is automatically generated after testing (see
- above), so run tests before trying this example.
  
- Although the model created and loaded is a tensorflow model, all it does is
-  add 2 numbers and multiply (tensorflow can do math!), it doesn't predict 
+ Although the model created and loaded is a `tensorflow.python.keras` model, all it does is
+  add 2 numbers as well as multiply them (tensorflow can do math!), it doesn't predict 
   anything based on training data... yet.

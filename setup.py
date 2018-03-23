@@ -1,17 +1,19 @@
+from pathlib import Path
 from setuptools import setup
 
-with open('requirements.txt', 'r') as f:
+
+req_path = Path(Path(__file__).parent, 'requirements.txt')
+with open(req_path, 'r') as f:
     requirements = f.read().splitlines()
 
 
 setup(
-    name='djamba',
+    name='zamba',
     version='0.0',
-    # py_modules=['djamba'],
     install_requires=requirements,
     entry_points={
         'console_scripts': [
-            'djamba=djamba.cli:main',
+            'zamba=zamba.cli:main',
         ],
     },
 )
