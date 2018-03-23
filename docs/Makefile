@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = cmd
+SPHINXPROJ    = zamba
 SOURCEDIR     = .
 BUILDDIR      = _build
 
