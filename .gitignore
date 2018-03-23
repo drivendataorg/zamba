@@ -15,3 +15,7 @@ build/
 
 # JetBrains
 .idea/
+
+# sphinx
+docs/_build/
+docs/_static/
