@@ -18,11 +18,12 @@ class GetItemMeta(EnumMeta):
 
 
 class ModelName(Enum, metaclass=GetItemMeta):
-    """Allows easy control over which Model subclass to load, sample or winning.
+    """Allows easy control over which Model subclass to load. To add a new model class, add a line like ``NEW_MODEL
+    = ('new_model', NewModelClass)``
 
         Args:
-            string (str) : string for switching between test and default model
-            model (Model) : Model subclass to instantiate into manager.
+            string (str) : string used to reference the model model
+            model (Model) : model class to instantiate into manager
 
     """
 
@@ -41,19 +42,19 @@ class ModelManager(object):
     """Mediates loading, configuration, and logic of model calls.
 
         Args:
-            model_path (str | Path) : path to model
-                Required argument (for now)
+            model_path (str | Path) : path to model weights and architecture
+                Required argument. Will be instantiated as Model object.
             data_path (str | Path) : path to data
-                Defaults to ``None``.
-            pred_path (str | Path) : where predictions will be saved
-                Defaults to ``None``.
-            proba_threshold (float) : threshold for classification
-                Defaults to ``None``.
+                Defaults to ``None`` in case ModelManager is not yet used for prediction
+            pred_path (str | Path) : output path where predictions will be saved
+                Defaults to ``None``. Can also be passed to predict method.
+            proba_threshold (float) : probability threshold for classification
+                Defaults to ``None``, in which case class probabilities are returned.
             tempdir (str | Path) : path to temporary directory
-                Defaults to ``None``.
-            verbose (bool) : controls verbosity
-                Defaults to ``True``.
-            model_class (str) : controls whether sample class or production is used
+                If specific temporary directory is to be used, its path is passed here. Defaults to ``None``.
+            verbose (bool) : controls verbosity of prediction, training, and tuning methods
+                Defaults to ``True`` in which case training, tuning or prediction progress will be logged.
+            model_class (str) : controls whether sample model class or production model class is used
                 Defaults to "winning". Must be "winning" or "sample".
     """
     def __init__(self,
