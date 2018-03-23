@@ -10,7 +10,7 @@ class WinningModel(Model):
         """Predict class probabilities for each input, X
 
         Args:
-            X:
+            X: input data
 
         Returns:
 
@@ -22,8 +22,8 @@ class WinningModel(Model):
         the provided X and y.
 
         Args:
-            X:
-            y:
+            X: training data
+            y: training labels
 
         Returns:
 
