@@ -2,7 +2,7 @@ from enum import Enum, EnumMeta
 from pathlib import Path
 
 from zamba.models.model import SampleModel
-from zamba.models.winning_model import WinningModel
+from zamba.models.cnnensemble_model import CnnEnsemble
 
 
 class GetItemMeta(EnumMeta):
@@ -27,7 +27,7 @@ class ModelName(Enum, metaclass=GetItemMeta):
 
     """
 
-    WINNING = ('winning', WinningModel)
+    WINNING = ('cnnensemble', CnnEnsemble)
     SAMPLE = ('sample', SampleModel)
 
     def __init__(self, string, model):
@@ -58,7 +58,7 @@ class ModelManager(object):
                  proba_threshold=None,
                  tempdir=None,
                  verbose=True,
-                 model_class='winning'):
+                 model_class='cnnensemble'):
 
         self.model_path = Path(model_path)
         self.model_class = ModelName[model_class].model
