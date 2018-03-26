@@ -2,10 +2,22 @@ from pathlib import Path
 from setuptools import setup
 
 
-req_path = Path(Path(__file__).parent, 'requirements.txt')
-with open(req_path, 'r') as f:
-    requirements = f.read().splitlines()
+def load_reqs(p):
+    requirements = []
+    with open(p, 'r') as f:
+        for l in f.readlines():
+            if l.startswith('-r'):
+                requirements += load_reqs(l.split(' ')[1].strip())
+            else:
+                r = l.strip()
 
+                if r and not r.startswith('#'):
+                    requirements.append(r)
+    return requirements
+
+
+req_path = Path(Path(__file__).parent, 'requirements.txt')
+requirements = load_reqs(req_path)
 
 setup(
     name='zamba',
