@@ -1,6 +1,12 @@
+from datetime import datetime
 from enum import Enum, EnumMeta
+from os import listdir
+from os.path import isfile, join
 from pathlib import Path
 
+import pandas as pd
+
+from zamba.models.cnnensemble.src import config
 from zamba.models.model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
 
@@ -62,6 +68,7 @@ class ModelManager(object):
 
         self.model_path = Path(model_path)
         self.model_class = ModelName[model_class].model
+        self._pass_sub_format = False if model_class == 'cnnensemble' else True
 
         self.tempdir = tempdir
         self.model = self.model_class(model_path)
@@ -69,7 +76,7 @@ class ModelManager(object):
 
         self.verbose = verbose
 
-    def predict(self, data_path, pred_path=None):
+    def predict(self, data_path, save=False, pred_path=None):
         """
         Args:
             data_path (str | Path) : path to input data
@@ -80,14 +87,28 @@ class ModelManager(object):
         """
 
         data_path = Path(data_path)
-        data = self.model.load_data(data_path)
 
-        preds = self.model.predict(data)
+        # much of the cnn prediction code uses the submission format, requires correct video list
+        self.make_submission_format_file(data_path)
 
-        if self.proba_threshold is None:
-            return preds
+        # cnn ensemble doesn't use simple data loader, samples do...
+        if self.model_class != 'cnnensemble':
+            data = self.model.load_data(data_path)
+            preds = self.model.predict(data)
         else:
-            return preds >= self.proba_threshold
+            preds = self.model.predict(data_path)
+
+        # threshold if provided
+        if self.proba_threshold is not None:
+            preds = preds >= self.proba_threshold
+
+        if save:
+            if pred_path is None:
+                timestamp = datetime.now().isoformat()
+                pred_path = Path('.', f'predictions-{data_path.parts[-1]}-{timestamp}.csv')
+            preds.to_csv(pred_path)
+
+        return preds
 
     def train(self):
         """
@@ -104,3 +125,27 @@ class ModelManager(object):
 
         """
         pass
+
+    def make_submission_format_file(self, data_path):
+        """This functions uses the files found in data_path to format a prediction DataFrame.
+        The submission format csv saved here is used throught the prediction process for cnn ensemble.
+
+        Args:
+            data_path: path to data directory
+
+        Returns:
+
+        """
+
+        # skip this if we're testing models other than cnn
+        if self._pass_sub_format:
+            return
+        else:
+            filelist = [f for f in listdir(data_path) if isfile(join(data_path, f))]
+            classes = config.CLASSES
+
+            current_sub_format = pd.DataFrame(index=pd.Index(filelist),
+                                              columns=classes)
+            current_sub_format.fillna(0.5, inplace=True)
+            current_sub_format.index.name = 'filename'
+            current_sub_format.to_csv(config.SUBMISSION_FORMAT)

@@ -473,10 +473,12 @@ class SingleFrameCNNDataset:
             y = self.training_set_labels_ds.loc[[video_id]].as_matrix(columns=CLASSES)
             yield video_id, X, y
 
-    def generate_test_frames_for_prediction(self):
+    def generate_test_frames_for_prediction(self, data_path=None):
+        if data_path is None:
+            data_path = config.TEST_VIDEO_DIR
         test_ds = pd.read_csv(config.SUBMISSION_FORMAT)
         for video_id in test_ds.filename:
-            X = self.frames_from_video_clip(video_fn=os.path.join(config.TEST_VIDEO_DIR, video_id))
+            X = self.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
             yield video_id, X
 
 
@@ -700,7 +702,11 @@ def generate_prediction(model_name, weights, fold):
             print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
 
-def generate_prediction_test(model_name, weights, fold):
+def generate_prediction_test(model_name, weights, fold, data_path=None):
+
+    if data_path is None:
+        data_path = config.TEST_VIDEO_DIR
+
     model = MODELS[model_name].factory(lock_base_model=True)
     model.load_weights(weights, by_name=False)
 
@@ -725,8 +731,10 @@ def generate_prediction_test(model_name, weights, fold):
 
     test_clips = sorted(list(set(test_clips) - converted_files))
 
-    def load_file(video_id):
-        X = dataset.frames_from_video_clip(video_fn=os.path.join(config.TEST_VIDEO_DIR, video_id))
+    def load_file(video_id, data_path=None):
+        if data_path is None:
+            data_path = config.TEST_VIDEO_DIR
+        X = dataset.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
         return video_id, X
 
     start_time = time.time()
