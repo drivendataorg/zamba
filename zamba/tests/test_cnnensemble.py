@@ -1,10 +1,10 @@
 from pathlib import Path
-# import pytest
+import pytest
 
 from zamba.models.manager import ModelManager
 
 
-# @pytest.mark.xfail(reason="Not yet implemented!")
+@pytest.mark.skip(reason="Production doesn't download weights yet, and sample vids aren't baked into project")
 def test_predict():
 
     # this test assumes a dir sitting parallel to project source
