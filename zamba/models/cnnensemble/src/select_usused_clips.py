@@ -13,7 +13,7 @@ predictions = [
     'xception_avg_2.csv'
 ]
 
-data_dir = '../output/prediction_unused_frames/'
+data_dir = Path(__file__).parent.parent / 'output/prediction_unused_frames/'
 
 classes = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo',
            'gorilla', 'hippopotamus', 'human', 'hyena', 'large ungulate',
@@ -53,13 +53,13 @@ def find_problematic_clips():
     print(np.sum(ds.error < 0.1))
 
     ds_matching = ds[ds.error < 0.1]
-    ds_matching.to_csv('../output/unused_matching.csv',
+    ds_matching.to_csv(Path(__file__).parent.parent / 'output/unused_matching.csv',
                        index=False, float_format='%.7f',
                        columns=['filename'] + ['mean_' + cls for cls in classes],
                        header=['filename'] + classes)
     return
     ds_sorted = ds.sort_values(by=['error'], ascending=False)
-    dest_dir = '../output/to_label/'
+    dest_dir = Path(__file__).parent.parent / 'output/to_label/'
 
     for cls in classes_compatible:
         os.makedirs(dest_dir+'res/'+cls, exist_ok=True)
@@ -88,7 +88,7 @@ def find_problematic_clips():
 
 
 def generate_labeled():
-    data_dir = '../input/extra_data'
+    data_dir = Path(__file__).parent.parent / 'input/extra_data'
     labels = {}  # video_id -> class_id
     for category_id, dir_name in enumerate(classes_compatible):
         for fn in os.listdir(os.path.join(data_dir, dir_name)):
@@ -107,7 +107,7 @@ def generate_labeled():
     for col, cls in enumerate(classes):
         res[cls] = data[:, col]
 
-    res.to_csv('../output/unused_labeled.csv',
+    res.to_csv(Path(__file__).parent.parent / 'output/unused_labeled.csv',
                index=False, float_format='%.7f', header=True)
 
 

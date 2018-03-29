@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pathlib import Path
 
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.optimizers import SGD
@@ -147,9 +148,9 @@ def resnet152_model(img_shape, num_classes=None):
     model = Model(img_input, x_fc)
 
     # Use pre-trained weights for Tensorflow backend
-    weights_path = '../input/resnet152_weights_tf.h5'
+    weights_path = Path(__file__).parent.parent.parent / 'input/resnet152_weights_tf.h5'
 
-    model.load_weights(weights_path, by_name=True)
+    model.load_weights(weights_path, by_name=False)
 
     # Truncate and replace softmax layer for transfer learning
     # Cannot use model.layers.pop() since model is not of Sequential() type

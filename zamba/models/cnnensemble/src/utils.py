@@ -192,7 +192,7 @@ if __name__ == '__main__':
     test_parallel_generator()
     # test_chunks()
     #
-    # img = skimage.io.imread('../train/ALB/img_00003.jpg')
+    # img = skimage.io.imread(Path(__file__).parent.parent / 'train/ALB/img_00003.jpg')
     # print(img.shape)
     #
     # with timeit_context('Generate crops'):

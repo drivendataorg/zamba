@@ -1,11 +1,13 @@
-RAW_VIDEO_DIR = '../input/raw/'
+from pathlib import Path
+
+RAW_VIDEO_DIR = Path(__file__).parent.parent / 'input/raw/'
 TRAIN_IMG_DIR = '/opt/data_fast/pri_matrix/train_img/'
-TEST_VIDEO_DIR = '../input/raw_test/'
-UNUSED_VIDEO_DIR = '../input/raw_unused/'
-UNUSED_IMG_DIR = '../input/raw_unused_img/'
-SMALL_VIDEO_DIR = '../input/small/'
-TRAINING_SET_LABELS = '../input/Pri-matrix_Factorization_-_Training_Set_Labels.csv'
-SUBMISSION_FORMAT = '../input/Pri-matrix_Factorization_-_Submission_Format.csv'
+TEST_VIDEO_DIR = Path(__file__).parent.parent / "input" / "raw_test"
+UNUSED_VIDEO_DIR = Path(__file__).parent.parent / 'input/raw_unused/'
+UNUSED_IMG_DIR = Path(__file__).parent.parent / 'input/raw_unused_img/'
+SMALL_VIDEO_DIR = Path(__file__).parent.parent / 'input/small/'
+TRAINING_SET_LABELS = Path(__file__).parent.parent / "input" / "Pri-matrix_Factorization_-_Training_Set_Labels.csv"
+SUBMISSION_FORMAT = Path(__file__).parent.parent / "input" / "Pri-matrix_Factorization_-_Submission_Format.csv"
 
 ALL_MODELS = [
     [('resnet50_avg', 1), ('resnet50', 2), ('resnet50_avg', 3), ('resnet50_avg', 4)],
