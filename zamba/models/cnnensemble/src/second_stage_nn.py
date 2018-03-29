@@ -474,6 +474,7 @@ def combine_submissions2():
                 ds[col] += src[col]*weight/total_weight
         pth = Path(__file__).parent.parent / f'submissions/submission_60_avg_xgb_nn_lgb_all_4_1_1_clip_{clip10}.csv'
         ds.to_csv(pth, index=False, float_format='%.8f')
+        return ds
 
 
 def train_combined_folds_models():
@@ -565,7 +566,8 @@ def main():
         predict_all_single_fold_models()
 
     combine_submissions1()
-    combine_submissions2()
+    preds2 = combine_submissions2()
+    return preds2
 
 
 if __name__ == '__main__':
