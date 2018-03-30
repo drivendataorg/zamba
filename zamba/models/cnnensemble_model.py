@@ -281,14 +281,14 @@ class CnnEnsemble(Model):
 
             # clean up: _MACOSX
             to_rm = cache_dir / cache_subdir / "__MACOSX"
-            rmtree(to_rm)
+            rmtree(to_rm, ignore_errors=True)
 
         output_dir = Path(Path(__file__).parent, 'cnnensemble', 'output')
         if not output_dir.exists():
 
             # get the dir
-            fname = "output.zip"
-            origin = "https://s3.amazonaws.com/drivendata-public-assets/output.zip"
+            fname = "output.tar.gz"
+            origin = "https://s3.amazonaws.com/drivendata-public-assets/output.tar.gz"
             get_file(fname=fname,
                      origin=origin,
                      cache_dir=cache_dir,
@@ -301,4 +301,4 @@ class CnnEnsemble(Model):
 
             # clean up: _MACOSX
             to_rm = cache_dir / cache_subdir / "__MACOSX"
-            rmtree(to_rm)
+            rmtree(to_rm, ignore_errors=True)
