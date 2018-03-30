@@ -302,3 +302,24 @@ class CnnEnsemble(Model):
             # clean up: _MACOSX
             to_rm = cache_dir / cache_subdir / "__MACOSX"
             rmtree(to_rm, ignore_errors=True)
+
+        # get the training image dir (for dataset class)
+        data_fast_dir = Path(__file__).parent / "cnnensemble" / "data_fast"
+        if not data_fast_dir.exists():
+
+            # get the dir
+            fname = "data_fast.zip"
+            origin = "https://s3.amazonaws.com/drivendata-public-assets/data_fast.zip"
+            get_file(fname=fname,
+                     origin=origin,
+                     cache_dir=cache_dir,
+                     cache_subdir=cache_subdir,
+                     extract=True)
+
+            # clean up: input.zip
+            to_rm = cache_dir / cache_subdir / fname
+            remove(to_rm)
+
+            # clean up: _MACOSX
+            to_rm = cache_dir / cache_subdir / "__MACOSX"
+            rmtree(to_rm, ignore_errors=True)

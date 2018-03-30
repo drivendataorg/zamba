@@ -1,13 +1,14 @@
 from pathlib import Path
 
-RAW_VIDEO_DIR = Path(__file__).parent.parent / 'input/raw/'
-TRAIN_IMG_DIR = '/opt/data_fast/pri_matrix/train_img/'
-TEST_VIDEO_DIR = Path(__file__).parent.parent / "input" / "raw_test"
-UNUSED_VIDEO_DIR = Path(__file__).parent.parent / 'input/raw_unused/'
-UNUSED_IMG_DIR = Path(__file__).parent.parent / 'input/raw_unused_img/'
-SMALL_VIDEO_DIR = Path(__file__).parent.parent / 'input/small/'
-TRAINING_SET_LABELS = Path(__file__).parent.parent / "input" / "Pri-matrix_Factorization_-_Training_Set_Labels.csv"
-SUBMISSION_FORMAT = Path(__file__).parent.parent / "input" / "Pri-matrix_Factorization_-_Submission_Format.csv"
+cnnensemble_dir = Path(__file__).parent.parent
+RAW_VIDEO_DIR = cnnensemble_dir / "input" / "raw"
+TRAIN_IMG_DIR = cnnensemble_dir / "data_fast" / "pri_matrix" / "train_img"
+TEST_VIDEO_DIR = cnnensemble_dir / "input" / "raw_test"
+UNUSED_VIDEO_DIR = cnnensemble_dir / 'input/raw_unused/'
+UNUSED_IMG_DIR = cnnensemble_dir / "input" / "raw_unused_img"
+SMALL_VIDEO_DIR = cnnensemble_dir / 'input/small/'
+TRAINING_SET_LABELS = cnnensemble_dir / "input" / "Pri-matrix_Factorization_-_Training_Set_Labels.csv"
+SUBMISSION_FORMAT = cnnensemble_dir / "input" / "Pri-matrix_Factorization_-_Submission_Format.csv"
 
 CLASSES = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo', 'gorilla', 'hippopotamus', 'human',
            'hyena', 'large ungulate', 'leopard', 'lion', 'other (non-primate)', 'other (primate)', 'pangolin',
