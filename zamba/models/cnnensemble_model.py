@@ -1,4 +1,4 @@
-from os import remove
+from os import remove, listdir
 from pathlib import Path
 from shutil import rmtree
 
@@ -275,9 +275,15 @@ class CnnEnsemble(Model):
                      cache_subdir=cache_subdir,
                      extract=True)
 
-            # clean up: input.zip
+            # clean up: input.tar.gz
             to_rm = cache_dir / cache_subdir / fname
             remove(to_rm)
+
+            # clean up: hidden
+            problem_dir = cache_dir / cache_subdir / "input" / "raw_test"
+            for file in listdir(problem_dir):
+                if file.startswith("._"):
+                    remove(file)
 
             # clean up: _MACOSX
             to_rm = cache_dir / cache_subdir / "__MACOSX"
