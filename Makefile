@@ -1,5 +1,5 @@
 test:
-	python -m pytest -s zamba
+	python -m pytest zamba
 
 # requirements for local OSX development
 # requires `brew install gcc`
