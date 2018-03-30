@@ -1,4 +1,8 @@
+from os import remove
 from pathlib import Path
+from shutil import rmtree
+
+from tensorflow.python.keras.utils import get_file
 
 from .model import Model
 from .cnnensemble.src.single_frame_cnn import generate_prediction_test, save_all_combined_test_results
@@ -8,6 +12,8 @@ class CnnEnsemble(Model):
     def __init__(self, model_path, tempdir=None):
         # use the model object's defaults
         super().__init__(model_path, tempdir=tempdir)
+
+        self.download_weights_if_needed()
 
     def load_data(self, data_path):
         """ Loads data and returns it in a format that can be used
@@ -251,3 +257,48 @@ class CnnEnsemble(Model):
     def save_model(self):
         """Save the model weights, checkpoints, to model_path.
         """
+
+    def download_weights_if_needed(self):
+
+        cache_dir = Path(__file__).parent
+        cache_subdir = Path("cnnensemble")
+
+        input_dir = Path(Path(__file__).parent, 'cnnensemble', 'input')
+        if not input_dir.exists():
+
+            # get the dir
+            fname = "input.zip"
+            origin = "https://s3.amazonaws.com/drivendata-public-assets/input.zip"
+            get_file(fname=fname,
+                     origin=origin,
+                     cache_dir=cache_dir,
+                     cache_subdir=cache_subdir,
+                     extract=True)
+
+            # clean up: input.zip
+            to_rm = cache_dir / cache_subdir / fname
+            remove(to_rm)
+
+            # clean up: _MACOSX
+            to_rm = cache_dir / cache_subdir / "__MACOSX"
+            rmtree(to_rm)
+
+        output_dir = Path(Path(__file__).parent, 'cnnensemble', 'output')
+        if not output_dir.exists():
+
+            # get the dir
+            fname = "output.zip"
+            origin = "https://s3.amazonaws.com/drivendata-public-assets/output.zip"
+            get_file(fname=fname,
+                     origin=origin,
+                     cache_dir=cache_dir,
+                     cache_subdir=cache_subdir,
+                     extract=True)
+
+            # clean up: input.zip
+            to_rm = cache_dir / cache_subdir / fname
+            remove(to_rm)
+
+            # clean up: _MACOSX
+            to_rm = cache_dir / cache_subdir / "__MACOSX"
+            rmtree(to_rm)
