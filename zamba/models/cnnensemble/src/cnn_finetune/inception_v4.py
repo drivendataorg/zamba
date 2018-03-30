@@ -248,7 +248,7 @@ def inception_v4_model(img_rows, img_cols, color_type=1, num_classeses=None, dro
       # Use pre-trained weights for Tensorflow backend
       weights_path = 'imagenet_models/inception-v4_weights_tf_dim_ordering_tf_kernels.h5'
 
-    model.load_weights(weights_path, by_name=True)
+    model.load_weights(weights_path, by_name=False)
 
     # Truncate and replace softmax layer for transfer learning
     # Cannot use model.layers.pop() since model is not of Sequential() type

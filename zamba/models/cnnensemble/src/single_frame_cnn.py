@@ -587,7 +587,7 @@ def train(fold, model_name, weights, initial_epoch, use_non_blank_frames, use_ex
 
 def check_model(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
                                     batch_size=1,
@@ -608,7 +608,7 @@ def check_model(model_name, weights, fold):
 
 def check_model_score(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
     model.compile(optimizer=RMSprop(lr=3e-4), loss='binary_crossentropy', metrics=['accuracy'])
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
@@ -649,7 +649,7 @@ def check_model_score(model_name, weights, fold):
 
 def generate_prediction(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
 
     output_dir = Path(__file__).parent.parent / f'output/prediction_train_frames/{model_name}_{fold}'
     os.makedirs(output_dir, exist_ok=True)
@@ -766,7 +766,7 @@ def generate_prediction_test(model_name, weights, fold, data_path=None):
 
 def generate_prediction_unused(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
 
     output_dir = Path(__file__).parent.parent / f'output/prediction_unused_frames/{model_name}_{fold}'
     os.makedirs(output_dir, exist_ok=True)

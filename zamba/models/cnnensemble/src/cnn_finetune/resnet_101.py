@@ -157,7 +157,7 @@ def resnet101_model(img_rows, img_cols, color_type=1, num_classes=None):
       # Use pre-trained weights for Tensorflow backend
       weights_path = 'imagenet_models/resnet101_weights_tf.h5'
 
-    model.load_weights(weights_path, by_name=True)
+    model.load_weights(weights_path, by_name=False)
 
     # Truncate and replace softmax layer for transfer learning
     # Cannot use model.layers.pop() since model is not of Sequential() type
