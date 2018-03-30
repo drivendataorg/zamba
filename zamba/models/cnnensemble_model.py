@@ -267,8 +267,8 @@ class CnnEnsemble(Model):
         if not input_dir.exists():
 
             # get the dir
-            fname = "input.zip"
-            origin = "https://s3.amazonaws.com/drivendata-public-assets/input.zip"
+            fname = "input.tar.gz"
+            origin = "https://s3.amazonaws.com/drivendata-public-assets/input.tar.gz"
             get_file(fname=fname,
                      origin=origin,
                      cache_dir=cache_dir,
