@@ -120,7 +120,7 @@ def build_model_xception(lock_base_model: bool):
 
 
 def build_model_xception_avg(lock_base_model: bool):
-    base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None)
+    base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None, weights=None)
     if lock_base_model:
         for layer in base_model.layers:
             layer.trainable = False
