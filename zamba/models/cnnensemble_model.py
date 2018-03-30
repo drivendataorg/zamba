@@ -283,7 +283,10 @@ class CnnEnsemble(Model):
             problem_dir = cache_dir / cache_subdir / "input" / "raw_test"
             for file in listdir(problem_dir):
                 if file.startswith("._"):
-                    remove(Path(problem_dir, file), ignore_errors=True)
+                    try:
+                        remove(Path(problem_dir, file))
+                    except FileNotFoundError:
+                        pass
 
             # clean up: _MACOSX
             to_rm = cache_dir / cache_subdir / "__MACOSX"
