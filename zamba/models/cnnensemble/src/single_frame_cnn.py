@@ -3,57 +3,40 @@ import matplotlib
 matplotlib.use('Agg')
 
 import argparse
-import os
-import time
 from collections import namedtuple
+from multiprocessing.pool import ThreadPool
+import os
+import pickle
+import time
 
-# import matplotlib.pyplot as plt
+import av
 import numpy as np
 import pandas as pd
-from pims import Video
-import av
+import pims
 import scipy.misc
 import tensorflow as tf
 from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception
 from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_resnet50
 from tensorflow.python.keras.applications.xception import preprocess_input as preprocess_input_xception
 from tensorflow.python.keras.applications.inception_v3 import preprocess_input as preprocess_input_inception_v3
-
-from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard, LearningRateScheduler
-from tensorflow.python.keras.layers import Dense, Dropout, GlobalMaxPooling1D, GlobalAveragePooling1D
+from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
+from tensorflow.python.keras.layers import Dense, Dropout
 from tensorflow.python.keras.layers import GlobalMaxPooling2D, GlobalAveragePooling2D, AveragePooling2D
-from tensorflow.python.keras.layers import GlobalMaxPooling3D, GlobalAveragePooling3D
-from tensorflow.python.keras.layers import Input, Lambda, Reshape, TimeDistributed
-from tensorflow.python.keras.layers import concatenate
+from tensorflow.python.keras.layers import Input
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.optimizers import SGD, Adam, RMSprop
 from tensorflow.python.keras.regularizers import l1
-from sklearn.model_selection import train_test_split
+from tensorflow.python.keras import backend as K
+from tqdm import tqdm
+
 
 from .inception_resnet_v2 import InceptionResNetV2
 from .inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
 from .cnn_finetune import resnet_152
 from .metrics import pri_matrix_loss
-from tqdm import tqdm
-
-# from inception_resnet_v2 import InceptionResNetV2
-# from inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
-# from cnn_finetune import resnet_152
-# from metrics import pri_matrix_loss
-import pims
-from pims import Video
-
-from multiprocessing.pool import ThreadPool
-import concurrent.futures
-from queue import Queue
-from tqdm import tqdm
-
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import utils
-import pickle
 
-from tensorflow.python.keras import backend as K
-from PIL import Image
 
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True

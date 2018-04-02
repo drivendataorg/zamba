@@ -1,20 +1,15 @@
+import os
 from pathlib import Path
+import pickle
+from multiprocessing.pool import Pool
 
 import numpy as np
 import pandas as pd
-import os
-import pickle
-from zamba.models.cnnensemble.src import utils
-import sklearn.preprocessing
 from sklearn.model_selection import train_test_split
-from tqdm import tqdm
-from zamba.models.cnnensemble.src import metrics
-from zamba.models.cnnensemble.src import config
-from multiprocessing.pool import ThreadPool, Pool
-
-# from sklearn.ensemble import ExtraTreesClassifier
 from xgboost import XGBClassifier
-# import lightgbm as lgb
+
+from zamba.models.cnnensemble.src import config, metrics, utils
+
 
 NB_CAT = 24
 
