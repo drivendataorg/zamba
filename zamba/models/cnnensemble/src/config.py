@@ -4,9 +4,9 @@ cnnensemble_dir = Path(__file__).parent.parent
 RAW_VIDEO_DIR = cnnensemble_dir / "input" / "raw"
 TRAIN_IMG_DIR = cnnensemble_dir / "data_fast" / "pri_matrix" / "train_img"
 TEST_VIDEO_DIR = cnnensemble_dir / "input" / "raw_test"
-UNUSED_VIDEO_DIR = cnnensemble_dir / 'input/raw_unused/'
+UNUSED_VIDEO_DIR = cnnensemble_dir / "input" / "raw_unused"
 UNUSED_IMG_DIR = cnnensemble_dir / "input" / "raw_unused_img"
-SMALL_VIDEO_DIR = cnnensemble_dir / 'input/small/'
+SMALL_VIDEO_DIR = cnnensemble_dir / "input" / "small"
 TRAINING_SET_LABELS = cnnensemble_dir / "input" / "Pri-matrix_Factorization_-_Training_Set_Labels.csv"
 SUBMISSION_FORMAT = cnnensemble_dir / "input" / "Pri-matrix_Factorization_-_Submission_Format.csv"
 
