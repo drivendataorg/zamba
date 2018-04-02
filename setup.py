@@ -2,21 +2,20 @@ from pathlib import Path
 from setuptools import setup
 
 
-def load_reqs(p):
-    requirements = []
-    with open(p, 'r') as f:
-        for l in f.readlines():
-            if l.startswith('-r'):
-                requirements += load_reqs(l.split(' ')[1].strip())
+def load_reqs(path):
+    reqs = []
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            if line.startswith('-r'):
+                reqs += load_reqs(line.split(' ')[1].strip())
             else:
-                r = l.strip()
+                req = line.strip()
+                if req and not req.startswith('#'):
+                    reqs.append(req)
+    return reqs
 
-                if r and not r.startswith('#'):
-                    requirements.append(r)
-    return requirements
 
-
-req_path = Path(Path(__file__).parent, 'requirements.txt')
+req_path = Path(__file__).parent / 'requirements.txt'
 requirements = load_reqs(req_path)
 
 setup(
