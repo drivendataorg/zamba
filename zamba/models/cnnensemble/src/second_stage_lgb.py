@@ -38,7 +38,7 @@ def load_train_data(model_name, fold, cache_prefix='lgb'):
     cache_fn = f'{data_path}/{cache_prefix}_{model_name}_{fold}_cache.npz'
     print(cache_fn, os.path.exists(cache_fn))
 
-    if os.path.exists(cache_fn):
+    if Path(cache_fn).exists():
         print('loading cache', cache_fn)
         cached = np.load(cache_fn)
         print('loaded cache')
@@ -425,7 +425,7 @@ def train_all_single_fold_models():
         for model_name, fold in models:
             weights_fn = Path(__file__).parent.parent / f"output/lgb_{model_name}_{fold}_full.pkl"
             print(model_name, fold, weights_fn)
-            if os.path.exists(weights_fn):
+            if weights_fn.exists():
                 print('skip existing file')
             else:
                 with utils.timeit_context('train'):
