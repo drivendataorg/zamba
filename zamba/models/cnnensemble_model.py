@@ -1,4 +1,5 @@
-from os import remove, listdir
+from collections import deque
+from os import remove
 from pathlib import Path
 from shutil import rmtree
 
@@ -9,11 +10,11 @@ from .cnnensemble.src.single_frame_cnn import generate_prediction_test, save_all
 from .cnnensemble.src import second_stage, second_stage_nn
 
 class CnnEnsemble(Model):
-    def __init__(self, model_path, tempdir=None):
+    def __init__(self, model_path, tempdir=None, download_region='us'):
         # use the model object's defaults
         super().__init__(model_path, tempdir=tempdir)
 
-        self.download_weights_if_needed()
+        self._download_weights_if_needed(download_region)
 
     def load_data(self, data_path):
         """ Loads data and returns it in a format that can be used
@@ -258,77 +259,55 @@ class CnnEnsemble(Model):
         """Save the model weights, checkpoints, to model_path.
         """
 
-    def download_weights_if_needed(self):
+    def _download_weights_if_needed(self, download_region):
+        """Checks for directories containing the ensemble weights, downloads them if neccessary.
+
+        The CnnEnsemble uses many GB of pretrained weights for prediction. When using the package for the first
+        time, these weights (too heavy for pypi) need to be downloaded. We use the built in keras utility get_file to
+        handle the download and extraction. This function leaves some hidden files behind after extraction,
+        which we manually remove.
+
+        After download, the zamba/zamba/models/cnnensemble/ directory will have three new directories:
+
+        1. input - contains training fold splits from the original data, and stores formatting information for output
+        2. output - contains models weights for all models used in the ensemble
+        3. data_fast - contains cached training image preprocessing results
+        """
+
+        download_regions = ['us', 'eu', 'asia']
+        if download_region not in download_regions:
+            raise ValueError(f"download_region must be one of:\t{download_regions}")
+        else:
+            region_urls = {'us': 'https://s3.amazonaws.com/drivendata-public-assets/',
+                           'eu': 'https://s3.eu-central-1.amazonaws.com/drivendata-public-assets-eu/',
+                           'asia': 'https://s3-ap-southeast-1.amazonaws.com/drivendata-public-assets-asia/'}
+            region_url = region_urls[download_region]
+
+        # file names, paths
+        fnames = ["input.tar.gz", "output.tar.gz", "data_fast.zip"]
 
         cache_dir = Path(__file__).parent
         cache_subdir = Path("cnnensemble")
 
-        input_dir = Path(Path(__file__).parent, 'cnnensemble', 'input')
-        if not input_dir.exists():
+        paths_needed = [cache_dir / cache_subdir / "input",
+                        cache_dir / cache_subdir / "output",
+                        cache_dir / cache_subdir / "data_fast"]
 
-            # get the dir
-            fname = "input.tar.gz"
-            origin = "https://s3.amazonaws.com/drivendata-public-assets/input.tar.gz"
-            get_file(fname=fname,
-                     origin=origin,
-                     cache_dir=cache_dir,
-                     cache_subdir=cache_subdir,
-                     extract=True)
+        # download and extract if needed
+        for path_needed, fname in zip(paths_needed, fnames):
+            if not path_needed.exists():
+                origin = region_url + fname
+                get_file(fname=fname, origin=origin, cache_dir=cache_dir, cache_subdir=cache_subdir,
+                         extract=True)
 
-            # clean up: input.tar.gz
-            to_rm = cache_dir / cache_subdir / fname
-            remove(to_rm)
+                # remove the compressed file
+                remove(cache_dir / cache_subdir / fname)
 
-            # clean up: hidden
-            problem_dir = cache_dir / cache_subdir / "input" / "raw_test"
-            for file in listdir(problem_dir):
-                if file.startswith("._"):
-                    try:
-                        remove(Path(problem_dir, file))
-                    except FileNotFoundError:
-                        pass
-
-            # clean up: _MACOSX
-            to_rm = cache_dir / cache_subdir / "__MACOSX"
-            rmtree(to_rm, ignore_errors=True)
-
-        output_dir = Path(Path(__file__).parent, 'cnnensemble', 'output')
-        if not output_dir.exists():
-
-            # get the dir
-            fname = "output.tar.gz"
-            origin = "https://s3.amazonaws.com/drivendata-public-assets/output.tar.gz"
-            get_file(fname=fname,
-                     origin=origin,
-                     cache_dir=cache_dir,
-                     cache_subdir=cache_subdir,
-                     extract=True)
-
-            # clean up: input.zip
-            to_rm = cache_dir / cache_subdir / fname
-            remove(to_rm)
-
-            # clean up: _MACOSX
-            to_rm = cache_dir / cache_subdir / "__MACOSX"
-            rmtree(to_rm, ignore_errors=True)
-
-        # get the training image dir (for dataset class)
-        data_fast_dir = Path(__file__).parent / "cnnensemble" / "data_fast"
-        if not data_fast_dir.exists():
-
-            # get the dir
-            fname = "data_fast.zip"
-            origin = "https://s3.amazonaws.com/drivendata-public-assets/data_fast.zip"
-            get_file(fname=fname,
-                     origin=origin,
-                     cache_dir=cache_dir,
-                     cache_subdir=cache_subdir,
-                     extract=True)
-
-            # clean up: input.zip
-            to_rm = cache_dir / cache_subdir / fname
-            remove(to_rm)
-
-            # clean up: _MACOSX
-            to_rm = cache_dir / cache_subdir / "__MACOSX"
-            rmtree(to_rm, ignore_errors=True)
+        # remove hidden files or dirs if present
+        cnnpath = cache_dir / cache_subdir
+        hidden_dirs = [pth for pth in cnnpath.glob("**/*") if pth.parts[-1].startswith("._") and pth.is_dir()]
+        if hidden_dirs:
+            deque(map(rmtree, hidden_dirs))
+        hidden_files = [pth for pth in cnnpath.glob("**/*") if pth.parts[-1].startswith("._") and pth.is_file()]
+        if hidden_files:
+            deque(map(remove, hidden_files))
