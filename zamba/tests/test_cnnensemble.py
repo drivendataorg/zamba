@@ -1,13 +1,12 @@
 from pathlib import Path
-# import pytest
+import pytest
 
 from zamba.models.manager import ModelManager
 
 
-# @pytest.mark.skip(reason="Production doesn't download weights yet, and sample vids aren't baked into project")
+@pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
 def test_predict():
 
-    # this test assumes a dir sitting parallel to project source
     data_dir = Path(__file__).parent.parent / "models" / "cnnensemble" / "input" / "raw_test"
 
     manager = ModelManager('',
