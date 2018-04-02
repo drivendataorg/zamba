@@ -86,14 +86,6 @@ def try_train_model_xgboost(model_name, fold):
     model = XGBClassifier(n_estimators=500, objective='multi:softprob', silent=True)
     model.fit(X, y_cat, eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
 
-    # model = ExtraTreesClassifier(n_estimators=500, max_features=32)
-    # pickle.dump(model, open(Path(__file__).parent.parent / f"output/et_{model_name}.pkl", "wb"))
-    # model = pickle.load(open(Path(__file__).parent.parent / f"output/et_{model_name}.pkl", "rb"))
-
-    #
-    # print(model)
-    # model.fit(X_train, y_train)
-
     prediction = model.predict_proba(X_test)
     if prediction.shape[1] == 23: # insert mission lion col
         prediction = np.insert(prediction, obj=12, values=0.0, axis=1)
@@ -107,7 +99,6 @@ def try_train_model_xgboost(model_name, fold):
     print(np.min(delta), np.max(delta), np.mean(np.abs(delta)), np.sum(np.abs(delta) > 0.5))
 
     avg_prob = avg_probabilities()
-    # print(avg_prob)
     avg_pred = np.repeat([avg_prob], y_test_one_hot.shape[0], axis=0)
     print(metrics.pri_matrix_loss(y_test_one_hot, avg_pred))
     print(metrics.pri_matrix_loss(y_test_one_hot, avg_pred*0.1 + prediction*0.9))
@@ -122,7 +113,7 @@ def model_xgboost(model_name, fold):
     print(np.unique(y_cat))
 
     model = XGBClassifier(n_estimators=400, objective='multi:softprob', learning_rate=0.1, silent=True)
-    model.fit(X, y_cat)  # , eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
+    model.fit(X, y_cat)
     pickle.dump(model, open(Path(__file__).parent.parent / f"output/xgb_{model_name}_{fold}_full.pkl", "wb"))
 
 
@@ -152,13 +143,6 @@ def predict_on_test(model_name, fold, use_cache=False):
         ds[cls] = np.clip(prediction[:, col], 0.001, 0.999)
     os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
     ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_one_model_{model_name}_{fold}.csv', index=False, float_format='%.7f')
-
-
-# def load_one_model(request):
-#     model_name, fold = request
-#     print('load', model_name, fold)
-#     X, y, video_ids = load_train_data(model_name, fold)
-#     return X, y, video_ids
 
 
 def train_all_models_xgboost_combined(combined_model_name, models_with_folds):
@@ -214,10 +198,6 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
     folds = [1, 2, 3, 4]
 
     X_combined = {fold: [] for fold in folds}
-    # try:
-    #     pth = Path(__file__).parent.parent / f"output/X_combined_xgb_{combined_model_name}.pkl"
-    #     X_combined = pickle.load(open(pth.resolve(), 'rb'))
-    # except FileNotFoundError:
     requests = []
 
     for model_with_folds in models_with_folds:
@@ -225,8 +205,6 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
             data_dir = Path(__file__).parent.parent / f'output/prediction_test_frames'
             with utils.timeit_context('load data'):
                 requests.append((data_dir, data_model_name, data_fold))
-                # X_combined[data_fold].append(load_test_data(data_dir, ds.filename))
-                # print(X_combined[-1].shape)
     pool = Pool(40)
     results = pool.map(load_test_data_one_model, requests)
     for data_fold, X in results:
@@ -301,10 +279,6 @@ def predict_combined_folds_models():
     for models in config.ALL_MODELS:
         combined_model_name = models[0][0] + '_combined'
 
-        # def load_data(request):
-        #     model_name, fold = request
-        #     return load_test_data(data_dir, model_name, fold)
-
         with utils.timeit_context('load 4 folds data'):
             X_for_folds = pool.starmap(load_test_data_from_std_path, models)
 
@@ -363,7 +337,6 @@ def predict_all_single_fold_models():
 
             with utils.timeit_context('load data'):
                 X = results[requests.index((model_name, fold))]
-                # X = load_test_data_from_std_path(model_name, fold)
                 print(X.shape)
 
             with utils.timeit_context('predict'):
@@ -400,23 +373,13 @@ def check_corr(sub1, sub2):
 
 def main():
     with utils.timeit_context('train xgboost model'):
-        # train_all_models_xgboost_combined("2k_extra", models_with_folds=config.ALL_MODELS)
         predict_on_test_combined("2k_extra", models_with_folds=config.ALL_MODELS)
-
-        # train_combined_folds_models()
         predict_combined_folds_models()
-
-        # train_all_single_fold_models()
         predict_all_single_fold_models()
 
 
 if __name__ == '__main__':
     with utils.timeit_context('train xgboost model'):
-        # train_all_models_xgboost_combined("2k_extra", models_with_folds=config.ALL_MODELS)
         predict_on_test_combined("2k_extra", models_with_folds=config.ALL_MODELS)
-
-        # train_combined_folds_models()
         predict_combined_folds_models()
-
-        # train_all_single_fold_models()
         predict_all_single_fold_models()
