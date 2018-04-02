@@ -29,7 +29,6 @@ from tensorflow.python.keras.regularizers import l1
 from tensorflow.python.keras import backend as K
 from tqdm import tqdm
 
-
 from .inception_resnet_v2 import InceptionResNetV2
 from .inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
 from .cnn_finetune import resnet_152
