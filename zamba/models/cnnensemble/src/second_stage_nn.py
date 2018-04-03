@@ -460,9 +460,6 @@ def combine_submissions2():
             (f'submission_combined_folds_models_xgboost_clip_{clip10}.csv', 1.0),
             (f'submission_single_folds_models_xgboost_clip_{clip10}.csv', 1.0),
 
-            # (f'submission_combined_models_lgb_all_combined_260_clip_{clip10}.csv', 4.0),
-            # (f'submission_combined_folds_models_lgb_clip_{clip10}.csv', 1.0),
-            # (f'submission_single_folds_models_lgb_clip_{clip10}.csv', 1.0),
         ]
         total_weight = sum([s[1] for s in sources])
         ds = pd.read_csv(config.SUBMISSION_FORMAT)
