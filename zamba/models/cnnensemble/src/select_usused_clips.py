@@ -13,7 +13,7 @@ predictions = [
     'xception_avg_2.csv'
 ]
 
-data_dir = Path(__file__).parent.parent / 'output/prediction_unused_frames/'
+data_dir = config.MODEL_DIR / 'output/prediction_unused_frames/'
 
 classes = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo',
            'gorilla', 'hippopotamus', 'human', 'hyena', 'large ungulate',
@@ -59,7 +59,7 @@ def find_problematic_clips():
                        header=['filename'] + classes)
     return
     ds_sorted = ds.sort_values(by=['error'], ascending=False)
-    dest_dir = Path(__file__).parent.parent / 'output/to_label/'
+    dest_dir = config.MODEL_DIR / 'output/to_label/'
 
     for cls in classes_compatible:
         os.makedirs(dest_dir+'res/'+cls, exist_ok=True)
@@ -88,7 +88,7 @@ def find_problematic_clips():
 
 
 def generate_labeled():
-    data_dir = Path(__file__).parent.parent / 'input/extra_data'
+    data_dir = config.MODEL_DIR / 'input/extra_data'
     labels = {}  # video_id -> class_id
     for category_id, dir_name in enumerate(classes_compatible):
         for fn in os.listdir(os.path.join(data_dir, dir_name)):

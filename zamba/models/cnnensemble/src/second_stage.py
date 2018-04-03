@@ -34,7 +34,7 @@ def preprocess_x(data: np.ndarray):
 
 
 def load_train_data(model_name, fold, cache_prefix='xgb'):
-    data_path = Path(__file__).parent.parent / 'output/prediction_train_frames'
+    data_path = config.MODEL_DIR / 'output/prediction_train_frames'
     cache_fn = f'{data_path}/{cache_prefix}_{model_name}_{fold}_cache.npz'
     print(cache_fn, os.path.exists(cache_fn))
 
@@ -60,7 +60,7 @@ def load_test_data(test_path, model_name, fold):
 
 
 def load_test_data_from_std_path(model_name, fold):
-    test_path = Path(__file__).parent.parent / 'output/prediction_test_frames'
+    test_path = config.MODEL_DIR / 'output/prediction_test_frames'
     X_raw = np.load(f'{test_path}/{model_name}_{fold}_combined.npy')
     print('preprocess', model_name, fold)
     X = preprocess_x(X_raw)
@@ -124,9 +124,9 @@ def predict_on_test(model_name, fold, use_cache=False):
     classes = list(ds.columns)[1:]
     print(classes)
 
-    data_dir = Path(__file__).parent.parent / f'output/prediction_test_frames'
+    data_dir = config.MODEL_DIR / f'output/prediction_test_frames'
     with utils.timeit_context('load data'):
-        cache_fn = Path(__file__).parent.parent / f'output/prediction_test_frames/{model_name}_{fold}_cache.npy'
+        cache_fn = config.MODEL_DIR / f'output/prediction_test_frames/{model_name}_{fold}_cache.npy'
         if use_cache:
             X = np.load(cache_fn)
         else:
@@ -202,7 +202,7 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
 
     for model_with_folds in models_with_folds:
         for data_model_name, data_fold in model_with_folds:
-            data_dir = Path(__file__).parent.parent / f'output/prediction_test_frames'
+            data_dir = config.MODEL_DIR / f'output/prediction_test_frames'
             with utils.timeit_context('load data'):
                 requests.append((data_dir, data_model_name, data_fold))
     pool = Pool(40)
@@ -211,7 +211,7 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
         X_combined[data_fold].append(X)
     pickle.dump(X_combined, open(Path(Path(__file__).parent.parent, f"output/X_combined_xgb_{combined_model_name}.pkl").resolve(), "wb"))
 
-    to_open = Path(__file__).parent.parent / f"output/xgb_combined_{combined_model_name}.pkl"
+    to_open = config.MODEL_DIR / f"output/xgb_combined_{combined_model_name}.pkl"
     model = pickle.load(open(to_open.resolve(), "rb"))
     print(model)
 
@@ -306,7 +306,7 @@ def predict_combined_folds_models():
 def train_all_single_fold_models():
     for models in config.ALL_MODELS:
         for model_name, fold in models:
-            weights_fn = Path(__file__).parent.parent / "output" / f"xgb_{model_name}_{fold}_full.pkl"
+            weights_fn = config.MODEL_DIR / "output" / f"xgb_{model_name}_{fold}_full.pkl"
             print(model_name, fold, weights_fn)
             if weights_fn.exists():
                 print('skip existing file')

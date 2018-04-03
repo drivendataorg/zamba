@@ -38,8 +38,8 @@ def move_non_train():
     training_set_labels_ds_full = pd.read_csv(config.TRAINING_SET_LABELS)
     train_files = set(training_set_labels_ds_full.filename)
 
-    src_dir = Path(__file__).parent.parent / 'input/raw/'
-    dst_dir = Path(__file__).parent.parent / 'input/raw_test/'
+    src_dir = config.MODEL_DIR / 'input/raw/'
+    dst_dir = config.MODEL_DIR / 'input/raw_test/'
     skip_files = 0
     for fn in os.listdir(Path(__file__).parent.parent / 'input/raw/'):
         if fn not in train_files:
@@ -54,8 +54,8 @@ def move_unused():
     test_set = pd.read_csv(config.SUBMISSION_FORMAT)
     test_files = set(test_set.filename)
 
-    src_dir = Path(__file__).parent.parent / 'input/raw_test/'
-    dst_dir = Path(__file__).parent.parent / 'input/raw_unused/'
+    src_dir = config.MODEL_DIR / 'input/raw_test/'
+    dst_dir = config.MODEL_DIR / 'input/raw_unused/'
     skip_files = 0
     for fn in os.listdir(Path(__file__).parent.parent / 'input/raw_test/'):
         if fn not in test_files:

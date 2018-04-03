@@ -11,6 +11,7 @@ from tensorflow.python.keras import backend as K
 from sklearn.metrics import log_loss
 
 from .custom_layers.scale_layer import Scale
+from zamba.models.cnnensemble.src import config
 
 # from load_cifar10 import load_cifar10_data
 
@@ -148,7 +149,7 @@ def resnet152_model(img_shape, num_classes=None):
     model = Model(img_input, x_fc)
 
     # Use pre-trained weights for Tensorflow backend
-    weights_path = Path(__file__).parent.parent.parent / 'input/resnet152_weights_tf.h5'
+    weights_path = config.MODEL_DIR.parent / 'input/resnet152_weights_tf.h5'
 
     model.load_weights(weights_path, by_name=False)
 

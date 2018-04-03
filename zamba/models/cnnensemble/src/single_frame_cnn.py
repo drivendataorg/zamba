@@ -53,7 +53,7 @@ CLASSES = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo'
            'porcupine', 'reptile', 'rodent', 'small antelope', 'small cat', 'wild dog', 'duiker', 'hog']
 NB_CLASSES = len(CLASSES)
 
-cnnensemble_path = Path(__file__).parent.parent
+cnnensemble_path = config.MODEL_DIR
 
 
 def build_model_resnet50(lock_base_model: bool):

@@ -36,7 +36,7 @@ def preprocess_x(data: np.ndarray):
 
 
 def load_train_data(model_name, fold, cache_prefix='nn'):
-    data_path = Path(__file__).parent.parent / 'output/prediction_train_frames'
+    data_path = config.MODEL_DIR / 'output/prediction_train_frames'
     cache_fn = f'{data_path}/{cache_prefix}_{model_name}_{fold}_cache.npz'
     print(cache_fn, os.path.exists(cache_fn))
 
@@ -166,7 +166,7 @@ def train_model_nn(model_name, fold, load_cache=True):
 def train_all_single_fold_models():
     for models in config.ALL_MODELS:
         for model_name, fold in models:
-            weights_fn = Path(__file__).parent.parent / f"output/nn1_{model_name}_{fold}_full.pkl"
+            weights_fn = config.MODEL_DIR / f"output/nn1_{model_name}_{fold}_full.pkl"
             print(model_name, fold, weights_fn)
             if weights_fn.exists():
                 print('skip existing file')
@@ -181,11 +181,11 @@ def predict_all_single_fold_models():
     total_weight = 0.0
     result = np.zeros((ds.shape[0], NB_CAT))
 
-    data_dir = Path(__file__).parent.parent / 'output/prediction_test_frames/'
+    data_dir = config.MODEL_DIR / 'output/prediction_test_frames/'
 
     for models in config.ALL_MODELS:
         for model_name, fold in models:
-            weights_fn = Path(__file__).parent.parent / f"output/nn1_{model_name}_{fold}_full.pkl"
+            weights_fn = config.MODEL_DIR / f"output/nn1_{model_name}_{fold}_full.pkl"
             print(model_name, fold, weights_fn)
 
             with utils.timeit_context('load data'):
@@ -358,7 +358,7 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
     X_combined = {fold: [] for fold in folds}
     for model_with_folds in models_with_folds:
         for data_model_name, data_fold in model_with_folds:
-            data_dir = Path(__file__).parent.parent / f'output/prediction_test_frames/'
+            data_dir = config.MODEL_DIR / f'output/prediction_test_frames/'
             with utils.timeit_context('load data'):
                 X_combined[data_fold].append(load_test_data(data_dir, data_model_name, data_fold))
                 # print(X_combined[-1].shape)
@@ -445,7 +445,7 @@ def combine_submissions1():
             src = pd.read_csv(pth)
             for col in ds.columns[1:]:
                 ds[col] += src[col]*weight/total_weight
-        pth = Path(__file__).parent.parent / f'submissions/submission_59_avg_xgb_nn_all_4_1_1_clip_{clip10}.csv'
+        pth = config.MODEL_DIR / f'submissions/submission_59_avg_xgb_nn_all_4_1_1_clip_{clip10}.csv'
         ds.to_csv(pth, index=False, float_format='%.8f')
 
 
@@ -472,7 +472,7 @@ def combine_submissions2():
             src = pd.read_csv(pth)
             for col in ds.columns[1:]:
                 ds[col] += src[col]*weight/total_weight
-        pth = Path(__file__).parent.parent / f'submissions/submission_60_avg_xgb_nn_lgb_all_4_1_1_clip_{clip10}.csv'
+        pth = config.MODEL_DIR / f'submissions/submission_60_avg_xgb_nn_lgb_all_4_1_1_clip_{clip10}.csv'
         ds.to_csv(pth, index=False, float_format='%.8f')
         return ds
 
@@ -493,7 +493,7 @@ def predict_combined_folds_models():
     total_weight = 0.0
     result = np.zeros((ds.shape[0], NB_CAT))
 
-    data_dir = Path(__file__).parent.parent / 'output/prediction_test_frames/'
+    data_dir = config.MODEL_DIR / 'output/prediction_test_frames/'
     pool = ThreadPool(8)
 
     for models in config.ALL_MODELS:
@@ -533,7 +533,7 @@ def predict_unused_clips(data_model_name, data_fold, combined_model_name):
     ds = pd.read_csv(config.SUBMISSION_FORMAT)
     classes = list(ds.columns)[1:]
 
-    data_dir = Path(__file__).parent.parent / f'output/prediction_unused_frames/'
+    data_dir = config.MODEL_DIR / f'output/prediction_unused_frames/'
     video_ids = [fn[:-4] for fn in os.listdir(data_dir) if fn.endswith('.csv')]
 
     with utils.timeit_context('load data'):
