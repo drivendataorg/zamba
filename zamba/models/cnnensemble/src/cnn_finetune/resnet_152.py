@@ -149,7 +149,7 @@ def resnet152_model(img_shape, num_classes=None):
     model = Model(img_input, x_fc)
 
     # Use pre-trained weights for Tensorflow backend
-    weights_path = config.MODEL_DIR.parent / 'input/resnet152_weights_tf.h5'
+    weights_path = config.MODEL_DIR / 'input/resnet152_weights_tf.h5'
 
     model.load_weights(weights_path, by_name=False)
 
