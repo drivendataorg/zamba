@@ -8,9 +8,8 @@ from queue import Queue
 
 import skimage.io
 import skimage.transform
-from skimage.transform import SimilarityTransform, AffineTransform
+from skimage.transform import SimilarityTransform
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def crop_edge(img, x, y, w, h, mode='edge'):
@@ -188,26 +187,4 @@ def test_parallel_generator():
 
 
 if __name__ == '__main__':
-    pass
     test_parallel_generator()
-    # test_chunks()
-    #
-    # img = skimage.io.imread('../train/ALB/img_00003.jpg')
-    # print(img.shape)
-    #
-    # with timeit_context('Generate crops'):
-    #     crop_edge(img, 10, 10, 400, 400)
-    #
-    # import matplotlib.pyplot as plt
-    #
-    # plt.figure(1)
-    # plt.subplot(221)
-    # plt.imshow(img)
-    # plt.subplot(222)
-    # plt.imshow(crop_edge(img, 1280-200, 720-200, 400, 400, mode='edge'))
-    # plt.subplot(223)
-    # plt.imshow(crop_edge(img, 1280 - 200, 720 - 200, 400, 400, mode='wrap'))
-    # plt.subplot(224)
-    # plt.imshow(crop_edge(img, 1280 - 200, 720 - 200, 400, 400, mode='reflect'))
-    #
-    # plt.show()

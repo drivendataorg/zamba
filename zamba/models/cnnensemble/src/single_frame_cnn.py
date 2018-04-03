@@ -1,49 +1,41 @@
-import argparse
-import os
-import time
-from collections import namedtuple
+from pathlib import Path
+import matplotlib
+matplotlib.use('Agg')
 
-# import matplotlib.pyplot as plt
+import argparse
+from collections import namedtuple
+from multiprocessing.pool import ThreadPool
+import os
+import pickle
+import time
+
+import av
 import numpy as np
 import pandas as pd
-from pims import Video
-import av
+import pims
 import scipy.misc
 import tensorflow as tf
 from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception
 from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_resnet50
 from tensorflow.python.keras.applications.xception import preprocess_input as preprocess_input_xception
 from tensorflow.python.keras.applications.inception_v3 import preprocess_input as preprocess_input_inception_v3
-
-from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard, LearningRateScheduler
-from tensorflow.python.keras.layers import Dense, Dropout, GlobalMaxPooling1D, GlobalAveragePooling1D
+from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
+from tensorflow.python.keras.layers import Dense, Dropout
 from tensorflow.python.keras.layers import GlobalMaxPooling2D, GlobalAveragePooling2D, AveragePooling2D
-from tensorflow.python.keras.layers import GlobalMaxPooling3D, GlobalAveragePooling3D
-from tensorflow.python.keras.layers import Input, Lambda, Reshape, TimeDistributed
-from tensorflow.python.keras.layers import concatenate
+from tensorflow.python.keras.layers import Input
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.optimizers import SGD, Adam, RMSprop
 from tensorflow.python.keras.regularizers import l1
-from sklearn.model_selection import train_test_split
+from tensorflow.python.keras import backend as K
+from tqdm import tqdm
 
 from .inception_resnet_v2 import InceptionResNetV2
 from .inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
 from .cnn_finetune import resnet_152
 from .metrics import pri_matrix_loss
-from tqdm import tqdm
-
-
-from multiprocessing.pool import ThreadPool
-import concurrent.futures
-from queue import Queue
-from tqdm import tqdm
-
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import utils
-import pickle
 
-from tensorflow.python.keras import backend as K
-from PIL import Image
 
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True
@@ -60,6 +52,8 @@ CLASSES = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo'
            'hyena', 'large ungulate', 'leopard', 'lion', 'other (non-primate)', 'other (primate)', 'pangolin',
            'porcupine', 'reptile', 'rodent', 'small antelope', 'small cat', 'wild dog', 'duiker', 'hog']
 NB_CLASSES = len(CLASSES)
+
+cnnensemble_path = config.MODEL_DIR
 
 
 def build_model_resnet50(lock_base_model: bool):
@@ -97,7 +91,7 @@ def build_model_resnet152(lock_base_model: bool):
 
 
 def build_model_xception(lock_base_model: bool):
-    base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None)
+    base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None, weights=None)
     if lock_base_model:
         for layer in base_model.layers:
             layer.trainable = False
@@ -110,7 +104,7 @@ def build_model_xception(lock_base_model: bool):
 
 
 def build_model_xception_avg(lock_base_model: bool):
-    base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None)
+    base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None, weights=None)
     if lock_base_model:
         for layer in base_model.layers:
             layer.trainable = False
@@ -242,7 +236,7 @@ class SingleFrameCNNDataset:
         self.file_names = list(self.training_set_labels_ds.filename)
         self.training_set_labels_ds = self.training_set_labels_ds.set_index('filename')
 
-        self.folds = pd.read_csv('../input/folds.csv')
+        self.folds = pd.read_csv(cnnensemble_path / "input" / "folds.csv")
         train_clips = set(self.folds[self.folds.fold != fold].filename)
         test_clips = set(self.folds[self.folds.fold == fold].filename)
 
@@ -255,11 +249,11 @@ class SingleFrameCNNDataset:
         self.use_extra_clips = use_extra_clips
         self.extra_matching_clips = []
         if use_extra_clips:
-            self.extra_matching_clips_ds = pd.read_csv('../output/unused_matching.csv')
+            self.extra_matching_clips_ds = pd.read_csv(cnnensemble_path / 'output/unused_matching.csv')
             self.extra_matching_clips = list(self.extra_matching_clips_ds.filename)
             self.extra_matching_clips_ds = self.extra_matching_clips_ds.set_index('filename')
 
-            self.extra_labeled_clips_ds = pd.read_csv('../output/unused_labeled.csv')
+            self.extra_labeled_clips_ds = pd.read_csv(cnnensemble_path / 'output/unused_labeled.csv')
             self.extra_labeled_clips = list(self.extra_labeled_clips_ds.filename)
             self.extra_labeled_clips_ds = self.extra_labeled_clips_ds.set_index('filename')
             print('extra matching clips:', len(self.extra_matching_clips))
@@ -290,7 +284,7 @@ class SingleFrameCNNDataset:
                        'resnet50_2_non_blank.pkl',
                        'resnet50_avg_3_non_blank.pkl',
                        'resnet50_avg_4_non_blank.pkl']:
-                data = pickle.load(open('../output/prediction_train_frames/' + fn, 'rb'))
+                data = pickle.load(open(cnnensemble_path / 'output/prediction_train_frames/' + fn, 'rb'))
                 self.non_blank_frames.update(data)
 
     def train_steps_per_epoch(self):
@@ -463,10 +457,12 @@ class SingleFrameCNNDataset:
             y = self.training_set_labels_ds.loc[[video_id]].as_matrix(columns=CLASSES)
             yield video_id, X, y
 
-    def generate_test_frames_for_prediction(self):
+    def generate_test_frames_for_prediction(self, data_path=None):
+        if data_path is None:
+            data_path = config.TEST_VIDEO_DIR
         test_ds = pd.read_csv(config.SUBMISSION_FORMAT)
         for video_id in test_ds.filename:
-            X = self.frames_from_video_clip(video_fn=os.path.join(config.TEST_VIDEO_DIR, video_id))
+            X = self.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
             yield video_id, X
 
 
@@ -526,8 +522,8 @@ def train(fold, model_name, weights, initial_epoch, use_non_blank_frames, use_ex
     if use_extra_clips:
         suffix = '_extra'
 
-    checkpoints_dir = f'../output/checkpoints/{model_name}_fold_{fold}{suffix}'
-    tensorboard_dir = f'../output/tensorboard/{model_name}_fold_{fold}{suffix}'
+    checkpoints_dir = cnnensemble_path / f'output/checkpoints/{model_name}_fold_{fold}{suffix}'
+    tensorboard_dir = cnnensemble_path / f'output/tensorboard/{model_name}_fold_{fold}{suffix}'
     os.makedirs(checkpoints_dir, exist_ok=True)
     os.makedirs(tensorboard_dir, exist_ok=True)
 
@@ -570,12 +566,12 @@ def train(fold, model_name, weights, initial_epoch, use_non_blank_frames, use_ex
         initial_epoch=max(initial_epoch, nb_sgd_epoch)
     )
 
-    model.save_weights(f'../output/{model_name}_s_fold_{fold}{suffix}.h5')
+    model.save_weights(cnnensemble_path / f'output/{model_name}_s_fold_{fold}{suffix}.h5')
 
 
 def check_model(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
                                     batch_size=1,
@@ -596,7 +592,7 @@ def check_model(model_name, weights, fold):
 
 def check_model_score(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
     model.compile(optimizer=RMSprop(lr=3e-4), loss='binary_crossentropy', metrics=['accuracy'])
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
@@ -625,7 +621,7 @@ def check_model_score(model_name, weights, fold):
     # print(gt)
     # print(pred)
     checkpoint_name = os.path.basename(weights)
-    out_dir = f'../output/check_model_score/gt{model_name}_{fold}_{checkpoint_name}'
+    out_dir = cnnensemble_path / f'output/check_model_score/gt{model_name}_{fold}_{checkpoint_name}'
     os.makedirs(out_dir, exist_ok=True)
     print(out_dir)
     np.save(f'{out_dir}/gt.npy', gt)
@@ -637,10 +633,10 @@ def check_model_score(model_name, weights, fold):
 
 def generate_prediction(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
 
-    output_dir = f'../output/prediction_train_frames/{model_name}_{fold}/'
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = cnnensemble_path / "output" / "prediction_train_frames" / f"{model_name}_{fold}"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
                                     batch_size=1,
@@ -651,8 +647,8 @@ def generate_prediction(model_name, weights, fold):
     converted_files = set()
     processed_files = 0
     for video_id in dataset.test_clips:
-        res_fn = output_dir + video_id + '.csv'
-        if os.path.exists(res_fn):
+        res_fn = output_dir.resolve() / f"{video_id}.csv"
+        if res_fn.exists():
             processed_files += 1
             converted_files.add(video_id)
     test_clips = sorted(list(set(dataset.test_clips) - converted_files))
@@ -674,7 +670,7 @@ def generate_prediction(model_name, weights, fold):
         prev_res = pool.map_async(load_file, batch)
         for video_id, X, y in results:
             processed_files += 1
-            res_fn = output_dir + video_id + '.csv'
+            res_fn = output_dir.resolve() / f"{video_id}.csv"
             have_data_time = time.time()
             prediction = model.predict(X, batch_size=4)
 
@@ -690,12 +686,16 @@ def generate_prediction(model_name, weights, fold):
             print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
 
-def generate_prediction_test(model_name, weights, fold):
-    model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+def generate_prediction_test(model_name, weights, fold, data_path=None):
 
-    output_dir = f'../output/prediction_test_frames/{model_name}_{fold}/'
-    os.makedirs(output_dir, exist_ok=True)
+    if data_path is None:
+        data_path = config.TEST_VIDEO_DIR
+
+    model = MODELS[model_name].factory(lock_base_model=True)
+    model.load_weights(weights, by_name=False)
+
+    output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}_{fold}"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
                                     batch_size=1,
@@ -708,15 +708,17 @@ def generate_prediction_test(model_name, weights, fold):
     converted_files = set()
     processed_files = 0
     for video_id in test_clips:
-        res_fn = output_dir + video_id + '.csv'
-        if os.path.exists(res_fn):
+        res_fn = output_dir.resolve() / f"{video_id}.csv"
+        if res_fn.exists():
             processed_files += 1
             converted_files.add(video_id)
 
     test_clips = sorted(list(set(test_clips) - converted_files))
 
-    def load_file(video_id):
-        X = dataset.frames_from_video_clip(video_fn=os.path.join(config.TEST_VIDEO_DIR, video_id))
+    def load_file(video_id, data_path=None):
+        if data_path is None:
+            data_path = config.TEST_VIDEO_DIR
+        X = dataset.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
         return video_id, X
 
     start_time = time.time()
@@ -731,7 +733,7 @@ def generate_prediction_test(model_name, weights, fold):
         prev_res = pool.map_async(load_file, batch)
         for video_id, X in results:
             processed_files += 1
-            res_fn = output_dir + video_id + '.csv'
+            res_fn = output_dir.resolve() / f"{video_id}.csv"
             have_data_time = time.time()
             prediction = model.predict(X, batch_size=4)
 
@@ -748,10 +750,10 @@ def generate_prediction_test(model_name, weights, fold):
 
 def generate_prediction_unused(model_name, weights, fold):
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=True)
+    model.load_weights(weights, by_name=False)
 
-    output_dir = f'../output/prediction_unused_frames/{model_name}_{fold}/'
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = cnnensemble_path / "output" / "prediction_unused_frames" / f"{model_name}_{fold}"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
                                     batch_size=1,
@@ -765,8 +767,8 @@ def generate_prediction_unused(model_name, weights, fold):
     converted_files = set()
     processed_files = 0
     for video_id in test_clips:
-        res_fn = output_dir + video_id + '.csv'
-        if os.path.exists(res_fn):
+        res_fn = output_dir.resolve() / f"{video_id}.csv"
+        if res_fn.exists():
             processed_files += 1
             converted_files.add(video_id)
         else:
@@ -795,7 +797,7 @@ def generate_prediction_unused(model_name, weights, fold):
         prev_res = pool.map_async(load_file, batch)
         for video_id, X in results:
             processed_files += 1
-            res_fn = output_dir + video_id + '.csv'
+            res_fn = output_dir.resolve() / f"{video_id}.csv"
             have_data_time = time.time()
             prediction = model.predict(X, batch_size=4)
 
@@ -811,7 +813,7 @@ def generate_prediction_unused(model_name, weights, fold):
 
 
 def find_non_blank_frames(model_name, fold):
-    data_dir = f'../output/prediction_train_frames/{model_name}_{fold}/'
+    data_dir = cnnensemble_path / f'output/prediction_train_frames/{model_name}_{fold}'
     training_labels = pd.read_csv(config.TRAINING_SET_LABELS)
     training_labels = training_labels.set_index('filename')
 
@@ -831,15 +833,15 @@ def find_non_blank_frames(model_name, fold):
         blank_col = 2
         dst_blank_prob = np.interp(target_frames, src_frames, ds[1:, blank_col])
         res[filename] = 1.0 - dst_blank_prob
-    pickle.dump(res, open(f"../output/prediction_train_frames/{model_name}_{fold}_non_blank.pkl", "wb"))
+    pickle.dump(res, open(cnnensemble_path / f"output/prediction_train_frames/{model_name}_{fold}_non_blank.pkl", "wb"))
 
 
 def save_combined_train_results(model_name, fold, skip_existing=True):
     X_raw = []
     y = []
     video_ids = []
-    train_path = f'../output/prediction_train_frames/{model_name}_{fold}/'
-    raw_cache_fn = f'../output/prediction_train_frames/{model_name}_{fold}_combined.npz'
+    train_path = cnnensemble_path / f'output/prediction_train_frames/{model_name}_{fold}'
+    raw_cache_fn = cnnensemble_path / f'output/prediction_train_frames/{model_name}_{fold}_combined.npz'
     for fn in tqdm(sorted(os.listdir(train_path))):
         if not fn.endswith('csv'):
             continue
@@ -857,8 +859,8 @@ def save_combined_train_results(model_name, fold, skip_existing=True):
 
 def save_combined_test_results(model_name, fold, skip_existing=True):
     ds = pd.read_csv(config.SUBMISSION_FORMAT)
-    data_dir = f'../output/prediction_test_frames/{model_name}_{fold}/'
-    res_fn = f'../output/prediction_test_frames/{model_name}_{fold}_combined.npy'
+    data_dir = cnnensemble_path / 'output' / 'prediction_test_frames' / f'{model_name}_{fold}'
+    res_fn = cnnensemble_path / 'output' / 'prediction_test_frames' / f'{model_name}_{fold}_combined.npy'
 
     if skip_existing and os.path.exists(res_fn):
         print('skip existing', res_fn)
@@ -873,10 +875,10 @@ def save_combined_test_results(model_name, fold, skip_existing=True):
     np.save(res_fn, X_raw)
 
 
-def save_all_combined_test_results():
+def save_all_combined_test_results(skip_existing=False):
     for models in config.ALL_MODELS:
         for model, fold in models:
-            save_combined_test_results(model, fold)
+            save_combined_test_results(model, fold, skip_existing)
 
 
 def save_all_combined_train_results():

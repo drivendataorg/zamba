@@ -1,13 +1,15 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import os
 import pickle
-import utils
-import sklearn.preprocessing
+from zamba.models.cnnensemble.src import utils
+# import sklearn.preprocessing
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
-import metrics
-import config
+from zamba.models.cnnensemble.src import metrics
+from zamba.models.cnnensemble.src import config
 
 from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard, LearningRateScheduler, ReduceLROnPlateau
 from tensorflow.python.keras.layers import Dense, Dropout, BatchNormalization
@@ -34,11 +36,11 @@ def preprocess_x(data: np.ndarray):
 
 
 def load_train_data(model_name, fold, cache_prefix='nn'):
-    data_path = '../output/prediction_train_frames'
+    data_path = config.MODEL_DIR / 'output/prediction_train_frames'
     cache_fn = f'{data_path}/{cache_prefix}_{model_name}_{fold}_cache.npz'
     print(cache_fn, os.path.exists(cache_fn))
 
-    if os.path.exists(cache_fn):
+    if Path(cache_fn).exists():
         print('loading cache', cache_fn)
         cached = np.load(cache_fn)
         print('loaded cache')
@@ -158,15 +160,15 @@ def train_model_nn(model_name, fold, load_cache=True):
               verbose=1,
               callbacks=[LearningRateScheduler(schedule=cheduler)])
 
-    model.save_weights(f"../output/nn1_{model_name}_{fold}_full.pkl")
+    model.save_weights(Path(__file__).parent.parent / f"output/nn1_{model_name}_{fold}_full.pkl")
 
 
 def train_all_single_fold_models():
     for models in config.ALL_MODELS:
         for model_name, fold in models:
-            weights_fn = f"../output/nn1_{model_name}_{fold}_full.pkl"
+            weights_fn = config.MODEL_DIR / f"output/nn1_{model_name}_{fold}_full.pkl"
             print(model_name, fold, weights_fn)
-            if os.path.exists(weights_fn):
+            if weights_fn.exists():
                 print('skip existing file')
             else:
                 train_model_nn(model_name, fold)
@@ -179,11 +181,11 @@ def predict_all_single_fold_models():
     total_weight = 0.0
     result = np.zeros((ds.shape[0], NB_CAT))
 
-    data_dir = '../output/prediction_test_frames/'
+    data_dir = config.MODEL_DIR / 'output/prediction_test_frames/'
 
     for models in config.ALL_MODELS:
         for model_name, fold in models:
-            weights_fn = f"../output/nn1_{model_name}_{fold}_full.pkl"
+            weights_fn = config.MODEL_DIR / f"output/nn1_{model_name}_{fold}_full.pkl"
             print(model_name, fold, weights_fn)
 
             with utils.timeit_context('load data'):
@@ -200,14 +202,14 @@ def predict_all_single_fold_models():
                 result += prediction * weight
                 total_weight += weight
 
-    os.makedirs('../submissions', exist_ok=True)
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
     result /= total_weight
 
     for clip10 in [5, 4, 3, 2]:
         clip = 10 ** (-clip10)
         for col, cls in enumerate(classes):
             ds[cls] = np.clip(result[:, col] * (1 - clip * 2) + clip, clip, 1.0 - clip)
-        ds.to_csv(f'../submissions/submission_single_folds_models_nn_clip_{clip10}.csv',
+        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_single_folds_models_nn_clip_{clip10}.csv',
                   index=False,
                   float_format='%.8f')
 
@@ -247,7 +249,7 @@ def train_model_nn_combined_folds(combined_model_name, model_with_folds, load_ca
               verbose=1,
               callbacks=[LearningRateScheduler(schedule=cheduler)])
 
-    model.save_weights(f"../output/nn_combined_folds_{combined_model_name}.pkl")
+    model.save_weights(Path(__file__).parent.parent / f"output/nn_combined_folds_{combined_model_name}.pkl")
 
 
 def train_all_models_nn_combined(combined_model_name, models_with_folds):
@@ -291,7 +293,7 @@ def train_all_models_nn_combined(combined_model_name, models_with_folds):
               verbose=1,
               callbacks=[LearningRateScheduler(schedule=cheduler)])
 
-    model.save_weights(f"../output/nn_{combined_model_name}_full.pkl")
+    model.save_weights(Path(__file__).parent.parent / f"output/nn_{combined_model_name}_full.pkl")
 
 
 def try_train_all_models_nn_combined(models_with_folds):
@@ -356,17 +358,17 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
     X_combined = {fold: [] for fold in folds}
     for model_with_folds in models_with_folds:
         for data_model_name, data_fold in model_with_folds:
-            data_dir = f'../output/prediction_test_frames/'
+            data_dir = config.MODEL_DIR / f'output/prediction_test_frames/'
             with utils.timeit_context('load data'):
                 X_combined[data_fold].append(load_test_data(data_dir, data_model_name, data_fold))
                 # print(X_combined[-1].shape)
-    pickle.dump(X_combined, open(f"../output/X_combined_{combined_model_name}.pkl", "wb"))
+    pickle.dump(X_combined, open(Path(__file__).parent.parent / f"output/X_combined_{combined_model_name}.pkl", "wb"))
 
-    # X_combined = pickle.load(open(f"../output/X_combined_{combined_model_name}.pkl", 'rb'))
+    # X_combined = pickle.load(open(Path(__file__).parent.parent / f"output/X_combined_{combined_model_name}.pkl", 'rb'))
 
     model = model_nn_combined(input_size=np.column_stack(X_combined[1]).shape[1])
     model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
-    model.load_weights(f"../output/nn_{combined_model_name}_full.pkl")
+    model.load_weights(Path(__file__).parent.parent / f"output/nn_{combined_model_name}_full.pkl")
 
     predictions = []
     with utils.timeit_context('predict'):
@@ -375,13 +377,13 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
             predictions.append(model.predict(X))
 
     prediction = np.mean(np.array(predictions).astype(np.float64), axis=0)
-    os.makedirs('../submissions', exist_ok=True)
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
 
     for clip10 in [5, 4, 3, 2]:
         clip = 10 ** (-clip10)
         for col, cls in enumerate(classes):
             ds[cls] = np.clip(prediction[:, col]*(1-clip*2)+clip, clip, 1.0-clip)
-        ds.to_csv(f'../submissions/submission_combined_models_nn_{combined_model_name}_clip_{clip10}.csv',
+        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_combined_models_nn_{combined_model_name}_clip_{clip10}.csv',
                   index=False,
                   float_format='%.8f')
 
@@ -397,26 +399,26 @@ def predict_on_test(model_name, fold, data_model_name=None, data_fold=None):
         data_fold = fold
 
     with utils.timeit_context('load data'):
-        X = load_test_data('../output/prediction_test_frames/', data_model_name, data_fold)
+        X = load_test_data(Path(__file__).parent.parent / 'output/prediction_test_frames/', data_model_name, data_fold)
         print(X.shape)
 
     model = model_nn(input_size=X.shape[1])
     model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
-    model.load_weights(f"../output/nn1_{model_name}_{fold}_full.pkl")
+    model.load_weights(Path(__file__).parent.parent / f"output/nn1_{model_name}_{fold}_full.pkl")
 
     with utils.timeit_context('predict'):
         prediction = model.predict(X)
 
     for col, cls in enumerate(classes):
         ds[cls] = np.clip(prediction[:, col], 0.001, 0.999)
-    os.makedirs('../submissions', exist_ok=True)
-    ds.to_csv(f'../submissions/submission_one_model_nn_{model_name}_{data_fold}.csv', index=False, float_format='%.7f')
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
+    ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_one_model_nn_{model_name}_{data_fold}.csv', index=False, float_format='%.7f')
 
 
 def check_corr(sub1, sub2):
     print(sub1, sub2)
-    s1 = pd.read_csv('../submissions/' + sub1)
-    s2 = pd.read_csv('../submissions/' + sub2)
+    s1 = pd.read_csv(Path(Path(__file__).parent.parent / 'submissions/', sub1))
+    s2 = pd.read_csv(Path(Path(__file__).parent.parent / 'submissions/', sub2))
     for col in s1.columns[1:]:
         print(col, s1[col].corr(s2[col]))
 
@@ -439,10 +441,12 @@ def combine_submissions1():
         total_weight = sum([s[1] for s in sources])
         ds = pd.read_csv(config.SUBMISSION_FORMAT)
         for src_fn, weight in sources:
-            src = pd.read_csv('../submissions/'+src_fn)
+            pth = Path(Path(__file__).parent.parent / 'submissions/', src_fn)
+            src = pd.read_csv(pth)
             for col in ds.columns[1:]:
                 ds[col] += src[col]*weight/total_weight
-        ds.to_csv(f'../submissions/submission_59_avg_xgb_nn_all_4_1_1_clip_{clip10}.csv', index=False, float_format='%.8f')
+        pth = config.MODEL_DIR / f'submissions/submission_59_avg_xgb_nn_all_4_1_1_clip_{clip10}.csv'
+        ds.to_csv(pth, index=False, float_format='%.8f')
 
 
 def combine_submissions2():
@@ -456,19 +460,18 @@ def combine_submissions2():
             (f'submission_combined_folds_models_xgboost_clip_{clip10}.csv', 1.0),
             (f'submission_single_folds_models_xgboost_clip_{clip10}.csv', 1.0),
 
-            (f'submission_combined_models_lgb_all_combined_260_clip_{clip10}.csv', 4.0),
-            (f'submission_combined_folds_models_lgb_clip_{clip10}.csv', 1.0),
-            (f'submission_single_folds_models_lgb_clip_{clip10}.csv', 1.0),
         ]
         total_weight = sum([s[1] for s in sources])
         ds = pd.read_csv(config.SUBMISSION_FORMAT)
         for src_fn, weight in sources:
             check_corr('submission_combined_models_xgboost_2k_extra_clip_4.csv', src_fn)
-
-            src = pd.read_csv('../submissions/'+src_fn)
+            pth = Path(Path(__file__).parent.parent / 'submissions/', src_fn)
+            src = pd.read_csv(pth)
             for col in ds.columns[1:]:
                 ds[col] += src[col]*weight/total_weight
-        ds.to_csv(f'../submissions/submission_60_avg_xgb_nn_lgb_all_4_1_1_clip_{clip10}.csv', index=False, float_format='%.8f')
+        pth = config.MODEL_DIR / f'submissions/submission_60_avg_xgb_nn_lgb_all_4_1_1_clip_{clip10}.csv'
+        ds.to_csv(pth, index=False, float_format='%.8f')
+        return ds
 
 
 def train_combined_folds_models():
@@ -487,7 +490,7 @@ def predict_combined_folds_models():
     total_weight = 0.0
     result = np.zeros((ds.shape[0], NB_CAT))
 
-    data_dir = '../output/prediction_test_frames/'
+    data_dir = config.MODEL_DIR / 'output/prediction_test_frames/'
     pool = ThreadPool(8)
 
     for models in config.ALL_MODELS:
@@ -502,7 +505,7 @@ def predict_combined_folds_models():
 
         model = model_nn(input_size=X_for_folds[0].shape[1])
         model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
-        model.load_weights(f"../output/nn_combined_folds_{combined_model_name}.pkl")
+        model.load_weights(Path(__file__).parent.parent / f"output/nn_combined_folds_{combined_model_name}.pkl")
 
         for (model_name, fold), X in zip(models, X_for_folds):
             with utils.timeit_context('predict'):
@@ -511,14 +514,14 @@ def predict_combined_folds_models():
                 result += prediction*weight
                 total_weight += weight
 
-    os.makedirs('../submissions', exist_ok=True)
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
     result /= total_weight
 
     for clip10 in [5, 4, 3, 2]:
         clip = 10 ** (-clip10)
         for col, cls in enumerate(classes):
             ds[cls] = np.clip(result[:, col] * (1 - clip * 2) + clip, clip, 1.0 - clip)
-        ds.to_csv(f'../submissions/submission_combined_folds_models_nn_clip_{clip10}.csv',
+        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_combined_folds_models_nn_clip_{clip10}.csv',
                   index=False,
                   float_format='%.8f')
 
@@ -527,7 +530,7 @@ def predict_unused_clips(data_model_name, data_fold, combined_model_name):
     ds = pd.read_csv(config.SUBMISSION_FORMAT)
     classes = list(ds.columns)[1:]
 
-    data_dir = f'../output/prediction_unused_frames/'
+    data_dir = config.MODEL_DIR / f'output/prediction_unused_frames/'
     video_ids = [fn[:-4] for fn in os.listdir(data_dir) if fn.endswith('.csv')]
 
     with utils.timeit_context('load data'):
@@ -535,7 +538,7 @@ def predict_unused_clips(data_model_name, data_fold, combined_model_name):
 
     model = model_nn(input_size=X.shape[1])
     model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
-    model.load_weights(f"../output/nn1_{combined_model_name}_0_full.pkl")
+    model.load_weights(Path(__file__).parent.parent / f"output/nn1_{combined_model_name}_0_full.pkl")
 
     with utils.timeit_context('predict'):
         prediction = model.predict(X)
@@ -544,12 +547,12 @@ def predict_unused_clips(data_model_name, data_fold, combined_model_name):
 
     for col, cls in enumerate(classes):
         ds[cls] = prediction[:, col]  # np.clip(prediction[:, col], 0.001, 0.999)
-    # os.makedirs('../submissions', exist_ok=True)
-    ds.to_csv(f'../output/prediction_unused_frames/{data_model_name}_{data_fold}.csv', index=False, float_format='%.7f')
+    # os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
+    ds.to_csv(Path(__file__).parent.parent / f'output/prediction_unused_frames/{data_model_name}_{data_fold}.csv', index=False, float_format='%.7f')
 
 
-if __name__ == '__main__':
-    with utils.timeit_context('train nn model'):
+def main():
+    with utils.timeit_context('predict nn model'):
         # train_all_models_nn_combined('combined_extra_dr075', config.ALL_MODELS)
         predict_on_test_combined('combined_extra_dr075', config.ALL_MODELS)
 
@@ -560,4 +563,5 @@ if __name__ == '__main__':
         predict_all_single_fold_models()
 
     combine_submissions1()
-    combine_submissions2()
+    preds2 = combine_submissions2()
+    return preds2

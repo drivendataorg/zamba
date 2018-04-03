@@ -34,11 +34,11 @@ def preprocess_x(data: np.ndarray):
 
 
 def load_train_data(model_name, fold, cache_prefix='lgb'):
-    data_path = '../output/prediction_train_frames'
+    data_path = config.MODEL_DIR / 'output/prediction_train_frames'
     cache_fn = f'{data_path}/{cache_prefix}_{model_name}_{fold}_cache.npz'
     print(cache_fn, os.path.exists(cache_fn))
 
-    if os.path.exists(cache_fn):
+    if Path(cache_fn).exists():
         print('loading cache', cache_fn)
         cached = np.load(cache_fn)
         print('loaded cache')
@@ -60,7 +60,7 @@ def load_test_data(test_path, model_name, fold):
 
 
 def load_test_data_from_std_path(model_name, fold):
-    test_path = '../output/prediction_test_frames'
+    test_path = config.MODEL_DIR / 'output/prediction_test_frames'
     X_raw = np.load(f'{test_path}/{model_name}_{fold}_combined.npy')
     print('preprocess', model_name, fold)
     X = preprocess_x(X_raw)
@@ -134,18 +134,18 @@ def model_lgb(model_name, fold):
              'num_class': NB_CAT,
              'metric': ['multi_logloss']}
     model = lgb.train(param, train_data,  num_boost_round=100)
-    pickle.dump(model, open(f"../output/lgb_{model_name}_{fold}_full.pkl", "wb"))
+    pickle.dump(model, open(Path(__file__).parent.parent / f"output/lgb_{model_name}_{fold}_full.pkl", "wb"))
 
 
 def predict_on_test(model_name, fold, use_cache=False):
-    model = pickle.load(open(f"../output/lgb_{model_name}_{fold}_full.pkl", "rb"))
+    model = pickle.load(open(Path(__file__).parent.parent / f"output/lgb_{model_name}_{fold}_full.pkl", "rb"))
     print(model)
     ds = pd.read_csv(config.SUBMISSION_FORMAT)
     classes = list(ds.columns)[1:]
     print(classes)
 
     with utils.timeit_context('load data'):
-        cache_fn = f'../output/prediction_test_frames/{model_name}_{fold}_cache.npy'
+        cache_fn = config.MODEL_DIR / f'output/prediction_test_frames/{model_name}_{fold}_cache.npy'
         if use_cache:
             X = np.load(cache_fn)
         else:
@@ -160,8 +160,8 @@ def predict_on_test(model_name, fold, use_cache=False):
 
     for col, cls in enumerate(classes):
         ds[cls] = np.clip(prediction[:, col], 0.001, 0.999)
-    os.makedirs('../submissions', exist_ok=True)
-    ds.to_csv(f'../submissions/submission_one_model_lgb_{model_name}_{fold}.csv', index=False, float_format='%.7f')
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
+    ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_one_model_lgb_{model_name}_{fold}.csv', index=False, float_format='%.7f')
 
 
 # def load_one_model(request):
@@ -217,7 +217,7 @@ def train_all_models_lgb_combined(combined_model_name, models_with_folds):
                  'metric': ['multi_logloss']}
         model = lgb.train(param, lgb.Dataset(X, label=y_cat), num_boost_round=260)
 
-    pickle.dump(model, open(f"../output/lgb_combined_{combined_model_name}.pkl", "wb"))
+    pickle.dump(model, open(Path(__file__).parent.parent / f"output/lgb_combined_{combined_model_name}.pkl", "wb"))
 
 
 def try_train_all_models_lgb_combined(models_with_folds):
@@ -301,13 +301,13 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
 
     X_combined = {fold: [] for fold in folds}
     try:
-        X_combined = pickle.load(open(f"../output/X_combined_lgb_{combined_model_name}.pkl", 'rb'))
+        X_combined = pickle.load(open(Path(__file__).parent.parent / f"output/X_combined_lgb_{combined_model_name}.pkl", 'rb'))
     except FileNotFoundError:
         requests = []
 
         for model_with_folds in models_with_folds:
             for data_model_name, data_fold in model_with_folds:
-                data_dir = f'../output/prediction_test_frames'
+                data_dir = config.MODEL_DIR / f'output/prediction_test_frames'
                 with utils.timeit_context('load data'):
                     requests.append((data_dir, data_model_name, data_fold))
                     # X_combined[data_fold].append(load_test_data(data_dir, ds.filename))
@@ -316,9 +316,9 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
         results = pool.map(load_test_data_one_model, requests)
         for data_fold, X in results:
             X_combined[data_fold].append(X)
-        pickle.dump(X_combined, open(f"../output/X_combined_lgb_{combined_model_name}.pkl", "wb"))
+        pickle.dump(X_combined, open(Path(__file__).parent.parent / f"output/X_combined_lgb_{combined_model_name}.pkl", "wb"))
 
-    model = pickle.load(open(f"../output/lgb_combined_{combined_model_name}.pkl", "rb"))
+    model = pickle.load(open(Path(__file__).parent.parent / f"output/lgb_combined_{combined_model_name}.pkl", "rb"))
     print(model)
 
     predictions = []
@@ -329,14 +329,14 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
             print('prediction', predictions[-1].shape)
             
     prediction = np.mean(np.array(predictions).astype(np.float64), axis=0)
-    os.makedirs('../submissions', exist_ok=True)
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
     print('predictions', prediction.shape)
 
     for clip10 in [5, 4, 3, 2]:
         clip = 10 ** (-clip10)
         for col, cls in enumerate(classes):
             ds[cls] = np.clip(prediction[:, col]*(1-clip*2)+clip, clip, 1.0-clip)
-        ds.to_csv(f'../submissions/submission_combined_models_lgb_{combined_model_name}_clip_{clip10}.csv',
+        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_combined_models_lgb_{combined_model_name}_clip_{clip10}.csv',
                   index=False,
                   float_format='%.8f')
 
@@ -368,7 +368,7 @@ def train_model_lgb_combined_folds(combined_model_name, model_with_folds):
                  'metric': ['multi_logloss']}
         model = lgb.train(param, lgb.Dataset(X, label=y_cat), num_boost_round=200)
 
-    pickle.dump(model, open(f"../output/lgb_combined_folds_{combined_model_name}.pkl", "wb"))
+    pickle.dump(model, open(Path(__file__).parent.parent / f"output/lgb_combined_folds_{combined_model_name}.pkl", "wb"))
 
 
 def train_combined_folds_models():
@@ -399,7 +399,7 @@ def predict_combined_folds_models():
         with utils.timeit_context('load 4 folds data'):
             X_for_folds = pool.starmap(load_test_data_from_std_path, models)
 
-        model = pickle.load(open(f"../output/lgb_combined_folds_{combined_model_name}.pkl", "rb"))
+        model = pickle.load(open(Path(__file__).parent.parent / f"output/lgb_combined_folds_{combined_model_name}.pkl", "rb"))
 
         for (model_name, fold), X in zip(models, X_for_folds):
             with utils.timeit_context('predict'):
@@ -408,14 +408,14 @@ def predict_combined_folds_models():
                 result += prediction*weight
                 total_weight += weight
 
-    os.makedirs('../submissions', exist_ok=True)
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
     result /= total_weight
 
     for clip10 in [5, 4, 3, 2]:
         clip = 10 ** (-clip10)
         for col, cls in enumerate(classes):
             ds[cls] = np.clip(result[:, col] * (1 - clip * 2) + clip, clip, 1.0 - clip)
-        ds.to_csv(f'../submissions/submission_combined_folds_models_lgb_clip_{clip10}.csv',
+        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_combined_folds_models_lgb_clip_{clip10}.csv',
                   index=False,
                   float_format='%.8f')
 
@@ -423,9 +423,9 @@ def predict_combined_folds_models():
 def train_all_single_fold_models():
     for models in config.ALL_MODELS:
         for model_name, fold in models:
-            weights_fn = f"../output/lgb_{model_name}_{fold}_full.pkl"
+            weights_fn = config.MODEL_DIR / f"output/lgb_{model_name}_{fold}_full.pkl"
             print(model_name, fold, weights_fn)
-            if os.path.exists(weights_fn):
+            if weights_fn.exists():
                 print('skip existing file')
             else:
                 with utils.timeit_context('train'):
@@ -449,7 +449,7 @@ def predict_all_single_fold_models():
 
     for models in config.ALL_MODELS:
         for model_name, fold in models:
-            model = pickle.load(open(f"../output/lgb_{model_name}_{fold}_full.pkl", "rb"))
+            model = pickle.load(open(Path(__file__).parent.parent / f"output/lgb_{model_name}_{fold}_full.pkl", "rb"))
             print(model_name, fold, model)
 
             with utils.timeit_context('load data'):
@@ -465,21 +465,21 @@ def predict_all_single_fold_models():
                 result += prediction * weight
                 total_weight += weight
 
-    os.makedirs('../submissions', exist_ok=True)
+    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
     result /= total_weight
 
     for clip10 in [5, 4, 3, 2]:
         clip = 10 ** (-clip10)
         for col, cls in enumerate(classes):
             ds[cls] = np.clip(result[:, col] * (1 - clip * 2) + clip, clip, 1.0 - clip)
-        ds.to_csv(f'../submissions/submission_single_folds_models_lgb_clip_{clip10}.csv',
+        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_single_folds_models_lgb_clip_{clip10}.csv',
                   index=False,
                   float_format='%.8f')
 
 def check_corr(sub1, sub2):
     print(sub1, sub2)
-    s1 = pd.read_csv('../submissions/' + sub1)
-    s2 = pd.read_csv('../submissions/' + sub2)
+    s1 = pd.read_csv(Path(__file__).parent.parent / 'submissions/' + sub1)
+    s2 = pd.read_csv(Path(__file__).parent.parent / 'submissions/' + sub2)
     for col in s1.columns[1:]:
         print(col, s1[col].corr(s2[col]))
 
