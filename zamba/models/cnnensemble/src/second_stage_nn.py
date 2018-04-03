@@ -568,18 +568,3 @@ def main():
     combine_submissions1()
     preds2 = combine_submissions2()
     return preds2
-
-
-if __name__ == '__main__':
-    with utils.timeit_context('train nn model'):
-        # train_all_models_nn_combined('combined_extra_dr075', config.ALL_MODELS)
-        predict_on_test_combined('combined_extra_dr075', config.ALL_MODELS)
-
-        #  train_combined_folds_models()
-        predict_combined_folds_models()
-
-        # train_all_single_fold_models()
-        predict_all_single_fold_models()
-
-    combine_submissions1()
-    combine_submissions2()

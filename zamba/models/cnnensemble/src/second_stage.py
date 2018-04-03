@@ -376,10 +376,3 @@ def main():
         predict_on_test_combined("2k_extra", models_with_folds=config.ALL_MODELS)
         predict_combined_folds_models()
         predict_all_single_fold_models()
-
-
-if __name__ == '__main__':
-    with utils.timeit_context('train xgboost model'):
-        predict_on_test_combined("2k_extra", models_with_folds=config.ALL_MODELS)
-        predict_combined_folds_models()
-        predict_all_single_fold_models()
