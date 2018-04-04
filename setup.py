@@ -22,6 +22,10 @@ setup(
     name='zamba',
     version='0.0',
     install_requires=requirements,
+    extras_require={
+        "tf": ["tensorflow>=1.5.0"],
+        "tf_gpu": ["tensorflow-gpu>=1.4.1"]
+    },
     entry_points={
         'console_scripts': [
             'zamba=zamba.cli:main',
