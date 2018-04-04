@@ -12,7 +12,7 @@ from zamba.models.cnnensemble.src import config, metrics, utils
 
 
 NB_CAT = 24
-
+N_CORES = 8
 
 def preprocess_x(data: np.ndarray):
     rows = []
@@ -156,7 +156,7 @@ def train_all_models_xgboost_combined(combined_model_name, models_with_folds):
             requests.append((model_name, fold))
             # results.append(load_one_model(requests[-1]))
 
-    pool = Pool(40)
+    pool = Pool(N_CORES)
     with utils.timeit_context('load all data'):
         results = pool.starmap(load_train_data, requests)
 
@@ -205,7 +205,7 @@ def predict_on_test_combined(combined_model_name, models_with_folds):
             data_dir = config.MODEL_DIR / f'output/prediction_test_frames'
             with utils.timeit_context('load data'):
                 requests.append((data_dir, data_model_name, data_fold))
-    pool = Pool(40)
+    pool = Pool(N_CORES)
     results = pool.map(load_test_data_one_model, requests)
     for data_fold, X in results:
         X_combined[data_fold].append(X)
@@ -274,7 +274,7 @@ def predict_combined_folds_models():
     total_weight = 0.0
     result = np.zeros((ds.shape[0], NB_CAT))
 
-    pool = Pool(16)
+    pool = Pool(N_CORES)
 
     for models in config.ALL_MODELS:
         combined_model_name = models[0][0] + '_combined'
@@ -326,7 +326,7 @@ def predict_all_single_fold_models():
     for model_with_folds in config.ALL_MODELS:
         for model_name, fold in model_with_folds:
             requests.append((model_name, fold))
-    pool = Pool(8)
+    pool = Pool(N_CORES)
     with utils.timeit_context('load all data'):
         results = pool.starmap(load_test_data_from_std_path, requests)
 

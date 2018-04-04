@@ -146,6 +146,6 @@ class ModelManager(object):
 
             current_sub_format = pd.DataFrame(index=pd.Index(filelist),
                                               columns=classes)
-            current_sub_format.fillna(0.5, inplace=True)
+            current_sub_format.fillna(0.0, inplace=True)
             current_sub_format.index.name = 'filename'
             current_sub_format.to_csv(config.SUBMISSION_FORMAT)
