@@ -1,7 +1,5 @@
 from pathlib import Path
 import matplotlib
-matplotlib.use('Agg')
-
 import argparse
 from collections import namedtuple
 from multiprocessing.pool import ThreadPool
@@ -48,9 +46,7 @@ INPUT_SHAPE = (INPUT_ROWS, INPUT_COLS, 3)
 VIDEO_FPS = 24
 PREDICT_FRAMES = [2, 8, 12, 18] + [i * VIDEO_FPS // 2 + 24 for i in range(14 * 2)]
 
-CLASSES = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo', 'gorilla', 'hippopotamus', 'human',
-           'hyena', 'large ungulate', 'leopard', 'lion', 'other (non-primate)', 'other (primate)', 'pangolin',
-           'porcupine', 'reptile', 'rodent', 'small antelope', 'small cat', 'wild dog', 'duiker', 'hog']
+from .config import CLASSES
 NB_CLASSES = len(CLASSES)
 
 cnnensemble_path = config.MODEL_DIR
@@ -70,6 +66,11 @@ def build_model_resnet50(lock_base_model: bool):
 
 
 def build_model_resnet50_avg(lock_base_model: bool):
+    """
+    Build the Resnet50 based level 1 model
+    :param lock_base_model:
+    :return:
+    """
     base_model = ResNet50(input_shape=INPUT_SHAPE, include_top=False, pooling=None)
     if lock_base_model:
         for layer in base_model.layers:
@@ -158,55 +159,48 @@ def build_model_inception_v3_dropout(lock_base_model: True):
     return model
 
 
-ModelInfo = namedtuple('ModelInfo', ['factory', 'preprocess_input', 'input_shape', 'unlock_layer_name', 'batch_size'])
+ModelInfo = namedtuple('ModelInfo', ['factory', 'preprocess_input', 'unlock_layer_name', 'batch_size'])
 
 MODELS = {
     'resnet50_initial': ModelInfo(
         factory=build_model_resnet50_avg,
         preprocess_input=preprocess_input_resnet50,
-        input_shape=(404, 720, 3),
         unlock_layer_name='activation_22',
         batch_size=32
     ),
     'resnet50': ModelInfo(
         factory=build_model_resnet50,
         preprocess_input=preprocess_input_resnet50,
-        input_shape=(404, 720, 3),
         unlock_layer_name='activation_22',
         batch_size=32
     ),
     'resnet50_avg': ModelInfo(
         factory=build_model_resnet50_avg,
         preprocess_input=preprocess_input_resnet50,
-        input_shape=(404, 720, 3),
         unlock_layer_name='activation_22',
         batch_size=32
     ),
     'inception_v3': ModelInfo(
         factory=build_model_inception_v3_avg,
         preprocess_input=preprocess_input_inception_v3,
-        input_shape=(404, 720, 3),
         unlock_layer_name='mixed4',
         batch_size=32
     ),
     'inception_v2_resnet': ModelInfo(
         factory=build_model_inception_v2_resnet,
         preprocess_input=preprocess_input_inception_resnet_v2,
-        input_shape=(404, 720, 3),
         unlock_layer_name='activation_75',
         batch_size=16
     ),
     'xception_avg': ModelInfo(
         factory=build_model_xception_avg,
         preprocess_input=preprocess_input_xception,
-        input_shape=(404, 720, 3),
         unlock_layer_name='block4_pool',
         batch_size=16
     ),
     'resnet152': ModelInfo(
         factory=build_model_resnet152,
         preprocess_input=preprocess_input_resnet50,
-        input_shape=(404, 720, 3),
         unlock_layer_name='res3b7_relu',
         batch_size=8
     ),
@@ -219,10 +213,22 @@ MODELS['inception_v2_resnet_extra'] = MODELS['inception_v2_resnet']
 
 
 class SingleFrameCNNDataset:
+    """
+    SingleFrameCNNDataset class prepares training and validation sample generators for training L1 models.
+    """
+
     def __init__(self, fold, preprocess_input_func, batch_size,
                  validation_batch_size=1,
-                 use_non_blank_frames=False,
-                 use_extra_clips=False):
+                 use_non_blank_frames=False):
+        """
+        :param fold: verification fold in 1..4 range, or -1 when model trained on the full dataset
+        :param preprocess_input_func: pre-process function to convert input data to distribution
+                used during imagenet based training
+        :param batch_size: train batch size
+        :param validation_batch_size: validation batch size
+        :param use_non_blank_frames: if True, information about estimated probabilities for non blank frames
+                is used so blank frame from non blank clip is less likely to be used.
+        """
         self.validation_batch_size = validation_batch_size
         self.batch_size = batch_size
         self.combine_batches = 1  # combine multiple batches in generator for parallel processing
@@ -246,19 +252,6 @@ class SingleFrameCNNDataset:
         self.test_clips = self.test_clips[:self.validation_steps() * validation_batch_size]
         self.pool = ThreadPool(8)
 
-        self.use_extra_clips = use_extra_clips
-        self.extra_matching_clips = []
-        if use_extra_clips:
-            self.extra_matching_clips_ds = pd.read_csv(cnnensemble_path / 'output/unused_matching.csv')
-            self.extra_matching_clips = list(self.extra_matching_clips_ds.filename)
-            self.extra_matching_clips_ds = self.extra_matching_clips_ds.set_index('filename')
-
-            self.extra_labeled_clips_ds = pd.read_csv(cnnensemble_path / 'output/unused_labeled.csv')
-            self.extra_labeled_clips = list(self.extra_labeled_clips_ds.filename)
-            self.extra_labeled_clips_ds = self.extra_labeled_clips_ds.set_index('filename')
-            print('extra matching clips:', len(self.extra_matching_clips))
-            print('extra labeled clips:', len(self.extra_labeled_clips))
-
         print('train clips:', len(self.train_clips))
         print('test clips:', len(self.test_clips))
 
@@ -267,13 +260,6 @@ class SingleFrameCNNDataset:
         for cls in range(NB_CLASSES):
             self.train_clips_per_cat[cls] = list(
                 self.training_set_labels_ds[self.training_set_labels_ds[CLASSES[cls]] > 0.5].index.values)
-
-        # for video_id, row in self.training_set_labels_ds.iterrows():
-        #     classes = self.training_set_labels_ds.loc[[video_id]].as_matrix(columns=CLASSES)[0]
-        #     self.y_map[video_id] = classes
-        # for cls in range(NB_CLASSES):
-        #     if classes[cls] > 0.5:
-        #         self.train_clips_per_cat[cls].append(video_id)
 
         for cls in range(NB_CLASSES):
             print(CLASSES[cls], len(self.train_clips_per_cat[cls]))
@@ -288,36 +274,37 @@ class SingleFrameCNNDataset:
                 self.non_blank_frames.update(data)
 
     def train_steps_per_epoch(self):
+        """
+        Return the number of batches used for one epoch training.
+
+        Calculated in a way to ensure comparable number of clips used per epoch regardless of batch size.
+        """
         preprocess_batch_size = self.batch_size * self.combine_batches
         return int(len(self.train_clips) / 2 // preprocess_batch_size * preprocess_batch_size // self.batch_size)
 
     def validation_steps(self):
+        """
+        Return the number of batches used for validation.
+
+        Calculated in a way to ensure comparable number of clips used regardless of batch size.
+        """
         preprocess_batch_size = self.validation_batch_size * self.combine_batches
         return len(self.test_clips) // preprocess_batch_size * preprocess_batch_size // self.validation_batch_size
 
     def load_train_clip(self, video_id, offset=4, hflip=False):
-        # v = pims.Video(os.path.join(config.RAW_VIDEO_DIR, video_id))
-        # X = v[offset]
-        # if X.shape != INPUT_SHAPE:
-        #     X = scipy.misc.imresize(X, size=(INPUT_ROWS, INPUT_COLS), interp='bilinear').astype(np.float32)
-        # else:
-        #     X = X.astype(np.float32)
-        # del v
+        """
+        Load the train tensor for the single train video clip.
 
-        if video_id.startswith('labeled_'):
-            video_id = video_id[len('labeled_'):]
-            images_dir = config.UNUSED_IMG_DIR
-            video_dir = config.UNUSED_VIDEO_DIR
-            classes = self.extra_labeled_clips_ds.loc[[video_id]].as_matrix(columns=CLASSES)
-        elif video_id.startswith('matching_'):
-            video_id = video_id[len('matching_'):]
-            images_dir = config.UNUSED_IMG_DIR
-            video_dir = config.UNUSED_VIDEO_DIR
-            classes = self.extra_matching_clips_ds.loc[[video_id]].as_matrix(columns=CLASSES)
-        else:
-            images_dir = config.TRAIN_IMG_DIR
-            video_dir = config.RAW_VIDEO_DIR
-            classes = self.training_set_labels_ds.loc[[video_id]].as_matrix(columns=CLASSES)
+        Id decoded jpeg file is found, it's used, otherwise video clip is decoded.
+
+        :param video_id: train video clip id
+        :param offset: frame number
+        :param hflip: video if flipped horizontally if true
+        :return: pre-processed X
+        """
+        images_dir = config.TRAIN_IMG_DIR
+        video_dir = config.RAW_VIDEO_DIR
+        classes = self.training_set_labels_ds.loc[[video_id]].as_matrix(columns=CLASSES)
 
         base_name = video_id[:-4]
 
@@ -328,15 +315,6 @@ class SingleFrameCNNDataset:
             loaded = True
         except FileNotFoundError:
             pass
-
-        # if not loaded:
-        #     try:
-        #         offset = 4
-        #         fn = os.path.join(images_dir, base_name, f'{offset+1:04}.jpg')
-        #         X = scipy.misc.imread(fn).astype(np.float32)
-        #         loaded = True
-        #     except FileNotFoundError:
-        #         pass
 
         if not loaded:
             v = pims.Video(os.path.join(video_dir, video_id))
@@ -358,12 +336,14 @@ class SingleFrameCNNDataset:
         return self.preprocess_input_func(X), classes[0]
 
     def choose_train_video_id(self):
+        """
+            Policy of choosing video clip for training.
+            Classes are partially normalised.
+
+        :return: train video id
+        """
         while True:
             r = np.random.random()
-            if r < 0.04:
-                return 'labeled_'+np.random.choice(self.extra_labeled_clips)
-            if r < 0.2:
-                return 'matching_' + np.random.choice(self.extra_matching_clips)
             if r < 0.6:
                 return np.random.choice(self.train_clips)
             else:
@@ -373,6 +353,12 @@ class SingleFrameCNNDataset:
                     return np.random.choice(self.train_clips_per_cat[cls])
 
     def generate(self, verbose=False):
+        """
+        Train dataset generator
+
+        :param verbose: print debug information if true
+        """
+
         batch_size = self.batch_size
         X = np.zeros(shape=(batch_size,) + INPUT_SHAPE, dtype=np.float32)
         y = np.zeros(shape=(batch_size, NB_CLASSES), dtype=np.float32)
@@ -467,6 +453,10 @@ class SingleFrameCNNDataset:
 
 
 def check_generator(use_test):
+    """
+    Helper function used to visually check X and y vectors generated by SingleFrameCNNDataset
+    :param use_test: true if validation samples are checked, false for training samples.
+    """
     dataset = SingleFrameCNNDataset(preprocess_input_func=preprocess_input_resnet50,
                                     batch_size=2,
                                     validation_batch_size=2,
@@ -490,22 +480,30 @@ def check_generator(use_test):
             plt.show()
 
 
-def train(fold, model_name, weights, initial_epoch, use_non_blank_frames, use_extra_clips):
-    model_info = MODELS[model_name]
-    print(model_name, weights, initial_epoch)
+def train(fold, model_name, weights='', initial_epoch=0, use_non_blank_frames=True):
+    """
+    Train the level 1 model.
 
+    :param fold: Fold to train model on, or -1 to train on the full dataset
+    :param model_name: name of the level 1 model to train
+    :param weights: optional, if non empty string passed, training starts from supplied weights,
+                    otherwise imagenet pre-trained model is loaded
+    :param initial_epoch: Epoch to continue training from, used together with weight parameter to continue training
+    :param use_non_blank_frames:
+    :param use_extra_clips:
+    :return: None
+    """
+    model_info = MODELS[model_name]
     dataset = SingleFrameCNNDataset(preprocess_input_func=model_info.preprocess_input,
                                     fold=fold,
                                     batch_size=model_info.batch_size,
                                     validation_batch_size=model_info.batch_size,
-                                    use_non_blank_frames=use_non_blank_frames,
-                                    use_extra_clips=use_extra_clips)
+                                    use_non_blank_frames=use_non_blank_frames)
 
     model = model_info.factory(lock_base_model=True)
     if initial_epoch == 0 and weights == '':
         # train the first layer first unless continue training
         model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
-        # model.summary()
         model.fit_generator(
             dataset.generate(),
             steps_per_epoch=dataset.train_steps_per_epoch(),
@@ -518,12 +516,8 @@ def train(fold, model_name, weights, initial_epoch, use_non_blank_frames, use_ex
     utils.lock_layers_until(model, model_info.unlock_layer_name)
     # model.summary()
 
-    suffix = ''
-    if use_extra_clips:
-        suffix = '_extra'
-
-    checkpoints_dir = cnnensemble_path / f'output/checkpoints/{model_name}_fold_{fold}{suffix}'
-    tensorboard_dir = cnnensemble_path / f'output/tensorboard/{model_name}_fold_{fold}{suffix}'
+    checkpoints_dir = cnnensemble_path / f'output/checkpoints/{model_name}_fold_{fold}'
+    tensorboard_dir = cnnensemble_path / f'output/tensorboard/{model_name}_fold_{fold}'
     os.makedirs(checkpoints_dir, exist_ok=True)
     os.makedirs(tensorboard_dir, exist_ok=True)
 
@@ -566,10 +560,17 @@ def train(fold, model_name, weights, initial_epoch, use_non_blank_frames, use_ex
         initial_epoch=max(initial_epoch, nb_sgd_epoch)
     )
 
-    model.save_weights(cnnensemble_path / f'output/{model_name}_s_fold_{fold}{suffix}.h5')
+    model.save_weights(cnnensemble_path / f'output/{model_name}_s_fold_{fold}.h5')
 
 
 def check_model(model_name, weights, fold):
+    """
+    Helper test method to do a simple sanity check of model predictions
+
+    :param model_name: name of the model
+    :param weights: model weights file path
+    :param fold: fold to check
+    """
     model = MODELS[model_name].factory(lock_base_model=True)
     model.load_weights(weights, by_name=False)
 
@@ -590,48 +591,18 @@ def check_model(model_name, weights, fold):
             plt.show()
 
 
-def check_model_score(model_name, weights, fold):
-    model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=False)
-    model.compile(optimizer=RMSprop(lr=3e-4), loss='binary_crossentropy', metrics=['accuracy'])
-
-    dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
-                                    batch_size=MODELS[model_name].batch_size,
-                                    validation_batch_size=4,  # MODELS[model_name].batch_size,
-                                    fold=fold,
-                                    use_non_blank_frames=True)
-    gt = []
-    pred = []
-    steps = dataset.validation_steps() // 500
-    print('steps:', steps)
-    step = 0
-    for X, y in tqdm(dataset.generate_test(verbose=True)):
-        gt.append(y)
-        pred.append(model.predict_on_batch(X))
-        step += 1
-        if step >= steps:
-            break
-
-    # print(gt)
-    # print(pred)
-
-    gt = np.vstack(gt).astype(np.float64)
-    pred = np.vstack(pred).astype(np.float64)
-    print(gt.shape, pred.shape)
-    # print(gt)
-    # print(pred)
-    checkpoint_name = os.path.basename(weights)
-    out_dir = cnnensemble_path / f'output/check_model_score/gt{model_name}_{fold}_{checkpoint_name}'
-    os.makedirs(out_dir, exist_ok=True)
-    print(out_dir)
-    np.save(f'{out_dir}/gt.npy', gt)
-    np.save(f'{out_dir}/pred.npy', pred)
-
-    for clip in [0.0, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]:
-        print(clip, pri_matrix_loss(gt, np.clip(pred, clip, 1.0 - clip)))
-
-
 def generate_prediction(model_name, weights, fold):
+    """
+    Generate out of fold prediction for the training dataset, used for level 2 model training.
+
+    Predictions are saved in individual files in the output/prediction_train_frames directory
+    and need to be combined with save_combined_train_results()
+
+    :param model_name: name of level 1 model
+    :param weights: path to model weights
+    :param fold: fold to generate predictions for
+    :return:
+    """
     model = MODELS[model_name].factory(lock_base_model=True)
     model.load_weights(weights, by_name=False)
 
@@ -686,8 +657,21 @@ def generate_prediction(model_name, weights, fold):
             print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
 
-def generate_prediction_test(model_name, weights, fold, data_path=None):
+def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=True):
+    """
+    Predict classes probabilities for a number of frames of each test clip
 
+    :param model_name: name of the model
+    :param weights: path to model weights
+    :param fold: TODO: remove it
+    :param data_path: directory video clips are stored, defaults to config.TEST_VIDEO_DIR
+    :param verbose: print status messaged if true
+
+    TODO:
+    :return: predictions as array with shape (nb_clips, nb_frames, nb_classes)
+    """
+
+    # TODO: data_path is ignored right now, to be fixed
     if data_path is None:
         data_path = config.TEST_VIDEO_DIR
 
@@ -697,12 +681,14 @@ def generate_prediction_test(model_name, weights, fold, data_path=None):
     output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}_{fold}"
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # TODO: don't create dataset instance, better to move out and rename frames_from_video_clip method
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
                                     batch_size=1,
                                     validation_batch_size=1,
                                     fold=fold)
 
     # skip processed files
+    # TODO: better to pass list of files as paramater
     test_clips = list(pd.read_csv(config.SUBMISSION_FORMAT).filename)
 
     converted_files = set()
@@ -745,74 +731,26 @@ def generate_prediction_test(model_name, weights, fold, data_path=None):
             prepare_ms = int((have_data_time - start_time) * 1000)
             predict_ms = int((have_prediction_time - have_data_time) * 1000)
             start_time = time.time()
-            print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
-
-
-def generate_prediction_unused(model_name, weights, fold):
-    model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=False)
-
-    output_dir = cnnensemble_path / "output" / "prediction_unused_frames" / f"{model_name}_{fold}"
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
-                                    batch_size=1,
-                                    validation_batch_size=1,
-                                    fold=fold)
-
-    # skip processed files
-    test_clips = os.listdir(config.UNUSED_VIDEO_DIR)
-    unprocessed_files = []
-
-    converted_files = set()
-    processed_files = 0
-    for video_id in test_clips:
-        res_fn = output_dir.resolve() / f"{video_id}.csv"
-        if res_fn.exists():
-            processed_files += 1
-            converted_files.add(video_id)
-        else:
-            unprocessed_files.append(video_id)
-
-    test_clips = unprocessed_files
-
-    def load_file(video_id):
-        X = dataset.frames_from_video_clip(video_fn=os.path.join(config.UNUSED_VIDEO_DIR, video_id))
-        return video_id, X
-
-    start_time = time.time()
-
-    pool = ThreadPool(8)
-    prev_res = None
-    for batch in utils.chunks(test_clips, 1, add_empty=True):
-        if prev_res is not None:
-            try:
-                results = prev_res.get()
-            except av.AVError:
-                results = []
-            except IOError:
-                results = []
-        else:
-            results = []
-        prev_res = pool.map_async(load_file, batch)
-        for video_id, X in results:
-            processed_files += 1
-            res_fn = output_dir.resolve() / f"{video_id}.csv"
-            have_data_time = time.time()
-            prediction = model.predict(X, batch_size=4)
-
-            ds = pd.DataFrame(index=PREDICT_FRAMES,
-                              data=prediction,
-                              columns=CLASSES)
-            ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
-            have_prediction_time = time.time()
-            prepare_ms = int((have_data_time - start_time) * 1000)
-            predict_ms = int((have_prediction_time - have_data_time) * 1000)
-            start_time = time.time()
-            print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
+            if verbose:
+                print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
 
 def find_non_blank_frames(model_name, fold):
+    """
+    For all non blank clips in the training dataset,
+    estimate probability an animal is visible on particular video frames.
+
+    This information is used to train next models, so it's less likely
+    model is trained on frame labeled as non blank which is actually blank.
+
+    Prediction is done for out of fold non blank frames only,
+    so to cover the whole training dataset it's necessary to call find_non_blank_frames() for each fold.
+
+    The result is saved to output/prediction_train_frames directory and loaded by DataSet class.
+
+    :param model_name: name of the trained L1 model
+    :param fold: verification fold model is trained with
+    """
     data_dir = cnnensemble_path / f'output/prediction_train_frames/{model_name}_{fold}'
     training_labels = pd.read_csv(config.TRAINING_SET_LABELS)
     training_labels = training_labels.set_index('filename')
@@ -836,7 +774,7 @@ def find_non_blank_frames(model_name, fold):
     pickle.dump(res, open(cnnensemble_path / f"output/prediction_train_frames/{model_name}_{fold}_non_blank.pkl", "wb"))
 
 
-def save_combined_train_results(model_name, fold, skip_existing=True):
+def save_combined_train_results(model_name, fold):
     X_raw = []
     y = []
     video_ids = []
@@ -907,21 +845,16 @@ if __name__ == '__main__':
         check_generator(use_test=True)
     elif action == 'check_model':
         check_model(model_name=model, weights=args.weights, fold=args.fold)
-    elif action == 'check_model_score':
-        check_model_score(model_name=model, weights=args.weights, fold=args.fold)
     elif action == 'train':
         train(fold=args.fold,
               model_name=model,
               weights=args.weights,
               initial_epoch=args.initial_epoch,
-              use_non_blank_frames=args.use_non_blank_frames,
-              use_extra_clips=args.use_extra_clips)
+              use_non_blank_frames=args.use_non_blank_frames)
     elif action == 'generate_prediction':
         generate_prediction(fold=args.fold, model_name=model, weights=args.weights)
     elif action == 'generate_prediction_test':
         generate_prediction_test(fold=args.fold, model_name=model, weights=args.weights)
-    elif action == 'generate_prediction_unused':
-        generate_prediction_unused(fold=args.fold, model_name=model, weights=args.weights)
     elif action == 'find_non_blank_frames':
         find_non_blank_frames(fold=args.fold, model_name=model)
     elif action == 'save_combined_test_results':
