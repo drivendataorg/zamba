@@ -4,17 +4,34 @@ import pickle
 from multiprocessing.pool import Pool
 
 import numpy as np
-import pandas as pd
 from sklearn.model_selection import train_test_split
+
 from xgboost import XGBClassifier
+import lightgbm as lgb
+
+from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard, LearningRateScheduler
+from tensorflow.python.keras.layers import Dense, Dropout
+from tensorflow.python.keras.layers import Input
+from tensorflow.python.keras.models import Model
+from tensorflow.python.keras.optimizers import Adam
+from tensorflow.python.keras.regularizers import l1
 
 from zamba.models.cnnensemble.src import config, metrics, utils
 
-
 NB_CAT = 24
 N_CORES = 8
+SORTED_BINS_DOWNSAMPLE = 4
 
-def preprocess_x(data: np.ndarray):
+
+def preprocess_x_histogram(data: np.ndarray):
+    """
+        Pre-process results of l1 model prediction to be used as an input to l2 model.
+
+        This method is used for xgboost and lgbm models and uses set of per class statistics and histogram
+
+        :param data: np.ndarray, predictions of the single l1 model with the shape of (NB_CLIPS, NB_FRAMES, NB_CLASSES)
+        :return: pre-processed X tensor with shape (NB_CLIPS, X_WIDTH)
+    """
     rows = []
 
     for row in data:
@@ -33,346 +50,259 @@ def preprocess_x(data: np.ndarray):
     return np.array(rows)
 
 
-def load_train_data(model_name, fold, cache_prefix='xgb'):
-    data_path = config.MODEL_DIR / 'output/prediction_train_frames'
-    cache_fn = f'{data_path}/{cache_prefix}_{model_name}_{fold}_cache.npz'
-    print(cache_fn, os.path.exists(cache_fn))
+def preprocess_x_sorted_bins(data: np.ndarray):
+    """
+        Pre-process results of l1 model prediction to be used as an input to l2 model.
 
-    if Path(cache_fn).exists():
-        print('loading cache', cache_fn)
-        cached = np.load(cache_fn)
-        print('loaded cache')
-        X, y, video_ids = cached['X'], cached['y'], cached['video_ids']
-    else:
-        raw_cache_fn = f'{data_path}/{model_name}_{fold}_combined.npz'
-        print('loading raw cache', raw_cache_fn, os.path.exists(raw_cache_fn))
-        cached = np.load(raw_cache_fn)
-        X_raw, y, video_ids = cached['X_raw'], cached['y'], cached['video_ids']
-        X = preprocess_x(X_raw)
-        np.savez(cache_fn, X=X, y=y, video_ids=video_ids)
+        This method is used for MLP model.
+
+        Per class predictions are sorted and each bin of 4 values is averaged.
+
+        :param data: np.ndarray, predictions of the single l1 model with the shape of (NB_CLIPS, NB_FRAMES, NB_CLASSES)
+        :return: pre-processed X tensor with shape (NB_CLIPS, X_WIDTH)
+    """
+    rows = []
+    for row in data:
+        items = []
+        for col in range(row.shape[1]):
+            sorted = np.sort(row[:, col])
+            items.append(sorted.reshape(-1, SORTED_BINS_DOWNSAMPLE).mean(axis=1))
+        rows.append(np.hstack(items))
+    return np.array(rows)
+
+
+def load_train_data(model_name, fold, preprocess_x):
+    """
+    Load the out of fold train data from file saved from l1 model prediction
+
+    :param model_name: l1 model name
+    :param fold: fold number NOT used for model training
+    :param preprocess_x: function used to pre-process model input
+
+    :return: X, y, video_ids
+                np.ndarray with pre-processed train data;
+                np.ndarray with labels as one hot encoded array
+                list of video ids of X and y
+    """
+    data_path = config.MODEL_DIR / 'output/prediction_train_frames'
+    raw_cache_fn = f'{data_path}/{model_name}_{fold}_combined.npz'
+    print('loading raw cache', raw_cache_fn, os.path.exists(raw_cache_fn))
+    cached = np.load(raw_cache_fn)
+    X_raw, y, video_ids = cached['X_raw'], cached['y'], cached['video_ids']
+    X = preprocess_x(X_raw)
     return X, y, video_ids
 
 
-def load_test_data(test_path, model_name, fold):
-    X_raw = np.load(f'{test_path}/{model_name}_{fold}_combined.npy')
-    X = preprocess_x(X_raw)
-    return X
-
-
-def load_test_data_from_std_path(model_name, fold):
-    test_path = config.MODEL_DIR / 'output/prediction_test_frames'
-    X_raw = np.load(f'{test_path}/{model_name}_{fold}_combined.npy')
-    print('preprocess', model_name, fold)
-    X = preprocess_x(X_raw)
-    return X
-
-
-def avg_probabilities():
-    ds = pd.read_csv(config.TRAINING_SET_LABELS)
-    data = ds.as_matrix()[:, 1:]
-    return data.mean(axis=0)
-
-
-def try_train_model_xgboost(model_name, fold):
-    with utils.timeit_context('load data'):
-        X, y, video_ids = load_train_data(model_name, fold)
-
-    y_cat = np.argmax(y, axis=1)
-    print(X.shape, y.shape)
-    print(np.unique(y_cat))
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y_cat, test_size=0.25, random_state=42)
-
-    model = XGBClassifier(n_estimators=500, objective='multi:softprob', silent=True)
-    model.fit(X, y_cat, eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
-
-    prediction = model.predict_proba(X_test)
-    if prediction.shape[1] == 23: # insert mission lion col
-        prediction = np.insert(prediction, obj=12, values=0.0, axis=1)
-    print(model.score(X_test, y_test))
-
-    y_test_one_hot = np.eye(24)[y_test]
-    print(y_test.shape, prediction.shape, y_test_one_hot.shape)
-    print(metrics.pri_matrix_loss(y_test_one_hot, prediction))
-    print(metrics.pri_matrix_loss(y_test_one_hot, np.clip(prediction, 0.001, 0.999)))
-    delta = prediction - y_test_one_hot
-    print(np.min(delta), np.max(delta), np.mean(np.abs(delta)), np.sum(np.abs(delta) > 0.5))
-
-    avg_prob = avg_probabilities()
-    avg_pred = np.repeat([avg_prob], y_test_one_hot.shape[0], axis=0)
-    print(metrics.pri_matrix_loss(y_test_one_hot, avg_pred))
-    print(metrics.pri_matrix_loss(y_test_one_hot, avg_pred*0.1 + prediction*0.9))
-
-
-def model_xgboost(model_name, fold):
-    with utils.timeit_context('load data'):
-        X, y, video_ids = load_train_data(model_name, fold)
-
-    y_cat = np.argmax(y, axis=1)
-    print(X.shape, y.shape)
-    print(np.unique(y_cat))
-
-    model = XGBClassifier(n_estimators=400, objective='multi:softprob', learning_rate=0.1, silent=True)
-    model.fit(X, y_cat)
-    pickle.dump(model, open(Path(__file__).parent.parent / f"output/xgb_{model_name}_{fold}_full.pkl", "wb"))
-
-
-def predict_on_test(model_name, fold, use_cache=False):
-    model = pickle.load(open(Path(__file__).parent.parent / f"output/xgb_{model_name}_{fold}_full.pkl", "rb"))
-    print(model)
-    ds = pd.read_csv(config.SUBMISSION_FORMAT)
-    classes = list(ds.columns)[1:]
-    print(classes)
-
-    data_dir = config.MODEL_DIR / f'output/prediction_test_frames'
-    with utils.timeit_context('load data'):
-        cache_fn = config.MODEL_DIR / f'output/prediction_test_frames/{model_name}_{fold}_cache.npy'
-        if use_cache:
-            X = np.load(cache_fn)
-        else:
-            X = load_test_data(data_dir, model_name, fold)
-            np.save(cache_fn, X)
-        print(X.shape)
-    with utils.timeit_context('predict'):
-        prediction = model.predict_proba(X)
-
-    if prediction.shape[1] == 23:
-        prediction = np.insert(prediction, obj=12, values=0.0, axis=1)
-
-    for col, cls in enumerate(classes):
-        ds[cls] = np.clip(prediction[:, col], 0.001, 0.999)
-    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
-    ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_one_model_{model_name}_{fold}.csv', index=False, float_format='%.7f')
-
-
-def train_all_models_xgboost_combined(combined_model_name, models_with_folds):
-    X_all_combined = []
-    y_all_combined = []
-
-    requests = []
-    results = []
-    for model_with_folds in models_with_folds:
-        for model_name, fold in model_with_folds:
-            requests.append((model_name, fold))
-            # results.append(load_one_model(requests[-1]))
-
-    pool = Pool(N_CORES)
-    with utils.timeit_context('load all data'):
-        results = pool.starmap(load_train_data, requests)
-
-    for model_with_folds in models_with_folds:
-        X_combined = []
-        y_combined = []
-        for model_name, fold in model_with_folds:
-            X, y, video_ids = results[requests.index((model_name, fold))]
-            print(model_name, fold, X.shape)
-            X_combined.append(X)
-            y_combined.append(y)
-
-        X_all_combined.append(np.row_stack(X_combined))
-        y_all_combined.append(np.row_stack(y_combined))
-
-    X = np.column_stack(X_all_combined)
-    y = y_all_combined[0]
-
-    print(X.shape, y.shape)
-
-    y_cat = np.argmax(y, axis=1)
-    print(X.shape, y.shape)
-    print(np.unique(y_cat))
-
-    model = XGBClassifier(n_estimators=1600, objective='multi:softprob', learning_rate=0.03, silent=False)
-    with utils.timeit_context('fit 1600 est'):
-        model.fit(X, y_cat)  # , eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
-    pickle.dump(model, open(Path(__file__).parent.parent / f"output/xgb_combined_{combined_model_name}.pkl", "wb"))
-
-
-def load_test_data_one_model(request):
-    data_dir, model_name, fold = request
-    return fold, load_test_data(data_dir, model_name, fold)
-
-
-def predict_on_test_combined(combined_model_name, models_with_folds):
-    ds = pd.read_csv(config.SUBMISSION_FORMAT)
-    classes = list(ds.columns)[1:]
-    folds = [1, 2, 3, 4]
-
-    X_combined = {fold: [] for fold in folds}
-    requests = []
-
-    for model_with_folds in models_with_folds:
-        for data_model_name, data_fold in model_with_folds:
-            data_dir = config.MODEL_DIR / f'output/prediction_test_frames'
-            with utils.timeit_context('load data'):
-                requests.append((data_dir, data_model_name, data_fold))
-    pool = Pool(N_CORES)
-    results = pool.map(load_test_data_one_model, requests)
-    for data_fold, X in results:
-        X_combined[data_fold].append(X)
-    pickle.dump(X_combined, open(Path(Path(__file__).parent.parent, f"output/X_combined_xgb_{combined_model_name}.pkl").resolve(), "wb"))
-
-    to_open = config.MODEL_DIR / f"output/xgb_combined_{combined_model_name}.pkl"
-    model = pickle.load(open(to_open.resolve(), "rb"))
-    print(model)
-
-    predictions = []
-    with utils.timeit_context('predict'):
-        for fold in [1, 2, 3, 4]:
-            X = np.column_stack(X_combined[fold])
-            predictions.append(model.predict_proba(X))
-            print('prediction', predictions[-1].shape)
-            
-    prediction = np.mean(np.array(predictions).astype(np.float64), axis=0)
-    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
-    print('predictions', prediction.shape)
-
-    for clip10 in [5, 4, 3, 2]:
-        clip = 10 ** (-clip10)
-        for col, cls in enumerate(classes):
-            ds[cls] = np.clip(prediction[:, col]*(1-clip*2)+clip, clip, 1.0-clip)
-        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_combined_models_xgboost_{combined_model_name}_clip_{clip10}.csv',
-                  index=False,
-                  float_format='%.8f')
-
-
-def train_model_xgboost_combined_folds(combined_model_name, model_with_folds):
-    X_combined = []
-    y_combined = []
-
-    for model_name, fold in model_with_folds:
-        with utils.timeit_context('load data'):
-            X, y, video_ids = load_train_data(model_name, fold)
-            X_combined.append(X)
-            y_combined.append(y)
-
-    X = np.row_stack(X_combined)
-    y = np.row_stack(y_combined)
-
-    y_cat = np.argmax(y, axis=1)
-    print(X.shape, y.shape)
-    print(np.unique(y_cat))
-
-    model = XGBClassifier(n_estimators=500, objective='multi:softprob', learning_rate=0.1, silent=True)
-    with utils.timeit_context('fit 500 est'):
-        model.fit(X, y_cat)
-    pickle.dump(model, open(Path(__file__).parent.parent / f"output/xgb_combined_folds_{combined_model_name}.pkl", "wb"))
-
-
-def train_combined_folds_models():
-    for models in config.ALL_MODELS:
-        combined_model_name = models[0][0] + '_combined'
-        print('*' * 64)
-        print(combined_model_name)
-        print('*' * 64)
-        train_model_xgboost_combined_folds(combined_model_name, models)
-
-
-def predict_combined_folds_models():
-    ds = pd.read_csv(config.SUBMISSION_FORMAT)
-    classes = list(ds.columns)[1:]
-
-    total_weight = 0.0
-    result = np.zeros((ds.shape[0], NB_CAT))
-
-    pool = Pool(N_CORES)
-
-    for models in config.ALL_MODELS:
-        combined_model_name = models[0][0] + '_combined'
-
-        with utils.timeit_context('load 4 folds data'):
-            X_for_folds = pool.starmap(load_test_data_from_std_path, models)
-
-        model = pickle.load(open(Path(__file__).parent.parent / f"output/xgb_combined_folds_{combined_model_name}.pkl", "rb"))
-
-        for (model_name, fold), X in zip(models, X_for_folds):
-            with utils.timeit_context('predict'):
-                prediction = model.predict_proba(X)
-                weight = config.MODEL_WEIGHTS[model_name]
-                result += prediction*weight
-                total_weight += weight
-
-    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
-    result /= total_weight
-
-    for clip10 in [5, 4, 3, 2]:
-        clip = 10 ** (-clip10)
-        for col, cls in enumerate(classes):
-            ds[cls] = np.clip(result[:, col] * (1 - clip * 2) + clip, clip, 1.0 - clip)
-        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_combined_folds_models_xgboost_clip_{clip10}.csv',
-                  index=False,
-                  float_format='%.8f')
-
-
-def train_all_single_fold_models():
-    for models in config.ALL_MODELS:
-        for model_name, fold in models:
-            weights_fn = config.MODEL_DIR / "output" / f"xgb_{model_name}_{fold}_full.pkl"
-            print(model_name, fold, weights_fn)
-            if weights_fn.exists():
-                print('skip existing file')
-            else:
-                with utils.timeit_context('train'):
-                    model_xgboost(model_name, fold)
-
-
-def predict_all_single_fold_models():
-    ds = pd.read_csv(config.SUBMISSION_FORMAT)
-    classes = list(ds.columns)[1:]
-
-    total_weight = 0.0
-    result = np.zeros((ds.shape[0], NB_CAT))
-
-    requests = []
-    for model_with_folds in config.ALL_MODELS:
-        for model_name, fold in model_with_folds:
-            requests.append((model_name, fold))
-    pool = Pool(N_CORES)
-    with utils.timeit_context('load all data'):
-        results = pool.starmap(load_test_data_from_std_path, requests)
-
-    for models in config.ALL_MODELS:
-        for model_name, fold in models:
-            model = pickle.load(open(Path(__file__).parent.parent / f"output/xgb_{model_name}_{fold}_full.pkl", "rb"))
-            print(model_name, fold, model)
-
-            with utils.timeit_context('load data'):
-                X = results[requests.index((model_name, fold))]
-                print(X.shape)
-
-            with utils.timeit_context('predict'):
-                prediction = model.predict_proba(X)
-                if prediction.shape[1] == 23:
-                    prediction = np.insert(prediction, obj=12, values=0.0, axis=1)
-                weight = config.MODEL_WEIGHTS[model_name]
-                result += prediction * weight
-                total_weight += weight
-
-    os.makedirs(Path(__file__).parent.parent / 'submissions', exist_ok=True)
-    result /= total_weight
-
-    for clip10 in [5, 4, 3, 2]:
-        clip = 10 ** (-clip10)
-        for col, cls in enumerate(classes):
-            ds[cls] = np.clip(result[:, col] * (1 - clip * 2) + clip, clip, 1.0 - clip)
-        ds.to_csv(Path(__file__).parent.parent / f'submissions/submission_single_folds_models_xgboost_clip_{clip10}.csv',
-                  index=False,
-                  float_format='%.8f')
-
-
-def check_corr(sub1, sub2):
-    print(sub1, sub2)
-    s1 = pd.read_csv(Path(__file__).parent.parent / 'submissions/' + sub1)
-    s2 = pd.read_csv(Path(__file__).parent.parent / 'submissions/' + sub2)
-    for col in s1.columns[1:]:
-        print(col, s1[col].corr(s2[col]))
-
-    print('mean ', sub1, sub2, 'sub2-sub1')
-    for col in s1.columns[1:]:
-        print('{:20}  {:.6} {:.6} {:.6}'.format(col, s1[col].mean(), s2[col].mean(), s2[col].mean() - s1[col].mean()))
-
-
-def main():
-    with utils.timeit_context('train xgboost model'):
-        predict_on_test_combined("2k_extra", models_with_folds=config.ALL_MODELS)
-        predict_combined_folds_models()
-        predict_all_single_fold_models()
+class SecondLevelModel:
+    """
+    Base class for the second level model, used to combine multiple individual l1 models predictions
+    from multiple video frames.
+    """
+    def __init__(self, l1_model_names, preprocess_l1_model_output):
+        """
+        :param l1_model_names: list or l1 model names used this model combines results from
+        :param preprocess_l1_model_output: function to pre-process l1 models output
+        """
+        self.l1_model_names = l1_model_names
+        self.preprocess_l1_model_output = preprocess_l1_model_output
+        self.pool = Pool(N_CORES)
+
+    def _predict(self, X):
+        """
+        Internal, to be implemented by model implementation.
+
+        Predict class probabilities
+
+        :param X: Input vector
+        :return: class probabilities as np.ndarray with shape (NB_ITEMS, NB_CLASSES)
+        """
+        raise NotImplemented()
+
+    def _train(self, X, y):
+        """
+        Internal, to be implemented by model
+
+        Train model.
+
+        :param X:
+        :param y: result as labels (not categorical) TODO: switch to categorical to allow multiple classes on one clip
+        :return:
+        """
+        raise NotImplemented()
+
+    def predict(self, l1_model_results):
+        """
+        :param l1_model_results: results of l1 model predictions as a dictionary
+                             { model_name : ndarray(NB_CLIPS, NB_FRAMES, NB_CLASSES) }
+        :return: class probabilities as ndarray with shape (NB_CLIPS, NB_CLASSES)
+        """
+        X_per_model = self.pool.map(self.preprocess_l1_model_output,
+                                    [l1_model_results[model] for model in self.l1_model_names])
+        X = np.column_stack(X_per_model)
+        return self._predict(X)
+
+    def train(self):
+        """
+        Train model using saved L1 model out of fold predictions
+        """
+        X_all_combined = []
+        y_all_combined = []
+
+        # the same format as config.ALL_MODELS_WITH_TRAIN_FOLDS
+        # but only included models from self.l1_model_names in the same order
+        models_with_folds = []
+
+        for model_name in self.l1_model_names:
+            for model_with_folds in config.ALL_MODELS_WITH_TRAIN_FOLDS:
+                if model_with_folds[0][0] == model_name:
+                    models_with_folds.append(model_with_folds)
+
+        requests = []
+        results = []
+        for model_with_folds in models_with_folds:
+            for model_name, fold in model_with_folds:
+                requests.append((model_name, fold, self.preprocess_l1_model_output))
+                # results.append(load_one_model(requests[-1]))
+
+        with utils.timeit_context('load all data'):
+            results = self.pool.starmap(load_train_data, requests)
+
+        for model_with_folds in models_with_folds:
+            X_combined = []
+            y_combined = []
+            for model_name, fold in model_with_folds:
+                X, y, video_ids = results[requests.index((model_name, fold))]
+                print(model_name, fold, X.shape)
+                X_combined.append(X)
+                y_combined.append(y)
+
+            X_all_combined.append(np.row_stack(X_combined))
+            y_all_combined.append(np.row_stack(y_combined))
+
+        X = np.column_stack(X_all_combined)
+        y = y_all_combined[0]
+
+        print(X.shape, y.shape)
+
+        y_cat = np.argmax(y, axis=1)
+        print(X.shape, y.shape)
+        print(np.unique(y_cat))
+
+        self._train(X, y_cat)
+
+
+class SecondLevelModelXGBoost(SecondLevelModel):
+    """
+        XGBoost based L2 model implementation
+    """
+    def __init__(self, combined_model_name, l1_model_names):
+        super().__init__(l1_model_names, preprocess_l1_model_output=preprocess_x_histogram)
+        self.combined_model_name = combined_model_name
+        self.model = None
+        self.model_fn = config.MODEL_DIR / f"output/xgb_combined_{self.combined_model_name}.pkl"
+
+    def _predict(self, X):
+        if self.model is None:
+            self.model = pickle.load(open(self.model_fn.resolve(), "rb"))
+        return self.model.predict_proba(X)
+
+    def _train(self, X, y):
+        self.model = XGBClassifier(n_estimators=1600, objective='multi:softprob', learning_rate=0.03, silent=False)
+        with utils.timeit_context('fit 1600 est'):
+            self.model.fit(X, y)  # , eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
+        pickle.dump(self.model, open(self.model_fn.resolve(), "wb"))
+
+
+class SecondLevelModelLGBM(SecondLevelModel):
+    """
+        LightGBM based L2 model implementation
+    """
+    def __init__(self, combined_model_name, l1_model_names):
+        super().__init__(l1_model_names, preprocess_l1_model_output=preprocess_x_histogram)
+        self.combined_model_name = combined_model_name
+        self.model = None
+        self.model_fn = config.MODEL_DIR / f"output/lgb_combined_{self.combined_model_name}.pkl"
+
+    def _predict(self, X):
+        if self.model is None:
+            self.model = pickle.load(open(self.model_fn.resolve(), "rb"))
+        return self.model.predict(X)
+
+    def _train(self, X, y):
+        param = {'num_leaves': 50,
+                 'objective': 'multiclass',
+                 'max_depth': 5,
+                 'learning_rate': .05,
+                 'max_bin': 300,
+                 'num_class': NB_CAT,
+                 'metric': ['multi_logloss']}
+        self.model = lgb.train(param, lgb.Dataset(X, label=y), num_boost_round=260)
+        pickle.dump(self.model, open(self.model_fn.resolve(), "wb"))
+
+
+class SecondLevelModelMLP(SecondLevelModel):
+    """
+        Keras neural network based L2 model implementation
+    """
+    def __init__(self, combined_model_name, l1_model_names):
+        super().__init__(l1_model_names, preprocess_l1_model_output=preprocess_x_sorted_bins)
+        self.combined_model_name = combined_model_name
+        self.model = None
+        self.weights_fn = config.MODEL_DIR / f"output/nn_{self.combined_model_name}_full.pkl"
+
+    def _build_model(self, input_size):
+        input_data = Input(shape=(input_size,))
+        x = input_data
+        x = Dense(2048, activation='relu')(x)
+        x = Dropout(0.75)(x)
+        x = Dense(128, activation='relu')(x)
+        x = Dense(NB_CAT, activation='sigmoid', kernel_regularizer=l1(1e-5))(x)
+        model = Model(inputs=input_data, outputs=x)
+        return model
+
+    def _predict(self, X):
+        if self.model is None:
+            self.model = self._build_model(input_size=X.shape[1])
+            self.model.load_weights(self.weights_fn.resolve())
+            self.model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
+        return self.model.predict(X)
+
+    def _train(self, X, y):
+        self.model = self._build_model(input_size=X.shape[1])
+        self.model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
+        self.model.summary()
+
+        batch_size = 64
+
+        def cheduler(epoch):
+            if epoch < 32:
+                return 1e-3
+            if epoch < 48:
+                return 4e-4
+            if epoch < 80:
+                return 1e-4
+            return 1e-5
+
+        self.model.fit(X, y,
+                       batch_size=batch_size,
+                       epochs=80,
+                       verbose=1,
+                       callbacks=[LearningRateScheduler(schedule=cheduler)])
+
+        self.model.save_weights(self.weights_fn.resolve())
+
+
+def predict(l1_model_results):
+    """
+    :param l1_model_results: results of l1 model predictions as a dictionary
+                             { model_name : ndarray(NB_CLIPS, NB_FRAMES, NB_CLASSES) }
+    :return: class probabilities as ndarray with shape (NB_CLIPS, NB_CLASSES)
+    """
+    l1_model_names = [model[0][0] for model in config.ALL_MODELS]
+    xgboost_model = SecondLevelModelXGBoost(l1_model_names=l1_model_names, combined_model_name='2k_extra')
+    mlp_model = SecondLevelModelMLP(l1_model_names=l1_model_names, combined_model_name='combined_extra_dr075')
+
+    xgboost_predictions = xgboost_model.predict(l1_model_results)
+    mlp_predictions = mlp_model.predict(l1_model_results)
+
+    return xgboost_predictions*0.5 + mlp_predictions*0.5
