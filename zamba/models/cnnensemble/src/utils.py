@@ -5,22 +5,7 @@ import random
 from contextlib import contextmanager
 import concurrent.futures
 from queue import Queue
-
-import skimage.io
-import skimage.transform
-from skimage.transform import SimilarityTransform
 import numpy as np
-
-
-def crop_edge(img, x, y, w, h, mode='edge'):
-    img_w = img.shape[1]
-    img_h = img.shape[0]
-
-    if x >= 0 and y >= 0 and x + w <= img_w and y + h < img_h:
-        return img[int(y):int(y + h), int(x):int(x + w)].astype('float32') / 255.0
-
-    tform = SimilarityTransform(translation=(x, y))
-    return skimage.transform.warp(img, tform, mode=mode, output_shape=(h, w))
 
 
 def preprocessed_input_to_img_resnet(x):
