@@ -54,7 +54,6 @@ class CnnEnsemble(Model):
         l1_results = {}
 
         for l1_model, weights_path in l1_models:
-            print(l1_model)
             l1_results[l1_model] = generate_prediction_test(model_name=l1_model,
                                                             weights=(Path(__file__).parent / 'cnnensemble' / 'output' /
                                                                      'checkpoints' / weights_path),
