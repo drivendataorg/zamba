@@ -643,7 +643,7 @@ def generate_prediction(model_name, weights, fold):
             processed_files += 1
             res_fn = output_dir.resolve() / f"{video_id}.csv"
             have_data_time = time.time()
-            prediction = model.predict(X, batch_size=4)
+            prediction = model.predict(X, batch_size=1)
 
             ds = pd.DataFrame(index=[-1] + PREDICT_FRAMES,
                               data=np.row_stack([y, prediction]),
