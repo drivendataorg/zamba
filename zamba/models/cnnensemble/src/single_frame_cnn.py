@@ -13,7 +13,7 @@ import pandas as pd
 import pims
 import scipy.misc
 import tensorflow as tf
-from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception
+from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception, InceptionResNetV2
 from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_resnet50
 from tensorflow.python.keras.applications.xception import preprocess_input as preprocess_input_xception
 from tensorflow.python.keras.applications.inception_v3 import preprocess_input as preprocess_input_inception_v3
@@ -27,8 +27,10 @@ from tensorflow.python.keras.regularizers import l1
 from tensorflow.python.keras import backend as K
 from tqdm import tqdm
 
-from .inception_resnet_v2 import InceptionResNetV2
-from .inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
+# The original InceptionResNetV2 has been trained by mistake with preprocess_input using caffe scale similar to resnet50
+# TODO: it's worth to switch back to the correct preprocess_input when InceptionResNetV2 model is re-trained
+from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_inception_resnet_v2
+
 from .cnn_finetune import resnet_152
 from .metrics import pri_matrix_loss
 from zamba.models.cnnensemble.src import config
