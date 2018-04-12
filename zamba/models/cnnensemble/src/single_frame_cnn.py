@@ -42,7 +42,8 @@ K.set_session(tf.Session(config=tf_config))
 
 INPUT_ROWS = 404
 INPUT_COLS = 720
-INPUT_SHAPE = (INPUT_ROWS, INPUT_COLS, 3)
+INPUT_CHANNELS = 3
+INPUT_SHAPE = (INPUT_ROWS, INPUT_COLS, INPUT_CHANNELS)
 VIDEO_FPS = 24
 PREDICT_FRAMES = [2, 8, 12, 18] + [i * VIDEO_FPS // 2 + 24 for i in range(14 * 2)]
 
@@ -91,19 +92,6 @@ def build_model_resnet152(lock_base_model: bool):
     return model
 
 
-def build_model_xception(lock_base_model: bool):
-    base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None, weights=None)
-    if lock_base_model:
-        for layer in base_model.layers:
-            layer.trainable = False
-    x = AveragePooling2D((5, 5), name='avg_pool5', strides=1)(base_model.layers[-2].output)
-    x = GlobalMaxPooling2D()(x)
-    res = Dense(NB_CLASSES, activation='sigmoid', name='classes', kernel_initializer='zero',
-                kernel_regularizer=l1(1e-5))(x)
-    model = Model(inputs=base_model.inputs, outputs=res)
-    return model
-
-
 def build_model_xception_avg(lock_base_model: bool):
     base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None, weights=None)
     if lock_base_model:
@@ -140,21 +128,6 @@ def build_model_inception_v2_resnet(lock_base_model: True):
     res = Dense(NB_CLASSES, activation='sigmoid', name='classes', kernel_initializer='zero',
                 kernel_regularizer=l1(1e-5))(base_model.layers[-1].output)
     model = Model(inputs=img_input, outputs=res)
-    # model.summary()
-    return model
-
-
-def build_model_inception_v3_dropout(lock_base_model: True):
-    base_model = InceptionV3(input_shape=INPUT_SHAPE, include_top=False, pooling=None)
-    if lock_base_model:
-        for layer in base_model.layers:
-            layer.trainable = False
-    # base_model.summary()
-    x = GlobalAveragePooling2D(name='avg_pool_final')(base_model.layers[-1].output)
-    x = Dropout(0.25)(x)
-    res = Dense(NB_CLASSES, activation='sigmoid', name='classes', kernel_initializer='zero',
-                kernel_regularizer=l1(1e-5))(x)
-    model = Model(inputs=base_model.inputs, outputs=res)
     # model.summary()
     return model
 
@@ -418,24 +391,7 @@ class SingleFrameCNNDataset:
                         yield X, y
 
     def frames_from_video_clip(self, video_fn):
-        X = np.zeros(shape=(len(PREDICT_FRAMES),) + INPUT_SHAPE, dtype=np.float32)
-        v = pims.Video(video_fn)
-        for i, frame_num in enumerate(PREDICT_FRAMES):
-            try:
-                frame = v[frame_num]
-                if frame.shape != INPUT_SHAPE:
-                    frame = scipy.misc.imresize(frame, size=(INPUT_ROWS, INPUT_COLS), interp='bilinear').astype(
-                        np.float32)
-                else:
-                    frame = frame.astype(np.float32)
-                X[i] = frame
-            except IndexError:
-                if i > 0:
-                    X[i] = X[i - 1]
-                else:
-                    X[i] = 0.0
-        del v
-        return self.preprocess_input_func(X)
+        return self.preprocess_input_func(load_video_clip_frames(video_fn))
 
     def generate_frames_for_prediction(self):
         for video_id in sorted(self.test_clips):
@@ -450,6 +406,33 @@ class SingleFrameCNNDataset:
         for video_id in test_ds.filename:
             X = self.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
             yield video_id, X
+
+def load_video_clip_frames(video_fn):
+    """
+    Load video clip frames used for the second stage training and prediction.
+
+    Returned frames matches PREDICT_FRAMES and resized if necessary to (INPUT_ROWS, INPUT_COLS)
+
+    :param video_fn: path to video clip
+    :return: ndarray of shape (PREDICT_FRAMES, INPUT_ROWS, INPUT_COLS, INPUT_CHANNELS)
+    """
+    X = np.zeros(shape=(len(PREDICT_FRAMES),) + INPUT_SHAPE, dtype=np.float32)
+    with pims.Video(video_fn) as v:
+        for i, frame_num in enumerate(PREDICT_FRAMES):
+            try:
+                frame = v[frame_num]
+                if frame.shape != INPUT_SHAPE:
+                    frame = scipy.misc.imresize(frame, size=(INPUT_ROWS, INPUT_COLS), interp='bilinear').astype(
+                        np.float32)
+                else:
+                    frame = frame.astype(np.float32)
+                X[i] = frame
+            except IndexError:
+                if i > 0:
+                    X[i] = X[i - 1]
+                else:
+                    X[i] = 0.0
+    return X
 
 
 def check_generator(use_test):
@@ -657,7 +640,7 @@ def generate_prediction(model_name, weights, fold):
             print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
 
-def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=True):
+def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=False, save_results=False):
     """
     Predict classes probabilities for a number of frames of each test clip
 
@@ -666,8 +649,9 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
     :param fold: TODO: remove it
     :param data_path: directory video clips are stored, defaults to config.TEST_VIDEO_DIR
     :param verbose: print status messaged if true
+    :param save_results: if set, prediction results are saved to
+               output/prediction_test_frames/{model_name}_{fold}/{video_id}.csv
 
-    TODO:
     :return: predictions as array with shape (nb_clips, nb_frames, nb_classes)
     """
 
@@ -675,17 +659,14 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
     if data_path is None:
         data_path = config.TEST_VIDEO_DIR
 
+    if verbose:
+        print(model_name)
+
     model = MODELS[model_name].factory(lock_base_model=True)
     model.load_weights(weights, by_name=False)
 
     output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}_{fold}"
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    # TODO: don't create dataset instance, better to move out and rename frames_from_video_clip method
-    dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
-                                    batch_size=1,
-                                    validation_batch_size=1,
-                                    fold=fold)
 
     # skip processed files
     # TODO: better to pass list of files as paramater
@@ -700,14 +681,18 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
             converted_files.add(video_id)
 
     test_clips = sorted(list(set(test_clips) - converted_files))
+    preprocess_input = MODELS[model_name].preprocess_input
 
     def load_file(video_id, data_path=None):
         if data_path is None:
             data_path = config.TEST_VIDEO_DIR
-        X = dataset.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
+        video_fn = os.path.join(data_path, video_id)
+        X = preprocess_input(load_video_clip_frames(video_fn))
         return video_id, X
 
     start_time = time.time()
+
+    all_predictions = []
 
     pool = ThreadPool(8)
     prev_res = None
@@ -719,20 +704,25 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
         prev_res = pool.map_async(load_file, batch)
         for video_id, X in results:
             processed_files += 1
-            res_fn = output_dir.resolve() / f"{video_id}.csv"
             have_data_time = time.time()
-            prediction = model.predict(X, batch_size=4)
+            prediction = model.predict(X, batch_size=1)
+            all_predictions.append(prediction)
 
-            ds = pd.DataFrame(index=PREDICT_FRAMES,
-                              data=prediction,
-                              columns=CLASSES)
-            ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
+            if save_results:
+                res_fn = output_dir.resolve() / f"{video_id}.csv"
+                ds = pd.DataFrame(index=PREDICT_FRAMES,
+                                  data=prediction,
+                                  columns=CLASSES)
+                ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
+
             have_prediction_time = time.time()
             prepare_ms = int((have_data_time - start_time) * 1000)
             predict_ms = int((have_prediction_time - have_data_time) * 1000)
             start_time = time.time()
             if verbose:
                 print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
+
+    return np.array(all_predictions)
 
 
 def find_non_blank_frames(model_name, fold):
