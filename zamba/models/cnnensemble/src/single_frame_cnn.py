@@ -667,22 +667,13 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
     model = MODELS[model_name].factory(lock_base_model=True)
     model.load_weights(weights, by_name=False)
 
-    output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}_{fold}"
-    output_dir.mkdir(parents=True, exist_ok=True)
+    if save_results:
+        output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}_{fold}"
+        output_dir.mkdir(parents=True, exist_ok=True)
 
     # skip processed files
     # TODO: better to pass list of files as paramater
     test_clips = list(pd.read_csv(config.SUBMISSION_FORMAT).filename)
-
-    converted_files = set()
-    processed_files = 0
-    for video_id in test_clips:
-        res_fn = output_dir.resolve() / f"{video_id}.csv"
-        if res_fn.exists():
-            processed_files += 1
-            converted_files.add(video_id)
-
-    test_clips = sorted(list(set(test_clips) - converted_files))
     preprocess_input = MODELS[model_name].preprocess_input
 
     def load_file(video_id, data_path=None):
@@ -695,6 +686,7 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
     start_time = time.time()
 
     all_predictions = []
+    processed_files = 0
 
     pool = ThreadPool(8)
     prev_res = None
