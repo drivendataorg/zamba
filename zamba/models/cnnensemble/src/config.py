@@ -41,15 +41,3 @@ ALL_MODELS = [
     [('resnet152', 1)],
     [('inception_v2_resnet_extra', 1)],
 ]
-
-MODEL_WEIGHTS = {
-    'resnet50_avg': 4,
-    'resnet50': 4,
-    'xception_avg': 6,
-    'xception_avg_ch10': 8,
-    'inception_v3': 8,
-    'inception_v2_resnet': 6,
-    'inception_v2_resnet_ch10': 10,
-    'resnet152': 4,
-    'inception_v2_resnet_extra': 20
-}
