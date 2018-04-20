@@ -39,7 +39,6 @@ class CnnEnsemble(Model):
 
         """
 
-        # TODO: for all models types, train a single model on the whole dataset
         l1_models = [
             ('resnet50_avg', 'resnet50_avg_fold_1/checkpoint-007-0.0480.hdf5'),
             ('xception_avg', 'xception_avg_fold_1/checkpoint-004-0.1295.hdf5'),
@@ -57,11 +56,10 @@ class CnnEnsemble(Model):
             l1_results[l1_model] = generate_prediction_test(model_name=l1_model,
                                                             weights=(Path(__file__).parent / 'cnnensemble' / 'output' /
                                                                      'checkpoints' / weights_path),
-                                                            fold=1,  # TODO: retrain for -1 fold
-                                                            data_path=data_path)
-
-        # pickle.dump(l1_results, open('l1_results.pkl', 'wb'))
-        # l1_results = pickle.load(open('l1_results.pkl', 'rb'))
+                                                            fold=1,
+                                                            data_path=data_path,
+                                                            verbose=True,
+                                                            save_results=False)
 
         l2_results = second_stage.predict(l1_results)
         return l2_results
