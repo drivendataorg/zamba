@@ -14,6 +14,12 @@ CLASSES = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo'
            'hyena', 'large ungulate', 'leopard', 'lion', 'other (non-primate)', 'other (primate)', 'pangolin',
            'porcupine', 'reptile', 'rodent', 'small antelope', 'small cat', 'wild dog', 'duiker', 'hog']
 
+# number of cores used for multiprocessing pools, jobs etc
+N_CORES = 8
+
+# downsample bins of sorted predictions per class for frames for the second level model input
+L2_SORTED_BINS_DOWNSAMPLE = 4
+
 ALL_MODELS_WITH_TRAIN_FOLDS = [
     [('resnet50_avg', 1), ('resnet50', 2), ('resnet50_avg', 3), ('resnet50_avg', 4)],
     [('xception_avg', fold) for fold in [1, 2, 3, 4]],

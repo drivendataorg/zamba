@@ -18,9 +18,7 @@ from tensorflow.python.keras.regularizers import l1
 
 from zamba.models.cnnensemble.src import config, metrics, utils
 
-NB_CAT = 24
-N_CORES = 8
-SORTED_BINS_DOWNSAMPLE = 4
+NB_CAT = len(config.CLASSES)
 
 
 def preprocess_x_histogram(data: np.ndarray):
@@ -66,7 +64,7 @@ def preprocess_x_sorted_bins(data: np.ndarray):
         items = []
         for col in range(row.shape[1]):
             sorted = np.sort(row[:, col])
-            items.append(sorted.reshape(-1, SORTED_BINS_DOWNSAMPLE).mean(axis=1))
+            items.append(sorted.reshape(-1, config.L2_SORTED_BINS_DOWNSAMPLE).mean(axis=1))
         rows.append(np.hstack(items))
     return np.array(rows)
 
@@ -105,7 +103,7 @@ class SecondLevelModel:
         """
         self.l1_model_names = l1_model_names
         self.preprocess_l1_model_output = preprocess_l1_model_output
-        self.pool = Pool(N_CORES)
+        self.pool = Pool(config.N_CORES)
 
     def _predict(self, X):
         """
@@ -207,7 +205,8 @@ class SecondLevelModelXGBoost(SecondLevelModel):
         return self.model.predict_proba(X)
 
     def _train(self, X, y):
-        self.model = XGBClassifier(n_estimators=1600, objective='multi:softprob', learning_rate=0.03, silent=False)
+        self.model = XGBClassifier(n_estimators=1600, objective='multi:softprob',
+                                   learning_rate=0.03, silent=False, n_jobs=config.N_CORES)
         with utils.timeit_context('fit 1600 est'):
             self.model.fit(X, y)  # , eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
         pickle.dump(self.model, open(self.model_fn.resolve(), "wb"))
