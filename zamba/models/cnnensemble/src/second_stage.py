@@ -273,7 +273,7 @@ class SecondLevelModelMLP(SecondLevelModel):
 
         batch_size = 64
 
-        def cheduler(epoch):
+        def scheduler(epoch):
             if epoch < 32:
                 return 1e-3
             if epoch < 48:
@@ -286,7 +286,7 @@ class SecondLevelModelMLP(SecondLevelModel):
                        batch_size=batch_size,
                        epochs=80,
                        verbose=1,
-                       callbacks=[LearningRateScheduler(schedule=cheduler)])
+                       callbacks=[LearningRateScheduler(schedule=scheduler)])
 
         self.model.save_weights(self.weights_fn.resolve())
 
