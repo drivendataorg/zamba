@@ -18,6 +18,9 @@ from tensorflow.python.keras.regularizers import l1
 
 from zamba.models.cnnensemble.src import config, metrics, utils
 
+import logging
+logger = logging.getLogger(__file__)
+
 NB_CAT = len(config.CLASSES)
 
 
@@ -84,7 +87,6 @@ def load_train_data(model_name, fold, preprocess_x):
     """
     data_path = config.MODEL_DIR / 'output/prediction_train_frames'
     raw_cache_fn = f'{data_path}/{model_name}_{fold}_combined.npz'
-    print('loading raw cache', raw_cache_fn, os.path.exists(raw_cache_fn))
     cached = np.load(raw_cache_fn)
     X_raw, y, video_ids = cached['X_raw'], cached['y'], cached['video_ids']
     X = preprocess_x(X_raw)
@@ -156,11 +158,9 @@ class SecondLevelModel:
                     models_with_folds.append(model_with_folds)
 
         requests = []
-        results = []
         for model_with_folds in models_with_folds:
             for model_name, fold in model_with_folds:
                 requests.append((model_name, fold, self.preprocess_l1_model_output))
-                # results.append(load_one_model(requests[-1]))
 
         with utils.timeit_context('load all data'):
             results = self.pool.starmap(load_train_data, requests)
@@ -170,7 +170,7 @@ class SecondLevelModel:
             y_combined = []
             for model_name, fold in model_with_folds:
                 X, y, video_ids = results[requests.index((model_name, fold))]
-                print(model_name, fold, X.shape)
+                logger.debug("Load", model_name, fold, X.shape, y.shape)
                 X_combined.append(X)
                 y_combined.append(y)
 
@@ -180,12 +180,9 @@ class SecondLevelModel:
         X = np.column_stack(X_all_combined)
         y = y_all_combined[0]
 
-        print(X.shape, y.shape)
+        logger.debug("Training model", X.shape, y.shape)
 
         y_cat = np.argmax(y, axis=1)
-        print(X.shape, y.shape)
-        print(np.unique(y_cat))
-
         self._train(X, y_cat)
 
 
