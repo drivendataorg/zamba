@@ -20,24 +20,19 @@ N_CORES = 8
 # downsample bins of sorted predictions per class for frames for the second level model input
 L2_SORTED_BINS_DOWNSAMPLE = 4
 
-ALL_MODELS_WITH_TRAIN_FOLDS = [
-    [('resnet50_avg', 1), ('resnet50', 2), ('resnet50_avg', 3), ('resnet50_avg', 4)],
-    [('xception_avg', fold) for fold in [1, 2, 3, 4]],
-    [('xception_avg_ch10', fold) for fold in [1, 2, 3, 4]],
-    [('inception_v3', fold) for fold in [1, 2, 3, 4]],
-    [('inception_v2_resnet', fold) for fold in [1, 2, 3, 4]],
-    [('inception_v2_resnet_ch10', fold) for fold in [1, 2, 3, 4]],
-    [('resnet152', fold) for fold in [1, 2, 3, 4]],
-    [('inception_v2_resnet_extra', fold) for fold in [1, 2, 3, 4]],
-]
+# L2 models are trained on OOF L1 model predictions, folds are listed here
+TRAIN_FOLDS = [1, 2, 3, 4]
 
-ALL_MODELS = [
-    [('resnet50_avg', 1)],
-    [('xception_avg', 1)],
-    [('xception_avg_ch10', 1)],
-    [('inception_v3', 1)],
-    [('inception_v2_resnet', 1)],
-    [('inception_v2_resnet_ch10', 1)],
-    [('resnet152', 1)],
-    [('inception_v2_resnet_extra', 1)],
-]
+MODEL_WEIGHTS = {
+    'inception_v2_resnet': 'inception_v2_resnet_ch10_fold_0/checkpoint-010-0.0324-0.0300.hdf5',
+    'inception_v3': 'inception_v3_fold_0/checkpoint-009-0.0345-0.0331.hdf5',
+    'nasnet_mobile': 'nasnet_mobile_fold_0/checkpoint-012-0.0329-0.0315.hdf5',
+    'xception_avg': 'xception_avg_ch10_fold_0/checkpoint-009-0.0318-0.0399.hdf5'
+}
+
+PROFILES = {
+    'fast': ['nasnet_mobile'],
+    'full': ['nasnet_mobile', 'inception_v3', 'xception_avg', 'inception_v2_resnet']
+}
+
+DEFAULT_PROFILE = 'full'
