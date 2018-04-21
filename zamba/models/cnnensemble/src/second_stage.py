@@ -148,14 +148,14 @@ class SecondLevelModel:
         X_all_combined = []
         y_all_combined = []
 
-        # the same format as config.ALL_MODELS_WITH_TRAIN_FOLDS
-        # but only included models from self.l1_model_names in the same order
+        # list of (model_name, fold) tuples
         models_with_folds = []
 
         for model_name in self.l1_model_names:
-            for model_with_folds in config.ALL_MODELS_WITH_TRAIN_FOLDS:
-                if model_with_folds[0][0] == model_name:
-                    models_with_folds.append(model_with_folds)
+            model_with_folds = []
+            for fold in config.TRAIN_FOLDS:
+                model_with_folds.append((model_name, fold))
+            models_with_folds.append(model_with_folds)
 
         requests = []
         for model_with_folds in models_with_folds:
@@ -288,15 +288,15 @@ class SecondLevelModelMLP(SecondLevelModel):
         self.model.save_weights(self.weights_fn.resolve())
 
 
-def predict(l1_model_results):
+def predict(l1_model_results, profile):
     """
     :param l1_model_results: results of l1 model predictions as a dictionary
                              { model_name : ndarray(NB_CLIPS, NB_FRAMES, NB_CLASSES) }
     :return: class probabilities as ndarray with shape (NB_CLIPS, NB_CLASSES)
     """
-    l1_model_names = [model[0][0] for model in config.ALL_MODELS]
-    xgboost_model = SecondLevelModelXGBoost(l1_model_names=l1_model_names, combined_model_name='2k_extra')
-    mlp_model = SecondLevelModelMLP(l1_model_names=l1_model_names, combined_model_name='combined_extra_dr075')
+    l1_model_names = config.PROFILES[profile]
+    xgboost_model = SecondLevelModelXGBoost(l1_model_names=l1_model_names, combined_model_name='preset_'+profile)
+    mlp_model = SecondLevelModelMLP(l1_model_names=l1_model_names, combined_model_name='preset_'+profile)
 
     xgboost_predictions = xgboost_model.predict(l1_model_results)
     mlp_predictions = mlp_model.predict(l1_model_results)

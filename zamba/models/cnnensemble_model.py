@@ -7,13 +7,16 @@ import pickle
 from tensorflow.python.keras.utils import get_file
 
 from .model import Model
-from .cnnensemble.src.single_frame_cnn import generate_prediction_test, save_all_combined_test_results
+from .cnnensemble.src.single_frame_cnn import generate_prediction_test
 from .cnnensemble.src import second_stage
+from .cnnensemble.src import config
+
 
 class CnnEnsemble(Model):
-    def __init__(self, model_path, tempdir=None, download_region='us'):
+    def __init__(self, model_path, profile=config.DEFAULT_PROFILE, tempdir=None, download_region='us'):
         # use the model object's defaults
         super().__init__(model_path, tempdir=tempdir)
+        self.profile = profile
 
         self._download_weights_if_needed(download_region)
 
@@ -27,41 +30,30 @@ class CnnEnsemble(Model):
         Returns:
             The data.
         """
-        return Path('.')
+        p = Path(data_path)
+        file_names = [x for x in p.iterdir() if x.is_file()]
+        return file_names
 
-    def predict(self, data_path):
+    def predict(self, file_names):
         """Predict class probabilities for each input, X
 
         Args:
-            data_path: input data, or data path
+            file_names: input data, list of video clip paths
 
         Returns:
 
         """
 
-        l1_models = [
-            ('resnet50_avg', 'resnet50_avg_fold_1/checkpoint-007-0.0480.hdf5'),
-            ('xception_avg', 'xception_avg_fold_1/checkpoint-004-0.1295.hdf5'),
-            ('xception_avg_ch10', 'xception_avg_fold_1/checkpoint-009-0.1741.hdf5'),
-            ('inception_v3', 'inception_v3_fold_1/checkpoint-009-0.0499-0.1092.hdf5'),
-            ('inception_v2_resnet', 'inception_v2_resnet_fold_1/checkpoint-005-0.0347.hdf5'),
-            ('inception_v2_resnet_ch10', 'inception_v2_resnet_fold_1/checkpoint-011-0.0380-0.0313.hdf5'),
-            ('resnet152', 'resnet152_fold_1/checkpoint-010-0.0453-0.0715.hdf5'),
-            ('inception_v2_resnet_extra', 'inception_v2_resnet_fold_1_extra/checkpoint-014-0.0313-0.1366.hdf5'),
-        ]
-
         l1_results = {}
-
-        for l1_model, weights_path in l1_models:
+        for l1_model in config.PROFILES[self.profile]:
             l1_results[l1_model] = generate_prediction_test(model_name=l1_model,
                                                             weights=(Path(__file__).parent / 'cnnensemble' / 'output' /
-                                                                     'checkpoints' / weights_path),
-                                                            fold=1,
-                                                            data_path=data_path,
+                                                                     'checkpoints' / config.MODEL_WEIGHTS[l1_model]),
+                                                            file_names=file_names,
                                                             verbose=True,
                                                             save_results=False)
 
-        l2_results = second_stage.predict(l1_results)
+        l2_results = second_stage.predict(l1_results, profile=self.profile)
         return l2_results
 
     def fit(self, X, y):

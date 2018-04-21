@@ -13,10 +13,12 @@ import pandas as pd
 import pims
 import scipy.misc
 import tensorflow as tf
-from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception, InceptionResNetV2
+from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception, NASNetMobile, InceptionResNetV2
 from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_resnet50
 from tensorflow.python.keras.applications.xception import preprocess_input as preprocess_input_xception
 from tensorflow.python.keras.applications.inception_v3 import preprocess_input as preprocess_input_inception_v3
+from tensorflow.python.keras.applications.nasnet import preprocess_input as preprocess_input_nasnet
+from tensorflow.python.keras.applications.inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
 from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
 from tensorflow.python.keras.layers import Dense, Dropout
 from tensorflow.python.keras.layers import GlobalMaxPooling2D, GlobalAveragePooling2D, AveragePooling2D
@@ -27,11 +29,6 @@ from tensorflow.python.keras.regularizers import l1
 from tensorflow.python.keras import backend as K
 from tqdm import tqdm
 
-# The original InceptionResNetV2 has been trained by mistake with preprocess_input using caffe scale similar to resnet50
-# TODO: it's worth to switch back to the correct preprocess_input when InceptionResNetV2 model is re-trained
-from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_inception_resnet_v2
-
-from .cnn_finetune import resnet_152
 from .metrics import pri_matrix_loss
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import utils
@@ -85,15 +82,6 @@ def build_model_resnet50_avg(lock_base_model: bool):
     return model
 
 
-def build_model_resnet152(lock_base_model: bool):
-    model = resnet_152.resnet152_model(img_shape=INPUT_SHAPE, num_classes=NB_CLASSES)
-    if lock_base_model:
-        for layer in model.layers[:-1]:
-            layer.trainable = False
-    # model.summary()
-    return model
-
-
 def build_model_xception_avg(lock_base_model: bool):
     base_model = Xception(input_shape=INPUT_SHAPE, include_top=False, pooling=None, weights=None)
     if lock_base_model:
@@ -131,6 +119,18 @@ def build_model_inception_v2_resnet(lock_base_model: True):
                 kernel_regularizer=l1(1e-5))(base_model.layers[-1].output)
     model = Model(inputs=img_input, outputs=res)
     # model.summary()
+    return model
+
+
+def build_model_nasnet_mobile(lock_base_model: True):
+    img_input = Input(shape=INPUT_SHAPE)
+    base_model = NASNetMobile(input_tensor=img_input, include_top=False, pooling='avg')
+    if lock_base_model:
+        for layer in base_model.layers:
+            layer.trainable = False
+    res = Dense(NB_CLASSES, activation='sigmoid', name='classes', kernel_initializer='zero',
+                kernel_regularizer=l1(1e-5))(base_model.layers[-1].output)
+    model = Model(inputs=img_input, outputs=res)
     return model
 
 
@@ -173,11 +173,11 @@ MODELS = {
         unlock_layer_name='block4_pool',
         batch_size=16
     ),
-    'resnet152': ModelInfo(
-        factory=build_model_resnet152,
-        preprocess_input=preprocess_input_resnet50,
-        unlock_layer_name='res3b7_relu',
-        batch_size=8
+    'nasnet_mobile': ModelInfo(
+        factory=build_model_nasnet_mobile,
+        preprocess_input=preprocess_input_nasnet,
+        unlock_layer_name='activation_15',
+        batch_size=16
     ),
 }
 
@@ -642,14 +642,12 @@ def generate_prediction(model_name, weights, fold):
             print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
 
-def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=False, save_results=False):
+def generate_prediction_test(model_name, weights, file_names, verbose=False, save_results=False):
     """
     Predict classes probabilities for a number of frames of each test clip
 
     :param model_name: name of the model
     :param weights: path to model weights
-    :param fold: TODO: remove it
-    :param data_path: directory video clips are stored, defaults to config.TEST_VIDEO_DIR
     :param verbose: print status messaged if true
     :param save_results: if set, prediction results are saved to
                output/prediction_test_frames/{model_name}_{fold}/{video_id}.csv
@@ -657,30 +655,22 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
     :return: predictions as array with shape (nb_clips, nb_frames, nb_classes)
     """
 
-    # TODO: data_path is ignored right now, to be fixed
-    if data_path is None:
-        data_path = config.TEST_VIDEO_DIR
-
     if verbose:
         print(model_name)
+
+    K.clear_session()
 
     model = MODELS[model_name].factory(lock_base_model=True)
     model.load_weights(weights, by_name=False)
 
+    output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}"
     if save_results:
-        output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}_{fold}"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-    # skip processed files
-    # TODO: better to pass list of files as paramater
-    test_clips = list(pd.read_csv(config.SUBMISSION_FORMAT).filename)
     preprocess_input = MODELS[model_name].preprocess_input
 
-    def load_file(video_id, data_path=None):
-        if data_path is None:
-            data_path = config.TEST_VIDEO_DIR
-        video_fn = os.path.join(data_path, video_id)
-        X = preprocess_input(load_video_clip_frames(video_fn))
+    def load_file(video_id):
+        X = preprocess_input(load_video_clip_frames(video_id))
         return video_id, X
 
     start_time = time.time()
@@ -690,13 +680,14 @@ def generate_prediction_test(model_name, weights, fold, data_path=None, verbose=
 
     pool = ThreadPool(8)
     prev_res = None
-    for batch in utils.chunks(test_clips, 8, add_empty=True):
+    for batch in utils.chunks(file_names, 8, add_empty=True):
         if prev_res is not None:
             results = prev_res.get()
         else:
             results = []
         prev_res = pool.map_async(load_file, batch)
-        for video_id, X in results:
+        for file_path, X in results:
+            video_id = file_path.name
             processed_files += 1
             have_data_time = time.time()
             prediction = model.predict(X, batch_size=1)
@@ -797,15 +788,9 @@ def save_combined_test_results(model_name, fold, skip_existing=True):
     np.save(res_fn, X_raw)
 
 
-def save_all_combined_test_results(skip_existing=False):
-    for models in config.ALL_MODELS:
-        for model, fold in models:
-            save_combined_test_results(model, fold, skip_existing)
-
-
 def save_all_combined_train_results():
-    for models in config.ALL_MODELS:
-        for model, fold in models:
+    for model in config.MODEL_WEIGHTS.keys():
+        for fold in config.TRAIN_FOLDS:
             save_combined_train_results(model, fold)
 
 
@@ -818,6 +803,7 @@ if __name__ == '__main__':
     parser.add_argument('--model', type=str, default='resnet50')
     parser.add_argument('--use_non_blank_frames', action='store_true')
     parser.add_argument('--use_extra_clips', action='store_true')
+    parser.add_argument('--file_names', type=str, nargs='+', required=False)
 
     args = parser.parse_args()
     action = args.action
@@ -838,12 +824,10 @@ if __name__ == '__main__':
     elif action == 'generate_prediction':
         generate_prediction(fold=args.fold, model_name=model, weights=args.weights)
     elif action == 'generate_prediction_test':
-        generate_prediction_test(fold=args.fold, model_name=model, weights=args.weights)
+        generate_prediction_test(model_name=model, weights=args.weights, file_names=args.file_names)
     elif action == 'find_non_blank_frames':
         find_non_blank_frames(fold=args.fold, model_name=model)
     elif action == 'save_combined_test_results':
         save_combined_test_results(fold=args.fold, model_name=model)
-    elif action == 'save_all_combined_test_results':
-        save_all_combined_test_results()
     elif action == 'save_all_combined_train_results':
         save_all_combined_train_results()

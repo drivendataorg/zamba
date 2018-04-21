@@ -5,6 +5,7 @@ from os.path import isfile, join
 from pathlib import Path
 
 import pandas as pd
+import numpy as np
 
 from zamba.models.cnnensemble.src import config
 from zamba.models.model import SampleModel
@@ -68,7 +69,6 @@ class ModelManager(object):
 
         self.model_path = Path(model_path)
         self.model_class = ModelName[model_class].model
-        self._pass_sub_format = False if model_class == 'cnnensemble' else True
 
         self.tempdir = tempdir
         self.model = self.model_class(model_path)
@@ -88,9 +88,6 @@ class ModelManager(object):
 
         data_path = Path(data_path)
 
-        # much of the cnn prediction code uses the submission format, requires correct video list
-        self.make_submission_format_file(data_path)
-
         # cnn ensemble doesn't use simple data loader, samples do...
         if self.model_class != 'cnnensemble':
             data = self.model.load_data(data_path)
@@ -106,7 +103,9 @@ class ModelManager(object):
             if pred_path is None:
                 timestamp = datetime.now().isoformat()
                 pred_path = Path('.', f'predictions-{data_path.parts[-1]}-{timestamp}.csv')
-            preds.to_csv(pred_path)
+
+            # as predictions are returned an np array
+            np.savetxt(pred_path, preds, delimiter=',', fmt='%.4f', header=','.join(config.CLASSES))
 
         return preds
 
@@ -125,27 +124,3 @@ class ModelManager(object):
 
         """
         pass
-
-    def make_submission_format_file(self, data_path):
-        """This functions uses the files found in data_path to format a prediction DataFrame.
-        The submission format csv saved here is used throught the prediction process for cnn ensemble.
-
-        Args:
-            data_path: path to data directory
-
-        Returns:
-
-        """
-
-        # skip this if we're testing models other than cnn
-        if self._pass_sub_format:
-            return
-        else:
-            filelist = [f for f in listdir(data_path) if isfile(join(data_path, f))]
-            classes = config.CLASSES
-
-            current_sub_format = pd.DataFrame(index=pd.Index(filelist),
-                                              columns=classes)
-            current_sub_format.fillna(0.0, inplace=True)
-            current_sub_format.index.name = 'filename'
-            current_sub_format.to_csv(config.SUBMISSION_FORMAT)
