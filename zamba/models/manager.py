@@ -104,8 +104,7 @@ class ModelManager(object):
                 timestamp = datetime.now().isoformat()
                 pred_path = Path('.', f'predictions-{data_path.parts[-1]}-{timestamp}.csv')
 
-            # as predictions are returned an np array
-            np.savetxt(pred_path, preds, delimiter=',', fmt='%.4f', header=','.join(config.CLASSES))
+            preds.to_csv(pred_path, index=False)
 
         return preds
 
