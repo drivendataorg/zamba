@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 import pims
 import scipy.misc
+
 import tensorflow as tf
 from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception, NASNetMobile, InceptionResNetV2
 from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_resnet50
@@ -33,7 +34,8 @@ from .metrics import pri_matrix_loss
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import utils
 
-
+# turn off noisy CPP compilation notifications
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 tf_config = tf.ConfigProto()
 tf_config.gpu_options.allow_growth = True
 # tf_config.gpu_options.visible_device_list = "0"

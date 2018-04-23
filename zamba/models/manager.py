@@ -1,13 +1,8 @@
 from datetime import datetime
 from enum import Enum, EnumMeta
-from os import listdir
-from os.path import isfile, join
+import logging
 from pathlib import Path
 
-import pandas as pd
-import numpy as np
-
-from zamba.models.cnnensemble.src import config
 from zamba.models.model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
 
@@ -63,9 +58,12 @@ class ModelManager(object):
     def __init__(self,
                  model_path,
                  proba_threshold=None,
+                 output_class_names=False,
                  tempdir=None,
                  verbose=True,
                  model_class='cnnensemble'):
+
+        self.logger = logging.getLogger(f"{__file__}")
 
         self.model_path = Path(model_path)
         self.model_class = ModelName[model_class].model
@@ -73,6 +71,8 @@ class ModelManager(object):
         self.tempdir = tempdir
         self.model = self.model_class(model_path)
         self.proba_threshold = proba_threshold
+
+        self.output_class_names = output_class_names
 
         self.verbose = verbose
 
@@ -99,12 +99,18 @@ class ModelManager(object):
         if self.proba_threshold is not None:
             preds = preds >= self.proba_threshold
 
+        if self.output_class_names:
+            preds = preds.idxmax(axis=1)
+
         if save:
             if pred_path is None:
                 timestamp = datetime.now().isoformat()
                 pred_path = Path('.', f'predictions-{data_path.parts[-1]}-{timestamp}.csv')
 
-            preds.to_csv(pred_path, index=False)
+            preds.to_csv(pred_path)
+
+        if self.verbose:
+            self.logger.info(preds)
 
         return preds
 

@@ -3,7 +3,6 @@ from os import remove
 from pathlib import Path
 from shutil import rmtree
 import pandas as pd
-import pickle
 
 from tensorflow.python.keras.utils import get_file
 
@@ -23,16 +22,17 @@ class CnnEnsemble(Model):
 
     def load_data(self, data_path):
         """ Loads data and returns it in a format that can be used
-            by this model.
+            by this model. This is not recursive, and loads files that
+            do not start with ".".
 
         Args:
-            data_path: A path to the input dat
+            data_path: A path to the input data
 
         Returns:
             The data.
         """
         p = Path(data_path)
-        file_names = [x for x in p.iterdir() if x.is_file()]
+        file_names = [x for x in p.iterdir() if x.is_file() and not x.name.startswith(".")]
         return file_names
 
     def predict(self, file_names):
@@ -64,7 +64,7 @@ class CnnEnsemble(Model):
             columns=['filename'] + config.CLASSES
         )
 
-        return preds
+        return preds.set_index('filename')
 
     def fit(self, X, y):
         """Use the same architecture, but train the weights from scratch using

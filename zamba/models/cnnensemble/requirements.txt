@@ -25,5 +25,5 @@ six==1.11.0
 slicerator==0.9.8
 tqdm==4.19.5
 Werkzeug==0.14.1
-xgboost==0.6a2
+xgboost==0.71
 #xgboostpython

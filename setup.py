@@ -23,8 +23,8 @@ setup(
     version='0.0',
     install_requires=requirements,
     extras_require={
-        "tf": ["tensorflow==1.5.0"],
-        "tf_gpu": ["tensorflow-gpu==1.4.1"]
+        "cpu": ["tensorflow==1.7.0"],
+        "gpu": ["tensorflow-gpu==1.7.0"]
     },
     entry_points={
         'console_scripts': [

@@ -1,47 +1,119 @@
 # zamba - a command line interface for species classification
 
-Zamba means "forest" in Lingalese.
+_Zamba means "forest" in the Lingala language._
 
-The `zamba` command will be the entry point for users (see 
+Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa. The tool makes predictions for
+
+The `zamba` command will be the entry point for users (see
 example usage below).
 
 [ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
 
-## Install
+## Prerequisites
+
+ - Python 3.6
+ - `AV` library
+
+Install an Anaconda version of **Python 3.6**. Anaconda is required to reliably install the video loading library that we currently use. ([Issue #51](https://github.com/drivendataorg/zamba/issues/51) tracks removing this). The download for Anaconda is availabe here:
+
+ - https://www.anaconda.com/download/
+
+We use anaconda because it provides the most reliable cross-platform approach for installing the `av` library. In order to install `av` once Anaconda is installed and functioning, you can run:
+
+```
+conda install av==0.3.3 -c conda-forge
+```
+
+## Installing `zamba`
 
 ### GPU or CPU
-To correctly install, the user must specifiy whether the cpu or gpu version of tensorflow should be installed. If the user fails to make this specification, no version of tensorflow will be installed, thus everything will fail.
 
-To install for development with **tensorflow gpu** 
-```
-> git clone https://github.com/drivendataorg/zamba.git
-> cd zamba
-> pip install --editable .[tf_gpu]
-```
+`zamba` is significantly faster when using a machine with a GPU instead of just a CPU. To use a GPU, you must be using an [nvidia gpu](https://www.nvidia.com/Download/index.aspx?lang=en-us), [installed and configured CUDA](https://developer.nvidia.com/cuda-downloads), and [installed and configured CuDNN](https://developer.nvidia.com/cudnn) per their specifications. Once this is done, you can select to install the version of zamaba that uses `tensorflow` compiled for GPU.
+
+When a user installs `zamba` she should specifue have a GPU or a CPU installed. If the user fails to make this specification, **no version of tensorflow will be installed, thus everything will fail.**
 
 To install for development with **tensorflow cpu**
 ```
-> git clone https://github.com/drivendataorg/zamba.git
-> cd zamba
-> pip install --editable .[tf]
+$ git clone https://github.com/drivendataorg/zamba.git
+$ cd zamba
+$ pip install --editable .[cpu]
 ```
 
-### AV
-As shown in the `Dockerfile`, the cross-platform (minus Windows) approach to installing `pyav` uses the `conda` image. So in order to comply with `requirements.txt` and successfully install `av`, use
+To install for development with **tensorflow gpu**
+```
+$ git clone https://github.com/drivendataorg/zamba.git
+$ cd zamba
+$ pip install --editable .[gpu]
+```
+
+
+## Example usage
+
+Once zamba is installed, you can see the commands with `zamba`:
+
+`zamba`
 
 ```
-conda install av -c conda-forge
+Usage: zamba [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  predict  Identify species in a video.
+  train    [NOT IMPLEMENTED] Retrain network from...
+  tune     [NOT IMPLEMENTED] Update network with new...
 ```
 
-This requires Anaconda.
+And you can see the options you can pass to the `predict` command with:
 
-## Test
+`zamba predict --help`
+
+```
+Usage: zamba predict [OPTIONS] [DATA_PATH] [PRED_PATH]
+
+  Identify species in a video.
+
+  This is a command line interface for prediction on camera trap footage.
+  Given a path to camera trap footage, the predict function use a deep
+  learning model to predict the presence or absense of a variety of species
+  of common interest to wildlife researchers working with camera trap data.
+
+Options:
+  --tempdir PATH                Path to temporary directory. If not specified,
+                                OS temporary directory is used.
+  --proba_threshold FLOAT       Probability threshold for classification. if
+                                specified binary predictions are returned with
+                                1 being greater than the threshold, 0 being
+                                less than or equal to. If not specified,
+                                probabilities between 0 and 1 are returned.
+  --output_class_names BOOLEAN  If True, we just return a video and the name
+                                of the most likely class. If False, we return
+                                a probability or indicator (depending on
+                                --proba_threshold) for every possible class.
+  --model_path PATH             Path to model files to be loaded into model
+                                object.
+  --model_class TEXT            Class of model, controls whether or not sample
+                                model is used.
+  --verbose BOOLEAN             Controls verbosity of the command line predict
+                                function.
+  --help                        Show this message and exit.
+```
+
+Once `zamba` is installed, you can execute it on any directory of video files. The tool does not recursively search directories, so all of the files must be at the top level of the directory. The algorithm will work the best with 15 second videos since that is what it is trained on, though it will sample frames
+
+`zamba predict path/to/videos`
+
+By default the output will be written to the file `output.csv` in the current directory. If the file exists, it will be overwritten.
+
+## Running the `zamba` test suite
+
 The included `Makefile` contains code that uses pytest to run all tests in `zamba/tests`.
 
 The command is (from the project root),
 
 ```
-> make test
+$ make test
 ```
 
 ### Testing End-To-End Prediction With `test_cnnensemble.py`
@@ -52,8 +124,6 @@ By default this test is skipped due to the `pytest` decorator
 ```
 @pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
 def test_predict():
-
-
     data_dir = Path(__file__).parent.parent / "models" / "cnnensemble" / "input" / "raw_test"
 
     manager = ModelManager('', model_class='cnnensemble', proba_threshold=0.5)
@@ -64,6 +134,4 @@ It is reccomended that the **decorator be commented out in order to test end-to-
 
 To test end-to-end prediction using `make test` on a different set of videos, simply edit `data_dir`.
 
-## Example usage
 
-`zamba predict path/to/vids`
