@@ -2,6 +2,7 @@ from collections import deque
 from os import remove
 from pathlib import Path
 from shutil import rmtree
+import pandas as pd
 import pickle
 
 from tensorflow.python.keras.utils import get_file
@@ -54,7 +55,16 @@ class CnnEnsemble(Model):
                                                             save_results=False)
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
-        return l2_results
+
+        preds = pd.DataFrame(
+            {
+                'filename': [file_name.name for file_name in file_names],
+                **{cls: l2_results[:, i] for i, cls in enumerate(config.CLASSES)}
+            },
+            columns=['filename'] + config.CLASSES
+        )
+
+        return preds
 
     def fit(self, X, y):
         """Use the same architecture, but train the weights from scratch using
