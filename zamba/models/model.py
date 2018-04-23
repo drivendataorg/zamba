@@ -4,7 +4,15 @@ from shutil import rmtree
 import tempfile
 
 import pandas as pd
-from tensorflow.python import keras
+
+
+try:
+    from tensorflow.python import keras
+except ImportError:
+    msg = "Zamba must have tensorflow installed, run either `pip install zamba[cpu]` "\
+          "or `pip install zamba[gpu]` " \
+          "depending on what is available on your system."
+    raise ImportError(msg)
 
 
 class Model(object):
@@ -155,7 +163,7 @@ class SampleModel(Model):
         save_path.parent.mkdir(exist_ok=True)
 
         # keras' save
-        self.model.save(save_path)
+        self.model.save(save_path, include_optimizer=False)
 
     def load_data(self, data_path):
         """SampleModel loads pickled data
