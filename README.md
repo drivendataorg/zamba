@@ -1,13 +1,12 @@
 # zamba - a command line interface for species classification
 
+[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
+
 _Zamba means "forest" in the Lingala language._
 
-Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa. The tool makes predictions for
+Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa. The tool makes predictions for 24 common species in these videos. For more information, see the documentation.
 
-The `zamba` command will be the entry point for users (see
-example usage below).
-
-[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
+The `zamba` command will be the entry point for users (see example usage below).
 
 ## Prerequisites
 
@@ -30,7 +29,7 @@ conda install av==0.3.3 -c conda-forge
 
 `zamba` is significantly faster when using a machine with a GPU instead of just a CPU. To use a GPU, you must be using an [nvidia gpu](https://www.nvidia.com/Download/index.aspx?lang=en-us), [installed and configured CUDA](https://developer.nvidia.com/cuda-downloads), and [installed and configured CuDNN](https://developer.nvidia.com/cudnn) per their specifications. Once this is done, you can select to install the version of zamaba that uses `tensorflow` compiled for GPU.
 
-When a user installs `zamba` she should specifue have a GPU or a CPU installed. If the user fails to make this specification, **no version of tensorflow will be installed, thus everything will fail.**
+When a user installs `zamba` that user must specify to install the GPU or CPU version. If the user fails to make this specification, **no version of tensorflow will be installed, thus everything will fail.**
 
 To install for development with **tensorflow cpu**
 ```
@@ -100,7 +99,9 @@ Options:
   --help                        Show this message and exit.
 ```
 
-Once `zamba` is installed, you can execute it on any directory of video files. The tool does not recursively search directories, so all of the files must be at the top level of the directory. The algorithm will work the best with 15 second videos since that is what it is trained on, though it will sample frames
+Once `zamba` is installed, you can execute it on any directory of video files. The tool does not recursively search directories, so all of the files must be at the top level of the directory. The algorithm will work the best with 15 second videos since that is what it is trained on, though it will sample frames from longer videos, which may be less reliable.
+
+**NOTE: `zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~1GB of files with these weights.** Once these are downloaded, the tool will use the local versions and will not need to perform this download again.
 
 `zamba predict path/to/videos`
 

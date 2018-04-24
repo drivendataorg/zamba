@@ -33,8 +33,8 @@ def main():
                    "being greater than the threshold, 0 being less than or equal to. If not specified, probabilities "
                    "between 0 and 1 are returned.")
 @click.option('--output_class_names',
-              type=bool,
-              default=True,
+              is_flag=True,
+              default=False,
               help="If True, we just return a video and the name of the most likely class. If False, "
                    "we return a probability or indicator (depending on --proba_threshold) for every "
                    "possible class.")
