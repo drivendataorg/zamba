@@ -11,4 +11,4 @@ RUN pip install -U pip Cython
 COPY . /app
 WORKDIR /app
 
-RUN pip install .[tf]
+RUN pip install .[cpu]
