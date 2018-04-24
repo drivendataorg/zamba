@@ -9,3 +9,6 @@ reqs:
 
 clean_pycache:
 	find . -name *.pyc -delete && find . -name __pycache__ -delete
+
+ci_env_vars:
+	jet encrypt --key-path drivendataorg_chimps-tool.aes .env env.encrypted
