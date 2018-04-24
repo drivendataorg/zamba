@@ -1,5 +1,6 @@
 # Minimal makefile for Sphinx documentation
 #
+S3_BUCKET=drivendata-zamba-docs
 
 # You can set these variables from the command line.
 SPHINXOPTS    = -W
