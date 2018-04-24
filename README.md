@@ -1,6 +1,7 @@
 # zamba - a command line interface for species classification
 
-[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
+[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)  [![Documentation Status](https://readthedocs.org/projects/zamba/badge/?version=latest)](http://zamba.readthedocs.io/en/latest/?badge=latest)
+
 
 _Zamba means "forest" in the Lingala language._
 
