@@ -1,3 +1,4 @@
 zamba:
   build: .
   cached: true
+  encrypted_env_file: env.encrypted
