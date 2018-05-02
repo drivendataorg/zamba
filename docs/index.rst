@@ -10,7 +10,10 @@ Welcome to zamba's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   install
+   quickstart-cli
+   slowstart-cli
+   slowstart-lib
 
 Indices and tables
 ==================
