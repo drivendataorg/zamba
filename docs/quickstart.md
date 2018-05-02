@@ -1,5 +1,4 @@
-Quickstart
-**********
+# Quickstart
 
 I *just* want to **predict!**
 
