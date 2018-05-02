@@ -7,10 +7,9 @@ import os
 import pickle
 import time
 
-import av
 import numpy as np
 import pandas as pd
-import pims
+import skvideo.io
 import scipy.misc
 
 import tensorflow as tf
@@ -294,7 +293,7 @@ class SingleFrameCNNDataset:
             pass
 
         if not loaded:
-            v = pims.Video(os.path.join(video_dir, video_id))
+            v = skvideo.io.vread(os.path.join(video_dir, video_id))
             X = np.zeros(INPUT_SHAPE)
             while offset >= 0:
                 try:
@@ -421,21 +420,21 @@ def load_video_clip_frames(video_fn):
     :return: ndarray of shape (PREDICT_FRAMES, INPUT_ROWS, INPUT_COLS, INPUT_CHANNELS)
     """
     X = np.zeros(shape=(len(PREDICT_FRAMES),) + INPUT_SHAPE, dtype=np.float32)
-    with pims.Video(video_fn) as v:
-        for i, frame_num in enumerate(PREDICT_FRAMES):
-            try:
-                frame = v[frame_num]
-                if frame.shape != INPUT_SHAPE:
-                    frame = scipy.misc.imresize(frame, size=(INPUT_ROWS, INPUT_COLS), interp='bilinear').astype(
-                        np.float32)
-                else:
-                    frame = frame.astype(np.float32)
-                X[i] = frame
-            except IndexError:
-                if i > 0:
-                    X[i] = X[i - 1]
-                else:
-                    X[i] = 0.0
+    v = skvideo.io.vread(video_fn)
+    for i, frame_num in enumerate(PREDICT_FRAMES):
+        try:
+            frame = v[frame_num]
+            if frame.shape != INPUT_SHAPE:
+                frame = scipy.misc.imresize(frame, size=(INPUT_ROWS, INPUT_COLS), interp='bilinear').astype(
+                    np.float32)
+            else:
+                frame = frame.astype(np.float32)
+            X[i] = frame
+        except IndexError:
+            if i > 0:
+                X[i] = X[i - 1]
+            else:
+                X[i] = 0.0
     return X
 
 
