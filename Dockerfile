@@ -4,8 +4,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install -y build-essential
 
-RUN conda update -n base conda
-RUN conda install av==0.3.3 -c conda-forge
+RUN apt-get install -y --allow-unauthenticated ffmpeg
 RUN pip install -U pip Cython
 
 COPY . /app
