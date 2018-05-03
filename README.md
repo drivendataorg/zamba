@@ -11,18 +11,8 @@ The `zamba` command will be the entry point for users (see example usage below).
 
 ## Prerequisites
 
- - Python 3.6
- - `AV` library
-
-Install an Anaconda version of **Python 3.6**. Anaconda is required to reliably install the video loading library that we currently use. ([Issue #51](https://github.com/drivendataorg/zamba/issues/51) tracks removing this). The download for Anaconda is availabe here:
-
- - https://www.anaconda.com/download/
-
-We use anaconda because it provides the most reliable cross-platform approach for installing the `av` library. In order to install `av` once Anaconda is installed and functioning, you can run:
-
-```
-conda install av==0.3.3 -c conda-forge
-```
+ - [Python](https://www.python.org/) 3.6
+ - [ffmpeg](https://www.ffmpeg.org/download.html), codecs for handling the video loading
 
 ## Installing `zamba`
 

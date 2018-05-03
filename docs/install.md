@@ -12,6 +12,7 @@ will fail.
 ## Prerequisites
 
  - [Python](https://www.python.org/) 3.6
+ - [ffmpeg](https://www.ffmpeg.org/download.html), codecs for handling the video loading
 
 ## Hardware Specifications
 <a name="hardware"></a>
