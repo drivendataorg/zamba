@@ -8,9 +8,15 @@ Welcome to zamba's documentation!
 
 *Zamba means "forest" in the Lingala language.*
 
-Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa. The tool makes predictions for 24 common species in these videos. For more information, see the documentation.
+Zamba is a command-line tool built in Python to automatically identify the
+species seen in camera trap videos from sites in central Africa. Using the
+combined input of various deep learning models, the tool makes predictions
+for 23 common species in these videos (as well as blank, or, "no species
+present").
+For more information, see the documentation.
 
-The `zamba` command will be the entry point for users (see example usage below).
+The ``zamba`` command will be the entry point for users (see example usage
+below).
 
 
 .. toctree::
@@ -23,6 +29,7 @@ The `zamba` command will be the entry point for users (see example usage below).
    :maxdepth: 4
    :caption: Getting Started:
 
+   algorithms
    quickstart
    slowstart-cli
    slowstart-lib
