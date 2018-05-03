@@ -56,7 +56,7 @@ class ModelManager(object):
                 Defaults to "winning". Must be "winning" or "sample".
     """
     def __init__(self,
-                 model_path,
+                 model_path=Path('.'),
                  proba_threshold=None,
                  output_class_names=False,
                  tempdir=None,
