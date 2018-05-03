@@ -20,7 +20,13 @@ requirements = load_reqs(req_path)
 
 setup(
     name='zamba',
-    version='0.0',
+    version='0.1',
+    description='Zamba is a tool to identify the species seen in camera trap videos from sites in central Africa.',
+    author='DrivenData',
+    author_email='info@drivendata.org',
+    url='https://github.com/drivendataorg/zamba',
+    download_url='https://github.com/drivendataorg/zamba/archive/0.1.tar.gz',
+    keywords=['deep learning', 'camera', 'africa', 'classifier'],
     install_requires=requirements,
     extras_require={
         "cpu": ["tensorflow==1.7.0"],
