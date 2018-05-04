@@ -1,5 +1,5 @@
 from pathlib import Path
-from distutils.core import setup
+from setuptools import setup
 
 def load_reqs(path):
     reqs = []
