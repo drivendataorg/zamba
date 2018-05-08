@@ -6,6 +6,7 @@ import click
 from zamba.models.manager import ModelManager
 
 default_model_dir = Path(__file__).parent / 'models' / 'assets'
+default_model_dir.mkdir(exist_ok=True)
 
 
 @click.group()
