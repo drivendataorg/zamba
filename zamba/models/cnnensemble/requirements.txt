@@ -6,7 +6,6 @@ enum34==1.1.6
 h5py==2.7.1
 html5lib==0.9999999
 Keras==2.1.2
-lightgbm==2.0.12
 Markdown==2.6.11
 networkx==2.0
 opencv-python==3.4.0.12

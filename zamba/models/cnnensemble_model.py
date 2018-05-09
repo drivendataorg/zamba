@@ -5,6 +5,7 @@ from shutil import rmtree
 import pandas as pd
 
 from tensorflow.python.keras.utils import get_file
+from tqdm import tqdm
 
 from .model import Model
 from .cnnensemble.src.single_frame_cnn import generate_prediction_test
@@ -13,12 +14,13 @@ from .cnnensemble.src import config
 
 
 class CnnEnsemble(Model):
-    def __init__(self, model_path, profile=config.DEFAULT_PROFILE, tempdir=None, download_region='us'):
+    def __init__(self, model_path, profile=config.DEFAULT_PROFILE, tempdir=None, download_region='us', verbose=False):
         # use the model object's defaults
         super().__init__(model_path, tempdir=tempdir)
         self.profile = profile
 
         self._download_weights_if_needed(download_region)
+        self.verbose = verbose
 
     def load_data(self, data_path):
         """ Loads data and returns it in a format that can be used
@@ -46,12 +48,13 @@ class CnnEnsemble(Model):
         """
 
         l1_results = {}
-        for l1_model in config.PROFILES[self.profile]:
+        prof = config.PROFILES[self.profile]
+        for l1_model in tqdm(prof, desc=f'Predicting on {len(prof)} L1 models'):
             l1_results[l1_model] = generate_prediction_test(model_name=l1_model,
                                                             weights=(Path(__file__).parent / 'cnnensemble' / 'output' /
                                                                      'checkpoints' / config.MODEL_WEIGHTS[l1_model]),
                                                             file_names=file_names,
-                                                            verbose=True,
+                                                            verbose=self.verbose,
                                                             save_results=False)
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
