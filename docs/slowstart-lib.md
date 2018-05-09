@@ -1,39 +1,22 @@
-# `zamba` as a Python Module
+# zamba as a Python Module
 
-`zamba` can also be used directly in python scripts.
+If you want to use `zamba` as part of a pipeline, it can be used directly in python scripts instead of from the command line.
 
-## Use `zamba` in Python
+## Use zamba in Python
 
-The models packed with `zamba` can be accessed through the `models` module.
-Currently, the only model packaged with `zamba` is the stacked ensemble
-described elsewhere in these docs.
-
-To access this class directly,
-
-```
-$ python
->>> from zamba.models.cnnensemble_model import CnnEnsemble
->>>
-```
-
-However, this is not the easiest way to make predictions. Project `zamba` uses
-a mediating class called `ModelManager` that can be accessed with
+The main API for `zamba` is the `ModelManager` class that can be accessed with:
 
 ```
 >>> from zamba.models.manager import ModelManager
 >>>
 ```
 
-to interface between the user and model.
-
 The `ModelManager` class is used by `zamba`'s
 [command line interface](slowstart-cli.html) to handle preprocessing the
 filenames, loading the videos, serving them to the model, and saving
 predictions. Therefore any functionality available to the command line
-interface should be accessible via the `ModelManager` class.
+interface is accessible via the `ModelManager` class.
 
-Although any part of `zamba` can be used in Python (it's written in Python!),
-the `ModelManager` class is the most useful.
 
 ### Example Prediction in Python using the `ModelManager`
 
@@ -56,9 +39,9 @@ ungulate.mp4
 Now start Python, import the `ModelManager`, and make a prediction:
 
 ```
-$ pyhthon
+$ python
 >>> from zamba.models.manager import ModelManager
->>> manager = ModelManager()
+>>> manager = ModelManager(model_class='cnnensemble')
 >>> manager.predict('vids_to_classify/', save=True)
 nasnet_mobile
 blank2.mp4  1 prepared in 3249 predicted in 24662
@@ -87,18 +70,18 @@ small-cat.mp4  5 prepared in 0 predicted in 89486
 ```
 A few of things to note.
 
-1. The data directory `vids_to_classify/` is passed to the `ModelManager` as a
-Python string (i.e., it is wrapped in quotes).
+1. The data directory `vids_to_classify/` should be passed to the `ModelManager` as a string.
 2. The data path and prediction path are not listed at the start of prediction,
  as they were in the command line interface. In other words, the verbosity is
  less.
 3. The `save=True` argument passed to the predict method will lead to the same
 `output.csv` as before. By default this argument is `False`, so calling
 `manager.predict('vids_to_classify/')` _without_ `save=True` would **not** save
- the output, although the output would still be displayed on the command line.
+ the output, although the output would still be sent to standard out.
 
 Otherwise, the output is just the same! Unless otherwise specified using the
 `pred_path` argument in `ModelManager.predict`, the predictions will be output
 to the working directory under the name `output.csv`, just as specified in the
 [Quickstart](quickstart.html).
 
+#### You can find all of the parameters for `predict` in the module documentation.
