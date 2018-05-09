@@ -7,7 +7,6 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 from xgboost import XGBClassifier
-import lightgbm as lgb
 
 from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard, LearningRateScheduler
 from tensorflow.python.keras.layers import Dense, Dropout
@@ -206,33 +205,6 @@ class SecondLevelModelXGBoost(SecondLevelModel):
                                    learning_rate=0.03, silent=False, n_jobs=config.N_CORES)
         with utils.timeit_context('fit 1600 est'):
             self.model.fit(X, y)  # , eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
-        pickle.dump(self.model, open(self.model_fn.resolve(), "wb"))
-
-
-class SecondLevelModelLGBM(SecondLevelModel):
-    """
-        LightGBM based L2 model implementation
-    """
-    def __init__(self, combined_model_name, l1_model_names):
-        super().__init__(l1_model_names, preprocess_l1_model_output=preprocess_x_histogram)
-        self.combined_model_name = combined_model_name
-        self.model = None
-        self.model_fn = config.MODEL_DIR / f"output/lgb_combined_{self.combined_model_name}.pkl"
-
-    def _predict(self, X):
-        if self.model is None:
-            self.model = pickle.load(open(self.model_fn.resolve(), "rb"))
-        return self.model.predict(X)
-
-    def _train(self, X, y):
-        param = {'num_leaves': 50,
-                 'objective': 'multiclass',
-                 'max_depth': 5,
-                 'learning_rate': .05,
-                 'max_bin': 300,
-                 'num_class': NB_CAT,
-                 'metric': ['multi_logloss']}
-        self.model = lgb.train(param, lgb.Dataset(X, label=y), num_boost_round=260)
         pickle.dump(self.model, open(self.model_fn.resolve(), "wb"))
 
 

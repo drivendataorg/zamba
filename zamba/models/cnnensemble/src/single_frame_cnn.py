@@ -627,7 +627,7 @@ def generate_prediction(model_name, weights, fold):
         else:
             results = []
         prev_res = pool.map_async(load_file, batch)
-        for video_id, X, y in results:
+        for video_id, X, y in tqdm(results, desc='Processing videos...'):
             processed_files += 1
             res_fn = output_dir.resolve() / f"{video_id}.csv"
             have_data_time = time.time()
@@ -642,7 +642,7 @@ def generate_prediction(model_name, weights, fold):
             prepare_ms = int((have_data_time - start_time) * 1000)
             predict_ms = int((have_prediction_time - have_data_time) * 1000)
             start_time = time.time()
-            print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
+            # print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
 
 def generate_prediction_test(model_name, weights, file_names, verbose=False, save_results=False):
@@ -693,7 +693,8 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
         else:
             results = []
         prev_res = pool.map_async(load_file, batch)
-        for file_path, X in results:
+
+        for file_path, X in tqdm(results, desc=f'Processing {len(results)} videos'):
             if X is None:
                 print("Skipping file that is not a valid video: ", file_path)
 
@@ -710,13 +711,6 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
                                       data=prediction,
                                       columns=CLASSES)
                     ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
-
-                have_prediction_time = time.time()
-                prepare_ms = int((have_data_time - start_time) * 1000)
-                predict_ms = int((have_prediction_time - have_data_time) * 1000)
-                start_time = time.time()
-                if verbose:
-                    print(f'{video_id}  {processed_files} prepared in {prepare_ms} predicted in {predict_ms}')
 
     return np.array(all_predictions)
 

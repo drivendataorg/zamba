@@ -60,8 +60,9 @@ class ModelManager(object):
                  proba_threshold=None,
                  output_class_names=False,
                  tempdir=None,
-                 verbose=True,
-                 model_class='cnnensemble'):
+                 verbose=False,
+                 model_class='cnnensemble',
+                 model_kwargs=dict()):
 
         self.logger = logging.getLogger(f"{__file__}")
 
@@ -69,7 +70,7 @@ class ModelManager(object):
         self.model_class = ModelName[model_class].model
 
         self.tempdir = tempdir
-        self.model = self.model_class(model_path)
+        self.model = self.model_class(model_path, verbose=verbose, **model_kwargs)
         self.proba_threshold = proba_threshold
 
         self.output_class_names = output_class_names
@@ -109,7 +110,10 @@ class ModelManager(object):
 
             preds.to_csv(pred_path)
 
-        if self.verbose:
+            if self.verbose:
+                self.logger.info(f"Wrote predictions to {pred_path}")
+
+        if self.verbose or self.output_class_names:
             self.logger.info(preds)
 
         return preds

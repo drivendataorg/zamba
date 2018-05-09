@@ -39,21 +39,26 @@ def main():
               help="If True, we just return a video and the name of the most likely class. If False, "
                    "we return a probability or indicator (depending on --proba_threshold) for every "
                    "possible class.")
-@click.option('--model_path',
-              type=click.Path(exists=True,
-                              file_okay=True,
-                              dir_okay=True),
-              default=default_model_dir,
-              help="Path to model files to be loaded into model object.")
-@click.option('--model_class',
+@click.option('--model_profile',
               type=str,
-              default="cnnensemble",
-              help="Class of model, controls whether or not sample model is used.")
+              default='full',
+              help="Defaults to 'full' which is slow and accurate; can be 'fast' which is faster and less accurate.")
+@click.option('--weight_download_region',
+              type=str,
+              default="us",
+              help="Defaults to 'us', can also be 'eu' or 'asia'. Region for server to download weights.")
 @click.option('--verbose',
-              type=bool,
-              default=True,
-              help="Controls verbosity of the command line predict function.")
-def predict(data_path, pred_path, tempdir, proba_threshold, output_class_names, model_path, model_class, verbose):
+              is_flag=True,
+              default=False,
+              help="Displays additional logging information during processing.")
+def predict(data_path,
+            pred_path,
+            tempdir,
+            proba_threshold,
+            output_class_names,
+            model_profile,
+            weight_download_region,
+            verbose):
     """Identify species in a video.
 
       This is a command line interface for prediction on camera trap footage. Given a path to camera trap footage,
@@ -62,16 +67,17 @@ def predict(data_path, pred_path, tempdir, proba_threshold, output_class_names, 
 
     """
 
-    if verbose:
-        click.echo(f"Using data_path:\t{data_path}")
-        click.echo(f"Using pred_path:\t{pred_path}")
+    click.echo(f"Using data_path:\t{data_path}")
+    click.echo(f"Using pred_path:\t{pred_path}")
 
     # Load the model into manager
-    manager = ModelManager(model_path=model_path,
-                           model_class=model_class,
+    manager = ModelManager(model_path=default_model_dir,
+                           model_class='cnnensemble',
                            proba_threshold=proba_threshold,
                            tempdir=tempdir,
-                           output_class_names=output_class_names)
+                           output_class_names=output_class_names,
+                           model_kwargs=dict(profile=model_profile,
+                                             download_region=weight_download_region))
 
     # Make predictions, return a DataFrame
     manager.predict(data_path, pred_path=pred_path, save=True)
