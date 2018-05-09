@@ -1,11 +1,11 @@
-# `zamba` as a Command Line Interface
+# zamba Command Line Interface
 
 This section goes into a bit more detail concerning the available options for
 the `zamba` command line interface tool. If you are new to `zamba` and just
 want to classify some videos as soon as possible, see the [Quickstart]
 (quickstart.html) guide.
 
-## `zamba`'s Optional Flags
+## zamba's Optional Flags
 
 ### `zamba predict`
 
@@ -41,26 +41,22 @@ This option specifies the `PATH` to be used for temporary storage during
 prediction. The model that is shipped with `zamba` is able to process within
 memory (assuming reasonably large modern memory of ~16 GB). If a custom model
 is being used, it may be necessary to point `zamba` to a mounted drive or some
- other large-capacity directory.
+ other large-capacity directory. By default this uses the operating system's temporary directory.
 
 #### --proba_threshold FLOAT
 
-This is a `FLOAT` number, e.g., `0.64` corresponding to the probability
+For advanced uses, you may want the algorithm to be more or less sensitive to if a species is present. This parameter is a `FLOAT` number, e.g., `0.64` corresponding to the probability
 threshold beyond which an animal is considered to be present in the video being
  analyzed.
 
-By default no threshold is passed, `proba_threshold=None`. This yields raw
-class probabilities for each species in each video. If a threshold is passed,
-then the final prediction [Pandas `DataFrame`](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html) is subjected to a boolean
-operation
-`DataFrame >= proba_threshold`, so that all class values become `0` (`False`)
-or `1` (`True`).
+By default no threshold is passed, `proba_threshold=None`. This will return a probability from 0-1 for each species that could occur in each video. If a threshold is passed,
+then the final prediction value returned for each class is `probability >= proba_threshold`, so that all class values become `0` (`False`, the species does not appear) or `1` (`True`, the species does appear).
 
 #### --output_class_names
 
 Setting this option to `True` yields the most concise output `zamba` is capable
  of. The highest species probability in a video is taken to be the _only_
- species in that video, and the output returned simply shows the video name and
+ species in that video, and the output returned is simply the video name and
   the name of the species (or `blank`) with the highest class probability. See
   the [Quickstart](quickstart.html) for example usage.
 

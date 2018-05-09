@@ -1,10 +1,13 @@
-zamba package
+zamba
 ==============
 
-Submodules
-----------
+.. automodule:: zamba
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
-zamba.cli module
+
+zamba.cli
 -----------------
 
 .. automodule:: zamba.cli
@@ -13,10 +16,34 @@ zamba.cli module
     :show-inheritance:
 
 
-Module contents
----------------
+zamba.models
+-----------------
 
-.. automodule:: zamba
+.. automodule:: zamba.models
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+zamba.models.manager
+----------------------------
+
+.. automodule:: zamba.models.manager
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+zamba.models.model
+--------------------------
+
+.. automodule:: zamba.models.model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+zamba.models.cnnensemble
+-----------------------------------
+
+.. automodule:: zamba.models.cnnensemble
     :members:
     :undoc-members:
     :show-inheritance:

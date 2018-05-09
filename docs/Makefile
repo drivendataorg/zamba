@@ -3,7 +3,7 @@
 S3_BUCKET=drivendata-zamba-docs
 
 # You can set these variables from the command line.
-SPHINXOPTS    = -W
+SPHINXOPTS    = -W -vvv
 SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = zamba
 SOURCEDIR     = .
