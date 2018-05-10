@@ -1,10 +1,10 @@
 from click.testing import CliRunner
-from pytest_mock import mocker
+from pytest_mock import mocker  # noqa: F401
 
 from zamba.cli import predict
 
 
-def test_predict_modelpath(sample_model_path, sample_data_path, mocker):
+def test_predict_modelpath(sample_model_path, sample_data_path, mocker):  # noqa: F811
     # mock predictions to just test CLI args
     def pred_mock(self, ata_path, pred_path='', save=False):
         return None
