@@ -103,10 +103,11 @@ class SampleModel(Model):
             model_path:
             tempdir:
     """
-    def __init__(self, model_path=None, tempdir=None):
+    def __init__(self, model_path=None, tempdir=None, verbose=False):
         super().__init__(model_path, tempdir=tempdir)
 
         self.model = self._build_graph() if self.model_path is None else keras.models.load_model(self.model_path)
+        self.verbose = verbose
 
     def _build_graph(self):
         """Simple keras graph for testing api.

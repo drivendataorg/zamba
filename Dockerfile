@@ -10,4 +10,6 @@ RUN pip install -U pip Cython
 COPY . /app
 WORKDIR /app
 
+RUN pip install -r requirements-dev.txt
+
 RUN pip install .[cpu]
