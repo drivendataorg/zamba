@@ -94,6 +94,9 @@ Options:
   --help                         Show this message and exit.
 ```
 
+![demo](https://s3.amazonaws.com/drivendata-public-assets/zamba-demo.gif)
+
+
 Once `zamba` is installed, you can execute it on any directory of video files. The tool does not recursively search directories, so all of the files must be at the top level of the directory. The algorithm will work the best with 15 second videos since that is what it is trained on, though it will sample frames from longer videos, which may be less reliable.
 
 **NOTE: `zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~1GB of files with these weights.** Once these are downloaded, the tool will use the local versions and will not need to perform this download again.
