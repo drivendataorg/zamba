@@ -3,8 +3,9 @@
 [ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
 
 
-###[HOMEPAGE](http://zamba.drivendata.org/)
-###[DOCUMENTATION](http://zamba.drivendata.org/docs/)
+### [HOMEPAGE](http://zamba.drivendata.org/)
+
+### [DOCUMENTATION](http://zamba.drivendata.org/docs/)
 
 _Zamba means "forest" in the Lingala language._
 
