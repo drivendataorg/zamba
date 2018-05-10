@@ -1,7 +1,10 @@
 # zamba - a command line interface for species classification
 
-[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)  [![Documentation Status](https://readthedocs.org/projects/zamba/badge/?version=latest)](http://zamba.readthedocs.io/en/latest/?badge=latest)
+[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
 
+
+###[HOMEPAGE](http://zamba.drivendata.org/)
+###[DOCUMENTATION](http://zamba.drivendata.org/docs/)
 
 _Zamba means "forest" in the Lingala language._
 
@@ -9,12 +12,14 @@ Zamba is a command-line tool built in Python to automatically identify the speci
 
 The `zamba` command will be the entry point for users (see example usage below).
 
-## Prerequisites
+
+## Prerequisites (for more detail, see [the documentation](http://zamba.drivendata.org/docs/))
 
  - [Python](https://www.python.org/) 3.6
  - [ffmpeg](https://www.ffmpeg.org/download.html), codecs for handling the video loading
 
-## Installing `zamba`
+
+## Installing `zamba` (for more detail, see [the documentation](http://zamba.drivendata.org/docs/))
 
 ### GPU or CPU
 
@@ -22,18 +27,14 @@ The `zamba` command will be the entry point for users (see example usage below).
 
 When a user installs `zamba` that user must specify to install the GPU or CPU version. If the user fails to make this specification, **no version of tensorflow will be installed, thus everything will fail.**
 
-To install for development with **tensorflow cpu**
+To install with **tensorflow cpu** (you do not have a GPU)
 ```
-$ git clone https://github.com/drivendataorg/zamba.git
-$ cd zamba
-$ pip install --editable .[cpu]
+$ pip install zamba[cpu]
 ```
 
-To install for development with **tensorflow gpu**
+To install with **tensorflow gpu**
 ```
-$ git clone https://github.com/drivendataorg/zamba.git
-$ cd zamba
-$ pip install --editable .[gpu]
+$ pip install zamba[gpu]
 ```
 
 
@@ -70,24 +71,26 @@ Usage: zamba predict [OPTIONS] [DATA_PATH] [PRED_PATH]
   of common interest to wildlife researchers working with camera trap data.
 
 Options:
-  --tempdir PATH                Path to temporary directory. If not specified,
-                                OS temporary directory is used.
-  --proba_threshold FLOAT       Probability threshold for classification. if
-                                specified binary predictions are returned with
-                                1 being greater than the threshold, 0 being
-                                less than or equal to. If not specified,
-                                probabilities between 0 and 1 are returned.
-  --output_class_names BOOLEAN  If True, we just return a video and the name
-                                of the most likely class. If False, we return
-                                a probability or indicator (depending on
-                                --proba_threshold) for every possible class.
-  --model_path PATH             Path to model files to be loaded into model
-                                object.
-  --model_class TEXT            Class of model, controls whether or not sample
-                                model is used.
-  --verbose BOOLEAN             Controls verbosity of the command line predict
-                                function.
-  --help                        Show this message and exit.
+  --tempdir PATH                 Path to temporary directory. If not
+                                 specified, OS temporary directory is used.
+  --proba_threshold FLOAT        Probability threshold for classification. if
+                                 specified binary predictions are returned
+                                 with 1 being greater than the threshold, 0
+                                 being less than or equal to. If not
+                                 specified, probabilities between 0 and 1 are
+                                 returned.
+  --output_class_names           If True, we just return a video and the name
+                                 of the most likely class. If False, we return
+                                 a probability or indicator (depending on
+                                 --proba_threshold) for every possible class.
+  --model_profile TEXT           Defaults to 'full' which is slow and
+                                 accurate; can be 'fast' which is faster and
+                                 less accurate.
+  --weight_download_region TEXT  Defaults to 'us', can also be 'eu' or 'asia'.
+                                 Region for server to download weights.
+  --verbose                      Displays additional logging information
+                                 during processing.
+  --help                         Show this message and exit.
 ```
 
 Once `zamba` is installed, you can execute it on any directory of video files. The tool does not recursively search directories, so all of the files must be at the top level of the directory. The algorithm will work the best with 15 second videos since that is what it is trained on, though it will sample frames from longer videos, which may be less reliable.

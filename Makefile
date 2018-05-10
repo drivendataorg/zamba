@@ -24,5 +24,5 @@ distribute_testpypi: build
 	twine upload --repository pypitest dist/*.tar.gz
 
 distribute_pypi: build
-	twine upload --repository pypitest dist/*.tar.gz
+	twine upload --repository pypi dist/*.tar.gz
 

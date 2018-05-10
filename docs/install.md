@@ -11,15 +11,55 @@ will fail.
 
 ## Prerequisites
 
- - [Python](https://www.python.org/) 3.6, we recommend [Python installation using Anaconda](https://www.anaconda.com/download/)
- - [ffmpeg](https://www.ffmpeg.org/download.html), codecs for handling loading video files
+ - Python 3.6
+ - ffmpeg
+ - xgboost
+
+### [Python](https://www.python.org/) 3.6
+
+We recommend [Python installation using Anaconda](https://www.anaconda.com/download/) for all platforms, for more information about how to install Anaconda, here are some useful Youtube videos of installation on different platforms:
+
+ - [Anaconda download link](https://www.anaconda.com/download/)
+
+ - [Windows install video](https://www.youtube.com/watch?v=0OXBHvFeH_U)
+ - [macOS installation video](https://www.youtube.com/watch?v=nVlrpNf3EdM)
 
 
-## Hardware Specifications
+### FFMPEG version 4.0
+
+FFMPEG is an opensource library for loading videos of different codecs, and using ffmpeg means that `zamba` can be flexible in terms of the video formats we support. FFMPEG can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos/instructions walking through installation of FFMPEG on different platforms:
+
+ - [ffmpeg download link](https://www.ffmpeg.org/download.html)
+
+ - [Windows install video](https://www.youtube.com/watch?v=pHR3ttH5t-w)
+ - [Windows install instructions with screenshots](https://video.stackexchange.com/questions/20495/how-do-i-set-up-and-use-ffmpeg-in-windows/20496#20496)
+
+ - [MacOS install video](https://www.youtube.com/watch?v=8nbuqYw2OCw&t=5s)
+
+
+### XGBOOST 0.7.1
+
+XGBoost is a library for gradient boosting trees, which is oftenused in ensembled machine learning architectures like `zamba`. XGBoost may require extra steps on your platform. See below:
+
+#### XGBoost on Windows
+
+ - [Download precompiled xgboost](https://www.lfd.uci.edu/~gohlke/pythonlibs/#xgboost) for Python 3.6 and either 32 or 64 bit [depending on your version of windows](https://support.microsoft.com/en-us/help/827218/how-to-determine-whether-a-computer-is-running-a-32-bit-version-or-64)
+
+ - Open a command prompt. If you installed Anaconda, you will want to use an Anaconda command prompt: **Start > Anaconda3 > Anaconda Prompt**
+ - `cd Downloads` - change directories to your download folder where the precompiled binary is
+ - `pip install xgboost-0.71-cp36-cp36m-win_amd64.whl` - your filename may be different based on the version of Windows
+
+#### XGBoost on Linux and macOS
+
+XGBoost should install with `zamba` automatically. If you see a problem with xgboost when installing zamba, the easiest fix is to run `conda install xgboost==0.7.1 -c conda-forge` in an Anaconda prompt.
+
+
+## Install Hardware Specific Version of Zamba
 
 `zamba` is much faster on a machine with a graphics processing unit (gpu), but
  it has been developed and tested for machine with and without gpu(s).
 
+If you are using Anaconda, run these commands from an Anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
 ### gpu
 
@@ -46,19 +86,19 @@ $ pip install zamba[cpu]
 ```
 
 
-## Operating System Specifications
-
-In addition to [installing the correct version](#hardware) of `zamba`, a user
-may need to take additional steps before `zamba` works with their operating system.
+## Operating Systems that have been tested
 
 
 ### macOS
 
 `zamba` has been tested on macOS High Sierra.
 
-
 ### Linux
 
 `zamba` has been tested on [Ubuntu](https://www.ubuntu.com/) versions 16 and 17.
+
+### Windows
+
+`zamba` has been tested on Windows 10.
 
 

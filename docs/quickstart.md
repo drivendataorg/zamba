@@ -1,7 +1,8 @@
 # Quickstart
 
 This section assumes you have successfully installed `zamba` and want to get
-right to making species predictions for some videos!
+right to making species predictions for some videos! All of the commands here should be run at the commandline. On
+macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, and if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
 ## Input videos
 
@@ -62,7 +63,10 @@ small-cat.mp4         small cat
 **NOTE: `zamba` needs to download the "weights" files for the neural networks
 that it uses to make predictions. On first run it will download ~1GB of files
 with these weights.** Once these are downloaded, the tool will use the local
-versions and will not need to perform this download again.
+versions and will not need to perform this download again. If you are not in the US, we recommend
+running the above command with the additional flag either `--weight_download_region eu` or
+`--weight_download_region asia` depending on your location. The closer you are to the server
+the faster the downloads will be.
 
 ## Getting Help from the Command Line
 
@@ -88,7 +92,6 @@ information about the `predict` command and its options:
 
 ```console
 $ zamba predict --help
-
 Usage: zamba predict [OPTIONS] [DATA_PATH] [PRED_PATH]
 
   Identify species in a video.
@@ -99,23 +102,26 @@ Usage: zamba predict [OPTIONS] [DATA_PATH] [PRED_PATH]
   of common interest to wildlife researchers working with camera trap data.
 
 Options:
-  --tempdir PATH           Path to temporary directory. If not specified, OS
-                           temporary directory is used.
-  --proba_threshold FLOAT  Probability threshold for classification. if
-                           specified binary predictions are returned with 1
-                           being greater than the threshold, 0 being less than
-                           or equal to. If not specified, probabilities
-                           between 0 and 1 are returned.
-  --output_class_names     If True, we just return a video and the name of the
-                           most likely class. If False, we return a
-                           probability or indicator (depending on
-                           --proba_threshold) for every possible class.
-  --model_path PATH        Path to model files to be loaded into model object.
-  --model_class TEXT       Class of model, controls whether or not sample
-                           model is used.
-  --verbose BOOLEAN        Controls verbosity of the command line predict
-                           function.
-  --help                   Show this message and exit.
+  --tempdir PATH                 Path to temporary directory. If not
+                                 specified, OS temporary directory is used.
+  --proba_threshold FLOAT        Probability threshold for classification. if
+                                 specified binary predictions are returned
+                                 with 1 being greater than the threshold, 0
+                                 being less than or equal to. If not
+                                 specified, probabilities between 0 and 1 are
+                                 returned.
+  --output_class_names           If True, we just return a video and the name
+                                 of the most likely class. If False, we return
+                                 a probability or indicator (depending on
+                                 --proba_threshold) for every possible class.
+  --model_profile TEXT           Defaults to 'full' which is slow and
+                                 accurate; can be 'fast' which is faster and
+                                 less accurate.
+  --weight_download_region TEXT  Defaults to 'us', can also be 'eu' or 'asia'.
+                                 Region for server to download weights.
+  --verbose                      Displays additional logging information
+                                 during processing.
+  --help                         Show this message and exit.
 ```
 
 ## Next Steps

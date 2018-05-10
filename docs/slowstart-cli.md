@@ -14,23 +14,36 @@ more information about options for `zamba`:
 
 ```
 $ zamba predict --help
-  --tempdir PATH           Path to temporary directory. If not specified, OS
-                           temporary directory is used.
-  --proba_threshold FLOAT  Probability threshold for classification. if
-                           specified binary predictions are returned with 1
-                           being greater than the threshold, 0 being less than
-                           or equal to. If not specified, probabilities
-                           between 0 and 1 are returned.
-  --output_class_names     If True, we just return a video and the name of the
-                           most likely class. If False, we return a
-                           probability or indicator (depending on
-                           --proba_threshold) for every possible class.
-  --model_path PATH        Path to model files to be loaded into model object.
-  --model_class TEXT       Class of model, controls whether or not sample
-                           model is used.
-  --verbose BOOLEAN        Controls verbosity of the command line predict
-                           function.
-  --help                   Show this message and exit.
+Usage: zamba predict [OPTIONS] [DATA_PATH] [PRED_PATH]
+
+  Identify species in a video.
+
+  This is a command line interface for prediction on camera trap footage.
+  Given a path to camera trap footage, the predict function use a deep
+  learning model to predict the presence or absense of a variety of species
+  of common interest to wildlife researchers working with camera trap data.
+
+Options:
+  --tempdir PATH                 Path to temporary directory. If not
+                                 specified, OS temporary directory is used.
+  --proba_threshold FLOAT        Probability threshold for classification. if
+                                 specified binary predictions are returned
+                                 with 1 being greater than the threshold, 0
+                                 being less than or equal to. If not
+                                 specified, probabilities between 0 and 1 are
+                                 returned.
+  --output_class_names           If True, we just return a video and the name
+                                 of the most likely class. If False, we return
+                                 a probability or indicator (depending on
+                                 --proba_threshold) for every possible class.
+  --model_profile TEXT           Defaults to 'full' which is slow and
+                                 accurate; can be 'fast' which is faster and
+                                 less accurate.
+  --weight_download_region TEXT  Defaults to 'us', can also be 'eu' or 'asia'.
+                                 Region for server to download weights.
+  --verbose                      Displays additional logging information
+                                 during processing.
+  --help                         Show this message and exit.
 ```
 
 Let's go through these one by one.
@@ -60,30 +73,22 @@ Setting this option to `True` yields the most concise output `zamba` is capable
   the name of the species (or `blank`) with the highest class probability. See
   the [Quickstart](quickstart.html) for example usage.
 
-#### --model_path PATH
+#### --model_profile TEXT
 
-This option tells `zamba` where to look for the model. By default the
-[algorithm shipped](algorithms.html) with `zamba` is used.
+There are two versions of the algorithm that ship with zamba. If you pass `fast` there is a faster algorithm that can be less accurate that is used. If you pass `full` (the default) a slower algorithm that has 4 sub-models instead of 1 is used.
 
-If an alternative model path is used, the model pointed to must be able to
-inherit from the `zamba.models.model.Model` class in order to appropriately
-work with the rest of the code.
+#### --weight_download_region TEXT
 
-#### --model_class TEXT
-
-This flag is used primarily for development, in which a sample model is
-sometimes used to test functionality. By default the `cnnensemble` [algorithm
-class shipped](algorithms.html) with `zamba` is used.
+Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. 'us' is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
 #### --verbose BOOLEAN
 
-This option currently controls only whether or not the command line shows the
- `data_path` (input) and `pred_path` (output) being used during prediction.
+This option currently controls only whether or not the command line shows additional information during processing.
 
 ### `zamba train`
 
-#### NOT IMPLEMENTED
+#### NOT YET IMPLEMENTED
 
 ### `zamba tune`
 
-#### NOT IMPLEMENTED
+#### NOT YET IMPLEMENTED
