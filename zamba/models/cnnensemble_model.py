@@ -49,19 +49,22 @@ class CnnEnsemble(Model):
 
         l1_results = {}
         prof = config.PROFILES[self.profile]
+        all_skipped = set()
         for l1_model in tqdm(prof, desc=f'Predicting on {len(prof)} L1 models'):
-            l1_results[l1_model] = generate_prediction_test(model_name=l1_model,
-                                                            weights=(Path(__file__).parent / 'cnnensemble' / 'output' /
+            l1_results[l1_model], skipped = generate_prediction_test(model_name=l1_model,
+                                                                     weights=(Path(__file__).parent / 'cnnensemble' / 'output' /
                                                                      'checkpoints' / config.MODEL_WEIGHTS[l1_model]),
-                                                            file_names=file_names,
-                                                            verbose=self.verbose,
-                                                            save_results=False)
+                                                                     file_names=file_names,
+                                                                     verbose=self.verbose,
+                                                                     save_results=False)
+
+            all_skipped |= set([f.name for f in skipped])
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
         preds = pd.DataFrame(
             {
-                'filename': [file_name.name for file_name in file_names],
+                'filename': [file_name.name for file_name in file_names if file_name.name not in all_skipped],
                 **{cls: l2_results[:, i] for i, cls in enumerate(config.CLASSES)}
             },
             columns=['filename'] + config.CLASSES

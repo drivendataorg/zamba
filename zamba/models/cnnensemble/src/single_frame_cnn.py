@@ -675,7 +675,7 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
     def load_file(video_id):
         try:
             X = preprocess_input(load_video_clip_frames(video_id))
-        except ValueError:
+        except:
             X = None
 
         return video_id, X
@@ -683,36 +683,43 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
     start_time = time.time()
 
     all_predictions = []
+    skipped_files = []
     processed_files = 0
 
     pool = ThreadPool(8)
     prev_res = None
-    for batch in utils.chunks(file_names, 8, add_empty=True):
-        if prev_res is not None:
-            results = prev_res.get()
-        else:
-            results = []
-        prev_res = pool.map_async(load_file, batch)
 
-        for file_path, X in tqdm(results, desc=f'Processing {len(results)} videos'):
-            if X is None:
-                print("Skipping file that is not a valid video: ", file_path)
 
+    with tqdm(total=len(file_names), desc=f'Processing {len(file_names)} videos') as pbar:
+        for batch in utils.chunks(file_names, 8, add_empty=True):
+            if prev_res is not None:
+                results = prev_res.get()
             else:
-                video_id = file_path.name
-                processed_files += 1
-                have_data_time = time.time()
-                prediction = model.predict(X, batch_size=1)
-                all_predictions.append(prediction)
+                results = []
+            prev_res = pool.map_async(load_file, batch)
 
-                if save_results:
-                    res_fn = output_dir.resolve() / f"{video_id}.csv"
-                    ds = pd.DataFrame(index=PREDICT_FRAMES,
-                                      data=prediction,
-                                      columns=CLASSES)
-                    ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
+            for file_path, X in results:
+                pbar.update(1)
+                if X is None:
+                    print(" Skipping file that is not a valid video: ", file_path)
+                    processed_files += 1
+                    skipped_files.append(file_path)
 
-    return np.array(all_predictions)
+                else:
+                    video_id = file_path.name
+                    processed_files += 1
+                    have_data_time = time.time()
+                    prediction = model.predict(X, batch_size=1)
+                    all_predictions.append(prediction)
+
+                    if save_results:
+                        res_fn = output_dir.resolve() / f"{video_id}.csv"
+                        ds = pd.DataFrame(index=PREDICT_FRAMES,
+                                          data=prediction,
+                                          columns=CLASSES)
+                        ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
+
+    return np.array(all_predictions), skipped_files
 
 
 def find_non_blank_frames(model_name, fold):
