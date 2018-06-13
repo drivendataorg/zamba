@@ -34,7 +34,7 @@ class CnnEnsemble(Model):
             The data.
         """
         p = Path(data_path)
-        file_names = [x for x in p.iterdir() if x.is_file() and not x.name.startswith(".")]
+        file_names = [x for x in p.glob('**/*') if x.is_file() and not x.name.startswith(".")]
         return file_names
 
     def predict(self, file_names):
@@ -58,13 +58,13 @@ class CnnEnsemble(Model):
                                                                      verbose=self.verbose,
                                                                      save_results=False)
 
-            all_skipped |= set([f.name for f in skipped])
+            all_skipped |= set([str(f) for f in skipped])
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
         preds = pd.DataFrame(
             {
-                'filename': [file_name.name for file_name in file_names if file_name.name not in all_skipped],
+                'filename': [str(file_name) for file_name in file_names if str(file_name) not in all_skipped],
                 **{cls: l2_results[:, i] for i, cls in enumerate(config.CLASSES)}
             },
             columns=['filename'] + config.CLASSES
