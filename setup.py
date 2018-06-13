@@ -22,7 +22,7 @@ long_description = open(Path(__file__).parent / 'README.md').read()
 
 setup(
     name='zamba',
-    version='0.1.5',
+    version='0.1.6',
     description='Zamba is a tool to identify the species seen in camera trap videos from sites in central Africa.',
     long_description=long_description,
     long_description_content_type='text/markdown',
