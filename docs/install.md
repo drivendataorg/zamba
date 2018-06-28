@@ -1,10 +1,10 @@
 # Installing zamba
 
 
-Zamba has been developed and tested on macOS and Ubuntu linux for both cpu and
-gpu configurations.
+Zamba has been developed and tested on macOS and Ubuntu Linux for both CPU and
+GPU configurations.
 
-When a user installs `zamba` that **user must specify to install the gpu or cpu
+When a user installs `zamba` that **user must specify to install the GPU or CPU
  version**. If the user fails to make this specification, no version of
 [`tensorflow`](https://www.tensorflow.org/) will be installed, thus everything
 will fail.
@@ -17,7 +17,7 @@ will fail.
 
 ### [Python](https://www.python.org/) 3.6
 
-We recommend [Python installation using Anaconda](https://www.anaconda.com/download/) for all platforms, for more information about how to install Anaconda, here are some useful Youtube videos of installation on different platforms:
+We recommend [Python installation using Anaconda](https://www.anaconda.com/download/) for all platforms, for more information about how to install Anaconda, here are some useful YouTube videos of installation on different platforms:
 
  - [Anaconda download link](https://www.anaconda.com/download/)
 
@@ -27,7 +27,7 @@ We recommend [Python installation using Anaconda](https://www.anaconda.com/downl
 
 ### FFMPEG version 4.0
 
-FFMPEG is an opensource library for loading videos of different codecs, and using ffmpeg means that `zamba` can be flexible in terms of the video formats we support. FFMPEG can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos/instructions walking through installation of FFMPEG on different platforms:
+FFMPEG is an open source library for loading videos of different codecs, and using ffmpeg means that `zamba` can be flexible in terms of the video formats we support. FFMPEG can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos/instructions walking through installation of FFMPEG on different platforms:
 
  - [ffmpeg download link](https://www.ffmpeg.org/download.html)
 
@@ -39,7 +39,7 @@ FFMPEG is an opensource library for loading videos of different codecs, and usin
 
 ### XGBOOST 0.7.1
 
-XGBoost is a library for gradient boosting trees, which is oftenused in ensembled machine learning architectures like `zamba`. XGBoost may require extra steps on your platform. See below:
+XGBoost is a library for gradient boosting trees, which is often used in ensembled machine learning architectures like `zamba`. XGBoost may require extra steps on your platform. See below:
 
 #### XGBoost on Windows
 
@@ -56,30 +56,30 @@ XGBoost should install with `zamba` automatically. If you see a problem with xgb
 
 ## Install Hardware Specific Version of Zamba
 
-`zamba` is much faster on a machine with a graphics processing unit (gpu), but
- it has been developed and tested for machine with and without gpu(s).
+`zamba` is much faster on a machine with a graphics processing unit (GPU), but
+ it has been developed and tested for machine with and without GPU(s).
 
 If you are using Anaconda, run these commands from an Anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
-### gpu
+### GPU
 
-To install for development with **Tensorflow for gpu**
+To install for development with **Tensorflow for GPU**
 
 ```console
 $ pip install zamba[gpu]
 ```
 
 To use a GPU, you must be using an
-[nvidia gpu](https://www.nvidia.com/Download/index.aspx?lang=en-us),
+[NVIDIA GPU](https://www.nvidia.com/Download/index.aspx?lang=en-us),
 [installed and configured CUDA](https://developer.nvidia.com/cuda-downloads),
 and [installed and configured CuDNN](https://developer.nvidia.com/cudnn) per
 their specifications. Once this is done, you can select to install the version
  of `zamba` that uses `tensorflow` compiled for GPU.
 
 
-### cpu
+### CPU
 
-To install for development with **Tensorflow for cpu**
+To install for development with **Tensorflow for CPU**
 
 ```console
 $ pip install zamba[cpu]
