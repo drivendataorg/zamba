@@ -5,6 +5,7 @@ from shutil import rmtree
 import pandas as pd
 
 from tensorflow.python.keras.utils import get_file
+from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception, NASNetMobile, InceptionResNetV2
 from tqdm import tqdm
 
 from .model import Model
@@ -156,3 +157,9 @@ class CnnEnsemble(Model):
         hidden_files = [pth for pth in cnnpath.glob("**/*") if pth.parts[-1].startswith("._") and pth.is_file()]
         if hidden_files:
             deque(map(remove, hidden_files))
+
+        # now get the weights *with tops* for pre-trained Keras models if needed
+        pretrained_models = [ResNet50, InceptionV3, Xception, NASNetMobile, InceptionResNetV2]
+
+        # calling the model triggers download if needed
+        [model() for model in pretrained_models]
