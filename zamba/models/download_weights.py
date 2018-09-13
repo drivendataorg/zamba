@@ -1,8 +1,10 @@
 from collections import deque
 from os import remove
+from shutil import rmtree
 from pathlib import Path
 
 from tensorflow.python.keras.utils import get_file
+
 
 def download_weights(download_region='us'):
     """Checks for directories containing the ensemble weights, downloads them if neccessary.
