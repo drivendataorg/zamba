@@ -1,7 +1,8 @@
 from collections import deque
-from os import remove
+from os import remove, getenv
 from pathlib import Path
 from shutil import rmtree
+from dotenv import load_dotenv, find_dotenv
 import pandas as pd
 
 from tensorflow.python.keras.utils import get_file
@@ -11,6 +12,8 @@ from .model import Model
 from .cnnensemble.src.single_frame_cnn import generate_prediction_test
 from .cnnensemble.src import second_stage
 from .cnnensemble.src import config
+
+load_dotenv(find_dotenv())
 
 
 class CnnEnsemble(Model):
@@ -131,7 +134,7 @@ class CnnEnsemble(Model):
         # file names, paths
         fnames = ["input.tar.gz", "output.tar.gz", "data_fast.zip"]
 
-        cache_dir = Path(__file__).parent
+        cache_dir = Path(__file__).parent if getenv("CACHE_DIR") is None else getenv("CACHE_DIR")
         cache_subdir = Path("cnnensemble")
 
         paths_needed = [cache_dir / cache_subdir / "input",
