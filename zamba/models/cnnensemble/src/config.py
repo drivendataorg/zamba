@@ -1,6 +1,11 @@
+from os import getenv
 from pathlib import Path
 
-MODEL_DIR = Path(__file__).parent.parent
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+MODEL_DIR = Path(__file__).parent.parent if getenv("CACHE_DIR") is None else Path(getenv("CACHE_DIR")) / "cnnensemble"
 RAW_VIDEO_DIR = MODEL_DIR / "input" / "raw"
 TRAIN_IMG_DIR = MODEL_DIR / "data_fast" / "pri_matrix" / "train_img"
 TEST_VIDEO_DIR = MODEL_DIR / "input" / "raw_test"

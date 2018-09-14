@@ -1,9 +1,12 @@
 from collections import deque
-from os import remove
+from os import remove, getenv
 from shutil import rmtree
 from pathlib import Path
 
+from dotenv import load_dotenv, find_dotenv
 from tensorflow.python.keras.utils import get_file
+
+load_dotenv(find_dotenv())
 
 
 def download_weights(download_region='us'):
@@ -33,7 +36,7 @@ def download_weights(download_region='us'):
     # file names, paths
     fnames = ["input.tar.gz", "output.tar.gz", "data_fast.zip"]
 
-    cache_dir = Path(__file__).parent
+    cache_dir = Path(__file__).parent if getenv("CACHE_DIR") is None else getenv("CACHE_DIR")
     cache_subdir = Path("cnnensemble")
 
     paths_needed = [cache_dir / cache_subdir / "input",
