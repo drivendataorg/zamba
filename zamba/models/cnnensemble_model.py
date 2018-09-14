@@ -54,12 +54,13 @@ class CnnEnsemble(Model):
         prof = config.PROFILES[self.profile]
         all_skipped = set()
         for l1_model in tqdm(prof, desc=f'Predicting on {len(prof)} L1 models'):
-            l1_results[l1_model], skipped = generate_prediction_test(model_name=l1_model,
-                                                                     weights=(Path(__file__).parent / 'cnnensemble' / 'output' /
-                                                                     'checkpoints' / config.MODEL_WEIGHTS[l1_model]),
-                                                                     file_names=file_names,
-                                                                     verbose=self.verbose,
-                                                                     save_results=False)
+            l1_results[l1_model], skipped = generate_prediction_test(
+                model_name=l1_model,
+                weights=config.MODEL_DIR / 'output' / 'checkpoints' / config.MODEL_WEIGHTS[l1_model],
+                file_names=file_names,
+                verbose=self.verbose,
+                save_results=False
+            )
 
             all_skipped |= set([str(f) for f in skipped])
 
