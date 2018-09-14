@@ -53,7 +53,7 @@ def find_problematic_clips():
     print(np.sum(ds.error < 0.1))
 
     ds_matching = ds[ds.error < 0.1]
-    ds_matching.to_csv(Path(__file__).parent.parent / 'output/unused_matching.csv',
+    ds_matching.to_csv(config.MODEL_DIR / 'output/unused_matching.csv',
                        index=False, float_format='%.7f',
                        columns=['filename'] + ['mean_' + cls for cls in classes],
                        header=['filename'] + classes)
@@ -107,7 +107,7 @@ def generate_labeled():
     for col, cls in enumerate(classes):
         res[cls] = data[:, col]
 
-    res.to_csv(Path(__file__).parent.parent / 'output/unused_labeled.csv',
+    res.to_csv(config.MODEL_DIR / 'output/unused_labeled.csv',
                index=False, float_format='%.7f', header=True)
 
 

@@ -31,7 +31,7 @@ def generate_folds():
         print(np.sum(data[items, :-2], axis=0))
 
     training_set_labels_ds_full['fold'] = data[:, -1]
-    training_set_labels_ds_full.to_csv(Path(__file__).parent.parent / 'input/folds.csv', columns=['filename', 'fold'], index=False)
+    training_set_labels_ds_full.to_csv(config.MODEL_DIR / 'input/folds.csv', columns=['filename', 'fold'], index=False)
 
 
 def move_non_train():
@@ -41,7 +41,7 @@ def move_non_train():
     src_dir = config.MODEL_DIR / 'input/raw/'
     dst_dir = config.MODEL_DIR / 'input/raw_test/'
     skip_files = 0
-    for fn in os.listdir(Path(__file__).parent.parent / 'input/raw/'):
+    for fn in os.listdir(config.MODEL_DIR / 'input/raw/'):
         if fn not in train_files:
             skip_files += 1
             shutil.move(os.path.join(src_dir, fn), os.path.join(dst_dir, fn))
@@ -57,7 +57,7 @@ def move_unused():
     src_dir = config.MODEL_DIR / 'input/raw_test/'
     dst_dir = config.MODEL_DIR / 'input/raw_unused/'
     skip_files = 0
-    for fn in os.listdir(Path(__file__).parent.parent / 'input/raw_test/'):
+    for fn in os.listdir(config.MODEL_DIR / 'input/raw_test/'):
         if fn not in test_files:
             skip_files += 1
             shutil.move(os.path.join(src_dir, fn), os.path.join(dst_dir, fn))
