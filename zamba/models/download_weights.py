@@ -83,6 +83,9 @@ def download_weights(download_region='us'):
         "inception_resnet_v2_weights_tf_dim_ordering_tf_kernels_notop.h5":
             f"https://github.com/fchollet/deep-learning-models/releases/download/v0.7"
             f"/inception_resnet_v2_weights_tf_dim_ordering_tf_kernels_notop.h5",
+        "inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5":
+            f"https://github.com/fchollet/deep-learning-models/releases/download/v0.5"
+            f"/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5",
     }
 
     for fname, origin in pretrained_model_weight_paths.items():
