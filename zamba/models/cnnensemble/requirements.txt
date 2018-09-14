@@ -2,7 +2,6 @@ bleach==1.5.0
 cycler==0.10.0
 Cython==0.28.1
 decorator==4.1.2
-dotenv==0.9.1
 enum34==1.1.6
 h5py==2.7.1
 html5lib==0.9999999
@@ -14,6 +13,7 @@ Pillow==5.0.0
 protobuf==3.5.1
 pyparsing==2.2.0
 python-dateutil==2.6.1
+python-dotenv==0.9.1
 pytz==2017.3
 PyWavelets==0.5.2
 PyYAML==3.12
