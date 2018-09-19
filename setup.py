@@ -15,10 +15,11 @@ def load_reqs(path):
     return reqs
 
 
-req_path = Path(__file__).parent / 'requirements.txt'
+project_path = Path(__file__).parent
+req_path = project_path / 'requirements.txt'
 requirements = load_reqs(req_path)
 
-long_description = open(Path(__file__).parent / 'README.md').read()
+long_description = open(project_path / 'README.md').read()
 
 setup(
     name='zamba',
@@ -47,7 +48,7 @@ setup(
         'Intended Audience :: Science/Research',
 
         # Pick your license as you wish (should match "license" above)
-         'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: MIT License',
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
@@ -65,8 +66,8 @@ setup(
     python_requires='>=3.5',
     install_requires=requirements,
     extras_require={
-        "cpu": ["tensorflow==1.7.0"],
-        "gpu": ["tensorflow-gpu==1.7.0"]
+        "cpu": ["tensorflow==1.10.1"],
+        "gpu": ["tensorflow-gpu==1.10.1"]
     },
     entry_points={
         'console_scripts': [
