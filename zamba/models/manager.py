@@ -87,7 +87,7 @@ class ModelManager(object):
 
         """
 
-        data_path = Path(data_path)
+        data_path = str(data_path)
 
         # cnn ensemble doesn't use simple data loader, samples do...
         if self.model_class != 'cnnensemble':

@@ -231,7 +231,7 @@ class SecondLevelModelMLP(SecondLevelModel):
     def _predict(self, X):
         if self.model is None:
             self.model = self._build_model(input_size=X.shape[1])
-            self.model.load_weights(self.weights_fn.resolve())
+            self.model.load_weights(str(self.weights_fn.resolve()))
             self.model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
         return self.model.predict(X)
 
