@@ -499,7 +499,7 @@ def train(fold, model_name, weights='', initial_epoch=0, use_non_blank_frames=Tr
             verbose=1)
     else:
         print('load weights', weights)
-        model.load_weights(weights)
+        model.load_weights(str(weights))
 
     utils.lock_layers_until(model, model_info.unlock_layer_name)
     # model.summary()
@@ -560,7 +560,7 @@ def check_model(model_name, weights, fold):
     :param fold: fold to check
     """
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=False)
+    model.load_weights(str(weights), by_name=False)
 
     dataset = SingleFrameCNNDataset(preprocess_input_func=MODELS[model_name].preprocess_input,
                                     batch_size=1,
@@ -592,7 +592,7 @@ def generate_prediction(model_name, weights, fold):
     :return:
     """
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=False)
+    model.load_weights(str(weights), by_name=False)
 
     output_dir = cnnensemble_path / "output" / "prediction_train_frames" / f"{model_name}_{fold}"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -664,7 +664,7 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
     K.clear_session()
 
     model = MODELS[model_name].factory(lock_base_model=True)
-    model.load_weights(weights, by_name=False)
+    model.load_weights(str(weights), by_name=False)
 
     output_dir = cnnensemble_path / "output" / "prediction_test_frames" / f"{model_name}"
     if save_results:
