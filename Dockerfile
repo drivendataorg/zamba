@@ -1,5 +1,5 @@
 # Dockerfile for CI on codeship
-FROM continuumio/anaconda3
+FROM continuumio/anaconda3:5.2.0
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install -y build-essential
