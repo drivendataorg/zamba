@@ -51,7 +51,7 @@ XGBoost is a library for gradient boosting trees, which is oftenused in ensemble
 
 #### XGBoost on Linux and macOS
 
-XGBoost should install with `zamba` automatically. If you see a problem with xgboost when installing zamba, the easiest fix is to run `conda install xgboost==0.7.1 -c conda-forge` in an Anaconda prompt.
+XGBoost should install with `zamba` automatically. If you see a problem with xgboost when installing zamba, the easiest fix is to run `conda install xgboost==0.71 -c conda-forge` in an Anaconda prompt.
 
 
 ## Install Hardware Specific Version of Zamba
