@@ -4,7 +4,9 @@ platform: x64
 
 environment:
   matrix:
-      - MINICONDA: C:\Miniconda3
+      - PYTHON_VERSION: 3.6
+        MINICONDA: C:\Miniconda3
+        PYTHON_ARCH: "64"
 
 install:
   - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
