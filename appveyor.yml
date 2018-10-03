@@ -1,10 +1,10 @@
 build: false
 
-environment:
-  global:
-      MINGW_64: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
-      MINICONDA: C:\Miniconda3
+platform: x64
 
+environment:
+  matrix:
+      - MINICONDA: C:\Miniconda3
 
 install:
   - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
@@ -19,4 +19,3 @@ install:
 test_script:
   - python -m pytest -s zamba
   - flake8 zamba
-
