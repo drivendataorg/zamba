@@ -1,0 +1,13 @@
+build: false
+
+environment:
+  matrix:
+    - PYTHON_VERSION: 3.6
+
+
+install:
+  - pip install -r requirements-dev.txt
+  - pip install .[cpu]
+
+test_script:
+  - python -m pytest -s zamba
