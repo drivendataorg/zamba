@@ -3,6 +3,6 @@ recommonmark==0.4.0
 sphinx_rtd_theme==0.3.0
 
 # required to autobuild docs, but only installed as extra
-tensorflow==1.10.1
+tensorflow==1.10
 
 -r ../requirements.txt
