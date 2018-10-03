@@ -2,16 +2,11 @@ build: false
 
 environment:
   matrix:
-    - MINICONDA: C:\Miniconda3
+    - PYTHON_VERSION: 3.6
 
 
 install:
-  - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  - "conda create -q -n test-environment python=3.6"
-  - activate test-environment
-  - conda install xgboost==0.71 -c conda-forge
+  - pip install xgboost-0.71-cp36-cp36m-win_amd64.whl
   - pip install -r requirements-dev.txt
   - pip install .[cpu]
 
