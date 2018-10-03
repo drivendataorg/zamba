@@ -14,8 +14,8 @@ install:
   - conda update -q conda
   - "conda create -q -n test-environment python=3.6"
   - activate test-environment
-  - conda install -c anaconda py-xgboost==0.71
-  - which python
+  - appveyor DownloadFile https://github.com/worldbank/ML-classification-algorithms-poverty/raw/master/deps/xgboost-0.71-cp36-cp36m-win_amd64.whl
+  - pip install xgboost-0.71-cp36-cp36m-win_amd64.whl
   - pip install -r requirements-dev.txt
   - pip install .[cpu]
 
