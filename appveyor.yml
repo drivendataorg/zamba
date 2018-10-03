@@ -2,7 +2,9 @@ build: false
 
 environment:
   global:
-    - PYTHON_ARCH: "64"
+    - MINGW_64: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
+
+  matrix:
     - MINICONDA: C:\Miniconda3
 
 
