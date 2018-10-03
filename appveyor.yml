@@ -1,15 +1,15 @@
 build: false
 
 environment:
-  - PYTHON_VERSION: 3.6
-  - MINICONDA: C:\Miniconda3
+  matrix:
+    - MINICONDA: C:\Miniconda3
 
 
 install:
   - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  - "conda create -q -n test-environment python=%PYTHON_VERSION%"
+  - "conda create -q -n test-environment python=3.6"
   - activate test-environment
   - conda install xgboost==0.71 -c conda-forge
   - pip install -r requirements-dev.txt
