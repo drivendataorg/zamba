@@ -1,7 +1,8 @@
 build: false
 
 environment:
-  matrix:
+  global:
+    - PYTHON_ARCH: "64"
     - MINICONDA: C:\Miniconda3
 
 
