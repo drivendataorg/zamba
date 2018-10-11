@@ -37,7 +37,7 @@ FFMPEG is an opensource library for loading videos of different codecs, and usin
  - [MacOS install video](https://www.youtube.com/watch?v=8nbuqYw2OCw&t=5s)
 
 
-### XGBOOST 0.7.1
+### XGBOOST 0.71
 
 XGBoost is a library for gradient boosting trees, which is oftenused in ensembled machine learning architectures like `zamba`. XGBoost may require extra steps on your platform. See below:
 
