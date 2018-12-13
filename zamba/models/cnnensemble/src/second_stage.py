@@ -168,7 +168,7 @@ class SecondLevelModel:
             X_combined = []
             y_combined = []
             for model_name, fold in model_with_folds:
-                X, y, video_ids = results[requests.index((model_name, fold))]
+                X, y, video_ids = results[requests.index((model_name, fold, self.preprocess_l1_model_output))]
                 logger.debug("Load", model_name, fold, X.shape, y.shape)
                 X_combined.append(X)
                 y_combined.append(y)
@@ -180,9 +180,7 @@ class SecondLevelModel:
         y = y_all_combined[0]
 
         logger.debug("Training model", X.shape, y.shape)
-
-        y_cat = np.argmax(y, axis=1)
-        self._train(X, y_cat)
+        self._train(X, y)
 
 
 class SecondLevelModelXGBoost(SecondLevelModel):
@@ -197,15 +195,16 @@ class SecondLevelModelXGBoost(SecondLevelModel):
 
     def _predict(self, X):
         if self.model is None:
-            self.model = pickle.load(open(self.model_fn.resolve(), "rb"))
+            self.model = pickle.load(open(str(self.model_fn.resolve()), "rb"))
         return self.model.predict_proba(X)
 
     def _train(self, X, y):
         self.model = XGBClassifier(n_estimators=1600, objective='multi:softprob',
                                    learning_rate=0.03, silent=False, n_jobs=config.N_CORES)
         with utils.timeit_context('fit 1600 est'):
-            self.model.fit(X, y)  # , eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
-        pickle.dump(self.model, open(self.model_fn.resolve(), "wb"))
+            y_cat = np.argmax(y, axis=1)
+            self.model.fit(X, y_cat)  # , eval_set=[(X_test, y_test)], early_stopping_rounds=20, verbose=True)
+        pickle.dump(self.model, open(str(self.model_fn.resolve()), "wb"))
 
 
 class SecondLevelModelMLP(SecondLevelModel):
@@ -257,7 +256,7 @@ class SecondLevelModelMLP(SecondLevelModel):
                        verbose=1,
                        callbacks=[LearningRateScheduler(schedule=scheduler)])
 
-        self.model.save_weights(self.weights_fn.resolve())
+        self.model.save_weights(str(self.weights_fn))
 
 
 def predict(l1_model_results, profile):

@@ -130,4 +130,14 @@ def train(data_path, labels, tempdir):
         Train the weights from scratch using
         the provided data_path and labels.
     """
-    click.echo("Training an algorithm from scratch on new data is not yet implemented.")
+    click.echo(f"Using data_path:\t{data_path}")
+    click.echo(f"Using labels:\t{labels}")
+    click.echo(f"Using tempdir:\t{tempdir}")
+
+    # Load the model into manager
+    manager = ModelManager(model_path=default_model_dir,
+                           model_class='cnnensemble',
+                           tempdir=tempdir)
+
+    # Make predictions, return a DataFrame
+    manager.train(data_path, labels, tempdir)

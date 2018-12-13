@@ -106,7 +106,7 @@ class ModelManager(object):
         if save:
             if pred_path is None:
                 timestamp = datetime.now().isoformat()
-                pred_path = Path('.', f'predictions-{data_path.parts[-1]}-{timestamp}.csv')
+                pred_path = Path('.', f'predictions-{Path(data_path).parts[-1]}-{timestamp}.csv')
 
             preds.to_csv(pred_path)
 
@@ -118,13 +118,13 @@ class ModelManager(object):
 
         return preds
 
-    def train(self):
+    def train(self, config):
         """
 
         Returns:
 
         """
-        pass
+        self.model.fit()
 
     def tune(self):
         """

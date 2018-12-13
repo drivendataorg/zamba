@@ -58,7 +58,7 @@ class Model(object):
         """
         pass
 
-    def fit(self, X, y):
+    def fit(self):
         """Use the same architecture, but train the weights from scratch using
         the provided X and y.
 
