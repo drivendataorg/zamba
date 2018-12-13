@@ -4,26 +4,38 @@ from pathlib import Path
 from shutil import rmtree
 from dotenv import load_dotenv, find_dotenv
 import pandas as pd
+import logging
+from tqdm import tqdm
 
 from tensorflow.python.keras.utils import get_file
-from tqdm import tqdm
 
 from .model import Model
 from .cnnensemble.src.single_frame_cnn import generate_prediction_test
 from .cnnensemble.src import second_stage
 from .cnnensemble.src import config
+from .cnnensemble.src import prepare_train_data
+from .cnnensemble.src import single_frame_cnn
 
 load_dotenv(find_dotenv())
 
 
 class CnnEnsemble(Model):
-    def __init__(self, model_path, profile=config.DEFAULT_PROFILE, tempdir=None, download_region='us', verbose=False):
+    def __init__(self,
+                 model_path,
+                 profile=config.DEFAULT_PROFILE,
+                 tempdir=None,
+                 download_region='us',
+                 download_weights=True,
+                 verbose=False
+                 ):
         # use the model object's defaults
         super().__init__(model_path, tempdir=tempdir)
         self.profile = profile
-
-        self._download_weights_if_needed(download_region)
         self.verbose = verbose
+        self.logger = logging.getLogger(f"{__file__}")
+
+        if download_weights:
+            self._download_weights_if_needed(download_region)
 
     def load_data(self, data_path):
         """ Loads data and returns it in a format that can be used
@@ -56,7 +68,7 @@ class CnnEnsemble(Model):
         for l1_model in tqdm(prof, desc=f'Predicting on {len(prof)} L1 models'):
             l1_results[l1_model], skipped = generate_prediction_test(
                 model_name=l1_model,
-                weights=config.MODEL_DIR / 'output' / 'checkpoints' / config.MODEL_WEIGHTS[l1_model],
+                weights=config.MODEL_DIR / 'output' / config.MODEL_WEIGHTS[l1_model],
                 file_names=file_names,
                 verbose=self.verbose,
                 save_results=False
@@ -76,7 +88,71 @@ class CnnEnsemble(Model):
 
         return preds.set_index('filename')
 
-    def fit(self, X, y):
+    def _train_initial_l1_filter_model(self):
+        for fold in config.TRAIN_FOLDS:
+            self.logger.info(f"Train initial model, fold {fold}")
+            single_frame_cnn.train(
+                fold=fold,
+                model_name=config.BLANK_FRAMES_MODEL,
+                nb_epochs=config.NB_EPOCHS[config.BLANK_FRAMES_MODEL],
+                use_non_blank_frames=False)
+
+    def _find_non_non_blank_frames(self):
+        model_name = config.BLANK_FRAMES_MODEL
+        for fold in config.TRAIN_FOLDS:
+            self.logger.info(f'find non blank frames for fold {fold}')
+            # TODO: slow part, would benefit from parallel execution at least per fold
+            single_frame_cnn.generate_prediction(
+                   model_name=model_name,
+                   weights=str(config.MODEL_DIR / f'output/{model_name}_s_fold_{fold}.h5'),
+                   fold=fold)
+            single_frame_cnn.find_non_blank_frames(model_name=model_name, fold=fold)
+
+    def _train_l1_models(self):
+        for model_name in config.PROFILES['full']:
+            for fold in config.TRAIN_FOLDS + [0]:  # 0 fold for training on the full dataset
+                model_weights_path = single_frame_cnn.model_weights_path(model_name, fold)
+                if model_weights_path.exists():
+                    self.logger.info(f'L1 model {model_name} for fold {fold} already trained, use existing weights '
+                                     f'{model_weights_path}')
+                else:
+                    self.logger.info(f'train L1 model {model_name} for fold {fold}')
+                    single_frame_cnn.train(
+                        model_name=model_name,
+                        nb_epochs=config.NB_EPOCHS[model_name],
+                        fold=fold,
+                        use_non_blank_frames=False
+                    )
+
+    def _predict_l1_oof(self):
+        for model_name in config.PROFILES['full']:
+            for fold in config.TRAIN_FOLDS:
+                model_weights_path = single_frame_cnn.model_weights_path(model_name, fold)
+                self.logger.info(f'predict oof L1 model {model_name} for fold {fold}')
+                single_frame_cnn.generate_prediction(
+                    model_name=model_name,
+                    fold=fold,
+                    weights=str(model_weights_path)
+                )
+        single_frame_cnn.save_all_combined_train_results()
+
+    def _train_l2_models(self):
+        for profile in config.PROFILES.keys():
+            l1_model_names = config.PROFILES[profile]
+
+            mlp_model = second_stage.SecondLevelModelMLP(l1_model_names=l1_model_names,
+                                                         combined_model_name='preset_' + profile)
+
+            self.logger.info(f'train L2 MLP model for profile {profile}')
+            mlp_model.train()
+
+            xgboost_model = second_stage.SecondLevelModelXGBoost(l1_model_names=l1_model_names,
+                                                                 combined_model_name='preset_' + profile)
+
+            self.logger.info(f'train L2 xgboost model for profile {profile}')
+            xgboost_model.train()
+
+    def fit(self):
         """Use the same architecture, but train the weights from scratch using
         the provided X and y.
 
@@ -87,7 +163,13 @@ class CnnEnsemble(Model):
         Returns:
 
         """
-        pass
+        prepare_train_data.generate_folds(config)
+        prepare_train_data.generate_train_images()
+        self._train_initial_l1_filter_model()
+        self._find_non_non_blank_frames()
+        self._train_l1_models()
+        self._predict_l1_oof()
+        self._train_l2_models()
 
     def finetune(self, X, y):
         """Finetune the network for a different task by keeping the

@@ -1,5 +1,6 @@
 from pathlib import Path
 import matplotlib
+import matplotlib.pyplot as plt
 import argparse
 from collections import namedtuple
 from multiprocessing.pool import ThreadPool
@@ -20,16 +21,15 @@ from tensorflow.python.keras.applications.inception_v3 import preprocess_input a
 from tensorflow.python.keras.applications.nasnet import preprocess_input as preprocess_input_nasnet
 from tensorflow.python.keras.applications.inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
 from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
-from tensorflow.python.keras.layers import Dense, Dropout
+from tensorflow.python.keras.layers import Dense
 from tensorflow.python.keras.layers import GlobalMaxPooling2D, GlobalAveragePooling2D, AveragePooling2D
 from tensorflow.python.keras.layers import Input
 from tensorflow.python.keras.models import Model
-from tensorflow.python.keras.optimizers import SGD, Adam, RMSprop
+from tensorflow.python.keras.optimizers import SGD, Adam
 from tensorflow.python.keras.regularizers import l1
 from tensorflow.python.keras import backend as K
 from tqdm import tqdm
 
-from .metrics import pri_matrix_loss
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import utils
 
@@ -182,11 +182,6 @@ MODELS = {
     ),
 }
 
-# extra model names used for different checkpoints, ideas/etc
-MODELS['xception_avg_ch10'] = MODELS['xception_avg']
-MODELS['inception_v2_resnet_ch10'] = MODELS['inception_v2_resnet']
-MODELS['inception_v2_resnet_extra'] = MODELS['inception_v2_resnet']
-
 
 class SingleFrameCNNDataset:
     """
@@ -220,7 +215,11 @@ class SingleFrameCNNDataset:
 
         self.folds = pd.read_csv(cnnensemble_path / "input" / "folds.csv")
         train_clips = set(self.folds[self.folds.fold != fold].filename)
-        test_clips = set(self.folds[self.folds.fold == fold].filename)
+        if fold == 0:
+            # use fold 1 as verification set for compatibility with the rest of pipeline
+            test_clips = set(self.folds[self.folds.fold == 1].filename)
+        else:
+            test_clips = set(self.folds[self.folds.fold == fold].filename)
 
         self.train_clips = list(self.loaded_files.intersection(train_clips))
         self.test_clips = list(self.loaded_files.intersection(test_clips))
@@ -237,17 +236,21 @@ class SingleFrameCNNDataset:
             self.train_clips_per_cat[cls] = list(
                 self.training_set_labels_ds[self.training_set_labels_ds[CLASSES[cls]] > 0.5].index.values)
 
-        for cls in range(NB_CLASSES):
-            print(CLASSES[cls], len(self.train_clips_per_cat[cls]))
+        # for cls in range(NB_CLASSES):
+        #     print(CLASSES[cls], len(self.train_clips_per_cat[cls]))
 
         self.non_blank_frames = {}
         if use_non_blank_frames:
-            for fn in ['resnet50_avg_1_non_blank.pkl',
+            for fn in ['resnet50_1_non_blank.pkl',
                        'resnet50_2_non_blank.pkl',
-                       'resnet50_avg_3_non_blank.pkl',
-                       'resnet50_avg_4_non_blank.pkl']:
+                       'resnet50_3_non_blank.pkl',
+                       'resnet50_4_non_blank.pkl']:
                 data = pickle.load(open(cnnensemble_path / 'output/prediction_train_frames/' + fn, 'rb'))
                 self.non_blank_frames.update(data)
+
+    def __del__(self):
+        self.pool.close()
+        self.pool.join()
 
     def train_steps_per_epoch(self):
         """
@@ -284,15 +287,11 @@ class SingleFrameCNNDataset:
 
         base_name = video_id[:-4]
 
-        loaded = False
+        # TODO: should we enforce to always have pre-processed jpeg frames?
         try:
             fn = os.path.join(images_dir, base_name, f'{offset+1:04}.jpg')
             X = scipy.misc.imread(fn).astype(np.float32)
-            loaded = True
         except FileNotFoundError:
-            pass
-
-        if not loaded:
             v = skvideo.io.vread(os.path.join(video_dir, video_id))
             X = np.zeros(INPUT_SHAPE)
             while offset >= 0:
@@ -394,7 +393,11 @@ class SingleFrameCNNDataset:
                         yield X, y
 
     def frames_from_video_clip(self, video_fn):
-        return self.preprocess_input_func(load_video_clip_frames(video_fn))
+        frames = utils.load_video_clip_frames(
+            video_fn,
+            frames_numbers=config.PREDICT_FRAMES,
+            output_size=(config.INPUT_ROWS, config.INPUT_COLS))
+        return self.preprocess_input_func(frames)
 
     def generate_frames_for_prediction(self):
         for video_id in sorted(self.test_clips):
@@ -409,35 +412,6 @@ class SingleFrameCNNDataset:
         for video_id in test_ds.filename:
             X = self.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
             yield video_id, X
-
-def load_video_clip_frames(video_fn):
-    """
-    Load video clip frames used for the second stage training and prediction.
-
-    Returned frames matches PREDICT_FRAMES and resized if necessary to (INPUT_ROWS, INPUT_COLS)
-
-    :param video_fn: path to video clip
-    :return: ndarray of shape (PREDICT_FRAMES, INPUT_ROWS, INPUT_COLS, INPUT_CHANNELS)
-    """
-    X = np.zeros(shape=(len(PREDICT_FRAMES),) + INPUT_SHAPE, dtype=np.float32)
-
-    v = skvideo.io.vread(str(video_fn))
-
-    for i, frame_num in enumerate(PREDICT_FRAMES):
-        try:
-            frame = v[frame_num]
-            if frame.shape != INPUT_SHAPE:
-                frame = scipy.misc.imresize(frame, size=(INPUT_ROWS, INPUT_COLS), interp='bilinear').astype(
-                    np.float32)
-            else:
-                frame = frame.astype(np.float32)
-            X[i] = frame
-        except IndexError:
-            if i > 0:
-                X[i] = X[i - 1]
-            else:
-                X[i] = 0.0
-    return X
 
 
 def check_generator(use_test):
@@ -468,7 +442,16 @@ def check_generator(use_test):
             plt.show()
 
 
-def train(fold, model_name, weights='', initial_epoch=0, use_non_blank_frames=True):
+def model_weights_path(model_name, fold):
+    return cnnensemble_path / f'output/{model_name}_s_fold_{fold}.h5'
+
+
+def train(fold, model_name,
+          weights='',
+          initial_epoch=0,
+          use_non_blank_frames=True,
+          nb_epochs=15,
+          checkpoints_period=16):
     """
     Train the level 1 model.
 
@@ -477,10 +460,13 @@ def train(fold, model_name, weights='', initial_epoch=0, use_non_blank_frames=Tr
     :param weights: optional, if non empty string passed, training starts from supplied weights,
                     otherwise imagenet pre-trained model is loaded
     :param initial_epoch: Epoch to continue training from, used together with weight parameter to continue training
-    :param use_non_blank_frames:
-    :param use_extra_clips:
+    :param nb_epochs: number of epochs to train
+    :param use_non_blank_frames: should information about predicted non blank frame be used for frame sampling
+    :param checkpoints_period: period of checkpoints in epochs
     :return: None
     """
+    K.clear_session()
+
     model_info = MODELS[model_name]
     dataset = SingleFrameCNNDataset(preprocess_input_func=model_info.preprocess_input,
                                     fold=fold,
@@ -509,10 +495,11 @@ def train(fold, model_name, weights='', initial_epoch=0, use_non_blank_frames=Tr
     os.makedirs(checkpoints_dir, exist_ok=True)
     os.makedirs(tensorboard_dir, exist_ok=True)
 
-    checkpoint_periodical = ModelCheckpoint(checkpoints_dir + "/checkpoint-{epoch:03d}-{loss:.4f}-{val_loss:.4f}.hdf5",
-                                            verbose=1,
-                                            save_weights_only=True,
-                                            period=1)
+    checkpoint_periodical = ModelCheckpoint(
+        str(checkpoints_dir / "checkpoint-{epoch:03d}-{loss:.4f}-{val_loss:.4f}.hdf5"),
+        verbose=1,
+        save_weights_only=True,
+        period=checkpoints_period)
     tensorboard = TensorBoard(tensorboard_dir, histogram_freq=0, write_graph=False, write_images=False)
 
     # SGD with lr=1e-4 seems to be training very slowly, but still keep it for initial weights adjustments
@@ -537,7 +524,7 @@ def train(fold, model_name, weights='', initial_epoch=0, use_non_blank_frames=Tr
     model.fit_generator(
         dataset.generate(),
         steps_per_epoch=dataset.train_steps_per_epoch(),
-        epochs=15,
+        epochs=nb_epochs,
         verbose=1,
         validation_data=dataset.generate_test(),
         validation_steps=dataset.validation_steps(),
@@ -548,7 +535,7 @@ def train(fold, model_name, weights='', initial_epoch=0, use_non_blank_frames=Tr
         initial_epoch=max(initial_epoch, nb_sgd_epoch)
     )
 
-    model.save_weights(cnnensemble_path / f'output/{model_name}_s_fold_{fold}.h5')
+    model.save_weights(str(model_weights_path(model_name, fold)))
 
 
 def check_model(model_name, weights, fold):
@@ -621,13 +608,13 @@ def generate_prediction(model_name, weights, fold):
 
     pool = ThreadPool(8)
     prev_res = None
-    for batch in utils.chunks(test_clips, 8, add_empty=True):
+    for batch in tqdm(utils.chunks(test_clips, 8, add_empty=True), total=len(test_clips)//8):
         if prev_res is not None:
             results = prev_res.get()
         else:
             results = []
         prev_res = pool.map_async(load_file, batch)
-        for video_id, X, y in tqdm(results, desc='Processing videos...'):
+        for video_id, X, y in results:
             processed_files += 1
             res_fn = output_dir.resolve() / f"{video_id}.csv"
             have_data_time = time.time()
@@ -674,7 +661,11 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
 
     def load_file(video_id):
         try:
-            X = preprocess_input(load_video_clip_frames(video_id))
+            frames = utils.load_video_clip_frames(
+                video_id,
+                frames_numbers=config.PREDICT_FRAMES,
+                output_size=(config.INPUT_ROWS, config.INPUT_COLS))
+            X = preprocess_input(frames)
         except:
             X = None
 
@@ -688,7 +679,6 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
 
     pool = ThreadPool(8)
     prev_res = None
-
 
     with tqdm(total=len(file_names), desc=f'Processing {len(file_names)} videos') as pbar:
         for batch in utils.chunks(file_names, 8, add_empty=True):
