@@ -18,4 +18,3 @@ def test_train():
     manager = ModelManager(model_class='cnnensemble',
                            model_kwargs=dict(download_weights=False, verbose=True))
     manager.train(config)
-
