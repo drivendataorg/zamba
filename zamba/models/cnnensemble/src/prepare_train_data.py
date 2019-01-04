@@ -1,3 +1,5 @@
+import copy
+
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
@@ -9,9 +11,17 @@ from tqdm import tqdm
 
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import utils
+from zamba.models.cnnensemble.src import folds_split
 
 
-def generate_folds(config):
+def generate_folds_site_aware():
+    training_set_labels_ds_full = pd.read_csv(config.TRAINING_SET_LABELS)
+    group_names_df = pd.read_csv(config.MODEL_DIR / 'input' / 'obfuscation_map_with_api_data.csv', low_memory=False)
+    df = folds_split.prepare_group_aware_split_to_folds(training_set_labels_ds_full, group_names_df)
+    _save_folds(df)
+
+
+def generate_folds_random():
     training_set_labels_ds_full = pd.read_csv(config.TRAINING_SET_LABELS)
     training_set_labels_ds_full['fold'] = 0
 
@@ -29,7 +39,10 @@ def generate_folds(config):
         print(np.sum(data[items, :-2], axis=0))
 
     training_set_labels_ds_full['fold'] = data[:, -1]
+    _save_folds(training_set_labels_ds_full)
 
+
+def _save_folds(training_set_labels_ds_full):
     if config.TRAIN_ON_SMALL_SUBSET:
         # pipeline testing mode, train on the the small subset of samples
         filenames = []
@@ -54,16 +67,53 @@ def generate_folds(config):
 
 
 def _prepare_frame_data(video_id):
+    # skip already processed files
+    processed_images = 0
+    dest_dir = config.TRAIN_IMG_DIR / video_id[:-4]
+    for i, frame in enumerate(config.PREDICT_FRAMES):
+        fn = str(dest_dir / f'{i+2:04}.jpg')
+        if os.path.exists(fn) and os.path.getsize(fn) > 0:
+            processed_images += 1
+        else:
+            break
+    else:
+        return  # all files already processed
+
     frames = utils.load_video_clip_frames(
         video_fn=config.RAW_VIDEO_DIR / video_id,
-        frames_numbers=config.TRAIN_FRAMES,
+        frames_numbers=config.PREDICT_FRAMES[processed_images:],
         output_size=(config.INPUT_ROWS, config.INPUT_COLS)
     )
-    dest_dir = config.TRAIN_IMG_DIR / video_id[:-4]
     os.makedirs(str(dest_dir), exist_ok=True)
-    for i, frame in enumerate(config.TRAIN_FRAMES):
+    for i, frame in enumerate(config.PREDICT_FRAMES[processed_images:]):
         img = Image.fromarray(np.clip(frames[i], 0, 255).astype(np.uint8))
-        img.save(str(dest_dir / f'{i+2:04}.jpg'), quality=85)
+        img.save(str(dest_dir / f'{i+processed_images+2:04}.jpg'), quality=85)
+
+
+def benchmark_load_video():
+    # it's around 4x faster to load converted jpeg files
+    video_id = '04GBFOZS5F.mp4'
+    import scipy.misc
+    from PIL import Image
+
+    with utils.timeit_context('load video files'):
+        frames = utils.load_video_clip_frames(
+            video_fn=config.RAW_VIDEO_DIR / video_id,
+            frames_numbers=config.PREDICT_FRAMES,
+            output_size=(config.INPUT_ROWS, config.INPUT_COLS)
+        )
+
+    dest_dir = '/opt/data_fast/tmp/' + video_id[:-4]
+    os.makedirs(str(dest_dir), exist_ok=True)
+
+    for i, frame in enumerate(config.PREDICT_FRAMES):
+        img = Image.fromarray(np.clip(frames[i], 0, 255).astype(np.uint8))
+        img.save(str(dest_dir + f'/{i+2:04}.jpg'), quality=85)
+
+    with utils.timeit_context('load images'):
+        for i, frame in enumerate(config.PREDICT_FRAMES):
+            fn = str(dest_dir + f'/{i+2:04}.jpg')
+            X = scipy.misc.imread(fn).astype(np.float32)
 
 
 def generate_train_images():
