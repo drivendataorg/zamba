@@ -15,6 +15,8 @@ SMALL_VIDEO_DIR = MODEL_DIR / "input" / "small"
 TRAINING_SET_LABELS = MODEL_DIR / "input" / "Pri-matrix_Factorization_-_Training_Set_Labels.csv"
 SUBMISSION_FORMAT = MODEL_DIR / "input" / "Pri-matrix_Factorization_-_Submission_Format.csv"
 FOLDS_PATH = MODEL_DIR / "input" / "folds.csv"
+#
+TRAINING_GROUPS = MODEL_DIR / 'input' / 'obfuscation_map_with_api_data.csv'
 
 CLASSES = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo', 'gorilla', 'hippopotamus', 'human',
            'hyena', 'large ungulate', 'leopard', 'lion', 'other (non-primate)', 'other (primate)', 'pangolin',
