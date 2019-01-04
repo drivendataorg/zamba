@@ -137,7 +137,9 @@ def train(data_path, labels, tempdir):
     # Load the model into manager
     manager = ModelManager(model_path=default_model_dir,
                            model_class='cnnensemble',
-                           tempdir=tempdir)
+                           tempdir=tempdir,
+                           model_kwargs=dict(download_weights=False)
+                           )
 
     # Make predictions, return a DataFrame
     manager.train()
