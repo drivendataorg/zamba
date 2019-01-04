@@ -23,21 +23,30 @@ CLASSES = ['bird', 'blank', 'cattle', 'chimpanzee', 'elephant', 'forest buffalo'
            'porcupine', 'reptile', 'rodent', 'small antelope', 'small cat', 'wild dog', 'duiker', 'hog']
 
 # number of cores used for multiprocessing pools, jobs etc
-N_CORES = 8
+N_CORES = 16
 
 # downsample bins of sorted predictions per class for frames for the second level model input
 L2_SORTED_BINS_DOWNSAMPLE = 4
 
 # for pipeline testing only, train on the small subset of training samples
-TRAIN_ON_SMALL_SUBSET = True
+TRAIN_ON_SMALL_SUBSET = False
+# keep only 2.5% of samples for quick pipeline testing
 TRAIN_SAMPLES_SUBSET = 0.025
 # for subset of training samples, keep at least 100 samples
 MIN_SAMPLES_TO_KEEP = 100
 
+
+# expected FPS of video clips, used only for frame number selection below
 VIDEO_FPS = 24
+# list of video frames used for prediction.
+# overall use 2 frames per second, with two exceptions:
+# more samples during the first second as animal is more likely to be visible after the camera triggered
+# exclude the first few frames as it's often blank or has incorrect exposure for many cameras
 PREDICT_FRAMES = [2, 8, 12, 18] + [i * VIDEO_FPS // 2 + 24 for i in range(14 * 2)]
+# for training use only the first 16 selected frames, approx 8 seconds of video
 TRAIN_FRAMES = PREDICT_FRAMES[:16]
 
+# the most common video resolution, all frames are resized to this resolution
 INPUT_ROWS = 404
 INPUT_COLS = 720
 INPUT_CHANNELS = 3
@@ -45,22 +54,17 @@ INPUT_CHANNELS = 3
 # L2 models are trained on OOF L1 model predictions, folds are listed here
 TRAIN_FOLDS = [1, 2, 3, 4]
 
+# initial model trained on all
 BLANK_FRAMES_MODEL = 'resnet50'
 
+# number of epochs to train each L1 model
 NB_EPOCHS = {
     'nasnet_mobile': 12,
-    'inception_v2_resnet': 12,
+    'inception_v2_resnet': 10,
     'inception_v3': 12,
-    'xception_avg': 12,
-    'resnet50': 12
+    'xception_avg': 10,
+    'resnet50': 9
 }
-
-# MODEL_WEIGHTS = {
-#     'inception_v2_resnet': 'inception_v2_resnet_ch10_fold_0/checkpoint-010-0.0324-0.0300.hdf5',
-#     'inception_v3': 'inception_v3_fold_0/checkpoint-009-0.0345-0.0331.hdf5',
-#     'nasnet_mobile': 'nasnet_mobile_fold_0/checkpoint-012-0.0329-0.0315.hdf5',
-#     'xception_avg': 'xception_avg_ch10_fold_0/checkpoint-009-0.0318-0.0399.hdf5'
-# }
 
 MODEL_WEIGHTS = {
     'inception_v2_resnet': 'inception_v2_resnet_s_fold_0.h5',
