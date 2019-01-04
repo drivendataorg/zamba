@@ -227,6 +227,7 @@ class SingleFrameCNNDataset:
         self.test_clips = self.test_clips[:self.validation_steps() * validation_batch_size]
         self.pool = ThreadPool(8)
 
+        print('fold:', fold)
         print('train clips:', len(self.train_clips))
         print('test clips:', len(self.test_clips))
 
@@ -392,26 +393,17 @@ class SingleFrameCNNDataset:
                     if (j + 1) % batch_size == 0:
                         yield X, y
 
-    def frames_from_video_clip(self, video_fn):
-        frames = utils.load_video_clip_frames(
-            video_fn,
-            frames_numbers=config.PREDICT_FRAMES,
-            output_size=(config.INPUT_ROWS, config.INPUT_COLS))
-        return self.preprocess_input_func(frames)
+    def frames_from_saved_images(self, video_id):
+        images_dir = config.TRAIN_IMG_DIR
 
-    def generate_frames_for_prediction(self):
-        for video_id in sorted(self.test_clips):
-            X = self.frames_from_video_clip(video_fn=os.path.join(config.RAW_VIDEO_DIR, video_id))
-            y = self.training_set_labels_ds.loc[[video_id]].as_matrix(columns=CLASSES)
-            yield video_id, X, y
+        frames = []
+        base_name = video_id[:-4]
+        for i in range(len(config.PREDICT_FRAMES)):
+            fn = os.path.join(images_dir, base_name, f'{i + 2:04}.jpg')
+            frame = scipy.misc.imread(fn).astype(np.float32)
+            frames.append(frame)
 
-    def generate_test_frames_for_prediction(self, data_path=None):
-        if data_path is None:
-            data_path = config.TEST_VIDEO_DIR
-        test_ds = pd.read_csv(config.SUBMISSION_FORMAT)
-        for video_id in test_ds.filename:
-            X = self.frames_from_video_clip(video_fn=os.path.join(data_path, video_id))
-            yield video_id, X
+        return self.preprocess_input_func(np.array(frames))
 
 
 def check_generator(use_test):
@@ -466,7 +458,6 @@ def train(fold, model_name,
     :return: None
     """
     K.clear_session()
-
     model_info = MODELS[model_name]
     dataset = SingleFrameCNNDataset(preprocess_input_func=model_info.preprocess_input,
                                     fold=fold,
@@ -600,7 +591,7 @@ def generate_prediction(model_name, weights, fold):
     test_clips = sorted(list(set(dataset.test_clips) - converted_files))
 
     def load_file(video_id):
-        X = dataset.frames_from_video_clip(video_fn=os.path.join(config.RAW_VIDEO_DIR, video_id))
+        X = dataset.frames_from_saved_images(video_id=video_id)
         y = dataset.training_set_labels_ds.loc[[video_id]].as_matrix(columns=CLASSES)
         return video_id, X, y
 

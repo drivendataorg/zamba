@@ -1,3 +1,4 @@
+import pickle
 from collections import deque
 from os import remove, getenv
 from pathlib import Path
@@ -6,6 +7,7 @@ from dotenv import load_dotenv, find_dotenv
 import pandas as pd
 import logging
 from tqdm import tqdm
+import multiprocessing
 
 from tensorflow.python.keras.utils import get_file
 
@@ -91,6 +93,11 @@ class CnnEnsemble(Model):
     def _train_initial_l1_filter_model(self):
         for fold in config.TRAIN_FOLDS:
             self.logger.info(f"Train initial model, fold {fold}")
+
+            force_fold = getenv('FOLD')
+            if force_fold is not None and int(force_fold) != fold:
+                continue
+
             single_frame_cnn.train(
                 fold=fold,
                 model_name=config.BLANK_FRAMES_MODEL,
@@ -101,6 +108,12 @@ class CnnEnsemble(Model):
         model_name = config.BLANK_FRAMES_MODEL
         for fold in config.TRAIN_FOLDS:
             self.logger.info(f'find non blank frames for fold {fold}')
+            print(f'find non blank frames for fold {fold}')
+
+            force_fold = getenv('FOLD')
+            if force_fold is not None and int(force_fold) != fold:
+                continue
+
             # TODO: slow part, would benefit from parallel execution at least per fold
             single_frame_cnn.generate_prediction(
                    model_name=model_name,
@@ -111,22 +124,32 @@ class CnnEnsemble(Model):
     def _train_l1_models(self):
         for model_name in config.PROFILES['full']:
             for fold in config.TRAIN_FOLDS + [0]:  # 0 fold for training on the full dataset
+                force_fold = getenv('FOLD')
+                if force_fold is not None and int(force_fold) != fold:
+                    continue
+
                 model_weights_path = single_frame_cnn.model_weights_path(model_name, fold)
                 if model_weights_path.exists():
                     self.logger.info(f'L1 model {model_name} for fold {fold} already trained, use existing weights '
                                      f'{model_weights_path}')
                 else:
                     self.logger.info(f'train L1 model {model_name} for fold {fold}')
+                    print(f'train L1 model {model_name} for fold {fold}')
                     single_frame_cnn.train(
                         model_name=model_name,
                         nb_epochs=config.NB_EPOCHS[model_name],
                         fold=fold,
-                        use_non_blank_frames=False
+                        use_non_blank_frames=False,
+                        checkpoints_period=2
                     )
 
     def _predict_l1_oof(self):
         for model_name in config.PROFILES['full']:
             for fold in config.TRAIN_FOLDS:
+                force_fold = getenv('FOLD')
+                if force_fold is not None and int(force_fold) != fold:
+                    continue
+
                 model_weights_path = single_frame_cnn.model_weights_path(model_name, fold)
                 self.logger.info(f'predict oof L1 model {model_name} for fold {fold}')
                 single_frame_cnn.generate_prediction(
@@ -154,16 +177,12 @@ class CnnEnsemble(Model):
 
     def fit(self):
         """Use the same architecture, but train the weights from scratch using
-        the provided X and y.
-
+        the dataset from configuration file.
         Args:
-            X: training data
-            y: training labels
-
         Returns:
 
         """
-        prepare_train_data.generate_folds(config)
+        prepare_train_data.generate_folds_site_aware()
         prepare_train_data.generate_train_images()
         self._train_initial_l1_filter_model()
         self._find_non_non_blank_frames()
