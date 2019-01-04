@@ -118,7 +118,7 @@ class ModelManager(object):
 
         return preds
 
-    def train(self, config):
+    def train(self):
         """
 
         Returns:
