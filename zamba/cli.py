@@ -125,7 +125,7 @@ def tune(data_path, labels, tempdir, batch_size, weights_out):
               type=click.Path(exists=True),
               help="Path to temporary directory. If not specified, OS temporary directory is used")
 def train(data_path, labels, tempdir):
-    """ [NOT IMPLEMENTED] Retrain network from scratch.
+    """ Retrain network from scratch.
 
         Train the weights from scratch using
         the provided data_path and labels.
@@ -140,4 +140,4 @@ def train(data_path, labels, tempdir):
                            tempdir=tempdir)
 
     # Make predictions, return a DataFrame
-    manager.train(data_path, labels, tempdir)
+    manager.train()
