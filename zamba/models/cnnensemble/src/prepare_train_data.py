@@ -13,6 +13,9 @@ from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import utils
 from zamba.models.cnnensemble.src import folds_split
 
+import logging
+logger = logging.getLogger(__file__)
+
 
 def generate_folds_site_aware():
     training_set_labels_ds_full = pd.read_csv(config.TRAINING_SET_LABELS)
@@ -27,16 +30,16 @@ def generate_folds_random():
 
     data = training_set_labels_ds_full.as_matrix(columns=config.CLASSES + ['filename', 'fold'])
 
-    cls = np.argmax(data[:, :-2], axis=1)
+    category = np.argmax(data[:, :-2], axis=1)
 
     skf = StratifiedKFold(n_splits=len(config.TRAIN_FOLDS), shuffle=True, random_state=42)
 
-    split_idx = list(skf.split(data, cls))
+    split_idx = list(skf.split(data, category))
     for fold, fold_split in enumerate(split_idx):
         items = fold_split[1]
         data[items, -1] = fold + 1
-        print(fold)
-        print(np.sum(data[items, :-2], axis=0))
+        logger.debug(f"Fold {fold}")
+        logger.debug(f"Fold classes {np.sum(data[items, :-2], axis=0)}")
 
     training_set_labels_ds_full['fold'] = data[:, -1]
     _save_folds(training_set_labels_ds_full)
@@ -126,7 +129,9 @@ def generate_train_images():
     fold_data = pd.read_csv(config.FOLDS_PATH)
     pool = Pool(config.N_CORES)
 
-    for _ in tqdm(pool.imap_unordered(_prepare_frame_data, fold_data.filename), total=len(fold_data)):
+    for _ in tqdm(pool.imap_unordered(_prepare_frame_data, fold_data.filename),
+                  total=len(fold_data),
+                  desc="Decode train images"):
         pass
 
     pool.close()

@@ -21,3 +21,5 @@ docs/_build/
 
 .env
 drivendataorg_chimps-tool.aes
+output
+output.old
