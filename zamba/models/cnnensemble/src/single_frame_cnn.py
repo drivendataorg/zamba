@@ -237,9 +237,6 @@ class SingleFrameCNNDataset:
             self.train_clips_per_cat[cls] = list(
                 self.training_set_labels_ds[self.training_set_labels_ds[CLASSES[cls]] > 0.5].index.values)
 
-        # for cls in range(NB_CLASSES):
-        #     print(CLASSES[cls], len(self.train_clips_per_cat[cls]))
-
         self.non_blank_frames = {}
         if use_non_blank_frames:
             for fn in ['resnet50_1_non_blank.pkl',
@@ -599,7 +596,9 @@ def generate_prediction(model_name, weights, fold):
 
     pool = ThreadPool(8)
     prev_res = None
-    for batch in tqdm(utils.chunks(test_clips, 8, add_empty=True), total=len(test_clips)//8):
+    for batch in tqdm(utils.chunks(test_clips, 8, add_empty=True),
+                      total=len(test_clips)//8,
+                      desc="Predict OOF samples"):
         if prev_res is not None:
             results = prev_res.get()
         else:
