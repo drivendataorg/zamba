@@ -36,6 +36,8 @@ class CnnEnsemble(Model):
         self.profile = profile
         self.verbose = verbose
         self.site_aware = site_aware
+        self.raw_video_dir = raw_video_dir
+        self.labels_path = labels_path
         self.logger = logging.getLogger(f"{__file__}")
 
         if download_weights:
@@ -185,11 +187,12 @@ class CnnEnsemble(Model):
 
         """
         if self.site_aware:
-            prepare_train_data.generate_folds_site_aware()
+            prepare_train_data.generate_folds_site_aware(self.labels_path)
         else:
-            prepare_train_data.generate_folds_random()
+            prepare_train_data.generate_folds_random(self.labels_path)
 
-        prepare_train_data.generate_train_images()
+        prepare_train_data.generate_train_images(self.raw_video_dir)
+
         self._train_initial_l1_filter_model()
         self._find_non_non_blank_frames()
         self._train_l1_models()

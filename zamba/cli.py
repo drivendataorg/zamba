@@ -121,7 +121,8 @@ def tune(data_path, labels, tempdir, batch_size, weights_out):
                                 dir_okay=True))
 @click.argument('labels',
                 type=click.File())
-@click.option('--site-aware', is_flag=True, default=True, help='If training on initial competition data, should we segment training folds based on site.')
+@click.option('--site-aware', is_flag=True, default=False,
+              help='If training on initial competition data, should we segment training folds based on site.')
 @click.option('--tempdir',
               type=click.Path(exists=True),
               help="Path to temporary directory. If not specified, OS temporary directory is used")
@@ -139,7 +140,11 @@ def train(data_path, labels, site_aware, tempdir):
     manager = ModelManager(model_path=default_model_dir,
                            model_class='cnnensemble',
                            tempdir=tempdir,
-                           model_kwargs=dict(download_weights=False, site_aware=site_aware)
+                           model_kwargs=dict(
+                               download_weights=False,
+                               site_aware=site_aware,
+                               raw_video_dir=data_path,
+                               labels_path=labels)
                            )
 
     # Make predictions, return a DataFrame

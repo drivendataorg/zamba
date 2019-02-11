@@ -17,15 +17,20 @@ import logging
 logger = logging.getLogger(__file__)
 
 
-def generate_folds_site_aware():
-    training_set_labels_ds_full = pd.read_csv(config.TRAINING_SET_LABELS)
-    group_names_df = pd.read_csv(config.MODEL_DIR / 'input' / 'obfuscation_map_with_api_data.csv', low_memory=False)
+def generate_folds_site_aware(labels_path):
+    if not labels_path:
+        labels_path = config.TRAINING_SET_LABELS
+
+    training_set_labels_ds_full = pd.read_csv(labels_path)
+    group_names_df = pd.read_csv(config.TRAINING_GROUPS, low_memory=False)
     df = folds_split.prepare_group_aware_split_to_folds(training_set_labels_ds_full, group_names_df)
     _save_folds(df)
 
 
-def generate_folds_random():
-    training_set_labels_ds_full = pd.read_csv(config.TRAINING_SET_LABELS)
+def generate_folds_random(labels_path):
+    if not labels_path:
+        labels_path = config.TRAINING_SET_LABELS
+    training_set_labels_ds_full = pd.read_csv(labels_path)
     training_set_labels_ds_full['fold'] = 0
 
     data = training_set_labels_ds_full.as_matrix(columns=config.CLASSES + ['filename', 'fold'])
@@ -69,7 +74,7 @@ def _save_folds(training_set_labels_ds_full):
                                            index=False)
 
 
-def _prepare_frame_data(video_id):
+def _prepare_frame_data(video_dir, video_id):
     # skip already processed files
     processed_images = 0
     dest_dir = config.TRAIN_IMG_DIR / video_id[:-4]
@@ -82,8 +87,11 @@ def _prepare_frame_data(video_id):
     else:
         return  # all files already processed
 
+    if video_dir is None:
+        video_dir = config.RAW_VIDEO_DIR
+
     frames = utils.load_video_clip_frames(
-        video_fn=config.RAW_VIDEO_DIR / video_id,
+        video_fn=video_dir / video_id,
         frames_numbers=config.PREDICT_FRAMES[processed_images:],
         output_size=(config.INPUT_ROWS, config.INPUT_COLS)
     )
@@ -93,15 +101,18 @@ def _prepare_frame_data(video_id):
         img.save(str(dest_dir / f'{i+processed_images+2:04}.jpg'), quality=85)
 
 
-def benchmark_load_video():
+def benchmark_load_video(video_dir):
     # it's around 4x faster to load converted jpeg files
     video_id = '04GBFOZS5F.mp4'
     import scipy.misc
     from PIL import Image
 
+    if video_dir is None:
+        video_dir = config.RAW_VIDEO_DIR
+
     with utils.timeit_context('load video files'):
         frames = utils.load_video_clip_frames(
-            video_fn=config.RAW_VIDEO_DIR / video_id,
+            video_fn=video_dir / video_id,
             frames_numbers=config.PREDICT_FRAMES,
             output_size=(config.INPUT_ROWS, config.INPUT_COLS)
         )
@@ -119,7 +130,7 @@ def benchmark_load_video():
             X = scipy.misc.imread(fn).astype(np.float32)
 
 
-def generate_train_images():
+def generate_train_images(video_dir):
     """
     Generate jpeg frames from video clips, used for L1 models training.
 
@@ -129,7 +140,7 @@ def generate_train_images():
     fold_data = pd.read_csv(config.FOLDS_PATH)
     pool = Pool(config.N_CORES)
 
-    for _ in tqdm(pool.imap_unordered(_prepare_frame_data, fold_data.filename),
+    for _ in tqdm(pool.imap_unordered(_prepare_frame_data, video_dir, fold_data.filename),
                   total=len(fold_data),
                   desc="Decode train images"):
         pass
