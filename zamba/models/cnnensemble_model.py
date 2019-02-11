@@ -30,6 +30,8 @@ class CnnEnsemble(Model):
                  download_weights=True,
                  verbose=False,
                  site_aware=False,
+                 labels_path=None,
+                 raw_video_dir=None,
                  ):
         # use the model object's defaults
         super().__init__(model_path, tempdir=tempdir)
