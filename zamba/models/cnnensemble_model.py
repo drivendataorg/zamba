@@ -28,12 +28,14 @@ class CnnEnsemble(Model):
                  tempdir=None,
                  download_region='us',
                  download_weights=True,
-                 verbose=False
+                 verbose=False,
+                 site_aware=False,
                  ):
         # use the model object's defaults
         super().__init__(model_path, tempdir=tempdir)
         self.profile = profile
         self.verbose = verbose
+        self.site_aware = site_aware
         self.logger = logging.getLogger(f"{__file__}")
 
         if download_weights:
@@ -182,7 +184,11 @@ class CnnEnsemble(Model):
         Returns:
 
         """
-        prepare_train_data.generate_folds_site_aware()
+        if self.site_aware:
+            prepare_train_data.generate_folds_site_aware()
+        else:
+            prepare_train_data.generate_folds_random()
+
         prepare_train_data.generate_train_images()
         self._train_initial_l1_filter_model()
         self._find_non_non_blank_frames()
