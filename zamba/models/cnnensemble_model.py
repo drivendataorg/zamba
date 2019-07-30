@@ -69,7 +69,12 @@ class CnnEnsemble(Model):
         Returns:
 
         """
-
+        blank_file_names = self._find_blank_videos(file_names)
+        self.logger.debug(
+            "Blank file names %s", "\n".join([str(file_name) for file_name in blank_file_names])
+        )
+        non_blank_file_names = sorted(list(set(file_names) - blank_file_names))
+        self.logger.debug("Non-blank file names %s", str(non_blank_file_names))
         l1_results = {}
         prof = config.PROFILES[self.profile]
         all_skipped = set()
@@ -77,24 +82,32 @@ class CnnEnsemble(Model):
             l1_results[l1_model], skipped = generate_prediction_test(
                 model_name=l1_model,
                 weights=config.MODEL_DIR / 'output' / config.MODEL_WEIGHTS[l1_model],
-                file_names=file_names,
+                file_names=non_blank_file_names,
                 verbose=self.verbose,
                 save_results=False
             )
 
-            all_skipped |= set([str(f) for f in skipped])
+            all_skipped.update({str(f) for f in skipped})
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
+        index = [
+            str(file_name)
+            for file_name in non_blank_file_names
+            if str(file_name) not in all_skipped
+        ]
+
         preds = pd.DataFrame(
-            {
-                'filename': [str(file_name) for file_name in file_names if str(file_name) not in all_skipped],
-                **{cls: l2_results[:, i] for i, cls in enumerate(config.CLASSES)}
-            },
-            columns=['filename'] + config.CLASSES
+            **{cls: l2_results[:, i] for i, cls in enumerate(config.CLASSES)},
+            index=index,
+            columns=config.CLASSES,
         )
 
-        return preds.set_index('filename')
+        blanks = pd.DataFrame(0, index=blank_file_names, columns=preds.columns)
+        blanks["blank"] = 1
+        preds = pd.concat([preds, blanks], axis=0)
+
+        return preds
 
     def _train_initial_l1_filter_model(self):
         for fold in config.TRAIN_FOLDS:
@@ -114,7 +127,6 @@ class CnnEnsemble(Model):
         model_name = config.BLANK_FRAMES_MODEL
         for fold in config.TRAIN_FOLDS:
             self.logger.info(f'find non blank frames for fold {fold}')
-            print(f'find non blank frames for fold {fold}')
 
             force_fold = getenv('FOLD')
             if force_fold is not None and int(force_fold) != fold:
@@ -126,6 +138,23 @@ class CnnEnsemble(Model):
                    weights=str(config.MODEL_DIR / f'output/{model_name}_s_fold_{fold}.h5'),
                    fold=fold)
             single_frame_cnn.find_non_blank_frames(model_name=model_name, fold=fold)
+
+    def _find_blank_videos(self, file_names):
+        """Detects blank videos. At the moment, this assigns odd indexed videos as blank and even indexed videos as
+        non-blank.
+
+        Args:
+            file_names (list of str)
+
+        Returns:
+            (set) A set of blank video file names
+        """
+        blank_videos = set()
+        for i, file_name in enumerate(file_names):
+            if (i % 2) == 1:
+                blank_videos.add(file_name)
+
+        return blank_videos
 
     def _train_l1_models(self):
         for model_name in config.PROFILES['full']:
