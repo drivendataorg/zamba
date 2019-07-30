@@ -10,10 +10,13 @@ environment:
 
 install:
   - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
+  - conda info --all
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
+  - cmd: activate # important: activate the base once!
+  - cmd: conda init cmd.exe
   - "conda create -q -n test-environment python=3.6"
-  - activate test-environment
+  - cmd: activate test-environment
   - pip install https://github.com/worldbank/ML-classification-algorithms-poverty/raw/master/deps/xgboost-0.71-cp36-cp36m-win_amd64.whl
   - pip install -r requirements-dev.txt
   - pip install .[cpu]
