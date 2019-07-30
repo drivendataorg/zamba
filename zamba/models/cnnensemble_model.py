@@ -274,7 +274,7 @@ class CnnEnsemble(Model):
             region_url = region_urls[download_region]
 
         # file names, paths
-        fnames = ["input.tar.gz", "output.tar.gz", "data_fast.zip"]
+        fnames = ["input.tar.gz", "zamba.zip", "data_fast.zip"]
 
         cache_dir = Path(__file__).parent if getenv("ZAMBA_CACHE_DIR") is None else getenv("ZAMBA_CACHE_DIR")
         cache_subdir = Path("cnnensemble")
