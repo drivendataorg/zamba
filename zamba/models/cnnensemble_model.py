@@ -98,7 +98,10 @@ class CnnEnsemble(Model):
         ]
 
         preds = pd.DataFrame(
-            **{cls: l2_results[:, i] for i, cls in enumerate(config.CLASSES)},
+            {
+                cls: l2_results[:, i]
+                for i, cls in enumerate(config.CLASSES)
+            },
             index=index,
             columns=config.CLASSES,
         )
