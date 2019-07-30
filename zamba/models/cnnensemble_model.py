@@ -142,20 +142,22 @@ class CnnEnsemble(Model):
                    fold=fold)
             single_frame_cnn.find_non_blank_frames(model_name=model_name, fold=fold)
 
-    def _find_blank_videos(self, file_names):
-        """Detects blank videos. At the moment, this assigns odd indexed videos as blank and even indexed videos as
-        non-blank.
+    def _find_blank_videos(self, file_names, dummy=False):
+        """Detects blank videos
 
         Args:
             file_names (list of str)
+            dummy (bool): If True, label all even-indexed videos as non-blank and all odd-indexed videos as blank
 
         Returns:
             (set) A set of blank video file names
         """
         blank_videos = set()
-        for i, file_name in enumerate(file_names):
-            if (i % 2) == 1:
-                blank_videos.add(file_name)
+
+        if dummy:
+            for i, file_name in enumerate(file_names):
+                if (i % 2) == 1:
+                    blank_videos.add(file_name)
 
         return blank_videos
 
