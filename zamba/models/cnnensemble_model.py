@@ -4,6 +4,7 @@ from os import remove, getenv
 from pathlib import Path
 from shutil import rmtree
 from dotenv import load_dotenv, find_dotenv
+import numpy as np
 import pandas as pd
 import logging
 from tqdm import tqdm
@@ -67,14 +68,17 @@ class CnnEnsemble(Model):
             file_names: input data, list of video clip paths
 
         Returns:
-
+            pd.DataFrame: A table of class probabilities, where index is the file name and columns are the different
+            classes
         """
-        blank_file_names = self._find_blank_videos(file_names)
-        self.logger.debug(
-            "Blank file names %s", "\n".join([str(file_name) for file_name in blank_file_names])
+        blank_file_names, blank_probabilities = self._find_blank_videos(file_names, threshold=0.5, dummy=True)
+        self.logger.debug("Blank file names %s", str(blank_file_names))
+
+        non_blank_file_names = sorted(
+            list(set(file_names) - blank_file_names)
         )
-        non_blank_file_names = sorted(list(set(file_names) - blank_file_names))
         self.logger.debug("Non-blank file names %s", str(non_blank_file_names))
+
         l1_results = {}
         prof = config.PROFILES[self.profile]
         all_skipped = set()
@@ -88,6 +92,10 @@ class CnnEnsemble(Model):
             )
 
             all_skipped.update({str(f) for f in skipped})
+
+        blank_probabilities = blank_probabilities.loc[
+            ~blank_probabilities.index.isin(all_skipped)
+        ]
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
@@ -106,9 +114,11 @@ class CnnEnsemble(Model):
             columns=config.CLASSES,
         )
 
-        blanks = pd.DataFrame(0, index=blank_file_names, columns=preds.columns)
-        blanks["blank"] = 1
-        preds = pd.concat([preds, blanks], axis=0)
+        if "blank" in preds:
+            del preds["blank"]
+
+        preds = preds.join(blank_probabilities, how="outer")
+        preds.fillna(0, inplace=True)
 
         return preds
 
@@ -142,24 +152,38 @@ class CnnEnsemble(Model):
                    fold=fold)
             single_frame_cnn.find_non_blank_frames(model_name=model_name, fold=fold)
 
-    def _find_blank_videos(self, file_names, dummy=False):
+    def _find_blank_videos(self, file_names, threshold, dummy=False):
         """Detects blank videos
 
         Args:
             file_names (list of str)
-            dummy (bool): If True, label all even-indexed videos as non-blank and all odd-indexed videos as blank
+            dummy (bool): If True, randomly assign blank probabilities. If False, assign a blank probability of 0 to
+                all videos
 
         Returns:
-            (set) A set of blank video file names
+            pd.Series: The probability that the video is blank for each video
         """
-        blank_videos = set()
+
+        def blank_nonblank_model(file_names):
+            rng = np.random.RandomState(100)
+            blank_probabilities = rng.rand(len(file_names))
+            return blank_probabilities
 
         if dummy:
-            for i, file_name in enumerate(file_names):
-                if (i % 2) == 1:
-                    blank_videos.add(file_name)
+            blank_probabilities = blank_nonblank_model(file_names)
+        else:
+            blank_probabilities = 0
 
-        return blank_videos
+        blank_probabilities = pd.Series(
+            blank_probabilities,
+            index=[str(file_name) for file_name in file_names],
+            name="blank",
+        )
+
+        blank_file_names = blank_probabilities.loc[blank_probabilities > threshold].index
+        blank_file_names = set(Path(file_name) for file_name in blank_file_names)
+
+        return blank_file_names, blank_probabilities
 
     def _train_l1_models(self):
         for model_name in config.PROFILES['full']:
