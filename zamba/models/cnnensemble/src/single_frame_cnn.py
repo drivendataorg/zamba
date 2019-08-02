@@ -650,21 +650,15 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
     preprocess_input = MODELS[model_name].preprocess_input
 
     def load_file(video_id):
-        try:
-            frames = utils.load_video_clip_frames(
-                video_id,
-                frames_numbers=config.PREDICT_FRAMES,
-                output_size=(config.INPUT_ROWS, config.INPUT_COLS))
-            X = preprocess_input(frames)
-        except:
-            X = None
+        frames = utils.load_video_clip_frames(
+            video_id,
+            frames_numbers=config.PREDICT_FRAMES,
+            output_size=(config.INPUT_ROWS, config.INPUT_COLS))
+        X = preprocess_input(frames)
 
         return video_id, X
 
-    start_time = time.time()
-
     all_predictions = []
-    skipped_files = []
     processed_files = 0
 
     pool = ThreadPool(8)
@@ -680,26 +674,19 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
 
             for file_path, X in results:
                 pbar.update(1)
-                if X is None:
-                    print(" Skipping file that is not a valid video: ", file_path)
-                    processed_files += 1
-                    skipped_files.append(file_path)
+                video_id = file_path.name
+                processed_files += 1
+                prediction = model.predict(X, batch_size=1)
+                all_predictions.append(prediction)
 
-                else:
-                    video_id = file_path.name
-                    processed_files += 1
-                    have_data_time = time.time()
-                    prediction = model.predict(X, batch_size=1)
-                    all_predictions.append(prediction)
+                if save_results:
+                    res_fn = output_dir.resolve() / f"{video_id}.csv"
+                    ds = pd.DataFrame(index=PREDICT_FRAMES,
+                                      data=prediction,
+                                      columns=CLASSES)
+                    ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
 
-                    if save_results:
-                        res_fn = output_dir.resolve() / f"{video_id}.csv"
-                        ds = pd.DataFrame(index=PREDICT_FRAMES,
-                                          data=prediction,
-                                          columns=CLASSES)
-                        ds.to_csv(res_fn, index_label='frame', float_format='%.5f')
-
-    return np.array(all_predictions), skipped_files
+    return np.array(all_predictions)
 
 
 def find_non_blank_frames(model_name, fold):

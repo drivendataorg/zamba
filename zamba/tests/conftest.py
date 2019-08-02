@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 from zamba.models.model import SampleModel
+from zamba.models.cnnensemble.src import config
 
 
 @pytest.fixture
@@ -62,3 +63,8 @@ def sample_data_path():
     assert data_path.resolve().exists()
     yield data_path
     rmtree(data_path.parent)
+
+
+@pytest.fixture
+def data_dir():
+    return config.MODEL_DIR / "input" / "raw_test"

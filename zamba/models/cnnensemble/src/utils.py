@@ -1,13 +1,59 @@
-import math
-import pickle
 import time
-import random
 from contextlib import contextmanager
-import concurrent.futures
-from queue import Queue
 import numpy as np
 import skvideo.io
 import skimage.transform
+
+
+def validate_video(path, min_duration=None):
+    """Checks whether a video file is valid by reading the metadata gathered by ffprobe
+
+    Args:
+        path (str): Path to a video file
+        min_frames (int): Minimum number of frames a video needs to be considered valid
+
+    Returns:
+        bool: True if video is valid, False if video is invalid
+    """
+    try:
+        info = skvideo.io.ffprobe(path)
+        if "video" not in info:
+            is_valid = False
+
+        else:
+            if min_duration is None:
+                is_valid = True
+
+            else:
+                duration = float(info["video"]["@duration"])
+                is_valid = duration > min_duration
+
+    except Exception as e:
+        is_valid = False
+
+    return is_valid
+
+
+def get_valid_videos(paths, min_duration=None):
+    """Splits videos into valid and invalid
+
+    Args:
+        paths (list of str): A list of paths to videos
+        min_duration (float, optional): Minimum video duration for a video to be considered valid
+
+    Returns:
+        A list of valid video paths and a list of invalid video paths
+    """
+    valid_videos, invalid_videos = [], []
+
+    for path in paths:
+        if validate_video(path, min_duration=min_duration):
+            valid_videos.append(path)
+        else:
+            invalid_videos.append(path)
+
+    return valid_videos, invalid_videos
+
 
 def preprocessed_input_to_img_resnet(x):
     # Zero-center by mean pixel

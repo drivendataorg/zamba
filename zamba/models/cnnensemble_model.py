@@ -1,4 +1,3 @@
-import pickle
 from collections import deque
 from os import remove, getenv
 from pathlib import Path
@@ -8,16 +7,16 @@ import numpy as np
 import pandas as pd
 import logging
 from tqdm import tqdm
-import multiprocessing
 
 from tensorflow.python.keras.utils import get_file
 
-from .model import Model
-from .cnnensemble.src.single_frame_cnn import generate_prediction_test
-from .cnnensemble.src import second_stage
-from .cnnensemble.src import config
-from .cnnensemble.src import prepare_train_data
-from .cnnensemble.src import single_frame_cnn
+from zamba.models.model import Model
+from zamba.models.cnnensemble.src.single_frame_cnn import generate_prediction_test
+from zamba.models.cnnensemble.src import second_stage
+from zamba.models.cnnensemble.src import config
+from zamba.models.cnnensemble.src import prepare_train_data
+from zamba.models.cnnensemble.src import single_frame_cnn
+from zamba.models.cnnensemble.src import utils
 
 load_dotenv(find_dotenv())
 
@@ -71,54 +70,59 @@ class CnnEnsemble(Model):
             pd.DataFrame: A table of class probabilities, where index is the file name and columns are the different
             classes
         """
-        blank_file_names, blank_probabilities = self._find_blank_videos(file_names, threshold=0.5, dummy=True)
-        self.logger.debug("Blank file names %s", str(blank_file_names))
+        valid_videos, invalid_videos = utils.get_valid_videos(file_names)
+        self.logger.debug(f"Invalid videos {str(invalid_videos)}")
+
+        blank_file_names, blank_probabilities = self._find_blank_videos(valid_videos, threshold=0.5, dummy=False)
+        self.logger.debug(f"Blank videos {str(blank_file_names)}")
 
         non_blank_file_names = sorted(
-            list(set(file_names) - blank_file_names)
+            list(set(valid_videos) - blank_file_names)
         )
-        self.logger.debug("Non-blank file names %s", str(non_blank_file_names))
+        self.logger.debug(f"Non-blank videos {str(non_blank_file_names)}")
 
         l1_results = {}
         prof = config.PROFILES[self.profile]
-        all_skipped = set()
         for l1_model in tqdm(prof, desc=f'Predicting on {len(prof)} L1 models'):
-            l1_results[l1_model], skipped = generate_prediction_test(
+            l1_results[l1_model] = generate_prediction_test(
                 model_name=l1_model,
                 weights=config.MODEL_DIR / 'output' / config.MODEL_WEIGHTS[l1_model],
                 file_names=non_blank_file_names,
-                verbose=self.verbose,
+                # verbose=self.verbose,
                 save_results=False
             )
 
-            all_skipped.update({str(f) for f in skipped})
-
-        blank_probabilities = blank_probabilities.loc[
-            ~blank_probabilities.index.isin(all_skipped)
-        ]
-
         l2_results = second_stage.predict(l1_results, profile=self.profile)
-
-        index = [
-            str(file_name)
-            for file_name in non_blank_file_names
-            if str(file_name) not in all_skipped
-        ]
 
         preds = pd.DataFrame(
             {
-                cls: l2_results[:, i]
-                for i, cls in enumerate(config.CLASSES)
+                c: l2_results[:, i]
+                for i, c in enumerate(config.CLASSES)
             },
-            index=index,
+            index=[str(file_name) for file_name in non_blank_file_names],
             columns=config.CLASSES,
         )
 
-        if "blank" in preds:
-            del preds["blank"]
+        # add nans for invalid videos
+        preds = pd.concat(
+            [
+                preds,
+                pd.DataFrame(
+                    np.nan,
+                    index=[str(file_name) for file_name in invalid_videos],
+                    columns=config.CLASSES,
+                )
+            ],
+            axis=0,
+        )
 
-        preds = preds.join(blank_probabilities, how="outer")
-        preds.fillna(0, inplace=True)
+        # join with blank probabilities
+        preds = preds.drop(
+            columns=["blank"]
+        ).join(
+            blank_probabilities,
+            how="outer",
+        )
 
         return preds
 
