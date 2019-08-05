@@ -90,11 +90,11 @@ class ModelManager(object):
         data_path = str(data_path)
 
         # cnn ensemble doesn't use simple data loader, samples do...
-        if self.model_class != 'cnnensemble':
+        if isinstance(self.model_class, CnnEnsemble):
+            preds = self.model.predict(data_path)
+        else:
             data = self.model.load_data(data_path)
             preds = self.model.predict(data)
-        else:
-            preds = self.model.predict(data_path)
 
         # threshold if provided
         if self.proba_threshold is not None:
