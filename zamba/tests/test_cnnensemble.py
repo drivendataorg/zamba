@@ -30,7 +30,7 @@ def test_train():
 def test_validate_videos(data_dir):
     """Tests that all videos in the data directory are marked as valid."""
     paths = data_dir.glob("*")
-    valid_videos, invalid_videos = utils.get_valid_videos(paths, min_duration=None)
+    valid_videos, invalid_videos = utils.get_valid_videos(paths)
     assert len(invalid_videos) == 0
 
 
