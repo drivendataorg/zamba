@@ -20,6 +20,11 @@ RUN wget https://s3.amazonaws.com/drivendata-public-assets/input.tar.gz -P /tmp 
 RUN mkdir -p ~/.keras/models
 RUN wget https://github.com/fchollet/deep-learning-models/releases/download/v0.8/NASNet-mobile-no-top.h5 \
 	-O /root/.keras/models/nasnet_mobile_no_top.h5
+RUN wget https://github.com/fchollet/deep-learning-models/releases/download/v0.7/inception_resnet_v2_weights_tf_dim_ordering_tf_kernels_notop.h5 \
+	-O /root/.keras/models/inception_resnet_v2_weights_tf_dim_ordering_tf_kernels_notop.h5
+RUN wget https://github.com/fchollet/deep-learning-models/releases/download/v0.5/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5  \
+	-O /root/.keras/models/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
+
 
 COPY requirements-dev.txt requirements.txt /app/
 COPY zamba/models/cnnensemble/requirements.txt /app/zamba/models/cnnensemble
