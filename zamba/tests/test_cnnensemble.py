@@ -41,7 +41,7 @@ def test_predict_invalid_videos(data_dir):
 
     # create invalid (empty) videos
     for i in range(2):
-        (video_directory / f"invalid{i:02}").touch()
+        (video_directory / f"invalid{i:02}.mp4").touch()
 
     # copy valid videos
     test_video_path = list(data_dir.glob("*.mp4"))[0]
@@ -65,3 +65,5 @@ def test_predict_invalid_videos(data_dir):
     assert ~predictions.loc[
         predictions.index.str.contains("video")
     ].isnull().values.any()
+
+    tempdir.cleanup()

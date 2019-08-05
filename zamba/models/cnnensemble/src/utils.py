@@ -17,7 +17,7 @@ def validate_video(path, n_frames=1):
         bool: True if video is valid, False if video is invalid
     """
     try:
-        video = skimage.io.vreader(path)
+        video = skvideo.io.vreader(path)
 
         for i in range(n_frames):
             _ = next(video)
