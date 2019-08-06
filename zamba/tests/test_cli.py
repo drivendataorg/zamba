@@ -6,7 +6,7 @@ from zamba.cli import predict
 
 def test_predict_modelpath(sample_model_path, sample_data_path, mocker):  # noqa: F811
     # mock predictions to just test CLI args
-    def pred_mock(self, ata_path, pred_path='', save=False):
+    def pred_mock(self, data_path, pred_path='', save=False):
         return None
 
     mocker.patch('zamba.cli.ModelManager.predict', pred_mock)

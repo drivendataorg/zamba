@@ -1,22 +1,22 @@
-import pickle
 from collections import deque
 from os import remove, getenv
 from pathlib import Path
 from shutil import rmtree
 from dotenv import load_dotenv, find_dotenv
+import numpy as np
 import pandas as pd
 import logging
 from tqdm import tqdm
-import multiprocessing
 
 from tensorflow.python.keras.utils import get_file
 
-from .model import Model
-from .cnnensemble.src.single_frame_cnn import generate_prediction_test
-from .cnnensemble.src import second_stage
-from .cnnensemble.src import config
-from .cnnensemble.src import prepare_train_data
-from .cnnensemble.src import single_frame_cnn
+from zamba.models.model import Model
+from zamba.models.cnnensemble.src.single_frame_cnn import generate_prediction_test
+from zamba.models.cnnensemble.src import second_stage
+from zamba.models.cnnensemble.src import config
+from zamba.models.cnnensemble.src import prepare_train_data
+from zamba.models.cnnensemble.src import single_frame_cnn
+from zamba.models.cnnensemble.src import utils
 
 load_dotenv(find_dotenv())
 
@@ -67,34 +67,64 @@ class CnnEnsemble(Model):
             file_names: input data, list of video clip paths
 
         Returns:
-
+            pd.DataFrame: A table of class probabilities, where index is the file name and columns are the different
+            classes
         """
+        valid_videos, invalid_videos = utils.get_valid_videos(file_names)
+        self.logger.debug(f"Invalid videos {str(invalid_videos)}")
+
+        blank_file_names, blank_probabilities = self._find_blank_videos(valid_videos, threshold=0.5, dummy=False)
+        self.logger.debug(f"Blank videos {str(blank_file_names)}")
+
+        non_blank_file_names = sorted(
+            list(set(valid_videos) - blank_file_names)
+        )
+        self.logger.debug(f"Non-blank videos {str(non_blank_file_names)}")
 
         l1_results = {}
         prof = config.PROFILES[self.profile]
-        all_skipped = set()
         for l1_model in tqdm(prof, desc=f'Predicting on {len(prof)} L1 models'):
-            l1_results[l1_model], skipped = generate_prediction_test(
+            l1_results[l1_model] = generate_prediction_test(
                 model_name=l1_model,
                 weights=config.MODEL_DIR / 'output' / config.MODEL_WEIGHTS[l1_model],
-                file_names=file_names,
-                verbose=self.verbose,
+                file_names=non_blank_file_names,
+                # verbose=self.verbose,
                 save_results=False
             )
-
-            all_skipped |= set([str(f) for f in skipped])
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
         preds = pd.DataFrame(
             {
-                'filename': [str(file_name) for file_name in file_names if str(file_name) not in all_skipped],
-                **{cls: l2_results[:, i] for i, cls in enumerate(config.CLASSES)}
+                c: l2_results[:, i]
+                for i, c in enumerate(config.CLASSES)
             },
-            columns=['filename'] + config.CLASSES
+            index=[str(file_name) for file_name in non_blank_file_names],
+            columns=config.CLASSES,
         )
 
-        return preds.set_index('filename')
+        # add nans for invalid videos
+        preds = pd.concat(
+            [
+                preds,
+                pd.DataFrame(
+                    np.nan,
+                    index=[str(file_name) for file_name in invalid_videos],
+                    columns=config.CLASSES,
+                )
+            ],
+            axis=0,
+        )
+
+        # join with blank probabilities
+        preds = preds.drop(
+            columns=["blank"]
+        ).join(
+            blank_probabilities,
+            how="outer",
+        )
+
+        return preds
 
     def _train_initial_l1_filter_model(self):
         for fold in config.TRAIN_FOLDS:
@@ -114,7 +144,6 @@ class CnnEnsemble(Model):
         model_name = config.BLANK_FRAMES_MODEL
         for fold in config.TRAIN_FOLDS:
             self.logger.info(f'find non blank frames for fold {fold}')
-            print(f'find non blank frames for fold {fold}')
 
             force_fold = getenv('FOLD')
             if force_fold is not None and int(force_fold) != fold:
@@ -126,6 +155,39 @@ class CnnEnsemble(Model):
                    weights=str(config.MODEL_DIR / f'output/{model_name}_s_fold_{fold}.h5'),
                    fold=fold)
             single_frame_cnn.find_non_blank_frames(model_name=model_name, fold=fold)
+
+    def _find_blank_videos(self, file_names, threshold, dummy=False):
+        """Detects blank videos
+
+        Args:
+            file_names (list of str)
+            dummy (bool): If True, randomly assign blank probabilities. If False, assign a blank probability of 0 to
+                all videos
+
+        Returns:
+            pd.Series: The probability that the video is blank for each video
+        """
+
+        def blank_nonblank_model(file_names):
+            rng = np.random.RandomState(100)
+            blank_probabilities = rng.rand(len(file_names))
+            return blank_probabilities
+
+        if dummy:
+            blank_probabilities = blank_nonblank_model(file_names)
+        else:
+            blank_probabilities = 0
+
+        blank_probabilities = pd.Series(
+            blank_probabilities,
+            index=[str(file_name) for file_name in file_names],
+            name="blank",
+        )
+
+        blank_file_names = blank_probabilities.loc[blank_probabilities > threshold].index
+        blank_file_names = set(Path(file_name) for file_name in blank_file_names)
+
+        return blank_file_names, blank_probabilities
 
     def _train_l1_models(self):
         for model_name in config.PROFILES['full']:
@@ -245,7 +307,7 @@ class CnnEnsemble(Model):
             region_url = region_urls[download_region]
 
         # file names, paths
-        fnames = ["input.tar.gz", "output.tar.gz", "data_fast.zip"]
+        fnames = ["input.tar.gz", "zamba.zip", "data_fast.zip"]
 
         cache_dir = Path(__file__).parent if getenv("ZAMBA_CACHE_DIR") is None else getenv("ZAMBA_CACHE_DIR")
         cache_subdir = Path("cnnensemble")
