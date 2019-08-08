@@ -119,12 +119,11 @@ def load_video_clip_frames(video_fn, frames_numbers, output_size):
     """
     X = np.zeros(shape=(len(frames_numbers),) + output_size + (3,), dtype=np.float32)
 
-    v = skvideo.io.vread(str(video_fn))
-    valid_frames = 0
+    videogen = skvideo.io.vreader(str(video_fn))
 
-    for i, frame_num in enumerate(frames_numbers):
-        try:
-            frame = v[frame_num]
+    valid_frames = 0
+    for frame_ix, frame in enumerate(videogen):
+        if frame_ix in frames_numbers:
             if frame.shape[:2] != output_size:
                 frame = skimage.transform.resize(frame,
                                                  output_shape=output_size,
@@ -133,13 +132,13 @@ def load_video_clip_frames(video_fn, frames_numbers, output_size):
                                                  preserve_range=True).astype(np.float32)
             else:
                 frame = frame.astype(np.float32)
-            X[i] = frame
+
+            X[valid_frames] = frame
             valid_frames += 1
-        except IndexError:
-            if valid_frames > 0:
-                X[i] = X[i % valid_frames]
-            else:
-                X[i] = 0.0
+
+        if frame_ix == max(frames_numbers):
+            break
+
     return X
 
 
