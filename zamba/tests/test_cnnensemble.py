@@ -2,6 +2,9 @@ import pathlib
 import pytest
 import shutil
 import tempfile
+
+import numpy as np
+
 from zamba.models.cnnensemble.src import config, utils
 from zamba.models.manager import ModelManager
 
@@ -9,6 +12,10 @@ from zamba.models.manager import ModelManager
 def test_predict_fast(data_dir):
     manager = ModelManager('', model_class='cnnensemble', output_class_names=False, model_kwargs=dict(profile='fast'))
     result = manager.predict(data_dir, save=True)
+
+    # check that duiker is most likely class (manually verified)
+    assert np.isclose(result.iloc[0, 21], 0.53087)
+
     result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
 
 
@@ -57,7 +64,6 @@ def test_predict_invalid_videos(data_dir):
         },
     )
     predictions = manager.predict(video_directory)
-
     assert predictions.loc[
         predictions.index.str.contains("invalid")
     ].isnull().values.all()
