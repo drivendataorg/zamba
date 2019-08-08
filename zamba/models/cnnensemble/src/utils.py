@@ -123,9 +123,6 @@ def load_video_clip_frames(video_fn, frames_numbers, output_size):
 
     valid_frames = 0
     for frame_ix, frame in enumerate(videogen):
-        if frame_ix > max(frames_numbers):
-            break
-
         if frame_ix in frames_numbers:
             if frame.shape[:2] != output_size:
                 frame = skimage.transform.resize(frame,
@@ -138,6 +135,9 @@ def load_video_clip_frames(video_fn, frames_numbers, output_size):
 
             X[valid_frames] = frame
             valid_frames += 1
+
+        if frame_ix == max(frames_numbers):
+            break
 
     return X
 
