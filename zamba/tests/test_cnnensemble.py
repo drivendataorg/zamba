@@ -3,9 +3,8 @@ import pytest
 import shutil
 import tempfile
 
-import numpy as np
-
-from zamba.models.cnnensemble.src import config, utils
+from zamba import utils
+from zamba.models.cnnensemble.src import config
 from zamba.models.manager import ModelManager
 
 
@@ -14,7 +13,7 @@ def test_predict_fast(data_dir):
     result = manager.predict(data_dir, save=True)
 
     # check that duiker is most likely class (manually verified)
-    assert np.isclose(result.iloc[0, 21], 0.53087)
+    assert result.idxmax(axis=1).values[0] == "duiker"
 
     result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
 
@@ -39,6 +38,16 @@ def test_validate_videos(data_dir):
     paths = data_dir.glob("*")
     valid_videos, invalid_videos = utils.get_valid_videos(paths)
     assert len(invalid_videos) == 0
+
+
+def test_load_data(data_dir):
+    manager = ModelManager(
+        '', model_class='cnnensemble',
+        output_class_names=False,
+        model_kwargs=dict(profile='fast'),
+    )
+    input_paths = manager.model.load_data(data_dir)
+    assert len(input_paths) > 0
 
 
 def test_predict_invalid_videos(data_dir):

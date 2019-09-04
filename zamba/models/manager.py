@@ -86,15 +86,8 @@ class ModelManager(object):
         Returns: DataFrame of predictions
 
         """
-
-        data_path = str(data_path)
-
-        # cnn ensemble doesn't use simple data loader, samples do...
-        if isinstance(self.model_class, CnnEnsemble):
-            preds = self.model.predict(data_path)
-        else:
-            data = self.model.load_data(data_path)
-            preds = self.model.predict(data)
+        data_paths = self.model.load_data(Path(data_path).expanduser().resolve())
+        preds = self.model.predict(data_paths)
 
         # threshold if provided
         if self.proba_threshold is not None:
