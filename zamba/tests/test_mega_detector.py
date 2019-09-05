@@ -1,10 +1,8 @@
-import pytest
 import numpy as np
 
 from zamba.models.mega_detector import MegaDetector
 
 
-@pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
 def test_compute_n_detections_and_areas():
     # Compare output for test dataset example (af9b5346-1752-49dd-911a-0aeb2329ee98)
     boxes = [
@@ -19,7 +17,7 @@ def test_compute_n_detections_and_areas():
         np.array([
             [0.47295967, 0.10388512, 0.8461845, 0.18570223],
         ]),
-        np.array([[]])
+        np.array([])
     ]
     n_detections, area = MegaDetector.compute_n_detections_and_areas(boxes, h=252, w=448)
     assert n_detections == 3
