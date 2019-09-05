@@ -18,7 +18,7 @@ def validate_video(path, n_frames=1):
         bool: True if video is valid, False if video is invalid
     """
     try:
-        load_video(path, n_frames=1)
+        load_video(path, n_frames=n_frames)
         is_valid = True
 
     except Exception:
