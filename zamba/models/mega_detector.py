@@ -9,7 +9,6 @@ from tqdm import tqdm
 
 import zamba
 from zamba.utils import load_video
-import zamba.visualization as viz
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
@@ -232,6 +231,8 @@ class MegaDetector:
 
     @staticmethod
     def visualize_video(video, boxes, key_frames_only=True, sleep=0.2):
+        import zamba.visualization as viz
+
         if isinstance(video, (str, Path)):
             video = load_video(video, key_frames_only=key_frames_only)
 
