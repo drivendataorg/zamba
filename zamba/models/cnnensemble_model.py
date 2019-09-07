@@ -85,7 +85,7 @@ class CnnEnsemble(Model):
 
         return OrderedDict(zip(input_paths, output_paths))
 
-    def predict(self, file_names):
+    def predict(self, file_names, resample=True):
         """Predict class probabilities for each input
 
         Args:
@@ -95,7 +95,7 @@ class CnnEnsemble(Model):
             pd.DataFrame: A table of class probabilities, where index is the file name and columns are the different
                 classes
         """
-        processed_paths = self.preprocess_videos(file_names)
+        processed_paths = self.preprocess_videos(file_names, resample=resample)
         valid_videos, invalid_videos = zamba.utils.get_valid_videos(processed_paths.values())
         self.logger.debug(f"Invalid videos {str(invalid_videos)}")
 
@@ -202,7 +202,7 @@ class CnnEnsemble(Model):
 
         bnb = BlankNonBlank()
         X = bnb.prepare_features(features)
-        blank = bnb.predict(X)
+        blank = bnb.predict_proba(X)[:, 1]
 
         blank = pd.Series(
             blank,
