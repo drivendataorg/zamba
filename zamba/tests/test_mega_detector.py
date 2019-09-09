@@ -5,7 +5,7 @@ from zamba.models.mega_detector import MegaDetector
 
 def test_compute_features(data_dir):
     mega = MegaDetector()
-    video_paths = [path for path in data_dir.glob("*") if not path.startswith(".")]
+    video_paths = [path for path in data_dir.glob("*") if not path.stem.startswith(".")]
     mega_features = mega.compute_features(video_paths)
 
     assert mega_features.shape[1] == len(MegaDetector.FEATURE_NAMES)
