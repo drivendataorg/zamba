@@ -19,7 +19,7 @@ def test_predict_fast(data_dir):
     result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
 
 
-def test_predict_fast(data_dir):
+def test_mega_detector(data_dir):
     mega = MegaDetector()
     video_paths = list(data_dir.glob("*"))
     mega.compute_features(video_paths)
