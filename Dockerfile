@@ -1,5 +1,5 @@
 # Dockerfile for CI on codeship
-FROM continuumio/anaconda3:5.2.0
+FROM python:3.6-stretch
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && \
@@ -9,7 +9,6 @@ RUN apt-get update && \
 	libavutil-dev libavfilter-dev libswscale-dev libswresample-dev \
 	unzip pkg-config && \
 	rm -rf /var/lib/apt/lists/*
-RUN pip install -U pip Cython
 
 # download weights
 RUN mkdir -p /root/.cache/zamba/cnnensemble /root/.cache/zamba/megadetector /root/.keras/models && \
@@ -37,7 +36,9 @@ COPY zamba/models/cnnensemble/requirements.txt /app/zamba/models/cnnensemble
 COPY docs/requirements.txt /app/docs
 
 WORKDIR /app
-RUN pip install -r requirements-dev.txt
+RUN pip install -U pip Cython && \
+	pip install -r requirements-dev.txt && \
+	rm -rf /root/.cache/pip
 
 COPY . /app
 RUN pip install .[cpu]
