@@ -109,6 +109,7 @@ class CnnEnsemble(Model):
                 save_results=False
             )
 
+        print("Predicting L2 model")
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
         cnn_features = pd.DataFrame(
@@ -121,6 +122,7 @@ class CnnEnsemble(Model):
         )
         cnn_features["blank"] = 0
 
+        print("Computing blank probability")
         blank = self.compute_blank_probability(valid_videos, cnn_features)
 
         # add nans for invalid videos
@@ -190,7 +192,7 @@ class CnnEnsemble(Model):
             pd.Series: A series containing the blank probability for each video
         """
         mega = MegaDetector()
-        mega_features = mega.compute_features(video_paths)
+        mega_features = np.random.rand(len(video_paths), len(MegaDetector.FEATURE_NAMES))
 
         mega_features = pd.DataFrame(
             mega_features,
