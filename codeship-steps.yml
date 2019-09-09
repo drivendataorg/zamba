@@ -1,4 +1,4 @@
-- type: parallel
+- type: serial
   steps:
     - name: test
       service: zamba
