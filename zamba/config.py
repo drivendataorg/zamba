@@ -17,4 +17,4 @@ else:
 
 cache_dir.mkdir(exist_ok=True)
 
-codeship = os.getenv("CI_NAME", False) == "codeship"
+codeship = os.getenv("CI", False)
