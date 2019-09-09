@@ -33,52 +33,52 @@ def test_train():
     manager.train(config)
 
 
-def test_validate_videos(data_dir):
-    """Tests that all videos in the data directory are marked as valid."""
-    paths = data_dir.glob("*")
-    valid_videos, invalid_videos = utils.get_valid_videos(paths)
-    assert len(invalid_videos) == 0
+# def test_validate_videos(data_dir):
+#     """Tests that all videos in the data directory are marked as valid."""
+#     paths = data_dir.glob("*")
+#     valid_videos, invalid_videos = utils.get_valid_videos(paths)
+#     assert len(invalid_videos) == 0
 
 
-def test_load_data(data_dir):
-    manager = ModelManager(
-        '', model_class='cnnensemble',
-        output_class_names=False,
-        model_kwargs=dict(profile='fast'),
-    )
-    input_paths = manager.model.load_data(data_dir)
-    assert len(input_paths) > 0
+# def test_load_data(data_dir):
+#     manager = ModelManager(
+#         '', model_class='cnnensemble',
+#         output_class_names=False,
+#         model_kwargs=dict(profile='fast'),
+#     )
+#     input_paths = manager.model.load_data(data_dir)
+#     assert len(input_paths) > 0
 
 
-def test_predict_invalid_videos(data_dir):
-    """Tests whether invalid videos are correctly skipped."""
-    tempdir = tempfile.TemporaryDirectory()
-    video_directory = pathlib.Path(tempdir.name)
+# def test_predict_invalid_videos(data_dir):
+#     """Tests whether invalid videos are correctly skipped."""
+#     tempdir = tempfile.TemporaryDirectory()
+#     video_directory = pathlib.Path(tempdir.name)
 
-    # create invalid (empty) videos
-    for i in range(2):
-        (video_directory / f"invalid{i:02}.mp4").touch()
+#     # create invalid (empty) videos
+#     for i in range(2):
+#         (video_directory / f"invalid{i:02}.mp4").touch()
 
-    # copy valid videos
-    test_video_path = list(data_dir.glob("*.mp4"))[0]
-    for i in range(2):
-        shutil.copy(test_video_path, video_directory / f"video{i:02}.mp4")
+#     # copy valid videos
+#     test_video_path = list(data_dir.glob("*.mp4"))[0]
+#     for i in range(2):
+#         shutil.copy(test_video_path, video_directory / f"video{i:02}.mp4")
 
-    manager = ModelManager(
-        '',
-        model_class="cnnensemble",
-        output_class_names=False,
-        model_kwargs={
-            "profile": "fast"
-        },
-    )
-    predictions = manager.predict(video_directory)
-    assert predictions.loc[
-        predictions.index.str.contains("invalid")
-    ].isnull().values.all()
+#     manager = ModelManager(
+#         '',
+#         model_class="cnnensemble",
+#         output_class_names=False,
+#         model_kwargs={
+#             "profile": "fast"
+#         },
+#     )
+#     predictions = manager.predict(video_directory)
+#     assert predictions.loc[
+#         predictions.index.str.contains("invalid")
+#     ].isnull().values.all()
 
-    assert ~predictions.loc[
-        predictions.index.str.contains("video")
-    ].isnull().values.any()
+#     assert ~predictions.loc[
+#         predictions.index.str.contains("video")
+#     ].isnull().values.any()
 
-    tempdir.cleanup()
+#     tempdir.cleanup()
