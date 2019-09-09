@@ -200,10 +200,7 @@ class CnnEnsemble(Model):
 
         features = pd.concat([mega_features, cnn_features], axis=1)
 
-        bnb = BlankNonBlank()
-        X = bnb.prepare_features(features)
-        # blank = bnb.predict_proba(X)[:, 1]
-        blank = np.random.rand(len(X))
+        blank = np.random.rand(len(features))
 
         blank = pd.Series(
             blank,
