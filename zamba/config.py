@@ -16,3 +16,5 @@ else:
     cache_dir = Path(cache_dir)
 
 cache_dir.mkdir(exist_ok=True)
+
+codeship = os.getenv("CI_NAME", False) == "codeship"

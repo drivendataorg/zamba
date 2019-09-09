@@ -69,7 +69,7 @@ def convert_videos(
 
     for input_path, output_path in tqdm(
         zip(input_paths, output_paths),
-        total=len(input_paths),
+        total=len(output_paths),
         desc="Resampling videos",
     ):
         ffmpeg_resample(input_path, output_path, fps, width, height)

@@ -3,11 +3,15 @@ import pytest
 import shutil
 import tempfile
 
-from zamba import utils
+import zamba
 from zamba.models.cnnensemble.src import config
 from zamba.models.manager import ModelManager
 
 
+@pytest.mark.skipif(
+    zamba.config.codeship,
+    reason="Uses too much memory for codeship build, but test locally before merging.",
+)
 def test_predict_fast(data_dir):
     manager = ModelManager('', model_class='cnnensemble', output_class_names=False, model_kwargs=dict(profile='fast'))
     result = manager.predict(data_dir, save=True)
@@ -36,7 +40,7 @@ def test_train():
 def test_validate_videos(data_dir):
     """Tests that all videos in the data directory are marked as valid."""
     paths = data_dir.glob("*")
-    valid_videos, invalid_videos = utils.get_valid_videos(paths)
+    valid_videos, invalid_videos = zamba.utils.get_valid_videos(paths)
     assert len(invalid_videos) == 0
 
 
@@ -50,6 +54,10 @@ def test_load_data(data_dir):
     assert len(input_paths) > 0
 
 
+@pytest.mark.skipif(
+    zamba.config.codeship,
+    reason="Uses too much memory for codeship build, but test locally before merging.",
+)
 def test_predict_invalid_videos(data_dir):
     """Tests whether invalid videos are correctly skipped."""
     tempdir = tempfile.TemporaryDirectory()

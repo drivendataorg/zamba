@@ -121,7 +121,7 @@ class MegaDetector:
         if not kwargs.get("key_frames_only", True):
             raise ValueError("Features only supported for `key_frame_only=True`")
 
-        features = np.empty((len(videos), len(self.FEATURE_NAMES)), dtype=np.int32)
+        features = []
         for i, video in enumerate(videos):
             if isinstance(video, (str, Path)):
                 video = load_video(video, key_frames_only=True)
@@ -130,11 +130,11 @@ class MegaDetector:
             boxes, scores = self.detect_video(video, **kwargs)
             n_detections, area = MegaDetector.compute_n_detections_and_areas(boxes, height, width)
 
-            features[i, 0] = n_key_frames
-            features[i, 1] = height
-            features[i, 2] = width
-            features[i, 3] = n_detections
-            features[i, 4] = area
+            features.append([
+                n_key_frames, height, width, n_detections, area
+            ])
+
+        features = np.array(features, dtype=np.int32)
 
         return features
 

@@ -3,6 +3,14 @@ import numpy as np
 from zamba.models.mega_detector import MegaDetector
 
 
+def test_compute_features(data_dir):
+    mega = MegaDetector()
+    video_paths = [path for path in data_dir.glob("*") if not path.startswith(".")]
+    mega_features = mega.compute_features(video_paths)
+
+    assert mega_features.shape[1] == len(MegaDetector.FEATURE_NAMES)
+
+
 def test_compute_n_detections_and_areas():
     # Compare output for test dataset example (af9b5346-1752-49dd-911a-0aeb2329ee98)
     boxes = [
