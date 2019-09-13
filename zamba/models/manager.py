@@ -77,7 +77,7 @@ class ModelManager(object):
 
         self.verbose = verbose
 
-    def predict(self, data_path, save=False, pred_path=None):
+    def predict(self, data_path, save=False, pred_path=None, predict_kwargs=None):
         """
         Args:
             data_path (str | Path) : path to input data
@@ -86,8 +86,11 @@ class ModelManager(object):
         Returns: DataFrame of predictions
 
         """
+        if predict_kwargs is None:
+            predict_kwargs = dict()
+
         data_paths = self.model.load_data(Path(data_path).expanduser().resolve())
-        preds = self.model.predict(data_paths)
+        preds = self.model.predict(data_paths, **predict_kwargs)
 
         # threshold if provided
         if self.proba_threshold is not None:
