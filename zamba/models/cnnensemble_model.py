@@ -1,4 +1,4 @@
-from collections import deque
+from collections import deque, OrderedDict
 from os import remove, getenv
 from pathlib import Path
 from shutil import rmtree
@@ -6,17 +6,21 @@ from dotenv import load_dotenv, find_dotenv
 import numpy as np
 import pandas as pd
 import logging
+import tempfile
 from tqdm import tqdm
 
 from tensorflow.python.keras.utils import get_file
 
-from zamba.models.model import Model
+import zamba
+from zamba.convert_videos import convert_videos
+from zamba.models.blanknonblank import BlankNonBlank
 from zamba.models.cnnensemble.src.single_frame_cnn import generate_prediction_test
 from zamba.models.cnnensemble.src import second_stage
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble.src import prepare_train_data
 from zamba.models.cnnensemble.src import single_frame_cnn
-from zamba.models.cnnensemble.src import utils
+from zamba.models.mega_detector import MegaDetector
+from zamba.models.model import Model
 
 load_dotenv(find_dotenv())
 
@@ -46,40 +50,54 @@ class CnnEnsemble(Model):
             self._download_weights_if_needed(download_region)
 
     def load_data(self, data_path):
-        """ Loads data and returns it in a format that can be used
-            by this model. This is not recursive, and loads files that
-            do not start with ".".
+        input_paths = [
+            path for path in data_path.glob('**/*')
+            if not path.is_dir() and not path.name.startswith(".")
+        ]
+
+        return input_paths
+
+    def preprocess_videos(self, input_paths, resample=True):
+        """Preprocesses videos into a format that can be used by this model.
+
+        Input is a directory containing videos. The directory will be recursively searched for all files that do not
+        start with ".". Also has the option to resample raw videos to standard resolution and frame rate.
 
         Args:
-            data_path: A path to the input data
+            data_path (pathlib.Path): Path to a directory containing the input files
+            resample (bool): If true, resample the videos to a standard resolution and frame rate
 
         Returns:
-            The data.
+            OrderedDict: A dict with `key: value` as `original path: processed path` for each video.
         """
-        p = Path(data_path)
-        file_names = [x for x in p.glob('**/*') if x.is_file() and not x.name.startswith(".")]
-        return file_names
+        self.logger.debug("Preprocessing %d videos", len(input_paths))
 
-    def predict(self, file_names):
-        """Predict class probabilities for each input, X
+        if resample:
+            self.logger.debug("Converting videos to standard resolution and frame rate.")
+            output_directory = Path(
+                tempfile.mkdtemp(prefix="resampled_", dir=self.tempdir)
+            )
+            output_paths = convert_videos(
+                input_paths, output_directory, fps=15, width=448, height=252,
+            )
+        else:
+            output_paths = input_paths
+
+        return OrderedDict(zip(input_paths, output_paths))
+
+    def predict(self, file_names, resample=True):
+        """Predict class probabilities for each input
 
         Args:
-            file_names: input data, list of video clip paths
+            file_names: input data, list of video paths
 
         Returns:
             pd.DataFrame: A table of class probabilities, where index is the file name and columns are the different
-            classes
+                classes
         """
-        valid_videos, invalid_videos = utils.get_valid_videos(file_names)
+        processed_paths = self.preprocess_videos(file_names, resample=resample)
+        valid_videos, invalid_videos = zamba.utils.get_valid_videos(processed_paths.values())
         self.logger.debug(f"Invalid videos {str(invalid_videos)}")
-
-        blank_file_names, blank_probabilities = self._find_blank_videos(valid_videos, threshold=0.5, dummy=False)
-        self.logger.debug(f"Blank videos {str(blank_file_names)}")
-
-        non_blank_file_names = sorted(
-            list(set(valid_videos) - blank_file_names)
-        )
-        self.logger.debug(f"Non-blank videos {str(non_blank_file_names)}")
 
         l1_results = {}
         prof = config.PROFILES[self.profile]
@@ -87,26 +105,28 @@ class CnnEnsemble(Model):
             l1_results[l1_model] = generate_prediction_test(
                 model_name=l1_model,
                 weights=config.MODEL_DIR / 'output' / config.MODEL_WEIGHTS[l1_model],
-                file_names=non_blank_file_names,
-                # verbose=self.verbose,
+                file_names=valid_videos,
                 save_results=False
             )
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
-        preds = pd.DataFrame(
+        cnn_features = pd.DataFrame(
             {
                 c: l2_results[:, i]
                 for i, c in enumerate(config.CLASSES)
             },
-            index=[str(file_name) for file_name in non_blank_file_names],
+            index=[str(file_name) for file_name in valid_videos],
             columns=config.CLASSES,
         )
+        cnn_features["blank"] = 0
+
+        blank = self.compute_blank_probability(valid_videos, cnn_features)
 
         # add nans for invalid videos
         preds = pd.concat(
             [
-                preds,
+                cnn_features,
                 pd.DataFrame(
                     np.nan,
                     index=[str(file_name) for file_name in invalid_videos],
@@ -116,12 +136,14 @@ class CnnEnsemble(Model):
             axis=0,
         )
 
-        # join with blank probabilities
-        preds = preds.drop(
-            columns=["blank"]
-        ).join(
-            blank_probabilities,
-            how="outer",
+        preds["blank"] = blank
+
+        preds.rename(
+            index={
+                str(processed_path): str(original_path)
+                for original_path, processed_path in processed_paths.items()
+            },
+            inplace=True,
         )
 
         return preds
@@ -156,38 +178,38 @@ class CnnEnsemble(Model):
                    fold=fold)
             single_frame_cnn.find_non_blank_frames(model_name=model_name, fold=fold)
 
-    def _find_blank_videos(self, file_names, threshold, dummy=False):
-        """Detects blank videos
+    def compute_blank_probability(self, video_paths, cnn_features):
+        """Predicts whether each video is blank
 
         Args:
-            file_names (list of str)
-            dummy (bool): If True, randomly assign blank probabilities. If False, assign a blank probability of 0 to
-                all videos
+            video_paths (list of str)
+            cnn_features (np.ndarray): Array of shape (num videos, num cnn categories) containing the output of the CNN
+                ensemble model
 
         Returns:
-            pd.Series: The probability that the video is blank for each video
+            pd.Series: A series containing the blank probability for each video
         """
+        mega = MegaDetector()
+        mega_features = mega.compute_features(video_paths)
 
-        def blank_nonblank_model(file_names):
-            rng = np.random.RandomState(100)
-            blank_probabilities = rng.rand(len(file_names))
-            return blank_probabilities
-
-        if dummy:
-            blank_probabilities = blank_nonblank_model(file_names)
-        else:
-            blank_probabilities = 0
-
-        blank_probabilities = pd.Series(
-            blank_probabilities,
-            index=[str(file_name) for file_name in file_names],
-            name="blank",
+        mega_features = pd.DataFrame(
+            mega_features,
+            index=[str(file_name) for file_name in video_paths],
+            columns=MegaDetector.FEATURE_NAMES,
         )
 
-        blank_file_names = blank_probabilities.loc[blank_probabilities > threshold].index
-        blank_file_names = set(Path(file_name) for file_name in blank_file_names)
+        features = pd.concat([mega_features, cnn_features], axis=1)
 
-        return blank_file_names, blank_probabilities
+        bnb = BlankNonBlank()
+        X = bnb.prepare_features(features)
+        blank = bnb.predict_proba(X)[:, 1]
+
+        blank = pd.Series(
+            blank,
+            index=[str(path) for path in video_paths],
+        )
+
+        return blank
 
     def _train_l1_models(self):
         for model_name in config.PROFILES['full']:
@@ -309,7 +331,7 @@ class CnnEnsemble(Model):
         # file names, paths
         fnames = ["input.tar.gz", "zamba.zip", "data_fast.zip"]
 
-        cache_dir = Path(__file__).parent if getenv("ZAMBA_CACHE_DIR") is None else getenv("ZAMBA_CACHE_DIR")
+        cache_dir = zamba.config.cache_dir
         cache_subdir = Path("cnnensemble")
 
         paths_needed = [cache_dir / cache_subdir / "input",

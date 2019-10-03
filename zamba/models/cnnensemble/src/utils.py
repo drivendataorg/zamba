@@ -3,51 +3,6 @@ from contextlib import contextmanager
 import numpy as np
 import skvideo.io
 import skimage.transform
-from zamba.models.cnnensemble.src import config
-
-
-def validate_video(path, n_frames=1):
-    """Quickly checks whether a video file is valid by reading the first and last frames
-
-    Args:
-        path (str): Path to a video file
-        n_frames (int): Number of frames to load
-
-    Returns:
-        bool: True if video is valid, False if video is invalid
-    """
-    try:
-        video = skvideo.io.vreader(path)
-
-        for i in range(n_frames):
-            _ = next(video)
-
-        is_valid = True
-
-    except Exception:
-        is_valid = False
-
-    return is_valid
-
-
-def get_valid_videos(paths):
-    """Splits videos into valid and invalid
-
-    Args:
-        paths (list of str): A list of paths to videos
-
-    Returns:
-        A list of valid video paths and a list of invalid video paths
-    """
-    valid_videos, invalid_videos = [], []
-
-    for path in paths:
-        if validate_video(path):
-            valid_videos.append(path)
-        else:
-            invalid_videos.append(path)
-
-    return valid_videos, invalid_videos
 
 
 def preprocessed_input_to_img_resnet(x):

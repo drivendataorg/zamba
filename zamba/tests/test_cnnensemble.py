@@ -3,18 +3,21 @@ import pytest
 import shutil
 import tempfile
 
-import numpy as np
-
-from zamba.models.cnnensemble.src import config, utils
+import zamba
+from zamba.models.cnnensemble.src import config
 from zamba.models.manager import ModelManager
 
 
+@pytest.mark.skipif(
+    zamba.config.codeship,
+    reason="Uses too much memory for codeship build, but test locally before merging.",
+)
 def test_predict_fast(data_dir):
     manager = ModelManager('', model_class='cnnensemble', output_class_names=False, model_kwargs=dict(profile='fast'))
     result = manager.predict(data_dir, save=True)
 
     # check that duiker is most likely class (manually verified)
-    assert np.isclose(result.iloc[0, 21], 0.53087)
+    assert result.idxmax(axis=1).values[0] == "duiker"
 
     result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
 
@@ -37,10 +40,24 @@ def test_train():
 def test_validate_videos(data_dir):
     """Tests that all videos in the data directory are marked as valid."""
     paths = data_dir.glob("*")
-    valid_videos, invalid_videos = utils.get_valid_videos(paths)
+    valid_videos, invalid_videos = zamba.utils.get_valid_videos(paths)
     assert len(invalid_videos) == 0
 
 
+def test_load_data(data_dir):
+    manager = ModelManager(
+        '', model_class='cnnensemble',
+        output_class_names=False,
+        model_kwargs=dict(profile='fast'),
+    )
+    input_paths = manager.model.load_data(data_dir)
+    assert len(input_paths) > 0
+
+
+@pytest.mark.skipif(
+    zamba.config.codeship,
+    reason="Uses too much memory for codeship build, but test locally before merging.",
+)
 def test_predict_invalid_videos(data_dir):
     """Tests whether invalid videos are correctly skipped."""
     tempdir = tempfile.TemporaryDirectory()

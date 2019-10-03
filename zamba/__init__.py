@@ -1,5 +1,8 @@
 # avoid using a backend when not installed
 # as a framework.
+import zamba.config
+import zamba.utils  # noqa: F401
+
 import matplotlib
 matplotlib.use('Agg')
 

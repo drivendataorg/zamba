@@ -168,5 +168,3 @@ todo_include_todos = True
 
 def setup(app):
     app.add_stylesheet('zamba_custom.css')
-
-

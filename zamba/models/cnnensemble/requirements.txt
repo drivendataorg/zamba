@@ -17,7 +17,6 @@ pytz==2017.3
 PyWavelets==0.5.2
 PyYAML==3.12
 scikit-image==0.13.1
-scikit-learn==0.19.1
 scipy==1.0.0
 sk-video==1.1.10
 six==1.11.0

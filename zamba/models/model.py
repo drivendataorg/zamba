@@ -37,7 +37,7 @@ class Model(object):
     def __init__(self, model_path=None, tempdir=None, verbose=False):
         self.model_path = Path(model_path) if model_path is not None else None
         self.delete_tempdir = tempdir is None
-        self.tempdir = Path(tempfile.mkdtemp()) if self.delete_tempdir else Path(tempdir)
+        self.tempdir = Path(tempfile.mkdtemp(prefix="zamba_")) if self.delete_tempdir else Path(tempdir)
         self.verbose = verbose
 
     def __del__(self):
@@ -94,6 +94,18 @@ class Model(object):
         Returns:
 
         """
+        pass
+
+    def load_data(self, data_path):
+        """SampleModel loads pickled data
+
+        Args:
+            data_path:
+
+        Returns:
+
+        """
+        pass
 
 
 class SampleModel(Model):
@@ -171,13 +183,12 @@ class SampleModel(Model):
         """SampleModel loads pickled data
 
         Args:
-            data_path:
+            data_path (pathlib.Path)
 
         Returns:
 
         """
-
-        with open(data_path, 'rb') as f:
+        with data_path.open("rb") as f:
             data = pickle.load(f)
 
         return data

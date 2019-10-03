@@ -1,12 +1,15 @@
+appdirs==1.4.3
+av==6.2.0
 click==6.7
 ffmpy==0.2.2
 flake8==3.5.0
 h5py==2.7.1
+joblib==0.13.2
 matplotlib==2.1.2
 numpy==1.14.1
 pandas==0.22.0
 protobuf==3.6.0
-scikit-learn==0.19.1
+scikit-learn==0.21.2
 Sphinx==1.7.0
 sphinx_rtd_theme==0.3.0
 
