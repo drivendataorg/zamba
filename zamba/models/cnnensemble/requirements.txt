@@ -9,7 +9,7 @@ Keras==2.1.5
 Markdown==2.6.11
 networkx==2.0
 opencv-python==3.4.0.12
-Pillow==5.0.0
+Pillow==6.2.0
 pyparsing==2.2.0
 python-dateutil==2.6.1
 python-dotenv==0.9.1
