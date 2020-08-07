@@ -2,7 +2,7 @@ import joblib
 
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
-from tensorflow.python.keras.utils import get_file
+from tensorflow.keras.utils import get_file
 
 import zamba
 

@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import skimage.io
 import tensorflow as tf
-from tensorflow.python.keras.utils import get_file
+from tensorflow.keras.utils import get_file
 from tqdm import tqdm
 
 import zamba
@@ -20,8 +20,8 @@ class MegaDetector:
         the weights from https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/megadetector_v3.pb
 
         Attributes:
-            model (tensorflow.python.framework.ops.Graph)
-            sess (tensorflow.python.client.session.Session)
+            model (tensorflow.framework.ops.Graph)
+            sess (tensorflow.client.session.Session)
             confidence_threshold (float): Only keep bounding boxes with scores above this threshold
     """
     MODEL_URL = "https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/megadetector_v3.pb"

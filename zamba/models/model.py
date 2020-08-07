@@ -7,7 +7,7 @@ import pandas as pd
 
 
 try:
-    from tensorflow.python import keras
+    from tensorflow import keras
 except ImportError:
     msg = "Zamba must have tensorflow installed, run either `pip install zamba[cpu]` "\
           "or `pip install zamba[gpu]` " \

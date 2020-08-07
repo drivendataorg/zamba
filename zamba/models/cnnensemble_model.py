@@ -9,7 +9,7 @@ import logging
 import tempfile
 from tqdm import tqdm
 
-from tensorflow.python.keras.utils import get_file
+from tensorflow.keras.utils import get_file
 
 import zamba
 from zamba.convert_videos import convert_videos
