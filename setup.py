@@ -66,8 +66,8 @@ setup(
     python_requires='>=3.5',
     install_requires=requirements,
     extras_require={
-        "cpu": ["tensorflow==1.10", "setuptools==39.1.0"],
-        "gpu": ["tensorflow-gpu==1.10", "setuptools==39.1.0"]
+        "cpu": ["tensorflow==1.15.3", "setuptools==41.0.0"],
+        "gpu": ["tensorflow-gpu==1.15.3", "setuptools==41.0.0"]
     },
     entry_points={
         'console_scripts': [
