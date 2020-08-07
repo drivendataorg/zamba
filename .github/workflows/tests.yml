@@ -1,0 +1,43 @@
+name: tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+  schedule:
+    # Run every Sunday
+    - cron: '0 0 * * 0'
+
+jobs:
+  build:
+    name: ${{ matrix.os }}, Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.7]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        make reqs
+
+    - name: Lint Package
+      run: |
+        make lint
+
+    - name: Test Package
+      run: |
+        make test
+
+    - name: Test Build Docs
+      run: |
+        make docs

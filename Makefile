@@ -1,3 +1,8 @@
+.PHONY: lint test reqs docs deploy-docs
+
+lint:
+	flake8 zamba
+
 test:
 	python -m pytest -s zamba
 
@@ -5,7 +10,16 @@ test:
 # requires `brew install gcc`
 reqs:
 	pip install -U pip Cython
-	env CC=gcc-5 CXX=g++-5 pip install -r requirements.txt
+	pip install -r requirements-dev.txt
+	pip install -e .[cpu]
+
+# Build HTML for documentation
+docs:
+	cd docs && make html
+
+# Deploy the documentation to S3
+deploy-docs: docs
+	cd docs && make s3_upload
 
 clean_pycache:
 	find . -name *.pyc -delete && find . -name __pycache__ -delete
