@@ -14,8 +14,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.7]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
 
@@ -38,7 +38,7 @@ jobs:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: ${{ matrix.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements*.txt') }}
         restore-keys: |
-          ${{ runner.os }}-pip-
+          ${{ matrix.os }}-${{ matrix.python-version }}-pip-
 
     - name: Install ffmpeg
       shell: bash -l {0}

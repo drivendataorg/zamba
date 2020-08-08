@@ -19,4 +19,4 @@ with warnings.catch_warnings():
 
 # set tensorflow logging to ignore warnings for deprecated alias `normal` for `truncated_normal`. Warning arises from
 # within keras that is packaged inside of tensorflow
-tensorflow.logging.set_verbosity(tensorflow.logging.ERROR)
+tensorflow.compat.v1.logging.set_verbosity(tensorflow.compat.v1.logging.ERROR)
