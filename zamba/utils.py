@@ -166,35 +166,35 @@ def load_video(
     if open_options is None:
         open_options = dict()
 
-    container = av.open(str(path), options=open_options)
-    container.streams.video[0].thread_type = 'AUTO'  # Go faster!
+    with av.open(str(path), options=open_options) as container:
+        container.streams.video[0].thread_type = 'AUTO'  # Go faster!
 
-    if not all([h, w, n_frames]):
-        if h is None:
-            h = container.streams.video[0].height
+        if not all([h, w, n_frames]):
+            if h is None:
+                h = container.streams.video[0].height
 
-        if w is None:
-            w = container.streams.video[0].width
+            if w is None:
+                w = container.streams.video[0].width
 
-        if n_frames is None:
-            n_frames = container.streams.video[0].frames
+            if n_frames is None:
+                n_frames = container.streams.video[0].frames
 
-    if key_frames_only:
-        container.streams.video[0].codec_context.skip_frame = 'NONKEY'
+        if key_frames_only:
+            container.streams.video[0].codec_context.skip_frame = 'NONKEY'
 
-    shape = (n_frames, h, w, 3) if not grayscale else (n_frames, h, w)
-    video_array = np.zeros(shape, dtype=np.uint8)
+        shape = (n_frames, h, w, 3) if not grayscale else (n_frames, h, w)
+        video_array = np.zeros(shape, dtype=np.uint8)
 
-    i = 0
-    for frame in container.decode(video=0):
-        if grayscale:
-            video_array[i] = np.array(frame.to_image().convert('L'))
-        else:
-            video_array[i] = frame.to_rgb().to_ndarray()
+        i = 0
+        for frame in container.decode(video=0):
+            if grayscale:
+                video_array[i] = np.array(frame.to_image().convert('L'))
+            else:
+                video_array[i] = frame.to_rgb().to_ndarray()
 
-        i += 1
-        if i >= n_frames:
-            break
+            i += 1
+            if i >= n_frames:
+                break
 
     return video_array[:i, ...]
 

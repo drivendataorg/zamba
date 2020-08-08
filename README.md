@@ -1,7 +1,6 @@
 # zamba - a command line interface for species classification
 
-[ ![Codeship Status for drivendataorg/chimps-tool](https://app.codeship.com/projects/03e3a040-0b6d-0136-afe4-3aeedc3a22e1/status?branch=master)](https://app.codeship.com/projects/281856)
-
+![build status](https://github.com/drivendataorg/zamba/workflows/test/badge.svg?branch=master) [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/)
 
 ### [HOMEPAGE](http://zamba.drivendata.org/)
 
