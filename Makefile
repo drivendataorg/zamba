@@ -9,9 +9,9 @@ test:
 # requirements for local OSX development
 # requires `brew install gcc`
 reqs:
-	pip install -U pip Cython
-	pip install -r requirements-dev.txt
-	pip install -e .[cpu]
+	python -m pip install -U pip Cython
+	python -m pip install -r requirements-dev.txt
+	python -m pip install -e .[cpu]
 
 # Build HTML for documentation
 docs:
