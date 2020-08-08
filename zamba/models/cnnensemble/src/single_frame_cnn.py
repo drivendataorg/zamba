@@ -14,20 +14,20 @@ import skvideo.io
 import scipy.misc
 
 import tensorflow as tf
-from tensorflow.python.keras.applications import ResNet50, InceptionV3, Xception, NASNetMobile, InceptionResNetV2
-from tensorflow.python.keras.applications.resnet50 import preprocess_input as preprocess_input_resnet50
-from tensorflow.python.keras.applications.xception import preprocess_input as preprocess_input_xception
-from tensorflow.python.keras.applications.inception_v3 import preprocess_input as preprocess_input_inception_v3
-from tensorflow.python.keras.applications.nasnet import preprocess_input as preprocess_input_nasnet
-from tensorflow.python.keras.applications.inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
-from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
-from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.layers import GlobalMaxPooling2D, GlobalAveragePooling2D, AveragePooling2D
-from tensorflow.python.keras.layers import Input
-from tensorflow.python.keras.models import Model
-from tensorflow.python.keras.optimizers import SGD, Adam
-from tensorflow.python.keras.regularizers import l1
-from tensorflow.python.keras import backend as K
+from tensorflow.keras.applications import ResNet50, InceptionV3, Xception, NASNetMobile, InceptionResNetV2
+from tensorflow.keras.applications.resnet50 import preprocess_input as preprocess_input_resnet50
+from tensorflow.keras.applications.xception import preprocess_input as preprocess_input_xception
+from tensorflow.keras.applications.inception_v3 import preprocess_input as preprocess_input_inception_v3
+from tensorflow.keras.applications.nasnet import preprocess_input as preprocess_input_nasnet
+from tensorflow.keras.applications.inception_resnet_v2 import preprocess_input as preprocess_input_inception_resnet_v2
+from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import GlobalMaxPooling2D, GlobalAveragePooling2D, AveragePooling2D
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import SGD, Adam
+from tensorflow.keras.regularizers import l1
+from tensorflow.keras import backend as K
 from tqdm import tqdm
 
 from zamba.models.cnnensemble.src import config

@@ -23,17 +23,18 @@ long_description = open(project_path / 'README.md').read()
 
 setup(
     name='zamba',
-    version='0.1.6',
+    version='0.1.7',
     description='Zamba is a tool to identify the species seen in camera trap videos from sites in central Africa.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='DrivenData',
-    author_email='info@drivendata.org',
+    author_email='zamba@drivendata.org',
     url='http://zamba.drivendata.org',
     project_urls={
         'Homepage': 'http://zamba.drivendata.org',
         'Documentation': 'http://zamba.drivendata.org/docs/',
         'Source Code': 'https://github.com/drivendataorg/zamba',
+        'Hosted Version': 'https://www.zambacloud.com',
         'DrivenData': 'http://drivendata.co'
     },
     classifiers=[
@@ -53,15 +54,15 @@ setup(
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
 
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
         'Topic :: Scientific/Engineering :: Image Recognition',
         'Topic :: Multimedia :: Video',
     ],
-    download_url='https://github.com/drivendataorg/zamba/archive/0.1.tar.gz',
+    download_url='https://github.com/drivendataorg/zamba/archive',
     keywords=['deep learning', 'camera', 'africa', 'classifier'],
     python_requires='>=3.5',
     install_requires=requirements,

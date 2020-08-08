@@ -8,12 +8,12 @@ from sklearn.model_selection import train_test_split
 
 from xgboost import XGBClassifier
 
-from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard, LearningRateScheduler
-from tensorflow.python.keras.layers import Dense, Dropout
-from tensorflow.python.keras.layers import Input
-from tensorflow.python.keras.models import Model
-from tensorflow.python.keras.optimizers import Adam
-from tensorflow.python.keras.regularizers import l1
+from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard, LearningRateScheduler
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.regularizers import l1
 
 from zamba.models.cnnensemble.src import config, metrics, utils
 

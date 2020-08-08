@@ -27,7 +27,7 @@ def model_path():
 
 
 @pytest.fixture
-def sample_model_path():
+def sample_model_path(model_path):
     """This fixture creates a sample model, saves it to the sample path,
     then yields the path to the sample.
 
@@ -37,10 +37,9 @@ def sample_model_path():
 
     """
     model = SampleModel()
-    path = model_path()
-    model.save_model(path=path)
-    yield path
-    rmtree(path.parent)
+    model.save_model(path=model_path)
+    yield model_path
+    rmtree(model_path.parent)
 
 
 @pytest.fixture
