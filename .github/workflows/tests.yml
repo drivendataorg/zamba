@@ -24,6 +24,7 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }} with Miniconda
       uses: goanpeca/setup-miniconda@v1
       with:
+        auto-update-conda: true
         python-version: ${{ matrix.python-version }}
 
     - name: Get pip cache dir
