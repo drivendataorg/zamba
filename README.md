@@ -1,6 +1,6 @@
 # zamba - a command line interface for species classification
 
-![build status](https://github.com/drivendataorg/zamba/workflows/test/badge.svg?branch=master) [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/)
+![build status](https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master) [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/)
 
 ### [HOMEPAGE](http://zamba.drivendata.org/)
 
