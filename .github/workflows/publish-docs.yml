@@ -18,7 +18,7 @@ jobs:
         - uses: actions/checkout@v2
     
         - name: Set up Python ${{ matrix.python-version }} with Miniconda
-          uses: goanpeca/setup-miniconda@v1
+          uses: conda-incubator/setup-miniconda@v2.0.0
           with:
             auto-update-conda: true
             python-version: ${{ matrix.python-version }}
