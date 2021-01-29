@@ -650,13 +650,20 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
     preprocess_input = MODELS[model_name].preprocess_input
 
     def load_file(video_id):
-        frames = utils.load_video_clip_frames(
-            video_id,
-            frames_numbers=config.PREDICT_FRAMES,
-            output_size=(config.INPUT_ROWS, config.INPUT_COLS))
-        X = preprocess_input(frames)
+        try:
+            frames = utils.load_video_clip_frames(
+                video_id,
+                frames_numbers=config.PREDICT_FRAMES,
+                output_size=(config.INPUT_ROWS, config.INPUT_COLS)
+            )
 
-        return video_id, X
+            X = preprocess_input(frames)
+
+            return video_id, X
+
+        # video loading errors from skvideo
+        except (AssertionError, RuntimeError, ValueError):
+            return video_id, None
 
     all_predictions = []
     processed_files = 0
@@ -676,8 +683,17 @@ def generate_prediction_test(model_name, weights, file_names, verbose=False, sav
                 pbar.update(1)
                 video_id = file_path.name
                 processed_files += 1
-                prediction = model.predict(X, batch_size=1)
-                all_predictions.append(prediction)
+
+                if X is None:
+                    all_predictions.append(
+                        np.ones(
+                            (len(PREDICT_FRAMES), NB_CLASSES),
+                            dtype=np.float32
+                        ) * np.nan
+                    )
+                else:
+                    prediction = model.predict(X, batch_size=1)
+                    all_predictions.append(prediction)
 
                 if save_results:
                     res_fn = output_dir.resolve() / f"{video_id}.csv"
