@@ -51,6 +51,14 @@ def main():
               is_flag=True,
               default=False,
               help="Displays additional logging information during processing.")
+@click.option('--resample',
+              is_flag=True,
+              default=False,
+              help="Resamples videos to a consistent size and framerate (fps=15, width=448, height=252).")
+@click.option('--separate_blank',
+              is_flag=True,
+              default=False,
+              help="Does a second stage blank/non-blank that is more accurate; recommended with resample.")
 def predict(data_path,
             pred_path,
             tempdir,
@@ -58,7 +66,9 @@ def predict(data_path,
             output_class_names,
             model_profile,
             weight_download_region,
-            verbose):
+            verbose,
+            resample,
+            separate_blank):
     """Identify species in a video.
 
       This is a command line interface for prediction on camera trap footage. Given a path to camera trap footage,
@@ -80,7 +90,10 @@ def predict(data_path,
                                              download_region=weight_download_region))
 
     # Make predictions, return a DataFrame
-    manager.predict(data_path, pred_path=pred_path, save=True)
+    manager.predict(data_path, pred_path=pred_path, save=True, predict_kwargs=dict(
+        resample=resample,
+        seperate_blank_model=separate_blank,
+    ))
 
 
 @main.command()

@@ -70,8 +70,6 @@ class CnnEnsemble(Model):
         Returns:
             OrderedDict: A dict with `key: value` as `original path: processed path` for each video.
         """
-        self.logger.debug("Preprocessing %d videos", len(input_paths))
-
         if resample:
             self.logger.debug("Converting videos to standard resolution and frame rate.")
             output_directory = Path(
@@ -85,7 +83,7 @@ class CnnEnsemble(Model):
 
         return OrderedDict(zip(input_paths, output_paths))
 
-    def predict(self, file_names, resample=True):
+    def predict(self, file_names, resample=True, seperate_blank_model=True):
         """Predict class probabilities for each input
 
         Args:
@@ -96,18 +94,40 @@ class CnnEnsemble(Model):
                 classes
         """
         processed_paths = self.preprocess_videos(file_names, resample=resample)
-        valid_videos, invalid_videos = zamba.utils.get_valid_videos(processed_paths.values())
-        self.logger.debug(f"Invalid videos {str(invalid_videos)}")
+        valid_videos = list(processed_paths.values())
+        invalid_videos = []
 
         l1_results = {}
+        invalid_mask = np.zeros(len(valid_videos), dtype=bool)
+
         prof = config.PROFILES[self.profile]
         for l1_model in tqdm(prof, desc=f'Predicting on {len(prof)} L1 models'):
-            l1_results[l1_model] = generate_prediction_test(
+            l1_model_preds = generate_prediction_test(
                 model_name=l1_model,
                 weights=config.MODEL_DIR / 'output' / config.MODEL_WEIGHTS[l1_model],
                 file_names=valid_videos,
                 save_results=False
             )
+
+            l1_results[l1_model] = l1_model_preds
+
+            # if video is invalid for this model, track that
+            invalid_mask |= np.isnan(l1_model_preds).all(axis=(1, 2))
+
+        # remove invalid videos from l1 results:
+        l1_results = {
+            name: results[~invalid_mask, ...]
+            for name, results in l1_results.items()
+        }
+
+        #  get names of invalid videos
+        l1_invalid_videos = np.array(valid_videos)[invalid_mask].tolist()
+
+        # filter out new invalid videos from valid
+        valid_videos = [v for v in valid_videos if v not in l1_invalid_videos]
+
+        # add new invalid videos to invalid
+        invalid_videos += [v for v in l1_invalid_videos if v not in invalid_videos]
 
         l2_results = second_stage.predict(l1_results, profile=self.profile)
 
@@ -119,9 +139,11 @@ class CnnEnsemble(Model):
             index=[str(file_name) for file_name in valid_videos],
             columns=config.CLASSES,
         )
-        cnn_features["blank"] = 0
 
-        blank = self.compute_blank_probability(valid_videos, cnn_features)
+        if seperate_blank_model:
+            cnn_features["blank"] = 0
+
+            blank = self.compute_blank_probability(valid_videos, cnn_features)
 
         # add nans for invalid videos
         preds = pd.concat(
@@ -136,7 +158,8 @@ class CnnEnsemble(Model):
             axis=0,
         )
 
-        preds["blank"] = blank
+        if seperate_blank_model:
+            preds["blank"] = blank
 
         preds.rename(
             index={
