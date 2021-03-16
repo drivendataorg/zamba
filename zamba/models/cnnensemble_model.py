@@ -50,10 +50,16 @@ class CnnEnsemble(Model):
             self._download_weights_if_needed(download_region)
 
     def load_data(self, data_path):
-        input_paths = [
-            path for path in data_path.glob('**/*')
-            if not path.is_dir() and not path.name.startswith(".")
-        ]
+
+        if Path(data_path).is_dir():
+            input_paths = [
+                path for path in data_path.glob('**/*')
+                if not path.is_dir() and not path.name.startswith(".")
+            ]
+
+        elif Path(data_path).suffix == '.csv':
+            df = pd.read_csv(data_path)
+            input_paths = [Path(f) for f in df.filepath.values]
 
         return input_paths
 
