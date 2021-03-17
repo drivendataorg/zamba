@@ -97,7 +97,7 @@ class CnnEnsemble(Model):
 
         # exclude videos where output path doesn't exist (e.g. videos that can't be resampled)
         valid_videos = [v for v in processed_paths.values() if v.exists()]
-        invalid_videos = []
+        invalid_videos = [v for v in processed_paths.values() if v not in valid_videos]
 
         l1_results = {}
         invalid_mask = np.zeros(len(valid_videos), dtype=bool)
