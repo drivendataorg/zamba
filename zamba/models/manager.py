@@ -3,9 +3,9 @@ from enum import Enum, EnumMeta
 import logging
 from pathlib import Path
 from typing import Optional
-import yaml
 
 from pydantic import BaseModel
+import yaml
 
 from zamba.models.model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble

@@ -9,6 +9,8 @@ matplotlib==3.3.0
 numpy==1.18.5
 pandas==1.1.0
 protobuf==3.6.1
+pydantic==1.8.1
+pyyaml==5.4.1
 scikit-learn==0.21.2
 Sphinx==1.7.0
 sphinx_rtd_theme==0.3.0
