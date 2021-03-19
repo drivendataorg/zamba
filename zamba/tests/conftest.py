@@ -5,7 +5,7 @@ from shutil import rmtree
 import numpy as np
 import pytest
 
-from zamba.models.model import SampleModel
+from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble.src import config
 
 
