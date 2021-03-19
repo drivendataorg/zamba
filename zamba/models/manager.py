@@ -2,12 +2,9 @@ from datetime import datetime
 from enum import Enum, EnumMeta
 import logging
 from pathlib import Path
-from typing import Optional
 
-from pydantic import BaseModel
-import yaml
-
-from zamba.models.model import SampleModel
+from zamba.models.model import Model
+from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
 
 
@@ -44,24 +41,6 @@ class ModelName(Enum, metaclass=GetItemMeta):
         return other == self.value
 
 
-class ModelEnum(str, Enum):
-    CnnEnsemble = 'cnnensemble'
-    SampleModel = 'sample'
-
-
-class ModelConfig(BaseModel):
-    model_path: Path = Path(".")
-    proba_threshold: float = None
-    output_class_names: bool = False
-    tempdir: Optional[Path]
-    verbose: bool = False
-    model_class: ModelEnum = 'cnnensemble'
-    model_kwargs: dict = dict()
-
-    class Config:
-        json_loads = yaml.safe_load
-
-
 class ModelManager(object):
     """Mediates loading, configuration, and logic of model calls.
 
@@ -84,23 +63,23 @@ class ModelManager(object):
                  tempdir=None,
                  verbose=False,
                  model_class='cnnensemble',
-                 model_kwargs=dict()):
+                 model_kwargs=dict(),
+                 config_file=None):
+
+        if model_class == 'custom':
+            self.model = Model.from_config(config_file)
+
+        else:
+            self.model_class = ModelName[model_class].model
+            self.model = self.model_class(model_path=model_path,
+                                          verbose=verbose,
+                                          tempdir=tempdir,
+                                          **model_kwargs)
 
         self.logger = logging.getLogger(f"{__file__}")
-        self.model_path = Path(model_path)
-        self.model_class = ModelName[model_class].model
-
-        self.tempdir = tempdir
-        self.model = self.model_class(model_path, verbose=verbose, **model_kwargs)
         self.proba_threshold = proba_threshold
         self.output_class_names = output_class_names
         self.verbose = verbose
-
-    @staticmethod
-    def from_config(config):
-        if not isinstance(config, ModelConfig):
-            config = ModelConfig.parse_file(config)
-        return ModelManager(**config.dict())
 
     def predict(self, data_path, save=False, pred_path=None, predict_kwargs=None):
         """
