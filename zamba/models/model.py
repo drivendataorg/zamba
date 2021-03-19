@@ -8,19 +8,18 @@ from pydantic import BaseModel
 import yaml
 
 
-# class ModelEnum(str, Enum):
-#     CnnEnsemble = 'cnnensemble'
-#     SampleModel = 'sample'
+class ModelEnum(str, Enum):
+    CnnEnsemble = 'cnnensemble'
+    SampleModel = 'sample'
 
 
 class ModelConfig(BaseModel):
     model_path: Path = Path(".")
     tempdir: Optional[Path]
     verbose: bool = False
-     # proba_threshold: float = None
-    # output_class_names: bool = False
-    # model_class: ModelEnum = 'cnnensemble'
-    # model_kwargs: dict = dict()
+    proba_threshold: float = None
+    output_class_names: bool = False
+    model_class: ModelEnum = 'cnnensemble'
 
     class Config:
         json_loads = yaml.safe_load
