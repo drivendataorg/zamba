@@ -38,9 +38,8 @@ class CnnEnsemble(Model):
                  raw_video_dir=None,
                  ):
         # use the model object's defaults
-        super().__init__(model_path, tempdir=tempdir)
+        super().__init__(model_path=Path(model_path))
         self.profile = profile
-        self.verbose = verbose
         self.site_aware = site_aware
         self.raw_video_dir = raw_video_dir
         self.labels_path = labels_path
