@@ -32,7 +32,6 @@ class CnnEnsemble(Model):
                  tempdir=None,
                  download_region='us',
                  download_weights=True,
-                 verbose=False,
                  site_aware=False,
                  labels_path=None,
                  raw_video_dir=None,
