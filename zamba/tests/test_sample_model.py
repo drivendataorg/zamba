@@ -5,6 +5,10 @@ from zamba.models.manager import ModelManager
 
 def test_create_and_save(sample_model_path, sample_data_path):
 
+    # test with default params
+    manager = ModelManager(model_class='sample')
+
+    # use sample model fixture
     manager = ModelManager(sample_model_path, model_class='sample')
 
     # "predict" (add, multiply), return exact values since no thresh given
@@ -23,7 +27,7 @@ def test_create_and_save(sample_model_path, sample_data_path):
     assert result.iloc[1].multiplied == np.float32(0.3) * np.float32(0.1)
 
     manager.model.save_model()
-    assert manager.model_path.exists()
+    assert manager.model.model_path.exists()
 
 
 def test_load_and_predict(sample_model_path, sample_data_path):
