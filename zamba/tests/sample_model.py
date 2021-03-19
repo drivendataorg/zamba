@@ -21,11 +21,10 @@ class SampleModel(Model):
             model_path:
             tempdir:
     """
-    def __init__(self, model_path=None, **kwargs):
-        super().__init__(model_path=model_path, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
-        self.model_path = None if model_path == Path('.') else model_path
-        self.model = self._build_graph() if self.model_path is None else keras.models.load_model(Path(self.model_path))
+        self.model = self._build_graph() if self.model_path == Path('.') else keras.models.load_model(Path(self.model_path))
 
     def _build_graph(self):
         """Simple keras graph for testing api.
