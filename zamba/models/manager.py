@@ -3,7 +3,7 @@ from enum import Enum, EnumMeta
 import logging
 from pathlib import Path
 
-from zamba.models.model import Model
+from zamba.models.model import ModelConfig
 from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
 
@@ -20,6 +20,7 @@ class GetItemMeta(EnumMeta):
         raise ValueError(f"Key '{name}' not in ModelName Enum.")
 
 
+# TODO: can we use pydantic for this?
 class ModelName(Enum, metaclass=GetItemMeta):
     """Allows easy control over which Model subclass to load. To add a new model class, add a line like ``NEW_MODEL
     = ('new_model', NewModelClass)``
@@ -54,7 +55,7 @@ class ModelManager(object):
             verbose (bool) : controls verbosity of prediction, training, and tuning methods
                 Defaults to ``True`` in which case training, tuning or prediction progress will be logged.
             model_class (str) : controls whether sample model class or production model class is used
-                Defaults to "winning". Must be "winning" or "sample".
+                Defaults to "cnnensemble". Must be "cnnensemble", "sample", or "custom".
     """
     def __init__(self,
                  model_path=Path('.'),
@@ -63,23 +64,43 @@ class ModelManager(object):
                  tempdir=None,
                  verbose=False,
                  model_class='cnnensemble',
-                 model_kwargs=dict(),
-                 config_file=None):
+                 model_kwargs=dict()):
 
         if model_class == 'custom':
-            self.model = Model.from_config(config_file)
+            try:
+                import keras
+                self.model = keras.model.load_model(model_path)
+            except:
+                raise NotImplementedError("Currently, only keras models can be loaded.")
+            # try:
+            #     self.model = torch.load(model_path)
+            # except:
+            #     raise ValueError("Model path cannot be loaded with keras or pytorch.")
 
+        # use one of existing models in package
         else:
+
+            # validate config for models in library
+            config = ModelConfig(
+                model_class=model_class,
+                model_path=model_path,
+                tempdir=tempdir,
+                verbose=verbose,
+                proba_threshold=proba_threshold,
+                output_class_names=output_class_names
+            )
+
             self.model_class = ModelName[model_class].model
-            self.model = self.model_class(model_path=model_path,
-                                          verbose=verbose,
-                                          tempdir=tempdir,
-                                          **model_kwargs)
+            self.model = self.model_class(
+                model_path=config.model_path,
+                tempdir=config.tempdir,
+                **model_kwargs
+            )
 
         self.logger = logging.getLogger(f"{__file__}")
-        self.proba_threshold = proba_threshold
-        self.output_class_names = output_class_names
-        self.verbose = verbose
+        self.verbose = config.verbose
+        self.proba_threshold = config.proba_threshold
+        self.output_class_names = config.output_class_names
 
     def predict(self, data_path, save=False, pred_path=None, predict_kwargs=None):
         """
