@@ -48,14 +48,6 @@ class CnnEnsemble(Model):
         if download_weights:
             self._download_weights_if_needed(download_region)
 
-    def load_data(self, data_path):
-        input_paths = [
-            path for path in data_path.glob('**/*')
-            if not path.is_dir() and not path.name.startswith(".")
-        ]
-
-        return input_paths
-
     def preprocess_videos(self, input_paths, resample=True):
         """Preprocesses videos into a format that can be used by this model.
 
