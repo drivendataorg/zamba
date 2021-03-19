@@ -1,18 +1,29 @@
-import pickle
+from enum import Enum, EnumMeta
 from pathlib import Path
 from shutil import rmtree
 import tempfile
+from typing import Optional
 
-import pandas as pd
+from pydantic import BaseModel
+import yaml
 
 
-try:
-    from tensorflow import keras
-except ImportError:
-    msg = "Zamba must have tensorflow installed, run either `pip install zamba[cpu]` "\
-          "or `pip install zamba[gpu]` " \
-          "depending on what is available on your system."
-    raise ImportError(msg)
+# class ModelEnum(str, Enum):
+#     CnnEnsemble = 'cnnensemble'
+#     SampleModel = 'sample'
+
+
+class ModelConfig(BaseModel):
+    model_path: Path = Path(".")
+    tempdir: Optional[Path]
+    verbose: bool = False
+     # proba_threshold: float = None
+    # output_class_names: bool = False
+    # model_class: ModelEnum = 'cnnensemble'
+    # model_kwargs: dict = dict()
+
+    class Config:
+        json_loads = yaml.safe_load
 
 
 class Model(object):
@@ -33,9 +44,9 @@ class Model(object):
                 Clean up tempdir if used.
 
     """
+    def __init__(self, model_path=Path('.'), tempdir=None, verbose=False):
 
-    def __init__(self, model_path=None, tempdir=None, verbose=False):
-        self.model_path = Path(model_path) if model_path is not None else None
+        self.model_path = model_path
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp(prefix="zamba_")) if self.delete_tempdir else Path(tempdir)
         self.verbose = verbose
@@ -46,6 +57,20 @@ class Model(object):
         """
         if self.delete_tempdir:
             rmtree(self.tempdir)
+
+    @staticmethod
+    def from_config(config):
+        if not isinstance(config, ModelConfig):
+            config = ModelConfig.parse_file(config)
+        return Model(**config.dict())
+
+    def load_data(self, data_path):
+        input_paths = [
+            path for path in data_path.glob('**/*')
+            if not path.is_dir() and not path.name.startswith(".")
+        ]
+
+        return input_paths
 
     def predict(self, X):
         """
@@ -95,100 +120,3 @@ class Model(object):
 
         """
         pass
-
-    def load_data(self, data_path):
-        """SampleModel loads pickled data
-
-        Args:
-            data_path:
-
-        Returns:
-
-        """
-        pass
-
-
-class SampleModel(Model):
-    """Sample model for testing.
-
-        Args:
-            model_path:
-            tempdir:
-    """
-    def __init__(self, model_path=None, tempdir=None, verbose=False):
-        super().__init__(model_path, tempdir=tempdir)
-
-        self.model = self._build_graph() if self.model_path is None else keras.models.load_model(self.model_path)
-        self.verbose = verbose
-
-    def _build_graph(self):
-        """Simple keras graph for testing api.
-
-        Takes two numbers, adds them, also multiplies them, outputs both results.
-
-        Returns: keras model for testing
-
-        """
-
-        # build simple architecture to multiply two numbers
-        w1 = keras.layers.Input(shape=(1,), name="w1")
-        w2 = keras.layers.Input(shape=(1,), name="w2")
-
-        add = keras.layers.add([w1, w2])
-        mult = keras.layers.multiply([w1, w2])
-        out = keras.layers.concatenate([add, mult])
-
-        return keras.models.Model(inputs=[w1, w2], outputs=out)
-
-    def predict(self, X):
-        """
-
-        Args:
-            X (list | numpy array) : data for test computation
-
-        Returns: DataFrame with two columns, ``added`` and ``multiplied``.
-
-        """
-
-        preds = self.model.predict(X)
-        preds = pd.DataFrame(dict(added=preds[:, 0],
-                                  multiplied=preds[:, 1]))
-        return preds
-
-    def save_model(self, path=None):
-        """Save the SampleModel.
-
-        If no path is passed, tries to use model_path attribute.
-
-        Args:
-            path:
-
-        Returns:
-
-        """
-
-        # save to user-specified, or model's path
-        path = Path(path) if path else None
-        save_path = path or self.model_path
-        if save_path is None:
-            raise FileNotFoundError("Must provide save_path")
-
-        # create if necessary
-        save_path.parent.mkdir(exist_ok=True)
-
-        # keras' save
-        self.model.save(save_path, include_optimizer=False)
-
-    def load_data(self, data_path):
-        """SampleModel loads pickled data
-
-        Args:
-            data_path (pathlib.Path)
-
-        Returns:
-
-        """
-        with data_path.open("rb") as f:
-            data = pickle.load(f)
-
-        return data
