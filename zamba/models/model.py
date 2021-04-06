@@ -1,28 +1,6 @@
-from enum import Enum, EnumMeta
 from pathlib import Path
 from shutil import rmtree
 import tempfile
-from typing import Optional
-
-from pydantic import BaseModel
-import yaml
-
-
-class ModelEnum(str, Enum):
-    CnnEnsemble = 'cnnensemble'
-    SampleModel = 'sample'
-
-
-class ModelConfig(BaseModel):
-    model_path: Path = Path(".")
-    tempdir: Optional[Path]
-    verbose: bool = False
-    proba_threshold: float = None
-    output_class_names: bool = False
-    model_class: ModelEnum = 'cnnensemble'
-
-    class Config:
-        json_loads = yaml.safe_load
 
 
 class Model(object):
@@ -43,12 +21,11 @@ class Model(object):
                 Clean up tempdir if used.
 
     """
-    def __init__(self, model_path=Path('.'), tempdir=None, verbose=False):
+    def __init__(self, model_path=Path('.'), tempdir=None):
 
         self.model_path = model_path
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp(prefix="zamba_")) if self.delete_tempdir else Path(tempdir)
-        self.verbose = verbose
 
     def __del__(self):
         """ If we use the default temporary directory, clean this
@@ -57,11 +34,12 @@ class Model(object):
         if self.delete_tempdir:
             rmtree(self.tempdir)
 
-    @staticmethod
-    def from_config(config):
-        if not isinstance(config, ModelConfig):
-            config = ModelConfig.parse_file(config)
-        return Model(**config.dict())
+    def load(self):
+        try:
+            import keras
+            return keras.model.load_model(self.model_path)
+        except:
+            raise NotImplementedError("Currently, only keras models can be loaded.")
 
     def load_data(self, data_path):
         input_paths = [

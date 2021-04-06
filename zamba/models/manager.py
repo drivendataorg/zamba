@@ -1,45 +1,67 @@
 from datetime import datetime
-from enum import Enum, EnumMeta
+from enum import Enum
 import logging
 from pathlib import Path
+from typing import Optional
 
-from zamba.models.model import ModelConfig
+from pydantic import BaseModel, validate_arguments
+import yaml
+
 from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
 
 
-class GetItemMeta(EnumMeta):
-    """Complicated override so that we can use hashing in ModelManager init.
-
-    """
-    def __getitem__(cls, name):
-        for e in cls:
-            if e.string == name:
-                return e
-
-        raise ValueError(f"Key '{name}' not in ModelName Enum.")
+@validate_arguments
+class ModelClassEnum(str, Enum):
+    cnnensemble = 'cnnensemble'
+    sample = 'sample'
+    custom = 'custom'
 
 
-# TODO: can we use pydantic for this?
-class ModelName(Enum, metaclass=GetItemMeta):
-    """Allows easy control over which Model subclass to load. To add a new model class, add a line like ``NEW_MODEL
-    = ('new_model', NewModelClass)``
+@validate_arguments
+class TrainConfig(BaseModel):
+    train_data: Path = Path(".")
+    val_data: Path = Path(".")
+    model_path: Path = Path(".")
+    model_class: ModelClassEnum = 'custom'
+    height: Optional[int] = None
+    width: Optional[int] = None
+    augmentation: Optional[bool] = False
+    early_stopping: Optional[bool] = False
+    n_epochs: Optional[int] = 10
 
-        Args:
-            string (str) : string used to reference the model model
-            model (Model) : model class to instantiate into manager
 
-    """
+@validate_arguments
+class PredictConfig(BaseModel):
+    data_path: Path = Path(".")
+    model_path: Path = Path(".")
+    model_class: ModelClassEnum = 'cnnensemble'
+    pred_path: Optional[Path] = None
+    output_class_names: Optional[bool] = False
+    proba_threshold: Optional[float] = None
+    tempdir: Optional[Path] = None
+    verbose: Optional[bool] = False
+    save: Optional[bool] = False
+    model_kwargs: Optional[dict] = dict()
+    predict_kwargs: Optional[dict] = dict()
 
-    WINNING = ('cnnensemble', CnnEnsemble)
-    SAMPLE = ('sample', SampleModel)
 
-    def __init__(self, string, model):
-        self.string = string
-        self.model = model
+@validate_arguments
+class FineTuneConfig(BaseModel):
+    pass
 
-    def __eq__(self, other):
-        return other == self.value
+
+@validate_arguments
+class ModelConfig(BaseModel):
+    train_config: Optional[TrainConfig] = TrainConfig
+    predict_config: Optional[PredictConfig] = PredictConfig
+
+    class Config:
+        json_loads = yaml.safe_load
+
+
+default_train = TrainConfig()
+default_predict = PredictConfig()
 
 
 class ModelManager(object):
@@ -58,94 +80,69 @@ class ModelManager(object):
                 Defaults to "cnnensemble". Must be "cnnensemble", "sample", or "custom".
     """
     def __init__(self,
-                 model_path=Path('.'),
-                 proba_threshold=None,
-                 output_class_names=False,
-                 tempdir=None,
-                 verbose=False,
-                 model_class='cnnensemble',
-                 model_kwargs=dict()):
+                 train_config=default_train,
+                 predict_config=default_predict):
 
-        if model_class == 'custom':
-            try:
-                import keras
-                self.model = keras.model.load_model(model_path)
-            except:
-                raise NotImplementedError("Currently, only keras models can be loaded.")
-            # try:
-            #     self.model = torch.load(model_path)
-            # except:
-            #     raise ValueError("Model path cannot be loaded with keras or pytorch.")
-
-        # use one of existing models in package
-        else:
-
-            # validate config for models in library
-            config = ModelConfig(
-                model_class=model_class,
-                model_path=model_path,
-                tempdir=tempdir,
-                verbose=verbose,
-                proba_threshold=proba_threshold,
-                output_class_names=output_class_names
-            )
-
-            self.model_class = ModelName[model_class].model
-            self.model = self.model_class(
-                model_path=config.model_path,
-                tempdir=config.tempdir,
-                **model_kwargs
-            )
-
+        self.train_config = train_config
+        self.predict_config = predict_config
         self.logger = logging.getLogger(f"{__file__}")
-        self.verbose = config.verbose
-        self.proba_threshold = config.proba_threshold
-        self.output_class_names = config.output_class_names
 
-    def predict(self, data_path, save=False, pred_path=None, predict_kwargs=None):
-        """
-        Args:
-            data_path (str | Path) : path to input data
-            pred_path (str | Path) : where predictions will be saved
+    @staticmethod
+    def from_config(config):
+        if not isinstance(config, ModelManager):
+            config = ModelConfig.parse_file(config)
+        return ModelManager(**config.dict())
 
-        Returns: DataFrame of predictions
+    def train(self):
+        if self.train_config.model_class == 'custom':
+            self.model = Model(model_path=self.train_config.model_path).load()
+        else:
+            raise NotImplementedError('Currently only custom models can be trained.')
 
-        """
-        if predict_kwargs is None:
-            predict_kwargs = dict()
+        self.model.fit(epochs=self.train_config.n_epochs)
+
+    def predict(self):
+        if self.predict_config.model_class == 'custom':
+            self.model = Model(self.predict_config.model_path).load()
+
+        else:
+            model_dict = {
+                'cnnensemble': CnnEnsemble,
+                'sample': SampleModel
+            }
+            self.model = model_dict[self.predict_config.model_class.value](
+                model_path=self.predict_config.model_path,
+                tempdir=self.predict_config.tempdir,
+                **self.predict_config.model_kwargs
+            )
+
+        data_path = self.predict_config.data_path
+        pred_path = self.predict_config.pred_path
 
         data_paths = self.model.load_data(Path(data_path).expanduser().resolve())
-        preds = self.model.predict(data_paths, **predict_kwargs)
+        preds = self.model.predict(data_paths, **self.predict_config.predict_kwargs)
 
         # threshold if provided
-        if self.proba_threshold is not None:
-            preds = preds >= self.proba_threshold
+        if self.predict_config.proba_threshold is not None:
+            preds = preds >= self.predict_config.proba_threshold
 
-        if self.output_class_names:
+        if self.predict_config.output_class_names:
             preds = preds.idxmax(axis=1)
 
-        if save:
+        if self.predict_config.save:
             if pred_path is None:
                 timestamp = datetime.now().isoformat()
                 pred_path = Path('.', f'predictions-{Path(data_path).parts[-1]}-{timestamp}.csv')
 
             preds.to_csv(pred_path)
 
-            if self.verbose:
+            if self.predict_config.verbose:
                 self.logger.info(f"Wrote predictions to {pred_path}")
 
-        if self.verbose or self.output_class_names:
+        if self.predict_config.verbose or self.predict_config.output_class_names:
             self.logger.info(preds)
 
         return preds
-
-    def train(self):
-        """
-
-        Returns:
-
-        """
-        self.model.fit()
 
     def tune(self):
         """
