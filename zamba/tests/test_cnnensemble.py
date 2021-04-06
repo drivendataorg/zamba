@@ -5,7 +5,7 @@ import tempfile
 
 import zamba
 from zamba.models.cnnensemble.src import config
-from zamba.models.manager import ModelManager
+from zamba.models.manager import ModelManager, PredictConfig
 
 
 @pytest.mark.skipif(
@@ -13,8 +13,17 @@ from zamba.models.manager import ModelManager
     reason="Uses too much memory for codeship build, but test locally before merging.",
 )
 def test_predict_fast(data_dir):
-    manager = ModelManager('', model_class='cnnensemble', output_class_names=False, model_kwargs=dict(profile='fast'))
-    result = manager.predict(data_dir, save=True)
+    manager = ModelManager(
+        predict_config=PredictConfig(
+            model_path='',
+            model_class='cnnensemble',
+            output_class_names=False,
+            model_kwargs=dict(profile='fast'),
+            data_path=data_dir,
+            save=True
+        )
+    )
+    result = manager.predict()
 
     # check that duiker is most likely class (manually verified)
     assert result.idxmax(axis=1).values[0] == "duiker"
@@ -24,17 +33,29 @@ def test_predict_fast(data_dir):
 
 @pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
 def test_predict_full(data_dir):
-    manager = ModelManager('', model_class='cnnensemble', output_class_names=False, model_kwargs=dict(profile='full'))
-    result = manager.predict(data_dir, save=True)
+    manager = ModelManager(
+        predict_config=PredictConfig(
+            model_path='',
+            model_class='cnnensemble',
+            output_class_names=False,
+            model_kwargs=dict(profile='full'),
+            data_path=data_dir,
+            save=True)
+    )
+    result = manager.predict()
     result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
 
 
-@pytest.mark.skip(reason="This test takes hours to run and is really for local dev only.")
-def test_train():
-    manager = ModelManager(model_class='cnnensemble',
-                           verbose=True,
-                           model_kwargs=dict(download_weights=False))
-    manager.train(config)
+# TODO: update with custom model
+# @pytest.mark.skip(reason="This test takes hours to run and is really for local dev only.")
+# def test_train():
+#     manager = ModelManager(
+#         train_config=TrainConfig(
+#             model_class='custom',
+#             verbose=True,
+#             model_kwargs=dict(download_weights=False))
+#     )
+#     manager.train()
 
 
 def test_validate_videos(data_dir):
@@ -44,14 +65,19 @@ def test_validate_videos(data_dir):
     assert len(invalid_videos) == 0
 
 
-def test_load_data(data_dir):
-    manager = ModelManager(
-        '', model_class='cnnensemble',
-        output_class_names=False,
-        model_kwargs=dict(profile='fast'),
-    )
-    input_paths = manager.model.load_data(data_dir)
-    assert len(input_paths) > 0
+# TODO: find way to load data without predicting
+# def test_load_data(data_dir):
+#     manager = ModelManager(
+#         predict_config=PredictConfig(
+#             model_path='',
+#             model_class='cnnensemble',
+#             output_class_names=False,
+#             model_kwargs=dict(profile='fast'),
+#             data_path=data_dir,
+#         )
+#     )
+#     input_paths = manager.model.load_data()
+#     assert len(input_paths) > 0
 
 
 @pytest.mark.skipif(
@@ -73,14 +99,17 @@ def test_predict_invalid_videos(data_dir):
         shutil.copy(test_video_path, video_directory / f"video{i:02}.mp4")
 
     manager = ModelManager(
-        '',
-        model_class="cnnensemble",
-        output_class_names=False,
-        model_kwargs={
-            "profile": "fast"
-        },
+        predict_config=PredictConfig(
+            model_path='',
+            model_class="cnnensemble",
+            output_class_names=False,
+            model_kwargs={
+                "profile": "fast"
+            },
+            data_path=video_directory,
+        )
     )
-    predictions = manager.predict(video_directory)
+    predictions = manager.predict()
     assert predictions.loc[
         predictions.index.str.contains("invalid")
     ].isnull().values.all()
