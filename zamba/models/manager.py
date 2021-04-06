@@ -9,29 +9,38 @@ import yaml
 
 from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
+from zamba.models.model import Model
 
 
-@validate_arguments
 class ModelClassEnum(str, Enum):
     cnnensemble = 'cnnensemble'
     sample = 'sample'
     custom = 'custom'
 
 
-@validate_arguments
+class ModelLibraryEnum(str, Enum):
+    keras = 'keras'
+    pytorch = 'pytorch'
+
+
+# @validate_arguments
 class TrainConfig(BaseModel):
-    train_data: Path = Path(".")
-    val_data: Path = Path(".")
-    model_path: Path = Path(".")
+    train_data: Path = Path("train_videos")
+    val_data: Path = Path("val_videos")
+    labels: Path = Path("labels.csv")
+    model_path: Optional[Path] = None
+    model_library: ModelLibraryEnum = 'keras'
     model_class: ModelClassEnum = 'custom'
+    tempdir: Optional[Path] = None
+    n_epochs: Optional[int] = 10
     height: Optional[int] = None
     width: Optional[int] = None
     augmentation: Optional[bool] = False
     early_stopping: Optional[bool] = False
-    n_epochs: Optional[int] = 10
+    save_path: Optional[Path] = None
 
 
-@validate_arguments
+# @validate_arguments
 class PredictConfig(BaseModel):
     data_path: Path = Path(".")
     model_path: Path = Path(".")
@@ -46,15 +55,15 @@ class PredictConfig(BaseModel):
     predict_kwargs: Optional[dict] = dict()
 
 
-@validate_arguments
+# @validate_arguments
 class FineTuneConfig(BaseModel):
     pass
 
-
-@validate_arguments
+# TODO: get validation to work
+# @validate_arguments
 class ModelConfig(BaseModel):
-    train_config: Optional[TrainConfig] = TrainConfig
-    predict_config: Optional[PredictConfig] = PredictConfig
+    train_config: Optional[TrainConfig] = None
+    predict_config: Optional[PredictConfig] = None
 
     class Config:
         json_loads = yaml.safe_load
@@ -74,8 +83,6 @@ class ModelManager(object):
                 Defaults to ``None``, in which case class probabilities are returned.
             tempdir (str | Path) : path to temporary directory
                 If specific temporary directory is to be used, its path is passed here. Defaults to ``None``.
-            verbose (bool) : controls verbosity of prediction, training, and tuning methods
-                Defaults to ``True`` in which case training, tuning or prediction progress will be logged.
             model_class (str) : controls whether sample model class or production model class is used
                 Defaults to "cnnensemble". Must be "cnnensemble", "sample", or "custom".
     """
@@ -91,11 +98,19 @@ class ModelManager(object):
     def from_config(config):
         if not isinstance(config, ModelManager):
             config = ModelConfig.parse_file(config)
-        return ModelManager(**config.dict())
+        return ModelManager(**dict(config))
+
 
     def train(self):
         if self.train_config.model_class == 'custom':
-            self.model = Model(model_path=self.train_config.model_path).load()
+
+            if not Path(self.train_config.model_path).exists():
+                raise ValueError(f"{self.train_config.model_path} does not exist.")
+
+            self.model = Model(
+                model_path=self.train_config.model_path,
+                model_library=self.train_config.model_library
+            ).load()
         else:
             raise NotImplementedError('Currently only custom models can be trained.')
 
