@@ -6,13 +6,17 @@ from zamba.models.manager import ModelManager, PredictConfig
 def test_create_and_save(sample_model_path, sample_data_path):
 
     # test with default params
-    manager = ModelManager(predict_config=PredictConfig(model_class='sample'))
+    manager = ModelManager(
+        predict_config=PredictConfig(model_class='sample')
+    )
 
     # use sample model fixture
-    manager = ModelManager(predict_config=PredictConfig(
-        model_path=sample_model_path,
-        model_class='sample',
-        data_path=sample_data_path)
+    manager = ModelManager(
+        predict_config=PredictConfig(
+            model_path=sample_model_path,
+            model_class='sample',
+            data_path=sample_data_path
+        )
     )
 
     # "predict" (add, multiply), return exact values since no thresh given
@@ -37,11 +41,13 @@ def test_create_and_save(sample_model_path, sample_data_path):
 def test_load_and_predict(sample_model_path, sample_data_path):
 
     # load the sample model in the ModelManager
-    manager = ModelManager(predict_config=PredictConfig(
-        model_path=sample_model_path,
-        data_path=sample_data_path,
-        model_class='sample',
-        proba_threshold=0.5)
+    manager = ModelManager(
+        predict_config=PredictConfig(
+            model_path=sample_model_path,
+            data_path=sample_data_path,
+            model_class='sample',
+            proba_threshold=0.5
+        )
     )
 
     # "predict" (add, multiply), return binary since thresh given
