@@ -4,14 +4,14 @@ from typing import Optional
 
 import typer
 
-from zamba.models.manager import (
+from zamba.models.config import (
     ModelClassEnum,
     ModelLibraryEnum,
-    ModelManager,
     ModelProfileEnum,
     PredictConfig,
     TrainConfig,
 )
+from zamba.models.manager import ModelManager
 
 
 default_model_dir = Path(__file__).parent / "models" / "assets"
