@@ -3,6 +3,7 @@ from enum import Enum
 import logging
 from pathlib import Path
 from typing import Optional
+from typing_extensions import TypedDict
 
 from pydantic import BaseModel, validate_arguments
 import yaml
@@ -14,13 +15,34 @@ from zamba.models.model import Model
 
 class ModelClassEnum(str, Enum):
     cnnensemble = 'cnnensemble'
-    sample = 'sample'
     custom = 'custom'
+    sample = 'sample'
 
 
 class ModelLibraryEnum(str, Enum):
     keras = 'keras'
     pytorch = 'pytorch'
+
+
+class ModelProfileEnum(str, Enum):
+    fast = 'fast'
+    full = 'full'
+
+
+class RegionEnum(str, Enum):
+    us = 'us'
+    eu = 'eu'
+    asia = 'asia'
+
+
+class CnnModelKwargs(TypedDict):
+    download_region: RegionEnum = 'us'
+    profile: ModelProfileEnum = 'full'
+
+
+class CnnPredictKwargs(TypedDict):
+    resample: Optional[bool] = False
+    seperate_blank_model: Optional[bool] = False
 
 
 # @validate_arguments
@@ -44,15 +66,15 @@ class TrainConfig(BaseModel):
 class PredictConfig(BaseModel):
     data_path: Path = Path(".")
     model_path: Path = Path(".")
-    model_class: ModelClassEnum = 'cnnensemble'
+    model_class: ModelClassEnum = "cnnensemble"
     pred_path: Optional[Path] = None
-    output_class_names: Optional[bool] = False
     proba_threshold: Optional[float] = None
+    output_class_names: Optional[bool] = False
     tempdir: Optional[Path] = None
     verbose: Optional[bool] = False
     save: Optional[bool] = False
-    model_kwargs: Optional[dict] = dict()
-    predict_kwargs: Optional[dict] = dict()
+    model_kwargs: Optional[CnnModelKwargs] = dict()
+    predict_kwargs: Optional[CnnPredictKwargs] = dict()
 
 
 # @validate_arguments
@@ -77,14 +99,8 @@ class ModelManager(object):
     """Mediates loading, configuration, and logic of model calls.
 
         Args:
-            model_path (str | Path) : path to model weights and architecture
-                Required argument. Will be instantiated as Model object.
-            proba_threshold (float) : probability threshold for classification
-                Defaults to ``None``, in which case class probabilities are returned.
-            tempdir (str | Path) : path to temporary directory
-                If specific temporary directory is to be used, its path is passed here. Defaults to ``None``.
-            model_class (str) : controls whether sample model class or production model class is used
-                Defaults to "cnnensemble". Must be "cnnensemble", "sample", or "custom".
+            train_config (TrainConfig) : Configuration for model training.
+            predict_config (PredictConfig): Configuration for inference.
     """
     def __init__(self,
                  train_config=default_train,
