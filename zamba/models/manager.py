@@ -37,9 +37,6 @@ class ModelManager(object):
     def train(self):
         if self.train_config.model_class == 'custom':
 
-            if not Path(self.train_config.model_path).exists():
-                raise ValueError(f"{self.train_config.model_path} does not exist.")
-
             self.model = Model(
                 model_path=self.train_config.model_path,
                 model_library=self.train_config.model_library
@@ -58,7 +55,7 @@ class ModelManager(object):
                 'cnnensemble': CnnEnsemble,
                 'sample': SampleModel
             }
-            self.model = model_dict[self.predict_config.model_class.value](
+            self.model = model_dict[self.predict_config.model_class](
                 model_path=self.predict_config.model_path,
                 tempdir=self.predict_config.tempdir,
                 **self.predict_config.model_kwargs

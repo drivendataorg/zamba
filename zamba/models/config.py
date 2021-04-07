@@ -1,10 +1,19 @@
 from enum import Enum
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 from typing_extensions import TypedDict
 
-from pydantic import BaseModel, validate_arguments
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic import DirectoryPath, FilePath
 import yaml
+
+
+class BaseModel(PydanticBaseModel):
+    """Set defaults for all models that inherit from the pydantic base model."""
+
+    class Config:
+        extra = "forbid"
+        use_enum_values = True
 
 
 class ModelClassEnum(str, Enum):
@@ -39,12 +48,11 @@ class CnnPredictKwargs(TypedDict):
     seperate_blank_model: Optional[bool] = False
 
 
-# @validate_arguments
 class TrainConfig(BaseModel):
-    train_data: Path = Path("train_videos")
-    val_data: Path = Path("val_videos")
-    labels: Path = Path("labels.csv")
-    model_path: Optional[Path] = None
+    train_data: DirectoryPath = None
+    val_data: DirectoryPath = None
+    labels: FilePath = None
+    model_path: Optional[FilePath] = None
     model_library: ModelLibraryEnum = "keras"
     model_class: ModelClassEnum = "custom"
     tempdir: Optional[Path] = None
@@ -54,12 +62,12 @@ class TrainConfig(BaseModel):
     augmentation: Optional[bool] = False
     early_stopping: Optional[bool] = False
     save_path: Optional[Path] = None
+    yaml: Optional[FilePath] = None
 
 
-# @validate_arguments
 class PredictConfig(BaseModel):
-    data_path: Path = Path(".")
-    model_path: Path = Path(".")
+    data_path: Union[DirectoryPath, FilePath] = None
+    model_path: Union[DirectoryPath, FilePath] = None
     model_class: ModelClassEnum = "cnnensemble"
     pred_path: Optional[Path] = None
     proba_threshold: Optional[float] = None
@@ -69,15 +77,13 @@ class PredictConfig(BaseModel):
     save: Optional[bool] = False
     model_kwargs: Optional[CnnModelKwargs] = dict()
     predict_kwargs: Optional[CnnPredictKwargs] = dict()
+    yaml: Optional[FilePath] = None
 
 
-# @validate_arguments
 class FineTuneConfig(BaseModel):
     pass
 
 
-# TODO: get validation to work
-# @validate_arguments
 class ModelConfig(BaseModel):
     train_config: Optional[TrainConfig] = None
     predict_config: Optional[PredictConfig] = None

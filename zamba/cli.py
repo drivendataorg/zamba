@@ -23,17 +23,13 @@ app = typer.Typer()
 @app.command()
 def train(
     train_data: Path = typer.Argument(
-        Path("train_videos"), exists=True, help="Path to folder containing training videos."
+        None, exists=True, help="Path to folder containing training videos."
     ),
     val_data: Path = typer.Argument(
-        Path("val_videos"), exists=True, help="Path to folder containing validation videos."
+        None, exists=True, help="Path to folder containing validation videos."
     ),
-    labels: Path = typer.Argument(
-        Path("labels.csv"), exists=True, help="Path to csv containing video labels."
-    ),
-    model_path: Path = typer.Argument(
-        Path("custom_model.h5"), exists=True, help="Path to model to train."
-    ),
+    labels: Path = typer.Argument(None, exists=True, help="Path to csv containing video labels."),
+    model_path: Path = typer.Argument(None, exists=True, help="Path to model to train."),
     model_library: ModelLibraryEnum = typer.Option(
         ModelLibraryEnum.keras, help="Library to use for loading custom model."
     ),
@@ -81,7 +77,7 @@ def train(
                 model_path=model_path,
                 model_library=model_library,
                 model_class=model_class,
-                config=config,
+                yaml=config,
                 tempdir=tempdir,
                 n_epochs=n_epochs,
                 height=height,
@@ -104,7 +100,7 @@ def train(
 @app.command()
 def predict(
     data_path: Path = typer.Argument(
-        Path("."), exists=True, help="Path to folder containing videos for prediction."
+        None, exists=True, help="Path to folder containing videos for prediction."
     ),
     model_class: ModelClassEnum = typer.Option(
         "cnnensemble",
@@ -167,7 +163,7 @@ def predict(
                 data_path=data_path,
                 model_path=default_model_dir,
                 model_class=model_class,
-                config=config,
+                yaml=config,
                 pred_path=pred_path,
                 proba_threshold=proba_threshold,
                 output_class_names=output_class_names,
@@ -194,11 +190,9 @@ def predict(
 @app.command()
 def tune(
     data_path: Path = typer.Option(
-        Path("."), exists=True, help="Path to folder containing videos for finetuning."
+        None, exists=True, help="Path to folder containing videos for finetuning."
     ),
-    labels: Path = typer.Option(
-        Path("labels.csv"), exists=True, help="Path to csv containing video labels."
-    ),
+    labels: Path = typer.Option(None, exists=True, help="Path to csv containing video labels."),
     config: Path = typer.Option(
         None,
         exists=True,
