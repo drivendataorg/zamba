@@ -8,30 +8,30 @@ import yaml
 
 
 class ModelClassEnum(str, Enum):
-    cnnensemble = 'cnnensemble'
-    custom = 'custom'
-    sample = 'sample'
+    cnnensemble = "cnnensemble"
+    custom = "custom"
+    sample = "sample"
 
 
 class ModelLibraryEnum(str, Enum):
-    keras = 'keras'
-    pytorch = 'pytorch'
+    keras = "keras"
+    pytorch = "pytorch"
 
 
 class ModelProfileEnum(str, Enum):
-    fast = 'fast'
-    full = 'full'
+    fast = "fast"
+    full = "full"
 
 
 class RegionEnum(str, Enum):
-    us = 'us'
-    eu = 'eu'
-    asia = 'asia'
+    us = "us"
+    eu = "eu"
+    asia = "asia"
 
 
 class CnnModelKwargs(TypedDict):
-    download_region: RegionEnum = 'us'
-    profile: ModelProfileEnum = 'full'
+    download_region: RegionEnum = "us"
+    profile: ModelProfileEnum = "full"
 
 
 class CnnPredictKwargs(TypedDict):
@@ -45,8 +45,8 @@ class TrainConfig(BaseModel):
     val_data: Path = Path("val_videos")
     labels: Path = Path("labels.csv")
     model_path: Optional[Path] = None
-    model_library: ModelLibraryEnum = 'keras'
-    model_class: ModelClassEnum = 'custom'
+    model_library: ModelLibraryEnum = "keras"
+    model_class: ModelClassEnum = "custom"
     tempdir: Optional[Path] = None
     n_epochs: Optional[int] = 10
     height: Optional[int] = None
@@ -74,6 +74,7 @@ class PredictConfig(BaseModel):
 # @validate_arguments
 class FineTuneConfig(BaseModel):
     pass
+
 
 # TODO: get validation to work
 # @validate_arguments
