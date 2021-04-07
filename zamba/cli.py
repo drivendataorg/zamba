@@ -22,23 +22,30 @@ app = typer.Typer()
 
 @app.command()
 def train(
-    train_data: Path = typer.Option(
-        Path("train_videos"), help="Path to folder containing training videos."
+    train_data: Path = typer.Argument(
+        Path("train_videos"), exists=True, help="Path to folder containing training videos."
     ),
-    val_data: Path = typer.Option(
-        Path("val_videos"), help="Path to folder containing validation videos."
+    val_data: Path = typer.Argument(
+        Path("val_videos"), exists=True, help="Path to folder containing validation videos."
     ),
-    labels: Path = typer.Option(Path("labels.csv"), help="Path to csv containing video labels."),
-    model_path: Path = typer.Option(Path("custom_model.h5"), help="Path to model to train."),
+    labels: Path = typer.Argument(
+        Path("labels.csv"), exists=True, help="Path to csv containing video labels."
+    ),
+    model_path: Path = typer.Argument(
+        Path("custom_model.h5"), exists=True, help="Path to model to train."
+    ),
     model_library: ModelLibraryEnum = typer.Option(
         ModelLibraryEnum.keras, help="Library to use for loading custom model."
     ),
     config: Path = typer.Option(
         None,
+        exists=True,
         help="Specify options using yaml configuration file instead of through command line options.",
     ),
     tempdir: Optional[Path] = typer.Option(
-        None, help="Path to temporary directory. If not specified, OS temporary directory is used"
+        None,
+        exists=True,
+        help="Path to temporary directory. If not specified, OS temporary directory is used",
     ),
     n_epochs: Optional[int] = typer.Option(10, help="Number of epochs to train."),
     height: Optional[int] = typer.Option(
@@ -96,8 +103,8 @@ def train(
 
 @app.command()
 def predict(
-    data_path: Path = typer.Option(
-        Path("."), help="Path to folder containing videos for prediction."
+    data_path: Path = typer.Argument(
+        Path("."), exists=True, help="Path to folder containing videos for prediction."
     ),
     model_class: ModelClassEnum = typer.Option(
         "cnnensemble",
@@ -109,6 +116,7 @@ def predict(
     ),
     config: Path = typer.Option(
         None,
+        exists=True,
         help="Specify options using yaml configuration file instead of through command line options.",
     ),
     pred_path: Optional[Path] = typer.Option(
@@ -132,7 +140,9 @@ def predict(
         help="Do a second stage blank/non-blank that is more accurate; recommended with resample.",
     ),
     tempdir: Optional[Path] = typer.Option(
-        None, help="Path to temporary directory. If not specified, OS temporary directory is used."
+        None,
+        exists=True,
+        help="Path to temporary directory. If not specified, OS temporary directory is used.",
     ),
     verbose: Optional[bool] = typer.Option(
         False, help="Displays additional logging information during processing."
@@ -184,11 +194,14 @@ def predict(
 @app.command()
 def tune(
     data_path: Path = typer.Option(
-        Path("."), help="Path to folder containing videos for finetuning."
+        Path("."), exists=True, help="Path to folder containing videos for finetuning."
     ),
-    labels: Path = typer.Option(Path("labels.csv"), help="Path to csv containing video labels."),
+    labels: Path = typer.Option(
+        Path("labels.csv"), exists=True, help="Path to csv containing video labels."
+    ),
     config: Path = typer.Option(
         None,
+        exists=True,
         help="Specify options using yaml configuration file instead of through command line options.",
     ),
     batch_size: Optional[int] = typer.Option(
@@ -196,7 +209,9 @@ def tune(
     ),
     weights_output: Optional[Path] = typer.Option(None, help="Output path for saved weights."),
     tempdir: Optional[Path] = typer.Option(
-        None, help="Path to temporary directory. If not specified, OS temporary directory is used"
+        None,
+        exists=True,
+        help="Path to temporary directory. If not specified, OS temporary directory is used",
     ),
 ):
     """[NOT IMPLEMENTED] Update network with new data.
