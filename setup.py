@@ -72,7 +72,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'zamba=zamba.cli:main',
+            'zamba=zamba.cli:app',
         ],
     },
     packages=find_packages(exclude=['dist', 'docs', 'zamba.tests']),
