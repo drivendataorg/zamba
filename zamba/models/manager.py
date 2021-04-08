@@ -55,6 +55,7 @@ class ModelManager(object):
                 'cnnensemble': CnnEnsemble,
                 'sample': SampleModel
             }
+
             self.model = model_dict[self.predict_config.model_class](
                 model_path=self.predict_config.model_path,
                 tempdir=self.predict_config.tempdir,
@@ -65,7 +66,7 @@ class ModelManager(object):
         pred_path = self.predict_config.pred_path
 
         data_paths = self.model.load_data(Path(data_path).expanduser().resolve())
-        preds = self.model.predict(data_paths, **self.predict_config.predict_kwargs)
+        preds = self.model.predict(data_paths)
 
         # threshold if provided
         if self.predict_config.proba_threshold is not None:

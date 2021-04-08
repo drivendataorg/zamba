@@ -169,12 +169,10 @@ def predict(
                 output_class_names=output_class_names,
                 tempdir=tempdir,
                 verbose=verbose,
+                download_region=weight_download_region,
                 save=save,
                 model_kwargs=dict(
-                    download_region=weight_download_region,
                     profile=model_profile,
-                ),
-                predict_kwargs=dict(
                     resample=resample,
                     seperate_blank_model=separate_blank,
                 ),

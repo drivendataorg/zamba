@@ -35,6 +35,8 @@ class CnnEnsemble(Model):
                  site_aware=False,
                  labels_path=None,
                  raw_video_dir=None,
+                 resample=True,
+                 seperate_blank_model=True,
                  ):
         # use the model object's defaults
         super().__init__(model_path=Path(model_path))
@@ -43,6 +45,9 @@ class CnnEnsemble(Model):
         self.raw_video_dir = raw_video_dir
         self.labels_path = labels_path
         self.logger = logging.getLogger(f"{__file__}")
+        self.resample = resample
+        self.seperate_blank_model = seperate_blank_model
+
 
         if download_weights:
             self._download_weights_if_needed(download_region)
@@ -73,7 +78,7 @@ class CnnEnsemble(Model):
 
         return OrderedDict(zip(input_paths, output_paths))
 
-    def predict(self, file_names, resample=True, seperate_blank_model=True):
+    def predict(self, file_names):
         """Predict class probabilities for each input
 
         Args:
@@ -83,7 +88,7 @@ class CnnEnsemble(Model):
             pd.DataFrame: A table of class probabilities, where index is the file name and columns are the different
                 classes
         """
-        processed_paths = self.preprocess_videos(file_names, resample=resample)
+        processed_paths = self.preprocess_videos(file_names, resample=self.resample)
 
         # exclude videos where output path doesn't exist (e.g. videos that can't be resampled)
         valid_videos = [v for v in processed_paths.values() if v.exists()]
@@ -132,7 +137,7 @@ class CnnEnsemble(Model):
             columns=config.CLASSES,
         )
 
-        if seperate_blank_model:
+        if self.seperate_blank_model:
             cnn_features["blank"] = 0
 
             blank = self.compute_blank_probability(valid_videos, cnn_features)
@@ -150,7 +155,7 @@ class CnnEnsemble(Model):
             axis=0,
         )
 
-        if seperate_blank_model:
+        if self.seperate_blank_model:
             preds["blank"] = blank
 
         preds.rename(

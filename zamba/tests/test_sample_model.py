@@ -15,7 +15,8 @@ def test_create_and_save(sample_model_path, sample_data_path):
         predict_config=PredictConfig(
             model_path=sample_model_path,
             model_class='sample',
-            data_path=sample_data_path
+            data_path=sample_data_path,
+            model_kwargs=dict(),
         )
     )
 
@@ -46,7 +47,8 @@ def test_load_and_predict(sample_model_path, sample_data_path):
             model_path=sample_model_path,
             data_path=sample_data_path,
             model_class='sample',
-            proba_threshold=0.5
+            proba_threshold=0.5,
+            model_kwargs=dict(),
         )
     )
 

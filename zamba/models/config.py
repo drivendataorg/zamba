@@ -38,16 +38,6 @@ class RegionEnum(str, Enum):
     asia = "asia"
 
 
-class CnnModelKwargs(TypedDict):
-    download_region: RegionEnum = "us"
-    profile: ModelProfileEnum = "full"
-
-
-class CnnPredictKwargs(TypedDict):
-    resample: Optional[bool] = False
-    seperate_blank_model: Optional[bool] = False
-
-
 class TrainConfig(BaseModel):
     train_data: DirectoryPath = None
     val_data: DirectoryPath = None
@@ -74,9 +64,9 @@ class PredictConfig(BaseModel):
     output_class_names: Optional[bool] = False
     tempdir: Optional[Path] = None
     verbose: Optional[bool] = False
+    download_region: RegionEnum = "us"
     save: Optional[bool] = False
-    model_kwargs: Optional[CnnModelKwargs] = dict()
-    predict_kwargs: Optional[CnnPredictKwargs] = dict()
+    model_kwargs: Optional[dict] = dict(resample=False, seperate_blank_model=False, profile="full")
     yaml: Optional[FilePath] = None
 
 
