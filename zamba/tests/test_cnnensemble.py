@@ -5,6 +5,7 @@ import tempfile
 
 import zamba
 from zamba.models.cnnensemble.src import config
+from zamba.models.cnnensemble_model import CnnEnsemble
 from zamba.models.manager import ModelManager, PredictConfig
 
 
@@ -65,19 +66,10 @@ def test_validate_videos(data_dir):
     assert len(invalid_videos) == 0
 
 
-# TODO: find way to load data without predicting
-# def test_load_data(data_dir):
-#     manager = ModelManager(
-#         predict_config=PredictConfig(
-#             model_path='',
-#             model_class='cnnensemble',
-#             output_class_names=False,
-#             model_kwargs=dict(profile='fast'),
-#             data_path=data_dir,
-#         )
-#     )
-#     input_paths = manager.model.load_data()
-#     assert len(input_paths) > 0
+def test_load_data(data_dir):
+    model = CnnEnsemble(model_path="", profile="fast")
+    input_paths = model.load_data(data_dir)
+    assert len(input_paths) > 0
 
 
 @pytest.mark.skipif(
