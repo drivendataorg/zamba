@@ -1,5 +1,5 @@
 train_config:
-  train_data: 'zamba/tests/assets/my_train_videos'
+  train_data: 'zamba/tests/assets/my_videos'
   val_data: 'zamba/tests/assets/my_val_videos'
   model_path: 'zamba/tests/assets/new_model.h5'
   labels: 'zamba/tests/assets/sample_labels.csv'
@@ -11,8 +11,8 @@ train_config:
   save_path: 'zamba/tests/assets/trained_new_model.h5'
 
 predict_config:
-  data_path: 'zamba/tests/assets/my_train_videos'
+  data_path: 'zamba/tests/assets/my_videos'
   model_class: 'cnnensemble'
   model_kwargs:
     profile: 'fast'
-  save: True
+  save: False
