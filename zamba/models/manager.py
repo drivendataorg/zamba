@@ -39,7 +39,8 @@ class ModelManager(object):
 
             self.model = Model(
                 model_path=self.train_config.model_path,
-                model_library=self.train_config.model_library
+                model_library=self.train_config.model_library,
+                save_path=self.train_config.save_path,
             ).load()
         else:
             raise NotImplementedError('Currently only custom models can be trained.')
@@ -48,8 +49,10 @@ class ModelManager(object):
 
     def predict(self):
         if self.predict_config.model_class == 'custom':
-            self.model = Model(model_path=self.predict_config.model_path,
-                               tempdir=self.predict_config.tempdir).load()
+            self.model = Model(
+                model_path=self.predict_config.model_path,
+                model_library=self.predict_config.model_library,
+                tempdir=self.predict_config.tempdir).load()
 
         else:
             model_dict = {
@@ -58,7 +61,7 @@ class ModelManager(object):
             }
 
             self.model = model_dict[self.predict_config.model_class](
-                tempdir=self.predict_config.tempdir,
+                tempdir = self.predict_config.tempdir,
                 **self.predict_config.model_kwargs
             )
 

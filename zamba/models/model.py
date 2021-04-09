@@ -21,10 +21,11 @@ class Model(object):
                 Clean up tempdir if used.
 
     """
-    def __init__(self, model_path=None, model_library=None, tempdir=None):
+    def __init__(self, model_path=None, model_library=None, tempdir=None, save_path=None):
 
         self.model_path = model_path
         self.model_library = model_library
+        self.save_path = save_path
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp(prefix="zamba_")) if self.delete_tempdir else Path(tempdir)
 
