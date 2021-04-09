@@ -14,22 +14,19 @@ from zamba.models.config import (
 from zamba.models.manager import ModelManager
 
 
-default_model_dir = Path(__file__).parent / "models" / "assets"
-default_model_dir.mkdir(exist_ok=True)
-
 app = typer.Typer()
 
 
 @app.command()
 def train(
-    train_data: Path = typer.Argument(
+    train_data: Path = typer.Option(
         None, exists=True, help="Path to folder containing training videos."
     ),
-    val_data: Path = typer.Argument(
+    val_data: Path = typer.Option(
         None, exists=True, help="Path to folder containing validation videos."
     ),
-    labels: Path = typer.Argument(None, exists=True, help="Path to csv containing video labels."),
-    model_path: Path = typer.Argument(None, exists=True, help="Path to model to train."),
+    labels: Path = typer.Option(None, exists=True, help="Path to csv containing video labels."),
+    model_path: Path = typer.Option(None, exists=True, help="Path to model to train."),
     model_library: ModelLibraryEnum = typer.Option(
         ModelLibraryEnum.keras, help="Library to use for loading custom model."
     ),
@@ -99,7 +96,7 @@ def train(
 
 @app.command()
 def predict(
-    data_path: Path = typer.Argument(
+    data_path: Path = typer.Option(
         None, exists=True, help="Path to folder containing videos for prediction."
     ),
     model_class: ModelClassEnum = typer.Option(
@@ -147,6 +144,9 @@ def predict(
         "us", help="Server region for downloading weights. Options are 'us', 'eu', or 'asia'."
     ),
     save: Optional[bool] = typer.Option(True, help="Save predictions to csv file."),
+    model_path: Path = typer.Option(
+        None, exists=True, help="[Not implemented] Path to model to use for prediction."
+    ),
 ):
     """Identify species in a video.
 
@@ -161,7 +161,7 @@ def predict(
         manager = ModelManager(
             predict_config=PredictConfig(
                 data_path=data_path,
-                model_path=default_model_dir,
+                model_path=model_path,
                 model_class=model_class,
                 yaml=config,
                 pred_path=pred_path,
