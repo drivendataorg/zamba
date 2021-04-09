@@ -21,8 +21,8 @@ class SampleModel(Model):
             model_path:
             tempdir:
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, tempdir=None):
+        super().__init__(tempdir=tempdir)
 
         self.model = self._build_graph() if self.model_path is None else keras.models.load_model(Path(self.model_path))
 
@@ -73,9 +73,11 @@ class SampleModel(Model):
         """
 
         # save to user-specified, or model's path
-        path = Path(path) if path else None
-        save_path = path or self.model_path
-        if save_path is None:
+        if path is not None:
+            save_path = Path(path)
+        elif self.model_path is not None:
+            save_path = Path(self.model_path)
+        else:
             raise FileNotFoundError("Must provide save_path")
 
         # create if necessary
