@@ -5,7 +5,7 @@ from pathlib import Path
 from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
 from zamba.models.model import Model
-from zamba.models.config import TrainConfig, PredictConfig
+from zamba.models.config import TrainConfig, PredictConfig, ModelConfig
 
 
 default_train = TrainConfig()
@@ -44,11 +44,12 @@ class ModelManager(object):
         else:
             raise NotImplementedError('Currently only custom models can be trained.')
 
-        self.model.fit(epochs=self.train_config.n_epochs)
+        # self.model.fit(epochs=self.train_config.n_epochs)
 
     def predict(self):
         if self.predict_config.model_class == 'custom':
-            self.model = Model(self.predict_config.model_path).load()
+            self.model = Model(model_path=self.predict_config.model_path,
+                               tempdir=self.predict_config.tempdir).load()
 
         else:
             model_dict = {
@@ -57,7 +58,6 @@ class ModelManager(object):
             }
 
             self.model = model_dict[self.predict_config.model_class](
-                model_path=self.predict_config.model_path,
                 tempdir=self.predict_config.tempdir,
                 **self.predict_config.model_kwargs
             )
