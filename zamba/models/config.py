@@ -42,7 +42,7 @@ class TrainConfig(BaseModel):
     train_data: DirectoryPath = None
     val_data: DirectoryPath = None
     labels: FilePath = None
-    model_path: Optional[FilePath] = None
+    model_path: FilePath = None
     model_library: ModelLibraryEnum = "keras"
     model_class: ModelClassEnum = "custom"
     tempdir: Optional[Path] = None
