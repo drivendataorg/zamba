@@ -27,7 +27,6 @@ load_dotenv(find_dotenv())
 
 class CnnEnsemble(Model):
     def __init__(self,
-                 model_path,
                  profile=config.DEFAULT_PROFILE,
                  tempdir=None,
                  download_region='us',
@@ -36,10 +35,9 @@ class CnnEnsemble(Model):
                  labels_path=None,
                  raw_video_dir=None,
                  resample=True,
-                 seperate_blank_model=True,
-                 ):
+                 seperate_blank_model=True):
         # use the model object's defaults
-        super().__init__(model_path=Path(model_path))
+        super().__init__(tempdir=tempdir)
         self.profile = profile
         self.site_aware = site_aware
         self.raw_video_dir = raw_video_dir
