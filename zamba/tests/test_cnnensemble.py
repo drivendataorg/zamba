@@ -16,12 +16,12 @@ from zamba.models.manager import ModelManager, PredictConfig
 def test_predict_fast(data_dir):
     manager = ModelManager(
         predict_config=PredictConfig(
-            model_path='',
             model_class='cnnensemble',
             output_class_names=False,
             model_kwargs=dict(profile='fast'),
             data_path=data_dir,
-            save=True
+            save=True,
+            pred_path=str(config.MODEL_DIR / 'output' / 'test_prediction.csv'),
         )
     )
     result = manager.predict()
@@ -29,34 +29,20 @@ def test_predict_fast(data_dir):
     # check that duiker is most likely class (manually verified)
     assert result.idxmax(axis=1).values[0] == "duiker"
 
-    result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
-
 
 @pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
 def test_predict_full(data_dir):
     manager = ModelManager(
         predict_config=PredictConfig(
-            model_path='',
             model_class='cnnensemble',
             output_class_names=False,
             model_kwargs=dict(profile='full'),
             data_path=data_dir,
-            save=True)
+            save=True,
+            pred_path=str(config.MODEL_DIR / 'output' / 'test_prediction.csv'),
+        )
     )
     result = manager.predict()
-    result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
-
-
-# TODO: update with custom model
-# @pytest.mark.skip(reason="This test takes hours to run and is really for local dev only.")
-# def test_train():
-#     manager = ModelManager(
-#         train_config=TrainConfig(
-#             model_class='custom',
-#             verbose=True,
-#             model_kwargs=dict(download_weights=False))
-#     )
-#     manager.train()
 
 
 def test_validate_videos(data_dir):
@@ -67,7 +53,7 @@ def test_validate_videos(data_dir):
 
 
 def test_load_data(data_dir):
-    model = CnnEnsemble(model_path="", profile="fast")
+    model = CnnEnsemble(profile="fast")
     input_paths = model.load_data(data_dir)
     assert len(input_paths) > 0
 
@@ -92,7 +78,6 @@ def test_predict_invalid_videos(data_dir):
 
     manager = ModelManager(
         predict_config=PredictConfig(
-            model_path='',
             model_class="cnnensemble",
             output_class_names=False,
             model_kwargs={
