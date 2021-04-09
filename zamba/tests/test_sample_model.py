@@ -1,22 +1,25 @@
+from pathlib import Path
+
 import numpy as np
 
+from zamba.tests.sample_model import SampleModel
 from zamba.models.manager import ModelManager, PredictConfig
 
 
-def test_create_and_save(sample_model_path, sample_data_path):
+def test_load_and_save():
+    sm = SampleModel()
+    save_path = Path("my_model.h5")
+    sm.save_model(save_path)
+    assert save_path.exists()
+    save_path.unlink()
 
-    # test with default params
-    manager = ModelManager(
-        predict_config=PredictConfig(model_class='sample')
-    )
 
-    # use sample model fixture
+def test_load_and_predict(sample_model_path, sample_data_path):
     manager = ModelManager(
         predict_config=PredictConfig(
-            model_path=sample_model_path,
-            model_class='sample',
             data_path=sample_data_path,
-            model_kwargs=dict(),
+            model_class="sample",
+            model_kwargs=dict()
         )
     )
 
@@ -35,18 +38,14 @@ def test_create_and_save(sample_model_path, sample_data_path):
     # 0.3 * 0.1 == 0.03
     assert result.iloc[1].multiplied == np.float32(0.3) * np.float32(0.1)
 
-    manager.model.save_model()
-    assert manager.model.model_path.exists()
 
-
-def test_load_and_predict(sample_model_path, sample_data_path):
+def test_load_and_predict_threshold(sample_model_path, sample_data_path):
 
     # load the sample model in the ModelManager
     manager = ModelManager(
         predict_config=PredictConfig(
-            model_path=sample_model_path,
             data_path=sample_data_path,
-            model_class='sample',
+            model_class="sample",
             proba_threshold=0.5,
             model_kwargs=dict(),
         )
