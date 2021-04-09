@@ -21,7 +21,7 @@ class Model(object):
                 Clean up tempdir if used.
 
     """
-    def __init__(self, model_path=Path('.'), model_library=None, tempdir=None):
+    def __init__(self, model_path=None, model_library=None, tempdir=None):
 
         self.model_path = model_path
         self.model_library = model_library
@@ -36,14 +36,15 @@ class Model(object):
             rmtree(self.tempdir)
 
     def load(self):
-        if self.model_library == 'keras':
-            import keras
-            return keras.models.load_model(self.model_path)
-        elif self.model_library == 'pytorch':
-            import torch
-            return torch.load(self.model_path)
-        else:
-            raise NotImplementedError("Currently, only Keras or PyTorch models can be loaded.")
+        if self.model_path is not None:
+            if self.model_library == 'keras':
+                import keras
+                return keras.models.load_model(str(self.model_path))
+            elif self.model_library == 'pytorch':
+                import torch
+                return torch.load(str(self.model_path))
+            else:
+                raise NotImplementedError("Currently, only Keras or PyTorch models can be loaded.")
 
     def load_data(self, data_path):
         input_paths = [
