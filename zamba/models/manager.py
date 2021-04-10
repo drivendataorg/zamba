@@ -33,7 +33,6 @@ class ModelManager(object):
             config = ModelConfig.parse_file(config)
         return ModelManager(**dict(config))
 
-
     def train(self):
         if self.train_config.model_class == 'custom':
 
@@ -45,7 +44,7 @@ class ModelManager(object):
         else:
             raise NotImplementedError('Currently only custom models can be trained.')
 
-        # self.model.fit(epochs=self.train_config.n_epochs)
+        self.model.fit(epochs=self.train_config.n_epochs)
 
     def predict(self):
         if self.predict_config.model_class == 'custom':
@@ -61,7 +60,7 @@ class ModelManager(object):
             }
 
             self.model = model_dict[self.predict_config.model_class](
-                tempdir = self.predict_config.tempdir,
+                tempdir=self.predict_config.tempdir,
                 **self.predict_config.model_kwargs
             )
 

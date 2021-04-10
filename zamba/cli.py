@@ -105,7 +105,8 @@ def predict(
     ),
     model_profile: Optional[ModelProfileEnum] = typer.Option(
         ModelProfileEnum.full,
-        help="If model_class is 'cnnensemble', options are 'full' which is slow and accurate or 'fast' which is faster and less accurate.",
+        help="If model_class is 'cnnensemble', options are 'full' which is slow and accurate or 'fast' \
+which is faster and less accurate.",
     ),
     config: Path = typer.Option(
         None,
@@ -114,15 +115,19 @@ def predict(
     ),
     pred_path: Optional[Path] = typer.Option(
         None,
-        help="Filepath for predictions csv. If not specified, predictions will be saved to `predictions-{data-path}-{timestamp}.csv`.",
+        help="Filepath for predictions csv. If not specified, predictions will be saved to \
+`predictions-{data-path}-{timestamp}.csv`.",
     ),
     proba_threshold: Optional[float] = typer.Option(
         None,
-        help="Probability threshold for classification. If specified, binary predictions are returned with 1 being greater than the threshold, 0 being less than or equal to. If not specified, probabilities between 0 and 1 are returned.",
+        help="Probability threshold for classification. If specified, binary predictions are \
+returned with 1 being greater than the threshold, 0 being less than or equal to.If not specified, \
+probabilities between 0 and 1 are returned.",
     ),
     output_class_names: Optional[bool] = typer.Option(
         False,
-        help="If True, return a video and the name of the most likely class. If False, return a probability or indicator (depending on --proba_threshold) for every possible class.",
+        help="If True, return a video and the name of the most likely class. If False, \
+return a probability or indicator (depending on --proba_threshold) for every possible class.",
     ),
     resample: Optional[bool] = typer.Option(
         False,
@@ -150,7 +155,9 @@ def predict(
 ):
     """Identify species in a video.
 
-    This is a command line interface for prediction on camera trap footage. Given a path to camera trap footage, the predict function use a deep learning model to predict the presence or absense of a variety of species of common interest to wildlife researchers working with camera trap data.
+    This is a command line interface for prediction on camera trap footage. Given a path to camera
+    trap footage, the predict function use a deep learning model to predict the presence or absense of
+    a variety of species of common interest to wildlife researchers working with camera trap data.
 
     """
 

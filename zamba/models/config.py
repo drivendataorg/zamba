@@ -1,7 +1,6 @@
 from enum import Enum
 from pathlib import Path
 from typing import Optional, Union
-from typing_extensions import TypedDict
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import DirectoryPath, FilePath

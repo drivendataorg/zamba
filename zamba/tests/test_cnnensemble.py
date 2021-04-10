@@ -42,7 +42,7 @@ def test_predict_full(data_dir):
             pred_path=str(config.MODEL_DIR / 'output' / 'test_prediction.csv'),
         )
     )
-    result = manager.predict()
+    manager.predict()
 
 
 def test_validate_videos(data_dir):
