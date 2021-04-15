@@ -17,7 +17,8 @@ class MegaDetector:
     """ Instantiate and detect on images or videos using AI for Earth's MegaDetector.
 
         Read more documentation at https://github.com/microsoft/CameraTraps/blob/master/megadetector.md and download
-        the weights from "https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb"
+        the weights from:
+        https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
 
         Attributes:
             model (tensorflow.framework.ops.Graph)
@@ -34,9 +35,9 @@ class MegaDetector:
     ):
         """
             Args:
-                model_path (str, optional): Path to mega detector weights (downloaded from
-                    "https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb"). If
-                    omitted, the weights will be downloaded automatically
+                model_path (str, optional): Path to mega detector weights. Default: downloaded from
+                https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
+
                 confidence_threshold (float): Only keep bounding boxes with scores above this threshold
         """
         if model_path is None:
