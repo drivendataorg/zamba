@@ -17,14 +17,15 @@ class MegaDetector:
     """ Instantiate and detect on images or videos using AI for Earth's MegaDetector.
 
         Read more documentation at https://github.com/microsoft/CameraTraps/blob/master/megadetector.md and download
-        the weights from https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/megadetector_v3.pb
+        the weights from:
+        https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
 
         Attributes:
             model (tensorflow.framework.ops.Graph)
             sess (tensorflow.client.session.Session)
             confidence_threshold (float): Only keep bounding boxes with scores above this threshold
     """
-    MODEL_URL = "https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/megadetector_v3.pb"
+    MODEL_URL = "https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb"
     FEATURE_NAMES = ["n_key_frames", "h", "w", "n_detections", "total_area"]
 
     def __init__(
@@ -34,9 +35,9 @@ class MegaDetector:
     ):
         """
             Args:
-                model_path (str, optional): Path to mega detector weights (downloaded from
-                    https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/megadetector_v3.pb). If
-                    omitted, the weights will be downloaded automatically
+                model_path (str, optional): Path to mega detector weights. Default: downloaded from
+                https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
+
                 confidence_threshold (float): Only keep bounding boxes with scores above this threshold
         """
         if model_path is None:
@@ -272,9 +273,11 @@ class MegaDetector:
 
         return detection_graph
 
-    def _get_model(self, file_name="megadetector_v3.pb", model_url=None):
+    def _get_model(self, model_url=None):
         if model_url is None:
             model_url = self.MODEL_URL
+
+        file_name = model_url.rsplit("/", 1)[-1]
 
         cache_subdir = "megadetector"
         model_path = zamba.config.cache_dir / cache_subdir / file_name
