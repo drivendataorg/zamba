@@ -162,6 +162,7 @@ return a probability or indicator (depending on --proba_threshold) for every pos
     """
 
     if config is not None:
+        typer.echo(f"Loading from config file: {config}. Any other arguments passed will be ignored.")
         manager = ModelManager.from_config(config)
 
     else:
