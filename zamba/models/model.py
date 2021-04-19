@@ -3,6 +3,15 @@ from shutil import rmtree
 import tempfile
 
 
+try:
+    from tensorflow import keras
+except ImportError:
+    msg = "Zamba must have tensorflow installed, run either `pip install zamba[cpu]` "\
+          "or `pip install zamba[gpu]` " \
+          "depending on what is available on your system."
+    raise ImportError(msg)
+
+
 class Model(object):
     """Abstract class implementing required methods for any model in the api.
 
