@@ -50,20 +50,20 @@ class CnnEnsemble(Model):
         if download_weights:
             self._download_weights_if_needed(download_region)
 
-    def preprocess_videos(self, input_paths, resample=True):
+    def preprocess_videos(self, input_paths):
         """Preprocesses videos into a format that can be used by this model.
 
         Input is a directory containing videos. The directory will be recursively searched for all files that do not
-        start with ".". Also has the option to resample raw videos to standard resolution and frame rate.
+        start with ".".
 
         Args:
             data_path (pathlib.Path): Path to a directory containing the input files
-            resample (bool): If true, resample the videos to a standard resolution and frame rate
 
         Returns:
             OrderedDict: A dict with `key: value` as `original path: processed path` for each video.
         """
-        if resample:
+        # resample the videos to a standard resolution and frame rate
+        if self.resample:
             self.logger.debug("Converting videos to standard resolution and frame rate.")
             output_directory = Path(
                 tempfile.mkdtemp(prefix="resampled_", dir=self.tempdir)
