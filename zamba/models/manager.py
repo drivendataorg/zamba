@@ -38,7 +38,7 @@ class ModelManager(object):
 
             self.model = Model(
                 model_path=self.train_config.model_path,
-                model_library=self.train_config.model_library,
+                framework=self.train_config.framework,
                 save_path=self.train_config.save_path,
             ).load()
         else:
@@ -50,7 +50,7 @@ class ModelManager(object):
         if self.predict_config.model_class == 'custom':
             self.model = Model(
                 model_path=self.predict_config.model_path,
-                model_library=self.predict_config.model_library,
+                framework=self.predict_config.framework,
                 tempdir=self.predict_config.tempdir).load()
 
         else:

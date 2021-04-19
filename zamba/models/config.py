@@ -21,7 +21,7 @@ class ModelClassEnum(str, Enum):
     sample = "sample"
 
 
-class ModelLibraryEnum(str, Enum):
+class FrameworkEnum(str, Enum):
     keras = "keras"
     pytorch = "pytorch"
 
@@ -42,7 +42,7 @@ class TrainConfig(BaseModel):
     val_data: DirectoryPath = None
     labels: FilePath = None
     model_path: FilePath = None
-    model_library: ModelLibraryEnum = "keras"
+    framework: FrameworkEnum = "keras"
     model_class: ModelClassEnum = "custom"
     tempdir: Optional[Path] = None
     n_epochs: Optional[int] = 10

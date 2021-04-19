@@ -21,10 +21,10 @@ class Model(object):
                 Clean up tempdir if used.
 
     """
-    def __init__(self, model_path=None, model_library=None, tempdir=None, save_path=None):
+    def __init__(self, model_path=None, framework=None, tempdir=None, save_path=None):
 
         self.model_path = model_path
-        self.model_library = model_library
+        self.framework = framework
         self.save_path = save_path
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp(prefix="zamba_")) if self.delete_tempdir else Path(tempdir)
@@ -38,10 +38,10 @@ class Model(object):
 
     def load(self):
         if self.model_path is not None:
-            if self.model_library == 'keras':
+            if self.framework == 'keras':
                 import keras
                 return keras.models.load_model(str(self.model_path))
-            elif self.model_library == 'pytorch':
+            elif self.framework == 'pytorch':
                 import torch
                 return torch.load(str(self.model_path))
             else:

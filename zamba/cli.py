@@ -6,7 +6,7 @@ import typer
 
 from zamba.models.config import (
     ModelClassEnum,
-    ModelLibraryEnum,
+    FrameworkEnum,
     ModelProfileEnum,
     PredictConfig,
     TrainConfig,
@@ -27,8 +27,8 @@ def train(
     ),
     labels: Path = typer.Option(None, exists=True, help="Path to csv containing video labels."),
     model_path: Path = typer.Option(None, exists=True, help="Path to model to train."),
-    model_library: ModelLibraryEnum = typer.Option(
-        ModelLibraryEnum.keras, help="Library to use for loading custom model."
+    framework: FrameworkEnum = typer.Option(
+        FrameworkEnum.keras, help="Library to use for loading custom model."
     ),
     config: Path = typer.Option(
         None,
@@ -72,7 +72,7 @@ def train(
                 val_data=val_data,
                 labels=labels,
                 model_path=model_path,
-                model_library=model_library,
+                framework=framework,
                 model_class=model_class,
                 yaml=config,
                 tempdir=tempdir,
@@ -89,7 +89,7 @@ def train(
     typer.echo(f"Using val data_path:\t{manager.train_config.val_data}")
     typer.echo(f"Using labels:\t{manager.train_config.labels}")
     typer.echo(f"Using model:\t{manager.train_config.model_path}")
-    typer.echo(f"Loading with:\t{manager.train_config.model_library}")
+    typer.echo(f"Loading with:\t{manager.train_config.framework}")
 
     manager.train()
 
