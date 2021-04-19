@@ -59,7 +59,7 @@ def test_train_options(data_dir, sample_model_path, mocker):  # noqa: F811
     assert result.exit_code == 2
     assert 'no such option' in result.output
 
-    result = runner.invoke(app, ['train', '--model-library', 'fastai'])
+    result = runner.invoke(app, ['train', '--framework', 'fastai'])
     assert result.exit_code == 2
     assert "invalid choice: fastai. (choose from keras, pytorch)" in result.output
 

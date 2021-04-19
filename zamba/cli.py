@@ -41,18 +41,6 @@ def train(
         help="Path to temporary directory. If not specified, OS temporary directory is used",
     ),
     n_epochs: Optional[int] = typer.Option(10, help="Number of epochs to train."),
-    height: Optional[int] = typer.Option(
-        None, help="[Not implemented] Desired height for resized video."
-    ),
-    width: Optional[int] = typer.Option(
-        None, help="[Not implemented] Desired width for resized video."
-    ),
-    augmentation: Optional[bool] = typer.Option(
-        False, help="[Not implemented] If True, flip and rotate videos during training."
-    ),
-    early_stopping: Optional[bool] = typer.Option(
-        False, help="[Not implemented] If True, use early stopping."
-    ),
     save_path: Optional[Path] = typer.Option(
         None, help="[Not implemented] Save out trained model to this filepath."
     ),
@@ -77,10 +65,6 @@ def train(
                 model_class=model_class,
                 tempdir=tempdir,
                 n_epochs=n_epochs,
-                height=height,
-                width=width,
-                augmentation=augmentation,
-                early_stopping=early_stopping,
                 save_path=save_path,
             )
         )

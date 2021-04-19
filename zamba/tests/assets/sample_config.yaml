@@ -3,11 +3,7 @@ train_config:
   val_data: 'zamba/tests/assets/my_val_videos'
   model_path: 'zamba/tests/assets/new_model.h5'
   labels: 'zamba/tests/assets/sample_labels.csv'
-  height: 150
-  width: 150
-  augmentation: True
-  early_stopping: True
-  n_epochs: 10
+  n_epochs: 2
   save_path: 'zamba/tests/assets/trained_new_model.h5'
 
 predict_config:

@@ -46,10 +46,6 @@ class TrainConfig(BaseModel):
     model_class: ModelClassEnum = "custom"
     tempdir: Optional[Path] = None
     n_epochs: Optional[int] = 10
-    height: Optional[int] = None
-    width: Optional[int] = None
-    augmentation: Optional[bool] = False
-    early_stopping: Optional[bool] = False
     save_path: Optional[Path] = None
 
 
