@@ -51,7 +51,6 @@ class TrainConfig(BaseModel):
     augmentation: Optional[bool] = False
     early_stopping: Optional[bool] = False
     save_path: Optional[Path] = None
-    yaml: Optional[FilePath] = None
 
 
 class PredictConfig(BaseModel):
@@ -66,7 +65,6 @@ class PredictConfig(BaseModel):
     download_region: RegionEnum = "us"
     save: Optional[bool] = False
     model_kwargs: Optional[dict] = dict(resample=False, seperate_blank_model=False, profile="full")
-    yaml: Optional[FilePath] = None
 
 
 class FineTuneConfig(BaseModel):

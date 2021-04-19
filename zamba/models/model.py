@@ -39,7 +39,7 @@ class Model(object):
     def load(self):
         if self.model_path is not None:
             if self.framework == 'keras':
-                import keras
+                from tensorflow import keras
                 return keras.models.load_model(str(self.model_path))
             elif self.framework == 'pytorch':
                 import torch

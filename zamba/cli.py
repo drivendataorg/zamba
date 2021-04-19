@@ -63,6 +63,7 @@ def train(
 ):
     """Train a custom model using the provided data, labels, and path to preconfigured model architecture."""
     if config is not None:
+        typer.echo(f"Loading from config file: {config}. Any other arguments passed will be ignored.")
         manager = ModelManager.from_config(config)
 
     else:
@@ -74,7 +75,6 @@ def train(
                 model_path=model_path,
                 framework=framework,
                 model_class=model_class,
-                yaml=config,
                 tempdir=tempdir,
                 n_epochs=n_epochs,
                 height=height,
@@ -171,7 +171,6 @@ return a probability or indicator (depending on --proba_threshold) for every pos
                 data_path=data_path,
                 model_path=model_path,
                 model_class=model_class,
-                yaml=config,
                 pred_path=pred_path,
                 proba_threshold=proba_threshold,
                 output_class_names=output_class_names,

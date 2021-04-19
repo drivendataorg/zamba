@@ -86,7 +86,7 @@ class CnnEnsemble(Model):
             pd.DataFrame: A table of class probabilities, where index is the file name and columns are the different
                 classes
         """
-        processed_paths = self.preprocess_videos(file_names, resample=self.resample)
+        processed_paths = self.preprocess_videos(file_names)
 
         # exclude videos where output path doesn't exist (e.g. videos that can't be resampled)
         valid_videos = [v for v in processed_paths.values() if v.exists()]
