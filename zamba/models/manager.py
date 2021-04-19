@@ -29,7 +29,7 @@ class ModelManager(object):
 
     @staticmethod
     def from_config(config):
-        if not isinstance(config, ModelManager):
+        if not isinstance(config, ModelConfig):
             config = ModelConfig.parse_file(config)
         return ModelManager(**dict(config))
 
