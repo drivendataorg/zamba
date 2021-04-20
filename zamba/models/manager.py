@@ -31,7 +31,9 @@ class ModelManager(object):
     def from_config(config):
         if not isinstance(config, ModelConfig):
             config = ModelConfig.parse_file(config)
-        return ModelManager(**dict(config))
+        return ModelManager(
+            train_config=config.train_config, predict_config=config.predict_config
+        )
 
     def train(self):
         if self.train_config.model_class == 'custom':
