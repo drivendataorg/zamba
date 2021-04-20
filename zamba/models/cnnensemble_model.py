@@ -1,4 +1,5 @@
 from collections import deque, OrderedDict
+from enum import Enum
 from os import remove, getenv
 from pathlib import Path
 from shutil import rmtree
@@ -23,6 +24,11 @@ from zamba.models.mega_detector import MegaDetector
 from zamba.models.model import Model
 
 load_dotenv(find_dotenv())
+
+
+class CnnModelProfileEnum(str, Enum):
+    fast = "fast"
+    full = "full"
 
 
 class CnnEnsemble(Model):

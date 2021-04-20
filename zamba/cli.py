@@ -7,11 +7,11 @@ import typer
 from zamba.models.config import (
     ModelClassEnum,
     FrameworkEnum,
-    ModelProfileEnum,
     PredictConfig,
     TrainConfig,
 )
 from zamba.models.manager import ModelManager
+from zamba.models.cnnensemble_model import CnnModelProfileEnum
 
 
 app = typer.Typer()
@@ -87,8 +87,8 @@ def predict(
         "cnnensemble",
         help="Controls whether prodcution model, external custom model, or sample model is used.",
     ),
-    model_profile: Optional[ModelProfileEnum] = typer.Option(
-        ModelProfileEnum.full,
+    model_profile: Optional[CnnModelProfileEnum] = typer.Option(
+        CnnModelProfileEnum.full,
         help="If model_class is 'cnnensemble', options are 'full' which is slow and accurate or 'fast' \
 which is faster and less accurate.",
     ),
