@@ -7,8 +7,7 @@ try:
     from tensorflow import keras
 except ImportError:
     msg = "Zamba must have tensorflow installed, run either `pip install zamba[cpu]` "\
-          "or `pip install zamba[gpu]` " \
-          "depending on what is available on your system."
+          "or `pip install zamba[gpu]` depending on what is available on your system."
     raise ImportError(msg)
 
 
