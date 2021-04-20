@@ -1,6 +1,7 @@
 import pickle
 from pathlib import Path
 
+from tensorflow import keras
 import pandas as pd
 
 from zamba.models.model import Model
