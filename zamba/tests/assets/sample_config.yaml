@@ -1,3 +1,8 @@
+model_config:
+  model_class: 'cnnensemble'
+  model_kwargs:
+    profile: 'fast'
+
 train_config:
   train_data: 'zamba/tests/assets/my_videos'
   val_data: 'zamba/tests/assets/my_val_videos'
@@ -8,7 +13,4 @@ train_config:
 
 predict_config:
   data_path: 'zamba/tests/assets/my_videos'
-  model_class: 'cnnensemble'
-  model_kwargs:
-    profile: 'fast'
   save: False
