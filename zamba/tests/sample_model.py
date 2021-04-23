@@ -9,14 +9,11 @@ from zamba.models.model import Model
 
 class SampleModel(Model):
     """Sample model for testing.
-
-        Args:
-            model_path:
-            tempdir:
     """
-    def __init__(self, tempdir=None, model_path=None):
-        super().__init__(tempdir=tempdir, model_path=model_path)
-        self.model = self._build_graph() if self.model_path is None else keras.models.load_model(Path(self.model_path))
+    def __init__(self, tempdir=None, model_load_path=None, model_save_path=None):
+        super().__init__(tempdir=tempdir)
+        self.model = self._build_graph() if model_load_path is None else keras.models.load_model(Path(model_load_path))
+        self.model_save_path = model_save_path
 
     def _build_graph(self):
         """Simple keras graph for testing api.
@@ -52,36 +49,6 @@ class SampleModel(Model):
                                   multiplied=preds[:, 1]))
         return preds
 
-    @classmethod
-    def from_disk(cls, model_path):
-        return cls(model_path=model_path)
-
-    def to_disk(self, path=None):
-        """Save the SampleModel.
-
-        If no path is passed, tries to use model_path attribute.
-
-        Args:
-            path:
-
-        Returns:
-
-        """
-
-        # save to user-specified, or model's path
-        if path is not None:
-            save_path = Path(path)
-        elif self.model_path is not None:
-            save_path = Path(self.model_path)
-        else:
-            raise FileNotFoundError("Must provide save_path")
-
-        # create if necessary
-        save_path.parent.mkdir(exist_ok=True)
-
-        # keras' save
-        self.model.save(save_path, include_optimizer=False)
-
     def load_data(self, data_path):
         """SampleModel loads pickled data
 
@@ -95,3 +62,26 @@ class SampleModel(Model):
             data = pickle.load(f)
 
         return data
+
+
+    @classmethod
+    def from_disk(cls, path):
+        return cls(model_load_path=path)
+
+    def to_disk(self, path=None):
+        """Save the model to specified path.
+        If no path is passed, tries to use model_save_path attribute.
+        """
+
+        # save to user-specified, or model's path
+        if path is not None:
+            save_path = Path(path)
+        elif self.model_save_path is not None:
+            save_path = Path(self.model_save_path)
+        else:
+            raise FileNotFoundError("Must provide save_path")
+
+        # create if necessary
+        save_path.parent.mkdir(exist_ok=True)
+        # keras' save
+        self.model.save(save_path, include_optimizer=False)
