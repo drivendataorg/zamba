@@ -53,10 +53,10 @@ class SampleModel(Model):
         return preds
 
     @classmethod
-    def load(cls, model_path):
+    def from_disk(cls, model_path):
         return cls(model_path=model_path)
 
-    def save_model(self, path=None):
+    def to_disk(self, path=None):
         """Save the SampleModel.
 
         If no path is passed, tries to use model_path attribute.

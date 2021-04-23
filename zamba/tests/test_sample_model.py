@@ -6,17 +6,17 @@ from zamba.tests.sample_model import SampleModel
 from zamba.models.manager import ModelManager, PredictConfig, ModelConfig
 
 
-def test_load_and_save():
-    sm = SampleModel()
-    save_path = Path("my_model.h5")
-    sm.save_model(save_path)
-    assert save_path.exists()
 
-    assert SampleModel.load(model_path=save_path)
+def test_load_and_save():
+    save_path = Path("my_model.h5")
+    sm = SampleModel()
+    sm.to_disk(save_path)
+    assert save_path.exists()
+    assert SampleModel.from_disk(model_path=save_path)
     save_path.unlink()
 
 
-def test_load_and_predict(sample_model_path, sample_data_path):
+def test_load_saved_and_predict(sample_model_path, sample_data_path):
     manager = ModelManager(
         model_config=ModelConfig(
             model_class="sample",
@@ -43,7 +43,7 @@ def test_load_and_predict(sample_model_path, sample_data_path):
     assert result.iloc[1].multiplied == np.float32(0.3) * np.float32(0.1)
 
 
-def test_load_and_predict_threshold(sample_model_path, sample_data_path):
+def test_load_default_and_predict_threshold(sample_model_path, sample_data_path):
 
     # load the sample model in the ModelManager
     manager = ModelManager(

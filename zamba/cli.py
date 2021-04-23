@@ -9,6 +9,7 @@ from zamba.models.config import (
     FrameworkEnum,
     PredictConfig,
     TrainConfig,
+    ModelConfig,
 )
 from zamba.models.manager import ModelManager
 from zamba.models.cnnensemble_model import CnnModelProfileEnum
@@ -56,13 +57,15 @@ def train(
 
     else:
         manager = ModelManager(
+            model_config=ModelConfig(
+                model_class=model_class,
+            ),
             train_config=TrainConfig(
                 train_data=train_data,
                 val_data=val_data,
                 labels=labels,
                 model_path=model_path,
                 framework=framework,
-                model_class=model_class,
                 tempdir=tempdir,
                 n_epochs=n_epochs,
                 save_path=save_path,
@@ -151,10 +154,17 @@ return a probability or indicator (depending on --proba_threshold) for every pos
 
     else:
         manager = ModelManager(
+            model_config=ModelConfig(
+                model_class=model_class,
+                model_kwargs=dict(
+                    profile=model_profile,
+                    resample=resample,
+                    seperate_blank_model=separate_blank,
+                ),
+            ),
             predict_config=PredictConfig(
                 data_path=data_path,
                 model_path=model_path,
-                model_class=model_class,
                 pred_path=pred_path,
                 proba_threshold=proba_threshold,
                 output_class_names=output_class_names,
@@ -162,16 +172,11 @@ return a probability or indicator (depending on --proba_threshold) for every pos
                 verbose=verbose,
                 download_region=weight_download_region,
                 save=save,
-                model_kwargs=dict(
-                    profile=model_profile,
-                    resample=resample,
-                    seperate_blank_model=separate_blank,
-                ),
             )
         )
 
     typer.echo(f"Using data_path:\t{manager.predict_config.data_path}")
-    typer.echo(f"Using model_class:\t{manager.predict_config.model_class}")
+    typer.echo(f"Using model_class:\t{manager.model_config.model_class}")
 
     manager.predict()
 

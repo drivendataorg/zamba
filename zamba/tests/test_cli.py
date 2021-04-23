@@ -10,7 +10,7 @@ assets_dir = Path(__file__).parent / 'assets'
 runner = CliRunner()
 
 
-def test_predict_options(sample_model_path, sample_data_path, mocker):  # noqa: F811
+def test_predict_options(sample_data_path, mocker):  # noqa: F811
     # before mocking predictions, test real prediction on single video using config file
     result = runner.invoke(app, ['predict', '--config', str(assets_dir / 'sample_config.yaml')])
     assert result.exit_code == 0
@@ -36,7 +36,7 @@ def test_predict_options(sample_model_path, sample_data_path, mocker):  # noqa: 
     assert "Path 'not/a/path' does not exist" in result.output
 
 
-def test_train_options(data_dir, sample_model_path, mocker):  # noqa: F811
+def test_train_options(data_dir, mocker):  # noqa: F811
 
     # before mocking ModelManager.train, check non-custom model errors
     result = runner.invoke(app, ['train', '--model-class', 'cnnensemble'])
@@ -52,7 +52,7 @@ def test_train_options(data_dir, sample_model_path, mocker):  # noqa: F811
     result = runner.invoke(app, ['train', '--train-data', str(data_dir)])
     assert result.exit_code == 0
 
-    result = runner.invoke(app, ['train', '--model-path', str(sample_model_path)])
+    result = runner.invoke(app, ['train', '--model-path', str(assets_dir / 'new_model.h5')])
     assert result.exit_code == 0
 
     result = runner.invoke(app, ['train', str(data_dir), '--download_region'])

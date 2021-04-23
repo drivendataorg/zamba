@@ -5,7 +5,12 @@ from pathlib import Path
 from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
 from zamba.models.model import Model
-from zamba.models.config import TrainConfig, PredictConfig, ModelConfig
+from zamba.models.config import (
+    TrainConfig,
+    PredictConfig,
+    ModelConfig,
+    ManagerConfig
+)
 
 
 default_train_config = TrainConfig()
@@ -27,20 +32,21 @@ class ModelManager(object):
 
         self.train_config = train_config
         self.predict_config = predict_config
+        self.model_config = model_config
         self.logger = logging.getLogger(f"{__file__}")
 
     @staticmethod
     def from_config(config):
-        if not isinstance(config, ModelConfig):
-            config = ModelConfig.parse_file(config)
+        if not isinstance(config, ManagerConfig):
+            config = ManagerConfig.parse_file(config)
         return ModelManager(
             train_config=config.train_config,
             predict_config=config.predict_config,
-            model_config=config.model.config,
+            model_config=config.model_config,
         )
 
     def train(self):
-        if self.train_config.model_class == 'custom':
+        if self.model_config.model_class == 'custom':
 
             self.model = Model(
                 model_path=self.train_config.model_path,
@@ -53,7 +59,7 @@ class ModelManager(object):
         self.model.fit(epochs=self.train_config.n_epochs)
 
     def predict(self):
-        if self.predict_config.model_class == 'custom':
+        if self.model_config.model_class == 'custom':
             self.model = Model(
                 model_path=self.predict_config.model_path,
                 framework=self.predict_config.framework,
@@ -65,9 +71,9 @@ class ModelManager(object):
                 'sample': SampleModel
             }
 
-            self.model = model_dict[self.predict_config.model_class](
+            self.model = model_dict[self.model_config.model_class](
                 tempdir=self.predict_config.tempdir,
-                **self.predict_config.model_kwargs
+                **self.model_config.model_kwargs
             )
 
         data_path = self.predict_config.data_path
