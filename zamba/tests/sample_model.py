@@ -14,9 +14,8 @@ class SampleModel(Model):
             model_path:
             tempdir:
     """
-    def __init__(self, tempdir=None):
-        super().__init__(tempdir=tempdir)
-
+    def __init__(self, tempdir=None, model_path=None):
+        super().__init__(tempdir=tempdir, model_path=model_path)
         self.model = self._build_graph() if self.model_path is None else keras.models.load_model(Path(self.model_path))
 
     def _build_graph(self):
@@ -52,6 +51,10 @@ class SampleModel(Model):
         preds = pd.DataFrame(dict(added=preds[:, 0],
                                   multiplied=preds[:, 1]))
         return preds
+
+    @classmethod
+    def load(cls, model_path):
+        return cls(model_path=model_path)
 
     def save_model(self, path=None):
         """Save the SampleModel.
