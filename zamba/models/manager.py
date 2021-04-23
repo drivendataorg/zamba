@@ -8,8 +8,9 @@ from zamba.models.model import Model
 from zamba.models.config import TrainConfig, PredictConfig, ModelConfig
 
 
-default_train = TrainConfig()
-default_predict = PredictConfig()
+default_train_config = TrainConfig()
+default_predict_config = PredictConfig()
+default_model_config = ModelConfig()
 
 
 class ModelManager(object):
@@ -20,8 +21,9 @@ class ModelManager(object):
             predict_config (PredictConfig): Configuration for inference.
     """
     def __init__(self,
-                 train_config=default_train,
-                 predict_config=default_predict):
+                 train_config=default_train_config,
+                 predict_config=default_predict_config,
+                 model_config=default_model_config):
 
         self.train_config = train_config
         self.predict_config = predict_config
@@ -32,7 +34,9 @@ class ModelManager(object):
         if not isinstance(config, ModelConfig):
             config = ModelConfig.parse_file(config)
         return ModelManager(
-            train_config=config.train_config, predict_config=config.predict_config
+            train_config=config.train_config,
+            predict_config=config.predict_config,
+            model_config=config.model.config,
         )
 
     def train(self):
