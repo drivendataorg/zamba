@@ -26,24 +26,29 @@ class FrameworkEnum(str, Enum):
     pytorch = "pytorch"
 
 
-class ModelProfileEnum(str, Enum):
-    fast = "fast"
-    full = "full"
-
-
 class RegionEnum(str, Enum):
     us = "us"
     eu = "eu"
     asia = "asia"
 
 
+class DataLoaderConfig(BaseModel):
+    batch_size: Optional[int]
+
+
+class ModelConfig(BaseModel):
+    model_class: ModelClassEnum = "cnnensemble"
+    model_kwargs: Optional[dict] = dict(resample=False, seperate_blank_model=False, profile="full")
+
+
 class TrainConfig(BaseModel):
     train_data: DirectoryPath = None
     val_data: DirectoryPath = None
     labels: FilePath = None
+    # TODO: thinkg about where saving and loading
     model_path: FilePath = None
+    # TODO: can we remove this and have from_disk and to_disk per model?
     framework: FrameworkEnum = "keras"
-    model_class: ModelClassEnum = "custom"
     tempdir: Optional[Path] = None
     n_epochs: Optional[int] = 10
     save_path: Optional[Path] = None
@@ -52,7 +57,7 @@ class TrainConfig(BaseModel):
 class PredictConfig(BaseModel):
     data_path: Union[DirectoryPath, FilePath] = None
     model_path: Union[DirectoryPath, FilePath] = None
-    model_class: ModelClassEnum = "cnnensemble"
+    # TODO: simplify saving
     pred_path: Optional[Path] = None
     proba_threshold: Optional[float] = None
     output_class_names: Optional[bool] = False
@@ -60,16 +65,12 @@ class PredictConfig(BaseModel):
     verbose: Optional[bool] = False
     download_region: RegionEnum = "us"
     save: Optional[bool] = False
-    model_kwargs: Optional[dict] = dict(resample=False, seperate_blank_model=False, profile="full")
 
 
-class FineTuneConfig(BaseModel):
-    pass
-
-
-class ModelConfig(BaseModel):
+class ManagerConfig(BaseModel):
     train_config: Optional[TrainConfig] = None
     predict_config: Optional[PredictConfig] = None
+    model_config: Optional[ModelConfig] = None
 
     class Config:
         json_loads = yaml.safe_load
