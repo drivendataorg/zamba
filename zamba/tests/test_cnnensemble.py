@@ -6,7 +6,7 @@ import tempfile
 import zamba
 from zamba.models.cnnensemble.src import config
 from zamba.models.cnnensemble_model import CnnEnsemble
-from zamba.models.manager import ModelManager, PredictConfig
+from zamba.models.manager import ModelManager, PredictConfig, ModelConfig
 
 
 @pytest.mark.skipif(
@@ -15,10 +15,12 @@ from zamba.models.manager import ModelManager, PredictConfig
 )
 def test_predict_fast(data_dir):
     manager = ModelManager(
-        predict_config=PredictConfig(
+        model_config=ModelConfig(
             model_class='cnnensemble',
-            output_class_names=False,
             model_kwargs=dict(profile='fast'),
+        ),
+        predict_config=PredictConfig(
+            output_class_names=False,
             data_path=data_dir,
             save=True,
             pred_path=str(config.MODEL_DIR / 'output' / 'test_prediction.csv'),
@@ -33,10 +35,12 @@ def test_predict_fast(data_dir):
 @pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
 def test_predict_full(data_dir):
     manager = ModelManager(
-        predict_config=PredictConfig(
+        model_config=ModelConfig(
             model_class='cnnensemble',
-            output_class_names=False,
             model_kwargs=dict(profile='full'),
+        ),
+        predict_config=PredictConfig(
+            output_class_names=False,
             data_path=data_dir,
             save=True,
             pred_path=str(config.MODEL_DIR / 'output' / 'test_prediction.csv'),
@@ -77,12 +81,14 @@ def test_predict_invalid_videos(data_dir):
         shutil.copy(test_video_path, video_directory / f"video{i:02}.mp4")
 
     manager = ModelManager(
-        predict_config=PredictConfig(
+        model_config=ModelConfig(
             model_class="cnnensemble",
-            output_class_names=False,
             model_kwargs={
                 "profile": "fast"
             },
+        ),
+        predict_config=PredictConfig(
+            output_class_names=False,
             data_path=video_directory,
         )
     )
