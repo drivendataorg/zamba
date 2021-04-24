@@ -41,7 +41,9 @@ class CnnEnsemble(Model):
                  labels_path=None,
                  raw_video_dir=None,
                  resample=True,
-                 seperate_blank_model=True):
+                 seperate_blank_model=True,
+                 model_load_path=None,
+                 model_save_path=None):
         # use the model object's defaults
         super().__init__(tempdir=tempdir)
         self.profile = profile
@@ -55,6 +57,16 @@ class CnnEnsemble(Model):
 
         if download_weights:
             self._download_weights_if_needed(download_region)
+
+    @classmethod
+    def from_disk(cls, path):
+        # models are loaded individually during training or inference
+        # this just enables a consistent API
+        return cls()
+
+    def to_disk(self):
+        # model saving is intertwined with training functions
+        raise NotImplementedError("Saving CnnEnsemble to disk is not implemented.")
 
     def preprocess_videos(self, input_paths):
         """Preprocesses videos into a format that can be used by this model.
@@ -323,10 +335,6 @@ class CnnEnsemble(Model):
 
         """
         pass
-
-    def save_model(self):
-        """Save the model weights, checkpoints, to model_path.
-        """
 
     def _download_weights_if_needed(self, download_region):
         """Checks for directories containing the ensemble weights, downloads them if neccessary.
