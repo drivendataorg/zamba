@@ -47,7 +47,6 @@ class ModelManager(object):
                 **self.model_config.model_kwargs
         ).from_disk(self.model_config.model_load_path)
 
-
     @staticmethod
     def from_config(config):
         if not isinstance(config, ManagerConfig):

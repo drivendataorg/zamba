@@ -62,7 +62,6 @@ class SampleModel(KerasModel):
 
         return data
 
-
     @classmethod
     def from_disk(cls, path):
         return cls(model_load_path=path)
