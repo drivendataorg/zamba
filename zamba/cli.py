@@ -6,7 +6,6 @@ import typer
 
 from zamba.models.config import (
     ModelClassEnum,
-    FrameworkEnum,
     PredictConfig,
     TrainConfig,
     ModelConfig,
@@ -27,10 +26,7 @@ def train(
         None, exists=True, help="Path to folder containing validation videos."
     ),
     labels: Path = typer.Option(None, exists=True, help="Path to csv containing video labels."),
-    model_path: Path = typer.Option(None, exists=True, help="Path to model to train."),
-    framework: FrameworkEnum = typer.Option(
-        FrameworkEnum.keras, help="Library to use for loading custom model."
-    ),
+    model_load_path: Path = typer.Option(None, exists=True, help="Path to model to train."),
     config: Path = typer.Option(
         None,
         exists=True,
@@ -42,12 +38,11 @@ def train(
         help="Path to temporary directory. If not specified, OS temporary directory is used",
     ),
     n_epochs: Optional[int] = typer.Option(10, help="Number of epochs to train."),
-    save_path: Optional[Path] = typer.Option(
-        None, help="[Not implemented] Save out trained model to this filepath."
+    model_save_path: Optional[Path] = typer.Option(
+        None, help="Save out trained model to this filepath."
     ),
-    model_class: str = typer.Option(
-        "custom",
-        help="[Not implemented] Model from model zoo to train. Currently only external custom models are supported.",
+    model_class: ModelClassEnum = typer.Option(
+        "custom_keras",
     ),
 ):
     """Train a custom model using the provided data, labels, and path to preconfigured model architecture."""
@@ -59,24 +54,23 @@ def train(
         manager = ModelManager(
             model_config=ModelConfig(
                 model_class=model_class,
+                model_load_path=model_load_path,
+                tempdir=tempdir,
+                model_save_path=model_save_path,
+                model_kwargs=dict()
             ),
             train_config=TrainConfig(
                 train_data=train_data,
                 val_data=val_data,
                 labels=labels,
-                model_path=model_path,
-                framework=framework,
-                tempdir=tempdir,
                 n_epochs=n_epochs,
-                save_path=save_path,
             )
         )
 
     typer.echo(f"Using train data_path:\t{manager.train_config.train_data}")
     typer.echo(f"Using val data_path:\t{manager.train_config.val_data}")
     typer.echo(f"Using labels:\t{manager.train_config.labels}")
-    typer.echo(f"Using model:\t{manager.train_config.model_path}")
-    typer.echo(f"Loading with:\t{manager.train_config.framework}")
+    typer.echo(f"Using model:\t{manager.model_config.model_load_path}")
 
     manager.train()
 
@@ -136,7 +130,7 @@ return a probability or indicator (depending on --proba_threshold) for every pos
         "us", help="Server region for downloading weights. Options are 'us', 'eu', or 'asia'."
     ),
     save: Optional[bool] = typer.Option(True, help="Save predictions to csv file."),
-    model_path: Path = typer.Option(
+    model_load_path: Path = typer.Option(
         None, exists=True, help="[Not implemented] Path to model to use for prediction."
     ),
 ):
@@ -156,19 +150,19 @@ return a probability or indicator (depending on --proba_threshold) for every pos
         manager = ModelManager(
             model_config=ModelConfig(
                 model_class=model_class,
+                model_load_path=model_load_path,
                 model_kwargs=dict(
                     profile=model_profile,
                     resample=resample,
                     seperate_blank_model=separate_blank,
                 ),
+                tempdir=tempdir,
             ),
             predict_config=PredictConfig(
                 data_path=data_path,
-                model_path=model_path,
                 pred_path=pred_path,
                 proba_threshold=proba_threshold,
                 output_class_names=output_class_names,
-                tempdir=tempdir,
                 verbose=verbose,
                 download_region=weight_download_region,
                 save=save,
