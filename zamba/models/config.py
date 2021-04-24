@@ -50,7 +50,7 @@ class PredictConfig(BaseModel):
     tempdir: Optional[Path] = None
     verbose: Optional[bool] = False
     download_region: RegionEnum = "us"
-    save: Optional[bool] = True
+    save: Optional[bool] = False
 
 
 class ManagerConfig(BaseModel):
