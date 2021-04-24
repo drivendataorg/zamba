@@ -4,16 +4,15 @@ from pathlib import Path
 from tensorflow import keras
 import pandas as pd
 
-from zamba.models.model import Model
+from zamba.models.keras_model import KerasModel
 
 
-class SampleModel(Model):
+class SampleModel(KerasModel):
     """Sample model for testing.
     """
     def __init__(self, tempdir=None, model_load_path=None, model_save_path=None):
-        super().__init__(tempdir=tempdir)
+        super().__init__(tempdir=tempdir, model_save_path=model_save_path)
         self.model = self._build_graph() if model_load_path is None else keras.models.load_model(Path(model_load_path))
-        self.model_save_path = model_save_path
 
     def _build_graph(self):
         """Simple keras graph for testing api.
@@ -67,21 +66,3 @@ class SampleModel(Model):
     @classmethod
     def from_disk(cls, path):
         return cls(model_load_path=path)
-
-    def to_disk(self, path=None):
-        """Save the model to specified path.
-        If no path is passed, tries to use model_save_path attribute.
-        """
-
-        # save to user-specified, or model's path
-        if path is not None:
-            save_path = Path(path)
-        elif self.model_save_path is not None:
-            save_path = Path(self.model_save_path)
-        else:
-            raise FileNotFoundError("Must provide save_path")
-
-        # create if necessary
-        save_path.parent.mkdir(exist_ok=True)
-        # keras' save
-        self.model.save(save_path, include_optimizer=False)
