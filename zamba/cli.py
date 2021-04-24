@@ -96,9 +96,10 @@ which is faster and less accurate.",
     ),
     pred_path: Optional[Path] = typer.Option(
         None,
-        help="Filepath for predictions csv. If not specified, predictions will be saved to \
+        help="Filepath for predictions csv. If not specified and `save` is True, predictions will be saved to \
 `predictions-{data-path}-{timestamp}.csv`.",
     ),
+    save: Optional[bool] = typer.Option(True, help="Save predictions to csv file."),
     proba_threshold: Optional[float] = typer.Option(
         None,
         help="Probability threshold for classification. If specified, binary predictions are \
@@ -129,7 +130,6 @@ return a probability or indicator (depending on --proba_threshold) for every pos
     weight_download_region: Optional[str] = typer.Option(
         "us", help="Server region for downloading weights. Options are 'us', 'eu', or 'asia'."
     ),
-    save: Optional[bool] = typer.Option(True, help="Save predictions to csv file."),
     model_load_path: Path = typer.Option(
         None, exists=True, help="[Not implemented] Path to model to use for prediction."
     ),
