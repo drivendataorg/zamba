@@ -1,0 +1,8 @@
+model_config:
+  model_class: 'cnnensemble'
+  model_kwargs:
+    profile: 'fast'
+
+predict_config:
+  data_path: 'zamba/tests/assets/my_videos'
+  save: False
