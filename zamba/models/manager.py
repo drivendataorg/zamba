@@ -4,7 +4,8 @@ from pathlib import Path
 
 from zamba.tests.sample_model import SampleModel
 from zamba.models.cnnensemble_model import CnnEnsemble
-from zamba.models.model import Model
+from zamba.models.keras_model import KerasModel
+
 from zamba.models.config import (
     TrainConfig,
     PredictConfig,
@@ -16,6 +17,12 @@ from zamba.models.config import (
 default_train_config = TrainConfig()
 default_predict_config = PredictConfig()
 default_model_config = ModelConfig()
+
+MODELS = {
+    'custom_keras': KerasModel,
+    'cnnensemble': CnnEnsemble,
+    'sample': SampleModel
+}
 
 
 class ModelManager(object):
@@ -30,10 +37,16 @@ class ModelManager(object):
                  predict_config=default_predict_config,
                  model_config=default_model_config):
 
+        self.logger = logging.getLogger(f"{__file__}")
         self.train_config = train_config
         self.predict_config = predict_config
         self.model_config = model_config
-        self.logger = logging.getLogger(f"{__file__}")
+        self.model = MODELS[self.model_config.model_class](
+                model_save_path=self.model_config.model_save_path,
+                tempdir=self.model_config.tempdir,
+                **self.model_config.model_kwargs
+        ).from_disk(self.model_config.model_load_path)
+
 
     @staticmethod
     def from_config(config):
@@ -46,36 +59,13 @@ class ModelManager(object):
         )
 
     def train(self):
-        if self.model_config.model_class == 'custom':
+        if self.model_config.model_class != 'custom_keras':
+            raise NotImplementedError('Currently only custom Keras models can be trained.')
 
-            self.model = Model(
-                model_path=self.train_config.model_path,
-                framework=self.train_config.framework,
-                save_path=self.train_config.save_path,
-            ).load()
         else:
-            raise NotImplementedError('Currently only custom models can be trained.')
-
-        self.model.fit(epochs=self.train_config.n_epochs)
+            self.model.fit(epochs=self.train_config.n_epochs)
 
     def predict(self):
-        if self.model_config.model_class == 'custom':
-            self.model = Model(
-                model_path=self.predict_config.model_path,
-                framework=self.predict_config.framework,
-                tempdir=self.predict_config.tempdir).load()
-
-        else:
-            model_dict = {
-                'cnnensemble': CnnEnsemble,
-                'sample': SampleModel
-            }
-
-            self.model = model_dict[self.model_config.model_class](
-                tempdir=self.predict_config.tempdir,
-                **self.model_config.model_kwargs
-            )
-
         data_path = self.predict_config.data_path
         pred_path = self.predict_config.pred_path
 
