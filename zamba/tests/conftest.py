@@ -10,24 +10,7 @@ from zamba.models.cnnensemble.src import config
 
 
 @pytest.fixture
-def model_path():
-    """This fixture creates a path to and filename for a test model.
-
-    Returns (Path): path to sample model
-
-    """
-    project_src = Path(__file__).absolute().parent.parent
-    model_dir = project_src / "models" / "assets"
-
-    model_name = Path("test-model.h5")
-    model_subdir = model_dir / model_name.stem
-    model_subdir.mkdir(exist_ok=True)
-
-    return model_subdir / model_name
-
-
-@pytest.fixture
-def sample_model_path(model_path):
+def sample_model_path():
     """This fixture creates a sample model, saves it to the sample path,
     then yields the path to the sample.
 
@@ -36,8 +19,11 @@ def sample_model_path(model_path):
     Returns (Path): path to test model
 
     """
+    model_path = Path(__file__).parents[1] / "models" / "assets" / "test_model.h5"
+
     model = SampleModel()
-    model.save_model(path=model_path)
+    model.to_disk(path=model_path)
+
     yield model_path
     rmtree(model_path.parent)
 
