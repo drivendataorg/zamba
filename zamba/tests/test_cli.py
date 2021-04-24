@@ -12,7 +12,9 @@ runner = CliRunner()
 
 def test_predict_options(sample_data_path, mocker):  # noqa: F811
     # before mocking predictions, test real prediction on single video using config file
-    result = runner.invoke(app, ['predict', '--config', str(assets_dir / 'sample_predict_config.yaml')])
+    result = runner.invoke(app, [
+        'predict', '--config', str(assets_dir / 'sample_predict_config.yaml'), '--model-profile', 'fast'
+    ])
     assert result.exit_code == 0
 
     # mock predictions to just test CLI args

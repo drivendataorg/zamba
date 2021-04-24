@@ -59,7 +59,7 @@ class ModelManager(object):
 
     def train(self):
         if self.model_config.model_class != 'custom_keras':
-            raise NotImplementedError('Currently only custom Keras models can be trained.')
+            raise NotImplementedError('Currently only custom models can be trained.')
 
         else:
             self.model.fit(epochs=self.train_config.n_epochs)
