@@ -29,11 +29,8 @@ class Model(object):
                 Clean up tempdir if used.
 
     """
-    def __init__(self, model_path=None, framework=None, tempdir=None, save_path=None):
-
-        self.model_path = model_path
-        self.framework = framework
-        self.save_path = save_path
+    def __init__(self, tempdir=None, model_save_path=None):
+        self.model_save_path = model_save_path
         self.delete_tempdir = tempdir is None
         self.tempdir = Path(tempfile.mkdtemp(prefix="zamba_")) if self.delete_tempdir else Path(tempdir)
 
@@ -43,17 +40,6 @@ class Model(object):
         """
         if self.delete_tempdir:
             rmtree(self.tempdir)
-
-    def load(self):
-        if self.model_path is not None:
-            if self.framework == 'keras':
-                from tensorflow import keras
-                return keras.models.load_model(str(self.model_path))
-            elif self.framework == 'pytorch':
-                import torch
-                return torch.load(str(self.model_path))
-            else:
-                raise NotImplementedError("Currently, only Keras or PyTorch models can be loaded.")
 
     def load_data(self, data_path):
         input_paths = [
