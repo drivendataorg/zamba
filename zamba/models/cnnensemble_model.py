@@ -49,17 +49,23 @@ class CnnEnsemble(Model):
         if download_weights:
             self._download_weights_if_needed(download_region)
 
-    def load_data(self, data_path):
-
-        if Path(data_path).is_dir():
+    def load_data(self, data_path, filepath_col=None):
+        if data_path.is_dir():
             input_paths = [
                 path for path in data_path.glob('**/*')
                 if not path.is_dir() and not path.name.startswith(".")
             ]
 
         elif Path(data_path).suffix == '.csv':
-            df = pd.read_csv(data_path)
-            input_paths = [Path(f) for f in df.filepath.values]
+            # check for header-less list of files
+            with data_path.open("r") as f:
+                l1 = f.readline()
+                no_header = Path(l1.split(",")[0]).exists()
+
+            df = pd.read_csv(data_path, header=(None if no_header else 0))
+            # assume first column unless otherwise specified
+            filepath_col = df.columns[0] if filepath_col is None
+            input_paths = [Path(f) for f in df[filepath_col].values]
 
         return input_paths
 
