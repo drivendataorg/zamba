@@ -64,7 +64,7 @@ class CnnEnsemble(Model):
 
             df = pd.read_csv(data_path, header=(None if no_header else 0))
             # assume first column unless otherwise specified
-            filepath_col = df.columns[0] if filepath_col is None
+            filepath_col = df.columns[0] if filepath_col is None else filepath_col
             input_paths = [Path(f) for f in df[filepath_col].values]
 
         return input_paths
