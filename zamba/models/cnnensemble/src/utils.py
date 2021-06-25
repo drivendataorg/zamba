@@ -1,5 +1,7 @@
-import time
 from contextlib import contextmanager
+from pathlib import Path
+import time
+
 import numpy as np
 import skvideo.io
 import skimage.transform
@@ -62,7 +64,7 @@ def print_stats(title, array):
     ))
 
 
-def load_video_clip_frames(video_fn, frames_numbers, output_size):
+def load_video_clip_frames(video_fn, frames_numbers, output_size, image_extensions=[".jpg", ".png"]):
     """
     Load video clip frames.
     Load frames or requested frames_numbers and resize if necessary to output_size
@@ -72,6 +74,10 @@ def load_video_clip_frames(video_fn, frames_numbers, output_size):
     :param output_size: (rows, cols) tuple, size of loaded image
     :return: ndarray of shape (len(frames_numbers), rows, cols, 3)
     """
+    # if path is to an image, load as image and repeat to the expected number of frames
+    if Path(video_fn).suffix.lower() in image_extensions:
+        return load_images_as_frames(video_fn, frames_numbers, output_size)
+
     X = np.zeros(shape=(len(frames_numbers),) + output_size + (3,), dtype=np.float32)
 
     videogen = skvideo.io.vreader(str(video_fn))
@@ -95,6 +101,32 @@ def load_video_clip_frames(video_fn, frames_numbers, output_size):
             break
 
     return X
+
+
+def load_images_as_frames(video_fn, frames_numbers, output_size):
+    """
+    Load an image in the video frame format expected by the model.
+    Load image and repeat len(frames_numbers) times; resize if necessary to output_size
+
+    The resulting array can be used by the video models directly.
+
+    :param video_fn: path to video clip
+    :param frames_numbers: list of frame numbers to load
+    :param output_size: (rows, cols) tuple, size of loaded image
+    :return: ndarray of shape (len(frames_numbers), rows, cols, 3)
+    """
+
+    frame = skimage.io.imread(str(video_fn))
+
+    frame = skimage.transform.resize(
+        frame,
+        output_shape=output_size,
+        order=1,
+        mode='constant',
+        preserve_range=True
+    ).astype(np.float32)
+
+    return np.repeat(frame[np.newaxis, ...], len(frames_numbers), axis=0)
 
 
 if __name__ == '__main__':
