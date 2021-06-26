@@ -67,3 +67,7 @@ def sample_data_path():
 @pytest.fixture
 def data_dir():
     return config.MODEL_DIR / "input" / "raw_test"
+
+@pytest.fixture
+def test_asset_dir():
+    return Path(__file__).parent / "assets"

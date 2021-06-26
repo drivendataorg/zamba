@@ -22,6 +22,18 @@ def test_predict_fast(data_dir):
     result.to_csv(str(config.MODEL_DIR / 'output' / 'test_prediction.csv'))
 
 
+@pytest.mark.skipif(
+    zamba.config.codeship,
+    reason="Uses too much memory for codeship build, but test locally before merging.",
+)
+def test_predict_fast_images(test_asset_dir):
+    manager = ModelManager(model_class='cnnensemble', output_class_names=False, model_kwargs=dict(profile='fast'), )
+    result = manager.predict(test_asset_dir / "test_images", save=False, predict_kwargs=dict(resample=False))
+
+    # test assets happen to be identified as blank
+    assert result.idxmax(axis=1).values[0] == "blank"
+
+
 @pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
 def test_predict_full(data_dir):
     manager = ModelManager('', model_class='cnnensemble', output_class_names=False, model_kwargs=dict(profile='full'))
