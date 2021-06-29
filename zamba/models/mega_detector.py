@@ -52,7 +52,14 @@ class MegaDetector:
             self.sess.close()
 
     def detect_image(self, image, return_image=False):
-        """
+        """Detects animals in an image
+
+        Args:
+            image (str, Path, or np.ndarray): Path to an image or an image loaded as an array
+            return_image (bool): Also return the array of the loaded image after the boxes and scores
+
+        Returns:
+            A list of bounding boxes for each detection and a list of scores for each detection
         """
         if isinstance(image, (str, Path)):
             image = skimage.io.imread(image)
@@ -91,6 +98,7 @@ class MegaDetector:
             video_name (str, optional): If video is provided as an array and write_boxes_npz is true, must provide a
                 name for the file containing the output bounding boxes
             key_frames_only (bool): Only load the key frames of the video
+            return_video (bool): Also return the array of the loaded video after the boxes and scores
 
         Returns:
             A list of bounding boxes for each frame and a list of scores for each frame

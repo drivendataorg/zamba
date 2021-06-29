@@ -72,6 +72,7 @@ def load_video_clip_frames(video_fn, frames_numbers, output_size, image_extensio
     :param video_fn: path to video clip
     :param frames_numbers: list of frame numbers to load
     :param output_size: (rows, cols) tuple, size of loaded image
+    :param image_extensions: list of extensions to load as an image rather than a video
     :return: ndarray of shape (len(frames_numbers), rows, cols, 3)
     """
     # if path is to an image, load as image and repeat to the expected number of frames
@@ -115,7 +116,6 @@ def load_images_as_frames(video_fn, frames_numbers, output_size):
     :param output_size: (rows, cols) tuple, size of loaded image
     :return: ndarray of shape (len(frames_numbers), rows, cols, 3)
     """
-
     frame = skimage.io.imread(str(video_fn))
 
     frame = skimage.transform.resize(
