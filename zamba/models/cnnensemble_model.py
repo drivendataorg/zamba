@@ -79,6 +79,7 @@ class CnnEnsemble(Model):
                 input_paths, output_directory, fps=15, width=448, height=252,
             )
         else:
+            self.logger.debug("Resample not set, videos procesed at their native frame rate")
             output_paths = input_paths
 
         return OrderedDict(zip(input_paths, output_paths))

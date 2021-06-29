@@ -51,8 +51,15 @@ class MegaDetector:
         if hasattr(self, "sess"):
             self.sess.close()
 
-    def detect_image(self, image):
-        """
+    def detect_image(self, image, return_image=False):
+        """Detects animals in an image
+
+        Args:
+            image (str, Path, or np.ndarray): Path to an image or an image loaded as an array
+            return_image (bool): Also return the array of the loaded image after the boxes and scores
+
+        Returns:
+            A list of bounding boxes for each detection and a list of scores for each detection
         """
         if isinstance(image, (str, Path)):
             image = skimage.io.imread(image)
@@ -73,12 +80,16 @@ class MegaDetector:
         boxes = box[score > self.confidence_threshold]
         scores = score[score > self.confidence_threshold]
 
-        return boxes, scores
+        if return_image:
+            return boxes, scores, image
+        else:
+            return boxes, scores
 
     def detect_video(
         self,
         video,
         key_frames_only=True,
+        return_video=False,
     ):
         """Detects animals in a video
 
@@ -87,6 +98,7 @@ class MegaDetector:
             video_name (str, optional): If video is provided as an array and write_boxes_npz is true, must provide a
                 name for the file containing the output bounding boxes
             key_frames_only (bool): Only load the key frames of the video
+            return_video (bool): Also return the array of the loaded video after the boxes and scores
 
         Returns:
             A list of bounding boxes for each frame and a list of scores for each frame
@@ -102,7 +114,10 @@ class MegaDetector:
             boxes.append(image_boxes)
             scores.append(image_scores)
 
-        return boxes, scores
+        if return_video:
+            return boxes, scores, video
+        else:
+            return boxes, scores
 
     def compute_features(
         self,
@@ -119,16 +134,20 @@ class MegaDetector:
             np.ndarray: An array with shape (num videos, 2) where the first column contains the number of detections
                 for each video and the second column contains the total area of detections for each video
         """
-        if not kwargs.get("key_frames_only", True):
+        if not kwargs.pop("key_frames_only", True):
             raise ValueError("Features only supported for `key_frame_only=True`")
 
         features = []
         for i, video in enumerate(videos):
-            if isinstance(video, (str, Path)):
-                video = load_video(video, key_frames_only=True)
+            try:
+                boxes, scores, video_arr = self.detect_video(video, key_frames_only=True, return_video=True, **kwargs)
 
-            n_key_frames, height, width = video.shape[:3]
-            boxes, scores = self.detect_video(video, **kwargs)
+            # fallback to see if this is just an image instead of a video
+            except IndexError:
+                boxes, scores, video_arr = self.detect_image(video, return_image=True)
+                boxes = boxes[np.newaxis, ...]  # add axis to match video dims
+
+            n_key_frames, height, width = video_arr.shape[:3]
             n_detections, area = MegaDetector.compute_n_detections_and_areas(boxes, height, width)
 
             features.append([
@@ -140,7 +159,7 @@ class MegaDetector:
         return features
 
     def detect_image_directory(
-        self, directory, extensions=None, recursive=True, key_frames_only=True,
+        self, directory, extensions=None, recursive=True, pbar=True,
     ):
         # setup recursive or not glob string
         glob_str = "**/*" if recursive else "*"
@@ -160,11 +179,13 @@ class MegaDetector:
         for formatted_glob in glob_searches:
             img_paths += list(Path(directory).glob(formatted_glob))
 
+        path_iter = img_paths if not pbar else tqdm(img_paths, total=len(img_paths))
+
         # detect on the images
         output_boxes = {}
         output_scores = {}
-        for i in img_paths:
-            boxes, scores = self.detect_image(i, key_frames_only=key_frames_only)
+        for i in path_iter:
+            boxes, scores = self.detect_image(i)
             output_boxes[str(i)], output_scores[str(i)] = boxes, scores
 
         return output_boxes, output_scores
