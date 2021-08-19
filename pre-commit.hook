@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-flake8 zamba
-python -m pytest --cov=zamba --cov-report=term
-cd docs && make clean && make html
