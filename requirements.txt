@@ -11,14 +11,10 @@ flake8
 future
 fvcore
 gitpython
-ipython
 jedi<0.18.0
-jupyter
-jupyterlab>=3.1.4
 loguru
 matplotlib
 nb_black
-nbautoexport
 numpy
 onnx
 onnxruntime-gpu
@@ -34,7 +30,6 @@ python-dotenv
 pytorch-lightning
 pytorchvideo
 scikit-learn
-seaborn
 setuptools
 tensorboard
 timm
