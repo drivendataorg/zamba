@@ -6,7 +6,7 @@ from torchvision import transforms
 from torchvision.datasets import MNIST
 import pytorch_lightning as pl
 
-from zamba_algorithms.settings import ROOT_DIRECTORY
+from zamba.settings import ROOT_DIRECTORY
 
 
 class MNISTDataModule(pl.LightningDataModule):

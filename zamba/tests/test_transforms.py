@@ -1,5 +1,5 @@
 import torch
-from zamba_algorithms.pytorch.transforms import PadDimensions
+from zamba.pytorch.transforms import PadDimensions
 
 
 def test_pad_dimensions():

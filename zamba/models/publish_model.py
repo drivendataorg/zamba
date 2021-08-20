@@ -3,7 +3,7 @@ import shutil
 
 import typer
 
-from zamba_algorithms.settings import ROOT_DIRECTORY, RESULTS_DIR
+from zamba.settings import ROOT_DIRECTORY, RESULTS_DIR
 
 
 def publish_model(model_dir):
@@ -15,7 +15,7 @@ def publish_model(model_dir):
     relative_model_dir = (
         Path(model_dir)
         .resolve()
-        .relative_to(ROOT_DIRECTORY / "zamba_algorithms" / "models" / "tensorboard_logs")
+        .relative_to(ROOT_DIRECTORY / "zamba" / "models" / "tensorboard_logs")
     )
 
     if (RESULTS_DIR / relative_model_dir).exists():

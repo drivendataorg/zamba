@@ -10,7 +10,7 @@ import onnx
 import onnxruntime as rt
 from tqdm import tqdm
 
-from zamba_algorithms.settings import DATA_DIRECTORY
+from zamba.settings import DATA_DIRECTORY
 
 
 LOCAL_MD_LITE_MODEL = str(

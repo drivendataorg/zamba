@@ -3,8 +3,8 @@ from typing import Any, Callable, Dict, Optional, Union
 
 from pydantic import BaseModel, ValidationError
 
-from zamba_algorithms.data.video import load_video_frames, VideoLoaderConfig
-from zamba_algorithms.settings import ROOT_DIRECTORY
+from zamba.data.video import load_video_frames, VideoLoaderConfig
+from zamba.settings import ROOT_DIRECTORY
 
 TEST_DATA_DIRECTORY = ROOT_DIRECTORY / "tests" / "assets" / "videos"
 

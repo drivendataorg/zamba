@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from typing import Any, Dict, Optional, Union
 from cloudpathlib import S3Path
 
-from zamba_algorithms.data.config import (
+from zamba.data.config import (
     EUROPEAN_ZAMBA_LABELS,
     NEW_ZAMBA_LABELS,
     ORIGINAL_ZAMBA_LABELS,

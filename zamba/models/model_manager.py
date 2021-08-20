@@ -9,30 +9,30 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 
-from zamba_algorithms.models.efficientnet_models import (
+from zamba.models.efficientnet_models import (
     TimeDistributedEfficientNet,
     TimeDistributedEfficientNetMultiLayerHead,
 )
-from zamba_algorithms.models.i3d_models import I3D
-from zamba_algorithms.models.resnet_models import (
+from zamba.models.i3d_models import I3D
+from zamba.models.resnet_models import (
     ResnetR2Plus1d18,
     SingleFrameResnet50,
     TimeDistributedResnet50,
 )
-from zamba_algorithms.models.slowfast_models import SlowFast
-from zamba_algorithms.models.x3d_models import X3D
-from zamba_algorithms.mnist.dataloaders import MNISTDataModule
-from zamba_algorithms.mnist.transforms import (
+from zamba.models.slowfast_models import SlowFast
+from zamba.models.x3d_models import X3D
+from zamba.mnist.dataloaders import MNISTDataModule
+from zamba.mnist.transforms import (
     MNISTOneHot,
     mnist_transforms,
     slowfast_mnist_transforms,
 )
-from zamba_algorithms.pytorch.finetuning import BackboneFinetuning
-from zamba_algorithms.settings import MODEL_SCRIPTS
+from zamba.pytorch.finetuning import BackboneFinetuning
+from zamba.settings import MODEL_SCRIPTS
 
 
 try:
-    from zamba_algorithms.models.timesformer_models import TimeSformer
+    from zamba.models.timesformer_models import TimeSformer
 
     TIMESFORMER_AVAILABLE = True
 except ImportError:

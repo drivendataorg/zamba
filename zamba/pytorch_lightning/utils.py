@@ -12,11 +12,11 @@ import torch.nn.functional as F
 import torch.utils.data
 from torchvision.transforms import transforms
 
-from zamba_algorithms.data.metadata import LoadMetadataConfig
-from zamba_algorithms.data.video import VideoLoaderConfig
-from zamba_algorithms.pytorch.dataloaders import get_datasets
-from zamba_algorithms.pytorch.transforms import ConvertTHWCtoCTHW
-from zamba_algorithms.settings import ROOT_DIRECTORY
+from zamba.data.metadata import LoadMetadataConfig
+from zamba.data.video import VideoLoaderConfig
+from zamba.pytorch.dataloaders import get_datasets
+from zamba.pytorch.transforms import ConvertTHWCtoCTHW
+from zamba.settings import ROOT_DIRECTORY
 
 default_transform = transforms.Compose(
     [

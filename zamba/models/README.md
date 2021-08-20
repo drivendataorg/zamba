@@ -7,7 +7,7 @@ Pytorch and Pytorch Lightning includes helpers for fine-tuning a model.
 
 Goal: Freeze everything but the head, train for a number of epochs, then unfreeze part of the base and continue training.
 
-Pytorch Lightning has a built-in callback [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/stable/extensions/generated/pytorch_lightning.callbacks.BackboneFinetuning.html) class that accomplishes that. First, you need to identify the part of the backbone that you want to train and add it as a `self.backbone: torch.nn.Module = ...` in the model `__init__` method. For example, in `zamba_algorithms.models.slowfast_models.SlowFast`:
+Pytorch Lightning has a built-in callback [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/stable/extensions/generated/pytorch_lightning.callbacks.BackboneFinetuning.html) class that accomplishes that. First, you need to identify the part of the backbone that you want to train and add it as a `self.backbone: torch.nn.Module = ...` in the model `__init__` method. For example, in `zamba.models.slowfast_models.SlowFast`:
 
 ```python
 base = torch.hub.load(
@@ -25,7 +25,7 @@ self.backbone = base.blocks[-2:]
 self.base = base
 ```
 
-After providing the model with an attribute named `backbone` indicating the trainable backbone, training with backbone finetuning (with the default finetuning parameters) can be accomplished by passing `train_model(..., backbone_finetune=True)`. `backbone_finetune_params` can be passed to specify parameters other than the defaults. The following snippet (from `zamba_algorithms/models/slowfast_finetune.py`) will create a callback that unfreezes that trainable backbone at epoch 15 with a learning rate that is 1/100th of the head learning rate.
+After providing the model with an attribute named `backbone` indicating the trainable backbone, training with backbone finetuning (with the default finetuning parameters) can be accomplished by passing `train_model(..., backbone_finetune=True)`. `backbone_finetune_params` can be passed to specify parameters other than the defaults. The following snippet (from `zamba/models/slowfast_finetune.py`) will create a callback that unfreezes that trainable backbone at epoch 15 with a learning rate that is 1/100th of the head learning rate.
 
 ```python
 trainer = train_model(

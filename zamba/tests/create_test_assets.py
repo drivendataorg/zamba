@@ -3,8 +3,8 @@ import ffmpeg
 import typer
 
 from loguru import logger
-from zamba_algorithms.settings import ROOT_DIRECTORY
-from zamba_algorithms.data.metadata import load_metadata
+from zamba.settings import ROOT_DIRECTORY
+from zamba.data.metadata import load_metadata
 
 TEST_DATA_DIRECTORY = ROOT_DIRECTORY / "tests" / "assets" / "videos"
 

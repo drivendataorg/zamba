@@ -6,7 +6,7 @@ from torch.nn import functional as F
 from torchvision import transforms
 from torchvision.transforms._transforms_video import NormalizeVideo
 
-from zamba_algorithms.pytorch.transforms import (
+from zamba.pytorch.transforms import (
     ConvertTCHWtoCTHW,
     PadDimensions,
     PackSlowFastPathways,

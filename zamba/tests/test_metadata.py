@@ -3,7 +3,7 @@ from string import ascii_letters
 
 import pandas as pd
 
-from zamba_algorithms.data.metadata import create_site_specific_splits
+from zamba.data.metadata import create_site_specific_splits
 
 
 def test_site_specific_splits():

@@ -3,9 +3,9 @@ import random
 import pandas as pd
 import pytest
 
-from zamba_algorithms.pytorch.dataloaders import get_datasets
-from zamba_algorithms.pytorch_lightning.utils import ZambaDataModule
-from zamba_algorithms.settings import ROOT_DIRECTORY
+from zamba.pytorch.dataloaders import get_datasets
+from zamba.pytorch_lightning.utils import ZambaDataModule
+from zamba.settings import ROOT_DIRECTORY
 
 TEST_DATA_DIRECTORY = ROOT_DIRECTORY / "tests" / "assets" / "videos"
 random.seed(56745)

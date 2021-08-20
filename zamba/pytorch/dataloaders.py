@@ -12,12 +12,12 @@ import torchvision.datasets.video_utils
 from torchvision.datasets.vision import VisionDataset
 import torchvision.transforms.transforms
 
-from zamba_algorithms.data.metadata import (
+from zamba.data.metadata import (
     create_site_specific_splits,
     load_metadata,
     LoadMetadataConfig,
 )
-from zamba_algorithms.data.video import load_video_frames, VideoLoaderConfig
+from zamba.data.video import load_video_frames, VideoLoaderConfig
 
 
 def get_datasets(
