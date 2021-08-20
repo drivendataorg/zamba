@@ -370,8 +370,7 @@ def test_load_video_frames(case: Case, video_metadata: Dict[str, Any]):
 
 
 def test_same_filename_new_kwargs():
-    """Test that load_video_frames does not load the npz file if the params change.
-    """
+    """Test that load_video_frames does not load the npz file if the params change."""
     # use first test video
     test_vid = [f for f in TEST_DATA_DIRECTORY.rglob("*") if f.is_file()][0]
 

@@ -22,11 +22,11 @@ req_path = project_path / "requirements.txt"
 requirements = load_reqs(req_path)
 
 setup(
-    name='zamba',
+    name="zamba",
     packages=find_packages(),
-    version='1.0',
+    version="1.0",
     description="Zamba identifies species in camera trap videos.",
-    author='DrivenData',
-    license='',
+    author="DrivenData",
+    license="",
     install_requires=requirements,
 )
