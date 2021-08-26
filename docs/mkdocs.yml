@@ -1,0 +1,32 @@
+site_name: Zamba
+site_url: https://zamba.drivendata.org/
+site_description: Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa. 
+repo_url: https://github.com/drivendataorg/zamba
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/custom_mkdocstrings.css
+
+nav:
+  - Quickstart: "index.md"
+  - Installing Zamba: "install.md"
+  - Inputs and outputs: "inputs_outputs.md"
+  - Command Line Interface: "cli.md"
+  - Python Interface: "py-package.md"
+  - About the algorithms: "algorithms.md"
+  - Contributing: "contribute.md"
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - toc:
+      permalink: True
+      toc_depth: 3
+
+plugins:
+  - search
