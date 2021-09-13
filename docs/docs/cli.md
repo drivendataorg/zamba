@@ -1,17 +1,16 @@
 # zamba Command Line Interface
 
-This section goes into a bit more detail concerning the available options for
+This section goes into more detail concerning the available options for
 the `zamba` command line interface tool. If you are new to `zamba` and just
-want to classify some videos as soon as possible, see the [Quickstart]
-(index.md) guide.
+want to classify some videos as soon as possible, see the [Quickstart](index.md) guide.
 
 ## zamba's Optional Flags
 
 Almost all of the parameters below can be specified either in the command line or in a yaml file that is passed to the command line. If a value is specified in both a yaml file passed to the command line and a command line argument, the value passed as a command line argument will be used.
 
-For most parameters, the default command line value is `None`. Rather than specifying a default value in the command line, default configuration values will be pulled in based on the algorithm type - `time_distributed`, `slowfast`, or `european`. Each algorithm that ships with zamba comes with a default yaml configuration file. If no yaml file is specified, the values from the default yaml will be used unless a value is specified directly in the command line. Default algorithm configurations can be found in `models/configs`.
+For most parameters, the default command line value is `None`. Rather than specifying a default value in the command line, default configuration values will be pulled in based on the algorithm type - `time_distributed`, `slowfast`, or `european`. Each algorithm that ships with zamba comes with a default yaml configuration file. If no yaml file is specified, the values from the default yaml will be used unless a value is specified directly in the command line. Default algorithm configurations can be found in `models/configs`. <!-- TODO: add some examples. also maybe add more full example at end><!-->
 
-### `zamba predict`
+## `zamba predict`
 
 As discussed in the [Quickstart](index.md), the `--help` flag provides more information about options for `zamba`:
 
@@ -77,61 +76,61 @@ Options:
 
 All of the above besides `file-list`, `model`, `yes`, and `checkpoint` can also be specified in a yaml file.<!--TODO: is that list accurate?><!--> Let's go through the flags one by one.
 
-#### --data-dir PATH
+#### `--data-dir PATH`
 
 Path to the folder containing your videos.
 
-#### --file-list PATH
+#### `--file-list PATH`
 
 Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must hae a column for `filepath`.
 
-#### --model TEXT
+#### `--model TEXT`
 
 There are three versions of the algorithm that ship with zamba: `time_distributed`, `slowfast`, and `european`. If `european` is passed, the model trained on European species will be run. `time_distributed` is the default. <!-- TODO: add quick description of each model><!-->
 
-#### --checkpoint PATH
+#### `--checkpoint PATH`
 
 Path to a model checkpoint to load and use for inference. To load a model from a checkpoint, the model name must also be specified. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model-name`.
 
-#### --gpus INT
+#### `--gpus INT`
 
 The number of GPUs to use during inference. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.
 
-#### batch-size INT
+#### `--batch-size INT`
 
 The batch size to use for prediction.
 
-#### --save
+#### `--save`
 
 Whether to save out the predictions to a CSV file. Predictions will be saved by default. Specify `--no-save` if you would like to write out predictions.
 
-#### --dry-run
+#### `--dry-run`
 
 Specifying `--dry-run` is useful for trying out model implementations more quickly by running only a single batch of inference. The default is `--no-dry-run`.
 
-#### --config
+#### `--config`
 
 Path to a yaml configuration file with values for other arguments to `predict`. If a value is specified in both the command line and in a yaml file that is passed, the command line argument value will be used. Each default model (`time_distributed`, `slowfast`, and `european`) comes with a yaml file that sets default configurations. If `--config` is not specified, these default values will be used for any argument that is not passed directly to the command line. Default configs can be found in `models/configs`.<!-- TODO: make sure that's right><!-->
 
-#### --proba-threshold FLOAT
+#### `--proba-threshold FLOAT`
 
 For advanced uses, you may want the algorithm to be more or less sensitive to if a species is present. This parameter is a `FLOAT` number, e.g., `0.64` corresponding to the probability threshold beyond which an animal is considered to be present in the video being analyzed.
 
 By default no threshold is passed, `proba_threshold=None`. This will return a probability from 0-1 for each species that could occur in each video. If a threshold is passed, then the final prediction value returned for each class is `probability >= proba_threshold`, so that all class values become `0` (`False`, the species does not appear) or `1` (`True`, the species does appear).
 
-#### --output-class-names
+#### `--output-class-names`
 
 Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the species with the highest class probability, or `blank` if the most likely classification is no animal. See the [Quickstart](index.md) for example usage.
 
-#### --weight_download_region TEXT
+#### `--weight_download_region TEXT` <!-- TODO: make sure CLI arg. doesn't show up now but it should be one><!-->
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. 'us' is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
-#### --yes
+#### `--yes`
 
-By default, the command line interface will print the specifications you have entered and ask for confirmation before starting predictions. Specifying `--yes` or `-y` skips this step and kicks off prediction without confirmation. 
+By default, the command line interface will print the specifications you have entered and ask for confirmation before starting inference. Specifying `--yes` or `-y` skips this step and kicks off prediction without confirmation. 
 
-### `zamba train`
+## `zamba train`
 
 ```
 $ zamba train --help
@@ -169,35 +168,35 @@ Options:
 
 All of the above besides `model` and `yes` can also be specified in a yaml file.<!--TODO: is that list accurate?><!--> Let's go through the flags one by one.
  
-#### --data-dir PATH
+#### `--data-dir PATH`
 
 Path to the folder containing your videos.
 
-#### --labels PATH
+#### `--labels PATH`
 
 Path to a CSV containing the video labels to use as ground truth during training.
 
-#### --model TEXT
+#### `--model TEXT`
 
 There are three versions of the algorithm that ship with zamba: `time_distributed`, `slowfast`, and `european`. If `european` is passed, the model trained on European species will be run. `time_distributed` is the default. <!-- TODO: add quick description of each model><!-->
 
-#### --config
+#### `--config`
 
 Path to a yaml configuration file with values for other arguments to `predict`. If a value is specified in both the command line and in a yaml file that is passed, the command line argument value will be used. Each default model (`time_distributed`, `slowfast`, and `european`) comes with a yaml file that sets default configurations. If `--config` is not specified, these default values will be used for any argument that is not passed directly to the command line. Default configs can be found in `models/configs`.<!-- TODO: make sure that's right><!-->
 
-#### batch-size INT
+#### `--batch-size INT`
 
 The batch size to use for training.
 
-#### --gpus INT
+#### `--gpus INT`
 
 The number of GPUs to use during training. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.
 
-#### --dry-run
+#### `--dry-run`
 
 Specifying `--dry-run` is useful for debugging more quickly by running only a single batch of train and validation. The default is `--no-dry-run`.
 
-#### --yes
+#### `--yes`
 
 By default, the command line interface will print the specifications you have entered and ask for confirmation before starting to train. Specifying `--yes` or `-y` skips this step and kicks off training without confirmation. 
 
