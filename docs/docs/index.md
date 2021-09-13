@@ -9,16 +9,18 @@ Welcome to zamba's documentation!
 *Zamba means "forest" in the Lingala language.*
 
 Zamba is a command-line tool built in Python to automatically identify the
-species seen in camera trap videos from sites in central Africa. Using the
+species seen in camera trap videos from sites in central and west Africa. Using the
 combined input of various deep learning models, the tool makes predictions
-for 23 common species in these videos (as well as blank, or, "no species
+for 31 common species in these videos (as well as blank, or, "no species
 present").
+
+**New in Zamba v2:** Zamba now has an additional model trained on 11 common European species. <!--TODO: add more details about where from><!-->
 
 # Quickstart
 
 This section assumes you have successfully installed `zamba` and want to get
-right to making species predictions for some videos! All of the commands here should be run at the commandline. On
-macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, and if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
+right to making species predictions for some videos! All of the commands here should be run at the command line. On
+macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
 ## Input videos
 
@@ -32,6 +34,7 @@ eleph.mp4
 small-cat.mp4
 ungulate.mp4
 ```
+<!-- TODO: update ungulate to species in the new labels><!-->
 
 Here are some screenshots from those videos:
 
@@ -63,11 +66,11 @@ probably be named something much less useful!
 ### Predict Using Concise Output Format
 
 If you just want to know the most likely animal in each video, the
-`--output_class_names` flag is useful. In this case, the final output as well as the resulting `output.csv`
+`--output-class-names` flag is useful. In this case, the final output as well as the resulting `output.csv`
 are simplified to show the _most probable_ animal in each video:
 
 ```console
-$ zamba predict vids_to_classify/ --output_class_names
+$ zamba predict --data-dir vids_to_classify/ --output_class_names
 ...
 blank2.mp4                blank
 eleph.mp4              elephant
@@ -77,7 +80,7 @@ small-cat.mp4         small cat
 ```
 
 **NOTE: `zamba` needs to download the "weights" files for the neural networks
-that it uses to make predictions. On first run it will download ~1GB of files
+that it uses to make predictions. On first run it will download ~1GB <!-- TODO: check size><!--> of files
 with these weights.** Once these are downloaded, the tool will use the local
 versions and will not need to perform this download again. If you are not in the US, we recommend
 running the above command with the additional flag either `--weight_download_region eu` or
@@ -90,54 +93,56 @@ Once zamba is installed, you can see the available commands with `zamba`:
 
 ```console
 $ zamba
-
 Usage: zamba [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --help  Show this message and exit.
+  --install-completion  Install completion for the current shell.
+  --show-completion     Show completion for the current shell, to copy it or
+                        customize the installation.
+
+  --help                Show this message and exit.
 
 Commands:
   predict  Identify species in a video.
-  train    [NOT IMPLEMENTED] Retrain network from...
-  tune     [NOT IMPLEMENTED] Update network with new...
+  train    Train a model using the provided data, labels, and model name.
 ```
 
 To see more detailed information about a command as well as the
 options available to pass to it, use the `--help` flag. For example, get more
-information about the `predict` command and its options:
+information about the `train` command and its options:
 
 ```console
-$ zamba predict --help
-Usage: zamba predict [OPTIONS] [DATA_PATH] [PRED_PATH]
+$ zamba train --help
+Usage: zamba train [OPTIONS]
 
-  Identify species in a video.
+  Train a model using the provided data, labels, and model name.
 
-  This is a command line interface for prediction on camera trap footage.
-  Given a path to camera trap footage, the predict function use a deep
-  learning model to predict the presence or absense of a variety of species
-  of common interest to wildlife researchers working with camera trap data.
+  If an argument is specified in both the command line and in a yaml file,
+  the command line input will take precedence.
 
 Options:
-  --tempdir PATH                 Path to temporary directory. If not
-                                 specified, OS temporary directory is used.
-  --proba_threshold FLOAT        Probability threshold for classification. if
-                                 specified binary predictions are returned
-                                 with 1 being greater than the threshold, 0
-                                 being less than or equal to. If not
-                                 specified, probabilities between 0 and 1 are
-                                 returned.
-  --output_class_names           If True, we just return a video and the name
-                                 of the most likely class. If False, we return
-                                 a probability or indicator (depending on
-                                 --proba_threshold) for every possible class.
-  --model_profile TEXT           Defaults to 'full' which is slow and
-                                 accurate; can be 'fast' which is faster and
-                                 less accurate.
-  --weight_download_region TEXT  Defaults to 'us', can also be 'eu' or 'asia'.
-                                 Region for server to download weights.
-  --verbose                      Displays additional logging information
-                                 during processing.
-  --help                         Show this message and exit.
+  --data-dir PATH                 Path to folder containing videos.
+  --labels PATH                   Path to csv containing video labels.
+  --model [time_distributed|slowfast]
+                                  Model class to train.  [default:
+                                  time_distributed]
+
+  --config PATH                   Specify options using yaml configuration
+                                  file instead of through command line
+                                  options.
+
+  --batch-size INTEGER            Batch size to use for training.
+  --gpus INTEGER                  Number of GPUs to use for training. If not
+                                  specifiied, will use all GPUs found on
+                                  machine.
+
+  --dry-run / --no-dry-run        Runs one batch of train and validation to
+                                  check for bugs.
+
+  -y, --yes                       Skip confirmation of configuration and
+                                  proceed right to training.  [default: False]
+
+  --help                          Show this message and exit.
 ```
 
 ## Next Steps
