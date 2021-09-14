@@ -76,8 +76,7 @@ leopard.mp4             leopard
 ```
 
 **NOTE: `zamba` needs to download the "weights" files for the neural networks
-that it uses to make predictions. On first run it will download ~1GB of files
-with these weights.** Once these are downloaded, the tool will use the local
+that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.** Once these are downloaded, the tool will use the local
 versions and will not need to perform this download again. If you are not in the US, we recommend
 running the above command with the additional flag either `--weight_download_region eu` or
 `--weight_download_region asia` depending on your location. The closer you are to the server
