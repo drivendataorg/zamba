@@ -42,18 +42,18 @@ Here are some screenshots from those videos:
 <table class="table">
   <tbody>
     <tr>
-      <td>eleph.mp4<br/>
+      <td style="text-align:center">eleph.mp4<br/>
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
       </td>
-      <td>
+      <td style="text-align:center">chimp.mp4<br/>
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-chimp-sm.png" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
     </tr>
     <tr>
-      <td>
+      <td style="text-align:center">blank1.mp4<br/>
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
-      <td>
+      <td style="text-align:center">small-cat.mp4<br/>
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-cat-sm.png" alt="cat" style="width:400px;height:225px;"/>
       </td>
     </tr>
