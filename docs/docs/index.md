@@ -32,9 +32,10 @@ blank1.mp4
 blank2.mp4
 eleph.mp4
 small-cat.mp4
-ungulate.mp4
+leopard.mp4
 ```
 <!-- TODO: update ungulate to species in the new labels><!-->
+<!-- TODO: make order or vids above match order of pics and order of labels later><!-->
 
 Here are some screenshots from those videos:
 
@@ -53,7 +54,7 @@ Here are some screenshots from those videos:
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="blank"/>
       </td>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-cat-sm.png" alt="cat"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-leopard-sm.png" alt="cat"/>
       </td>
     </tr>
   </tbody>
