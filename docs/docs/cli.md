@@ -86,7 +86,7 @@ Path to a CSV file with a column for the filepath to each video you want to clas
 
 #### `--model TEXT`
 
-There are three versions of the algorithm that ship with zamba: `time_distributed`, `slowfast`, and `european`. If `european` is passed, the model trained on European species will be run. `time_distributed` is the default. <!-- TODO: add quick description of each model><!-->
+There are three versions of the algorithm that ship with zamba: `time_distributed`, `slowfast`, and `european`. If `european` is passed, the model trained on European species will be run. `time_distributed` is the default.
 
 #### `--checkpoint PATH`
 
