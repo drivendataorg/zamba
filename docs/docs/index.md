@@ -29,11 +29,10 @@ For example, we might have the directory `vids_to_classify` with camera trap vid
 
 ```console
 $ ls vids_to_classify/
-blank1.mp4
-blank2.mp4
+blank.mp4
 chimp.mp4
 eleph.mp4
-small-cat.mp4
+leopard.mp4
 ```
 <!-- TODO: possibly update with newer videos><!-->
 Here are some screenshots from those videos:
@@ -41,19 +40,19 @@ Here are some screenshots from those videos:
 <table class="table">
   <tbody>
     <tr>
-      <td style="text-align:center">blank1.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
+      <td style="text-align:center">blank.mp4<br/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-blank-sm.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
       <td style="text-align:center">chimp.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-chimp-sm.png" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-chimp-sm.png" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
     </tr>
     <tr>
       <td style="text-align:center">eleph.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-eleph-sm.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
       </td>
-      <td style="text-align:center">small-cat.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-cat-sm.png" alt="cat" style="width:400px;height:225px;"/>
+      <td style="text-align:center">leopard.mp4<br/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-leopard-sm.png" alt="cat" style="width:400px;height:225px;"/>
       </td>
     </tr>
   </tbody>
@@ -72,11 +71,10 @@ are simplified to show the _most probable_ animal in each video:
 ```console
 $ zamba predict --data-dir vids_to_classify/ --output_class_names
 ...
-blank1.mp4                blank
-blank2.mp4                blank
+blank.mp4                 blank
 chimp.mp4     chimpanzee_bonobo
 eleph.mp4              elephant
-small-cat.mp4         small cat
+leopard.mp4             leopard
 ```
 
 **NOTE: `zamba` needs to download the "weights" files for the neural networks
