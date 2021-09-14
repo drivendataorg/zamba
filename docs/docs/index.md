@@ -36,23 +36,23 @@ leopard.mp4
 ```
 <!-- TODO: possibly update with newer videos><!-->
 Here are some screenshots from those videos:
-
+<!-- TODO: best way to resize things for s3 w/o losing quality? i resized each of the below to ~30 kb and quality was very very bad><!-->
 <table class="table">
   <tbody>
     <tr>
       <td style="text-align:center">blank.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-blank-sm.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-blank.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
       <td style="text-align:center">chimp.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-chimp-sm.png" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-chimp.png" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
     </tr>
     <tr>
       <td style="text-align:center">eleph.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-eleph-sm.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-eleph.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
       </td>
       <td style="text-align:center">leopard.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-leopard-sm.png" alt="cat" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-leopard.png" alt="cat" style="width:400px;height:225px;"/>
       </td>
     </tr>
   </tbody>
