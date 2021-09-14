@@ -43,18 +43,18 @@ Here are some screenshots from those videos:
   <tbody>
     <tr>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap" style="width:200px;height:113px;">
       </td>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-chimp-sm.png" alt="Leopard seen from a camera trap"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-chimp-sm.png" alt="Leopard seen from a camera trap" style="width:200px;height:113px;"/>
       </td>
     </tr>
     <tr>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="Blank frame seen from a camera trap"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="Blank frame seen from a camera trap" style="width:200px;height:113px;"/>
       </td>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-cat-sm.png" alt="cat"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-cat-sm.png" alt="cat" style="width:200px;height:113px;"/>
       </td>
     </tr>
   </tbody>
