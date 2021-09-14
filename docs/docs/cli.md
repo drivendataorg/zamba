@@ -8,7 +8,7 @@ want to classify some videos as soon as possible, see the [Quickstart](index.md)
 
 Almost all of the parameters below can be specified either in the command line or in a yaml file that is passed to the command line. If a value is specified in both a yaml file passed to the command line and a command line argument, the value passed as a command line argument will be used.
 
-For most parameters, the default command line value is `None`. Rather than specifying a default value in the command line, default configuration values will be pulled in based on the algorithm type - `time_distributed`, `slowfast`, or `european`. Each algorithm that ships with zamba comes with a default yaml configuration file. If no yaml file is specified, the values from the default yaml will be used unless a value is specified directly in the command line. Default algorithm configurations can be found in `models/configs`. <!-- TODO: add some examples. also maybe add more full example at end><!-->
+For most parameters, the default command line value is `None`. Rather than specifying a default value in the command line, default configuration values will be pulled in based on the algorithm type - `time_distributed`, `slowfast`, or `european`. Each algorithm that ships with zamba comes with a default yaml configuration file. If no yaml file is specified, the values from the default yaml will be used unless a value is specified directly in the command line. Default algorithm configurations can be found in `models/configs`.
 
 ## `zamba predict`
 
@@ -74,7 +74,7 @@ Options:
   --help                          Show this message and exit.
 ```
 
-All of the above besides `file-list`, `model`, `yes`, and `checkpoint` can also be specified in a yaml file.<!--TODO: is that list accurate?><!--> Let's go through the flags one by one.
+All of the above besides `file-list`, `model`, `yes`, and `checkpoint` can also be specified in a yaml file. Let's go through the flags one by one.
 
 #### `--data-dir PATH`
 
