@@ -9,6 +9,16 @@ The algorithms used by `zamba` are based on the winning solution from the
 competition, hosted by [DrivenData](https://www.drivendata.org/). This competition had over 300 participants and over 450 submissions throughout the three month challenge. The algorithm in this software has been adapted from the one that won the machine learning competition. Some aspects
 of the solution have been changed during development to improve performance.
 
+There are two main types of models that ship with the `zamba` package: `time_distributed` and `slowfast`. The third model, `european`, uses a similar architecture to `time_distributed`.
+
+## `time_distributed` and `european`
+
+The `time_distributed` and `european` models are both built by re-training a well-known image classification architecture called [EfficientNetV2](https://github.com/google/automl/tree/master/efficientnetv2) to identify the species in our camera trap videos. EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed. `time_distributed` was retrained to identify species from east and west Africa, while `european` was retrained to identify European species.
+
+<!-- https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/efficientnet.py><!-->
+
+***
+
 ## Stacked Ensemble
 
 The core algorithm in `zamba` is a [stacked ensemble](https://en.wikipedia.org/wiki/Ensemble_learning#Stacking) which consists of a first layer of models that are then combined into a final prediction in a second layer. The first level of the stack consists of 5 `keras` deep
