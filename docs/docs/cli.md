@@ -110,7 +110,7 @@ Specifying `--dry-run` is useful for trying out model implementations more quick
 
 #### `--config`
 
-Path to a yaml configuration file with values for other arguments to `predict`. If a value is specified in both the command line and in a yaml file that is passed, the command line argument value will be used. Each default model (`time_distributed`, `slowfast`, and `european`) comes with a yaml file that sets default configurations. If `--config` is not specified, these default values will be used for any argument that is not passed directly to the command line. Default configs can be found in `models/configs`.<!-- TODO: make sure that's right><!-->
+Path to a yaml configuration file with values for other arguments to `predict`. If a value is specified in both the command line and in a yaml file that is passed, the command line argument value will be used. Each default model (`time_distributed`, `slowfast`, and `european`) comes with a yaml file that sets default configurations. If `--config` is not specified, these default values will be used for any argument that is not passed directly to the command line. Default configs can be found in `models/configs`.
 
 #### `--proba-threshold FLOAT`
 
@@ -122,7 +122,7 @@ By default no threshold is passed, `proba_threshold=None`. This will return a pr
 
 Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the species with the highest class probability, or `blank` if the most likely classification is no animal. See the [Quickstart](index.md) for example usage.
 
-#### `--weight_download_region TEXT` <!-- TODO: make sure CLI arg. doesn't show up now but it should be one><!-->
+#### `--weight_download_region TEXT` 
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. 'us' is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
@@ -166,7 +166,7 @@ Options:
   --help                          Show this message and exit.
 ```
 
-All of the above besides `model` and `yes` can also be specified in a yaml file.<!--TODO: is that list accurate?><!--> Let's go through the flags one by one.
+All of the above besides `model` and `yes` can also be specified in a yaml file. Let's go through the flags one by one.
  
 #### `--data-dir PATH`
 
@@ -178,7 +178,7 @@ Path to a CSV containing the video labels to use as ground truth during training
 
 #### `--model TEXT`
 
-There are three versions of the algorithm that ship with zamba: `time_distributed`, `slowfast`, and `european`. If `european` is passed, the model trained on European species will be run. `time_distributed` is the default. <!-- TODO: add quick description of each model><!-->
+There are three versions of the algorithm that ship with zamba: `time_distributed`, `slowfast`, and `european`. If `european` is passed, the model trained on European species will be run. `time_distributed` is the default.
 
 #### `--config`
 
