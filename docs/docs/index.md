@@ -32,7 +32,7 @@ blank1.mp4
 blank2.mp4
 eleph.mp4
 small-cat.mp4
-leopard.mp4
+chimp.mp4
 ```
 <!-- TODO: update ungulate to species in the new labels><!-->
 <!-- TODO: make order or vids above match order of pics and order of labels later><!-->
@@ -43,18 +43,18 @@ Here are some screenshots from those videos:
   <tbody>
     <tr>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="elephant"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap"/>
       </td>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ung-sm.png" alt="ungulate"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-chimp-sm.png" alt="Leopard seen from a camera trap"/>
       </td>
     </tr>
     <tr>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="blank"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="Blank frame seen from a camera trap"/>
       </td>
       <td>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-leopard-sm.png" alt="cat"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-cat-sm.png" alt="cat"/>
       </td>
     </tr>
   </tbody>
