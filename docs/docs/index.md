@@ -15,7 +15,7 @@ combined input of various deep learning models, the tool makes predictions
 for 31 common species in these videos (as well as blank, or, "no species
 present").
 
-**New in Zamba v2:** Zamba now has an additional model trained on 11 common European species. <!--TODO: add more details about where from><!-->
+*New in Zamba v2:* Zamba now has an additional model trained on 11 common European species. <!--TODO: add more details about where from><!-->
 
 # Quickstart
 
@@ -25,32 +25,32 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 
 ## Input videos
 
-For example, we might have the directory `vids_to_classify` with camera trap videos in it:
+For example, we might have the directory `vids_to_classify` with camera trap videos in it. Let's list the videos:
 
 ```console
 $ ls vids_to_classify/
-eleph.mp4
-chimp.mp4
 blank1.mp4
 blank2.mp4
+chimp.mp4
+eleph.mp4
 small-cat.mp4
 ```
-
+<!-- TODO: possibly update with newer videos><!-->
 Here are some screenshots from those videos:
 
 <table class="table">
   <tbody>
     <tr>
-      <td style="text-align:center">eleph.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
+      <td style="text-align:center">blank1.mp4<br/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
       <td style="text-align:center">chimp.mp4<br/>
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-chimp-sm.png" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center">blank1.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-blank-sm.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
+      <td style="text-align:center">eleph.mp4<br/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
       </td>
       <td style="text-align:center">small-cat.mp4<br/>
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-cat-sm.png" alt="cat" style="width:400px;height:225px;"/>
@@ -72,10 +72,10 @@ are simplified to show the _most probable_ animal in each video:
 ```console
 $ zamba predict --data-dir vids_to_classify/ --output_class_names
 ...
-eleph.mp4              elephant
-chimp.mp4     chimpanzee_bonobo
 blank1.mp4                blank
 blank2.mp4                blank
+chimp.mp4     chimpanzee_bonobo
+eleph.mp4              elephant
 small-cat.mp4         small cat
 ```
 
