@@ -42,7 +42,7 @@ Here are some screenshots from those videos:
 <table class="table">
   <tbody>
     <tr>
-      <td>eleph.mp4
+      <td>eleph.mp4<br/>
         <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-ele-sm.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
       </td>
       <td>
