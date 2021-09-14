@@ -62,14 +62,7 @@ The possible class labels in `zamba`'s default model are:
 
 ## What Videos Can I use?
 
-The `zamba` models were trained using 15 second `.mp4` videos. Although videos
-longer than 15 seconds will process without error, we recommend segmenting your videos into 15 second segments for the most accurate results since videos are downsampled to a smaller number of frames during processing. This can be done with the `ffmpeg` commandline tool. Here's an example:
-
-```console
-$ ffmpeg -i input_video.mp4 -c copy -map 0 -segment_time 15 -f segment -reset_timestamps 1 output_video%%03d.mp4
-```
-
-`zamba` supports the same formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
+The `zamba` models were trained mostly on videos beteen 15 seconds and 1 minute long. `zamba` supports the same video formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). The models were trained primarily on `.mp4` and `.avi` videos.
 
 Videos do not need to be resized to a particular resolution since `zamba`
 resizes every frame it uses to `404 x 720` pixels.
