@@ -5,6 +5,7 @@ Welcome to zamba's documentation!
 <div class="embed-responsive embed-responsive-16by9" width=500>
     <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" frameborder="0" allowfullscreen=""></iframe>
 </div>
+<!-- TODO: what is the above supposed to do? it doesn't look like it's working><!-->
 
 *Zamba means "forest" in the Lingala language.*
 
@@ -28,14 +29,12 @@ For example, we might have the directory `vids_to_classify` with camera trap vid
 
 ```console
 $ ls vids_to_classify/
+eleph.mp4
+chimp.mp4
 blank1.mp4
 blank2.mp4
-eleph.mp4
 small-cat.mp4
-chimp.mp4
 ```
-<!-- TODO: update ungulate to species in the new labels><!-->
-<!-- TODO: make order or vids above match order of pics and order of labels later><!-->
 
 Here are some screenshots from those videos:
 
@@ -73,10 +72,10 @@ are simplified to show the _most probable_ animal in each video:
 ```console
 $ zamba predict --data-dir vids_to_classify/ --output_class_names
 ...
-blank2.mp4                blank
 eleph.mp4              elephant
+chimp.mp4     chimpanzee_bonobo
 blank1.mp4                blank
-ungulate.mp4     large ungulate
+blank2.mp4                blank
 small-cat.mp4         small cat
 ```
 
