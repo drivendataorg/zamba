@@ -45,8 +45,6 @@ The possible class labels in `zamba`'s default model are:
 * `small_cat`
 * `wild_dog_jackal`
 
-<!-- TODO: add details of european model. who collected and labels the data?><!-->
-
 *New in Zamba v2:* Thanks to new data shared by [<SOURCE>], `zamba` now also includes a prepackaged model to identify 11 common European species. The class labels in `zamba`'s European model are:
 
 * `bird`
@@ -64,8 +62,8 @@ The possible class labels in `zamba`'s default model are:
 
 ## What Videos Can I use?
 
-The `zamba` models were trained using 15 second `.mp4` videos. <!--TODO: noemie's data for depth estimation included .avi videos, does the data used to train zamba still only include .mp4?><!--> Although videos
-longer than 15 seconds will process without error, we recommend segmenting your videos into 15 second segments for the most accurate results since videos are downsampled to a smaller number of frames during processing. This can be done with the `ffmpeg` commandline tool. <!-- TODO: is that still true? did we still only train on 15 second videos?><!--> Here's an example:
+The `zamba` models were trained using 15 second `.mp4` videos. Although videos
+longer than 15 seconds will process without error, we recommend segmenting your videos into 15 second segments for the most accurate results since videos are downsampled to a smaller number of frames during processing. This can be done with the `ffmpeg` commandline tool. Here's an example:
 
 ```console
 $ ffmpeg -i input_video.mp4 -c copy -map 0 -segment_time 15 -f segment -reset_timestamps 1 output_video%%03d.mp4
@@ -74,7 +72,7 @@ $ ffmpeg -i input_video.mp4 -c copy -map 0 -segment_time 15 -f segment -reset_ti
 `zamba` supports the same formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
 
 Videos do not need to be resized to a particular resolution since `zamba`
-resizes every frame it uses to `404 x 720` pixels.<!-- TODO: is that resizing still true?><!-->
+resizes every frame it uses to `404 x 720` pixels.
 
 ### Know Where Your Videos Are
 
@@ -111,7 +109,7 @@ versions and will not need to perform this download again.
 `zamba` will begin prediction on the videos contained in the _top level_ of the
 `vids_to_classify` directory (`zamba` does not currently extract videos from
 nested directories):
-<!-- TODO: update the below, not currently working><!-->
+
 ```console
 $ zamba predict vids_to_classify/
 Using data_path:    vids_to_classify/
@@ -153,7 +151,7 @@ called `output.csv` will be saved (the current working directory unless
 otherwise specified). The lines that _don't_ begin with a
 filename – `nasnet_mobile`, `inception_v3`, `xception_avg`, `inception_v2_resnet` – tell the
 user which deep learning model `zamba` is currently using to predict. The final
-prediction combines predictions from these models. <!-- TODO: update this paragraph><!-->
+prediction combines predictions from these models. 
 
 `zamba` will output a `.csv` file with rows
  labeled by each video filename and columns for each class. The default
