@@ -5,7 +5,6 @@ Welcome to zamba's documentation!
 <div class="embed-responsive embed-responsive-16by9" width=500>
     <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" frameborder="0" allowfullscreen=""></iframe>
 </div>
-<!-- TODO: what is the above supposed to do? it doesn't look like it's working><!-->
 
 *Zamba means "forest" in the Lingala language.*
 
@@ -15,7 +14,7 @@ combined input of various deep learning models, the tool makes predictions
 for 31 common species in these videos (as well as blank, or, "no species
 present").
 
-*New in Zamba v2:* Zamba now has an additional model trained on 11 common European species. <!--TODO: add more details about where from><!-->
+*New in Zamba v2:* Zamba now has an additional model trained on 11 common European species.
 
 # Quickstart
 
@@ -34,9 +33,8 @@ chimp.mp4
 eleph.mp4
 leopard.mp4
 ```
-<!-- TODO: possibly update with newer videos><!-->
+
 Here are some screenshots from those videos:
-<!-- TODO: best way to resize things for s3 w/o losing quality? i resized each of the below to ~30 kb and quality was very very bad><!-->
 <table class="table">
   <tbody>
     <tr>
@@ -78,7 +76,7 @@ leopard.mp4             leopard
 ```
 
 **NOTE: `zamba` needs to download the "weights" files for the neural networks
-that it uses to make predictions. On first run it will download ~1GB <!-- TODO: check size><!--> of files
+that it uses to make predictions. On first run it will download ~1GB of files
 with these weights.** Once these are downloaded, the tool will use the local
 versions and will not need to perform this download again. If you are not in the US, we recommend
 running the above command with the additional flag either `--weight_download_region eu` or
