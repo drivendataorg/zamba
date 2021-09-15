@@ -45,6 +45,14 @@ on 11 common species from western Europe.
    configurations
    models
 
+.. toctree::
+   :maxdepth: 2
+   :caption: User Tutorials
+
+   no_labels
+   subset_labels
+   new_labels
+
 
 .. toctree::
    :maxdepth: 2
@@ -57,6 +65,12 @@ on 11 common species from western Europe.
    :caption: Zamba source documentation
 
    zamba
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Changelog
+
+   v2_updates
 
 Indices and tables
 ==================
