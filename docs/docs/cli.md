@@ -74,7 +74,7 @@ Options:
   --help                          Show this message and exit.
 ```
 
-All of the above besides `yes` can also be specified in a yaml file. Let's go through the flags one by one.
+All of the above besides `model` and `yes` can also be specified in a yaml file. Let's go through the flags one by one.
 
 #### `--data-dir PATH`
 
@@ -166,7 +166,7 @@ Options:
   --help                          Show this message and exit.
 ```
 
-All of the above besides `yes` can also be specified in a yaml file. Let's go through the flags one by one.
+All of the above besides `model` and `yes` can also be specified in a yaml file. Let's go through the flags one by one.
  
 #### `--data-dir PATH`
 

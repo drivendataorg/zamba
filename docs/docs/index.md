@@ -24,7 +24,20 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 
 ## Input videos
 
-For example, we might have the directory `vids_to_classify` with camera trap videos in it. Let's list the videos:
+### What videos can I use?
+
+`zamba` supports the same video formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). The models were trained primarily on `.mp4` and `.avi` videos that were each between 15 seconds and 1 minute long.
+
+### How do I input my videos to `zamba`?
+
+You can input the path to a directory of videos to classify. For example,
+suppose you have `zamba` installed, your command line is open, and you have a
+directory of videos, `vids_to_classify/`, that you want to classify using
+`zamba`.
+
+**The folder must contain only valid video files since zamba will try to load all of the files in the directory.**
+
+List the videos:
 
 ```console
 $ ls vids_to_classify/
@@ -59,6 +72,9 @@ Here are some screenshots from those videos:
 In this example, the videos have meaningful names so that we can easily
 compare the predictions made by `zamba`. In practice, your videos will
 probably be named something much less useful!
+
+You can also input a CSV of metadata that includes the path to each video
+for classification. For more details on this method, see the advanced options <!-- TODO: add link><!--> section.
 
 ### Predict Using Concise Output Format
 
