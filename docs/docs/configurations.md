@@ -1,26 +1,27 @@
 # Model Configurations
 
-In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file.
-The basic structure of the configuration is:
+In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file. Some - but not all - of these parameters can also be passed directly as arguments to the command line<!-- TODO: link to cli page><!-->.
+The basic structure of a configuration is:
 
-```
+```console
+$ cat basic_config.yaml
 video_loader_config:
   # video loading parameters, eg. video_height: 224
-
-train_config:
-  model_name: slowfast
-  data_directory: vids_to_classify/
-  # other training parameters, eg. labels, batch_size
 
 predict_config:
   model_name: slowfast
   data_directoty: vids_to_classify/
   # other training parameters, eg. batch_size
-```
 
-For example, the configuration below will predict labels for the videos in `vids_to_classify` using the `time_distributed` model, and will resize all videos to 2224x224 pixels:
+train_config:
+  model_name: slowfast
+  data_directory: vids_to_classify/
+  # other training parameters, eg. labels, batch_size
+  ```
 
-```
+For example, the configuration below will predict labels for the videos in `vids_to_classify` using the `slowfast` model, and will resize all videos to 2224x224 pixels:
+
+```console
 video_loader_config:
   video_height: 224
   video_width: 224
@@ -102,6 +103,57 @@ Reach the total number of frames specified by evenly sampling from the duration 
 
 ffmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bgr24` for BGR.
 
+## Prediction
+
+All possible model inference parameters are defined by the `PredictConfig` class<!-- TODO: add link to class definition><!-->. 
+
+```python
+>> from zamba.models.config import PredictConfig
+>> default_predict_config = PredictConfig()
+>> default_predict_config
+```
+<!-- TODO: add output of default train config above when it's working><!-->
+
+#### `data_directory (DirectoryPath, optional)`
+
+Path to the directory containing training videos. Defaults to the current working directory.
+
+#### `file_list (FilePath, optional)`
+
+Path to a list of files for classification. Defaults to `None`
+
+#### `checkpoint (Path or str, optional)`
+
+Path to a model checkpoint to load and use for inference. To load a model from a checkpoint, the model name must also be specified. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model-name`.
+
+#### `model_class, model_name, model_params` <!-- TODO: what's the final status of these params?><!-->
+
+#### `gpus (int, optional)`
+
+The number of GPUs to use during inference. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.
+
+#### `batch-size (int, optional)`
+
+The batch size to use for inference. Defaults to `8`.
+
+#### `dry_run (bool, optional)`
+
+Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of inference. Defaults to `False`.
+
+#### `columns (list(str), optional)`
+
+List of possible species class labels for the data. The default is the 31 species from central and west Africa that are predicted by `time_distributed` and `slowfast` <!-- TODO: add link to list of species><!-->
+
+#### `proba_threshold (float between 0 and 1, optional)`
+
+For advanced uses, you may want the algorithm to be more or less sensitive to if a species is present. This parameter is a `FLOAT` number, e.g., `0.64` corresponding to the probability threshold beyond which an animal is considered to be present in the video being analyzed.
+
+By default no threshold is passed, `proba_threshold=None`. This will return a probability from 0-1 for each species that could occur in each video. If a threshold is passed, then the final prediction value returned for each class is `probability >= proba_threshold`, so that all class values become `0` (`False`, the species does not appear) or `1` (`True`, the species does appear).
+
+#### `output_class_names (bool, optional)`
+
+Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the species with the highest class probability, or `blank` if the most likely classification is no animal. Defaults to `False`
+
 ## Training
 
 All possible model training parameters are defined by the `TrainConfig` class<!-- TODO: add link to class definition><!-->. 
@@ -117,36 +169,40 @@ All possible model training parameters are defined by the `TrainConfig` class<!-
 
 Path to a CSV file with labels for training. The labels file must have columns for `filename` and `label`
 
-####
+#### `data_directory (DirectoryPath, optional)`
 
-```python
-class TrainConfig(ZambaBaseModel):
-    labels: FilePath
-    data_directory: Optional[DirectoryPath] = os.getcwd()
-    model_class: ModelEnum = ModelEnum.time_distributed
-    model_name: str = None
-    model_params: Optional[ModelParams] = None
-    resume_from_checkpoint: Optional[Union[Path, str]] = None
-    dry_run: Union[bool, int] = False
-    batch_size: Optional[int] = 8
-    auto_lr_find: bool = True
-    backbone_finetune: bool = False
-    backbone_finetune_params: BackboneFinetuneConfig = None
-    gpus: Optional[Union[List[int], str, int]] = GPUS_AVAILABLE
-    max_epochs: int = None
-    early_stopping: bool = True
-    early_stopping_params: EarlyStoppingConfig = None
-    tensorboard_log_dir: str = "tensorboard_logs"
-    split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
-```
+Path to the directory containing training videos. Defaults to the current working directory.
 
-## Prediction
+#### `model_class, model_name, model_params` <!-- TODO: what's the final status of these params?><!-->
 
-All possible model inference parameters are defined by the `PredictConfig` class<!-- TODO: add link to class definition><!-->. 
+#### `resume_from_checkpoint (Path or str, optional)`
 
-```python
->> from zamba.models.config import PredictConfig
->> default_predict_config = PredictConfig()
->> default_predict_config
-```
-<!-- TODO: add output of default train config above when it's working><!-->
+Path to a model checkpoint from which to resume training. Defaults to `None`
+
+#### `dry_run (bool, optional)`
+
+Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of train and validation. Defaults to `False`.
+
+#### `batch-size (int, optional)`
+
+The batch size to use for training. Defaults to `8`.
+
+#### auto_lr_find, backbone_finetune, backbone_finetune_params 
+<!-- TODO: add these><!-->
+
+#### `gpus (int, optional)`
+
+The number of GPUs to use during training. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.
+
+#### `max_epochs (int, optional)`
+
+The maximum number of epochs to run during training. Defaults to `None`
+
+#### `early_stopping (bool, optional), early_stopping_params (EarlyStoppingConfig)`
+#### tensorboard_log_dir
+
+<!-- TODO: add these><!-->
+
+#### `split_proportions (dict(str, int), optional)`
+
+The proportion of data to use during training, validation, and as a holdout set. Defaults to `{"train": 3, "val": 1, "holdout": 1}`
