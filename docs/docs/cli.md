@@ -102,7 +102,8 @@ The batch size to use for prediction.
 
 #### `--save`
 
-Whether to save out the predictions to a CSV file. Predictions will be saved by default. Specify `--no-save` if you would like to write out predictions.
+Whether to save out the predictions to a CSV file. Predictions will be saved by default to `{model name}_{current timestamp}_preds.csv`.
+For example, running `zamba predict` with the `time_distributed` model on 9/15/21 will save out predictions at `time_distributed_2021-09-15_preds.csv`. Specify `--no-save` if you would not like to write out predictions.
 
 #### `--dry-run`
 
