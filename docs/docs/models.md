@@ -78,28 +78,38 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 * Salonga National Park, Democratic Republic of the Congo
 * Taï National Park, Côte d'Ivoire
 
-### Default configuration
+### Default video loading configuration
 
 <!-- TODO: add link to yaml file><!-->
 
+Running the `time_distributed` model on every frame would be very time consuming. Instead, the Megadetector model is used to select the 16 frames that have the highest probability of detection. `time_distributed` is run only on this subset.
+
+All videos are automatically resized to a resolution of 224x224 pixels.
+
 ## `slowfast` model
 
-The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operatues at a high frame rate to capture motion over time. The basic architectures are deep neural networks using [pytorch](https://pytorch.org/). The `time_distributed` model is image native, meaning it classifies each frame separately when generating predictions, while `slowfast` is video native, meaning it takes into account the relationship between frames in a video.
+The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operatues at a high frame rate to capture motion over time. The basic architectures are deep neural networks using [pytorch](https://pytorch.org/).
+
+<div style="text-align:center;">
+<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-slowfast-diagram.png" alt="Architecture showing the two pathways of the slowfast model" style="width:400px;"/>
+<br/>
+<i>Source:</i> Feichtenhofer, C., Fan, H., Malik, J., & He, K. (2019). Slowfast networks for video recognition. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6202-6211).
+</div>
+
+The `time_distributed` model is image native, meaning it classifies each frame separately when generating predictions. `slowfast` is video native, meaning it takes into account the relationship between frames in a video.
 
 ### Training data
 
 The `slowfast` model was trained using the same data as the `time_distributed` model<!-- TODO: add link to time distributed training data section><!-->.
 
-### Default configuration
-
 <!-- TODO: add link to yaml file><!-->
+
 
 ## `european` model
 
 ### Training data
 
-<!--TODO: add who to thank for the data><!-->The data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
-
-### Default configuration
+`european` was trained using data collected and annotated by partners at [The Max Planck Institute for
+Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
 
 <!-- TODO: add link to yaml file><!-->
