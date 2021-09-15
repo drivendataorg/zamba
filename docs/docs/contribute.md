@@ -75,3 +75,7 @@ and, once tested:
 $ make distribute_pypi
 ```
 
+## Submit additional training videos
+
+If you have additional labeled videos that may be useful for improving the basic models that ship with `zamba`, we'd love to hear from you! You can get in touch at [info@drivendata.org](mailto:info@drivendata.org)
+
