@@ -2,11 +2,9 @@
 
 The algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. There are three models that ship with the `zamba` package: `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
 
-## `time_distributed` model
+## What species can `zamba` detect?
 
-### What species can `time_distributed` detect?
-
-The possible class labels in the `time_distributed` model are:
+`time_distributed` and `slowfast` are both trained to identify 31 common species from central and west Afirca. The possible class labels in these models are:
 
 * `aardvark`
 * `antelope_duiker`
@@ -40,6 +38,30 @@ The possible class labels in the `time_distributed` model are:
 * `rodent`
 * `small_cat`
 * `wild_dog_jackal`
+
+`european` is trained to identify 11 common species in western Europe. The possible class labels are:
+
+* `bird`
+* `blank`
+* `domestic_cat`
+* `european_badger`
+* `european_beaver`
+* `european_hare`
+* `european_roe_deer`
+* `north_american_raccoon`
+* `red_fox`
+* `unidentified`
+* `weasel`
+* `wild_boar`
+
+## `time_distributed` model
+
+The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed.
+
+<!-- TODO: add megadetector details. where did we actually get it from? eg .The EfficientNetV2 architecture was combined with ...><!-->
+
+<!-- https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/efficientnet.py><!-->
+
 
 ### Training data
 
@@ -56,68 +78,28 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 * Salonga National Park, Democratic Republic of the Congo
 * Taï National Park, Côte d'Ivoire
 
+### Default configuration
+
+<!-- TODO: add link to yaml file><!-->
+
 ## `slowfast` model
 
-### What species can `slowfast` detect?
+The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operatues at a high frame rate to capture motion over time. The basic architectures are deep neural networks using [pytorch](https://pytorch.org/). The `time_distributed` model is image native, meaning it classifies each frame separately when generating predictions, while `slowfast` is video native, meaning it takes into account the relationship between frames in a video.
 
-The possible class labels in the `slowfast` model are:
-
-* `aardvark`
-* `antelope_duiker`
-* `badger`
-* `bat`
-* `bird`
-* `blank`
-* `cattle`
-* `cheetah`
-* `chimpanzee_bonobo`
-* `civet_genet`
-* `elephant`
-* `equid`
-* `forest_buffalo`
-* `fox`
-* `giraffe`
-* `gorilla`
-* `hare_rabbit`
-* `hippopotamus`
-* `hog`
-* `human`
-* `hyena`
-* `large_flightless_bird`
-* `leopard`
-* `lion`
-* `mongoose`
-* `monkey_prosimian`
-* `pangolin`
-* `porcupine`
-* `reptile`
-* `rodent`
-* `small_cat`
-* `wild_dog_jackal`
-
-## Training data
+### Training data
 
 The `slowfast` model was trained using the same data as the `time_distributed` model<!-- TODO: add link to time distributed training data section><!-->.
 
+### Default configuration
+
+<!-- TODO: add link to yaml file><!-->
+
 ## `european` model
 
-### What species can `european` detect?
-
-The possible class labels in the `european` model are:
-
-* `bird`
-* `blank`
-* `domestic_cat`
-* `european_badger`
-* `european_beaver`
-* `european_hare`
-* `european_roe_deer`
-* `north_american_raccoon`
-* `red_fox`
-* `unidentified`
-* `weasel`
-* `wild_boar`
-
-## Training data
+### Training data
 
 <!--TODO: add who to thank for the data><!-->The data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
+
+### Default configuration
+
+<!-- TODO: add link to yaml file><!-->
