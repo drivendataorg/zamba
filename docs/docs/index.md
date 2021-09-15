@@ -8,13 +8,15 @@ Welcome to zamba's documentation!
 
 *Zamba means "forest" in the Lingala language.*
 
-Zamba is a command-line tool built in Python to automatically identify the
-species seen in camera trap videos from sites in central and west Africa. Using the
-combined input of various deep learning models, the tool makes predictions
-for 31 common species in these videos (as well as blank, or, "no species
-present").
+Zamba is a tool built in Python to automatically identify the species seen
+in camera trap videos from sites in Africa and Europe. Using the combined
+input of various deep learning models, the tool makes predictions for 42
+common species in these videos (as well as blank, or, "no species present").
+Zamba can be accessed as both a command-line tool and a Python package.
 
-*New in Zamba v2:* Zamba now has an additional model trained on 11 common European species.
+Zamba ships with three model options. `time_distributed` and `slowfast` are trained 
+on 31 common species from central and west Africa. `european` is trained on 11 common
+species from western Europe.
 
 # Quickstart
 
@@ -36,6 +38,7 @@ directory of videos, `vids_to_classify/`, that you want to classify using
 `zamba`.
 
 **The folder must contain only valid video files since zamba will try to load all of the files in the directory.**
+`zamba` will begin prediction on the videos contained in the top level of the `vids_to_classify` directory (`zamba` does not currently extract videos from nested directories).
 
 List the videos:
 
@@ -76,14 +79,20 @@ probably be named something much less useful!
 You can also input a CSV of metadata that includes the path to each video
 for classification. For more details on this method, see the advanced options <!-- TODO: add link><!--> section.
 
-### Predict Using Concise Output Format
+## Using the command line interface
 
-If you just want to know the most likely animal in each video, the
-`--output-class-names` flag is useful. In this case, the final output as well as the resulting `output.csv`
-are simplified to show the _most probable_ animal in each video:
+To generate and save predictions for your videos using the default settings, run:
 
 ```console
-$ zamba predict --data-dir vids_to_classify/ --output_class_names
+$ zamba predict --data-dir vids_to_classify/
+```
+
+`zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class. The default prediction will store all class probabilities, so that cell (i,j) of `output.csv` can be interpreted as *the probability that animal j is present in video i.*
+
+Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
+
+```console
+$ zamba predict --data-dir vids_to_classify/ --output-class-names
 ...
 blank.mp4                 blank
 chimp.mp4     chimpanzee_bonobo
@@ -91,16 +100,12 @@ eleph.mp4              elephant
 leopard.mp4             leopard
 ```
 
-**NOTE: `zamba` needs to download the "weights" files for the neural networks
-that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.** Once these are downloaded, the tool will use the local
-versions and will not need to perform this download again. If you are not in the US, we recommend
-running the above command with the additional flag either `--weight_download_region eu` or
-`--weight_download_region asia` depending on your location. The closer you are to the server
-the faster the downloads will be.
+**NOTE: `zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.** 
+Once these are downloaded, the tool will use the local versions and will not need to perform this download again. If you are not in the US, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server the faster the downloads will be.
 
-## Getting Help from the Command Line
+### Getting help
 
-Once zamba is installed, you can see the available commands with `zamba`:
+Once zamba is installed, you can see available commands with `zamba`:
 
 ```console
 $ zamba
@@ -119,45 +124,38 @@ Commands:
 ```
 
 To see more detailed information about a command as well as the
-options available to pass to it, use the `--help` flag. For example, get more
+options available to pass to it, use the `--help` flag. For example, to get more
 information about the `train` command and its options:
 
 ```console
 $ zamba train --help
-Usage: zamba train [OPTIONS]
-
-  Train a model using the provided data, labels, and model name.
-
-  If an argument is specified in both the command line and in a yaml file,
-  the command line input will take precedence.
-
-Options:
-  --data-dir PATH                 Path to folder containing videos.
-  --labels PATH                   Path to csv containing video labels.
-  --model [time_distributed|slowfast]
-                                  Model class to train.  [default:
-                                  time_distributed]
-
-  --config PATH                   Specify options using yaml configuration
-                                  file instead of through command line
-                                  options.
-
-  --batch-size INTEGER            Batch size to use for training.
-  --gpus INTEGER                  Number of GPUs to use for training. If not
-                                  specifiied, will use all GPUs found on
-                                  machine.
-
-  --dry-run / --no-dry-run        Runs one batch of train and validation to
-                                  check for bugs.
-
-  -y, --yes                       Skip confirmation of configuration and
-                                  proceed right to training.  [default: False]
-
-  --help                          Show this message and exit.
 ```
+
+## Using the Python module
+
+The main API for `zamba` is the `ModelManager` class that can be accessed with:
+
+```console
+$ from zamba.models.manager import ModelManager
+```
+
+The `ModelManager` class is used behind the scenes by `zamba`’s command line interface to handle preprocessing the files, loading the videos, serving them to the model, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
+
+To generate predictions using the same directory `vids_to_classify/`:
+<!-- TODO: does it still default to time_distributed or does a model name have to be passed?><!-->
+<!-- TODO: placeholder, come  back to this when clearer how python module works><!-->
+```python
+from zamba.models.manager import ModelManager
+manager = ModelManager()
+```
+
+Just like in the command line, the default output has a row for each filename and a column for each possible class. 
+We can generate the simplified most probable class by adjusting the model configuration:
+<!-- TODO: add><!-->
+
+<!-- TODO: add how to specify weight download region><!-->
 
 ## Next Steps
 
-This is just the tip of the iceberg. `zamba` has more options for command line
-use, and can alsoe be used as a Python module, e.g., `import zamba`! See the
-docs for more information.
+This is just the tip of the iceberg! `zamba` has many more options for the command line
+and the Python module. See the docs for more information.
