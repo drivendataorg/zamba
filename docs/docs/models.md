@@ -56,9 +56,9 @@ The algorithms in `zamba` are designed to identify species of animals that appea
 
 ## `time_distributed` model
 
-The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed.
+The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
 
-<!-- TODO: add megadetector details. where did we actually get it from? eg .The EfficientNetV2 architecture was combined with ...><!-->
+`time_distributed` combines the EfficientNetV2 architecture with an open-source image object detection model to implement frame selection. The [YOLOX](https://arxiv.org/abs/2107.08430) detection model is run on all frames in a video. Only the frames with the highest probability of detection are then passed to the more computationally intensive EfficientNetV2 for detailed detection and classification.
 
 <!-- https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/efficientnet.py><!-->
 
@@ -96,7 +96,7 @@ The `slowfast` model was built by re-training a video classification backbone ca
 <i>Source:</i> Feichtenhofer, C., Fan, H., Malik, J., & He, K. (2019). Slowfast networks for video recognition. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6202-6211).
 </div>
 
-The `time_distributed` model is image native, meaning it classifies each frame separately when generating predictions. `slowfast` is video native, meaning it takes into account the relationship between frames in a video.
+Unlike `time_distributed`, `slowfast` is video native. This means it takes into account the relationship between frames in a video, rather than running independently on each frame.
 
 ### Training data
 
@@ -106,6 +106,12 @@ The `slowfast` model was trained using the same data as the `time_distributed` m
 
 
 ## `european` model
+
+The `european` model has the same backbone as the `time_distributed` model, but is trained on data from camera traps in western Europe instead of central and west Africa. 
+
+The `european` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
+
+`european` combines the EfficientNetV2 architecture with an open-source image object detection model to implement frame selection. The [YOLOX](https://arxiv.org/abs/2107.08430) detection model is run on all frames in a video. Only the frames with the highest probability of detection are then passed to the more computationally intensive EfficientNetV2 for detailed detection and classification.
 
 ### Training data
 
