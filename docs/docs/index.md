@@ -55,18 +55,18 @@ Here are some screenshots from those videos:
   <tbody>
     <tr>
       <td style="text-align:center">blank.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-blank.png" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-blank-sm.jpg" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
       <td style="text-align:center">chimp.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-chimp.png" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-chimp-sm.jpg" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
       </td>
     </tr>
     <tr>
       <td style="text-align:center">eleph.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-eleph.png" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-eleph-sm.jpg" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
       </td>
       <td style="text-align:center">leopard.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-leopard.png" alt="cat" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-leopard-sm.jpg" alt="cat" style="width:400px;height:225px;"/>
       </td>
     </tr>
   </tbody>
@@ -135,8 +135,8 @@ $ zamba train --help
 
 The main API for `zamba` is the `ModelManager` class that can be accessed with:
 
-```console
-$ from zamba.models.manager import ModelManager
+```python
+from zamba.models.manager import ModelManager
 ```
 
 The `ModelManager` class is used behind the scenes by `zamba`’s command line interface to handle preprocessing the files, loading the videos, serving them to the model, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
