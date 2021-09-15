@@ -33,19 +33,16 @@ on 11 common species from western Europe.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Options for Running zamba
+   :caption: How to Run zamba
 
    cli
    py-package
 
 .. toctree::
    :maxdepth: 2
-   :caption: Configurations
+   :caption: Advanced Options
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Available models
-
+   configurations
    models
 
 
