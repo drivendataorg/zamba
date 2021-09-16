@@ -7,9 +7,42 @@ The algorithms in `zamba` are designed to identify species of animals that appea
 - # of sites
 - kinds of sites?><!-->
 
+## Basic use
+
+<table>
+  <tr>
+    <th>Model</th>
+    <th>Use cases</th>
+    <th>Strengths</th>
+    <th>Geography</th>
+  </tr>
+  <tr>
+    <td><code>time_distributed</code></td>
+    <td rowspan=2>Model training or fine tuning</td>
+    <td rowspan=2>Classifying species<br/>Running more quickly</td>
+    <td>Central and west Africa</td>
+  </tr>
+  <tr>
+    <td><code>european</code></td>
+    <td>Western Europe</td>
+  </tr>
+<tr>
+    <td><code>slowfast</code></td>
+    <td>Detailed prediction of blank vs. non-blank</td>
+    <td>Identifying blank vs. non-blank videos</td>
+    <td>Central and west Africa</td>
+  </tr>
+</table>
+
+`time_distributed` and `european` use the same basic algorithm. The main difference is that they are trained on different geographies.
+
+For training or fine tuning, either the `time_distributed` and `european` model is recommended. These run much more quickly thatn the `slowfast` model.
+
+For inference, `slowfast` is recommended if the highest priority is differentiating between blank and non-blank videos. If the priority is species classification, either `time_distributed` or `european` is recommended based on the given geography.
+
 ## What species can `zamba` detect?
 
-`time_distributed` and `slowfast` are both trained to identify 31 common species from central and west Afirca. The possible class labels in these models are:
+`time_distributed` and `slowfast` are both trained to identify 31 common species from central and west Africa. The possible class labels in these models are:
 
 * `aardvark`
 * `antelope_duiker`
@@ -61,6 +94,8 @@ The algorithms in `zamba` are designed to identify species of animals that appea
 
 ## `time_distributed` model
 
+### Algorithm
+
 The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
 
 `time_distributed` combines the EfficientNetV2 architecture with an open-source image object detection model to implement frame selection. The [YOLOX](https://arxiv.org/abs/2107.08430) detection model is run on all frames in a video. Only the frames with the highest probability of detection are then passed to the more computationally intensive EfficientNetV2 for detailed detection and classification.
@@ -93,11 +128,13 @@ All videos are automatically resized to a resolution of 224x224 pixels.
 
 ## `slowfast` model
 
+### Algorithm
+
 The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operatues at a high frame rate to capture motion over time. The basic architectures are deep neural networks using [pytorch](https://pytorch.org/).
 
 <div style="text-align:center;">
 <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-slowfast-diagram.png" alt="Architecture showing the two pathways of the slowfast model" style="width:400px;"/>
-<br/>
+<br/><br/>
 <i>Source:</i> Feichtenhofer, C., Fan, H., Malik, J., & He, K. (2019). Slowfast networks for video recognition. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6202-6211).
 </div>
 
@@ -111,6 +148,8 @@ The `slowfast` model was trained using the same data as the `time_distributed` m
 
 
 ## `european` model
+
+### Algorithm
 
 The `european` model has the same backbone as the `time_distributed` model, but is trained on data from camera traps in western Europe instead of central and west Africa. 
 
