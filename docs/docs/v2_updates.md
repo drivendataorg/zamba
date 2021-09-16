@@ -1,4 +1,4 @@
-# Key V2 Updates
+# Key Version 2 Updates
 
 Released: <!-- TODO: add release date><!-->
 

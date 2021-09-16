@@ -20,9 +20,8 @@ To install for development:
 ```console
 $ git clone https://github.com/drivendataorg/zamba.git
 $ cd zamba
-$ pip install --editable .[cpu]
+$ pip install --editable .
 ```
-** Note: You can change `cpu` to `gpu` to develop against a gpu version on tensorflow. **
 
 ## Running the `zamba` test suite
 

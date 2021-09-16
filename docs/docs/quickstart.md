@@ -8,7 +8,7 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 
 ### What videos can I use?
 
-`zamba` supports the same video formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). The models were trained primarily on `.mp4` and `.avi` videos that were each between 15 seconds and 1 minute long.
+`zamba` supports the same video formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). The built-in models were trained primarily on `.mp4` and `.avi` videos that were each between 15 seconds and 1 minute long.
 
 ### How do I input my videos to `zamba`?
 
@@ -16,9 +16,6 @@ You can input the path to a directory of videos to classify. For example,
 suppose you have `zamba` installed, your command line is open, and you have a
 directory of videos, `vids_to_classify/`, that you want to classify using
 `zamba`.
-
-**The folder must contain only valid video files since zamba will try to load all of the files in the directory.**
-`zamba` will begin prediction on the videos contained in the top level of the `vids_to_classify` directory (`zamba` does not currently extract videos from nested directories).
 
 List the videos:
 
@@ -35,29 +32,32 @@ Here are some screenshots from those videos:
   <tbody>
     <tr>
       <td style="text-align:center">blank.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-blank-sm.jpg" alt="Blank frame seen from a camera trap" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-blank-sm.jpg" alt="Blank frame seen from a camera trap" style="width:400px;"/>
       </td>
       <td style="text-align:center">chimp.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-chimp-sm.jpg" alt="Leopard seen from a camera trap" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-chimp-sm.jpg" alt="Leopard seen from a camera trap" style="width:400px;"/>
       </td>
     </tr>
     <tr>
       <td style="text-align:center">eleph.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-eleph-sm.jpg" alt="Elephant seen from a camera trap" style="width:400px;height:225;">
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-eleph-sm.jpg" alt="Elephant seen from a camera trap" style="width:400px">
       </td>
       <td style="text-align:center">leopard.mp4<br/>
-        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-leopard-sm.jpg" alt="cat" style="width:400px;height:225px;"/>
+        <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-2-leopard-sm.jpg" alt="cat" style="width:400px;"/>
       </td>
     </tr>
   </tbody>
 </table>
+
+**The folder must contain only valid video files** since zamba will try to load all of the files in the directory.
 
 In this example, the videos have meaningful names so that we can easily
 compare the predictions made by `zamba`. In practice, your videos will
 probably be named something much less useful!
 
 You can also input a CSV of metadata that includes the path to each video
-for classification. For more details on this method, see the advanced options <!-- TODO: add link><!--> section.
+for classification. For more details on this method, see the advanced options section.
+<!-- TODO: add link><!--> 
 
 ## Using the command line interface
 
@@ -67,35 +67,35 @@ To generate and save predictions for your videos using the default settings, run
 $ zamba predict --data-dir vids_to_classify/
 ```
 
-`zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class. The default prediction will store all class probabilities, so that cell (i,j) of `output.csv` can be interpreted as *the probability that animal j is present in video i.*
+`zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
+Predictions will be saved to `{model name}_{current timestamp}_preds.csv`.
+For example, running `zamba predict` on 9/15/2021 with the `time_distributed` model (the default) will save out predictions to `time_distributed_2021-09-15_preds.csv`. 
+
+`zamba` will only generate predictions for the videos in the top level of the `vids_to_classify` directory (`zamba` does not currently extract videos from nested directories).
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
 
 ```console
 $ zamba predict --data-dir vids_to_classify/ --output-class-names
-...
-blank.mp4                 blank
-chimp.mp4     chimpanzee_bonobo
-eleph.mp4              elephant
-leopard.mp4             leopard
+$ cat time_distributed_2021-09-15_preds.csv
+vids/blank.mp4,blank
+vids/chimp.mp4,chimpanzee_bonobo
+vids/eleph.mp4,elephant
+vids/leopard.mp4,leopard
 ```
-
-**NOTE: `zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.** 
-Once these are downloaded, the tool will use the local versions and will not need to perform this download again. If you are not in the US, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server the faster the downloads will be.
 
 ### Getting help
 
-Once zamba is installed, you can see available commands with `zamba`:
+Once zamba is installed, you can see available commands with `zamba --help`:
 
 ```console
-$ zamba
+$ zamba --help
 Usage: zamba [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --install-completion  Install completion for the current shell.
   --show-completion     Show completion for the current shell, to copy it or
                         customize the installation.
-
   --help                Show this message and exit.
 
 Commands:
@@ -134,6 +134,11 @@ We can generate the simplified most probable class by adjusting the model config
 <!-- TODO: add><!-->
 
 <!-- TODO: add how to specify weight download region><!-->
+
+## Downloading model weights
+
+**`zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.** 
+Once a model's weights are downloaded, the tool will use the local version and will not need to perform this download again. If you are not in the US, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server the faster the downloads will be.
 
 ## Next Steps
 

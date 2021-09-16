@@ -1,6 +1,7 @@
 # Model Configurations
 
-In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file. Some - but not all - of these parameters can also be passed directly as arguments to the command line<!-- TODO: link to cli page><!-->.
+In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file. Some - but not all - of these parameters can also be passed directly as arguments to the command line.
+<!-- TODO: link to cli page><!-->
 The basic structure of a configuration is:
 
 ```console
@@ -17,9 +18,9 @@ train_config:
   model_name: slowfast
   data_directory: vids_to_classify/
   # other training parameters, eg. labels, batch_size
-  ```
+```
 
-For example, the configuration below will predict labels for the videos in `vids_to_classify` using the `slowfast` model, and will resize all videos to 2224x224 pixels:
+For example, the configuration below will predict labels for the videos in `vids_to_classify` using the `slowfast` model, and will resize all videos to 224x224 pixels:
 
 ```console
 video_loader_config:
@@ -50,7 +51,10 @@ All possible video loading and frame selection parameters are defined by the `Vi
 >> default_video_loader = VideoLoaderConfig()
 >> default_video_loader
 
-VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False, scene_threshold=None, megadetector_lite_config=None, video_height=None, video_width=None, total_frames=None, ensure_total_frames=True, fps=None, early_bias=False, frame_indices=None, evenly_sample_total_frames=False, pix_fmt='rgb24')
+VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False, scene_threshold=None, 
+megadetector_lite_config=None, video_height=None, video_width=None, 
+total_frames=None, ensure_total_frames=True, fps=None, early_bias=False, 
+frame_indices=None, evenly_sample_total_frames=False, pix_fmt='rgb24')
 ```
 
 Let's go through each of those arguments.
