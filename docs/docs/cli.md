@@ -1,18 +1,24 @@
 # zamba Command Line Interface
 
-This section goes into more detail concerning the available options for
-the `zamba` command line interface tool. If you are new to `zamba` and just
-want to classify some videos as soon as possible, see the [Quickstart](index.md) guide.
+This section goes into more detail about the available options for
+the `zamba` command line interface (CLI) tool. If you are new to `zamba` and just
+want to classify some videos as soon as possible, see the [Quickstart](quickstart.md) guide.
 
-## zamba's Optional Flags
+## How to specify optional parameters
 
-Almost all of the parameters below can be specified either in the command line or in a yaml file that is passed to the command line. If a value is specified in both a yaml file passed to the command line and a command line argument, the value passed as a command line argument will be used.
+Each model that ships with the `zamba` package comes with a default configuration saved as a YAML file. The default value of each parameter listed below will be set based on the model being used - `time_distributed`, `slowfast`, or `european`. Default algorithm configurations can be found in `models/config`.
+<!-- TODO: update path to default configs and add link to github folder><!-->
 
-For most parameters, the default command line value is `None`. Rather than specifying a default value in the command line, default configuration values will be pulled in based on the algorithm type - `time_distributed`, `slowfast`, or `european`. Each algorithm that ships with zamba comes with a default yaml configuration file. If no yaml file is specified, the values from the default yaml will be used unless a value is specified directly in the command line. Default algorithm configurations can be found in `models/configs`.
+There are two ways to override the default model parameter value, listed in order or precendence: 
 
-## `zamba predict`
+1. By passing an optional flag directly to the command line
+2. By specifying the parameter in a custom YAML configuration file, and passing the YAML filepath to the command line with the `--config` flag. For more details on YAML configuration file options, see the [Model Configurations](configurations.md) section. 
 
-As discussed in the [Quickstart](index.md), the `--help` flag provides more information about options for `zamba`:
+If a parameter is both passed directly to the CLI AND specified in a YAMl file that is passed to the CLI, the value that is passed directly to the CLI will be used.
+
+## `zamba predict` flags
+
+As discussed in the [Quickstart](index.md) guide, the `--help` flag provides more information about options for `zamba`:
 
 ```
 $ zamba predict --help 
@@ -131,7 +137,7 @@ Because `zamba` needs to download pretrained weights for the neural network arch
 
 By default, the command line interface will print the specifications you have entered and ask for confirmation before starting inference. Specifying `--yes` or `-y` skips this step and kicks off prediction without confirmation. 
 
-## `zamba train`
+## `zamba train` flags
 
 ```
 $ zamba train --help
@@ -191,7 +197,7 @@ The batch size to use for training.
 
 #### `--gpus INT`
 
-The number of GPUs to use during training. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.
+The number of GPUs to use during training. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine. 
 
 #### `--dry-run`
 
@@ -200,9 +206,3 @@ Specifying `--dry-run` is useful for debugging more quickly by running only a si
 #### `--yes`
 
 By default, the command line interface will print the specifications you have entered and ask for confirmation before starting to train. Specifying `--yes` or `-y` skips this step and kicks off training without confirmation. 
-
-#### NOT YET IMPLEMENTED
-
-### `zamba tune`
-
-#### NOT YET IMPLEMENTED
