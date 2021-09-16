@@ -46,7 +46,7 @@ on 11 common species from western Europe.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Configuration options
+   :caption: Model Configurations
 
    configurations
 
