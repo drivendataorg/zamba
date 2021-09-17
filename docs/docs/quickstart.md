@@ -1,8 +1,7 @@
 # Quickstart
 
 This section assumes you have successfully installed `zamba` and want to get
-right to making species predictions for some videos! All of the commands here should be run at the command line. On
-macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
+right to making species predictions for some videos! 
 
 ## Input videos
 
@@ -14,7 +13,7 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 
 You can input the path to a directory of videos to classify. For example,
 suppose you have `zamba` installed, your command line is open, and you have a
-directory of videos, `vids_to_classify/`, that you want to classify using
+directory of videos, `vids_to_classify`, that you want to classify using
 `zamba`.
 
 List the videos:
@@ -60,6 +59,9 @@ for classification. For more details on this method, see the advanced options se
 <!-- TODO: add link><!--> 
 
 ## Using the command line interface
+
+All of the commands here should be run at the command line. On
+macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
 To generate and save predictions for your videos using the default settings, run:
 
@@ -113,15 +115,9 @@ $ zamba train --help
 
 ## Using the Python module
 
-The main API for `zamba` is the `ModelManager` class that can be accessed with:
+The main API for `zamba` is the `ModelManager` class. The `ModelManager` is used behind the scenes by `zamba`’s command line interface to handle preprocessing the files, loading the videos, serving them to the model, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
 
-```python
-from zamba.models.manager import ModelManager
-```
-
-The `ModelManager` class is used behind the scenes by `zamba`’s command line interface to handle preprocessing the files, loading the videos, serving them to the model, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
-
-To generate predictions using the same directory `vids_to_classify/`:
+To generate predictions using the same directory, `vids_to_classify`:
 <!-- TODO: does it still default to time_distributed or does a model name have to be passed?><!-->
 <!-- TODO: placeholder, come  back to this when clearer how python module works><!-->
 ```python

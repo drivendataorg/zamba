@@ -25,7 +25,7 @@ We recommend [Python installation using Anaconda](https://www.anaconda.com/downl
 
 #### FFMPEG version 4.3
 
-FFMPEG is an open source library for loading videos of different codecs. Using ffmpeg means that `zamba` can be flexible in terms of the video formats we support. FFMPEG can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos and instructions walking through FFMPEG installation:
+[FFMPEG](https://ffmpeg.org/ffmpeg.html) is an open source library for loading videos of different codecs. Using ffmpeg means that `zamba` can be flexible in terms of the video formats we support. FFMPEG can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos and instructions walking through FFMPEG installation:
 
  - [ffmpeg download link](https://www.ffmpeg.org/download.html)
 
@@ -46,7 +46,7 @@ To check what version of zamba you have installed:
 $ pip show zamba
 ```
 
-To update zamba to the most recent version:
+To update zamba to the most recent version if needed:
 ```console
 $ pip install -U zamba
 ```

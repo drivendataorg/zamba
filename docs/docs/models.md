@@ -40,7 +40,7 @@ For training or fine tuning, either the `time_distributed` and `european` model 
 
 For inference, `slowfast` is recommended if the highest priority is differentiating between blank and non-blank videos. If the priority is species classification, either `time_distributed` or `european` is recommended based on the given geography.
 
-## What species can `zamba` detect?
+<h2 id="species-classes">What species can `zamba` detect?</h2>
 
 `time_distributed` and `slowfast` are both trained to identify 31 common species from central and west Africa. The possible class labels in these models are:
 
