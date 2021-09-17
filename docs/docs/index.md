@@ -29,7 +29,7 @@ on 11 common species from western Europe.
 
 ### [Choosing a Model](models.md)
 
-### [Model Configuration](configurations.md)
+### [All Configuration Options](configurations.md)
 
 ### User Tutorials
 - [I have no labels]("no_labels.md")
