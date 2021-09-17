@@ -146,25 +146,34 @@ Path to a model checkpoint to load and use for inference. The default is `None`,
 
 Model parameters to pass when loading a model from a checkpoint. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `model_params` is `None`
 
-#### `model_name (`time_distributed`|`slowfast`|`european`, optional)
+#### `model_name (time_distributed|slowfast|european, optional)
 
 Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
+
+#### `species (list(str), optional)`
+
+List of possible species class labels for the data.  The default is `None`, which automatically loads the classes associated with the model specified by `model_name`. Since the default `model_name` is `time_distributed`, the default is the [31 species](models.md#species-classes) (plus blank) from central and west Africa.
 
 #### `gpus (int, optional)`
 
 The number of GPUs to use during inference. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.
 
+#### `num_workers (int, optional)`
+
+The number of CPUs to use during training. By default, it will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system.
+
 #### `batch-size (int, optional)`
 
 The batch size to use for inference. Defaults to `8`
 
+#### `save (bool, optional)`
+
+Whether to save out the predictions to a CSV file. Predictions will be saved by default to `{model name}_{current timestamp}_preds.csv`.
+For example, running `zamba predict` with the `time_distributed` model on 9/15/21 will save out predictions at `time_distributed_2021-09-15_preds.csv`. Defaults to `True`
+
 #### `dry_run (bool, optional)`
 
 Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of inference. Defaults to `False`
-
-#### `columns (list(str), optional)`
-
-List of possible species class labels for the data. The default is the [31 species](models.md#species-classes) (plus blank) from central and west Africa that are predicted by `time_distributed` and `slowfast`.
 
 #### `proba_threshold (float between 0 and 1, optional)`
 
@@ -175,6 +184,18 @@ By default no threshold is passed, `proba_threshold=None`. This will return a pr
 #### `output_class_names (bool, optional)`
 
 Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the species with the highest class probability, or `blank` if the most likely classification is no animal. Defaults to `False`
+
+#### `weight_download_region [us|eu|asia]` 
+
+Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
+
+#### `cache_dir (FilePath, optional)`
+
+The directory where the model weights will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory. <!-- TODO: how to find this directory?><!-->
+
+#### `skip_load_validation (bool, optional)`
+
+By default, before kicking off inference `zamba` will iterate through all of the videos in the data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Defaults to `False`
 
 ## Training
 
@@ -214,7 +235,7 @@ Path to a model checkpoint to load and resume training from. The default is `Non
 
 Model parameters to pass when loading a model from a checkpoint. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `model_params` is `None`
 
-#### `model_name (`time_distributed`|`slowfast`|`european`, optional)
+#### `model_name (time_distributed|slowfast|european, optional)`
 
 Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
 
@@ -230,7 +251,7 @@ List of possible class labels that the model should be trained to predict. If th
 
 Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of train and validation. Defaults to `False`
 
-#### `batch-size (int, optional)`
+#### `batch_size (int, optional)`
 
 The batch size to use for training. Defaults to `8`
 
@@ -266,7 +287,7 @@ Whether to monitor a metric during model training and stop training when the met
 
 Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) if `early_stopping` is `True`. The default values are specified in the `EarlyStoppingConfig` <!-- TODO: add link to github source code><!--> class: `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
 
-#### tensorboard_log_dir
+#### `tensorboard_log_dir (str, optional)`
 
 Pytorch Lightning can log to a local file system in TensorBoard format with [TensorBoardLogger](https://pytorch-lightning.readthedocs.io/en/latest/api/pytorch_lightning.loggers.tensorboard.html). The directory in which to save these logs is set to `zamba/models/<tensorboard_log_dir>/`. Defaults to `tensorboard_logs`
 
