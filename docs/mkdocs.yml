@@ -26,8 +26,8 @@ nav:
     - Creating YAML configuration files: "configurations.md"
   - 'User Tutorials':
     - I want to predict on unlabeled videos: "user-tutorials/no_labels.md"
-    - I have <code>zamba</code> labels: "user-tutorials/subset_labels.md"
-    - I have new labels: "user-tutorials/new_labels.md"
+    - I want to train on <code>zamba</code> labels: "user-tutorials/subset_labels.md"
+    - I want to train on new labels: "user-tutorials/new_labels.md"
   - 'Contributing': 
     - Help make <code>zamba</code> better: "contribute.md"
   - 'Changelog':
