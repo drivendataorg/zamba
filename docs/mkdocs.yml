@@ -21,14 +21,15 @@ nav:
     - Command Line Interface: "cli.md"
     - Python Package: "py-package.md"
   - 'Available Models': 
-    - Choosing a model: "models.md"
-  - 'Model Configurations':
+    - Choosing a Model: "models.md"
+  - 'All Configuration Options':
     - Creating YAML configuration files: "configurations.md"
   - 'User Tutorials':
-    - I have no labels: "no_labels.md"
-    - I have zamba labels: "subset_labels.md"
-    - I have new labels: "new_labels.md"
-  - Contributing: "contribute.md"
+    - I want to predict on unlabeled videos: "user-tutorials/no_labels.md"
+    - I have <code>zamba</code> labels: "user-tutorials/subset_labels.md"
+    - I have new labels: "user-tutorials/new_labels.md"
+  - 'Contributing': 
+    - Help make <code>zamba</code> better: "contribute.md"
   - 'Changelog':
     - Version 2: "v2_updates.md"
 
