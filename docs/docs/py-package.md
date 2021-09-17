@@ -1,5 +1,7 @@
 # zamba as a Python Module
 
+reference: https://github.com/drivendataorg/zamba-algorithms/pull/405
+
 If you want to use `zamba` as part of a pipeline, it can be used directly in python scripts instead of from the command line.
 
 ## Use zamba in Python
