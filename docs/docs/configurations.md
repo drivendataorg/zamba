@@ -1,7 +1,7 @@
 # Model Configurations
 
-In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file. Some - but not all - of these parameters can also be passed directly as arguments to the command line.
-<!-- TODO: link to cli page><!-->
+In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file. Some - but not all - of these parameters can also be passed directly as arguments to the [command line](cli.md).
+
 The basic structure of a configuration is:
 
 ```console
@@ -101,7 +101,7 @@ Select specific frame numbers. Note: frame selection is done after any resamplin
 
 #### `evenly_sample_total_frames (bool, optional)`
 
-Reach the total number of frames specified by evenly sampling from the duration of the video. Defaults to `False`.
+Reach the total number of frames specified by evenly sampling from the duration of the video. Defaults to `False`
 
 #### `pix_fmt (str, optional)`
 
@@ -111,12 +111,24 @@ ffmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bg
 
 All possible model inference parameters are defined by the `PredictConfig` class<!-- TODO: add link to class definition><!-->. 
 
+Say we want to instantiate a configuration to run inference on the videos in `vids_to_classify`. First, let's check what's in the directory:
+
+```console
+$ ls vids_to_classify/
+blank.mp4
+chimp.mp4
+eleph.mp4
+leopard.mp4
+```
+
+Now let's create the `PredictConfig` class in Python:
+
 ```python
 >> from zamba.models.config import PredictConfig
->> default_predict_config = PredictConfig()
->> default_predict_config
+>> default_predict_config = PredictConfig(data_directory='vids_to_classify/')
 ```
-<!-- TODO: add output of default train config above when it's working><!-->
+
+Either a `data_directory` or a `file_list` must be specified to instantiate a `PredictModel` object. Otherwise, the current working directory will be used as the default `data_directory`.
 
 #### `data_directory (DirectoryPath, optional)`
 
@@ -124,13 +136,19 @@ Path to the directory containing training videos. Defaults to the current workin
 
 #### `file_list (FilePath, optional)`
 
-Path to a list of files for classification. Defaults to `None`
+Path to a list of files for classification. Defaults to the files in the current working directory
 
 #### `checkpoint (Path or str, optional)`
 
-Path to a model checkpoint to load and use for inference. To load a model from a checkpoint, the model name must also be specified. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model-name`.
+Path to a model checkpoint to load and use for inference. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `checkpoint` is `zamba_time_distributed.ckpt`
 
-#### `model_class, model_name, model_params` <!-- TODO: what's the final status of these params?><!-->
+#### `model_params (ModelParams <!-- TODO: link to class definition in config.py><!-->, optional)`
+
+Model parameters to pass when loading a model from a checkpoint. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `model_params` is `None`
+
+#### `model_name (`time_distributed`|`slowfast`|`european`, optional)
+
+Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
 
 #### `gpus (int, optional)`
 
@@ -138,15 +156,15 @@ The number of GPUs to use during inference. By default, all of the available GPU
 
 #### `batch-size (int, optional)`
 
-The batch size to use for inference. Defaults to `8`.
+The batch size to use for inference. Defaults to `8`
 
 #### `dry_run (bool, optional)`
 
-Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of inference. Defaults to `False`.
+Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of inference. Defaults to `False`
 
 #### `columns (list(str), optional)`
 
-List of possible species class labels for the data. The default is the 31 species from central and west Africa that are predicted by `time_distributed` and `slowfast` <!-- TODO: add link to list of species><!-->
+List of possible species class labels for the data. The default is the [31 species](models.md#species-classes) (plus blank) from central and west Africa that are predicted by `time_distributed` and `slowfast`.
 
 #### `proba_threshold (float between 0 and 1, optional)`
 
@@ -162,12 +180,23 @@ Setting this option to `True` yields the most concise output `zamba` is capable 
 
 All possible model training parameters are defined by the `TrainConfig` class<!-- TODO: add link to class definition><!-->. 
 
+Say we want to instantiate a configuration to train a model on the videos in `vids_to_classify`, and we have our ground truth labels in `example_labels.csv`. Let's check what's in the labels:
+
+```console
+$ cat example_labels.csv
+filepath,label
+vids_to_classify/eleph.MP4,elephant
+vids_to_classify/leopard.MP4,leopard
+vids_to_classify/blank.MP4,blank
+vids_to_classify/chimp.MP4,chimpanzee_bonobo
+```
+
+Now let's create the `TrainConfig` class in Python:
+
 ```python
 >> from zamba.models.config import TrainConfig
->> default_train_config = TrainConfig(labels='example_labels.csv')
->> default_train_config
+>> default_train_config = TrainConfig(data_directory='vids_to_classify/', labels='example_labels.csv')
 ```
-<!-- TODO: add output of default train config above when it's working><!-->
 
 #### `labels (FilePath, required)`
 
@@ -177,36 +206,82 @@ Path to a CSV file with labels for training. The labels file must have columns f
 
 Path to the directory containing training videos. Defaults to the current working directory.
 
-#### `model_class, model_name, model_params` <!-- TODO: what's the final status of these params?><!-->
+#### `checkpoint (Path or str, optional)`
 
-#### `resume_from_checkpoint (Path or str, optional)`
+Path to a model checkpoint to load and resume training from. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `checkpoint` is `zamba_time_distributed.ckpt`
 
-Path to a model checkpoint from which to resume training. Defaults to `None`
+#### `model_params (ModelParams <!-- TODO: link to class definition in config.py><!-->, optional)`
+
+Model parameters to pass when loading a model from a checkpoint. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `model_params` is `None`
+
+#### `model_name (`time_distributed`|`slowfast`|`european`, optional)
+
+Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
+
+#### `species (list(str), optional)`
+
+List of possible class labels that the model should be trained to predict. If the value is `None` (the default), the value will be set based on the label column of the CSV passed to `labels`:
+1. If the given labels are a subset of the [`zamba` labels](models.md#species-classes) for central and west Africa, `species` will be set to that list of 31 species (plus blank).
+2. If the given labels are a subset of the [`zamba` labels](models.md#species-classes) for western Europe, `species` will be set to that list of 11 species (plus blank).
+3. If the given labels are *not* a subset of the `zamba` labels, `species` will be set to a list of unique values in the given labels
+<!-- TODO: does this need to update? should it talk about loading from the checkpoint><!-->
 
 #### `dry_run (bool, optional)`
 
-Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of train and validation. Defaults to `False`.
+Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of train and validation. Defaults to `False`
 
 #### `batch-size (int, optional)`
 
-The batch size to use for training. Defaults to `8`.
+The batch size to use for training. Defaults to `8`
 
-#### auto_lr_find, backbone_finetune, backbone_finetune_params 
-<!-- TODO: add these><!-->
+#### `auto_lr_find (bool, optional)`
+
+Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to find the optimal initial learning rate. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `True`
+
+#### `backbone_finetune (bool, optional)`
+
+Finetune a backbone model based on a learning rate user-defined scheduling. Derined from Pytorch Lightning's built-in `BackboneFinetuning`, but with the ability to freeze batch norm layers during the freeze phase. See `zamba.pytorch.finetuning` for details.<!-- TODO: add github link><!--> Defaults to `False`
+
+#### `backbone_finetune_params (zamba.models.config.BackboneFinetuneConfig, optional)`
+
+Parameters to pass to the `BackboneFinetuning` <!-- TODO: add link to github source code><!-->class if `backbone_finetune` is `True`. The default values are specified in the `BackboneFinetuneConfig` <!-- TODO: add link to github source code><!--> class: `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
 
 #### `gpus (int, optional)`
 
 The number of GPUs to use during training. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.
 
+#### `num_workers (int, optional)`
+
+The number of CPUs to use during training. By default, it will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system.
+
 #### `max_epochs (int, optional)`
 
 The maximum number of epochs to run during training. Defaults to `None`
 
-#### `early_stopping (bool, optional), early_stopping_params (EarlyStoppingConfig)`
+#### `early_stopping (bool, optional)`
+
+Whether to monitor a metric during model training and stop training when the metric stops improving. Uses [`pytorch_lightning.callbacks.early_stopping`](https://pytorch-lightning.readthedocs.io/en/latest/common/early_stopping.html). Defaults to `True`
+
+#### `early_stopping_params (zamba.models.config.EarlyStoppingConfig, optional)`
+
+Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) if `early_stopping` is `True`. The default values are specified in the `EarlyStoppingConfig` <!-- TODO: add link to github source code><!--> class: `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
+
 #### tensorboard_log_dir
 
-<!-- TODO: add these><!-->
+Pytorch Lightning can log to a local file system in TensorBoard format with [TensorBoardLogger](https://pytorch-lightning.readthedocs.io/en/latest/api/pytorch_lightning.loggers.tensorboard.html). The directory in which to save these logs is set to `zamba/models/<tensorboard_log_dir>/`. Defaults to `tensorboard_logs`
+
+#### `weight_download_region [us|eu|asia]` 
+
+Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
+
+#### `cache_dir (FilePath, optional)`
+
+The directory where the trained model will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory. <!-- TODO: how to find this directory?><!-->
 
 #### `split_proportions (dict(str, int), optional)`
 
 The proportion of data to use during training, validation, and as a holdout set. Defaults to `{"train": 3, "val": 1, "holdout": 1}`
+
+#### `skip_load_validation (bool, optional)`
+
+By default, before kicking off training `zamba` will iterate through all of the videos in the training data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Defaults to `False`
