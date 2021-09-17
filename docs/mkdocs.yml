@@ -13,17 +13,24 @@ extra_css:
   - stylesheets/custom_mkdocstrings.css
 
 nav:
-  - Quickstart: "quickstart.md"
-  - Installing Zamba: "install.md"
-  - Command Line Interface: "cli.md"
-  - Python Package: "py-package.md"
-  - Available Models: "models.md"
-  - Model Configurations: "configurations.md"
-  - I have no labels: "no_labels.md"
-  - I have zamba labels: "subset_labels.md"
-  - I have new labels: "new_labels.md"
+  - Home: 'index.md'
+  - 'Getting Started':
+    - Quickstart: "quickstart.md"
+    - Installing Zamba: "install.md"
+  - 'How to Run Zamba':
+    - Command Line Interface: "cli.md"
+    - Python Package: "py-package.md"
+  - 'Available Models': 
+    - Choosing a model: "models.md"
+  - 'Model Configurations':
+    - Creating YAML configuration files: "configurations.md"
+  - 'User Tutorials':
+    - I have no labels: "no_labels.md"
+    - I have zamba labels: "subset_labels.md"
+    - I have new labels: "new_labels.md"
   - Contributing: "contribute.md"
-  - Version 2: "v2_updates.md"
+  - 'Changelog':
+    - Version 2: "v2_updates.md"
 
 markdown_extensions:
   - pymdownx.highlight
