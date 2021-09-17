@@ -28,18 +28,22 @@ First list the videos (in the command line, for simplicity):
 
 ```
 $ ls vids_to_classify/
-blank1.mp4
-blank2.mp4
+blank.mp4
+chimp.mp4
 eleph.mp4
-small-cat.mp4
-ungulate.mp4
+leopard.mp4
 ```
 
 Now start Python, import the `ModelManager`, and make a prediction:
 
+<!-- TODO: update the outputs below once zamba is running><!-->
+
+<!-- TODO: update import path and syntax if it changes><!-->
+
+<!-- TODO: right now .predict doesn't return the df, it just saves it. I think we should add that. Either add it or change the code below><!-->
 ```python
-from zamba.models.manager import ModelManager
-manager = ModelManager(model_class='cnnensemble')
+from zamba.models.model_manager import ModelManager
+manager = ModelManager('time_distributed')
 preds = manager.predict('vids_to_classify/', save=True)
 
  # Predicting on 4 L1 models:  25%|███████████▌                                  | 1/4 [02:04<06:14, 124.92s/it]
@@ -89,7 +93,7 @@ preds.head()
 # small-cat.mp4  9.729478e-01  3.508627e-04  0.008978  5.116147e-04
 ```
 
-A few of things to note.
+A few of things to note.<!-- TODO: update these>
 
 1. The data directory `vids_to_classify/` should be passed to the `ModelManager` as a string.
 2. The data path and prediction path are not listed at the start of prediction,
