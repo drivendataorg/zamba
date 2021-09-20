@@ -1,4 +1,4 @@
-# Model Configurations
+# All Configuration Options
 
 In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file. Some - but not all - of these parameters can also be passed directly as arguments to the [command line](cli.md).
 
@@ -219,9 +219,9 @@ Now let's create the `TrainConfig` class in Python:
 >> default_train_config = TrainConfig(data_directory='vids_to_classify/', labels='example_labels.csv')
 ```
 
-#### `labels (FilePath, required)`
+#### `labels (FilePath or pd.DataFrame, required)`
 
-Path to a CSV file with labels for training. The labels file must have columns for `filename` and `label`
+Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`.
 
 #### `data_directory (DirectoryPath, optional)`
 
