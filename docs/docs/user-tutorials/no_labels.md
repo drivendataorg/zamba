@@ -13,7 +13,7 @@ This tutorial goes over the steps for using `zamba` if you:
 - Your videos should all be a type that ffmpeg can recognize (link to ffmpeg filetype options)
 - they should all be in one folder, and that folder shouldn't have any other files in it. borrow language from quickstart
 - Make sure you know the path to your videos from where you are
-- You'll add this to the CLI with `--data-dir <path-to-your-data>`
+- You'll add this to the CLI with `--data-dir <path-to-your-data>`.
 
 If your videos are in a subfolder of your current working directory called `vids_to_classify`, so far the command is:
 ```console

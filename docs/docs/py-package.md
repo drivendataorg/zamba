@@ -1,8 +1,97 @@
-# zamba as a Python Module
+# `zamba` as a Python Module
+
+<!-- TODO: this page><!-->
+
+If you want to use `zamba` as part of a pipeline, it can be used directly in python scripts instead of from the command line. Any functionality available in the command line interface is also accessible in the Python package.
+
+## Generating predictions
+
+To generate predictions for the same folder, `vids_to_classify`, run:
+
+- example python code for generating predictions
+
+- explanation of predictconfig and videoloaderconfig. point to videoloaderconfig section
+
+- output of help(PredictConfig) (if we add docstrings)
+
+- explain required arguments, point to all configurations for the rest of the arguments
+
+- ### examples
+
+
+## Training a model
+
+
+## VideoLoaderConfig
+
+- both train and predict use the vidloadconfig class to specify any optional parameters for video loading
+- help(VideoLoaderConfig) beginning output. 
+- none of these are required
+- point to all configurations page
+
+
+
 
 reference: https://github.com/drivendataorg/zamba-algorithms/pull/405
 
-If you want to use `zamba` as part of a pipeline, it can be used directly in python scripts instead of from the command line.
+
+
+### Advanced example
+
+```python
+from cloudpathlib import S3Path
+import pandas as pd
+
+from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba_algorithms.models.config import TrainConfig
+from zamba_algorithms.models.model_manager import train_model
+from zamba_algorithms.settings import ROOT_DIRECTORY
+
+# set up csv of labels
+df = pd.read_csv(ROOT_DIRECTORY / "data" / "processed" / "unified_metadata.csv", low_memory=False)
+df["filepath"] = df.filepath.apply(lambda x: S3Path(x).key)
+df.rename(columns={"zamba_label_new": "label"}, inplace=True)
+df = df[df.label.notnull()].copy().head(20)
+
+video_loader_config = VideoLoaderConfig(
+    video_height=224,
+    video_width=224,
+    crop_bottom_pixels=50,
+    ensure_total_frames=True,
+    megadetector_lite_config={"confidence": 0.25, "fill_mode": "score_sorted", "n_frames": 16},
+    total_frames=16,
+)
+
+train_config = TrainConfig(
+    labels=df[["filepath", "label"]],
+    model_name="time_distributed",
+    batch_size=8,
+    backbone_finetune=True,
+    backbone_finetune_params={
+        "unfreeze_backbone_at_epoch": 3,
+        "verbose": True,
+        "pre_train_bn": True,
+        "multiplier": 1,
+    },
+    num_workers=3,
+    auto_lr_find=True,
+    early_stopping_params={
+        "patience": 5,
+    },
+    model_params={
+        "scheduler": "MultiStepLR",
+        "scheduler_params": {"milestones": [3], "gamma": 0.5, "verbose": True},
+    },
+)
+
+train_model(train_config, video_loader_config)
+```
+
+
+
+
+***
+OLD
 
 ## Use zamba in Python
 

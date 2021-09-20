@@ -115,6 +115,8 @@ information about the `train` command and its options:
 $ zamba train --help
 ```
 
+For more details, see the page on the [CLI](cli.md).
+
 ## Using the Python module
 
 Any functionality available in the command line interface is also accessible in the Python package.
@@ -123,7 +125,7 @@ Any functionality available in the command line interface is also accessible in 
 
 ### Generating predictions
 
-To generate predictions for the same folder, `vids_to_classify`, run:
+To generate predictions for the same folder, `vids_to_classify`, the minimum you have to run is:
 ```python
 from zamba.models.model_manager import predict_model
 from zamba.models.config import PredictConfig
@@ -197,10 +199,7 @@ help(PredictConfig)
 help(VideoLoaderConfig)
 ```
 
-Advanced options are explained in greater detail on the [All Configuration Options](configurations.md) page.
-
-<!-- TODO: add example for training for both, and other examples><!-->
-
+Advanced options are explained in greater detail on the [All Configuration Options](configurations.md) page. 
 
 
 ## Downloading model weights

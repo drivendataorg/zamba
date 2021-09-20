@@ -1,4 +1,4 @@
-# zamba Command Line Interface
+# `zamba` Command Line Interface
 
 This section goes into more detail about the available options for
 the `zamba` command line interface (CLI) tool. If you are new to `zamba` and just
@@ -108,7 +108,7 @@ Path to a yaml configuration file with values for other arguments to `predict`. 
 #### `--yes`
 By default, the command line interface will print the specifications you have entered and ask for confirmation before starting inference. Specifying `--yes` or `-y` skips this step and kicks off prediction without confirmation. 
 
-### Examples
+## `zamba predict` examples
 
 <!-- TODO: add examples><!-->
 
@@ -181,6 +181,6 @@ Path to a yaml configuration file with values for other arguments to `predict`. 
 
 By default, the command line interface will print the specifications you have entered and ask for confirmation before starting to train. Specifying `--yes` or `-y` skips this step and kicks off training without confirmation. 
 
-### Examples
+## `zamba train` examples
 
 <!-- TODO: add examples><!-->
