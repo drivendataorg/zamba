@@ -1,22 +1,17 @@
 # Quickstart
 
 This section assumes you have successfully installed `zamba` and want to get
-right to making species predictions for some videos! 
+right to either making species predictions for some videos, or training a model! 
 
-## Input videos
+## How do I input my videos to `zamba`?
 
-### What videos can I use?
+You can input the path to a directory of videos to classify. 
 
-`zamba` supports the same video formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). The built-in models were trained primarily on `.mp4` and `.avi` videos that were each between 15 seconds and 1 minute long.
+* **The folder must contain only valid video files**, since `zamba` will try to load all of the files in the directory. 
+* `zamba` supports the same video formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
+* `zamba` will only generate predictions for the videos in the top level of a directory (`zamba` does not currently extract videos from nested directories).
 
-### How do I input my videos to `zamba`?
-
-You can input the path to a directory of videos to classify. For example,
-suppose you have `zamba` installed, your command line is open, and you have a
-directory of videos, `vids_to_classify`, that you want to classify using
-`zamba`.
-
-List the videos:
+For example, say that we have a directory of videos called `vids_to_classify` that we want to generate predictions for using `zamba`. Let's list the videos:
 
 ```console
 $ ls vids_to_classify/
@@ -48,21 +43,20 @@ Here are some screenshots from those videos:
   </tbody>
 </table>
 
-**The folder must contain only valid video files** since zamba will try to load all of the files in the directory.
-
 In this example, the videos have meaningful names so that we can easily
 compare the predictions made by `zamba`. In practice, your videos will
 probably be named something much less useful!
 
-You can also input a CSV of metadata that includes the path to each video
-for classification. For more details on this method, see the advanced options section.
-<!-- TODO: add link><!--> 
+<h2 id='using-cli'></h2>
 
 ## Using the command line interface
 
 All of the commands here should be run at the command line. On
 macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
+<h3 id='basic-cli-prediction'></h3>
+
+### Generating predictions
 To generate and save predictions for your videos using the default settings, run:
 
 ```console
@@ -72,8 +66,6 @@ $ zamba predict --data-dir vids_to_classify/
 `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
 Predictions will be saved to `{model name}_{current timestamp}_preds.csv`.
 For example, running `zamba predict` on 9/15/2021 with the `time_distributed` model (the default) will save out predictions to `time_distributed_2021-09-15_preds.csv`. 
-
-`zamba` will only generate predictions for the videos in the top level of the `vids_to_classify` directory (`zamba` does not currently extract videos from nested directories).
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
 
@@ -85,6 +77,16 @@ vids/chimp.mp4,chimpanzee_bonobo
 vids/eleph.mp4,elephant
 vids/leopard.mp4,leopard
 ```
+
+### Training a model
+
+To train a model based on the videos in `vids_to_classify` and the labels in `example_labels.csv`:
+
+```console
+$ zamba train --data-dir vids/ --labels example_labels.csv
+```
+
+<!-- TODO: where will the model be saved?><!-->
 
 ### Getting help
 
@@ -115,21 +117,91 @@ $ zamba train --help
 
 ## Using the Python module
 
-The main API for `zamba` is the `ModelManager` class. The `ModelManager` is used behind the scenes by `zamba`’s command line interface to handle preprocessing the files, loading the videos, serving them to the model, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
+Any functionality available in the command line interface is also accessible in the Python package.
 
-To generate predictions using the same directory, `vids_to_classify`:
-<!-- TODO: does it still default to time_distributed or does a model name have to be passed?><!-->
-<!-- TODO: placeholder, come  back to this when clearer how python module works><!-->
+<h3 id='basic-python-prediction'></h3>
+
+### Generating predictions
+
+To generate predictions for the same folder, `vids_to_classify`, run:
 ```python
-from zamba.models.manager import ModelManager
-manager = ModelManager()
+from zamba.models.model_manager import predict_model
+from zamba.models.config import PredictConfig
+from zamba_algorithms.data.video import VideoLoaderConfig
+
+predict_config = PredictConfig(data_directory='vids_to_classify/')
+video_loader_config = VideoLoaderConfig()
+
+predict_model(predict_config=predict_config, video_loader_config=video_loader_config)
 ```
 
-Just like in the command line, the default output has a row for each filename and a column for each possible class. 
-We can generate the simplified most probable class by adjusting the model configuration:
-<!-- TODO: add><!-->
+To specify various parameters when running `predict_model`, the first step is to initiate `PredictConfig` and `VideoLoaderConfig` with any specifications for prediction and video loading respectively. The above uses all of the default settings.
 
-<!-- TODO: add how to specify weight download region><!-->
+The output will be the same as in the CLI - a `.csv` with rows labeled by each video filename and columns for each class, saved to `{model name}_{current timestamp}_preds.csv` (see the [CLI section](quickstart.md#basic-cli-prediction) for more details).
+
+Just like in the CLI, setting `output_class_names` to `True` will simplify the predictions to return only the *most likely* animal in each video. Another option is to set `proba_threshold`. For each video, this will return whether each class is either present (`1`) or not present (`0`) based on whether the probability is above a certain threshold:
+
+```python
+predict_config = PredictConfig(data_directory='vids_to_classify/', proba_threshold=0.5)
+video_loader_config = VideoLoaderConfig()
+
+predict_model(predict_config=predict_config, video_loader_config=video_loader_config)
+predictions = pd.read_csv('time_distributed_2021-09-15_preds.csv')
+predictions
+```
+
+| filepath                     | aardvark | antelope_duiker | badger | bat | bird | blank | cattle | cheetah | chimpanzee_bonobo | civet_genet | elephant | equid | forest_buffalo | fox | giraffe | gorilla | hare_rabbit | hippopotamus | hog | human | hyena | large_flightless_bird | leopard | lion | mongoose | monkey_prosimian | pangolin | porcupine | reptile | rodent | small_cat | wild_dog_jackal |
+| ---------------------------- | -------- | --------------- | ------ | --- | ---- | ----- | ------ | ------- | ----------------- | ----------- | -------- | ----- | -------------- | --- | ------- | ------- | ----------- | ------------ | --- | ----- | ----- | --------------------- | ------- | ---- | -------- | ---------------- | -------- | --------- | ------- | ------ | --------- | --------------- |
+| vids_to_classify/blank.MP4   | 0        | 0               | 0      | 0   | 0    | 1     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+| vids_to_classify/chimp.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 1                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+| vids_to_classify/eleph.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 1        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+| vids_to_classify/leopard.MP4 | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 1       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+
+### Training
+
+To train a model based on the videos in `vids_to_classify` and the labels in `example_labels.csv`:
+
+```python
+from zamba.models.model_manager import train_model
+from zamba.models.config import TrainConfig, VideoLoaderConfig
+
+train_config = TrainConfig(labels='example_labels.csv', data_directory='vids_to_classify/')
+video_loader_config = VideoLoaderConfig()
+
+train_model(train_config=train_config, video_loader_config=video_loader_config)
+```
+
+<!-- TODO: where will the model be saved?><!-->
+
+### Getting help
+
+Once you have import the functions and classes in Python, you can see the details of each with `help`:
+
+```python
+>> help(predict_model)
+
+predict_model(predict_config: zamba_algorithms.models.config.PredictConfig, video_loader_config: zamba_algorithms.data.video.VideoLoaderConfig, return_preds: bool = False)
+    Predicts from a model and writes out predictions to a csv.
+    
+    Args:
+        predict_config (PredictConfig): Pydantic config for performing inference.
+        video_loader_config (VideoLoaderConfig): Pydantic config for preprocessing videos.
+        return_preds (bool): If True, return dataframe containing predictions (in addition
+            to whatever save behavior is specified by predict_config.save). Defaults to False.
+```
+
+To see the options for `PredictConfig` and for `VideoLoaderConfig`, you can run:
+
+```python
+help(PredictConfig)
+help(VideoLoaderConfig)
+```
+
+Advanced options are explained in greater detail on the [All Configuration Options](configurations.md) page.
+
+<!-- TODO: add example for training for both, and other examples><!-->
+
+
 
 ## Downloading model weights
 
