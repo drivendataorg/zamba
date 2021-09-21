@@ -6,6 +6,8 @@ Three main configuration classes are specific in `zamba`:
 * `PredictConfig`: Defines all possible parameters for model inference
 * `TrainConfig`: Defines all possible parameters for model training
 
+Each inherits from the pydantic [BaseModel](https://pydantic-docs.helpmanual.io/usage/models/) as a parent class.
+
 <a id='video-loading-arguments'></a>
 
 ## Video loading arguments
@@ -135,8 +137,11 @@ The batch size to use for inference. Defaults to `8`
 
 #### `save (bool, optional)`
 
-Whether to save out the predictions to a CSV file. Predictions will be saved by default to `{model name}_{current timestamp}_preds.csv`.
-For example, running `zamba predict` with the `time_distributed` model on 9/15/21 will save out predictions at `time_distributed_2021-09-15_preds.csv`. Defaults to `True`
+Whether to save out the predictions to a CSV file. Defaults to `True`
+
+#### `save_path (FilePath, optional)`
+
+Full path where the prediction CSV file will be saved. Any needed parent directories will be created. By default, predictions will be saved at `zamba_predictions.csv` in the current working directory.
 
 #### `dry_run (bool, optional)`
 

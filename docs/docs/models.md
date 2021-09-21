@@ -7,7 +7,7 @@ The algorithms in `zamba` are designed to identify species of animals that appea
 - # of sites
 - kinds of sites?><!-->
 
-## Basic use
+## Basic usage
 
 <table>
   <tr>

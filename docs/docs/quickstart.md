@@ -99,6 +99,8 @@ example_vids/chimp.MP4,chimpanzee_bonobo
 **`zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.** 
 Once a model's weights are downloaded, the tool will use the local version and will not need to perform this download again. If you are not in the US, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server the faster the downloads will be.
 
+<a id='getting-help'></a>
+
 ## Getting help
 
 Once zamba is installed, you can see more details of each function with `--help`. 
@@ -138,7 +140,13 @@ Options:
                                   machine.
 
   --batch-size INTEGER            Batch size to use for training.
-  --save / --no-save              Whether to save out predictions to csv file.
+  --save / --no-save              Whether to save out predictions to a csv
+                                  file. If you want to specify the location of
+                                  the csv, use save_path instead.
+
+  --save-path PATH                Full path for prediction CSV file. Any
+                                  needed parent directories will be created.
+
   --dry-run / --no-dry-run        Runs one batch of inference to check for
                                   bugs.
 
@@ -187,7 +195,7 @@ $ zamba train --help
 
 Usage: zamba train [OPTIONS]
 
-  Train a model using the provided data, labels, and model name.
+  Train a model on your labeled data.
 
   If an argument is specified in both the command line and in a yaml file,
   the command line input will take precedence.
@@ -214,6 +222,12 @@ Options:
 
   --dry-run / --no-dry-run        Runs one batch of train and validation to
                                   check for bugs.
+
+  --save-dir PATH                 Directory in which to save model checkpoint
+                                  and configuration file. If not specified,
+                                  will save to a folder called
+                                  'zamba_{model_name}' in your working
+                                  directory.
 
   --weight-download-region [us|eu|asia]
                                   Server region for downloading weights.

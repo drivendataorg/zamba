@@ -19,7 +19,7 @@ nav:
     - Installing Zamba: "install.md"
   - 'User Tutorials':
     - Classifying Unlabeled Videos: "predict-tutorial.md"
-    - Training a Model on Labaled Videos: "train-tutorial.md"
+    - Training a Model on Labeled Videos: "train-tutorial.md"
   - 'Available Models': 
     - Choosing a Model: "models.md"
   - 'Advanced Options':
