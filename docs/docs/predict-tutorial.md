@@ -101,10 +101,10 @@ You can see the full default configuration for each model in `models/config`<!--
 
 In each case, `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
 
-Predictions will be saved to `{model name}_{current timestamp}_preds.csv`. For example, running `zamba predict` on 9/15/2021 with the `time_distributed` model (the default) will save predictions to `time_distributed_2021-09-15_preds.csv`. 
+By default, predictions will be saved to `zamba_predictions.csv`. You can save predictions to a custom path using the `--save-path` argument.
 
 ```console
-$ cat time_distributed_2021-09-15_preds.csv
+$ cat zamba_predictions.csv
 filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal
 example_vids/eleph.MP4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 example_vids/leopard.MP4,0.0,0.0,0.0,0.0,2e-05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -167,7 +167,7 @@ There are three options for how to format predictions, listed from most informat
 Say we want to generate predictions for the videos in `example_vids` indicating which animals are present in each video based on a probability threshold of 50%:
 ```console
 $ zamba predict --data-dir example_vids/ --proba-threshold 0.5
-$ cat time_distributed_2021-09-16_preds.csv
+$ cat zamba_predictions.csv
 filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal
 example_vids/eleph.MP4,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 example_vids/leopard.MP4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
@@ -180,7 +180,7 @@ In the Python package, use the `proba_threshold` argument:
 ```python
 predict_config = PredictConfig(data_directory='example_vids/', 
                                proba_threshold=0.5
-predictions = pd.read_csv('time_distributed_2021-09-16_preds.csv')
+predictions = pd.read_csv('zamba_predictions.csv')
 predictions
 ```
 
