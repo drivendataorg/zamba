@@ -94,6 +94,8 @@ For inference, `slowfast` is recommended if the highest priority is differentiat
 * `weasel`
 * `wild_boar`
 
+<a id='time-distributed'></a>
+
 ## `time_distributed` model
 
 ### Algorithm
@@ -124,9 +126,13 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
 <!-- TODO: add link to yaml file><!-->
 
+**`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** This is the default behavior if `time_distributed` is used, but must be added if you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package.
+
 Running the `time_distributed` model on every frame would be very time consuming. Instead, the Megadetector model is used to select the 16 frames that have the highest probability of detection. `time_distributed` is run only on this subset.
 
 All videos are automatically resized to a resolution of 224x224 pixels.
+
+<a id='slowfast'></a>
 
 ## `slowfast` model
 
@@ -146,8 +152,13 @@ Unlike `time_distributed`, `slowfast` is video native. This means it takes into 
 
 The `slowfast` model was trained using the same data as the `time_distributed` model<!-- TODO: add link to time distributed training data section><!-->.
 
+### Default video loading configuration
+
 <!-- TODO: add link to yaml file><!-->
 
+**`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** This is the default behavior if `time_distributed` is used, but must be added if you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package.
+
+<a id='european'></a>
 
 ## `european` model
 
@@ -164,4 +175,13 @@ The `european` model was built by re-training a well-known image classification 
 `european` was trained using data collected and annotated by partners at [The Max Planck Institute for
 Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
 
+### Default video loading configuration
+
 <!-- TODO: add link to yaml file><!-->
+
+**`european` requires that 16 frames be sampled from each video before running inference or training.** This is the default behavior if `european` is used, but must be added if you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package.
+
+
+predict_config:
+  data_directory: vids/
+  model_name: time_distributed

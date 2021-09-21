@@ -1,50 +1,16 @@
-# All Configuration Options
+# All Optional Arguments
 
-In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file. Some - but not all - of these parameters can also be passed directly as arguments to the [command line](cli.md).
+Three main configuration classes are specific in `zamba`:
 
-The basic structure of a configuration is:
+* `VideoLoaderConfig`: Defines all possible parameters for how videos are loaded
+* `PredictConfig`: Defines all possible parameters for model inference
+* `TrainConfig`: Defines all possible parameters for model training
 
-```console
-$ cat basic_config.yaml
-video_loader_config:
-  # video loading parameters, eg. video_height: 224
+<a id='video-loading-arguments'></a>
 
-predict_config:
-  model_name: slowfast
-  data_directoty: vids_to_classify/
-  # other training parameters, eg. batch_size
+## Video loading arguments
 
-train_config:
-  model_name: slowfast
-  data_directory: vids_to_classify/
-  # other training parameters, eg. labels, batch_size
-```
-
-For example, the configuration below will predict labels for the videos in `vids_to_classify` using the `slowfast` model, and will resize all videos to 224x224 pixels:
-
-```console
-video_loader_config:
-  video_height: 224
-  video_width: 224
-
-predict_config:
-  model_name: slowfast
-  data_directoty: vids_to_classify/
-```
-
-There are three basic classes used in model configuration: VideoLoaderConfig, TrainConfig, and PredictConfig. Each inherits from the pydantic [BaseModel](https://pydantic-docs.helpmanual.io/usage/models/) as a parent class.
-
-## Video loading
-
-Each video is loaded as a series of frames. For example, to evenly sample 20 frames from each video when loading, add to your YAML file:
-
-```
-video_loder_config:
-  total_frames: 20
-  evenly_sample_total_frames: True
-```
-
-All possible video loading and frame selection parameters are defined by the `VideoLoaderConfig` class<!-- TODO: add link to class definition><!-->. 
+The `VideoLoaderConfig` class <!-- TODO: add link to source code><!--> defines all of the optional parameters that can be specified for how videos are loaded before either inference or training. This includes selecting which frames to use from each video.
 
 ```python
 >> from zamba.data.video import VideoLoaderConfig
@@ -65,15 +31,15 @@ Number of pixels to crop from the bottom of the video (prior to resizing to `vid
 
 #### `i_frames (bool, optional)`
 
-Only load the I-Frames. See https://en.wikipedia.org/wiki/Video_compression_picture_types#Intra-coded_(I)_frames/slices_(key_frames). Defaults to `False`
+Only load the [I-Frames](https://en.wikipedia.org/wiki/Video_compression_picture_types#Intra-coded_(I)_frames/slices_(key_frames)). Defaults to `False`
 
 #### `scene_threshold (float, optional)`
 
-Only load frames that correspond to scene changes. See http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect. Defaults to `None`
+Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect). Defaults to `None`
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the MegadetectorLiteYoloX model for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. Defaults to `None`
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the MegadetectorLiteYoloX model for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLifeYoloX model will not be used to select frames.
 
 #### `video_height (int, optional), video_width (int, optional)`
 
@@ -93,7 +59,8 @@ Resample the video evenly from the entire duration to a specific number of frame
 
 #### `early_bias (bool, optional)`
 
-Resamples to 24 fps and selects 16 frames biased toward the front (strategy used by competition winner). Defaults to `False`
+Resamples to 24 fps and selects 16 frames biased toward the front. This strategy was used by the [Pri-matrix Factorization](https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/) machine learning
+competition winner. Defaults to `False`
 
 #### `frame_indices (list(int), optional)`
 
@@ -107,28 +74,28 @@ Reach the total number of frames specified by evenly sampling from the duration 
 
 ffmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bgr24` for BGR.
 
-## Prediction
+<a id='prediction-arguments'></a>
 
-All possible model inference parameters are defined by the `PredictConfig` class<!-- TODO: add link to class definition><!-->. 
+## Prediction arguments
 
-Say we want to instantiate a configuration to run inference on the videos in `vids_to_classify`. First, let's check what's in the directory:
-
-```console
-$ ls vids_to_classify/
-blank.mp4
-chimp.mp4
-eleph.mp4
-leopard.mp4
-```
-
-Now let's create the `PredictConfig` class in Python:
+All possible model inference parameters are defined by the `PredictConfig` class<!-- TODO: add link to class definition><!-->. Let's see the class documentation in Python:
 
 ```python
 >> from zamba.models.config import PredictConfig
->> default_predict_config = PredictConfig(data_directory='vids_to_classify/')
+>> help(PredictConfig)
+
+class PredictConfig(ZambaBaseModel)
+ |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = '/home/ubuntu/zamba-algorithms', 
+ file_list: pydantic.types.FilePath = None, checkpoint: pydantic.types.FilePath = None,
+ model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
+ species: List[str] = None, gpus: Union[List[int], str, int] = 1, 
+ num_workers: int = 7, batch_size: int = 8, save: bool = True, 
+ dry_run: bool = False, proba_threshold: float = None,  output_class_names: bool = False, 
+ weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
+ cache_dir: pathlib.Path = None, skip_load_validation: bool = False) -> None
 ```
 
-Either a `data_directory` or a `file_list` must be specified to instantiate a `PredictModel` object. Otherwise, the current working directory will be used as the default `data_directory`.
+**Either a `data_directory` or a `file_list` must be specified to instantiate `PredictConfig`.** Otherwise the current working directory will be used as the default `data_directory`.
 
 #### `data_directory (DirectoryPath, optional)`
 
@@ -195,29 +162,43 @@ The directory where the model weights will be saved. If it is `None` (the defaul
 
 #### `skip_load_validation (bool, optional)`
 
-By default, before kicking off inference `zamba` will iterate through all of the videos in the data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Defaults to `False`
+By default, before kicking off inference `zamba` will iterate through all of the videos in the data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Validation can be very time intensive depending on the number of videos. It is recommended to run validation once, but not on future inference runs if the videos have not changed. Defaults to `False`
 
-## Training
+<a id='training-arguments'></a>
 
-All possible model training parameters are defined by the `TrainConfig` class<!-- TODO: add link to class definition><!-->. 
+## Training arguments
 
-Say we want to instantiate a configuration to train a model on the videos in `vids_to_classify`, and we have our ground truth labels in `example_labels.csv`. Let's check what's in the labels:
-
-```console
-$ cat example_labels.csv
-filepath,label
-vids_to_classify/eleph.MP4,elephant
-vids_to_classify/leopard.MP4,leopard
-vids_to_classify/blank.MP4,blank
-vids_to_classify/chimp.MP4,chimpanzee_bonobo
-```
-
-Now let's create the `TrainConfig` class in Python:
+All possible model training parameters are defined by the `TrainConfig` class<!-- TODO: add link to class definition><!-->. Let's see the class documentation in Python:
 
 ```python
 >> from zamba.models.config import TrainConfig
->> default_train_config = TrainConfig(data_directory='vids_to_classify/', labels='example_labels.csv')
+>> help(TrainConfig)
+
+class TrainConfig(ZambaBaseModel)
+ |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame], 
+ data_directory: pydantic.types.DirectoryPath = '/home/ubuntu/zamba-algorithms', 
+ checkpoint: pydantic.types.FilePath = None, 
+ scheduler_config: zamba_algorithms.models.config.SchedulerConfig = None, 
+ model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
+ dry_run: Union[bool, int] = False, batch_size: int = 8, 
+ auto_lr_find: bool = True, backbone_finetune: bool = False, 
+ backbone_finetune_params: zamba_algorithms.models.config.BackboneFinetuneConfig = 
+      BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, 
+      backbone_initial_ratio_lr=0.01, multiplier=1, 
+      pre_train_bn=False, train_bn=False, verbose=True), 
+ gpus: Union[List[int], str, int] = 1, num_workers: int = 7, 
+ max_epochs: int = None, early_stopping: bool = True, 
+ early_stopping_params: zamba_algorithms.models.config.EarlyStoppingConfig = 
+      EarlyStoppingConfig(monitor='val_macro_f1', patience=3, 
+      verbose=True, mode='max'), 
+ tensorboard_log_dir: str = 'tensorboard_logs', 
+ weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
+ cache_dir: pathlib.Path = None, 
+ split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1}, 
+ skip_load_validation: bool = False, from_scratch: bool = False) -> None
 ```
+
+**`data_directory` and `labels` must be specified to instantiate `TrainConfig`.** If no `data_directory` is provided, it will default the current working directory.
 
 #### `labels (FilePath or pd.DataFrame, required)`
 
@@ -305,4 +286,4 @@ The proportion of data to use during training, validation, and as a holdout set.
 
 #### `skip_load_validation (bool, optional)`
 
-By default, before kicking off training `zamba` will iterate through all of the videos in the training data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Defaults to `False`
+By default, before kicking off training `zamba` will iterate through all of the videos in the training data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Validation can be very time intensive depending on the number of videos. It is recommended to run validation once, but not on future training runs if the videos have not changed. Defaults to `False`
