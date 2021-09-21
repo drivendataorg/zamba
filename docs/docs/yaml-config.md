@@ -1,4 +1,4 @@
-# Specifying Model Configurations with a YAML File
+# Using YAML Configuration Files
 
 In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file instead of passing arguments directly. YAML files (`.yml` or `.yaml`) are commonly used to serialize data in an easily readable way.
 

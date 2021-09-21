@@ -31,7 +31,7 @@ on 11 common species from western Europe.
 
 ### Advanced Options
 - [All Optional Arguments](configurations.md)
-- [Specifying Model Configurations with a YAML File](yaml-config.md)
+- [Using YAML Configuration Files](yaml-config.md)
 
 ### [Contributing](contribute.md)
 
