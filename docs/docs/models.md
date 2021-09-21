@@ -2,11 +2,6 @@
 
 The algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. There are three models that ship with the `zamba` package: `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
 
-<!-- TODO: what is the final data each model is trained on? once finalized, add:
-- # of videos for each model
-- # of sites
-- kinds of sites?><!-->
-
 ## Basic usage
 
 <table>
@@ -106,6 +101,7 @@ The `time_distributed` model was built by re-training a well-known image classif
 
 <!-- https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/efficientnet.py><!-->
 
+<a id='time-distributed-training-data'></a>
 
 ### Training data
 
@@ -150,7 +146,7 @@ Unlike `time_distributed`, `slowfast` is video native. This means it takes into 
 
 ### Training data
 
-The `slowfast` model was trained using the same data as the `time_distributed` model<!-- TODO: add link to time distributed training data section><!-->.
+The `slowfast` model was trained using the same data as the [`time_distributed` model](#time-distributed-training-data).
 
 ### Default video loading configuration
 

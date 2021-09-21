@@ -93,7 +93,7 @@ ModelConfig(
 
 ## Default configurations
 
-In the command line, the default configuration for each model is passed in using a specified YAML file that ships with `zamba`<!-- TODO: add link><!-->.
+In the command line, the default configuration for each model is passed in using a specified YAML file that ships with `zamba`<!-- TODO: add link to github><!-->.
 
 For example, the default configuration for the [`time_distributed` model](models.md#time-distributed) is:
 

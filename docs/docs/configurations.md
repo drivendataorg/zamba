@@ -80,7 +80,7 @@ ffmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bg
 
 ## Prediction arguments
 
-All possible model inference parameters are defined by the `PredictConfig` class<!-- TODO: add link to class definition><!-->. Let's see the class documentation in Python:
+All possible model inference parameters are defined by the `PredictConfig` class<!-- TODO: add link to class definition on github><!-->. Let's see the class documentation in Python:
 
 ```python
 >> from zamba.models.config import PredictConfig
@@ -164,7 +164,7 @@ Because `zamba` needs to download pretrained weights for the neural network arch
 
 #### `cache_dir (FilePath, optional)`
 
-The directory where the model weights will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory. <!-- TODO: how to find this directory?><!-->
+The directory where the model weights will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory at `~/.cache/zamba`
 
 #### `skip_load_validation (bool, optional)`
 
@@ -284,7 +284,7 @@ Because `zamba` needs to download pretrained weights for the neural network arch
 
 #### `cache_dir (FilePath, optional)`
 
-The directory where the trained model will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory. <!-- TODO: how to find this directory?><!-->
+The directory where the trained model will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory at `~/.cache/zamba`
 
 #### `split_proportions (dict(str, int), optional)`
 
@@ -310,7 +310,7 @@ Whether the species outputted by the model should be all zamba species. If you w
 
 Model defaults are all provided in YAML configuration files <!-- TODO: add link to default config folder><!-->. All of the arguments that can be passed to a YAML file can also be passed to either `VideoLoaderConfig`, `PredictConfig`, or `TrainConfig` in Python. 
 
-Say that we have videos saved in `example_vids` and the labels for those videos saved in `example_labels.csv`. The code below shows how to specify the default training configuration for the `time_distributed` model based on its YAML file <!-- TODO: add link to open source yaml><!-->:
+Say that we have videos saved in `example_vids` and the labels for those videos saved in `example_labels.csv`. The code below shows how to specify the default training configuration for the `time_distributed` model based on its YAML file <!-- TODO: add link to open source yaml on github><!-->:
 
 ```python
 from zamba_algorithms.data.video import VideoLoaderConfig

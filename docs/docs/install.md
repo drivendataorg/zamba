@@ -2,7 +2,6 @@
 
 Zamba has been developed and tested on macOS and Ubuntu Linux for both CPU and
 GPU configurations.
-<!-- TODO: update or make sure this is correct><!-->
 
 ## To install `zamba`
 
@@ -53,8 +52,6 @@ $ pip install -U zamba
 
 
 ## Operating Systems that have been tested
-<!-- TODO: update this if needed><!-->
-<!-- TODO: update all os versions from a PR><!-->
 
 ### macOS
 
