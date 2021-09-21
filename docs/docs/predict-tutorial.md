@@ -63,8 +63,39 @@ In the command line, video loading configurations are loaded by default based on
     - `time_distributed` or `european`: The suggested dimensions are 224x224, but any integers are acceptable
     - `slowfast`: Both must be greater than or equal to 200
 * **`total_frames (int)`:** The number of frames to select from each video and use during inference. 
-    * `time_distributed` or `european`: Must be greater than or equal to 16
-    * `slowfast`: The suggested value is 32, but any integer is acceptable
+    * `time_distributed` or `european`: Must be 16
+    * `slowfast`: Must be 32
+
+The full recommended `VideoLoaderConfig` for the `time_distributed` or `european` model is:
+```python
+from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
+
+megadetector_config = MegadetectorLiteYoloXConfig(confidence=0.25,
+                                                  fill_mode="score_sorted",
+                                                  n_frames=16)
+video_loader_config = VideoLoaderConfig(video_height=224,
+                                        video_width=224,
+                                        crop_bottom_pixels=50,
+                                        ensure_total_frames=True,
+                                        megadetector_list_config=megadetector_config,
+                                        total_frames=16)
+```
+
+The full recommended `VideoLoaderConfig` for the `slowfast` model is:
+```python
+megadetector_config = MegadetectorLiteYoloXConfig(confidence=0.25,
+                                                  fill_mode="score_sorted",
+                                                  n_frames=32)
+video_loader_config = VideoLoaderConfig(video_height=224,
+                                        video_width=224,
+                                        crop_bottom_pixels=50,
+                                        ensure_total_frames=True,
+                                        megadetector_list_config=megadetector_config,
+                                        total_frames=32)
+```
+
+You can see the full default configuration for each model in `models/config`<!-- TODO: add link to source and update if needed><!-->. For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
 
 ## Default behavior
 
@@ -166,13 +197,10 @@ And there's so much more! You can also do things like specify your region for fa
 
 #### Video size
 
-`zamba` can resize all videos before running inference.
+`zamba` can resize all videos before running inference. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to run inference.
 
-* Higher resolution videos will lead to more detailed accuracy in prediciton
-* Lower resolution videos will make inference run faster
-
-The default for all pretrained models is 224x224. If you have only a few videos for which you want highly detailed predictions, you could instead specify a larger size like 500x500. Your [YAML configuration file](yaml-config.md) would include:
-```
+The default for all pretrained models is 224x224 pixels. If you have only a few videos for which you want highly detailed predictions, you could instead specify a larger size like 500x500 pixels. Your [YAML configuration file](yaml-config.md) would include:
+```yaml
 video_loader_config:
   video_height: 500
   video_width: 500
@@ -202,8 +230,8 @@ video_loader_config = VideoLoaderConfig(total_frames=32,
                                         evenly_sample_total_frames=True,
                                         ensure_total_frames=True)
 ```
-* You can use a pretrained object detection model called MegadetectorLiteYoloX to select only the frames that are mostly likely to contain an animal. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
-```
+* You can use a pretrained object detection model called MegadetectorLiteYoloX to select only the frames that are mostly likely to contain an animal - this is the default method. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
+```yaml
 video_loader_config:
     megadetector_lite_config:
         n_frames: 16
@@ -216,8 +244,10 @@ from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
 megadetector_lite_config = MegadetectorLiteYoloXConfig(n_frames=16, 
                                                        fill_mode="score_sorted")
 video_loader_config = VideoLoaderConfig(megadetector_lite_config=megadetector_lite_config)
+predict_config = PredictConfig(data_directory='example_vids/')
 
-predict_model(video_loader_config=video_loader_config)
+predict_model(video_loader_config=video_loader_config, 
+              predict_config=predict_config)
 ```
 
 And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.
