@@ -75,7 +75,7 @@ ModelConfig(
                                       ), 
   train_config=None, 
   predict_config=PredictConfig(data_directory=PosixPath('vids'), 
-                               file_list=                         filepath
+                               filepaths=                         filepath
                                           0    /home/ubuntu/vids/eleph.MP4
                                           1  /home/ubuntu/vids/leopard.MP4
                                           2    /home/ubuntu/vids/blank.MP4
@@ -137,7 +137,7 @@ train_config:
 predict_config:
   # data_directory: YOUR_DATA_DIRECTORY_HERE
   # or
-  # file_list: YOUR_FILE_LIST_HERE
+  # filepaths: YOUR_FILEPATH_HERE
   model_name: time_distributed
   # or
   # checkpoint: YOUR_CKPT_HERE

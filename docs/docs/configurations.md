@@ -88,34 +88,37 @@ All possible model inference parameters are defined by the `PredictConfig` class
 
 class PredictConfig(ZambaBaseModel)
  |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'), 
- file_list: pydantic.types.FilePath = None, checkpoint: pydantic.types.FilePath = None, 
+ filepaths: pydantic.types.FilePath = None, 
+ checkpoint: pydantic.types.FilePath = None, 
  model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
- species: List[str] = None, gpus: Union[List[int], str, int] = 1, 
- num_workers: int = 7, batch_size: int = 8, save: Union[bool, pathlib.Path] = True, 
- dry_run: bool = False, proba_threshold: float = None, output_class_names: bool = False,
+ species: List[str] = None, 
+ gpus: Union[List[int], str, int] = 1, 
+ num_workers: int = 7, 
+ batch_size: int = 8, 
+ save: Union[bool, pathlib.Path] = True, 
+ dry_run: bool = False, 
+ proba_threshold: float = None, 
+ output_class_names: bool = False, 
  weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
- cache_dir: pathlib.Path = None, skip_load_validation: bool = False) -> None
+ cache_dir: pathlib.Path = None, 
+ skip_load_validation: bool = False) -> None
 
  ...
 ```
 
-**Either a `data_directory` or a `file_list` must be specified to instantiate `PredictConfig`.** Otherwise the current working directory will be used as the default `data_directory`.
+**Either `data_directory` or `filepaths` must be specified to instantiate `PredictConfig`.** Otherwise the current working directory will be used as the default `data_directory`.
 
 #### `data_directory (DirectoryPath, optional)`
 
 Path to the directory containing training videos. Defaults to the current working directory.
 
-#### `file_list (FilePath, optional)`
+#### `filepaths (FilePath, optional)`
 
 Path to a list of files for classification. Defaults to the files in the current working directory
 
 #### `checkpoint (Path or str, optional)`
 
 Path to a model checkpoint to load and use for inference. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `checkpoint` is `zamba_time_distributed.ckpt`
-
-#### `model_params (ModelParams <!-- TODO: link to class definition in config.py><!-->, optional)`
-
-Model parameters to pass when loading a model from a checkpoint. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `model_params` is `None`
 
 #### `model_name (time_distributed|slowfast|european, optional)
 
@@ -133,17 +136,13 @@ The number of GPUs to use during inference. By default, all of the available GPU
 
 The number of CPUs to use during training. By default, it will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system.
 
-#### `batch-size (int, optional)`
+#### `batch_size (int, optional)`
 
 The batch size to use for inference. Defaults to `8`
 
 #### `save (bool, optional)`
 
-Whether to save out the predictions to a CSV file. Defaults to `True`
-
-#### `save_path (FilePath, optional)`
-
-Full path where the prediction CSV file will be saved. Any needed parent directories will be created. By default, predictions will be saved at `zamba_predictions.csv` in the current working directory.
+Whether to save out the predictions to a CSV file. y default, predictions will be saved at `zamba_predictions.csv` in the current working directory. Defaults to `True`
 
 #### `dry_run (bool, optional)`
 
@@ -187,24 +186,29 @@ class TrainConfig(ZambaBaseModel)
  checkpoint: pydantic.types.FilePath = None, 
  scheduler_config: Union[str, zamba_algorithms.models.config.SchedulerConfig, NoneType] = 'default', 
  model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
- dry_run: Union[bool, int] = False, batch_size: int = 8, auto_lr_find: bool = True, 
+ dry_run: Union[bool, int] = False, 
+ batch_size: int = 8, 
+ auto_lr_find: bool = True, 
  backbone_finetune: bool = False, 
  backbone_finetune_params: zamba_algorithms.models.config.BackboneFinetuneConfig = 
-          BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, 
-          backbone_initial_ratio_lr=0.01, multiplier=1, 
-          pre_train_bn=False, train_bn=False, verbose=True), 
- gpus: Union[List[int], str, int] = 1, num_workers: int = 7, 
- max_epochs: int = None, early_stopping: bool = True, 
+            BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, 
+            backbone_initial_ratio_lr=0.01, multiplier=1, 
+            pre_train_bn=False, train_bn=False, verbose=True), 
+ gpus: Union[List[int], str, int] = 1, 
+ num_workers: int = 7, 
+ max_epochs: int = None, 
+ early_stopping: bool = True, 
  early_stopping_params: zamba_algorithms.models.config.EarlyStoppingConfig = 
-          EarlyStoppingConfig(monitor='val_macro_f1', patience=3, 
-          verbose=True, mode='max'), 
+            EarlyStoppingConfig(monitor='val_macro_f1', patience=3, 
+            verbose=True, mode='max'), 
  tensorboard_log_dir: str = 'tensorboard_logs', 
  weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
  cache_dir: pathlib.Path = None, 
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1}, 
- save_directory: pathlib.Path = None, skip_load_validation: bool = False, 
- from_scratch: bool = False, predict_all_zamba_species: bool = True) -> None
-
+ save_directory: pathlib.Path = None, 
+ skip_load_validation: bool = False, 
+ from_scratch: bool = False, 
+ predict_all_zamba_species: bool = True) -> None
  ...
 ```
 
@@ -222,21 +226,13 @@ Path to the directory containing training videos. Defaults to the current workin
 
 Path to a model checkpoint to load and resume training from. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `checkpoint` is `zamba_time_distributed.ckpt`
 
-#### `model_params (ModelParams <!-- TODO: link to class definition in config.py><!-->, optional)`
+#### `scheduler_config (zamba.models.config.SchedulerConfig, optional)`
 
-Model parameters to pass when loading a model from a checkpoint. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `model_params` is `None`
+A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate) to adjust the learning rate based on the number of epochs. Scheduler can either be `default` (the default), `None`, or a [`torch.optim.lr_scheduler`](https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py). If `default`, 
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
 Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
-
-#### `species (list(str), optional)`
-
-List of possible class labels that the model should be trained to predict. If the value is `None` (the default), the value will be set based on the label column of the CSV passed to `labels`:
-1. If the given labels are a subset of the [`zamba` labels](models.md#species-classes) for central and west Africa, `species` will be set to that list of 31 species (plus blank).
-2. If the given labels are a subset of the [`zamba` labels](models.md#species-classes) for western Europe, `species` will be set to that list of 11 species (plus blank).
-3. If the given labels are *not* a subset of the `zamba` labels, `species` will be set to a list of unique values in the given labels
-<!-- TODO: does this need to update? should it talk about loading from the checkpoint><!-->
 
 #### `dry_run (bool, optional)`
 
@@ -294,9 +290,21 @@ The directory where the trained model will be saved. If it is `None` (the defaul
 
 The proportion of data to use during training, validation, and as a holdout set. Defaults to `{"train": 3, "val": 1, "holdout": 1}`
 
+#### `save_directory (Path, optional)`
+
+Directory in which to save model checkpoint and configuration file. If not specified, will save to a folder called 'zamba_{model_name}' in your working directory.
+
 #### `skip_load_validation (bool, optional)`
 
 By default, before kicking off training `zamba` will iterate through all of the videos in the training data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Validation can be very time intensive depending on the number of videos. It is recommended to run validation once, but not on future training runs if the videos have not changed. Defaults to `False`
+
+#### `from_scratch (bool, optional)`
+
+Whether to instantiate the model with base weights. This means starting from the imagenet weights for image based models and the Kinetics weights for video models. Only used if labels is not None. Defaults to `False`
+
+#### `predict_all_zamba_species (bool, optional)`
+
+Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `predict_all_zamba_species` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`.
 
 ## Specifying advanced configurations in Python
 
@@ -335,10 +343,6 @@ train_config = TrainConfig(
     early_stopping=True,
     early_stopping_params={
         "patience": 5,
-    },
-    model_params={
-        "scheduler": "MultiStepLR",
-        "scheduler_params": {"milestones": [3], "gamma": 0.5, "verbose": True},
     },
 )
 ```

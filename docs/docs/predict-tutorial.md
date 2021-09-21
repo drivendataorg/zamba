@@ -51,11 +51,11 @@ To specify various parameters when running `predict_model`, the first step is to
 
 ### Required arguments
 
-To run `predict_model` in Python, you must specify either `data_directory` or `file_list` when `PredictConfig` is instantiated.
+To run `predict_model` in Python, you must specify either `data_directory` or `filepaths` when `PredictConfig` is instantiated.
 
 * **`data_directory (DirectoryPath)`:** Path to the folder containing your videos.
 
-* **`file_list (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
+* **`filepaths (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
 
 In the command line, video loading configurations are loaded by default based on the model being used. This is not the case in Python. There are additional requirements for `VideoLoaderConfig` based on the model you are using.
 
