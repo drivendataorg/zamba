@@ -23,28 +23,17 @@ on 11 common species from western Europe.
 - [Quickstart](quickstart.md)
 - [Installing Zamba](install.md)
 
-### How to Run Zamba
-- [Command Line Interface](cli.md)
-- [Python Package](py-package.md)
-
-### [Choosing a Model](models.md)
-
-### [All Configuration Options](configurations.md)
-
 ### User Tutorials
-- [I have no labels]("no_labels.md")
-- [I have zamba labels]("subset_labels.md")
-- [I have new labels]("new_labels.md")
+- [Classifying Unlabeled Videos](predict-tutorial.md)
+- [Training a Model on Labeled Videos](train-tutorial.md)
+
+### [Available Models](models.md)
+
+### Advanced Options
+- [All Optional Arguments](configurations.md)
+- [Specifying Model Configurations with a YAML File](yaml-config.md)
 
 ### [Contributing](contribute.md)
 
 ### Changelog
 - [Version 2](v2_updates.md)
-
-Indices and tables
-==================
-<!-- TODO: what is this supposed to do? fix><!-->
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
