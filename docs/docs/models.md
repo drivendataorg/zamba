@@ -100,7 +100,7 @@ For inference, `slowfast` is recommended if the highest priority is differentiat
 
 ### Algorithm
 
-The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
+The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
 
 `time_distributed` combines the EfficientNetV2 architecture with an open-source image object detection model to implement frame selection. The [YOLOX](https://arxiv.org/abs/2107.08430) detection model is run on all frames in a video. Only the frames with the highest probability of detection are then passed to the more computationally intensive EfficientNetV2 for detailed detection and classification.
 
@@ -126,11 +126,11 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
 <!-- TODO: add link to yaml file><!-->
 
-**`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** This is the default behavior if `time_distributed` is used, but must be added if you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package.
+Running the `time_distributed` model on every frame would be very time consuming. Instead, an open-source image object detection model called [YOLOX](https://arxiv.org/abs/2107.08430) is used to select the 16 frames that have the highest probability of detection. `time_distributed` is run only on this subset. **`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** 
 
-Running the `time_distributed` model on every frame would be very time consuming. Instead, the Megadetector model is used to select the 16 frames that have the highest probability of detection. `time_distributed` is run only on this subset.
+By default, videos are resized to 224x224 pixels. To run `time_distributed`, `video_height` and `video_width` must be specified.
 
-All videos are automatically resized to a resolution of 224x224 pixels.
+The above is the default behavior if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify `total_frames`, `video_height`, and `video_width`.
 
 <a id='slowfast'></a>
 
@@ -138,7 +138,7 @@ All videos are automatically resized to a resolution of 224x224 pixels.
 
 ### Algorithm
 
-The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operatues at a high frame rate to capture motion over time. The basic architectures are deep neural networks using [pytorch](https://pytorch.org/).
+The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operatues at a high frame rate to capture motion over time. The basic architectures are deep [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) using [pytorch](https://pytorch.org/).
 
 <div style="text-align:center;">
 <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-slowfast-diagram.png" alt="Architecture showing the two pathways of the slowfast model" style="width:400px;"/>
@@ -156,7 +156,11 @@ The `slowfast` model was trained using the same data as the `time_distributed` m
 
 <!-- TODO: add link to yaml file><!-->
 
-**`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** This is the default behavior if `time_distributed` is used, but must be added if you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package.
+Running the `slowfast` model on every frame would be very time consuming. Instead, an open-source image object detection model called [YOLOX](https://arxiv.org/abs/2107.08430) is used to select the 32 frames that have the highest probability of detection. `slowfast` is run only on this subset. **`slowfast` requires that 32 frames be sampled from each video before running inference or training.** 
+
+By default, videos are resized to 224x224 pixels. To run `slowfast`, `video_height` and `video_width` must be specified and must each be greater than or equal to 200. 
+
+The above is the default behavior if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify `total_frames`, `video_height`, and `video_width`.
 
 <a id='european'></a>
 
@@ -166,7 +170,7 @@ The `slowfast` model was trained using the same data as the `time_distributed` m
 
 The `european` model has the same backbone as the `time_distributed` model, but is trained on data from camera traps in western Europe instead of central and west Africa. 
 
-The `european` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional neural networks designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
+The `european` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
 
 `european` combines the EfficientNetV2 architecture with an open-source image object detection model to implement frame selection. The [YOLOX](https://arxiv.org/abs/2107.08430) detection model is run on all frames in a video. Only the frames with the highest probability of detection are then passed to the more computationally intensive EfficientNetV2 for detailed detection and classification.
 
@@ -179,9 +183,6 @@ Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The data included
 
 <!-- TODO: add link to yaml file><!-->
 
-**`european` requires that 16 frames be sampled from each video before running inference or training.** This is the default behavior if `european` is used, but must be added if you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package.
+Running the `european` model on every frame would be very time consuming. Instead, an open-source image object detection model called [YOLOX](https://arxiv.org/abs/2107.08430) is used to select the 16 frames that have the highest probability of detection. `european` is run only on this subset. **`european` requires that 16 frames be sampled from each video before running inference or training.** 
 
-
-predict_config:
-  data_directory: vids/
-  model_name: time_distributed
+By default, videos are resized to 224x224 pixels. To run `european`, `video_height` and `video_width` must be specified.
