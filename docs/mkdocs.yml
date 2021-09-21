@@ -17,17 +17,14 @@ nav:
   - 'Getting Started':
     - Quickstart: "quickstart.md"
     - Installing Zamba: "install.md"
-  - 'How to Run Zamba':
-    - Command Line Interface: "cli.md"
-    - Python Package: "py-package.md"
+  - 'User Tutorials':
+    - Classifying Unlabeled Videos: "predict-tutorial.md"
+    - Training a Model on Labaled Videos: "train-tutorial.md"
   - 'Available Models': 
     - Choosing a Model: "models.md"
-  - 'All Configuration Options':
-    - Creating YAML configuration files: "configurations.md"
-  - 'User Tutorials':
-    - I want to predict on unlabeled videos: "user-tutorials/no_labels.md"
-    - I want to train on <code>zamba</code> labels: "user-tutorials/subset_labels.md"
-    - I want to train on new labels: "user-tutorials/new_labels.md"
+  - 'Advanced Options':
+    - All Optional Arguments: "configurations.md"
+    - Creating YAML configuration files: "yaml-config.md"
   - 'Contributing': 
     - Help make <code>zamba</code> better: "contribute.md"
   - 'Changelog':
