@@ -59,14 +59,13 @@ $ zamba predict --data-dir example_vids/
 ```
 
 `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) is *the probability that animal j is present in video i.* 
-Predictions will be saved to `{model name}_{current timestamp}_preds.csv`.
-For example, running `zamba predict` on 9/15/2021 with the `time_distributed` model (the default) will save out predictions to `time_distributed_2021-09-15_preds.csv`. 
+Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions under a different name or in a different folder using the `--save-path` argument.
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
 
 ```console
 $ zamba predict --data-dir example_vids/ --output-class-names
-$ cat time_distributed_2021-09-15_preds.csv
+$ cat zamba_predictions.csv
 vids/blank.mp4,blank
 vids/chimp.mp4,chimpanzee_bonobo
 vids/eleph.mp4,elephant
@@ -75,7 +74,12 @@ vids/leopard.mp4,leopard
 
 ## Training a model
 
-Say that we have labels for the videos in the `example_vids` folder saved in `example_labels.csv`. To train a model, run:
+You can continue training one of the [models](models.md) that ships with `zamba` by either:
+
+* Fine-tuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models.md#species-classes)
+* Retraining a model to predict a new set of species based on a set of labeled videos
+
+In either case, the commands for training are the same. Say that we have labels for the videos in the `example_vids` folder saved in `example_labels.csv`. To train a model, run:
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
@@ -92,7 +96,13 @@ example_vids/blank.MP4,blank
 example_vids/chimp.MP4,chimpanzee_bonobo
 ```
 
-<!-- TODO: where will the model be saved?><!-->
+By default, the model will be saved to a folder in the current working directory called `zamba_<model_name>`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`. 
+
+```console
+$ zamba train --data-dir example_vids/ --labels example_labels.csv
+$ ls zamba_time_distributed
+configuration.yaml  events.out.tfevents.1632250686.ip-172-31-15-179.14229.0  hparams.yaml
+```
 
 ## Downloading model weights
 

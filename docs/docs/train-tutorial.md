@@ -247,14 +247,23 @@ video_loader_config:
         n_frames: 16
         fill_mode: "score_sorted"
 ```
-In Python, these can be specified by importing and calling the `MegadetectorLiteYoloXConfig`<!-- TODO: add link to source><!--> class. Once the megadetector configuration is defined, it is passed to the `VideoLoaderConfig`:
-```python
-from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
 
-megadetector_lite_config = MegadetectorLiteYoloXConfig(n_frames=16, 
-                                                       fill_mode="score_sorted")
-video_loader_config = VideoLoaderConfig(megadetector_lite_config=megadetector_lite_config)
-train_config = TrainConfig(data_directory='example_vids/', labels='example_labels.csv')
+In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
+```python
+video_loader_config = VideoLoaderConfig(
+    video_height=224,
+    video_width=224,
+    crop_bottom_pixels=50,
+    ensure_total_frames=True,
+    megadetector_lite_config={"confidence": 0.25, "fill_mode": "score_sorted", "n_frames": 16},
+    total_frames=16,
+)
+
+train_config = TrainConfig(
+    data_directory="example_vids/",
+    labels="example_labels.csv",
+    },
+)
 
 train_model(video_loader_config=video_loader_config, 
             train_config=train_config)

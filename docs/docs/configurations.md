@@ -87,14 +87,16 @@ All possible model inference parameters are defined by the `PredictConfig` class
 >> help(PredictConfig)
 
 class PredictConfig(ZambaBaseModel)
- |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = '/home/ubuntu/zamba-algorithms', 
- file_list: pydantic.types.FilePath = None, checkpoint: pydantic.types.FilePath = None,
+ |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'), 
+ file_list: pydantic.types.FilePath = None, checkpoint: pydantic.types.FilePath = None, 
  model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
  species: List[str] = None, gpus: Union[List[int], str, int] = 1, 
- num_workers: int = 7, batch_size: int = 8, save: bool = True, 
- dry_run: bool = False, proba_threshold: float = None,  output_class_names: bool = False, 
+ num_workers: int = 7, batch_size: int = 8, save: Union[bool, pathlib.Path] = True, 
+ dry_run: bool = False, proba_threshold: float = None, output_class_names: bool = False,
  weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
  cache_dir: pathlib.Path = None, skip_load_validation: bool = False) -> None
+
+ ...
 ```
 
 **Either a `data_directory` or a `file_list` must be specified to instantiate `PredictConfig`.** Otherwise the current working directory will be used as the default `data_directory`.
@@ -181,26 +183,29 @@ All possible model training parameters are defined by the `TrainConfig` class<!-
 
 class TrainConfig(ZambaBaseModel)
  |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame], 
- data_directory: pydantic.types.DirectoryPath = '/home/ubuntu/zamba-algorithms', 
+ data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'), 
  checkpoint: pydantic.types.FilePath = None, 
- scheduler_config: zamba_algorithms.models.config.SchedulerConfig = None, 
+ scheduler_config: Union[str, zamba_algorithms.models.config.SchedulerConfig, NoneType] = 'default', 
  model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
- dry_run: Union[bool, int] = False, batch_size: int = 8, 
- auto_lr_find: bool = True, backbone_finetune: bool = False, 
+ dry_run: Union[bool, int] = False, batch_size: int = 8, auto_lr_find: bool = True, 
+ backbone_finetune: bool = False, 
  backbone_finetune_params: zamba_algorithms.models.config.BackboneFinetuneConfig = 
-      BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, 
-      backbone_initial_ratio_lr=0.01, multiplier=1, 
-      pre_train_bn=False, train_bn=False, verbose=True), 
+          BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, 
+          backbone_initial_ratio_lr=0.01, multiplier=1, 
+          pre_train_bn=False, train_bn=False, verbose=True), 
  gpus: Union[List[int], str, int] = 1, num_workers: int = 7, 
  max_epochs: int = None, early_stopping: bool = True, 
  early_stopping_params: zamba_algorithms.models.config.EarlyStoppingConfig = 
-      EarlyStoppingConfig(monitor='val_macro_f1', patience=3, 
-      verbose=True, mode='max'), 
+          EarlyStoppingConfig(monitor='val_macro_f1', patience=3, 
+          verbose=True, mode='max'), 
  tensorboard_log_dir: str = 'tensorboard_logs', 
  weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
  cache_dir: pathlib.Path = None, 
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1}, 
- skip_load_validation: bool = False, from_scratch: bool = False) -> None
+ save_directory: pathlib.Path = None, skip_load_validation: bool = False, 
+ from_scratch: bool = False, predict_all_zamba_species: bool = True) -> None
+
+ ...
 ```
 
 **`data_directory` and `labels` must be specified to instantiate `TrainConfig`.** If no `data_directory` is provided, it will default the current working directory.
@@ -292,3 +297,48 @@ The proportion of data to use during training, validation, and as a holdout set.
 #### `skip_load_validation (bool, optional)`
 
 By default, before kicking off training `zamba` will iterate through all of the videos in the training data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Validation can be very time intensive depending on the number of videos. It is recommended to run validation once, but not on future training runs if the videos have not changed. Defaults to `False`
+
+## Specifying advanced configurations in Python
+
+Model defaults are all provided in YAML configuration files <!-- TODO: add link to default config folder><!-->. All of the arguments that can be passed to a YAML file can also be passed to either `VideoLoaderConfig`, `PredictConfig`, or `TrainConfig` in Python. 
+
+Say that we have videos saved in `example_vids` and the labels for those videos saved in `example_labels.csv`. The code below shows how to specify the default training configuration for the `time_distributed` model based on its YAML file <!-- TODO: add link to open source yaml><!-->:
+
+```python
+from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba_algorithms.models.config import TrainConfig
+from zamba_algorithms.models.model_manager import train_model
+
+video_loader_config = VideoLoaderConfig(
+    video_height=224,
+    video_width=224,
+    crop_bottom_pixels=50,
+    ensure_total_frames=True,
+    megadetector_lite_config={"confidence": 0.25, "fill_mode": "score_sorted", "n_frames": 16},
+    total_frames=16,
+)
+
+train_config = TrainConfig(
+    data_directory="example_vids/",
+    labels="example_labels.csv",
+    model_name="time_distributed",
+    batch_size=8,
+    backbone_finetune=True,
+    backbone_finetune_params={
+        "unfreeze_backbone_at_epoch": 3,
+        "verbose": True,
+        "pre_train_bn": True,
+        "multiplier": 1,
+    },
+    num_workers=3,
+    auto_lr_find=True,
+    early_stopping=True,
+    early_stopping_params={
+        "patience": 5,
+    },
+    model_params={
+        "scheduler": "MultiStepLR",
+        "scheduler_params": {"milestones": [3], "gamma": 0.5, "verbose": True},
+    },
+)
+```
