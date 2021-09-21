@@ -5,7 +5,7 @@ This section walks through how to train a model using `zamba`. If you are new to
 This tutorial goes over the steps for using `zamba` if:
 
 * You already have `zamba` installed (for details see the [Installation](install.md) page)
-* Have labeled videos that you want to use to train or finetune a model
+* You have labeled videos that you want to use to train or finetune a model
 
 `zamba` can run two types of model training:
 
@@ -87,24 +87,46 @@ video_loader_config = VideoLoaderConfig(video_height=224,
                                         total_frames=16)
 ```
 
-The full recommended `VideoLoaderConfig` for the `slowfast` model is:
-```python
-megadetector_config = MegadetectorLiteYoloXConfig(confidence=0.25,
-                                                  fill_mode="score_sorted",
-                                                  n_frames=32)
-video_loader_config = VideoLoaderConfig(video_height=224,
-                                        video_width=224,
-                                        crop_bottom_pixels=50,
-                                        ensure_total_frames=True,
-                                        megadetector_list_config=megadetector_config,
-                                        total_frames=32)
-```
-
 You can see the full default configuration for each model in `models/config`<!-- TODO: add link to source and update if needed><!-->. For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
 
 ## Default behavior
 
-<!-- TODO: where model will be saved><!-->
+By default, the model will be saved to a folder in the current working directory called `zamba_<model_name>`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
+
+```console
+$ zamba train --data-dir example_vids/ --labels example_labels.csv
+$ ls zamba_time_distributed
+configuration.yaml 
+hparams.yaml
+events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
+```
+
+`zamba_time_distributed` contains three files:
+
+* `configuration.yaml`: The full model configuration used to generate the given model, including `video_loader_config` and `train_config`. To continue training using the same configuration, or to train another model using the same configuration, you can pass in `configurations.yaml` (see [Specifying Model Configurations with a YAML File](yaml-config.md)).
+* `hparams.yaml`: Model hyperparameters. For example, the YAML file below tells us that the model was trained with a learning rate (`lr`) of 0.001:
+    ```yaml
+    $ cat zamba_time_distributed/hparams.yaml
+
+    lr: 0.001
+    model_class: TimeDistributedEfficientNetMultiLayerHead
+    num_frames: 16
+    scheduler: MultiStepLR
+    scheduler_params:
+    gamma: 0.5
+    milestones:
+    - 3
+    verbose: true
+    species:
+    - species_blank
+    - species_chimpanzee_bonobo
+    - species_elephant
+    - species_leopard
+    ```
+* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: Model checkpoint. The model checkpoint also includes both the model configuration in `configuration.yaml` and the model hyperparameters in `hparams.yaml`. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
+    ```console
+    $ zamba train --checkpoint zamba_time_distributed/events.out.tfevents.1632250686.ip-172-31-15-179.14229.0 --data-dir example_vids/ --labels example_labels.csv
+    ```
 
 ## Step-by-step tutorial
 
@@ -121,6 +143,8 @@ Add the path to your video folder with `--data-dir`. For example, if your videos
 In Python, the data directory is specified when `TrainConfig` is instantiated:
 
 ```python
+from zamba.models.config import TrainConfig
+
 # note this will not run yet because labels are not specified
 train_config = TrainConfig(data_directory='example_vids/')
 ```
@@ -145,7 +169,7 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 ```
 
 In Python, the labels are passed in when `TrainConfig` is instantiated. The Python package allows you to pass in labels as either a file path or a pandas dataframe:
-```
+```python
 labels_dataframe = pd.read_csv('example_labels.csv').set_index('filepath')
 train_config = TrainConfig(data_directory='example_vids/', 
                            labels=labels_dataframe)
@@ -204,7 +228,7 @@ The model only trains or generates prediction based on a subset of the frames in
 
 * If animals are more likely to be seen early in the video because that is closer to when the camera trap was triggered, you may want to set `early_bias` to True. This selects 16 frames towards the beginning of the video.
 * A simple option is to sample frames that are evenly distributed throughout a video. For example, to select 32 evenly distributed frames, add the following to a [YAML configuration file](yaml-config.md):
-```
+```yaml
 video_loader_config:
     total_frames: 32
     evenly_sample_total_frames: True
