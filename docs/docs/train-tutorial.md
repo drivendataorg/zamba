@@ -91,13 +91,14 @@ You can see the full default configuration for each model in `models/config`<!--
 
 ## Default behavior
 
-By default, the model will be saved to a folder in the current working directory called `zamba_<model_name>`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
+By default, the model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 $ ls zamba_time_distributed
 configuration.yaml 
 hparams.yaml
+time_distributed.ckpt
 events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
 ```
 
@@ -123,10 +124,11 @@ events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
     - species_elephant
     - species_leopard
     ```
-* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: Model checkpoint. The model checkpoint also includes both the model configuration in `configuration.yaml` and the model hyperparameters in `hparams.yaml`. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
+* `time_distributed.ckpt`: Model checkpoint. The model checkpoint also includes both the model configuration in `configuration.yaml` and the model hyperparameters in `hparams.yaml`. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
     ```console
     $ zamba train --checkpoint zamba_time_distributed/events.out.tfevents.1632250686.ip-172-31-15-179.14229.0 --data-dir example_vids/ --labels example_labels.csv
     ```
+* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs
 
 ## Step-by-step tutorial
 

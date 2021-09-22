@@ -96,12 +96,12 @@ example_vids/blank.MP4,blank
 example_vids/chimp.MP4,chimpanzee_bonobo
 ```
 
-By default, the model will be saved to a folder in the current working directory called `zamba_<model_name>`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`. 
+By default, the trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`. 
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 $ ls zamba_time_distributed
-configuration.yaml  events.out.tfevents.1632250686.ip-172-31-15-179.14229.0  hparams.yaml
+time_distributed.ckpt configuration.yaml  events.out.tfevents.1632250686.ip-172-31-15-179.14229.0  hparams.yaml
 ```
 
 ## Downloading model weights
