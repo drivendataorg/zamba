@@ -28,8 +28,22 @@ We recommend [Python installation using Anaconda](https://www.anaconda.com/downl
 
  - [ffmpeg download link](https://www.ffmpeg.org/download.html)
 
- - [Install on Ubuntu or Linux](https://www.tecmint.com/install-ffmpeg-in-linux/). In the command line, enter `sudo apt update` and then `sudo apt install ffmpeg`. To double check your installed version, run `ffmpeg -version`
+ - [Install on Ubuntu or Linux](https://www.tecmint.com/install-ffmpeg-in-linux/).
+     - In the command line, enter `sudo apt update` and then `sudo apt install ffmpeg`.
  - [MacOS install video](https://www.youtube.com/watch?v=8nbuqYw2OCw&t=5s)
+     - First, install [Homebrew](https://brew.sh/). Then run `brew install ffmpeg`
+
+To check that `ffmpeg` is installed, run `ffmpeg`:
+
+```console
+$ ffmpeg
+
+ffmpeg version 4.4 Copyright (c) 2000-2021 the FFmpeg developers
+  built with Apple clang version 12.0.0 (clang-1200.0.32.29)
+...
+```
+
+To check your installed version, run `ffmpeg -version`.
 
 ### 2. Install `zamba`
 
