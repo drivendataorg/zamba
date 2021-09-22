@@ -97,10 +97,6 @@ For inference, `slowfast` is recommended if the highest priority is differentiat
 
 The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
 
-`time_distributed` combines the EfficientNetV2 architecture with an open-source image object detection model to implement frame selection. The [YOLOX](https://arxiv.org/abs/2107.08430) detection model is run on all frames in a video. Only the frames with the highest probability of detection are then passed to the more computationally intensive EfficientNetV2 for detailed detection and classification.
-
-<!-- https://github.com/rwightman/pytorch-image-models/blob/master/timm/models/efficientnet.py><!-->
-
 <a id='time-distributed-training-data'></a>
 
 ### Training data
@@ -122,11 +118,31 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `time_distributed` model on every frame would be very time consuming. Instead, an open-source image object detection model called [YOLOX](https://arxiv.org/abs/2107.08430) is used to select the 16 frames that have the highest probability of detection. `time_distributed` is run only on this subset. **`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** 
+Running the `time_distributed` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is only run on the 32 frames with the highest predicted probability of detection. **`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** 
 
 By default, videos are resized to 224x224 pixels. To run `time_distributed`, `video_height` and `video_width` must be specified.
 
-The above is the default behavior if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify `total_frames`, `video_height`, and `video_width`.
+The above is the default behavior if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+```yaml
+video_loader_config:
+  video_height: # any integer
+  video_width: # any integer
+  total_frames: 16
+```
+
+The full default video loading configuration is:
+```yaml
+video_loader_config:
+  video_height: 224
+  video_width: 224
+  crop_bottom_pixels: 50
+  ensure_total_frames: True
+  megadetector_lite_config:
+    confidence: 0.25
+    fill_model: "score_sorted"
+    n_frames: 16
+  total_frames: 16
+```
 
 <a id='slowfast'></a>
 
@@ -148,15 +164,37 @@ Unlike `time_distributed`, `slowfast` is video native. This means it takes into 
 
 The `slowfast` model was trained using the same data as the [`time_distributed` model](#time-distributed-training-data).
 
-### Default video loading configuration
+### Video loading configuration
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `slowfast` model on every frame would be very time consuming. Instead, an open-source image object detection model called [YOLOX](https://arxiv.org/abs/2107.08430) is used to select the 32 frames that have the highest probability of detection. `slowfast` is run only on this subset. **`slowfast` requires that 32 frames be sampled from each video before running inference or training.** 
+Running the `slowfast` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is only run on the 32 frames with the highest predicted probability of detection. **`slowfast` requires that 32 frames be sampled from each video before running inference or training.** 
 
 By default, videos are resized to 224x224 pixels. To run `slowfast`, `video_height` and `video_width` must be specified and must each be greater than or equal to 200. 
 
-The above is the default behavior if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify `total_frames`, `video_height`, and `video_width`.
+The above is the default behavior if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+
+```yaml
+video_loader_config:
+  video_height: # any integer >= 200
+  video_width: # any integer >= 200
+  total_frames: 32
+```
+
+The full default video loading configuration is:
+
+```yaml
+video_loader_config:
+  video_height: 224
+  video_width: 224
+  crop_bottom_pixels: 50
+  ensure_total_frames: True
+  megadetector_lite_config:
+    confidence: 0.25
+    fill_model: "score_sorted"
+    n_frames: 32
+  total_frames: 32
+```
 
 <a id='european'></a>
 
@@ -179,6 +217,42 @@ Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The data included
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `european` model on every frame would be very time consuming. Instead, an open-source image object detection model called [YOLOX](https://arxiv.org/abs/2107.08430) is used to select the 16 frames that have the highest probability of detection. `european` is run only on this subset. **`european` requires that 16 frames be sampled from each video before running inference or training.** 
+Running the `european` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is only run on the 32 frames with the highest predicted probability of detection. **`european` requires that 16 frames be sampled from each video before running inference or training.** 
 
 By default, videos are resized to 224x224 pixels. To run `european`, `video_height` and `video_width` must be specified.
+
+The above is the default behavior if `european` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+
+```yaml
+video_loader_config:
+  video_height: # any integer
+  video_width: # any integer
+  total_frames: 16
+```
+
+The full default video loading configuration is:
+```yaml
+video_loader_config:
+  video_height: 224
+  video_width: 224
+  crop_bottom_pixels: 50
+  ensure_total_frames: True
+  megadetector_lite_config:
+    confidence: 0.25
+    fill_model: "score_sorted"
+    n_frames: 16
+  total_frames: 16
+```
+
+<a id='megadetectorliteyolox'></a>
+
+## MegaDetectorLiteYoloX
+
+Running any of the three models that ship with `zamba` on all frames of a video would be incredibly time consuming and computationally intensive. Instead, `zamba` uses a more efficient object detection model called MegaDetectorLiteYoloX to determine the likelihood that each frame contains an animal. Then, only the frames with the highest probability of detection can be passed to the model.
+
+MegaDetectorLiteYoloX combines two open-source models:
+
+* [MegaDetector](https://github.com/microsoft/CameraTraps/blob/master/megadetector.md) is a pretrained image model designed to detect animals, people, and vehicles in camera trap videos.
+* [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) is a high-performance, lightweight object detection model that is much less computationally intensive than MegaDetector.
+
+MegaDetector is much better at identifying frames with animals than YOLOX, but too computationally intensive to run on every frame. MegaDetectorLiteYoloX was created by training the YOLOX model using the predictions of the MegaDetector as ground truth - this method is called [student-teacher training](https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764).

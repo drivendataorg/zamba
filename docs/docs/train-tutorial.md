@@ -240,7 +240,7 @@ video_loader_config = VideoLoaderConfig(total_frames=32,
                                         evenly_sample_total_frames=True,
                                         ensure_total_frames=True)
 ```
-* You can use a pretrained object detection model called MegadetectorLiteYoloX to select only the frames that are mostly likely to contain an animal - this is the default method. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
+* You can use a pretrained object detection model called [MegadetectorLiteYoloX](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal - this is the default method. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
 ```yaml
 video_loader_config:
     megadetector_lite_config:

@@ -193,11 +193,11 @@ predictions
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or run only one batch for faster debugging (`--dry-run`). We'll go through a few common options to consider. If you using the command line interface, all of the parameters in this section must be passed as part of a [YAML configuration file](yaml-config.md) rather than directly to the command line.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or run only one batch for faster debugging (`--dry-run`). We'll go through a few common options to consider. If you are using the command line interface, all of the parameters in this section must be passed as part of a [YAML configuration file](yaml-config.md) rather than directly to the command line.
 
 #### Video size
 
-`zamba` can resize all videos before running inference. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to run inference.
+`zamba` can resize all videos before running inference. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to run inference on.
 
 The default for all pretrained models is 224x224 pixels. If you have only a few videos for which you want highly detailed predictions, you could instead specify a larger size like 500x500 pixels. Your [YAML configuration file](yaml-config.md) would include:
 ```yaml
@@ -230,7 +230,7 @@ video_loader_config = VideoLoaderConfig(total_frames=32,
                                         evenly_sample_total_frames=True,
                                         ensure_total_frames=True)
 ```
-* You can use a pretrained object detection model called MegadetectorLiteYoloX to select only the frames that are mostly likely to contain an animal - this is the default method. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
+* You can use a pretrained object detection model called [MegadetectorLiteYoloX](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal - this is the default method for all three models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
 ```yaml
 video_loader_config:
     megadetector_lite_config:
