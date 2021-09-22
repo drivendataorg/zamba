@@ -183,13 +183,13 @@ Your labels may be included in the list of [`zamba` class labels](models.md#spec
 
 #### Completely new labels
 
-You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replacing the final [neural network](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) layer with a new head that predicts *your* labels instead of those that ship with `zamba`. [Backpropogation](https://www.youtube.com/watch?v=Ilg3gGewQ5U) will continue from that point with the new head.
+You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final [neural network](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) layer with a new head that predicts *your* labels instead of those that ship with `zamba`. [Backpropogation](https://www.youtube.com/watch?v=Ilg3gGewQ5U) will continue from that point with the new head.
 
 ### 3. Choose a model for training
 
 If your videos contain species common to central or west Africa, use the [`time_distributed` model](models.md#time-distributed). If they contain species common to western Europe, use the [`european` model](models.md#european). We do not recommend using the [`slowfast` model](models.md#slowfast) for training because it is much more computationally intensive and slower to run.
 
-dd the model name to your command with `--model`. The `time_distributed` model will be used if no model is specified. For example, if you want to continue training the `european` model based on the videos in `example_euro_vids` and the labels in `example_euro_labels.csv`:
+Add the model name to your command with `--model`. The `time_distributed` model will be used if no model is specified. For example, if you want to continue training the `european` model based on the videos in `example_euro_vids` and the labels in `example_euro_labels.csv`:
 
 ```console
 $ zamba train --data-dir example_euro_vids/ --labels example_euro_labels.csv --model european
