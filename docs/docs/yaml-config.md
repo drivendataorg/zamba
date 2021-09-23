@@ -37,7 +37,16 @@ predict_config:
   data_directoty: example_vids/
 ```
 
-Either `predict_config` or `train_config` is required, based on whether you will be running inference or training a model. See [All Optional Arguments](configurations.md) for a full list of what can be specified under each class.
+## Required arguments
+
+Either `predict_config` or `train_config` is required, based on whether you will be running inference or training a model. See [All Optional Arguments](configurations.md) for a full list of what can be specified under each class. To run inference, either `data_directory` or `filepaths` must be specified. To train a model, both `data_directory` and `labels` must be specified.
+
+In `video_loader_config`, you must specify at least `video_height`, `video_width`, and `total_frames`. 
+
+* For `time_distributed` or `european`, `total_frames` must be 16
+* For `slowfast`, `total_frames` must be 32
+
+See the [Available Models](models.md) page for more details on each model's requirements.
 
 ## Command line interface
 
