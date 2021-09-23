@@ -42,14 +42,13 @@ from zamba.models.model_manager import train_model
 from zamba.models.config import TrainConfig
 from zamba_algorithms.data.video import VideoLoaderConfig
 
-train_config = TrainConfig(data_directory='example_vids/',
-                           labels='example_labels.csv')
-video_loader_config = VideoLoaderConfig(video_height=224, 
-                                        video_width=224, 
-                                        total_frames=16)
+train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv")
+video_loader_config = VideoLoaderConfig(
+    video_height=224, video_width=224, total_frames=16
+)
 
-train_model(train_config=train_config, 
-            video_loader_config=video_loader_config)
+train_model(train_config=train_config, video_loader_config=video_loader_config)
+
 ```
 
 To specify various parameters when running `train_model`, the first step is to instantiate [`TrainConfig`](configurations.md#training-arguments) and [`VideoLoaderConfig`](configurations.md#video-loading-arguments) with any specifications for model training and video loading respectively. The only two arguments that can be specified in `train_model` are `train_config` and `video_loader_config`.
@@ -76,15 +75,17 @@ The full recommended `VideoLoaderConfig` for the `time_distributed` or `european
 from zamba_algorithms.data.video import VideoLoaderConfig
 from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
 
-megadetector_config = MegadetectorLiteYoloXConfig(confidence=0.25,
-                                                  fill_mode="score_sorted",
-                                                  n_frames=16)
-video_loader_config = VideoLoaderConfig(video_height=224,
-                                        video_width=224,
-                                        crop_bottom_pixels=50,
-                                        ensure_total_frames=True,
-                                        megadetector_list_config=megadetector_config,
-                                        total_frames=16)
+megadetector_config = MegadetectorLiteYoloXConfig(
+    confidence=0.25, fill_mode="score_sorted", n_frames=16
+)
+video_loader_config = VideoLoaderConfig(
+    video_height=224,
+    video_width=224,
+    crop_bottom_pixels=50,
+    ensure_total_frames=True,
+    megadetector_list_config=megadetector_config,
+    total_frames=16,
+)
 ```
 
 You can see the full default configuration for each model in `models/config`<!-- TODO: add link to source and update if needed><!-->. For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
@@ -173,8 +174,7 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 In Python, the labels are passed in when `TrainConfig` is instantiated. The Python package allows you to pass in labels as either a file path or a pandas dataframe:
 ```python
 labels_dataframe = pd.read_csv('example_labels.csv').set_index('filepath')
-train_config = TrainConfig(data_directory='example_vids/', 
-                           labels=labels_dataframe)
+train_config = TrainConfig(data_directory='example_vids/', labels=labels_dataframe)
 ```
 
 #### Labels `zamba` has seen before
@@ -198,9 +198,11 @@ $ zamba train --data-dir example_euro_vids/ --labels example_euro_labels.csv --m
 In Python, model is specified when `TrainConfig` is instantiated:
 
 ```python
-train_config = TrainConfig(data_directory='example_euro_vids/',
-                           labels='example_euro_labels.csv',
-                           model_name='european')
+train_config = TrainConfig(
+    data_directory="example_euro_vids/",
+    labels="example_euro_labels.csv",
+    model_name="european",
+)
 ```
 
 ### 4. Specify any additional parameters
@@ -238,9 +240,9 @@ video_loader_config:
 ```
 In Python, these arguments can be specified when `VideoLoaderConfig` is instantiated:
 ```python
-video_loader_config = VideoLoaderConfig(total_frames=32,
-                                        evenly_sample_total_frames=True,
-                                        ensure_total_frames=True)
+video_loader_config = VideoLoaderConfig(
+    total_frames=32, evenly_sample_total_frames=True, ensure_total_frames=True
+)
 ```
 * You can use a pretrained object detection model called [MegadetectorLiteYoloX](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal - this is the default method. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
 ```yaml
@@ -250,25 +252,87 @@ video_loader_config:
         fill_mode: "score_sorted"
 ```
 
-In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
-```python
-video_loader_config = VideoLoaderConfig(
-    video_height=224,
-    video_width=224,
-    crop_bottom_pixels=50,
-    ensure_total_frames=True,
-    megadetector_lite_config={"confidence": 0.25, "fill_mode": "score_sorted", "n_frames": 16},
-    total_frames=16,
-)
+    In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
+    ```python
+    video_loader_config = VideoLoaderConfig(
+        video_height=224,
+        video_width=224,
+        crop_bottom_pixels=50,
+        ensure_total_frames=True,
+        megadetector_lite_config={
+            "confidence": 0.25,
+            "fill_mode": "score_sorted",
+            "n_frames": 16,
+        },
+        total_frames=16,
+    )
 
-train_config = TrainConfig(
-    data_directory="example_vids/",
-    labels="example_labels.csv",
-    },
-)
+    train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv",)
 
-train_model(video_loader_config=video_loader_config, 
-            train_config=train_config)
-```
+    train_model(video_loader_config=video_loader_config, train_config=train_config)
+    ```
 
 And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.
+
+## Troubleshooting
+
+Before kicking off your full model training, we recommend testing your code with a "dry run". In the command line:
+```console
+$ zamba train --data-dir example_vids/ --labels example_labels.csv --dry-run
+```
+
+In Python, `dry_run` can be specified in the `TrainConfig`:
+```python
+train_config = TrainConfig(
+    data_directory="example_vids/", labels="example_labels.csv", dry_run=True
+)
+```
+
+This will run one training and validation batch for one epoch to quickly detect any bugs. If the dry run completes successfully, train away!
+
+The dry run will also catch any GPU memory errors. If you hit a GPU memory error, try:
+
+* Reducing the batch size
+  
+    Command line:
+    ```console
+    zamba train --data-dir example_vids/ --labels example_labels.csv --batch-size 1
+    ```
+    In Python, `batch_size` is passed to `TrainConfig`:
+    ```python
+    train_config = TrainConfig(
+        data_directory="example_vids/", labels="example_labels.csv", batch_size=1
+    )
+    ```
+
+* Resizing video frames to be smaller before they are passed to the model. The default for all three models is 224x224 pixels. `video_height` and `video_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
+    
+    YAML file:
+    ```yaml
+    video_loader_config:
+      video_height: 100
+      video_width: 100
+      total_frames: 16 # total_frames is always required
+    ```
+    In Python, video size is passed to `VideoLoaderConfig`:
+    ```python
+    video_loader_config = VideoLoaderConfig(
+        video_height=100, video_width=100, total_frames=16
+    ) # total_frames is always required
+    ```
+
+* Reducing the number of workers (subprocesses) used for data loading. By default, `num_workers` will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system. `num_workers` cannot be passed directly to the command line, so if you are using the CLI it must be specified in a [YAML file](yaml-config.md).
+
+    YAML file:
+    ```yaml
+    train_config:
+      data_directory: "example_vids/" # required
+      labels: "example_labels.csv" # required
+      num_workers: 1
+    ```
+    In Python, `num_workers` is passed to `TrainConfig`:
+    ```python
+    train_config = TrainConfig(
+        data_directory="example_vids/", labels="example_labels.csv", num_workers=1
+    )
+    ```
