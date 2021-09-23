@@ -114,21 +114,11 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 * Salonga National Park, Democratic Republic of the Congo
 * Taï National Park, Côte d'Ivoire
 
-### Default video loading configuration
+### Default configuration
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `time_distributed` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is only run on the 32 frames with the highest predicted probability of detection. **`time_distributed` requires that 16 frames be sampled from each video before running inference or training.** 
-
-By default, videos are resized to 224x224 pixels. To run `time_distributed`, `video_height` and `video_width` must be specified.
-
-The above is the default behavior if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-```yaml
-video_loader_config:
-  video_height: # any integer
-  video_width: # any integer
-  total_frames: 16
-```
+Running the `time_distributed` model on every frame would be very time consuming. Instead, by default a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is only run on the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
 
 The full default video loading configuration is:
 ```yaml
@@ -142,6 +132,20 @@ video_loader_config:
     fill_model: "score_sorted"
     n_frames: 16
   total_frames: 16
+```
+
+### Requirements
+
+The above is pulled in by default if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+```yaml
+video_loader_config:
+  video_height: # any integer
+  video_width: # any integer
+  total_frames: 16
+```
+In Python:
+```python
+video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total_frames=16)
 ```
 
 <a id='slowfast'></a>
@@ -164,22 +168,11 @@ Unlike `time_distributed`, `slowfast` is video native. This means it takes into 
 
 The `slowfast` model was trained using the same data as the [`time_distributed` model](#time-distributed-training-data).
 
-### Video loading configuration
+### Default configuration
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `slowfast` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is only run on the 32 frames with the highest predicted probability of detection. **`slowfast` requires that 32 frames be sampled from each video before running inference or training.** 
-
-By default, videos are resized to 224x224 pixels. To run `slowfast`, `video_height` and `video_width` must be specified and must each be greater than or equal to 200. 
-
-The above is the default behavior if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-
-```yaml
-video_loader_config:
-  video_height: # any integer >= 200
-  video_width: # any integer >= 200
-  total_frames: 32
-```
+Running the `slowfast` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is only run on the 32 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels. 
 
 The full default video loading configuration is:
 
@@ -194,6 +187,20 @@ video_loader_config:
     fill_model: "score_sorted"
     n_frames: 32
   total_frames: 32
+```
+
+### Requirements
+
+The above is pulled in by default if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+```yaml
+video_loader_config:
+  video_height: # any integer >= 200
+  video_width: # any integer >= 200
+  total_frames: 32
+```
+In Python:
+```python
+video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total_frames=32)
 ```
 
 <a id='european'></a>
@@ -213,22 +220,11 @@ The `european` model was built by re-training a well-known image classification 
 `european` was trained using data collected and annotated by partners at [The Max Planck Institute for
 Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
 
-### Default video loading configuration
+### Default configuration
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `european` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is only run on the 32 frames with the highest predicted probability of detection. **`european` requires that 16 frames be sampled from each video before running inference or training.** 
-
-By default, videos are resized to 224x224 pixels. To run `european`, `video_height` and `video_width` must be specified.
-
-The above is the default behavior if `european` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-
-```yaml
-video_loader_config:
-  video_height: # any integer
-  video_width: # any integer
-  total_frames: 16
-```
+Running the `european` model on every frame would be very time consuming. Instead, by default a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is only run on the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
 
 The full default video loading configuration is:
 ```yaml
@@ -242,6 +238,20 @@ video_loader_config:
     fill_model: "score_sorted"
     n_frames: 16
   total_frames: 16
+```
+
+### Requirements
+
+The above is pulled in by default if `european` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+```yaml
+video_loader_config:
+  video_height: # any integer
+  video_width: # any integer
+  total_frames: 16
+```
+In Python:
+```python
+video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total_frames=16)
 ```
 
 <a id='megadetectorliteyolox'></a>

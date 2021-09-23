@@ -127,7 +127,7 @@ events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
     ```
 * `time_distributed.ckpt`: Model checkpoint. The model checkpoint also includes both the model configuration in `configuration.yaml` and the model hyperparameters in `hparams.yaml`. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
     ```console
-    $ zamba train --checkpoint zamba_time_distributed/events.out.tfevents.1632250686.ip-172-31-15-179.14229.0 --data-dir example_vids/ --labels example_labels.csv
+    $ zamba train --checkpoint time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
     ```
 * `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs
 
