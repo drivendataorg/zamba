@@ -6,7 +6,7 @@ theme:
   name: material
   features:
     - navigation.indexes
-    - navigation.sections
+    - navigation.expand
 
 extra_css:
   - stylesheets/extra.css
@@ -20,8 +20,7 @@ nav:
   - 'User Tutorials':
     - Classifying Unlabeled Videos: "predict-tutorial.md"
     - Training a Model on Labeled Videos: "train-tutorial.md"
-  - Available Models:
-    - "models.md"
+  - 'Available Models': "models.md"
   - 'Available Model':
     - Choosing a Model: "models.md"
   - 'Advanced Options':
