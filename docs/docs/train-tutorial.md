@@ -212,78 +212,7 @@ train_config = TrainConfig(
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or run only one batch for faster debugging (`--dry-run`). We'll go through a few common options to consider.
-
-The parameters for video size and frame selection discussed below cannot be passed directly to the command line interface. Instead, they must be passed as part of a [YAML configuration file](yaml-config.md). For example:
-
-```console
-$ zamba train --config path_to_your_config_file.yaml
-```
-
-#### Video size
-
-`zamba` can resize all videos before using them to train a model. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to train from.
-
-The default for all pretrained models is 224x224 pixels. Say that you have a large number of videos, and you are more considered with detecting blank v. non-blank videos than with identifying different species. You could train a model more quickly and with less detail be resizing images to 50x50 pixels. Your [YAML configuration file](yaml-config.md) would include:
-```yaml
-video_loader_config:
-  video_height: 50
-  video_width: 50
-```
-
-In Python, video resizing can be specified when `VideoLoaderConfig` is instantiated:
-
-```python
-video_loader_config = VideoLoaderConfig(video_height=50, video_width=50)
-```
-
-#### Frame selection
-
-The model only trains or generates prediction based on a subset of the frames in a video. There are a number of different ways to select frames (see the section on [Video loading arguments](configurations.md#video-loading-arguments) for details). A few possible methods:
-
-* If animals are more likely to be seen early in the video because that is closer to when the camera trap was triggered, you may want to set `early_bias` to True. This selects 16 frames towards the beginning of the video.
-* A simple option is to sample frames that are evenly distributed throughout a video. For example, to select 32 evenly distributed frames, add the following to a [YAML configuration file](yaml-config.md):
-```yaml
-video_loader_config:
-    total_frames: 32
-    evenly_sample_total_frames: True
-    ensure_total_frames: True
-```
-In Python, these arguments can be specified when `VideoLoaderConfig` is instantiated:
-```python
-video_loader_config = VideoLoaderConfig(
-    total_frames=32, evenly_sample_total_frames=True, ensure_total_frames=True
-)
-```
-* You can use a pretrained object detection model called [MegadetectorLiteYoloX](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal - this is the default method. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. For example, to take the 16 frames with the highest probability of detection based on the megadetector, add the following to a [YAML configuration file](yaml-config.md):
-```yaml
-video_loader_config:
-    megadetector_lite_config:
-        n_frames: 16
-        fill_mode: "score_sorted"
-```
-
-    In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
-    ```python hl_lines="6 7 8 9 10"
-    video_loader_config = VideoLoaderConfig(
-        video_height=224,
-        video_width=224,
-        crop_bottom_pixels=50,
-        ensure_total_frames=True,
-        megadetector_lite_config={
-            "confidence": 0.25,
-            "fill_mode": "score_sorted",
-            "n_frames": 16,
-        },
-        total_frames=16,
-    )
-
-    train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv",)
-
-    train_model(video_loader_config=video_loader_config, train_config=train_config)
-    ```
-
-And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or specify a different path where your model should be saved (`--save-directory`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
 
 ### 5. Test your configuration with a dry run
 
