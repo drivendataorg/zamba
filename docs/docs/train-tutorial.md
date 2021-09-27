@@ -10,7 +10,7 @@ This tutorial goes over the steps for using `zamba` if:
 `zamba` can run two types of model training:
 
 * Fine-tuning a model with labels that are a subset of the possible [zamba labels](models.md#species-classes)
-* Retraining a model to predict an entirely new set of labels
+* Fine-tuning a model to predict an entirely new set of labels
 
 The process is the same for both cases.
 
@@ -29,7 +29,8 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 To run `zamba train` in the command line, you must specify both `--data-directory` and `--labels`.
 
 * **`--data-dir PATH`:** Path to the folder containing your labeled videos.
-* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. 
+* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
+
 
 ## Basic usage: Python package
 
@@ -101,6 +102,8 @@ configuration.yaml
 hparams.yaml
 time_distributed.ckpt
 events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
+test_metrics.json
+val_metrics.json
 ```
 
 `zamba_time_distributed` contains three files:
@@ -130,6 +133,8 @@ events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
     $ zamba train --checkpoint time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
     ```
 * `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs
+* `test_metrics.json`: The model's performance on the test subset
+* `val_metrics.json`: The model's performance on the validation subset
 
 ## Step-by-step tutorial
 
@@ -173,7 +178,7 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 
 In Python, the labels are passed in when `TrainConfig` is instantiated. The Python package allows you to pass in labels as either a file path or a pandas dataframe:
 ```python
-labels_dataframe = pd.read_csv('example_labels.csv').set_index('filepath')
+labels_dataframe = pd.read_csv('example_labels.csv', index_col='filepath')
 train_config = TrainConfig(data_directory='example_vids/', labels=labels_dataframe)
 ```
 
@@ -183,7 +188,7 @@ Your labels may be included in the list of [`zamba` class labels](models.md#spec
 
 #### Completely new labels
 
-You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final [neural network](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) layer with a new head that predicts *your* labels instead of those that ship with `zamba`. [Backpropogation](https://www.youtube.com/watch?v=Ilg3gGewQ5U) will continue from that point with the new head.
+You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final [neural network](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) layer with a new head that predicts *your* labels instead of those that ship with `zamba`. [Backpropogation](https://www.youtube.com/watch?v=Ilg3gGewQ5U) will continue from that point with the new head. This process is called [transfer learning](https://keras.io/guides/transfer_learning/).
 
 ### 3. Choose a model for training
 
@@ -207,7 +212,13 @@ train_config = TrainConfig(
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or run only one batch for faster debugging (`--dry-run`). We'll go through a few common options to consider. If you using the command line interface, all of the parameters in this section must be passed as part of a [YAML configuration file](yaml-config.md) rather than directly to the command line.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or run only one batch for faster debugging (`--dry-run`). We'll go through a few common options to consider.
+
+The parameters for video size and frame selection discussed below cannot be passed directly to the command line interface. Instead, they must be passed as part of a [YAML configuration file](yaml-config.md). For example:
+
+```console
+$ zamba train --config path_to_your_config_file.yaml
+```
 
 #### Video size
 
@@ -253,7 +264,7 @@ video_loader_config:
 ```
 
     In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
-    ```python
+    ```python hl_lines="6 7 8 9 10"
     video_loader_config = VideoLoaderConfig(
         video_height=224,
         video_width=224,
@@ -274,65 +285,6 @@ video_loader_config:
 
 And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.
 
-## Troubleshooting
+### 5. Test your configuration with a dry run
 
-Before kicking off your full model training, we recommend testing your code with a "dry run". In the command line:
-```console
-$ zamba train --data-dir example_vids/ --labels example_labels.csv --dry-run
-```
-
-In Python, `dry_run` can be specified in the `TrainConfig`:
-```python
-train_config = TrainConfig(
-    data_directory="example_vids/", labels="example_labels.csv", dry_run=True
-)
-```
-
-This will run one training and validation batch for one epoch to quickly detect any bugs. If the dry run completes successfully, train away!
-
-The dry run will also catch any GPU memory errors. If you hit a GPU memory error, try:
-
-* Reducing the batch size
-  
-    Command line:
-    ```console
-    zamba train --data-dir example_vids/ --labels example_labels.csv --batch-size 1
-    ```
-    In Python, `batch_size` is passed to `TrainConfig`:
-    ```python
-    train_config = TrainConfig(
-        data_directory="example_vids/", labels="example_labels.csv", batch_size=1
-    )
-    ```
-
-* Resizing video frames to be smaller before they are passed to the model. The default for all three models is 224x224 pixels. `video_height` and `video_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
-    
-    YAML file:
-    ```yaml
-    video_loader_config:
-      video_height: 100
-      video_width: 100
-      total_frames: 16 # total_frames is always required
-    ```
-    In Python, video size is passed to `VideoLoaderConfig`:
-    ```python
-    video_loader_config = VideoLoaderConfig(
-        video_height=100, video_width=100, total_frames=16
-    ) # total_frames is always required
-    ```
-
-* Reducing the number of workers (subprocesses) used for data loading. By default, `num_workers` will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system. `num_workers` cannot be passed directly to the command line, so if you are using the CLI it must be specified in a [YAML file](yaml-config.md).
-
-    YAML file:
-    ```yaml
-    train_config:
-      data_directory: "example_vids/" # required
-      labels: "example_labels.csv" # required
-      num_workers: 1
-    ```
-    In Python, `num_workers` is passed to `TrainConfig`:
-    ```python
-    train_config = TrainConfig(
-        data_directory="example_vids/", labels="example_labels.csv", num_workers=1
-    )
-    ```
+Before kicking off the full model training, we recommend testing your code with a "dry run". This will run one training and validation batch for one epoch to quickly detect any bugs. See the [Debugging](debugging.md) page for details.

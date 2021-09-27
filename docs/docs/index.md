@@ -26,6 +26,7 @@ on 11 common species from western Europe. `time_distributed` and `european` are 
 ### User Tutorials
 - [Classifying Unlabeled Videos](predict-tutorial.md)
 - [Training a Model on Labeled Videos](train-tutorial.md)
+- [Debugging](debugging.md)
 
 ### [Available Models](models.md)
 

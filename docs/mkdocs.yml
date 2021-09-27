@@ -20,6 +20,7 @@ nav:
   - 'User Tutorials':
     - Classifying Unlabeled Videos: "predict-tutorial.md"
     - Training a Model on Labeled Videos: "train-tutorial.md"
+    - Debugging: "debugging.md"
   - 'Available Models': "models.md"
   - 'Advanced Options':
     - All Optional Arguments: "configurations.md"

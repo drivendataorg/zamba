@@ -269,65 +269,6 @@ video_loader_config:
 
 And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.
 
-## Troubleshooting
+### 5. Test your configuration with a dry run
 
-Before kicking off your full inference process, we recommend testing your code with a "dry run". In the command line:
-```console
-$ zamba predict --data-dir example_vids/ --dry-run
-```
-
-In Python, `dry_run` can be specified in the `PredictConfig`:
-```python
-predict_config = PredictConfig(
-    data_directory="example_vids/", dry_run=True
-)
-```
-
-This will run one inference on a single batch to quickly detect any bugs, and will not save our predictions to a `.csv`. If the dry run completes successfully, predict away!
-
-The dry run will also catch any GPU memory errors. If you hit a GPU memory error, try:
-
-* Reducing the batch size
-  
-    Command line:
-    ```console
-    zamba predict --data-dir example_vids/ --batch-size 1
-    ```
-    In Python, `batch_size` is passed to `PredictConfig`:
-    ```python
-    predict_config = PredictConfig(
-        data_directory="example_vids/", batch_size=1
-    )
-    ```
-
-* Resizing video frames to be smaller before they are passed to the model. The default for all three models is 224x224 pixels. `video_height` and `video_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
-    
-    YAML file:
-    ```yaml
-    video_loader_config:
-      video_height: 100
-      video_width: 100
-      total_frames: 16 # total_frames is always required
-    ```
-    In Python, video size is passed to `VideoLoaderConfig`:
-    ```python
-    video_loader_config = VideoLoaderConfig(
-        video_height=100, video_width=100, total_frames=16
-    ) # total_frames is always required
-    ```
-
-* Reducing the number of workers (subprocesses) used for data loading. By default, `num_workers` will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system. `num_workers` cannot be passed directly to the command line, so if you are using the CLI it must be specified in a [YAML file](yaml-config.md).
-
-    YAML file:
-    ```yaml
-    predict_config:
-      data_directory: "example_vids/" # required
-      labels: "example_labels.csv" # required
-      num_workers: 1
-    ```
-    In Python, `num_workers` is passed to `PredictConfig`:
-    ```python
-    predict_config = PredictConfig(
-        data_directory="example_vids/", num_workers=1
-    )
-    ```
+Before kicking off a full run of inference, we recommend testing your code with a "dry run". This will run one batch of inference to quickly detect any bugs. See the [Debugging](debugging.md) page for details.
