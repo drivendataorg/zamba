@@ -4,6 +4,13 @@ This section assumes you have successfully installed `zamba` and are ready to tr
 
 `zamba` can be used "out of the box" to generate predictions or train a model using your own videos. To perform inference, you simply need to run `zamba predict` followed by a set of arguments that let zamba know where your videos are located, which model you want to use, and where to save your output. To train a model, you can similarly run `zamba train` and specify your labels. The following sections provide details about these separate modules.
 
+There are two ways to interact with the `zamba` package:
+
+1. Use `zamba` as a command line interface tool. This page provides an overview of how to use the CLI.
+2. Import `zamba` in Python and use it as a Python package. For instructions on using the Python package, see the user tutorial that corresponds to your use case.
+
+Installation is the same for both the command line interface tool and the Python package.
+
 All of the commands on this page should be run at the command line. On
 macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 

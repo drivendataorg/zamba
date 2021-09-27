@@ -30,48 +30,7 @@ The included `Makefile` contains code that uses pytest to run all tests in `zamb
 The command is (from the project root),
 
 ```console
-$ make test
-```
-
-### Testing End-To-End Prediction With `test_cnnensemble.py`
-The test `tests/test_cnnensemble.py` runs an end-to-end prediction with `CnnEnsemble.predict(data_dir)` using a video that automatically gets downloaded along with the `input` directory (this and all required directories are downloaded upon instantiation of `CnnEnsemble` if they are not already present in the project).
-
-This test takes a longer time to execute than is possible on continuous integration, so by default this test is skipped due to the `pytest` decorator:
-
-```python
-@pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
-def test_predict():
-    data_dir = Path(__file__).parent.parent / "models" / "cnnensemble" / "input" / "raw_test"
-
-    manager = ModelManager('', model_class='cnnensemble', proba_threshold=0.5)
-    manager.predict(data_dir, save=True)
-```
-
-This test is important during local development, so it is recommended that the **decorator be commented out to test end-to-end prediction locally**. However, this change should never be pushed, as the lightweight machines on codeship will not be happy, or able, to complete the end-to-end prediction.
-
-To test end-to-end prediction using `make test` on a different set of videos, simply edit `data_dir`.
-
-The included `Makefile` contains code that uses pytest to run all tests in `zamba/tests`.
-
-
-## Packaging and pushing to PyPI
-
-If you want to update the packaging, you **must update the version number in `setup.py` and `docs/conf.py`**. To test packaging you can run:
-
-```console
-$ make build
-```
-
-If you have credentials for PyPI in a `~/.pypirc` file then you can push to PyPI. To upload a new version, you can use the make commands:
-
-```console
-$ make distribute_testpypi
-```
-
-and, once tested:
-
-```console
-$ make distribute_pypi
+$ make tests
 ```
 
 ## Submit additional training videos

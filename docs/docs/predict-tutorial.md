@@ -36,7 +36,7 @@ Minimum example for prediction using the Python package:
 ```python
 from zamba.models.model_manager import predict_model
 from zamba.models.config import PredictConfig
-from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba.data.video import VideoLoaderConfig
 
 predict_config = PredictConfig(data_directory="example_vids/")
 video_loader_config = VideoLoaderConfig(
@@ -68,14 +68,14 @@ In the command line, video loading configurations are loaded by default based on
 
 The full recommended `VideoLoaderConfig` for the `time_distributed` or `european` model is:
 ```python
-from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba.data.video import VideoLoaderConfig
 
 video_loader_config = VideoLoaderConfig(
     video_height=224,
     video_width=224,
     crop_bottom_pixels=50,
     ensure_total_frames=True,
-    megadetector_list_config={
+    megadetector_lite_config={
         "confidence": 0.25,
         "fill_mode": "score_sorted",
         "n_frames": 16,
@@ -91,7 +91,7 @@ video_loader_config = VideoLoaderConfig(
     video_width=224,
     crop_bottom_pixels=50,
     ensure_total_frames=True,
-    megadetector_list_config={
+    megadetector_lite_config={
         "confidence": 0.25,
         "fill_mode": "score_sorted",
         "n_frames": 32,
@@ -129,15 +129,17 @@ Save all of your videos in one folder.
 
 Add the path to your video folder with `--data-dir`. For example, if your videos are in a folder called `example_vids`:
 
-```console
-$ zamba predict --data-dir example_vids/
-```
+=== "CLI"
 
-In the python package, the data directory is specified when `PredictConfig` is instantiated:
+    ```console
+    $ zamba predict --data-dir example_vids/
+    ```
 
-```python
-predict_config = PredictConfig(data_directory='example_vids/')
-```
+=== "Python"
+
+    ```python
+    predict_config = PredictConfig(data_directory='example_vids/')
+    ```
 
 ### 2. Choose a model for prediction
 
@@ -150,15 +152,14 @@ If your videos contain species common to Europe, use the [`european` model](mode
 
 Add the model name to your command with `--model`. The `time_distributed` model will be used if no model is specified. For example, if you want to use the `slowfast` model to classify the videos in `example_vids`:
 
-```console
-$ zamba predict --data-dir example_vids/ --model slowfast
-```
-
-In the Python package, model is specified when `PredictConfig` is instantiated:
-
-```python
-predict_config = PredictConfig(data_directory='example_vids/', model_name='slowfast')
-```
+=== "CLI"
+    ```console
+    $ zamba predict --data-dir example_vids/ --model slowfast
+    ```
+=== "Python"
+    ```python
+    predict_config = PredictConfig(data_directory='example_vids/', model_name='slowfast')
+    ```
 
 ### 3. Choose the output format
 
@@ -169,30 +170,30 @@ There are three options for how to format predictions, listed from most informat
 3. **Most likely class:** Return predictions with a row for each filename and one column for the most likely class in each video. The most likely class can also be blank. To get the most likely class, add `--output-class-names` to your command. In Python, it can be specified by adding `output_class_names=True` when `PredictConfig` is instantiated. This is not recommended if you'd like to detect more than one species in each video.
 
 Say we want to generate predictions for the videos in `example_vids` indicating which animals are present in each video based on a probability threshold of 50%:
-```console
-$ zamba predict --data-dir example_vids/ --proba-threshold 0.5
-$ cat zamba_predictions.csv
-filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal
-example_vids/eleph.MP4,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-example_vids/leopard.MP4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
-example_vids/blank.MP4,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-example_vids/chimp.MP4,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-```
 
-In the Python package, use the `proba_threshold` argument:
+=== "CLI"
+    ```console
+    $ zamba predict --data-dir example_vids/ --proba-threshold 0.5
+    $ cat zamba_predictions.csv
+    filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal
+    example_vids/eleph.MP4,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    example_vids/leopard.MP4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+    example_vids/blank.MP4,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    example_vids/chimp.MP4,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    ```
+=== "Python"
+    ```python
+    predict_config = PredictConfig(data_directory="example_vids/", proba_threshold=0.5)
+    predictions = pd.read_csv("zamba_predictions.csv")
+    predictions
+    ```
 
-```python
-predict_config = PredictConfig(data_directory="example_vids/", proba_threshold=0.5)
-predictions = pd.read_csv("zamba_predictions.csv")
-predictions
-```
-
-| filepath                 | aardvark | antelope_duiker | badger | bat | bird | blank | cattle | cheetah | chimpanzee_bonobo | civet_genet | elephant | equid | forest_buffalo | fox | giraffe | gorilla | hare_rabbit | hippopotamus | hog | human | hyena | large_flightless_bird | leopard | lion | mongoose | monkey_prosimian | pangolin | porcupine | reptile | rodent | small_cat | wild_dog_jackal |
-| ------------------------ | -------- | --------------- | ------ | --- | ---- | ----- | ------ | ------- | ----------------- | ----------- | -------- | ----- | -------------- | --- | ------- | ------- | ----------- | ------------ | --- | ----- | ----- | --------------------- | ------- | ---- | -------- | ---------------- | -------- | --------- | ------- | ------ | --------- | --------------- |
-| example_vids/blank.MP4   | 0        | 0               | 0      | 0   | 0    | 1     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
-| example_vids/chimp.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 1                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
-| example_vids/eleph.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 1        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
-| example_vids/leopard.MP4 | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 1       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | filepath                 | aardvark | antelope_duiker | badger | bat | bird | blank | cattle | cheetah | chimpanzee_bonobo | civet_genet | elephant | equid | forest_buffalo | fox | giraffe | gorilla | hare_rabbit | hippopotamus | hog | human | hyena | large_flightless_bird | leopard | lion | mongoose | monkey_prosimian | pangolin | porcupine | reptile | rodent | small_cat | wild_dog_jackal |
+    | ------------------------ | -------- | --------------- | ------ | --- | ---- | ----- | ------ | ------- | ----------------- | ----------- | -------- | ----- | -------------- | --- | ------- | ------- | ----------- | ------------ | --- | ----- | ----- | --------------------- | ------- | ---- | -------- | ---------------- | -------- | --------- | ------- | ------ | --------- | --------------- |
+    | example_vids/blank.MP4   | 0        | 0               | 0      | 0   | 0    | 1     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | example_vids/chimp.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 1                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | example_vids/eleph.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 1        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | example_vids/leopard.MP4 | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 1       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
 
 ### 4. Specify any additional parameters
 

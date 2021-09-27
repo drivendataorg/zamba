@@ -33,6 +33,7 @@ nav:
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.tabbed
   - toc:
       permalink: True
       toc_depth: 3

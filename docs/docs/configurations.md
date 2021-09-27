@@ -22,7 +22,7 @@ class VideoLoaderConfig(pydantic.main.BaseModel)
  |  VideoLoaderConfig(*, crop_bottom_pixels: int = None, 
  i_frames: bool = False, 
  scene_threshold: float = None, 
- megadetector_lite_config: zamba_algorithms.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
+ megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
  video_height: int = None, 
  video_width: int = None, 
  total_frames: int = None, 
@@ -51,7 +51,7 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLiteYoloX model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLifeYoloX model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLiteYoloX model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLiteYoloX model will not be used to select frames.
 
 #### `video_height (int, optional), video_width (int, optional)`
 
@@ -100,7 +100,7 @@ class PredictConfig(ZambaBaseModel)
  |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'), 
  filepaths: pydantic.types.FilePath = None, 
  checkpoint: pydantic.types.FilePath = None, 
- model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
+ model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
  species: List[str] = None, 
  gpus: Union[List[int], str, int] = 1, 
  num_workers: int = 7, 
@@ -109,7 +109,7 @@ class PredictConfig(ZambaBaseModel)
  dry_run: bool = False, 
  proba_threshold: float = None, 
  output_class_names: bool = False, 
- weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
+ weight_download_region: zamba.models.utils.RegionEnum = 'us', 
  cache_dir: pathlib.Path = None, 
  skip_load_validation: bool = False) -> None
 
@@ -194,13 +194,13 @@ class TrainConfig(ZambaBaseModel)
  |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame], 
  data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'), 
  checkpoint: pydantic.types.FilePath = None, 
- scheduler_config: Union[str, zamba_algorithms.models.config.SchedulerConfig, NoneType] = 'default', 
- model_name: zamba_algorithms.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
+ scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default', 
+ model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
  dry_run: Union[bool, int] = False, 
  batch_size: int = 8, 
  auto_lr_find: bool = True, 
  backbone_finetune: bool = False, 
- backbone_finetune_params: zamba_algorithms.models.config.BackboneFinetuneConfig = 
+ backbone_finetune_params: zamba.models.config.BackboneFinetuneConfig = 
             BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, 
             backbone_initial_ratio_lr=0.01, multiplier=1, 
             pre_train_bn=False, train_bn=False, verbose=True), 
@@ -208,11 +208,11 @@ class TrainConfig(ZambaBaseModel)
  num_workers: int = 7, 
  max_epochs: int = None, 
  early_stopping: bool = True, 
- early_stopping_params: zamba_algorithms.models.config.EarlyStoppingConfig = 
+ early_stopping_params: zamba.models.config.EarlyStoppingConfig = 
             EarlyStoppingConfig(monitor='val_macro_f1', patience=3, 
             verbose=True, mode='max'), 
  tensorboard_log_dir: str = 'tensorboard_logs', 
- weight_download_region: zamba_algorithms.models.utils.RegionEnum = 'us', 
+ weight_download_region: zamba.models.utils.RegionEnum = 'us', 
  cache_dir: pathlib.Path = None, 
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1}, 
  save_directory: pathlib.Path = None, 

@@ -164,9 +164,9 @@ predict_config:
 For reference, the below shows how to specify the same video loading and training parameters using only the Python package:
 
 ```python
-from zamba_algorithms.data.video import VideoLoaderConfig
-from zamba_algorithms.models.config import TrainConfig
-from zamba_algorithms.models.model_manager import train_model
+from zamba.data.video import VideoLoaderConfig
+from zamba.models.config import TrainConfig
+from zamba.models.model_manager import train_model
 
 video_loader_config = VideoLoaderConfig(
     video_height=224,

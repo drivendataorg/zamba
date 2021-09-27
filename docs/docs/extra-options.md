@@ -2,27 +2,30 @@
 
 There are a LOT of ways to customize model training or inference. Here, we take that elephant-sized list of options and condense it to a manageable monkey-sized list of common considerations. To read about all possible customizations, see the [All Optional Arguments](configurations.md) page.
 
-Many of the options below cannot be passed directly to the command line. Instead, some must be passed as part of a [YAML configuration file](yaml-config.md). For example:
+Many of the options below cannot be passed directly to the command line. Instead, some must be passed as part of a YAML configuration file. For example:
 
 ```console
 $ zamba train --config path_to_your_config_file.yaml
 ```
 
+For using a YAML file with the Python package and other details, see the [YAML Configuration File](yaml-config.md) page.
+
 ## Downloading model weights
 
 `zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose. Model weights are stored on servers in three locations, and downloading weights from the server closest to you will run the fastest. By default, weights will be downloaded from the US. To specify a different region:
-```console
-zamba predict --data-dir example_vids/ --weight_download_region asia
-```
 
-In Python this can be specified in [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):
-```python
-predict_config = PredictConfig(
-    data_directory="example_vids/",
-    weight_download_region='asia',
-    ...
-)
-```
+=== "CLI"
+    ```console
+    zamba predict --data-dir example_vids/ --weight_download_region asia
+    ```
+=== "Python"
+    In Python this can be specified in [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):
+    ```python
+    predict_config = PredictConfig(
+        data_directory="example_vids/",
+        weight_download_region='asia',
+    )
+    ```
 
 The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a model's weights are downloaded, the tool will use the local version and will not need to perform this download again.
 
@@ -30,21 +33,23 @@ The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a mode
 
 When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to either predict on or train from. The default video loading configuration for all three pretrained models resizes images to 224x224 pixels. 
 
-Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. Adding the following to your [YAML configuration file](yaml-config.md) would resize all images to 50x50 pixels instead of the default 224x224: 
-```yaml
-video_loader_config:
-  video_height: 50
-  video_width: 50
-  total_frames: 16 # total_frames must always be specified
-```
+Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. To resize all images to 50x50 pixels instead of the default 224x224: 
 
-In Python, video resizing can be specified when `VideoLoaderConfig` is instantiated:
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+        video_height: 50
+        video_width: 50
+        total_frames: 16 # total_frames must always be specified
+    ```
+=== "Python"
+    In Python, video resizing can be specified when `VideoLoaderConfig` is instantiated:
 
-```python
-video_loader_config = VideoLoaderConfig(
-    video_height=50, video_width=50, total_frames=16
-) # total_frames must always be specified
-```
+    ```python
+    video_loader_config = VideoLoaderConfig(
+        video_height=50, video_width=50, total_frames=16
+    ) # total_frames must always be specified
+    ```
 
 ## Frame selection
 
@@ -54,19 +59,20 @@ The model only trains or generates prediction based on a subset of the frames in
 
 ### Early bias 
 
-Some camera traps begin recording a video when movement is detected. If this is the case, you may be more likely to see an animal towards when the video starts. Setting `early_bias` to True selects 16 frames towards the beginning of a video. In a [YAML configuration file](yaml-config.md):
+Some camera traps begin recording a video when movement is detected. If this is the case, you may be more likely to see an animal towards when the video starts. Setting `early_bias` to True selects 16 frames towards the beginning of a video. 
 
-```yaml
-video_loader_config:
-  early_bias: True
-  # other parameters
-```
+=== "YAML File"
+    ```yaml
+    video_loader_config:
+    early_bias: True
+    # ... other parameters
+    ```
+=== "Python"
+    In Python, `early_bias` is specified when `VideoLoaderConfig` is instantiated:
 
-In Python, `early_bias` is specified when `VideoLoaderConfig` is instantiated:
-
-```python
-video_loader_config = VideoLoaderConfig(early_bias=True, ...)
-```
+    ```python
+    video_loader_config = VideoLoaderConfig(early_bias=True, ...)
+    ```
 
 This method was used by the winning solution of the [Pri-matrix Factorization](https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/) machine learning competition, which was the basis for `zamba` v1.
 
@@ -74,54 +80,60 @@ This method was used by the winning solution of the [Pri-matrix Factorization](h
 
 A simple option is to sample frames that are evenly distributed throughout a video. For example, to select 32 evenly distributed frames, add the following to a [YAML configuration file](yaml-config.md):
 
-```yaml
-video_loader_config:
-    total_frames: 32
-    evenly_sample_total_frames: True
-    ensure_total_frames: True
-    # other parameters
-```
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+        total_frames: 32
+        evenly_sample_total_frames: True
+        ensure_total_frames: True
+        # ... other parameters
+    ```
+=== "Python"
+    In Python, these arguments can be specified when `VideoLoaderConfig` is instantiated:
+    ```python
+    video_loader_config = VideoLoaderConfig(
+        total_frames=32, 
+        evenly_sample_total_frames=True, 
+        ensure_total_frames=True,
+        ...
+    )
+    ```
 
-In Python, these arguments can be specified when `VideoLoaderConfig` is instantiated:
-```python
-video_loader_config = VideoLoaderConfig(
-    total_frames=32, 
-    evenly_sample_total_frames=True, 
-    ensure_total_frames=True,
-    ...
-)
-```
+### MegadetectorLiteYoloX
 
-### MegaDetectorLiteYoloX
+You can use a pretrained object detection model called [MegadetectorLiteYoloX](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. If `megadetector_lite_config` is None, the MegadetectorLiteYoloX model will not be used. 
 
-You can use a pretrained object detection model called [MegaDetectorLiteYoloX](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. If `megadetector_lite_config` is None, the MegaDetectorLiteYoloX model will not be used. 
+For example, to take the 16 frames with the highest probability of detection:
 
-For example, to take the 16 frames with the highest probability of detection, add the following to a [YAML configuration file](yaml-config.md):
-```yaml
-video_loader_config:
-    megadetector_lite_config:
-        n_frames: 16
-        fill_mode: "score_sorted"
-```
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+        megadetector_lite_config:
+            n_frames: 16
+            fill_mode: "score_sorted"
+        # ... other parameters
+    ```
+=== "Python"
+    In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
+    ```python hl_lines="6 7 8 9 10"
+    video_loader_config = VideoLoaderConfig(
+        video_height=224,
+        video_width=224,
+        crop_bottom_pixels=50,
+        ensure_total_frames=True,
+        megadetector_lite_config={
+            "confidence": 0.25,
+            "fill_mode": "score_sorted",
+            "n_frames": 16,
+        },
+        total_frames=16,
+    )
 
-In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
-```python hl_lines="6 7 8 9 10"
-video_loader_config = VideoLoaderConfig(
-    video_height=224,
-    video_width=224,
-    crop_bottom_pixels=50,
-    ensure_total_frames=True,
-    megadetector_lite_config={
-        "confidence": 0.25,
-        "fill_mode": "score_sorted",
-        "n_frames": 16,
-    },
-    total_frames=16,
-)
+    train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv",)
 
-train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv",)
+    train_model(video_loader_config=video_loader_config, train_config=train_config)
+    ```
 
-train_model(video_loader_config=video_loader_config, train_config=train_config)
-```
+To see all of the options that can be passed to `MegadetectorLiteYoloX`, see the `MegadetectorLiteYoloXConfig` class. <!-- TODO: add link to github code><!-->
 
 And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.

@@ -256,13 +256,13 @@ video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total
 
 <a id='megadetectorliteyolox'></a>
 
-## MegaDetectorLiteYoloX
+## MegadetectorLiteYoloX
 
-Running any of the three models that ship with `zamba` on all frames of a video would be incredibly time consuming and computationally intensive. Instead, `zamba` uses a more efficient object detection model called MegaDetectorLiteYoloX to determine the likelihood that each frame contains an animal. Then, only the frames with the highest probability of detection can be passed to the model.
+Running any of the three models that ship with `zamba` on all frames of a video would be incredibly time consuming and computationally intensive. Instead, `zamba` uses a more efficient object detection model called MegadetectorLiteYoloX to determine the likelihood that each frame contains an animal. Then, only the frames with the highest probability of detection can be passed to the model.
 
-MegaDetectorLiteYoloX combines two open-source models:
+MegadetectorLiteYoloX combines two open-source models:
 
-* [MegaDetector](https://github.com/microsoft/CameraTraps/blob/master/megadetector.md) is a pretrained image model designed to detect animals, people, and vehicles in camera trap videos.
-* [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) is a high-performance, lightweight object detection model that is much less computationally intensive than MegaDetector.
+* [Megadetector](https://github.com/microsoft/CameraTraps/blob/master/megadetector.md) is a pretrained image model designed to detect animals, people, and vehicles in camera trap videos.
+* [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) is a high-performance, lightweight object detection model that is much less computationally intensive than Megadetector.
 
-MegaDetector is much better at identifying frames with animals than YOLOX, but too computationally intensive to run on every frame. MegaDetectorLiteYoloX was created by training the YOLOX model using the predictions of the MegaDetector as ground truth - this method is called [student-teacher training](https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764).
+Megadetector is much better at identifying frames with animals than YOLOX, but too computationally intensive to run on every frame. MegadetectorLiteYoloX was created by training the YOLOX model using the predictions of the Megadetector as ground truth - this method is called [student-teacher training](https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764).

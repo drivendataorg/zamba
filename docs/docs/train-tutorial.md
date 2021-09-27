@@ -41,7 +41,7 @@ Minimum example for training using the Python package:
 ```python
 from zamba.models.model_manager import train_model
 from zamba.models.config import TrainConfig
-from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba.data.video import VideoLoaderConfig
 
 train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv")
 video_loader_config = VideoLoaderConfig(
@@ -73,7 +73,7 @@ In the command line, video loading configurations are loaded by default based on
 
 The full recommended `VideoLoaderConfig` for the `time_distributed` or `european` model is:
 ```python
-from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba.data.video import VideoLoaderConfig
 from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
 
 megadetector_config = MegadetectorLiteYoloXConfig(
@@ -148,14 +148,18 @@ Save all of your videos in one folder.
 
 Add the path to your video folder with `--data-dir`. For example, if your videos are in a folder called `example_vids`, add `--data-dir example_vids/` to your command.
 
-In Python, the data directory is specified when `TrainConfig` is instantiated:
+=== "CLI"
+    ```console
+    $ zamba train --data-dir example_vids
+    ```
 
-```python
-from zamba.models.config import TrainConfig
+=== "Python"
+    ```python
+    from zamba.models.config import TrainConfig
 
-# note this will not run yet because labels are not specified
-train_config = TrainConfig(data_directory='example_vids/')
-```
+    train_config = TrainConfig(data_directory='example_vids/')
+    ```
+Note that the above will not run yet because labels are not specified.
 
 ### 2. Specify your labels
 
@@ -172,15 +176,16 @@ example_vids/chimp.MP4,chimpanzee_bonobo
 
 Add the path to your labels with `--labels`.  For example, if your videos are in a folder called `example_vids` and your labels are saved in `example_labels.csv`:
 
-```console
-$ zamba train --data-dir example_vids/ --labels example_labels.csv
-```
-
-In Python, the labels are passed in when `TrainConfig` is instantiated. The Python package allows you to pass in labels as either a file path or a pandas dataframe:
-```python
-labels_dataframe = pd.read_csv('example_labels.csv', index_col='filepath')
-train_config = TrainConfig(data_directory='example_vids/', labels=labels_dataframe)
-```
+=== "CLI"
+    ```console
+    $ zamba train --data-dir example_vids/ --labels example_labels.csv
+    ```
+=== "Python"
+    In Python, the labels are passed in when `TrainConfig` is instantiated. The Python package allows you to pass in labels as either a file path or a pandas dataframe:
+    ```python
+    labels_dataframe = pd.read_csv('example_labels.csv', index_col='filepath')
+    train_config = TrainConfig(data_directory='example_vids/', labels=labels_dataframe)
+    ```
 
 #### Labels `zamba` has seen before
 
@@ -196,19 +201,18 @@ If your videos contain species common to central or west Africa, use the [`time_
 
 Add the model name to your command with `--model`. The `time_distributed` model will be used if no model is specified. For example, if you want to continue training the `european` model based on the videos in `example_euro_vids` and the labels in `example_euro_labels.csv`:
 
-```console
-$ zamba train --data-dir example_euro_vids/ --labels example_euro_labels.csv --model european
-```
-
-In Python, model is specified when `TrainConfig` is instantiated:
-
-```python
-train_config = TrainConfig(
-    data_directory="example_euro_vids/",
-    labels="example_euro_labels.csv",
-    model_name="european",
-)
-```
+=== "CLI"
+    ```console
+    $ zamba train --data-dir example_euro_vids/ --labels example_euro_labels.csv --model european
+    ```
+=== "Python"
+    ```python
+    train_config = TrainConfig(
+        data_directory="example_euro_vids/",
+        labels="example_euro_labels.csv",
+        model_name="european",
+    )
+    ```
 
 ### 4. Specify any additional parameters
 
