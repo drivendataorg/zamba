@@ -11,7 +11,7 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 You can input the path to a directory of videos to classify. 
 
 * **The folder must contain only valid video files**, since `zamba` will try to load all of the files in the directory. 
-* `zamba` supports the same video formats as FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
+* `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
 * `zamba` will only generate predictions for the videos in the top level of a directory (`zamba` does not currently extract videos from nested directories).
 
 For example, say we have a directory of videos called `example_vids` that we want to generate predictions for using `zamba`. Let's list the videos:

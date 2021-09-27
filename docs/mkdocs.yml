@@ -6,7 +6,6 @@ theme:
   name: material
   features:
     - navigation.indexes
-    - navigation.sections
     - navigation.expand
 
 extra_css:

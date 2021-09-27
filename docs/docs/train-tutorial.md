@@ -137,7 +137,7 @@ events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
 
 Save all of your videos in one folder.
 
-* Your videos should all be saved in formats that are suppored by FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
+* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
 * Your video folder must contain only valid video files, since zamba will try to load all of the files in the directory.
 * Your videos must all be in the top level of the video folder - `zamba` does not extract videos from nested directories.
 
