@@ -137,16 +137,21 @@ video_loader_config:
 ### Requirements
 
 The above is pulled in by default if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-```yaml
-video_loader_config:
-  video_height: # any integer
-  video_width: # any integer
-  total_frames: 16
-```
-In Python:
-```python
-video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total_frames=16)
-```
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+      video_height: # any integer
+      video_width: # any integer
+      total_frames: 16
+    ```
+=== "Python"
+    ```python
+    video_loader_config = VideoLoaderConfig(
+      video_height=..., # any integer
+      video_width=..., # any integer
+      total_frames=16
+    )
+    ```
 
 <a id='slowfast'></a>
 
@@ -192,16 +197,21 @@ video_loader_config:
 ### Requirements
 
 The above is pulled in by default if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-```yaml
-video_loader_config:
-  video_height: # any integer >= 200
-  video_width: # any integer >= 200
-  total_frames: 32
-```
-In Python:
-```python
-video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total_frames=32)
-```
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+      video_height: # any integer >= 200
+      video_width: # any integer >= 200
+      total_frames: 32
+    ```
+=== "Python"
+    ```python
+    video_loader_config = VideoLoaderConfig(
+      video_height=..., # any integer >= 200
+      video_width=..., # any integer >= 200
+      total_frames=32
+    )
+    ```
 
 <a id='european'></a>
 
@@ -243,16 +253,22 @@ video_loader_config:
 ### Requirements
 
 The above is pulled in by default if `european` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-```yaml
-video_loader_config:
-  video_height: # any integer
-  video_width: # any integer
-  total_frames: 16
-```
-In Python:
-```python
-video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total_frames=16)
-```
+
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+      video_height: # any integer
+      video_width: # any integer
+      total_frames: 16
+    ```
+=== "Python"
+    ```python
+    video_loader_config = VideoLoaderConfig(
+      video_height=..., # any integer
+      video_width=..., # any integer
+      total_frames=16
+    )
+    ```
 
 <a id='megadetectorliteyolox'></a>
 
