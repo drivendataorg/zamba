@@ -99,6 +99,15 @@ ModelConfig(
                               )
 ```
 
+We can now run inference or model training without specifying any additional parameters, because they are already associated with our instance of the `ModelManager` class. To run inference or training:
+```python
+manager.predict() # inference
+
+manager.train() # training
+```
+
+In our user tutorials, we refer to `train_model` and `predict_model` functions. The `ModelManager` class calls these same functions behind the scenes when `.predict()` or `.train()` is run.
+
 
 ## Default configurations
 
