@@ -16,13 +16,23 @@ The `VideoLoaderConfig` class <!-- TODO: add link to source code><!--> defines a
 
 ```python
 >> from zamba.data.video import VideoLoaderConfig
->> default_video_loader = VideoLoaderConfig()
->> default_video_loader
+>> help(VideoLoaderConfig)
 
-VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False, scene_threshold=None, 
-megadetector_lite_config=None, video_height=None, video_width=None, 
-total_frames=None, ensure_total_frames=True, fps=None, early_bias=False, 
-frame_indices=None, evenly_sample_total_frames=False, pix_fmt='rgb24')
+class VideoLoaderConfig(pydantic.main.BaseModel)
+ |  VideoLoaderConfig(*, crop_bottom_pixels: int = None, 
+ i_frames: bool = False, 
+ scene_threshold: float = None, 
+ megadetector_lite_config: zamba_algorithms.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
+ video_height: int = None, 
+ video_width: int = None, 
+ total_frames: int = None, 
+ ensure_total_frames: bool = True, 
+ fps: float = None, 
+ early_bias: bool = False, 
+ frame_indices: List[int] = None, 
+ evenly_sample_total_frames: bool = False, 
+ pix_fmt: str = 'rgb24', 
+ resize_after_frame_selection: bool = False) -> None
 ```
 
 Let's go through each of those arguments.
@@ -305,44 +315,3 @@ Whether to instantiate the model with base weights. This means starting from the
 #### `predict_all_zamba_species (bool, optional)`
 
 Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `predict_all_zamba_species` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`.
-
-## Specifying advanced configurations in Python
-
-Model defaults are all provided in YAML configuration files <!-- TODO: add link to default config folder><!-->. All of the arguments that can be passed to a YAML file can also be passed to either `VideoLoaderConfig`, `PredictConfig`, or `TrainConfig` in Python. 
-
-Say that we have videos saved in `example_vids` and the labels for those videos saved in `example_labels.csv`. The code below shows how to specify the default training configuration for the `time_distributed` model based on its YAML file <!-- TODO: add link to open source yaml on github><!-->:
-
-```python
-from zamba_algorithms.data.video import VideoLoaderConfig
-from zamba_algorithms.models.config import TrainConfig
-from zamba_algorithms.models.model_manager import train_model
-
-video_loader_config = VideoLoaderConfig(
-    video_height=224,
-    video_width=224,
-    crop_bottom_pixels=50,
-    ensure_total_frames=True,
-    megadetector_lite_config={"confidence": 0.25, "fill_mode": "score_sorted", "n_frames": 16},
-    total_frames=16,
-)
-
-train_config = TrainConfig(
-    data_directory="example_vids/",
-    labels="example_labels.csv",
-    model_name="time_distributed",
-    batch_size=8,
-    backbone_finetune=True,
-    backbone_finetune_params={
-        "unfreeze_backbone_at_epoch": 3,
-        "verbose": True,
-        "pre_train_bn": True,
-        "multiplier": 1,
-    },
-    num_workers=3,
-    auto_lr_find=True,
-    early_stopping=True,
-    early_stopping_params={
-        "patience": 5,
-    },
-)
-```

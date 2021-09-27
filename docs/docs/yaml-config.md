@@ -151,3 +151,46 @@ predict_config:
   # or
   # checkpoint: YOUR_CKPT_HERE
 ```
+
+For reference, the below shows how to specify the same video loading and training parameters using only the Python package:
+
+```python
+from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba_algorithms.models.config import TrainConfig
+from zamba_algorithms.models.model_manager import train_model
+
+video_loader_config = VideoLoaderConfig(
+    video_height=224,
+    video_width=224,
+    crop_bottom_pixels=50,
+    ensure_total_frames=True,
+    megadetector_lite_config={
+        "confidence": 0.25,
+        "fill_mode": "score_sorted",
+        "n_frames": 16,
+    },
+    total_frames=16,
+)
+
+train_config = TrainConfig(
+    # data_directory=YOUR_DATA_DIRECTORY_HERE,
+    # labels=YOUR_LABELS_CSV_HERE,
+    model_name="time_distributed",
+    # or
+    # checkpoint=YOUR_CKPT_HERE,
+    batch_size=8,
+    backbone_finetune=True,
+    backbone_finetune_params={
+        "unfreeze_backbone_at_epoch": 3,
+        "verbose": True,
+        "pre_train_bn": True,
+        "multiplier": 1,
+    },
+    num_workers=3,
+    auto_lr_find=True,
+    early_stopping=True,
+    early_stopping_params={"patience": 5,},
+)
+
+train_model(train_config=train_config, video_loader_config=video_loader_config)
+```

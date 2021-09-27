@@ -17,11 +17,11 @@ Zamba can be accessed as both a command-line tool and a Python package.
 
 Zamba ships with three model options. `time_distributed` and `slowfast` are 
 trained on 31 common species from central and west Africa. `european` is trained 
-on 11 common species from western Europe.
+on 11 common species from western Europe. `time_distributed` and `european` are image-based models while `slowfast` is a video-based model.
 
 ### Getting Started
-- [Quickstart](quickstart.md)
 - [Installing Zamba](install.md)
+- [Quickstart](quickstart.md)
 
 ### User Tutorials
 - [Classifying Unlabeled Videos](predict-tutorial.md)
