@@ -21,14 +21,10 @@ nav:
     - Classifying Unlabeled Videos: "predict-tutorial.md"
     - Training a Model on Labeled Videos: "train-tutorial.md"
   - 'Available Models': "models.md"
-  - 'Available Model':
-    - Choosing a Model: "models.md"
   - 'Advanced Options':
-    - "models.md"
     - All Optional Arguments: "configurations.md"
     - Using YAML configuration files: "yaml-config.md"
-  - 'Contributing': 
-    - Help make <code>zamba</code> better: "contribute.md"
+  - 'Contribute to <code>zamba</code>': "contribute.md"
   - 'Changelog':
     - Version 2: "v2_updates.md"
 

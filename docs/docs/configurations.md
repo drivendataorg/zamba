@@ -84,7 +84,7 @@ Reach the total number of frames specified by evenly sampling from the duration 
 
 #### `pix_fmt (str, optional)`
 
-ffmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bgr24` for BGR.
+FFmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bgr24` for BGR.
 
 <a id='prediction-arguments'></a>
 

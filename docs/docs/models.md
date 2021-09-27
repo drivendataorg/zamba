@@ -29,7 +29,7 @@ The algorithms in `zamba` are designed to identify species of animals that appea
   </tr>
 </table>
 
-`time_distributed` and `european` use the same basic algorithm. The main difference is that they are trained on different geographies.
+`time_distributed` and `european` use the same basic algorithm. The main difference is that they predict different species based on their intended geography.
 
 For training or fine tuning, either the `time_distributed` and `european` model is recommended. These run much more quickly thatn the `slowfast` model.
 
@@ -118,7 +118,7 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `time_distributed` model on every frame would be very time consuming. Instead, by default a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is only run on the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
 
 The full default video loading configuration is:
 ```yaml
@@ -154,7 +154,7 @@ video_loader_config = VideoLoaderConfig(video_height=..., video_width=..., total
 
 ### Algorithm
 
-The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operatues at a high frame rate to capture motion over time. The basic architectures are deep [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) using [pytorch](https://pytorch.org/).
+The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operates at a high frame rate to capture motion over time. The basic architectures are deep [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) using [pytorch](https://pytorch.org/).
 
 <div style="text-align:center;">
 <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-slowfast-diagram.png" alt="Architecture showing the two pathways of the slowfast model" style="width:400px;"/>
@@ -172,7 +172,7 @@ The `slowfast` model was trained using the same data as the [`time_distributed` 
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `slowfast` model on every frame would be very time consuming. Instead, a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is only run on the 32 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels. 
+By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels. 
 
 The full default video loading configuration is:
 
@@ -217,14 +217,14 @@ The `european` model was built by re-training a well-known image classification 
 
 ### Training data
 
-`european` was trained using data collected and annotated by partners at [The Max Planck Institute for
-Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
+The `european` model is built by starting with the fully trained `time_distributed` model. The network is then finetuned with data collected and annotated by partners at [The Max Planck Institute for
+Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
 
 ### Default configuration
 
 <!-- TODO: add link to yaml file><!-->
 
-Running the `european` model on every frame would be very time consuming. Instead, by default a more efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is only run on the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
 
 The full default video loading configuration is:
 ```yaml

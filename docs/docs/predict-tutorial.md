@@ -6,7 +6,7 @@ This tutorial goes over the steps for using `zamba` if:
 
 * You already have `zamba` installed (for details see the [Installation](install.md) page)
 * You have unlabeled videos that you want to generate labels for
-* The possible class species labels for your videos are included in the list of possible [zamba labels](models.md#species-classes)
+* The possible class species labels for your videos are included in the list of possible [zamba labels](models.md#species-classes). If your species are not included in this list, you can [retrain a model](train-tutorial.md) using your own labeled data and then run inference.
 
 ## Basic usage: command line interface
 
@@ -20,12 +20,12 @@ $ zamba predict --data-dir example_vids/
 
 ### Required arguments
 
-To run `zamba predict` in the command line, you must specify either `--data-dir` or `--file-list`. 
+To run `zamba predict` in the command line, you must specify either `--data-dir` or `--filepaths`. 
 
 * **`--data-dir PATH`:** Path to the folder containing your videos.
-* **`--file-list PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
+* **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
 
-All other flags are optional. To choose a model, either `--model` or `--checkpoint` must be specified. `--model` defaults to `time_distributed`.
+All other flags are optional. To choose a model, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the three [pretrained models](models.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to `time_distributed`.
 
 ## Basic usage: Python package
 
@@ -123,7 +123,7 @@ example_vids/chimp.MP4,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,0.0,1.0,0.0,0.0,0.0,0.0,0.0
 
 Save all of your videos in one folder.
 
-* Your videos should all be saved in formats that are suppored by FFMPEG, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
+* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
 * Your video folder must contain only valid video files, since zamba will try to load all of the files in the directory.
 * Your videos must all be in the top level of the video folder - `zamba` does not extract videos from nested directories.
 
@@ -166,7 +166,7 @@ There are three options for how to format predictions, listed from most informat
 
 1. **Store all probabilities (default):** Return predictions with a row for each filename and a column for each class label, with probabilities between 0 and 1. Cell (i,j) is the probability that animal j is present in video i.
 2. **Presence/absence:** Return predictions with a row for each filename and a column for each class label, with cells indicating either presence or absense based on a user-specified probability threshold. Cell (i, j) indicates whether animal j is present (`1`) or not present (`0`) in video i. The probability threshold cutoff is specified with `--proba-threshold` in the CLI. 
-3. **Most likely class:** Return predictions with a row for each filename and one column for the most likely class in each video. The most likely class can also be blank. To get the most likely class, add `--output-class-names` to your command. In Python, it can be specified by adding `output_class_names=True` when `PredictConfig` is instantiated.
+3. **Most likely class:** Return predictions with a row for each filename and one column for the most likely class in each video. The most likely class can also be blank. To get the most likely class, add `--output-class-names` to your command. In Python, it can be specified by adding `output_class_names=True` when `PredictConfig` is instantiated. This is not recommended if you'd like to detect more than one species in each video.
 
 Say we want to generate predictions for the videos in `example_vids` indicating which animals are present in each video based on a probability threshold of 50%:
 ```console
@@ -196,7 +196,13 @@ predictions
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or run only one batch for faster debugging (`--dry-run`). We'll go through a few common options to consider. If you are using the command line interface, all of the parameters in this section must be passed as part of a [YAML configuration file](yaml-config.md) rather than directly to the command line.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or run only one batch for faster debugging (`--dry-run`). We'll go through a few common options to consider. 
+
+The parameters for video size and frame selection discussed below cannot be passed directly to the command line interface. Instead, they must be passed as part of a [YAML configuration file](yaml-config.md). For example:
+
+```console
+$ zamba predict --config path_to_your_config_file.yaml
+```
 
 #### Video size
 
@@ -242,7 +248,7 @@ video_loader_config:
 ```
 
     In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
-    ```python
+    ```python hl_lines="6 7 8 9 10"
     video_loader_config = VideoLoaderConfig(
         video_height=224,
         video_width=224,
