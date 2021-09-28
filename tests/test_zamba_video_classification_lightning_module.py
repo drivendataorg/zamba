@@ -1,12 +1,12 @@
 import pytest
 
 from zamba.models.slowfast_models import SlowFast
-from zamba.models.efficientnet_models import TimeDistributedEfficientNet
+from zamba.models.efficientnet_models import TimeDistributedEfficientNetMultiLayerHead
 
 from conftest import DummyZambaVideoClassificationLightningModule
 
 
-@pytest.mark.parametrize("model_class", (SlowFast, TimeDistributedEfficientNet))
+@pytest.mark.parametrize("model_class", (SlowFast, TimeDistributedEfficientNetMultiLayerHead))
 def test_save_and_load(model_class, tmp_path):
     model = model_class(species=["cat", "dog"])
     model.to_disk(tmp_path / model_class.__name__)

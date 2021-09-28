@@ -13,7 +13,7 @@ from zamba.pytorch_lightning.utils import (
 
 
 @register_model
-class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
+class TimeDistributedEfficientNetMultiLayerHead(ZambaVideoClassificationLightningModule):
     def __init__(
         self, num_frames=16, finetune_from: Optional[Union[os.PathLike, str]] = None, **kwargs
     ):
