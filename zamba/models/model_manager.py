@@ -15,8 +15,8 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.plugins import DDPPlugin
 import torch
 
-from zamba_algorithms.data.video import VideoLoaderConfig
-from zamba_algorithms.models.config import (
+from zamba.data.video import VideoLoaderConfig
+from zamba.models.config import (
     ModelConfig,
     MODEL_MAPPING,
     SchedulerConfig,
@@ -24,34 +24,34 @@ from zamba_algorithms.models.config import (
     PredictConfig,
     RegionEnum,
 )
-from zamba_algorithms.models.efficientnet_models import (
+from zamba.models.efficientnet_models import (
     TimeDistributedEfficientNet,
     TimeDistributedEfficientNetMultiLayerHead,
 )
-from zamba_algorithms.models.i3d_models import I3D
-from zamba_algorithms.models.resnet_models import (
+from zamba.models.i3d_models import I3D
+from zamba.models.resnet_models import (
     ResnetR2Plus1d18,
     SingleFrameResnet50,
     TimeDistributedResnet50,
 )
-from zamba_algorithms.models.slowfast_models import SlowFast
-from zamba_algorithms.models.x3d_models import X3D
-from zamba_algorithms.models.utils import download_weights
-from zamba_algorithms.mnist.dataloaders import MNISTDataModule
-from zamba_algorithms.mnist.transforms import (
+from zamba.models.slowfast_models import SlowFast
+from zamba.models.x3d_models import X3D
+from zamba.models.utils import download_weights
+from zamba.mnist.dataloaders import MNISTDataModule
+from zamba.mnist.transforms import (
     MNISTOneHot,
     mnist_transforms,
     slowfast_mnist_transforms,
 )
-from zamba_algorithms.pytorch.finetuning import BackboneFinetuning
-from zamba_algorithms.pytorch_lightning.utils import (
+from zamba.pytorch.finetuning import BackboneFinetuning
+from zamba.pytorch_lightning.utils import (
     available_models,
     ZambaDataModule,
     ZambaVideoClassificationLightningModule,
 )
 
 try:
-    from zamba_algorithms.models.timesformer_models import TimeSformer
+    from zamba.models.timesformer_models import TimeSformer
 
     TIMESFORMER_AVAILABLE = True
 except ImportError:

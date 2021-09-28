@@ -2,8 +2,8 @@ import pandas as pd
 import pytest
 import torch
 
-from zamba_algorithms.models.config import SchedulerConfig, TrainConfig
-from zamba_algorithms.models.model_manager import instantiate_model
+from zamba.models.config import SchedulerConfig, TrainConfig
+from zamba.models.model_manager import instantiate_model
 
 from conftest import DummyZambaVideoClassificationLightningModule
 

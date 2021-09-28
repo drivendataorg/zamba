@@ -10,16 +10,16 @@ import pytest
 from _pytest.logging import caplog as _caplog  # noqa: F401
 import torch
 
-from zamba_algorithms.data.video import VideoLoaderConfig
-from zamba_algorithms.models.config import PredictConfig, TrainConfig
-from zamba_algorithms.models.megadetector_lite_yolox import MegadetectorLiteYoloX
-from zamba_algorithms.models.model_manager import MODEL_MAPPING, train_model
-from zamba_algorithms.pytorch.transforms import zamba_image_model_transforms
-from zamba_algorithms.pytorch_lightning.utils import (
+from zamba.data.video import VideoLoaderConfig
+from zamba.models.config import PredictConfig, TrainConfig
+from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloX
+from zamba.models.model_manager import MODEL_MAPPING, train_model
+from zamba.pytorch.transforms import zamba_image_model_transforms
+from zamba.pytorch_lightning.utils import (
     register_model,
     ZambaVideoClassificationLightningModule,
 )
-from zamba_algorithms.settings import ROOT_DIRECTORY
+from zamba.settings import ROOT_DIRECTORY
 
 
 ASSETS_DIR = ROOT_DIRECTORY / "tests" / "assets"

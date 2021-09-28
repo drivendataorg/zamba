@@ -37,8 +37,8 @@ clean:
 
 ## Lint using flake8
 lint:
-	flake8 zamba_algorithms tests
-	black --check zamba_algorithms tests
+	flake8 zamba tests
+	black --check zamba tests
 
 ## Generate assets and run tests
 tests:

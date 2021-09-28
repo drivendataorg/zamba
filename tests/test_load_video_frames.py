@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 from pydantic import BaseModel, ValidationError
 
-from zamba_algorithms.data.video import (
+from zamba.data.video import (
     load_video_frames,
     VideoLoaderConfig,
     MegadetectorLiteYoloXConfig,

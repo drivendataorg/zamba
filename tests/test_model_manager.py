@@ -6,9 +6,9 @@ from botocore.exceptions import ClientError
 import pytest
 import torch
 
-from zamba_algorithms.models.config import MODEL_MAPPING
-from zamba_algorithms.models.utils import download_weights
-from zamba_algorithms.models.model_manager import train_model
+from zamba.models.config import MODEL_MAPPING
+from zamba.models.utils import download_weights
+from zamba.models.model_manager import train_model
 
 from conftest import DummyTrainConfig, TEST_VIDEOS_DIR
 
