@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Union
+from typing import Optional, Tuple
 import warnings
 
 import pandas as pd
@@ -9,17 +9,12 @@ import torchvision.datasets.video_utils
 from torchvision.datasets.vision import VisionDataset
 import torchvision.transforms.transforms
 
-from zamba.data.metadata import (
-    load_metadata,
-    LoadMetadataConfig,
-)
 from zamba.data.video import load_video_frames, VideoLoaderConfig
 
 
 def get_datasets(
     train_metadata: Optional[pd.DataFrame] = None,
     predict_metadata: Optional[pd.DataFrame] = None,
-    load_metadata_config: Optional[Union[LoadMetadataConfig, dict]] = None,
     transform: Optional[torchvision.transforms.transforms.Compose] = None,
     video_loader_config: Optional[VideoLoaderConfig] = None,
 ) -> Tuple[
@@ -41,9 +36,6 @@ def get_datasets(
           - site (optional): If no "split" column, generate a site-specific split using the values
             in this column.
         predict_metadata (pathlike, optional): Path to a CSV or DataFrame with a "filepath" column.
-        load_metadata_config (dict or LoadMetadataConfig, optional): If `train_metadata` and
-            `predict_metadata` are not provided, load the datasets by passing these parameters to
-            the `src.data.metadata.load_metadata` function.
         transform (torchvision.transforms.transforms.Compose, optional)
         video_loader_config (VideoLoaderConfig, optional)
 
@@ -51,23 +43,7 @@ def get_datasets(
         A tuple of (train_dataset, val_dataset, test_dataset, predict_dataset) where each dataset
         can be None if not specified.
     """
-    if (
-        (train_metadata is None)
-        and (predict_metadata is None)
-        and (load_metadata_config is not None)
-    ):
-        train_metadata = load_metadata(
-            **(
-                load_metadata_config.dict()
-                if isinstance(load_metadata_config, LoadMetadataConfig)
-                else load_metadata_config
-            )
-        )
-        # make this path absolute
-        train_metadata["local_path"] = str(train_metadata.local_path.path.resolve())
-        train_metadata.rename(columns={"local_path": "filepath"}, inplace=True)
-
-    elif predict_metadata is not None:
+    if predict_metadata is not None:
         # enable filtering the same way on all datasets
         predict_metadata["species"] = 0
 
