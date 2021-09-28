@@ -7,13 +7,6 @@ load_dotenv()
 
 ROOT_DIRECTORY = Path(__file__).parents[1].resolve()
 
-DATA_DIRECTORY = ROOT_DIRECTORY / "data"
-LOCAL_DATA_DIRECTORY = ROOT_DIRECTORY / "local_data"
-MODEL_DIRECTORY = ROOT_DIRECTORY / "models"
-MODEL_SCRIPTS = ROOT_DIRECTORY / "zamba" / "models"
-RESULTS_DIR = ROOT_DIRECTORY / "data" / "results"
-
-
 LOAD_VIDEO_FRAMES_CACHE_DIR = os.environ.get("LOAD_VIDEO_FRAMES_CACHE_DIR")
 if LOAD_VIDEO_FRAMES_CACHE_DIR == "":
     LOAD_VIDEO_FRAMES_CACHE_DIR = None
