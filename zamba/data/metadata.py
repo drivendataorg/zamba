@@ -79,3 +79,19 @@ def create_site_specific_splits(
         )
 
     return site.replace(assignments)
+
+
+def one_hot_to_labels(
+    one_hot: pd.DataFrame, column_prefix: Optional[str] = r"species_"
+) -> pd.DataFrame:
+    if column_prefix:
+        one_hot = one_hot.filter(regex=column_prefix)
+        # remove prefix
+        one_hot.columns = [c.split(column_prefix, 1)[1] for c in one_hot.columns]
+
+    one_hot.index = one_hot.index.rename("filepath")
+    one_hot.columns = one_hot.columns.rename("label")
+
+    labels = (one_hot == 1).stack()
+    labels = labels[labels]
+    return labels.reset_index().drop(0, axis=1)
