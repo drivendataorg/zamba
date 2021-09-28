@@ -1,0 +1,19 @@
+*.pyc
+
+dist/
+build/
+*.egg-info/
+
+.tox/
+.coverage
+.vscode
+
+# OSX junk
+.DS_Store
+
+# Pytest
+.pytest_cache/
+
+.env
+output.old
+*.aes
