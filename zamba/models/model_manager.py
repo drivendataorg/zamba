@@ -24,71 +24,13 @@ from zamba.models.config import (
     PredictConfig,
     RegionEnum,
 )
-from zamba.models.efficientnet_models import (
-    TimeDistributedEfficientNet,
-    TimeDistributedEfficientNetMultiLayerHead,
-)
-from zamba.models.i3d_models import I3D
-from zamba.models.resnet_models import (
-    ResnetR2Plus1d18,
-    SingleFrameResnet50,
-    TimeDistributedResnet50,
-)
-from zamba.models.slowfast_models import SlowFast
-from zamba.models.x3d_models import X3D
 from zamba.models.utils import download_weights
-from zamba.mnist.dataloaders import MNISTDataModule
-from zamba.mnist.transforms import (
-    MNISTOneHot,
-    mnist_transforms,
-    slowfast_mnist_transforms,
-)
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.utils import (
     available_models,
     ZambaDataModule,
     ZambaVideoClassificationLightningModule,
 )
-
-try:
-    from zamba.models.timesformer_models import TimeSformer
-
-    TIMESFORMER_AVAILABLE = True
-except ImportError:
-    TIMESFORMER_AVAILABLE = False
-    pass
-
-MODEL_DICT = {
-    "i3d": I3D,
-    "resnet_r2plus1d": ResnetR2Plus1d18,
-    "single_frame_resnet": SingleFrameResnet50,
-    "slowfast": SlowFast,
-    "time_distributed_efficientnet": TimeDistributedEfficientNet,
-    "time_distributed_efficientnet_multilayer_head": TimeDistributedEfficientNetMultiLayerHead,
-    "time_distributed_resnet": TimeDistributedResnet50,
-    "timesformer": TimeSformer if TIMESFORMER_AVAILABLE else None,
-    "x3d": X3D,
-}
-
-time_distributed_mnist_transformms = mnist_transforms(
-    three_channels=True, repeat=16, time_first=True
-)
-
-MNIST_TRANSFORMS = {
-    "resnet_2dplus1d": mnist_transforms(three_channels=True, repeat=16, time_first=False),
-    "single_frame_resnet": mnist_transforms(),
-    "slowfast": slowfast_mnist_transforms(),
-    "time_distributed_efficientnet": time_distributed_mnist_transformms,
-    "time_distributed_efficientnet_multilayer_head": time_distributed_mnist_transformms,
-    "time_distributed_resnet": time_distributed_mnist_transformms,
-    "timesformer": mnist_transforms(repeat=16, time_first=False, resize=(224, 224)),
-}
-
-
-def prepare_mnist_module(model_class, **params):
-    return MNISTDataModule(
-        img_transform=MNIST_TRANSFORMS[model_class], target_transform=MNISTOneHot(), **params
-    )
 
 
 def instantiate_model(
