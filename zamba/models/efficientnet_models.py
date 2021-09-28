@@ -5,8 +5,8 @@ import timm
 import torch
 from torch import nn
 
-from zamba_algorithms.pytorch.layers import TimeDistributed
-from zamba_algorithms.pytorch_lightning.utils import (
+from zamba.pytorch.layers import TimeDistributed
+from zamba.pytorch_lightning.utils import (
     register_model,
     ZambaVideoClassificationLightningModule,
 )

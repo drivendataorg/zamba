@@ -2,7 +2,7 @@ from loguru import logger
 
 from cloudpathlib import S3Path
 
-from zamba_algorithms.models.config import MODEL_MAPPING
+from zamba.models.config import MODEL_MAPPING
 
 
 for model in MODEL_MAPPING.keys():

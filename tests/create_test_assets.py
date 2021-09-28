@@ -4,8 +4,8 @@ import ffmpeg
 from loguru import logger
 import typer
 
-from zamba_algorithms.settings import ROOT_DIRECTORY
-from zamba_algorithms.data.metadata import load_metadata
+from zamba.settings import ROOT_DIRECTORY
+from zamba.data.metadata import load_metadata
 
 
 ASSETS_DIR = ROOT_DIRECTORY / "tests" / "assets"

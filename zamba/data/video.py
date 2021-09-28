@@ -20,12 +20,12 @@ import numpy as np
 import pandas as pd
 from pydantic import BaseModel, root_validator
 
-from zamba_algorithms.exceptions import ZambaFfmpegException
-from zamba_algorithms.models.megadetector_lite_yolox import (
+from zamba.exceptions import ZambaFfmpegException
+from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
-from zamba_algorithms.settings import LOAD_VIDEO_FRAMES_CACHE_DIR
+from zamba.settings import LOAD_VIDEO_FRAMES_CACHE_DIR
 
 logger.remove()
 log_level = os.environ["LOGURU_LEVEL"] if "LOGURU_LEVEL" in os.environ else "INFO"

@@ -5,16 +5,16 @@ from pydantic.error_wrappers import ValidationError
 import typer
 import yaml
 
-from zamba_algorithms.data.video import VideoLoaderConfig
-from zamba_algorithms.models.config import (
+from zamba.data.video import VideoLoaderConfig
+from zamba.models.config import (
     MODEL_MAPPING,
     ModelConfig,
     ModelEnum,
     PredictConfig,
     TrainConfig,
 )
-from zamba_algorithms.models.model_manager import ModelManager
-from zamba_algorithms.models.utils import RegionEnum
+from zamba.models.model_manager import ModelManager
+from zamba.models.utils import RegionEnum
 
 
 app = typer.Typer()

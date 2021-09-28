@@ -4,7 +4,7 @@ from string import ascii_letters
 import numpy as np
 import pandas as pd
 
-from zamba_algorithms.data.metadata import create_site_specific_splits, one_hot_to_labels
+from zamba.data.metadata import create_site_specific_splits, one_hot_to_labels
 
 
 def test_site_specific_splits():

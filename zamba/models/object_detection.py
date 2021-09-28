@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pydantic import BaseModel
 
-from zamba_algorithms.data.video import VideoMetadata
+from zamba.data.video import VideoMetadata
 
 
 class Detection(BaseModel):

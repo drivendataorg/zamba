@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from pydantic import ValidationError
 
-from zamba_algorithms.models.config import (
+from zamba.models.config import (
     EarlyStoppingConfig,
     ModelConfig,
     PredictConfig,

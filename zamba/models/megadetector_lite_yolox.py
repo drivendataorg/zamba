@@ -11,7 +11,7 @@ import torch
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
 
-from zamba_algorithms.models.yolox_models import YoloXNano
+from zamba.models.yolox_models import YoloXNano
 
 LOCAL_MD_LITE_MODEL = Path(__file__).parent / "yolox_models" / "assets" / "yolox_nano_20210901.pth"
 
