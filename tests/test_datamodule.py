@@ -1,7 +1,4 @@
 import itertools
-import os
-
-import pytest
 
 from zamba.pytorch.dataloaders import get_datasets
 from zamba.pytorch_lightning.utils import ZambaDataModule
@@ -49,17 +46,6 @@ def test_get_datasets_train_and_predict_metadata(train_metadata, predict_metadat
     for video, label in predict_dataset:
         assert video.ndim == 4
         assert label.sum() == 0
-
-
-@pytest.mark.skipif(bool(os.getenv("CI")), reason="Private metadata files not available in CI")
-def test_get_datasets_load_metadata():
-    train_dataset, val_dataset, test_dataset, predict_dataset = get_datasets(
-        load_metadata_config={"subset": "dev", "zamba_label": "new"}
-    )
-    assert len(train_dataset) == 2577
-    assert len(val_dataset) == 2404
-    assert len(test_dataset) == 2326
-    assert predict_dataset is None
 
 
 def test_zamba_data_module_train(train_metadata):
