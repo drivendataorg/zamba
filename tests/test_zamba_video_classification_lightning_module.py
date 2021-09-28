@@ -1,7 +1,7 @@
 import pytest
 
-from zamba.models.slowfast_models import SlowFast
-from zamba.models.efficientnet_models import TimeDistributedEfficientNet
+from zamba_algorithms.models.slowfast_models import SlowFast
+from zamba_algorithms.models.efficientnet_models import TimeDistributedEfficientNet
 
 from conftest import DummyZambaVideoClassificationLightningModule
 

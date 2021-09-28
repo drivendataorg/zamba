@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from zamba.metrics import compute_species_specific_metrics
+from zamba_algorithms.metrics import compute_species_specific_metrics
 
 
 @pytest.fixture

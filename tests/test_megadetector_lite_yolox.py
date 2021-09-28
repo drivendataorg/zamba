@@ -3,12 +3,12 @@ from PIL import Image
 import pytest
 import torch
 
-from zamba.models.yolox_models import YoloXNano
-from zamba.models.megadetector_lite_yolox import (
+from zamba_algorithms.models.yolox_models import YoloXNano
+from zamba_algorithms.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
-from zamba.settings import ROOT_DIRECTORY
+from zamba_algorithms.settings import ROOT_DIRECTORY
 
 TEST_ASSETS_DIRECTORY = ROOT_DIRECTORY / "tests" / "assets"
 

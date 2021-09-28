@@ -15,14 +15,14 @@ import torch
 from tqdm import tqdm
 import yaml
 
-from zamba.data.metadata import create_site_specific_splits
-from zamba.data.video import VideoLoaderConfig
-from zamba.exceptions import ZambaFfmpegException
-from zamba.models.slowfast_models import SlowFast
-from zamba.models.efficientnet_models import TimeDistributedEfficientNetMultiLayerHead
-from zamba.models.utils import RegionEnum
-from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES, ROOT_DIRECTORY
+from zamba_algorithms.data.metadata import create_site_specific_splits
+from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba_algorithms.exceptions import ZambaFfmpegException
+from zamba_algorithms.models.slowfast_models import SlowFast
+from zamba_algorithms.models.efficientnet_models import TimeDistributedEfficientNetMultiLayerHead
+from zamba_algorithms.models.utils import RegionEnum
+from zamba_algorithms.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
+from zamba_algorithms.settings import SPLIT_SEED, VIDEO_SUFFIXES, ROOT_DIRECTORY
 
 
 GPUS_AVAILABLE = torch.cuda.device_count()
@@ -33,7 +33,7 @@ MODEL_MAPPING = {
         "model_class": TimeDistributedEfficientNetMultiLayerHead,
         "public_weights": "zamba_time_distributed.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_multilayer_head_mdlite/version_1/checkpoints/epoch=15-step=128720-v4.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/time_distributed.yaml",
+        "config": ROOT_DIRECTORY / "zamba_algorithms/models/configs/time_distributed.yaml",
         "transform": zamba_image_model_transforms(),
     },
     "european": {
@@ -41,7 +41,7 @@ MODEL_MAPPING = {
         "model_class": TimeDistributedEfficientNetMultiLayerHead,
         "public_weights": "zamba_european.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_finetuned_european/version_1/checkpoints/epoch=4-step=2820-v3.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/european.yaml",
+        "config": ROOT_DIRECTORY / "zamba_algorithms/models/configs/european.yaml",
         "transform": zamba_image_model_transforms(),
     },
     "slowfast": {
@@ -49,7 +49,7 @@ MODEL_MAPPING = {
         "model_class": SlowFast,
         "public_weights": "zamba_slowfast.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/slowfast.yaml",
+        "config": ROOT_DIRECTORY / "zamba_algorithms/models/configs/slowfast.yaml",
         "transform": slowfast_transforms(),
     },
 }
@@ -348,6 +348,9 @@ class TrainConfig(ZambaBaseModel):
             metrics (val_metrics.json), and model hyperparameters (hparams.yml).
             If None, a folder is created in the working directory called
             "zamba_``model_name``". Defaults to None.
+        overwrite_save_directory (bool): If True, will save outputs in `save_directory`
+            overwriting if those exist. If False, will create auto-incremented `version_n` folder
+            in `save_directory` with model outputs. Defaults to False.
         skip_load_validation (bool). Skip ffprobe check, which verifies that all
             videos can be loaded and skips files that cannot be loaded. Defaults
             to False.
@@ -376,6 +379,7 @@ class TrainConfig(ZambaBaseModel):
     cache_dir: Optional[Path] = None
     split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
     save_directory: Path = Path.cwd()
+    overwrite_save_directory: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
     predict_all_zamba_species: bool = True

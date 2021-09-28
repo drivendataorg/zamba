@@ -6,8 +6,11 @@ from botocore.exceptions import ClientError
 import pytest
 import torch
 
-from zamba.models.config import MODEL_MAPPING
-from zamba.models.utils import download_weights
+from zamba_algorithms.models.config import MODEL_MAPPING
+from zamba_algorithms.models.utils import download_weights
+from zamba_algorithms.models.model_manager import train_model
+
+from conftest import DummyTrainConfig, TEST_VIDEOS_DIR
 
 
 def test_model_manager(dummy_trainer):
@@ -83,6 +86,35 @@ def test_save_configuration(dummy_trainer):
 def test_train_save_directory(dummy_trainer):
     assert Path(dummy_trainer.logger.root_dir).name == "my_model"
     assert Path(dummy_trainer.logger.log_dir).name == "version_0"
+
+
+def test_train_save_directory_overwrite(
+    labels_absolute_path, dummy_checkpoint, tmp_path, dummy_video_loader_config
+):
+    config = DummyTrainConfig(
+        labels=labels_absolute_path,
+        data_directory=TEST_VIDEOS_DIR,
+        model_name="dummy",
+        checkpoint=dummy_checkpoint,
+        save_directory=tmp_path / "my_model",
+        skip_load_validation=True,
+        overwrite_save_directory=True,
+        max_epochs=1,
+        batch_size=1,
+        auto_lr_find=False,
+        num_workers=1,
+    )
+
+    overwrite_trainer = train_model(
+        train_config=config, video_loader_config=dummy_video_loader_config
+    )
+
+    assert Path(overwrite_trainer.logger.log_dir).resolve() == config.save_directory.resolve()
+
+    assert not any([f.name.startswith("version_") for f in config.save_directory.iterdir()])
+
+    for f in ["train_configuration.yaml", "test_metrics.json", "val_metrics.json", "dummy.ckpt"]:
+        assert (config.save_directory / f).exists()
 
 
 @pytest.mark.parametrize("model_name", ["time_distributed", "slowfast", "european"])

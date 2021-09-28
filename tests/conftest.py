@@ -10,16 +10,16 @@ import pytest
 from _pytest.logging import caplog as _caplog  # noqa: F401
 import torch
 
-from zamba.data.video import VideoLoaderConfig
-from zamba.models.config import PredictConfig, TrainConfig
-from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloX
-from zamba.models.model_manager import MODEL_MAPPING, train_model
-from zamba.pytorch.transforms import zamba_image_model_transforms
-from zamba.pytorch_lightning.utils import (
+from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba_algorithms.models.config import PredictConfig, TrainConfig
+from zamba_algorithms.models.megadetector_lite_yolox import MegadetectorLiteYoloX
+from zamba_algorithms.models.model_manager import MODEL_MAPPING, train_model
+from zamba_algorithms.pytorch.transforms import zamba_image_model_transforms
+from zamba_algorithms.pytorch_lightning.utils import (
     register_model,
     ZambaVideoClassificationLightningModule,
 )
-from zamba.settings import ROOT_DIRECTORY
+from zamba_algorithms.settings import ROOT_DIRECTORY
 
 
 ASSETS_DIR = ROOT_DIRECTORY / "tests" / "assets"
@@ -73,13 +73,14 @@ class DummyTrainConfig(TrainConfig):
     model_name: str
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def labels_relative_path() -> os.PathLike:
     return ASSETS_DIR / "labels.csv"
 
 
-@pytest.fixture
-def labels_absolute_path(tmp_path) -> os.PathLike:
+@pytest.fixture(scope="session")
+def labels_absolute_path(tmp_path_factory) -> os.PathLike:
+    tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
     output_path = tmp_path / "labels.csv"
     df = pd.read_csv(ASSETS_DIR / "labels.csv")
     df["filepath"] = (str(TEST_VIDEOS_DIR) / df.filepath.path).path.resolve()
@@ -87,44 +88,47 @@ def labels_absolute_path(tmp_path) -> os.PathLike:
     return output_path
 
 
-@pytest.fixture
-def labels_no_splits(labels_absolute_path, tmp_path) -> os.PathLike:
+@pytest.fixture(scope="session")
+def labels_no_splits(labels_absolute_path, tmp_path_factory) -> os.PathLike:
+    tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
     pd.read_csv(labels_absolute_path, usecols=["filepath", "label"]).to_csv(
         tmp_path / "labels_no_splits.csv", index=False
     )
     return tmp_path / "labels_no_splits.csv"
 
 
-@pytest.fixture
-def filepaths(labels_absolute_path, tmp_path) -> os.PathLike:
+@pytest.fixture(scope="session")
+def filepaths(labels_absolute_path, tmp_path_factory) -> os.PathLike:
+    tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
     pd.read_csv(labels_absolute_path, usecols=["filepath"]).to_csv(
         tmp_path / "filepaths.csv", index=False
     )
     return tmp_path / "filepaths.csv"
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def train_metadata(labels_absolute_path) -> pd.DataFrame:
     return TrainConfig(labels=labels_absolute_path).labels
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def predict_metadata(filepaths) -> pd.DataFrame:
     return PredictConfig(filepaths=filepaths).filepaths
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def time_distributed_checkpoint(labels_absolute_path) -> os.PathLike:
     return TrainConfig(labels=labels_absolute_path, model_name="time_distributed").checkpoint
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def mdlite():
     return MegadetectorLiteYoloX()
 
 
-@pytest.fixture
-def dummy_checkpoint(labels_absolute_path, tmp_path) -> os.PathLike:
+@pytest.fixture(scope="session")
+def dummy_checkpoint(labels_absolute_path, tmp_path_factory) -> os.PathLike:
+    tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
     labels = pd.read_csv(labels_absolute_path)
     species = pd.get_dummies(labels.label).columns
     output_path = tmp_path / "dummy.ckpt"
@@ -134,8 +138,9 @@ def dummy_checkpoint(labels_absolute_path, tmp_path) -> os.PathLike:
     return output_path
 
 
-@pytest.fixture
-def dummy_train_config(labels_absolute_path, dummy_checkpoint, tmp_path):
+@pytest.fixture(scope="session")
+def dummy_train_config(labels_absolute_path, dummy_checkpoint, tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
     return DummyTrainConfig(
         labels=labels_absolute_path,
         data_directory=TEST_VIDEOS_DIR,
@@ -150,19 +155,19 @@ def dummy_train_config(labels_absolute_path, dummy_checkpoint, tmp_path):
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def dummy_video_loader_config():
     return VideoLoaderConfig(total_frames=4, frame_selection_height=19, frame_selection_width=19)
 
 
-@pytest.fixture
-def dummy_trainer(dummy_train_config, dummy_video_loader_config, labels_absolute_path):
+@pytest.fixture(scope="session")
+def dummy_trainer(dummy_train_config, dummy_video_loader_config):
     return train_model(
         train_config=dummy_train_config, video_loader_config=dummy_video_loader_config
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def dummy_trained_model_checkpoint(dummy_trainer):
     # get saved out checkpoint from trainer
     return next(iter((Path(dummy_trainer.logger.log_dir).glob("*.ckpt"))))

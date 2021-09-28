@@ -3,8 +3,8 @@ import os
 
 import pytest
 
-from zamba.pytorch.dataloaders import get_datasets
-from zamba.pytorch_lightning.utils import ZambaDataModule
+from zamba_algorithms.pytorch.dataloaders import get_datasets
+from zamba_algorithms.pytorch_lightning.utils import ZambaDataModule
 
 
 def test_get_datasets_train_metadata(train_metadata):

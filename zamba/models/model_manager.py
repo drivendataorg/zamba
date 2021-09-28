@@ -15,8 +15,8 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.plugins import DDPPlugin
 import torch
 
-from zamba.data.video import VideoLoaderConfig
-from zamba.models.config import (
+from zamba_algorithms.data.video import VideoLoaderConfig
+from zamba_algorithms.models.config import (
     ModelConfig,
     MODEL_MAPPING,
     SchedulerConfig,
@@ -24,34 +24,34 @@ from zamba.models.config import (
     PredictConfig,
     RegionEnum,
 )
-from zamba.models.efficientnet_models import (
+from zamba_algorithms.models.efficientnet_models import (
     TimeDistributedEfficientNet,
     TimeDistributedEfficientNetMultiLayerHead,
 )
-from zamba.models.i3d_models import I3D
-from zamba.models.resnet_models import (
+from zamba_algorithms.models.i3d_models import I3D
+from zamba_algorithms.models.resnet_models import (
     ResnetR2Plus1d18,
     SingleFrameResnet50,
     TimeDistributedResnet50,
 )
-from zamba.models.slowfast_models import SlowFast
-from zamba.models.x3d_models import X3D
-from zamba.models.utils import download_weights
-from zamba.mnist.dataloaders import MNISTDataModule
-from zamba.mnist.transforms import (
+from zamba_algorithms.models.slowfast_models import SlowFast
+from zamba_algorithms.models.x3d_models import X3D
+from zamba_algorithms.models.utils import download_weights
+from zamba_algorithms.mnist.dataloaders import MNISTDataModule
+from zamba_algorithms.mnist.transforms import (
     MNISTOneHot,
     mnist_transforms,
     slowfast_mnist_transforms,
 )
-from zamba.pytorch.finetuning import BackboneFinetuning
-from zamba.pytorch_lightning.utils import (
+from zamba_algorithms.pytorch.finetuning import BackboneFinetuning
+from zamba_algorithms.pytorch_lightning.utils import (
     available_models,
     ZambaDataModule,
     ZambaVideoClassificationLightningModule,
 )
 
 try:
-    from zamba.models.timesformer_models import TimeSformer
+    from zamba_algorithms.models.timesformer_models import TimeSformer
 
     TIMESFORMER_AVAILABLE = True
 except ImportError:
@@ -264,14 +264,31 @@ def train_model(
 
     train_config.save_directory.mkdir(parents=True, exist_ok=True)
 
+    # add folder version_n that auto increments if we are not overwriting
+    tensorboard_version = (
+        train_config.save_directory.name if train_config.overwrite_save_directory else None
+    )
+    tensorboard_save_dir = (
+        train_config.save_directory.parent
+        if train_config.overwrite_save_directory
+        else train_config.save_directory
+    )
+
     tensorboard_logger = TensorBoardLogger(
-        save_dir=train_config.save_directory,
+        save_dir=tensorboard_save_dir,
         name=None,
+        version=tensorboard_version,
         default_hp_metric=False,
     )
 
+    logging_and_save_dir = (
+        tensorboard_logger.log_dir
+        if not train_config.overwrite_save_directory
+        else train_config.save_directory
+    )
+
     model_checkpoint = ModelCheckpoint(
-        dirpath=tensorboard_logger.log_dir,
+        dirpath=logging_and_save_dir,
         filename=train_config.model_name,
         monitor=train_config.early_stopping_config.monitor,
         mode=train_config.early_stopping_config.mode,
@@ -318,7 +335,7 @@ def train_model(
     }
 
     if not train_config.dry_run:
-        config_path = Path(trainer.logger.log_dir) / "train_configuration.yaml"
+        config_path = Path(logging_and_save_dir) / "train_configuration.yaml"
         config_path.parent.mkdir(exist_ok=True, parents=True)
         logger.info(f"Writing out full configuration to {config_path}.")
         with config_path.open("w") as fp:
@@ -331,13 +348,13 @@ def train_model(
         if trainer.datamodule.test_dataloader() is not None:
             logger.info("Calculating metrics on holdout set.")
             test_metrics = trainer.test(dataloaders=trainer.datamodule.test_dataloader())[0]
-            with (Path(tensorboard_logger.log_dir) / "test_metrics.json").open("w") as fp:
+            with (Path(logging_and_save_dir) / "test_metrics.json").open("w") as fp:
                 json.dump(test_metrics, fp, indent=2)
 
         if trainer.datamodule.val_dataloader() is not None:
             logger.info("Calculating metrics on validation set.")
             val_metrics = trainer.validate(dataloaders=trainer.datamodule.val_dataloader())[0]
-            with (Path(tensorboard_logger.log_dir) / "val_metrics.json").open("w") as fp:
+            with (Path(logging_and_save_dir) / "val_metrics.json").open("w") as fp:
                 json.dump(val_metrics, fp, indent=2)
 
     return trainer

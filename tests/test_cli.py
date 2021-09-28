@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 from pytest_mock import mocker  # noqa: F401
 
-from zamba.cli import app
+from zamba_algorithms.cli import app
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
 
@@ -33,7 +33,7 @@ def pred_mock(self):
 
 
 def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa: F811
-    mocker.patch("zamba.cli.ModelManager.train", train_mock)
+    mocker.patch("zamba_algorithms.cli.ModelManager.train", train_mock)
 
     # check labels must exist
     result = runner.invoke(app, ["train", "--labels", "my_labels.csv"])
@@ -59,8 +59,8 @@ def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa:
 def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):  # noqa: F811
     """Test CLI options that are shared between train and predict commands."""
 
-    mocker.patch("zamba.cli.ModelManager.train", train_mock)
-    mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
+    mocker.patch("zamba_algorithms.cli.ModelManager.train", train_mock)
+    mocker.patch("zamba_algorithms.cli.ModelManager.predict", pred_mock)
 
     for command in [minimum_valid_train, minimum_valid_predict]:
 
@@ -108,7 +108,7 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
 
 
 def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # noqa: F811
-    mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
+    mocker.patch("zamba_algorithms.cli.ModelManager.predict", pred_mock)
 
     # check data dir must exist
     result = runner.invoke(app, ["predict", "--data-dir", "my_data"])

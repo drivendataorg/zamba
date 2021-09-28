@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
+from zamba_algorithms.models.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
 
 n_frames = 100
 rng = np.random.RandomState(68891)
