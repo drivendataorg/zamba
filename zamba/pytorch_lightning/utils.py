@@ -1,7 +1,7 @@
 import os
 from multiprocessing import cpu_count
 from multiprocessing.context import BaseContext
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple
 import warnings
 
 import numpy as np
