@@ -13,7 +13,6 @@ import torch.nn.functional as F
 import torch.utils.data
 from torchvision.transforms import transforms
 
-from zamba.data.metadata import LoadMetadataConfig
 from zamba.data.video import VideoLoaderConfig
 from zamba.metrics import compute_species_specific_metrics
 from zamba.pytorch.dataloaders import get_datasets
@@ -55,9 +54,6 @@ class ZambaDataModule(LightningDataModule):
         prefetch_factor: int = 2,
         train_metadata: Optional[pd.DataFrame] = None,
         predict_metadata: Optional[pd.DataFrame] = None,
-        load_metadata_config: Optional[Union[LoadMetadataConfig, dict]] = LoadMetadataConfig(
-            zamba_label="original", subset="dev"
-        ),
         multiprocessing_context: Optional[str] = "forkserver",
         *args,
         **kwargs,
@@ -67,11 +63,6 @@ class ZambaDataModule(LightningDataModule):
         self.prefetch_factor = prefetch_factor
         self.video_loader_config = (
             None if video_loader_config is None else video_loader_config.dict()
-        )
-        self.load_metadata_config = (
-            load_metadata_config.dict()
-            if isinstance(load_metadata_config, LoadMetadataConfig)
-            else load_metadata_config
         )
 
         self.train_metadata = train_metadata
@@ -85,7 +76,6 @@ class ZambaDataModule(LightningDataModule):
         ) = get_datasets(
             train_metadata=train_metadata,
             predict_metadata=predict_metadata,
-            load_metadata_config=load_metadata_config,
             transform=transform,
             video_loader_config=video_loader_config,
         )

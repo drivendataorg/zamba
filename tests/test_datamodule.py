@@ -7,7 +7,6 @@ from zamba.pytorch_lightning.utils import ZambaDataModule
 def test_get_datasets_train_metadata(train_metadata):
     train_dataset, val_dataset, test_dataset, predict_dataset = get_datasets(
         train_metadata=train_metadata,
-        load_metadata_config=None,
     )
 
     for video, label in itertools.chain(train_dataset, val_dataset, test_dataset):
@@ -20,7 +19,6 @@ def test_get_datasets_train_metadata(train_metadata):
 def test_get_datasets_predict_metadata(predict_metadata):
     train_dataset, val_dataset, test_dataset, predict_dataset = get_datasets(
         predict_metadata=predict_metadata,
-        load_metadata_config=None,
     )
 
     for video, label in predict_dataset:
@@ -36,7 +34,6 @@ def test_get_datasets_train_and_predict_metadata(train_metadata, predict_metadat
     train_dataset, val_dataset, test_dataset, predict_dataset = get_datasets(
         train_metadata=train_metadata,
         predict_metadata=predict_metadata,
-        load_metadata_config=None,
     )
 
     for video, label in itertools.chain(train_dataset, val_dataset, test_dataset):
@@ -49,7 +46,7 @@ def test_get_datasets_train_and_predict_metadata(train_metadata, predict_metadat
 
 
 def test_zamba_data_module_train(train_metadata):
-    data_module = ZambaDataModule(train_metadata=train_metadata, load_metadata_config=None)
+    data_module = ZambaDataModule(train_metadata=train_metadata)
     for videos, labels in data_module.train_dataloader():
         assert videos.ndim == 5
         assert labels.sum() == 1
@@ -59,7 +56,6 @@ def test_zamba_data_module_train_and_predict(train_metadata, predict_metadata):
     data_module = ZambaDataModule(
         train_metadata=train_metadata,
         predict_metadata=predict_metadata,
-        load_metadata_config=None,
     )
     for videos, labels in data_module.train_dataloader():
         assert videos.ndim == 5
