@@ -10,3 +10,4 @@ train_config:
   data_directory: tests/assets/videos
   labels: tests/assets/labels.csv
   model_name: time_distributed
+  predict_all_zamba_species: True
