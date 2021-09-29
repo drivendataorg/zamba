@@ -80,7 +80,7 @@ def labels_relative_path() -> os.PathLike:
 
 
 def labels_n_classes_df(n_classes):
-    """Get up a labels data frame where the labels are up to
+    """Get up a labels dataframe where the labels are up to
     26 classes.
     """
     if n_classes > len(string.ascii_uppercase):
