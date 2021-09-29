@@ -138,7 +138,8 @@ def instantiate_model(
 
         # add in remaining columns for species that are not present
         for c in set(hparams["species"]).difference(set(species)):
-            labels[c] = 0
+            # labels are still OHE at this point
+            labels[f"species_{c}"] = 0
 
         # sort columns so columns on dataloader are the same as columns on model
         labels.sort_index(axis=1, inplace=True)
