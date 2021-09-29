@@ -7,7 +7,7 @@ import warnings
 import numpy as np
 import pandas as pd
 from pytorch_lightning import LightningDataModule, LightningModule
-from sklearn.metrics import f1_score, top_k_accuracy_score
+from sklearn.metrics import f1_score, top_k_accuracy_score, accuracy_score
 import torch
 import torch.nn.functional as F
 import torch.utils.data
@@ -171,9 +171,13 @@ class ZambaVideoClassificationLightningModule(LightningModule):
 
     def on_train_start(self):
         metrics = {"val_macro_f1": {}}
-        metrics.update(
-            {f"val_top_{k}_accuracy": {} for k in DEFAULT_TOP_K if k < self.num_classes}
-        )
+
+        if self.num_classes > 2:
+            metrics.update(
+                {f"val_top_{k}_accuracy": {} for k in DEFAULT_TOP_K if k < self.num_classes}
+            )
+        else:
+            metrics.update({"val_accuracy": {}})
 
         # write hparams to hparams.yaml file, log metrics to tb hparams tab
         self.logger.log_hyperparams(self.hparams, metrics)
@@ -213,17 +217,23 @@ class ZambaVideoClassificationLightningModule(LightningModule):
     ):
         self.log(f"{subset}_macro_f1", f1_score(y_true, y_pred, average="macro", zero_division=0))
 
-        for k in DEFAULT_TOP_K:
-            if k < self.num_classes:
-                self.log(
-                    f"{subset}_top_{k}_accuracy",
-                    top_k_accuracy_score(
-                        y_true.argmax(axis=1),  # top k accuracy only supports single label case
-                        y_proba,
-                        labels=np.arange(y_proba.shape[1]),
-                        k=k,
-                    ),
-                )
+        # if only two classes, skip top_k accuracy since not enough classes
+        if self.num_classes > 2:
+            for k in DEFAULT_TOP_K:
+                if k < self.num_classes:
+                    self.log(
+                        f"{subset}_top_{k}_accuracy",
+                        top_k_accuracy_score(
+                            y_true.argmax(
+                                axis=1
+                            ),  # top k accuracy only supports single label case
+                            y_proba,
+                            labels=np.arange(y_proba.shape[1]),
+                            k=k,
+                        ),
+                    )
+        else:
+            self.log(f"{subset}_accuracy", accuracy_score(y_true, y_pred))
 
         for metric_name, label, metric in compute_species_specific_metrics(
             y_true, y_pred, self.species

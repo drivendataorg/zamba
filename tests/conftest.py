@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import string
 from typing import Optional, Union
 
 from loguru import logger
@@ -76,6 +77,21 @@ class DummyTrainConfig(TrainConfig):
 @pytest.fixture(scope="session")
 def labels_relative_path() -> os.PathLike:
     return ASSETS_DIR / "labels.csv"
+
+
+def labels_n_classes_df(n_classes):
+    """Get up a labels data frame where the labels are up to
+    26 classes.
+    """
+    if n_classes > len(string.ascii_uppercase):
+        raise ValueError("n_classes must be less than 26")
+
+    choices = string.ascii_uppercase[:n_classes]
+
+    df = pd.read_csv(ASSETS_DIR / "labels.csv")
+    df.label = random.choices(choices, k=len(df))
+
+    return df
 
 
 @pytest.fixture(scope="session")
