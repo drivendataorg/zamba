@@ -404,7 +404,7 @@ class TrainConfig(ZambaBaseModel):
         validate_model_name_and_checkpoint
     )
 
-    @validator("scheduler_config", always=True, skip_on_failure=True)
+    @validator("scheduler_config", always=True)
     def validate_scheduler_config(cls, scheduler_config):
         if scheduler_config is None:
             return SchedulerConfig(scheduler=None)
