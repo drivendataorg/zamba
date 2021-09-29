@@ -176,7 +176,7 @@ def validate_model_name_and_checkpoint(cls, values):
     if checkpoint is None and model_name is None:
         raise ValueError("Must provide either model_name or checkpoint path.")
 
-    # checkpoint always supercedes model since model_name cannot be None
+    # checkpoint always supercedes model
     elif checkpoint is not None and model_name is not None:
         logger.info(f"Using checkpoint file: {checkpoint}.")
 
