@@ -45,7 +45,7 @@ def get_datasets(
     """
     if predict_metadata is not None:
         # enable filtering the same way on all datasets
-        predict_metadata["species"] = 0
+        predict_metadata["species_"] = 0
 
     def subset_metadata_or_none(
         metadata: Optional[pd.DataFrame] = None, subset: Optional[str] = None
