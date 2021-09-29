@@ -1,0 +1,20 @@
+filepath,label,split
+data/raw/benjamin/05280418.MP4,gorilla,train
+data/raw/benjamin/20180516_112634_Cephalophus rufilatus_252212_1267525_Gauche.MP4,antelope_duiker,train
+data/raw/dzanga_sangha/T5/First_visit_T5/First_visit_T5C2/11260046.MP4,elephant,train
+data/raw/goualougo_2013/chimp_MPI_FID_2013/MPI_FID_30_Mambeleme/28-Jan-13/FID_30_Mambeleme_2013-1-28_0021.AVI,gorilla,train
+data/raw/goualougo_2013/chimp_MPI_FID_2013/MPI_FID_31_Abel/06-May-2013/FID_31_Abel_2013-5-6_0027.AVI,gorilla,train
+data/raw/goualougo_2013/gorillas_2013/MPI_FID_15_Emeli/11-Sept-2013/FID_15_Emeli_2013-9-11_0028.AVI,gorilla,train
+data/raw/lope/Theo_codification_gorilla videos/T17-1123-1624/EK000075.AVI,gorilla,train
+data/raw/lope/chimp_videos/Lop_E3/Lop_CAM12_0790537_9974042_20141016/EK000016.AVI,gorilla,train
+data/raw/noemie/Videos_All/Taï_T124/Taï_cam61_687002_647212_20161106/f4636736.avi,gorilla,train
+data/raw/noemie/Videos_All/Taï_T147/Taï_cam170_678016_649215_20161227/02120086.AVI,gorilla,train
+data/raw/noemie/Videos_All/Taï_T167/Taï_cam121_684008_650182_20161017/12010136.AVI,gorilla,train
+data/raw/noemie/Videos_All/Taï_T29/Taï_cam222_685018_641210_20161114/12230143.AVI,gorilla,val
+data/raw/noemie/Videos_All/Taï_TD4/Taï_cam17_691988_643179_20161119/PICT0026.AVI,gorilla,val
+data/raw/salonga/MISSION_10/Team_Loving/T291_C2_460421_9753362_20171220/01250030.AVI,gorilla,val
+data/raw/savanna/Gorongosa_Mozambique/2016 Videos/005/Baboon/09100353.AVI,gorilla,val
+data/raw/savanna/Gorongosa_Mozambique/2019 Videos/W09/Baboon/07220191.AVI,gorilla,holdout
+data/raw/savanna/Grumeti_Tanzania/G41_check2/09100029_Eland.MP4,gorilla,holdout
+data/raw/savanna/Grumeti_Tanzania/H39_check5/10110402_Elephant.AVI,elephant,holdout
+data/raw/savanna/Grumeti_Tanzania/M41_check1/08230028_Dikdik.AVI,antelope_duiker,holdout
