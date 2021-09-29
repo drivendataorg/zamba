@@ -81,7 +81,7 @@ class FfmpegZambaVideoDataset(VisionDataset):
         self.original_indices = annotations.index
 
         self.video_paths = annotations.index.tolist()
-        self.species = annotations.columns.tolist()
+        self.species = [s.split("species_", 1)[1] for s in annotations.columns]
         self.targets = annotations
 
         self.transform = transform
