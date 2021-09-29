@@ -19,7 +19,7 @@ from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.slowfast_models import SlowFast
-from zamba.models.efficientnet_models import TimeDistributedEfficientNetMultiLayerHead
+from zamba.models.efficientnet_models import TimeDistributedEfficientNet
 from zamba.models.utils import RegionEnum
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES, ROOT_DIRECTORY
@@ -30,25 +30,25 @@ GPUS_AVAILABLE = torch.cuda.device_count()
 MODEL_MAPPING = {
     "time_distributed": {
         "full_name": "time_distributed_efficientnet_multilayer_head_mdlite",
-        "model_class": TimeDistributedEfficientNetMultiLayerHead,
-        "public_weights": "zamba_time_distributed.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_multilayer_head_mdlite/version_1/checkpoints/epoch=15-step=128720-v4.ckpt",
+        "model_class": TimeDistributedEfficientNet,
+        "public_weights": "zamba_time_distributed_v2.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_multilayer_head_mdlite/version_1/checkpoints/epoch=15-step=128720-v4_zamba.ckpt",
         "config": ROOT_DIRECTORY / "zamba/models/configs/time_distributed.yaml",
         "transform": zamba_image_model_transforms(),
     },
     "european": {
         "full_name": "time_distributed_efficientnet_finetuned_european",
-        "model_class": TimeDistributedEfficientNetMultiLayerHead,
-        "public_weights": "zamba_european.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_finetuned_european/version_1/checkpoints/epoch=4-step=2820-v3.ckpt",
+        "model_class": TimeDistributedEfficientNet,
+        "public_weights": "zamba_european_v2.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_finetuned_european/version_1/checkpoints/epoch=4-step=2820-v3_zamba.ckpt",
         "config": ROOT_DIRECTORY / "zamba/models/configs/european.yaml",
         "transform": zamba_image_model_transforms(),
     },
     "slowfast": {
         "full_name": "slowfast_zamba_finetune_mdlite",
         "model_class": SlowFast,
-        "public_weights": "zamba_slowfast.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5.ckpt",
+        "public_weights": "zamba_slowfast_v2.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5_zamba.ckpt",
         "config": ROOT_DIRECTORY / "zamba/models/configs/slowfast.yaml",
         "transform": slowfast_transforms(),
     },
