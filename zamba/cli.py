@@ -149,7 +149,7 @@ def train(
     species = spacer + spacer.join(
         sorted(
             [
-                c.lstrip("species_")
+                c.split("species_", 1)[1]
                 for c in config.train_config.labels.filter(regex="species").columns
             ]
         )
