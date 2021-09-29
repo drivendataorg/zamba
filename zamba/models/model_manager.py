@@ -90,7 +90,7 @@ def instantiate_model(
 
     # get species from labels file
     species = labels.filter(regex=r"^species_").columns.tolist()
-    species = [s.split("species_", 1)[1] for s in species]
+    species = [s.lstrip("species_") for s in species]
 
     # check if species in label file are a subset of pretrained model species
     is_subset = set(species).issubset(set(hparams["species"]))
