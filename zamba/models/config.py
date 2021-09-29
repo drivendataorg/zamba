@@ -176,11 +176,9 @@ def validate_model_name_and_checkpoint(cls, values):
     if checkpoint is None and model_name is None:
         raise ValueError("Must provide either model_name or checkpoint path.")
 
-    # log a warning if user specifies both
+    # checkpoint always supercedes model since model_name cannot be None
     elif checkpoint is not None and model_name is not None:
-        logger.info(
-            f"Both model_name and checkpoint were specified. Using checkpoint file: {checkpoint}."
-        )
+        logger.info(f"Using checkpoint file: {checkpoint}.")
 
     elif checkpoint is None and model_name is not None:
         # look up public weights file based on model name
@@ -244,7 +242,7 @@ class EarlyStoppingConfig(ZambaBaseModel):
     verbose: bool = True
     mode: Optional[str] = None
 
-    @root_validator()
+    @root_validator
     def validate_mode(cls, values):
         mode = {"val_macro_f1": "max", "val_loss": "min"}[values.get("monitor")]
         user_mode = values.get("mode")
@@ -402,11 +400,11 @@ class TrainConfig(ZambaBaseModel):
 
         return values
 
-    _validate_model_name_and_checkpoint = root_validator(allow_reuse=True)(
+    _validate_model_name_and_checkpoint = root_validator(allow_reuse=True, skip_on_failure=True)(
         validate_model_name_and_checkpoint
     )
 
-    @validator("scheduler_config", always=True)
+    @validator("scheduler_config", always=True, skip_on_failure=True)
     def validate_scheduler_config(cls, scheduler_config):
         if scheduler_config is None:
             return SchedulerConfig(scheduler=None)
@@ -628,11 +626,11 @@ class PredictConfig(ZambaBaseModel):
 
         return values
 
-    _validate_model_name_and_checkpoint = root_validator(allow_reuse=True)(
+    _validate_model_name_and_checkpoint = root_validator(allow_reuse=True, skip_on_failure=True)(
         validate_model_name_and_checkpoint
     )
 
-    @root_validator
+    @root_validator(skip_on_failure=True)
     def validate_proba_threshold(cls, values):
         if values["proba_threshold"] is not None:
             if (values["proba_threshold"] <= 0) or (values["proba_threshold"] >= 1):
@@ -646,7 +644,7 @@ class PredictConfig(ZambaBaseModel):
                 )
         return values
 
-    @root_validator(pre=False)
+    @root_validator(pre=False, skip_on_failure=True)
     def get_filepaths(cls, values):
         """If no file list is passed, get all files in data directory. Warn if there
         are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`
@@ -696,6 +694,7 @@ class PredictConfig(ZambaBaseModel):
             logger.warning(
                 f"Found {num_duplicates} duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video."
             )
+            files_df = files_df[["filepath"]].drop_duplicates()
 
         values["filepaths"] = check_files_exist_and_load(
             df=files_df,
