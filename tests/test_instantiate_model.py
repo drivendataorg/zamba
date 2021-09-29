@@ -99,9 +99,9 @@ def test_head_not_replaced_for_species_subset(dummy_trained_model_checkpoint, tm
 
     assert (model.head.weight == original_model.head.weight).all()
     assert model.hparams["species"] == [
-        "species_antelope_duiker",
-        "species_elephant",
-        "species_gorilla",
+        "antelope_duiker",
+        "elephant",
+        "gorilla",
     ]
     assert model.model[-1].out_features == 3
 
@@ -124,7 +124,7 @@ def test_not_predict_all_zamba_species(dummy_trained_model_checkpoint, tmp_path)
 
     assert (model.head.weight != original_model.head.weight).all()
     assert model.hparams["species"] == [
-        "species_gorilla",
+        "gorilla",
     ]
     assert model.model[-1].out_features == 1
 
@@ -145,7 +145,7 @@ def test_head_replaced_for_new_species(dummy_trained_model_checkpoint, tmp_path)
     )
 
     assert (model.head.weight != original_model.head.weight).all()
-    assert model.hparams["species"] == ["species_alien"]
+    assert model.hparams["species"] == ["alien"]
     assert model.head.out_features == 1
 
 
@@ -159,7 +159,7 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
         labels=pd.DataFrame([{"filepath": "kangaroo.mp4", "species_kangaroo": 1}]),
         cache_dir=tmp_path,
     )
-    assert model.species == ["species_kangaroo"]
+    assert model.species == ["kangaroo"]
 
 
 @pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
@@ -177,51 +177,51 @@ def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
 
     if config.model_name == "european":
         assert model.species == [
-            "species_bird",
-            "species_blank",
-            "species_domestic_cat",
-            "species_european_badger",
-            "species_european_beaver",
-            "species_european_hare",
-            "species_european_roe_deer",
-            "species_north_american_raccoon",
-            "species_red_fox",
-            "species_weasel",
-            "species_wild_boar",
+            "bird",
+            "blank",
+            "domestic_cat",
+            "european_badger",
+            "european_beaver",
+            "european_hare",
+            "european_roe_deer",
+            "north_american_raccoon",
+            "red_fox",
+            "weasel",
+            "wild_boar",
         ]
     else:
         assert model.species == [
-            "species_aardvark",
-            "species_antelope_duiker",
-            "species_badger",
-            "species_bat",
-            "species_bird",
-            "species_blank",
-            "species_bonobo",
-            "species_cattle",
-            "species_cheetah",
-            "species_chimpanzee",
-            "species_civet_genet",
-            "species_elephant",
-            "species_equid",
-            "species_forest_buffalo",
-            "species_fox",
-            "species_giraffe",
-            "species_gorilla",
-            "species_hare_rabbit",
-            "species_hippopotamus",
-            "species_hog",
-            "species_human",
-            "species_hyena",
-            "species_large_flightless_bird",
-            "species_leopard",
-            "species_lion",
-            "species_mongoose",
-            "species_monkey_or_prosimian",
-            "species_pangolin",
-            "species_porcupine",
-            "species_reptile",
-            "species_rodent",
-            "species_small_cat",
-            "species_wild_dog_jackal",
+            "aardvark",
+            "antelope_duiker",
+            "badger",
+            "bat",
+            "bird",
+            "blank",
+            "bonobo",
+            "cattle",
+            "cheetah",
+            "chimpanzee",
+            "civet_genet",
+            "elephant",
+            "equid",
+            "forest_buffalo",
+            "fox",
+            "giraffe",
+            "gorilla",
+            "hare_rabbit",
+            "hippopotamus",
+            "hog",
+            "human",
+            "hyena",
+            "large_flightless_bird",
+            "leopard",
+            "lion",
+            "mongoose",
+            "monkey_or_prosimian",
+            "pangolin",
+            "porcupine",
+            "reptile",
+            "rodent",
+            "small_cat",
+            "wild_dog_jackal",
         ]

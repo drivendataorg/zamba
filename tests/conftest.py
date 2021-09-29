@@ -130,7 +130,8 @@ def mdlite():
 def dummy_checkpoint(labels_absolute_path, tmp_path_factory) -> os.PathLike:
     tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
     labels = pd.read_csv(labels_absolute_path)
-    species = pd.get_dummies(labels.label).columns
+    # species will always be OHE with pd.get_dummies which alphabetizes
+    species = sorted(labels.label.unique())
     output_path = tmp_path / "dummy.ckpt"
     DummyZambaVideoClassificationLightningModule(
         num_frames=4, num_hidden=1, species=species

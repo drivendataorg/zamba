@@ -39,7 +39,7 @@ def test_save_checkpoint(dummy_trained_model_checkpoint):
         "num_hidden": 1,
         "scheduler": None,
         "scheduler_params": None,
-        "species": ["species_antelope_duiker", "species_elephant", "species_gorilla"],
+        "species": ["antelope_duiker", "elephant", "gorilla"],
     }
 
 
@@ -49,18 +49,18 @@ def test_save_metrics(dummy_trainer, split):
         "val_loss",
         f"{split}_macro_f1",
         f"{split}_top_1_accuracy",
-        f"species/{split}_accuracy/species_antelope_duiker",
-        f"species/{split}_f1/species_antelope_duiker",
-        f"species/{split}_precision/species_antelope_duiker",
-        f"species/{split}_recall/species_antelope_duiker",
-        f"species/{split}_accuracy/species_elephant",
-        f"species/{split}_f1/species_elephant",
-        f"species/{split}_precision/species_elephant",
-        f"species/{split}_recall/species_elephant",
-        f"species/{split}_accuracy/species_gorilla",
-        f"species/{split}_f1/species_gorilla",
-        f"species/{split}_precision/species_gorilla",
-        f"species/{split}_recall/species_gorilla",
+        f"species/{split}_accuracy/antelope_duiker",
+        f"species/{split}_f1/antelope_duiker",
+        f"species/{split}_precision/antelope_duiker",
+        f"species/{split}_recall/antelope_duiker",
+        f"species/{split}_accuracy/elephant",
+        f"species/{split}_f1/elephant",
+        f"species/{split}_precision/elephant",
+        f"species/{split}_recall/elephant",
+        f"species/{split}_accuracy/gorilla",
+        f"species/{split}_f1/gorilla",
+        f"species/{split}_precision/gorilla",
+        f"species/{split}_recall/gorilla",
     }
 
     with (Path(dummy_trainer.logger.log_dir) / f"{split}_metrics.json").open() as fp:
