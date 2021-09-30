@@ -19,19 +19,19 @@ The `VideoLoaderConfig` class <!-- TODO: add link to source code><!--> defines a
 >> help(VideoLoaderConfig)
 
 class VideoLoaderConfig(pydantic.main.BaseModel)
- |  VideoLoaderConfig(*, crop_bottom_pixels: int = None, 
- i_frames: bool = False, 
- scene_threshold: float = None, 
- megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
- video_height: int = None, 
- video_width: int = None, 
- total_frames: int = None, 
- ensure_total_frames: bool = True, 
- fps: float = None, 
- early_bias: bool = False, 
- frame_indices: List[int] = None, 
- evenly_sample_total_frames: bool = False, 
- pix_fmt: str = 'rgb24', 
+ |  VideoLoaderConfig(*, crop_bottom_pixels: int = None,
+ i_frames: bool = False,
+ scene_threshold: float = None,
+ megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None,
+ video_height: int = None,
+ video_width: int = None,
+ total_frames: int = None,
+ ensure_total_frames: bool = True,
+ fps: float = None,
+ early_bias: bool = False,
+ frame_indices: List[int] = None,
+ evenly_sample_total_frames: bool = False,
+ pix_fmt: str = 'rgb24',
  resize_after_frame_selection: bool = False) -> None
 ```
 
@@ -97,20 +97,20 @@ All possible model inference parameters are defined by the `PredictConfig` class
 >> help(PredictConfig)
 
 class PredictConfig(ZambaBaseModel)
- |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'), 
- filepaths: pydantic.types.FilePath = None, 
- checkpoint: pydantic.types.FilePath = None, 
- model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
- species: List[str] = None, 
- gpus: Union[List[int], str, int] = 1, 
- num_workers: int = 7, 
- batch_size: int = 8, 
- save: Union[bool, pathlib.Path] = True, 
- dry_run: bool = False, 
- proba_threshold: float = None, 
- output_class_names: bool = False, 
- weight_download_region: zamba.models.utils.RegionEnum = 'us', 
- cache_dir: pathlib.Path = None, 
+ |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'),
+ filepaths: pydantic.types.FilePath = None,
+ checkpoint: pydantic.types.FilePath = None,
+ model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
+ species: List[str] = None,
+ gpus: Union[List[int], str, int] = 1,
+ num_workers: int = 7,
+ batch_size: int = 8,
+ save: Union[bool, pathlib.Path] = True,
+ dry_run: bool = False,
+ proba_threshold: float = None,
+ output_class_names: bool = False,
+ weight_download_region: zamba.models.utils.RegionEnum = 'us',
+ cache_dir: pathlib.Path = None,
  skip_load_validation: bool = False) -> None
 
  ...
@@ -136,7 +136,7 @@ Name of the model to use for inference. The three model options that ship with `
 
 #### `species (list(str), optional)`
 
-List of possible species class labels for the data.  The default is `None`, which automatically loads the classes associated with the model specified by `model_name`. Since the default `model_name` is `time_distributed`, the default is the [31 species](models.md#species-classes) (plus blank) from central and west Africa.
+List of possible species class labels for the data.  The default is `None`, which automatically loads the classes associated with the model specified by `model_name`. Since the default `model_name` is `time_distributed`, the default is the [32 species](models.md#species-classes) (plus blank) from central and west Africa.
 
 #### `gpus (int, optional)`
 
@@ -168,7 +168,7 @@ By default no threshold is passed, `proba_threshold=None`. This will return a pr
 
 Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the species with the highest class probability, or `blank` if the most likely classification is no animal. Defaults to `False`
 
-#### `weight_download_region [us|eu|asia]` 
+#### `weight_download_region [us|eu|asia]`
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
@@ -191,33 +191,33 @@ All possible model training parameters are defined by the `TrainConfig` class<!-
 >> help(TrainConfig)
 
 class TrainConfig(ZambaBaseModel)
- |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame], 
- data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'), 
- checkpoint: pydantic.types.FilePath = None, 
- scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default', 
- model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>, 
- dry_run: Union[bool, int] = False, 
- batch_size: int = 8, 
- auto_lr_find: bool = True, 
- backbone_finetune: bool = False, 
- backbone_finetune_params: zamba.models.config.BackboneFinetuneConfig = 
-            BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, 
-            backbone_initial_ratio_lr=0.01, multiplier=1, 
-            pre_train_bn=False, train_bn=False, verbose=True), 
- gpus: Union[List[int], str, int] = 1, 
- num_workers: int = 7, 
- max_epochs: int = None, 
- early_stopping: bool = True, 
- early_stopping_params: zamba.models.config.EarlyStoppingConfig = 
-            EarlyStoppingConfig(monitor='val_macro_f1', patience=3, 
-            verbose=True, mode='max'), 
- tensorboard_log_dir: str = 'tensorboard_logs', 
- weight_download_region: zamba.models.utils.RegionEnum = 'us', 
- cache_dir: pathlib.Path = None, 
- split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1}, 
- save_directory: pathlib.Path = None, 
- skip_load_validation: bool = False, 
- from_scratch: bool = False, 
+ |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame],
+ data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'),
+ checkpoint: pydantic.types.FilePath = None,
+ scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
+ model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
+ dry_run: Union[bool, int] = False,
+ batch_size: int = 8,
+ auto_lr_find: bool = True,
+ backbone_finetune: bool = False,
+ backbone_finetune_params: zamba.models.config.BackboneFinetuneConfig =
+            BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
+            backbone_initial_ratio_lr=0.01, multiplier=1,
+            pre_train_bn=False, train_bn=False, verbose=True),
+ gpus: Union[List[int], str, int] = 1,
+ num_workers: int = 7,
+ max_epochs: int = None,
+ early_stopping: bool = True,
+ early_stopping_params: zamba.models.config.EarlyStoppingConfig =
+            EarlyStoppingConfig(monitor='val_macro_f1', patience=3,
+            verbose=True, mode='max'),
+ tensorboard_log_dir: str = 'tensorboard_logs',
+ weight_download_region: zamba.models.utils.RegionEnum = 'us',
+ cache_dir: pathlib.Path = None,
+ split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
+ save_directory: pathlib.Path = None,
+ skip_load_validation: bool = False,
+ from_scratch: bool = False,
  predict_all_zamba_species: bool = True) -> None
  ...
 ```
@@ -238,7 +238,7 @@ Path to a model checkpoint to load and resume training from. The default is `Non
 
 #### `scheduler_config (zamba.models.config.SchedulerConfig, optional)`
 
-A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate) to adjust the learning rate based on the number of epochs. Scheduler can either be `default` (the default), `None`, or a [`torch.optim.lr_scheduler`](https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py). If `default`, 
+A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate) to adjust the learning rate based on the number of epochs. Scheduler can either be `default` (the default), `None`, or a [`torch.optim.lr_scheduler`](https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py). If `default`,
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
@@ -288,7 +288,7 @@ Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/P
 
 Pytorch Lightning can log to a local file system in TensorBoard format with [TensorBoardLogger](https://pytorch-lightning.readthedocs.io/en/latest/api/pytorch_lightning.loggers.tensorboard.html). The directory in which to save these logs is set to `zamba/models/<tensorboard_log_dir>/`. Defaults to `tensorboard_logs`
 
-#### `weight_download_region [us|eu|asia]` 
+#### `weight_download_region [us|eu|asia]`
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
