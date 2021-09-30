@@ -10,7 +10,7 @@ from zamba.models.config import MODEL_MAPPING
 from zamba.models.utils import download_weights
 from zamba.models.model_manager import train_model
 
-from conftest import DummyTrainConfig, TEST_VIDEOS_DIR
+from conftest import DummyTrainConfig, TEST_VIDEOS_DIR, labels_n_classes_df
 
 
 def test_model_manager(dummy_trainer):
@@ -65,6 +65,49 @@ def test_save_metrics(dummy_trainer, split):
 
     with (Path(dummy_trainer.logger.log_dir) / f"{split}_metrics.json").open() as fp:
         metrics = json.load(fp)
+    assert metrics.keys() == metric_names
+
+
+@pytest.mark.parametrize("split", ("test", "val"))
+def test_save_metrics_less_than_two_classes(
+    dummy_video_loader_config, split, dummy_checkpoint, tmp_path
+):
+    labels = labels_n_classes_df(2)
+    trainer = train_model(
+        train_config=DummyTrainConfig(
+            labels=labels,
+            data_directory=TEST_VIDEOS_DIR,
+            model_name="dummy",
+            checkpoint=dummy_checkpoint,
+            max_epochs=1,
+            batch_size=1,
+            auto_lr_find=False,
+            num_workers=2,
+            save_directory=tmp_path / "my_model",
+            skip_load_validation=True,
+        ),
+        video_loader_config=dummy_video_loader_config,
+    )
+
+    with (Path(trainer.logger.log_dir) / f"{split}_metrics.json").open() as fp:
+        metrics = json.load(fp)
+
+    metric_names = {
+        "val_loss",
+        f"{split}_macro_f1",
+        f"{split}_accuracy",
+    }
+
+    for c in labels.label.unique():
+        metric_names = metric_names.union(
+            {
+                f"species/{split}_accuracy/{c}",
+                f"species/{split}_f1/{c}",
+                f"species/{split}_precision/{c}",
+                f"species/{split}_recall/{c}",
+            }
+        )
+
     assert metrics.keys() == metric_names
 
 
