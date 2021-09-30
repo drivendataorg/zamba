@@ -15,8 +15,8 @@ input of various deep learning models, the tool makes predictions for 42
 common species in these videos (as well as blank, or, "no species present").
 Zamba can be accessed as both a command-line tool and a Python package.
 
-Zamba ships with three model options. `time_distributed` and `slowfast` are 
-trained on 31 common species from central and west Africa. `european` is trained 
+Zamba ships with three model options. `time_distributed` and `slowfast` are
+trained on 32 common species from central and west Africa. `european` is trained
 on 11 common species from western Europe. `time_distributed` and `european` are image-based models while `slowfast` is a video-based model.
 
 ### Getting Started

@@ -39,7 +39,7 @@ For inference, `slowfast` is recommended if the highest priority is differentiat
 
 ## What species can `zamba` detect?
 
-`time_distributed` and `slowfast` are both trained to identify 31 common species from central and west Africa. The possible class labels in these models are:
+`time_distributed` and `slowfast` are both trained to identify 32 common species from central and west Africa. The possible class labels in these models are:
 
 * `aardvark`
 * `antelope_duiker`
@@ -177,7 +177,7 @@ The `slowfast` model was trained using the same data as the [`time_distributed` 
 
 <!-- TODO: add link to yaml file><!-->
 
-By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels. 
+By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
 
 The full default video loading configuration is:
 
@@ -219,7 +219,7 @@ The above is pulled in by default if `slowfast` is used in the command line. If 
 
 ### Algorithm
 
-The `european` model has the same backbone as the `time_distributed` model, but is trained on data from camera traps in western Europe instead of central and west Africa. 
+The `european` model has the same backbone as the `time_distributed` model, but is trained on data from camera traps in western Europe instead of central and west Africa.
 
 The `european` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
 
