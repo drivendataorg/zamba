@@ -513,6 +513,13 @@ class TrainConfig(ZambaBaseModel):
                     k=len(labels),
                 )
 
+                logger.info(
+                    f"Writing out split information to {values['save_directory'] / 'splits.csv'}."
+                )
+                labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(
+                    values["save_directory"] / "splits.csv", index=False
+                )
+
         # filepath becomes column instead of index
         values["labels"] = labels.reset_index()
         return values
