@@ -371,6 +371,23 @@ def predict(
         manager.predict()
 
 
+@app.command()
+def guidance(
+    data_dir: Path = typer.Option(None, exists=True, help="Path to folder containing videos."),
+        model: ModelEnum = typer.Option(
+        "time_distributed",
+        help="Model to use for inference. Model will be superseded by checkpoint if provided.",
+    ),
+    config: Path = typer.Option(
+        None,
+        exists=True,
+        help="Specify options using yaml configuration file instead of through command line options.",
+    ),
+    
+):
+
+
+
 if __name__ == "__main__":
 
     app()
