@@ -6,7 +6,9 @@ Three main configuration classes are specific in `zamba`:
 * `PredictConfig`: Defines all possible parameters for model inference
 * `TrainConfig`: Defines all possible parameters for model training
 
-Each inherits from the pydantic [BaseModel](https://pydantic-docs.helpmanual.io/usage/models/) as a parent class.
+Here's a helpful diagram which shows how everything is related.
+
+![](config_diagram.png)
 
 <a id='video-loading-arguments'></a>
 
