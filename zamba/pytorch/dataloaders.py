@@ -1,6 +1,8 @@
 from typing import Optional, Tuple
 import warnings
 
+from loguru import logger
+import numpy as np
 import pandas as pd
 from pandas_path import path  # noqa: F401
 import torch
@@ -93,9 +95,30 @@ class FfmpegZambaVideoDataset(VisionDataset):
         return len(self.video_paths)
 
     def __getitem__(self, index: int):
-        video = load_video_frames(
-            filepath=self.video_paths[index], config=self.video_loader_config
-        )
+        try:
+            video = load_video_frames(
+                filepath=self.video_paths[index], config=self.video_loader_config
+            )
+        except Exception as e:
+            if isinstance(e, IndexError):
+                raise
+
+            logger.warning(
+                f"Video {self.video_paths[index]} could not be loaded. Using an array of all zeros instead."
+            )
+            video = np.zeros(
+                (
+                    self.video_loader_config.total_frames,
+                    self.video_loader_config.model_input_height
+                    if self.video_loader_config.model_input_height is not None
+                    else self.video_loader_config.frame_selection_height,
+                    self.video_loader_config.model_input_width
+                    if self.video_loader_config.model_input_width is not None
+                    else self.video_loader_config.frame_selection_width,
+                    3,
+                ),
+                dtype="int",
+            )
 
         # ignore pytorch warning about non-writeable tensors
         with warnings.catch_warnings():
