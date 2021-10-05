@@ -516,6 +516,10 @@ class TrainConfig(ZambaBaseModel):
                 logger.info(
                     f"Writing out split information to {values['save_directory'] / 'splits.csv'}."
                 )
+
+                # create the directory to save if we need to.
+                values["save_directory"].mkdir(parents=True, exists_ok=True)
+
                 labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(
                     values["save_directory"] / "splits.csv", index=False
                 )
