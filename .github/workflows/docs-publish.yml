@@ -21,9 +21,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
+
       - name: Build documentation
         run: |
           make docs
+
       - name: Deploy docs to Netlify
         uses: nwtgck/actions-netlify@v1.1
         with:

@@ -24,10 +24,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools
-          pip install -e .[cpu,dev]
+          pip install -e .[dev]
+
       - name: Lint package
         run: |
           make lint
+
   tests:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: code-quality
@@ -61,6 +63,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools
           pip install -e  .[dev]
+
       - name: Run tests
         run: |
           make tests
@@ -99,6 +102,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools
           pip install .
+
       - name: Run zamba CLI to ensure proper install
         run: |
           zamba --help
