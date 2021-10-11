@@ -26,7 +26,7 @@ ifeq (${CPU_OR_GPU}, gpu)
 	conda install cudatoolkit=11.0.3 cudnn=8.0 -c conda-forge
 endif
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
-	$(PYTHON_INTERPRETER) -m pip install -e .[dev]
+	$(PYTHON_INTERPRETER) -m pip install -r requirements-dev.txt
 
 
 ## Delete all compiled Python files
