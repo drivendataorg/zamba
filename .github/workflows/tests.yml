@@ -32,9 +32,11 @@ jobs:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: code-quality
     runs-on: ${{ matrix.os }}
+    env:
+      DISTUTILS_USE_SDK: 1  # for MSVC compiler
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: [3.7, 3.8]
 
     steps:
@@ -46,6 +48,9 @@ jobs:
           # Not strictly necessary, but it may prevent rate limit
           # errors especially on GitHub-hosted macos machines.
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Windows compilers
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -59,6 +64,12 @@ jobs:
       - name: Run tests
         run: |
           make tests
+
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: true
 
   test-install:
     name: Install and CLI test (non-editable install)
