@@ -35,7 +35,7 @@ jobs:
     needs: code-quality
     runs-on: ${{ matrix.os }}
     env:
-      DISTUTILS_USE_SDK: 1  # for MSVC compiler
+      DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -75,7 +75,7 @@ jobs:
           fail_ci_if_error: true
 
   test-install:
-    name: Install and CLI test (non-editable install)
+    name: Test install from built distributions
     needs: tests
     runs-on: ${{ matrix.os }}
     strategy:
@@ -98,11 +98,43 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install package (non-editable)
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip setuptools
-          pip install .
+          python -m pip install --upgrade pip setuptools wheel
 
-      - name: Run zamba CLI to ensure proper install
+      - name: Build package
         run: |
-          zamba --help
+          make dist
+
+      - name: Install wheel and test CLI
+        run: |
+          python -m venv .venv-whl
+          PYTHON_BIN=bin/python
+          .venv-whl/$PYTHON_BIN -m pip install --upgrade pip
+          .venv-whl/$PYTHON_BIN -m pip install dist/zamba-*.whl
+          .venv-whl/$PYTHON_BIN -m zamba --help
+
+      - name: Install source and test CLI
+        run: |
+          python -m venv .venv-sdist
+          PYTHON_BIN=bin/python
+          .venv-sdist/$PYTHON_BIN -m pip install --upgrade pip
+          .venv-sdist/$PYTHON_BIN -m pip install dist/zamba-*.tar.gz
+          .venv-sdist/$PYTHON_BIN -m zamba --help
+
+  notify:
+    name: Notify failed build
+    needs: [code-quality, tests, test-install]
+    if: failure() && (github.event_name == 'push' || github.event_name == 'schedule')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          RUN_NUMBER: ${{ github.run_number}}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          filename: .github/failed_build_issue_template.md
