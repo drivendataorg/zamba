@@ -36,8 +36,7 @@ jobs:
       DISTUTILS_USE_SDK: 1  # for MSVC compiler
     strategy:
       matrix:
-        # os: [ubuntu-latest, macos-latest]
-        os: [windows-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: [3.7, 3.8]
 
     steps:
