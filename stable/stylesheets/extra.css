@@ -1,0 +1,7 @@
+:root {
+    --md-primary-fg-color:        #388e3c;
+  }
+
+.md-header-nav__title {
+  padding-left: 0.05rem !important;
+}
