@@ -2,7 +2,7 @@ name: docs-latest
 
 on:
   push:
-    branches: [master]
+    branches: [master, v2]
   workflow_dispatch:
 
 jobs:
