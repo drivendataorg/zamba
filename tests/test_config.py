@@ -202,14 +202,19 @@ def test_labels_with_invalid_split(labels_absolute_path):
     ) == error.value.errors()[0]["msg"]
 
 
-def test_labels_no_splits(labels_no_splits):
-    config = TrainConfig(data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits)
+def test_labels_no_splits(labels_no_splits, tmp_path):
+    config = TrainConfig(
+        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, save_directory=tmp_path
+    )
     assert set(config.labels.split.unique()) == set(("holdout", "train", "val"))
 
 
-def test_labels_split_proportions(labels_no_splits):
+def test_labels_split_proportions(labels_no_splits, tmp_path):
     config = TrainConfig(
-        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, split_proportions={"a": 3, "b": 1}
+        data_directory=TEST_VIDEOS_DIR,
+        labels=labels_no_splits,
+        split_proportions={"a": 3, "b": 1},
+        save_directory=tmp_path,
     )
     assert config.labels.split.value_counts().to_dict() == {"a": 14, "b": 5}
 
