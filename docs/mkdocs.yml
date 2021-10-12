@@ -26,7 +26,7 @@ nav:
       - All Optional Arguments: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
       - Guide to Common Optional Parameters: "extra-options.md"
-  - "Contribute to <code>zamba</code>": "contribute.md"
+  - "Contribute to zamba": "contribute.md"
   - "Changelog":
       - Version 2: "v2_updates.md"
 
