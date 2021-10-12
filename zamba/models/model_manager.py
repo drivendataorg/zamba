@@ -176,14 +176,20 @@ def validate_species(model: ZambaVideoClassificationLightningModule, data_module
 
 def train_model(
     train_config: TrainConfig,
-    video_loader_config: VideoLoaderConfig,
+    video_loader_config: Optional[VideoLoaderConfig] = None,
 ):
     """Trains a model.
 
     Args:
         train_config (TrainConfig): Pydantic config for training.
-        video_loader_config (VideoLoaderConfig): Pydantic config for preprocessing videos.
+        video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.
+            If None, will use default for model specified in TrainConfig.
     """
+    # get default VLC for model if not specified
+    if video_loader_config is None:
+        video_loader_config = ModelConfig(
+            train_config=train_config, video_loader_config=video_loader_config
+        ).video_loader_config
 
     # set up model
     model = instantiate_model(
@@ -306,14 +312,21 @@ def train_model(
 
 def predict_model(
     predict_config: PredictConfig,
-    video_loader_config: VideoLoaderConfig,
+    video_loader_config: VideoLoaderConfig = None,
 ):
     """Predicts from a model and writes out predictions to a csv.
 
     Args:
         predict_config (PredictConfig): Pydantic config for performing inference.
-        video_loader_config (VideoLoaderConfig): Pydantic config for preprocessing videos.
+        video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.
+            If None, will use default for model specified in PredictConfig.
     """
+    # get default VLC for model if not specified
+    if video_loader_config is None:
+        video_loader_config = ModelConfig(
+            train_config=predict_config, video_loader_config=video_loader_config
+        ).video_loader_config
+
     # set up model
     model = instantiate_model(
         checkpoint=predict_config.checkpoint,
