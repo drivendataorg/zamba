@@ -88,9 +88,9 @@ def train(
         config_file = None
 
     if "video_loader_config" in config_dict.keys():
-        video_loader_dict = config_dict["video_loader_config"]
+        video_loader_config = VideoLoaderConfig(**config_dict["video_loader_config"])
     else:
-        video_loader_dict = dict()
+        video_loader_config = None
 
     train_dict = config_dict["train_config"]
 
@@ -134,7 +134,7 @@ def train(
     try:
         manager = ModelManager(
             ModelConfig(
-                video_loader_config=VideoLoaderConfig(**video_loader_dict),
+                video_loader_config=video_loader_config,
                 train_config=TrainConfig(**train_dict),
             )
         )
@@ -273,9 +273,9 @@ def predict(
         config_file = None
 
     if "video_loader_config" in config_dict.keys():
-        video_loader_dict = config_dict["video_loader_config"]
+        video_loader_config = VideoLoaderConfig(**config_dict["video_loader_config"])
     else:
-        video_loader_dict = dict()
+        video_loader_config = None
 
     predict_dict = config_dict["predict_config"]
 
@@ -329,7 +329,7 @@ def predict(
     try:
         manager = ModelManager(
             ModelConfig(
-                video_loader_config=VideoLoaderConfig(**video_loader_dict),
+                video_loader_config=video_loader_config,
                 predict_config=PredictConfig(**predict_dict),
             )
         )

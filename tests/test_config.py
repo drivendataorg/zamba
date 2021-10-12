@@ -332,3 +332,18 @@ def test_dry_run_and_skip_load_validation(labels_absolute_path, caplog):
     # if dry run is False, skip_load_validation is unchanged
     config = TrainConfig(labels=labels_absolute_path, dry_run=False, skip_load_validation=False)
     assert not config.skip_load_validation
+
+
+def test_default_video_loader_config(labels_absolute_path):
+    # if no video loader is specified, use default for model
+    config = ModelConfig(
+        train_config=TrainConfig(labels=labels_absolute_path, skip_load_validation=True),
+        video_loader_config=None,
+    )
+    assert config.video_loader_config is not None
+
+    config = ModelConfig(
+        predict_config=PredictConfig(filepaths=labels_absolute_path, skip_load_validation=True),
+        video_loader_config=None,
+    )
+    assert config.video_loader_config is not None

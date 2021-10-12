@@ -721,7 +721,8 @@ class ModelConfig(ZambaBaseModel):
 
     Args:
         video_loader_config (VideoLoaderConfig, optional): An instantiated VideoLoaderConfig.
-            Defaults to None.
+            If None, will use default video loader config for model specified in TrainConfig or
+            PredictConfig.
         train_config (TrainConfig, optional): An instantiated TrainConfig.
             Defaults to None.
         predict_config (PredictConfig, optional): An instantiated PredictConfig.
@@ -735,9 +736,28 @@ class ModelConfig(ZambaBaseModel):
     class Config:
         json_loads = yaml.safe_load
 
-    @root_validator
+    @root_validator(skip_on_failure=True)
     def one_config_must_exist(cls, values):
         if values["train_config"] is None and values["predict_config"] is None:
             raise ValueError("Must provide either `train_config` or `predict_config`.")
         else:
             return values
+
+    @root_validator(skip_on_failure=True)
+    def get_default_video_loader_config(cls, values):
+        if values["video_loader_config"] is None:
+            model_name = (
+                values["train_config"].model_name
+                if values["train_config"] is not None
+                else values["predict_config"].model_name
+            )
+
+            logger.info(f"No video loader config specified. Using default for {model_name}.")
+
+            config_file = MODEL_MAPPING[model_name]["config"]
+            with config_file.open() as f:
+                config_dict = yaml.safe_load(f)
+
+            values["video_loader_config"] = VideoLoaderConfig(**config_dict["video_loader_config"])
+
+        return values
