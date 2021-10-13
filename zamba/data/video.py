@@ -25,7 +25,7 @@ from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
-from zamba.settings import LOAD_VIDEO_FRAMES_CACHE_DIR
+from zamba.settings import VIDEO_CACHE_DIR
 
 logger.remove()
 log_level = os.environ["LOGURU_LEVEL"] if "LOGURU_LEVEL" in os.environ else "INFO"
@@ -357,7 +357,7 @@ class npy_cache:
     def __del__(self):
         if (
             hasattr(self, "tmp_path")
-            and (self.tmp_path != LOAD_VIDEO_FRAMES_CACHE_DIR)
+            and (self.tmp_path != VIDEO_CACHE_DIR)
             and self.tmp_path.exists()
         ):
             if self.tmp_path.parents[0] == Path(tempdir):
@@ -370,7 +370,7 @@ class npy_cache:
                 )
 
 
-@npy_cache(path=LOAD_VIDEO_FRAMES_CACHE_DIR)
+@npy_cache(path=VIDEO_CACHE_DIR)
 def load_video_frames(
     filepath: os.PathLike,
     config: Optional[VideoLoaderConfig] = None,

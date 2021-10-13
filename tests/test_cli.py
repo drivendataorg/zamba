@@ -154,7 +154,7 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     save_path = tmp_path / "zamba" / "my_preds.csv"
 
     # set environment var so we can check this is not used for inference
-    os.environ["LOAD_VIDEO_FRAMES_CACHE_DIR"] = tmp_path / "zamba_cache"
+    os.environ["VIDEO_CACHE_DIR"] = tmp_path / "zamba_cache"
 
     result = runner.invoke(
         app,
