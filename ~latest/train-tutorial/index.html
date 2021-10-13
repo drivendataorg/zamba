@@ -1,0 +1,1072 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/train-tutorial/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.3">
+    
+    
+      
+        <title>Training a Model on Labeled Videos - Zamba</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.5143246d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../stylesheets/custom_mkdocstrings.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#user-tutorial-training-a-model-on-labaled-videos" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Zamba" class="md-header__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zamba
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Training a Model on Labeled Videos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Zamba" class="md-nav__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Zamba
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installing Zamba
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          User Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../predict-tutorial/" class="md-nav__link">
+        Classifying Unlabeled Videos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Training a Model on Labeled Videos
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Training a Model on Labeled Videos
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage-command-line-interface" class="md-nav__link">
+    Basic usage: command line interface
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic usage: command line interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-arguments" class="md-nav__link">
+    Required arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage-python-package" class="md-nav__link">
+    Basic usage: Python package
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic usage: Python package">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-arguments_1" class="md-nav__link">
+    Required arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-behavior" class="md-nav__link">
+    Default behavior
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-tutorial" class="md-nav__link">
+    Step-by-step tutorial
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step tutorial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-specify-the-path-to-your-videos" class="md-nav__link">
+    1. Specify the path to your videos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-specify-your-labels" class="md-nav__link">
+    2. Specify your labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-choose-a-model-for-training" class="md-nav__link">
+    3. Choose a model for training
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-specify-any-additional-parameters" class="md-nav__link">
+    4. Specify any additional parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-your-configuration-with-a-dry-run" class="md-nav__link">
+    5. Test your configuration with a dry run
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debugging/" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Available Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" data-md-state="indeterminate" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Advanced Options
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Advanced Options" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced Options
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configurations/" class="md-nav__link">
+        All Optional Arguments
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../yaml-config/" class="md-nav__link">
+        Using YAML configuration files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extra-options/" class="md-nav__link">
+        Guide to Common Optional Parameters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        Contribute to zamba
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" data-md-state="indeterminate" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Changelog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Changelog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v2_updates/" class="md-nav__link">
+        Version 2
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage-command-line-interface" class="md-nav__link">
+    Basic usage: command line interface
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic usage: command line interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-arguments" class="md-nav__link">
+    Required arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage-python-package" class="md-nav__link">
+    Basic usage: Python package
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic usage: Python package">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-arguments_1" class="md-nav__link">
+    Required arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-behavior" class="md-nav__link">
+    Default behavior
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-tutorial" class="md-nav__link">
+    Step-by-step tutorial
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step tutorial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-specify-the-path-to-your-videos" class="md-nav__link">
+    1. Specify the path to your videos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-specify-your-labels" class="md-nav__link">
+    2. Specify your labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-choose-a-model-for-training" class="md-nav__link">
+    3. Choose a model for training
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-specify-any-additional-parameters" class="md-nav__link">
+    4. Specify any additional parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-your-configuration-with-a-dry-run" class="md-nav__link">
+    5. Test your configuration with a dry run
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/train-tutorial.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="user-tutorial-training-a-model-on-labaled-videos">User Tutorial: Training a Model on Labaled Videos<a class="headerlink" href="#user-tutorial-training-a-model-on-labaled-videos" title="Permanent link">&para;</a></h1>
+<p>This section walks through how to train a model using <code>zamba</code>. If you are new to <code>zamba</code> and just want to classify some videos as soon as possible, see the <a href="../quickstart/">Quickstart</a> guide.</p>
+<p>This tutorial goes over the steps for using <code>zamba</code> if:</p>
+<ul>
+<li>You already have <code>zamba</code> installed (for details see the <a href="../install/">Installation</a> page)</li>
+<li>You have labeled videos that you want to use to train or finetune a model</li>
+</ul>
+<p><code>zamba</code> can run two types of model training:</p>
+<ul>
+<li>Fine-tuning a model with labels that are a subset of the possible <a href="../models/#species-classes">zamba labels</a></li>
+<li>Fine-tuning a model to predict an entirely new set of labels</li>
+</ul>
+<p>The process is the same for both cases.</p>
+<h2 id="basic-usage-command-line-interface">Basic usage: command line interface<a class="headerlink" href="#basic-usage-command-line-interface" title="Permanent link">&para;</a></h2>
+<p>Say that we want to finetune the <code>time_distributed</code> model based on the videos in <code>example_vids</code> and the labels in <code>example_labels.csv</code>. </p>
+<p>Minimum example for training in the command line:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir example_vids/ --labels example_labels.csv
+</code></pre></div>
+<h3 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h3>
+<p>To run <code>zamba train</code> in the command line, you must specify both <code>--data-directory</code> and <code>--labels</code>.</p>
+<ul>
+<li><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your labeled videos.</li>
+<li><strong><code>--labels PATH</code>:</strong> Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Optionally, there can also be columns for <code>split</code> (<code>train</code>, <code>val</code>, or <code>holdout</code>) and <code>site</code>. If your labels file does not have a column for <code>split</code>, you can alternately use the <code>split_proportions</code> argument.</li>
+</ul>
+<h2 id="basic-usage-python-package">Basic usage: Python package<a class="headerlink" href="#basic-usage-python-package" title="Permanent link">&para;</a></h2>
+<p>Say that we want to finetune the <code>time_distributed</code> model based on the videos in <code>example_vids</code> and the labels in <code>example_labels.csv</code>. </p>
+<p>Minimum example for training using the Python package:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.model_manager</span> <span class="kn">import</span> <span class="n">train_model</span>
+<span class="kn">from</span> <span class="nn">zamba.models.config</span> <span class="kn">import</span> <span class="n">TrainConfig</span>
+<span class="kn">from</span> <span class="nn">zamba.data.video</span> <span class="kn">import</span> <span class="n">VideoLoaderConfig</span>
+
+<span class="n">train_config</span> <span class="o">=</span> <span class="n">TrainConfig</span><span class="p">(</span><span class="n">data_directory</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_labels.csv&quot;</span><span class="p">)</span>
+<span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span>
+    <span class="n">video_height</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span> <span class="n">video_width</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span> <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span>
+<span class="p">)</span>
+
+<span class="n">train_model</span><span class="p">(</span><span class="n">train_config</span><span class="o">=</span><span class="n">train_config</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">)</span>
+</code></pre></div>
+<p>To specify various parameters when running <code>train_model</code>, the first step is to instantiate <a href="../configurations/#training-arguments"><code>TrainConfig</code></a> and <a href="../configurations/#video-loading-arguments"><code>VideoLoaderConfig</code></a> with any specifications for model training and video loading respectively. The only two arguments that can be specified in <code>train_model</code> are <code>train_config</code> and <code>video_loader_config</code>.</p>
+<h3 id="required-arguments_1">Required arguments<a class="headerlink" href="#required-arguments_1" title="Permanent link">&para;</a></h3>
+<p>To run <code>train_model</code> in Python, you must specify both <code>data_directory</code> and <code>labels</code> when <code>TrainConfig</code> is instantiated.</p>
+<ul>
+<li>
+<p><strong><code>data_directory (DirectoryPath)</code>:</strong> Path to the folder containing your videos.</p>
+</li>
+<li>
+<p><strong><code>labels (FilePath or pd.DataFrame)</code>:</strong> Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for <code>filename</code> and <code>label</code>.</p>
+</li>
+</ul>
+<p>In the command line, video loading configurations are loaded by default based on the model being used. This is not the case in Python. There are additional requirements for <code>VideoLoaderConfig</code> based on the model you are using.</p>
+<ul>
+<li><strong><code>video_height (int)</code>, <code>video_width (int)</code>:</strong> Dimensions for resizing videos as they are loaded. <ul>
+<li><code>time_distributed</code> or <code>european</code>: The suggested dimensions are 224x224, but any integers are acceptable</li>
+<li><code>slowfast</code>: Both must be greater than or equal to 200</li>
+</ul>
+</li>
+<li><strong><code>total_frames (int)</code>:</strong> The number of frames to select from each video and use during training. <ul>
+<li><code>time_distributed</code> or <code>european</code>: Must be 16</li>
+<li><code>slowfast</code>: Must be 32</li>
+</ul>
+</li>
+</ul>
+<p>The full recommended <code>VideoLoaderConfig</code> for the <code>time_distributed</code> or <code>european</code> model is:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.data.video</span> <span class="kn">import</span> <span class="n">VideoLoaderConfig</span>
+<span class="kn">from</span> <span class="nn">zamba.models.megadetector_lite_yolox</span> <span class="kn">import</span> <span class="n">MegadetectorLiteYoloXConfig</span>
+
+<span class="n">megadetector_config</span> <span class="o">=</span> <span class="n">MegadetectorLiteYoloXConfig</span><span class="p">(</span>
+    <span class="n">confidence</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">fill_mode</span><span class="o">=</span><span class="s2">&quot;score_sorted&quot;</span><span class="p">,</span> <span class="n">n_frames</span><span class="o">=</span><span class="mi">16</span>
+<span class="p">)</span>
+<span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span>
+    <span class="n">video_height</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
+    <span class="n">video_width</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
+    <span class="n">crop_bottom_pixels</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">ensure_total_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">megadetector_list_config</span><span class="o">=</span><span class="n">megadetector_config</span><span class="p">,</span>
+    <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></p>
+<p>You can see the full default configuration for each model in <code>models/config</code>&lt;!-- TODO: add link to source and update if needed&gt;&lt;!--&gt;. For detailed explanations of all possible configuration arguments, see <a href="../configurations/">All Optional Arguments</a>.</p>
+<h2 id="default-behavior">Default behavior<a class="headerlink" href="#default-behavior" title="Permanent link">&para;</a></h2>
+<p>By default, the model will be saved to a folder in the current working directory called <code>zamba_{model_name}</code>. For example, a model finetuned from the provided <code>time_distributed</code> model (the default) will be saved in <code>zamba_time_distributed</code>. </p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir example_vids/ --labels example_labels.csv
+<span class="gp">$ </span>ls zamba_time_distributed
+<span class="go">configuration.yaml </span>
+<span class="go">hparams.yaml</span>
+<span class="go">time_distributed.ckpt</span>
+<span class="go">events.out.tfevents.1632250686.ip-172-31-15-179.14229.0</span>
+<span class="go">test_metrics.json</span>
+<span class="go">val_metrics.json</span>
+</code></pre></div>
+<p><code>zamba_time_distributed</code> contains three files:</p>
+<ul>
+<li><code>configuration.yaml</code>: The full model configuration used to generate the given model, including <code>video_loader_config</code> and <code>train_config</code>. To continue training using the same configuration, or to train another model using the same configuration, you can pass in <code>configurations.yaml</code> (see <a href="../yaml-config/">Specifying Model Configurations with a YAML File</a>).</li>
+<li><code>hparams.yaml</code>: Model hyperparameters. For example, the YAML file below tells us that the model was trained with a learning rate (<code>lr</code>) of 0.001:
+    <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">$ cat zamba_time_distributed/hparams.yaml</span>
+
+<span class="l l-Scalar l-Scalar-Plain">lr</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">0.001</span>
+<span class="nt">model_class</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TimeDistributedEfficientNetMultiLayerHead</span>
+<span class="nt">num_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+<span class="nt">scheduler</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">MultiStepLR</span>
+<span class="nt">scheduler_params</span><span class="p">:</span>
+<span class="nt">gamma</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="nt">milestones</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">species</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">species_blank</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">species_chimpanzee_bonobo</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">species_elephant</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">species_leopard</span>
+</code></pre></div></li>
+<li><code>time_distributed.ckpt</code>: Model checkpoint. The model checkpoint also includes both the model configuration in <code>configuration.yaml</code> and the model hyperparameters in <code>hparams.yaml</code>. You can continue training from this checkpoint by passing it to <code>zamba train</code> with the <code>--checkpoint</code> flag:
+    <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --checkpoint time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
+</code></pre></div></li>
+<li><code>events.out.tfevents.1632250686.ip-172-31-15-179.14229.0</code>: <a href="https://www.tensorflow.org/tensorboard/get_started">TensorBoard</a> logs</li>
+<li><code>test_metrics.json</code>: The model's performance on the test subset</li>
+<li><code>val_metrics.json</code>: The model's performance on the validation subset</li>
+</ul>
+<h2 id="step-by-step-tutorial">Step-by-step tutorial<a class="headerlink" href="#step-by-step-tutorial" title="Permanent link">&para;</a></h2>
+<h3 id="1-specify-the-path-to-your-videos">1. Specify the path to your videos<a class="headerlink" href="#1-specify-the-path-to-your-videos" title="Permanent link">&para;</a></h3>
+<p>Save all of your videos in one folder.</p>
+<ul>
+<li>Your videos should all be saved in formats that are suppored by FFmpeg, <a href="https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features">which are listed here</a>.</li>
+<li>Your video folder must contain only valid video files, since zamba will try to load all of the files in the directory.</li>
+<li>Your videos must all be in the top level of the video folder - <code>zamba</code> does not extract videos from nested directories.</li>
+</ul>
+<p>Add the path to your video folder with <code>--data-dir</code>. For example, if your videos are in a folder called <code>example_vids</code>, add <code>--data-dir example_vids/</code> to your command.</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir example_vids
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.config</span> <span class="kn">import</span> <span class="n">TrainConfig</span>
+
+<span class="n">train_config</span> <span class="o">=</span> <span class="n">TrainConfig</span><span class="p">(</span><span class="n">data_directory</span><span class="o">=</span><span class="s1">&#39;example_vids/&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<p>Note that the above will not run yet because labels are not specified.</p>
+<h3 id="2-specify-your-labels">2. Specify your labels<a class="headerlink" href="#2-specify-your-labels" title="Permanent link">&para;</a></h3>
+<p>Your labels should be saved in a <code>.csv</code> file with columns for filepath and label. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat example_labels.csv
+<span class="go">filepath,label</span>
+<span class="go">example_vids/eleph.MP4,elephant</span>
+<span class="go">example_vids/leopard.MP4,leopard</span>
+<span class="go">example_vids/blank.MP4,blank</span>
+<span class="go">example_vids/chimp.MP4,chimpanzee_bonobo</span>
+</code></pre></div>
+<p>Add the path to your labels with <code>--labels</code>.  For example, if your videos are in a folder called <code>example_vids</code> and your labels are saved in <code>example_labels.csv</code>:</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir example_vids/ --labels example_labels.csv
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Python</label><div class="tabbed-content">
+<p>In Python, the labels are passed in when <code>TrainConfig</code> is instantiated. The Python package allows you to pass in labels as either a file path or a pandas dataframe:
+<div class="highlight"><pre><span></span><code><span class="n">labels_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;example_labels.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;filepath&#39;</span><span class="p">)</span>
+<span class="n">train_config</span> <span class="o">=</span> <span class="n">TrainConfig</span><span class="p">(</span><span class="n">data_directory</span><span class="o">=</span><span class="s1">&#39;example_vids/&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels_dataframe</span><span class="p">)</span>
+</code></pre></div></p>
+</div>
+</div>
+<h4 id="labels-zamba-has-seen-before">Labels <code>zamba</code> has seen before<a class="headerlink" href="#labels-zamba-has-seen-before" title="Permanent link">&para;</a></h4>
+<p>Your labels may be included in the list of <a href="../models/#species-classes"><code>zamba</code> class labels</a> that the provided models are trained to predict. If so, the relevant model that ships with <code>zamba</code> will essentially be used as a checkpoint, and model training will resume from that checkpoint.</p>
+<h4 id="completely-new-labels">Completely new labels<a class="headerlink" href="#completely-new-labels" title="Permanent link">&para;</a></h4>
+<p>You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final <a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=995s">neural network</a> layer with a new head that predicts <em>your</em> labels instead of those that ship with <code>zamba</code>. <a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">Backpropogation</a> will continue from that point with the new head. This process is called <a href="https://keras.io/guides/transfer_learning/">transfer learning</a>.</p>
+<h3 id="3-choose-a-model-for-training">3. Choose a model for training<a class="headerlink" href="#3-choose-a-model-for-training" title="Permanent link">&para;</a></h3>
+<p>If your videos contain species common to central or west Africa, use the <a href="../models/#time-distributed"><code>time_distributed</code> model</a>. If they contain species common to western Europe, use the <a href="../models/#european"><code>european</code> model</a>. We do not recommend using the <a href="../models/#slowfast"><code>slowfast</code> model</a> for training because it is much more computationally intensive and slower to run.</p>
+<p>Add the model name to your command with <code>--model</code>. The <code>time_distributed</code> model will be used if no model is specified. For example, if you want to continue training the <code>european</code> model based on the videos in <code>example_euro_vids</code> and the labels in <code>example_euro_labels.csv</code>:</p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir example_euro_vids/ --labels example_euro_labels.csv --model european
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">train_config</span> <span class="o">=</span> <span class="n">TrainConfig</span><span class="p">(</span>
+    <span class="n">data_directory</span><span class="o">=</span><span class="s2">&quot;example_euro_vids/&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_euro_labels.csv&quot;</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;european&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="4-specify-any-additional-parameters">4. Specify any additional parameters<a class="headerlink" href="#4-specify-any-additional-parameters" title="Permanent link">&para;</a></h3>
+<p>And there's so much more! You can also do things like specify your region for faster model download (<code>--weight-download-region</code>), start training from a saved model checkpoint (<code>--checkpoint</code>), or specify a different path where your model should be saved (<code>--save-directory</code>). To read about a few common considerations, see the <a href="../extra-options/">Guide to Common Optional Parameters</a> page.</p>
+<h3 id="5-test-your-configuration-with-a-dry-run">5. Test your configuration with a dry run<a class="headerlink" href="#5-test-your-configuration-with-a-dry-run" title="Permanent link">&para;</a></h3>
+<p>Before kicking off the full model training, we recommend testing your code with a "dry run". This will run one training and validation batch for one epoch to quickly detect any bugs. See the <a href="../debugging/">Debugging</a> page for details.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../predict-tutorial/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Classifying Unlabeled Videos" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Classifying Unlabeled Videos
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../debugging/" class="md-footer__link md-footer__link--next" aria-label="Next: Debugging" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Debugging
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f89c2efe.min.js"></script>
+      
+    
+  </body>
+</html>
