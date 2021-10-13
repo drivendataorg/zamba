@@ -79,25 +79,12 @@ def validate_model_cache_dir(model_cache_dir: Optional[Path]):
     """
     if model_cache_dir is None:
         model_cache_dir = os.getenv(
-            "MODEL_CACHE_DIR", Path(appdirs.user_model_cache_dir()) / "zamba"
+            "MODEL_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba"
         )
 
     model_cache_dir = Path(model_cache_dir)
     model_cache_dir.mkdir(parents=True, exist_ok=True)
     return model_cache_dir
-
-
-def validate_video_cache_dir(video_cache_dir: Optional[Path]):
-    """Set up cache directory for preprocessed videos. Config argument takes precedence
-    over environment varaible.
-    """
-    if video_cache_dir is None:
-        video_cache_dir = os.getenv("VIDEO_CACHE_DIR", None)
-
-    if video_cache_dir is not None:
-        video_cache_dir = Path(video_cache_dir)
-        video_cache_dir.mkdir(parents=True, exist_ok=True)
-    return video_cache_dir
 
 
 def check_files_exist_and_load(
@@ -364,11 +351,6 @@ class TrainConfig(ZambaBaseModel):
         model_cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and the MODEL_CACHE_DIR environment variable is
             not set, uses your default cache directory. Defaults to None.
-        video_cache_dir (Path, optional): Cache directory where preprocessed videos will be saved
-            upon first load. Alternatively, can be set with VIDEO_CACHE_DIR environment variable.
-            Defaults to None, which means videos will not be cached. If you have enough space on
-            your machine, it is highly encouraged to cache the videos as this will speed up all
-            subsequent epochs.
     """
 
     labels: Union[FilePath, pd.DataFrame]
@@ -392,7 +374,6 @@ class TrainConfig(ZambaBaseModel):
     from_scratch: bool = False
     predict_all_zamba_species: bool = True
     model_cache_dir: Optional[Path] = None
-    video_cache_dir: Optional[Path] = None
 
     class Config:
         arbitrary_types_allowed = True
@@ -401,10 +382,6 @@ class TrainConfig(ZambaBaseModel):
 
     _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir
-    )
-
-    _validate_video_cache_dir = validator("video_cache_dir", allow_reuse=True, always=True)(
-        validate_video_cache_dir
     )
 
     @root_validator(skip_on_failure=True)
@@ -591,10 +568,6 @@ class PredictConfig(ZambaBaseModel):
         model_cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and no environment variable is set, will use your
             default cache directory. Defaults to None.
-        video_cache_dir (Path, optional): Directory where preprocessed videos will be cached during
-            inference. Alternatively, can be set with VIDEO_CACHE_DIR environment variable. If you
-            are predicting on the same videos with the same video loader configuration, this will
-            save time on future runs. Defaults to None, which means videos will not be cached.
     """
 
     data_directory: DirectoryPath = Path.cwd()
@@ -611,16 +584,11 @@ class PredictConfig(ZambaBaseModel):
     weight_download_region: RegionEnum = "us"
     skip_load_validation: bool = False
     model_cache_dir: Optional[Path] = None
-    video_cache_dir: Optional[Path] = None
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
     _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir
-    )
-
-    _validate_video_cache_dir = validator("video_cache_dir", allow_reuse=True, always=True)(
-        validate_video_cache_dir
     )
 
     @root_validator(skip_on_failure=True)
