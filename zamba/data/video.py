@@ -106,18 +106,16 @@ def ensure_frame_number(arr, total_frames: int):
     if (total_frames is None) or (arr.shape[0] == total_frames):
         return arr
     elif arr.shape[0] == 0:
-        warnings.warn(
-            "No frames selected. Returning an array in the desired shape with all zeros."
-        )
+        logger.warn("No frames selected. Returning an array in the desired shape with all zeros.")
         return np.zeros((total_frames, arr.shape[1], arr.shape[2], arr.shape[3]), dtype="int")
     elif arr.shape[0] > total_frames:
-        warnings.warn(
+        logger.info(
             f"Clipping {arr.shape[0] - total_frames} frames "
             f"(original: {arr.shape[0]}, requested: {total_frames})."
         )
         return arr[:total_frames]
     elif arr.shape[0] < total_frames:
-        warnings.warn(
+        logger.info(
             f"Duplicating last frame {total_frames - arr.shape[0]} times "
             f"(original: {arr.shape[0]}, requested: {total_frames})."
         )
