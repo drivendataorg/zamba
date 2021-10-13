@@ -4,7 +4,6 @@ video_loader_config:
   crop_bottom_pixels: 0
   ensure_total_frames: True
   megadetector_lite_config:
-  evenly_sample_total_frames: True
   total_frames: 16
 
 predict_config:
