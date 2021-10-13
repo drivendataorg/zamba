@@ -394,7 +394,7 @@ class ModelManager(object):
     """Mediates loading, configuration, and logic of model calls.
 
     Args:
-        config (ModelConfig) : Instantiated ModelConfig.
+        config (ModelConfig): Instantiated ModelConfig.
     """
 
     def __init__(self, config: ModelConfig):

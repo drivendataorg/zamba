@@ -39,9 +39,9 @@ def create_site_specific_splits(
 
     Example:
         Split data into groups where each site is in one and only one group with roughly 50-25-25
-        train-val-holdout proportions::
+        train-val-holdout proportions.
 
-        $ create_site_specific_splits(site, proportions={"train": 2, "val": 1, "holdout": 1})
+        >>> create_site_specific_splits(site, proportions={"train": 2, "val": 1, "holdout": 1})
 
     Returns:
         pd.Series: A series containing the resulting split, one element per observation.

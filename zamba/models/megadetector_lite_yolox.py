@@ -19,7 +19,7 @@ LOCAL_MD_LITE_MODEL = Path(__file__).parent / "yolox_models" / "assets" / "yolox
 class FillModeEnum(str, Enum):
     """Enum for frame filtering fill modes
 
-    Values:
+    Attributes:
         repeat: Randomly resample qualifying frames to get to n_frames
         score_sorted: Take up to n_frames in sort order (even if some have zero probability)
         weighted_euclidean: Sample the remaining frames weighted by their euclidean distance in
