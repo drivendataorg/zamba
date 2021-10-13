@@ -370,7 +370,7 @@ class TrainConfig(ZambaBaseModel):
     auto_lr_find: bool = True
     backbone_finetune_config: Optional[BackboneFinetuneConfig] = BackboneFinetuneConfig()
     gpus: int = GPUS_AVAILABLE
-    num_workers: int = max(cpu_count() - 1, 1)
+    num_workers: int = 3
     max_epochs: Optional[int] = None
     early_stopping_config: Optional[EarlyStoppingConfig] = EarlyStoppingConfig()
     weight_download_region: RegionEnum = "us"
@@ -582,7 +582,7 @@ class PredictConfig(ZambaBaseModel):
     checkpoint: Optional[FilePath] = None
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     gpus: int = GPUS_AVAILABLE
-    num_workers: int = max(cpu_count() - 1, 1)
+    num_workers: int = 3
     batch_size: int = 8
     save: Union[bool, Path] = True
     dry_run: bool = False
