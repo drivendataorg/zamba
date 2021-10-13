@@ -1,3 +1,4 @@
+import os
 import shutil
 
 from typer.testing import CliRunner
@@ -152,7 +153,9 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
 
     save_path = tmp_path / "zamba" / "my_preds.csv"
 
-    # Prior to mocking, run one real prediction using config
+    # set environment var so we can check this is not used for inference
+    os.environ["LOAD_VIDEO_FRAMES_CACHE_DIR"] = tmp_path / "zamba_cache"
+
     result = runner.invoke(
         app,
         [
@@ -167,10 +170,19 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
         ],
     )
     assert result.exit_code == 0
+
     # check preds file got saved out
     assert save_path.exists()
+
     # check config got saved out too
     assert (save_path.parent / "predict_configuration.yaml").exists()
+<<<<<<< HEAD
     assert (
         pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
     )
+=======
+    assert pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "bird"
+
+    # check video was not cached
+    assert not (tmp_path / "zamba_cache").exists()
+>>>>>>> 8b48052... test cache dir is set but not used
