@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 from loguru import logger
 from pydantic.error_wrappers import ValidationError
@@ -15,6 +16,7 @@ from zamba.models.config import (
 )
 from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
+from zamba.version import __version__
 
 
 app = typer.Typer()
@@ -369,6 +371,28 @@ def predict(
     if yes:
         # kick off prediction
         manager.predict()
+
+
+def version_callback(version: bool):
+    """Print zamba package version and exit."""
+    if version:
+        typer.echo(__version__)
+        raise typer.Exit()
+
+
+@app.callback()
+def main(
+    version: Optional[bool] = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Show zamba version and exit.",
+    ),
+):
+    """Zamba is a tool built in Python to automatically identify the species seen
+    in camera trap videos from sites in Africa and Europe. Visit
+    https://zamba.drivendata.org/docs for more in-depth documentation."""
 
 
 if __name__ == "__main__":

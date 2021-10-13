@@ -28,12 +28,32 @@ endif
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements-dev.txt
 
+clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
-## Delete all compiled Python files
-clean:
-	find . -type f -name "*.py[co]" -delete
-	find . -type d -name "__pycache__" -delete
+clean-build: ## remove build artifacts
+	rm -fr build/
+	rm -fr dist/
+	rm -fr .eggs/
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
 
+clean-pyc: ## remove Python file artifacts
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+
+clean-test: ## remove test and coverage artifacts
+	rm -fr .tox/
+	rm -f .coverage
+	rm -f coverage.xml
+	rm -fr htmlcov/
+	rm -fr .pytest_cache
+
+dist: clean ## builds source and wheel package
+	python setup.py sdist
+	python setup.py bdist_wheel
+	ls -l dist
 
 ## Lint using flake8
 lint:

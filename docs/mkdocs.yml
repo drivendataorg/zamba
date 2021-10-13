@@ -1,6 +1,6 @@
 site_name: Zamba
-site_url: https://zamba.drivendata.org/
-site_description: Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa. 
+site_url: https://zamba.drivendata.org/docs/
+site_description: Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa.
 repo_url: https://github.com/drivendataorg/zamba
 theme:
   name: material
@@ -13,22 +13,22 @@ extra_css:
   - stylesheets/custom_mkdocstrings.css
 
 nav:
-  - Home: 'index.md'
-  - 'Getting Started':
-    - Installing Zamba: "install.md"
-    - Quickstart: "quickstart.md"
-  - 'User Tutorials':
-    - Classifying Unlabeled Videos: "predict-tutorial.md"
-    - Training a Model on Labeled Videos: "train-tutorial.md"
-    - Debugging: "debugging.md"
-  - 'Available Models': "models.md"
-  - 'Advanced Options':
-    - All Optional Arguments: "configurations.md"
-    - Using YAML configuration files: "yaml-config.md"
-    - Guide to Common Optional Parameters: "extra-options.md"
-  - 'Contribute to <code>zamba</code>': "contribute.md"
-  - 'Changelog':
-    - Version 2: "v2_updates.md"
+  - Home: "index.md"
+  - "Getting Started":
+      - Installing Zamba: "install.md"
+      - Quickstart: "quickstart.md"
+  - "User Tutorials":
+      - Classifying Unlabeled Videos: "predict-tutorial.md"
+      - Training a Model on Labeled Videos: "train-tutorial.md"
+      - Debugging: "debugging.md"
+  - "Available Models": "models.md"
+  - "Advanced Options":
+      - All Optional Arguments: "configurations.md"
+      - Using YAML configuration files: "yaml-config.md"
+      - Guide to Common Optional Parameters: "extra-options.md"
+  - "Contribute to zamba": "contribute.md"
+  - "Changelog":
+      - Version 2: "v2_updates.md"
 
 markdown_extensions:
   - pymdownx.highlight
@@ -40,3 +40,7 @@ markdown_extensions:
 
 plugins:
   - search
+
+extra:
+  version:
+    provider: mike
