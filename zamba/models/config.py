@@ -78,9 +78,7 @@ def validate_model_cache_dir(model_cache_dir: Optional[Path]):
     config argument, environment variable, or user's default cache dir.
     """
     if model_cache_dir is None:
-        model_cache_dir = os.getenv(
-            "MODEL_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba"
-        )
+        model_cache_dir = os.getenv("MODEL_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba")
 
     model_cache_dir = Path(model_cache_dir)
     model_cache_dir.mkdir(parents=True, exist_ok=True)

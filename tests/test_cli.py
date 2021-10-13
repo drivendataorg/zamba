@@ -1,4 +1,3 @@
-import os
 import shutil
 
 from typer.testing import CliRunner
@@ -167,10 +166,8 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
         ],
     )
     assert result.exit_code == 0
-
     # check preds file got saved out
     assert save_path.exists()
-
     # check config got saved out too
     assert (save_path.parent / "predict_configuration.yaml").exists()
 <<<<<<< HEAD

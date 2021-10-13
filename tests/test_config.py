@@ -247,7 +247,7 @@ def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplo
 
 def test_model_cache_dir(labels_absolute_path, tmp_path):
     config = TrainConfig(labels=labels_absolute_path)
-    assert config.model_cache_dir == Path(appdirs.user_model_cache_dir()) / "zamba"
+    assert config.model_cache_dir == Path(appdirs.user_cache_dir()) / "zamba"
 
     os.environ["MODEL_CACHE_DIR"] = str(tmp_path)
     config = TrainConfig(labels=labels_absolute_path)
