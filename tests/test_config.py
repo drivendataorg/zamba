@@ -202,14 +202,19 @@ def test_labels_with_invalid_split(labels_absolute_path):
     ) == error.value.errors()[0]["msg"]
 
 
-def test_labels_no_splits(labels_no_splits):
-    config = TrainConfig(data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits)
+def test_labels_no_splits(labels_no_splits, tmp_path):
+    config = TrainConfig(
+        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, save_directory=tmp_path
+    )
     assert set(config.labels.split.unique()) == set(("holdout", "train", "val"))
 
 
-def test_labels_split_proportions(labels_no_splits):
+def test_labels_split_proportions(labels_no_splits, tmp_path):
     config = TrainConfig(
-        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, split_proportions={"a": 3, "b": 1}
+        data_directory=TEST_VIDEOS_DIR,
+        labels=labels_no_splits,
+        split_proportions={"a": 3, "b": 1},
+        save_directory=tmp_path,
     )
     assert config.labels.split.value_counts().to_dict() == {"a": 14, "b": 5}
 
@@ -332,3 +337,18 @@ def test_dry_run_and_skip_load_validation(labels_absolute_path, caplog):
     # if dry run is False, skip_load_validation is unchanged
     config = TrainConfig(labels=labels_absolute_path, dry_run=False, skip_load_validation=False)
     assert not config.skip_load_validation
+
+
+def test_default_video_loader_config(labels_absolute_path):
+    # if no video loader is specified, use default for model
+    config = ModelConfig(
+        train_config=TrainConfig(labels=labels_absolute_path, skip_load_validation=True),
+        video_loader_config=None,
+    )
+    assert config.video_loader_config is not None
+
+    config = ModelConfig(
+        predict_config=PredictConfig(filepaths=labels_absolute_path, skip_load_validation=True),
+        video_loader_config=None,
+    )
+    assert config.video_loader_config is not None

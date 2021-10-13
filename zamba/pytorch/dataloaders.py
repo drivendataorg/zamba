@@ -103,6 +103,8 @@ class FfmpegZambaVideoDataset(VisionDataset):
             if isinstance(e, IndexError):
                 raise
 
+            # show ffmpeg error
+            logger.debug(e)
             logger.warning(
                 f"Video {self.video_paths[index]} could not be loaded. Using an array of all zeros instead."
             )
