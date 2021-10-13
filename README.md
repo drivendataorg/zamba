@@ -11,6 +11,8 @@ Zamba is a tool built in Python to automatically identify the species seen
 in camera trap videos from sites in Africa and Europe. Using the combined
 input of various deep learning models, the tool makes predictions for 42
 common species in these videos (as well as blank, or, "no species present").
-Zamba can be accessed as both a command-line tool and a Python package.
+Zamba can be used both as a command-line tool and as a Python package.
 
 Please visit https://zamba.drivendata.org/docs/ for documentation and tutorials.
+
+Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-submmitted models.
