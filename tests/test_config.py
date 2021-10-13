@@ -249,7 +249,7 @@ def test_cache_dir(labels_absolute_path, tmp_path):
     config = TrainConfig(labels=labels_absolute_path)
     assert config.cache_dir == Path(appdirs.user_cache_dir()) / "zamba"
 
-    os.environ["ZAMBA_CACHE_DIR"] = str(tmp_path)
+    os.environ["MODEL_CACHE_DIR"] = str(tmp_path)
     config = TrainConfig(labels=labels_absolute_path)
     assert config.cache_dir == tmp_path
 
