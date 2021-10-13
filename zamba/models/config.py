@@ -78,7 +78,7 @@ def validate_cache_dir(cache_dir: Optional[Path]):
     config argument, environment variable, or user's default cache dir.
     """
     if cache_dir is None:
-        cache_dir = os.getenv("ZAMBA_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba")
+        cache_dir = os.getenv("MODEL_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba")
 
     cache_dir = Path(cache_dir)
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -325,7 +325,7 @@ class TrainConfig(ZambaBaseModel):
             Options are "us" (United States), "eu" (European Union), or "asia"
             (Asia Pacific). Defaults to "us".
         cache_dir (Path, optional): Cache directory where downloaded model weights
-            will be saved. If None and the ZAMBA_CACHE_DIR environment variable is
+            will be saved. If None and the MODEL_CACHE_DIR environment variable is
             not set, uses your default cache directory. Defaults to None.
         split_proportions (dict): Proportions used to divide data into training,
             validation, and holdout sets if a if a "split" column is not included in
@@ -559,11 +559,15 @@ class PredictConfig(ZambaBaseModel):
         cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and no environment variable is set, will use your
             default cache directory. Defaults to None.
-        skip_load_validation (bool). By default, zamba runs a check to verify that
+        skip_load_validation (bool): By default, zamba runs a check to verify that
             all videos can be loaded and skips files that cannot be loaded. This can
             be time intensive, depending on how many videos there are. If you are very
             confident all your videos can be loaded, you can set this to True and skip
             this check. Defaults to False.
+        cache_videos (bool): Whether to cache preprocessed videos during inference. If True,
+            videos will be cached to the directory specified by the LOAD_VIDEO_FRAMES_CACHE_DIR
+            environment variable. If you are predicting on the same videos with the same
+            video loader configuration, this will save time on future runs. Defaults to False.
     """
 
     data_directory: DirectoryPath = Path.cwd()
@@ -580,6 +584,7 @@ class PredictConfig(ZambaBaseModel):
     weight_download_region: RegionEnum = "us"
     cache_dir: Optional[Path] = None
     skip_load_validation: bool = False
+    cache_videos: bool = False
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 

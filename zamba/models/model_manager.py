@@ -345,9 +345,14 @@ def predict_model(
     )
 
     validate_species(model, data_module)
+
     trainer = pl.Trainer(
         gpus=predict_config.gpus, logger=False, fast_dev_run=predict_config.dry_run
     )
+
+    # turn off caching for inference by default
+    if not predict_config.cache_videos:
+        os.environ["LOAD_VIDEO_FRAMES_CACHE_DIR"] = ""
 
     configuration = {
         "model_class": model.model_class,
