@@ -73,16 +73,18 @@ def validate_gpus(gpus: int):
         return gpus
 
 
-def validate_cache_dir(cache_dir: Optional[Path]):
+def validate_model_cache_dir(model_cache_dir: Optional[Path]):
     """Set up cache directory for downloading model weight. Order of priority is:
     config argument, environment variable, or user's default cache dir.
     """
-    if cache_dir is None:
-        cache_dir = os.getenv("MODEL_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba")
+    if model_cache_dir is None:
+        model_cache_dir = os.getenv(
+            "MODEL_CACHE_DIR", Path(appdirs.user_model_cache_dir()) / "zamba"
+        )
 
-    cache_dir = Path(cache_dir)
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    return cache_dir
+    model_cache_dir = Path(model_cache_dir)
+    model_cache_dir.mkdir(parents=True, exist_ok=True)
+    return model_cache_dir
 
 
 def check_files_exist_and_load(
@@ -324,7 +326,7 @@ class TrainConfig(ZambaBaseModel):
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (European Union), or "asia"
             (Asia Pacific). Defaults to "us".
-        cache_dir (Path, optional): Cache directory where downloaded model weights
+        model_cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and the MODEL_CACHE_DIR environment variable is
             not set, uses your default cache directory. Defaults to None.
         split_proportions (dict): Proportions used to divide data into training,
@@ -365,7 +367,7 @@ class TrainConfig(ZambaBaseModel):
     max_epochs: Optional[int] = None
     early_stopping_config: Optional[EarlyStoppingConfig] = EarlyStoppingConfig()
     weight_download_region: RegionEnum = "us"
-    cache_dir: Optional[Path] = None
+    model_cache_dir: Optional[Path] = None
     split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
     save_directory: Path = Path.cwd()
     overwrite_save_directory: bool = False
@@ -378,7 +380,9 @@ class TrainConfig(ZambaBaseModel):
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
-    _validate_cache_dir = validator("cache_dir", allow_reuse=True, always=True)(validate_cache_dir)
+    _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
+        validate_model_cache_dir
+    )
 
     @root_validator(skip_on_failure=True)
     def validate_from_scratch_and_checkpoint(cls, values):
@@ -556,7 +560,7 @@ class PredictConfig(ZambaBaseModel):
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (European Union), or "asia"
             (Asia Pacific). Defaults to "us".
-        cache_dir (Path, optional): Cache directory where downloaded model weights
+        model_cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and no environment variable is set, will use your
             default cache directory. Defaults to None.
         skip_load_validation (bool): By default, zamba runs a check to verify that
@@ -582,13 +586,15 @@ class PredictConfig(ZambaBaseModel):
     proba_threshold: Optional[float] = None
     output_class_names: bool = False
     weight_download_region: RegionEnum = "us"
-    cache_dir: Optional[Path] = None
+    model_cache_dir: Optional[Path] = None
     skip_load_validation: bool = False
     cache_videos: bool = False
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
-    _validate_cache_dir = validator("cache_dir", allow_reuse=True, always=True)(validate_cache_dir)
+    _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
+        validate_model_cache_dir
+    )
 
     @root_validator(skip_on_failure=True)
     def validate_dry_run_and_save(cls, values):
