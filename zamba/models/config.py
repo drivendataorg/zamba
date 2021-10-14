@@ -320,9 +320,8 @@ class TrainConfig(ZambaBaseModel):
         gpus (int): Number of GPUs to train on applied per node.
             Defaults to all of the available GPUs found on the machine.
         num_workers (int): Number of subprocesses to use for data loading. 0 means
-            that the data will be loaded in the main process. Defauts to one less
-            than the number of CPUs in the system, or 1 if there is one CPU in the
-            system.
+            that the data will be loaded in the main process. The maximum value is 
+            one less than the number of CPUs in the system. Defaults to 3.
         max_epochs (int, optional): Stop training once this number of epochs is
             reached. Disabled by default (None), which stops training at 1000 epochs.
         early_stopping_config (EarlyStoppingConfig, optional): Configuration for
@@ -547,10 +546,9 @@ class PredictConfig(ZambaBaseModel):
         gpus (int): Number of GPUs to use for inference.
             Defaults to all of the available GPUs found on the machine.
         num_workers (int): Number of subprocesses to use for data loading. 0 means
-            that the data will be loaded in the main process. Defauts to one less
-            than the number of CPUs in the system, or 1 if there is one CPU in the
-            system.
-        batch_size (int): Batch size to use for inference. Defaults to 8.
+            that the data will be loaded in the main process. The maximum value is 
+            one less than the number of CPUs in the system. Defaults to 3.
+        batch_size (int): Batch size to use for inference. Defaults to 2.
         save (bool or Path): Path to a CSV to save predictions. If True is passed,
             "zamba_predictions.csv" is written to the current working directory.
             If False is passed, predictions are not saved. Defaults to True.
