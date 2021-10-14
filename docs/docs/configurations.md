@@ -25,7 +25,7 @@ class VideoLoaderConfig(pydantic.main.BaseModel)
  crop_bottom_pixels: int = None, 
  i_frames: bool = False, 
  scene_threshold: float = None, 
- megadetector_lite_config: zamba_algorithms.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
+ megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
  frame_selection_height: int = None, 
  frame_selection_width: int = None, 
  total_frames: int = None, 
@@ -57,11 +57,9 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLiteYoloX model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLiteYoloX model will not be used to select frames.
 
-#### `frame_selection_height (int, optional), frame_selecto
+#### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
-#### `video_height (int, optional), video_width (int, optional)`
-
-Resize the video to this height and width in pixels. Defaults to `None`
+Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. This is recommended for MegadetectorLite, especially if your species of interest are smaller. Default to `None`
 
 #### `total_frames (int, optional)`
 
@@ -92,6 +90,10 @@ Reach the total number of frames specified by evenly sampling from the duration 
 
 FFmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bgr24` for BGR.
 
+#### `model_input_height (int, optional), model_input_width (int, optional)`
+
+After frame selection, resize the video to this height and width in pixels. Defaults to `None`
+
 <a id='prediction-arguments'></a>
 
 ## Prediction arguments
@@ -103,13 +105,13 @@ All possible model inference parameters are defined by the `PredictConfig` class
 >> help(PredictConfig)
 
 class PredictConfig(ZambaBaseModel)
- |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'),
+ |  PredictConfig(*, 
+ data_directory: pydantic.types.DirectoryPath = # your current working directory ,
  filepaths: pydantic.types.FilePath = None,
  checkpoint: pydantic.types.FilePath = None,
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
- species: List[str] = None,
- gpus: Union[List[int], str, int] = 1,
- num_workers: int = 7,
+ gpus: int = 0, 
+ num_workers: int = 3,
  batch_size: int = 8,
  save: Union[bool, pathlib.Path] = True,
  dry_run: bool = False,
@@ -139,10 +141,6 @@ Path to a model checkpoint to load and use for inference. The default is `None`,
 #### `model_name (time_distributed|slowfast|european, optional)
 
 Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
-
-#### `species (list(str), optional)`
-
-List of possible species class labels for the data.  The default is `None`, which automatically loads the classes associated with the model specified by `model_name`. Since the default `model_name` is `time_distributed`, the default is the [32 species](models.md#species-classes) (plus blank) from central and west Africa.
 
 #### `gpus (int, optional)`
 
@@ -198,33 +196,32 @@ All possible model training parameters are defined by the `TrainConfig` class<!-
 
 class TrainConfig(ZambaBaseModel)
  |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame],
- data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'),
+ data_directory: pydantic.types.DirectoryPath = # your current working directory ,
  checkpoint: pydantic.types.FilePath = None,
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  dry_run: Union[bool, int] = False,
  batch_size: int = 8,
  auto_lr_find: bool = True,
- backbone_finetune: bool = False,
- backbone_finetune_params: zamba.models.config.BackboneFinetuneConfig =
+ backbone_finetune_config: zamba.models.config.BackboneFinetuneConfig =
             BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
             backbone_initial_ratio_lr=0.01, multiplier=1,
             pre_train_bn=False, train_bn=False, verbose=True),
- gpus: Union[List[int], str, int] = 1,
- num_workers: int = 7,
- max_epochs: int = None,
- early_stopping: bool = True,
- early_stopping_params: zamba.models.config.EarlyStoppingConfig =
+gpus: int = 0, 
+num_workers: int = 3,
+max_epochs: int = None,
+early_stopping_config: zamba.models.config.EarlyStoppingConfig =
             EarlyStoppingConfig(monitor='val_macro_f1', patience=3,
             verbose=True, mode='max'),
- tensorboard_log_dir: str = 'tensorboard_logs',
- weight_download_region: zamba.models.utils.RegionEnum = 'us',
- cache_dir: pathlib.Path = None,
- split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
- save_directory: pathlib.Path = None,
- skip_load_validation: bool = False,
- from_scratch: bool = False,
- predict_all_zamba_species: bool = True) -> None
+weight_download_region: zamba.models.utils.RegionEnum = 'us',
+cache_dir: pathlib.Path = None,
+split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
+save_directory: pathlib.Path = # your current working directory , 
+overwrite_save_directory: bool = False, 
+skip_load_validation: bool = False,
+from_scratch: bool = False,
+predict_all_zamba_species: bool = True) -> None
+
  ...
 ```
 
@@ -262,13 +259,9 @@ The batch size to use for training. Defaults to `8`
 
 Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to find the optimal initial learning rate. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `True`
 
-#### `backbone_finetune (bool, optional)`
+#### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
-Finetune a backbone model based on a learning rate user-defined scheduling. Derined from Pytorch Lightning's built-in `BackboneFinetuning`, but with the ability to freeze batch norm layers during the freeze phase. See `zamba.pytorch.finetuning` for details.<!-- TODO: add github link><!--> Defaults to `False`
-
-#### `backbone_finetune_params (zamba.models.config.BackboneFinetuneConfig, optional)`
-
-Parameters to pass to the `BackboneFinetuning` <!-- TODO: add link to github source code><!-->class if `backbone_finetune` is `True`. The default values are specified in the `BackboneFinetuneConfig` <!-- TODO: add link to github source code><!--> class: `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
+Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in `BackboneFinetuning`, but with the ability to freeze batch norm layers during the freeze phase. See `zamba.pytorch.finetuning` for details.<!-- TODO: add github link><!--> The default values are specified in the `BackboneFinetuneConfig` <!-- TODO: add link to github source code><!--> class: `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
 
 #### `gpus (int, optional)`
 
@@ -282,17 +275,9 @@ The number of CPUs to use during training. By default, it will be set to either 
 
 The maximum number of epochs to run during training. Defaults to `None`
 
-#### `early_stopping (bool, optional)`
+#### `early_stopping_config (zamba.models.config.EarlyStoppingConfig, optional)`
 
-Whether to monitor a metric during model training and stop training when the metric stops improving. Uses [`pytorch_lightning.callbacks.early_stopping`](https://pytorch-lightning.readthedocs.io/en/latest/common/early_stopping.html). Defaults to `True`
-
-#### `early_stopping_params (zamba.models.config.EarlyStoppingConfig, optional)`
-
-Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) if `early_stopping` is `True`. The default values are specified in the `EarlyStoppingConfig` <!-- TODO: add link to github source code><!--> class: `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
-
-#### `tensorboard_log_dir (str, optional)`
-
-Pytorch Lightning can log to a local file system in TensorBoard format with [TensorBoardLogger](https://pytorch-lightning.readthedocs.io/en/latest/api/pytorch_lightning.loggers.tensorboard.html). The directory in which to save these logs is set to `zamba/models/<tensorboard_log_dir>/`. Defaults to `tensorboard_logs`
+Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the `EarlyStoppingConfig` <!-- TODO: add link to github source code><!--> class: `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
 
 #### `weight_download_region [us|eu|asia]`
 
@@ -309,6 +294,10 @@ The proportion of data to use during training, validation, and as a holdout set.
 #### `save_directory (Path, optional)`
 
 Directory in which to save model checkpoint and configuration file. If not specified, will save to a folder called 'zamba_{model_name}' in your working directory.
+
+#### `overwrite_save_directory (bool, optional)`
+
+ If True, will save outputs in `save_directory` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_directory` with model outputs. Defaults to `False`.
 
 #### `skip_load_validation (bool, optional)`
 

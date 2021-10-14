@@ -29,7 +29,7 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 To run `zamba train` in the command line, you must specify both `--data-directory` and `--labels`.
 
 * **`--data-dir PATH`:** Path to the folder containing your labeled videos.
-* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. The filepath column should be relative to the `data-dir` provided. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
+* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. The filepath column should be either full paths or paths relative to the `data-dir`. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
 
 ```console
 $ cat example_labels.csv

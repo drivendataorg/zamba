@@ -99,7 +99,7 @@ In either case, the commands for training are the same. Say that we have labels 
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 ```
 
-The labels file must have columns for both filepath and label. The filepath column should relative to the `data-dir` provided. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. Let's print the example labels:
+The labels file must have columns for both filepath and label. The filepath column should be either full paths or paths relative to the `data-dir`. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. Let's print the example labels:
 
 ```console
 $ cat example_labels.csv
