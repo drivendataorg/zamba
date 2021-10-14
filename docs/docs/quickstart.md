@@ -188,6 +188,9 @@ Options:
                                   on --proba_threshold) for every possible
                                   class.
 
+  --num-workers INTEGER           Number of subprocesses to use for data
+                                  loading.
+
   --weight-download-region [us|eu|asia]
                                   Server region for downloading weights.
   --cache-dir PATH                Path to directory for model weights.
@@ -248,6 +251,9 @@ Options:
                                   will save to a folder called
                                   'zamba_{model_name}' in your working
                                   directory.
+
+  --num-workers INTEGER           Number of subprocesses to use for data
+                                  loading.
 
   --weight-download-region [us|eu|asia]
                                   Server region for downloading weights.

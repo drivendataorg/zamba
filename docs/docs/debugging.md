@@ -56,13 +56,11 @@ Resize video frames to be smaller before they are passed to the model. The defau
 
 Reduce the number of workers (subprocesses) used for data loading. By default `num_workers` will be set to 3. The minimum value is 0, which means that the data will be loaded in the main process, and the maximum is one less than the number of CPUs in the system. `num_workers` cannot be passed directly to the command line, so if you are using the CLI it must be specified in a [YAML file](yaml-config.md).
 
-=== "YAML file"
-    In a YAML file, add `num_workers` to `predict_config` or `train_config`:
-    ```yaml
-    train_config:
-        data_directory: "example_vids/" # required
-        labels: "example_labels.csv" # required
-        num_workers: 1
+=== "CLI"
+    ```console
+    $ zamba predict --data-dir example_vids/ --num-workers 1
+
+    $ zamba train --data-dir example_vids/ --labels example_labels.csv --num-workers 1
     ```
 === "Python"
     In Python, add `num_workers` to [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):
