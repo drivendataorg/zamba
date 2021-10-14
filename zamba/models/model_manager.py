@@ -265,6 +265,11 @@ def train_model(
         else None,
     )
 
+    if video_loader_config.cache_dir is None:
+        logger.info("No cache dir is specified. Videos will not be cached.")
+    else:
+        logger.info(f"Videos will be cached to {video_loader_config.cache_dir}.")
+
     if train_config.auto_lr_find:
         logger.info("Finding best learning rate.")
         trainer.tune(model, data_module)
@@ -345,6 +350,11 @@ def predict_model(
     )
 
     validate_species(model, data_module)
+
+    if video_loader_config.cache_dir is None:
+        logger.info("No cache dir is specified. Videos will not be cached.")
+    else:
+        logger.info(f"Videos will be cached to {video_loader_config.cache_dir}.")
 
     trainer = pl.Trainer(
         gpus=predict_config.gpus, logger=False, fast_dev_run=predict_config.dry_run

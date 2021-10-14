@@ -11,7 +11,6 @@ from shutil import rmtree
 import sys
 from tempfile import tempdir
 from typing import Optional, Union, List
-import warnings
 
 import cv2
 from cloudpathlib import S3Path, AnyPath
@@ -384,9 +383,10 @@ class npy_cache:
     def __del__(self):
         if hasattr(self, "tmp_path") and self.cleanup and self.tmp_path.exists():
             if self.tmp_path.parents[0] == Path(tempdir):
+                logger.info(f"Deleting cache dir {self.tmp_path}.")
                 rmtree(self.tmp_path)
             else:
-                warnings.warn(
+                logger.warn(
                     "Bravely refusing to delete directory that is not a subdirectory of the "
                     "system temp directory. If you really want to delete, do so manually using:\n "
                     f"rm -r {self.tmp_path}"
