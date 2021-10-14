@@ -508,7 +508,7 @@ def load_video_frames(
     return arr
 
 
-def cached_load_video_frames(filepath: os.PathLike, config: VideoLoaderConfig):
+def cached_load_video_frames(filepath: os.PathLike, config: Optional[VideoLoaderConfig] = None):
     """Loads frames from videos using fast ffmpeg commands and caches to .npy file
     if config.cache_dir is not None.
 
@@ -516,6 +516,10 @@ def cached_load_video_frames(filepath: os.PathLike, config: VideoLoaderConfig):
         filepath (os.PathLike): Path to the video.
         config (VideoLoaderConfig): Configuration for video loading.
     """
+    if config is None:
+        # get environment variable for cache if it exists
+        config = VideoLoaderConfig()
+
     decorated_load_video_frames = npy_cache_factory(
         path=config.cache_dir, callable=load_video_frames, cleanup=config.cleanup_cache
     )
