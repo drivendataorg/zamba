@@ -73,18 +73,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 By default, the [`time_distributed`](models.md#time-distributed-model) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
 
-```console
-$ zamba train --data-dir example_vids/ --labels example_labels.csv
-$ ls zamba_time_distributed
-train_configuration.yaml 
-hparams.yaml
-time_distributed.ckpt
-events.out.tfevents.1632250686.ip-172-31-15-179.14229.0
-test_metrics.json
-val_metrics.json
-```
-
-`zamba_time_distributed` contains three files:
+`zamba_time_distributed` contains:
 
 * `train_configuration.yaml`: The full model configuration used to generate the given model, including `video_loader_config` and `train_config`. To continue training using the same configuration, or to train another model using the same configuration, you can pass in `train_configurations.yaml` (see [Specifying Model Configurations with a YAML File](yaml-config.md)).
 * `hparams.yaml`: Model hyperparameters. For example, the YAML file below tells us that the model was trained with a learning rate (`lr`) of 0.001:
@@ -113,6 +102,7 @@ val_metrics.json
 * `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs
 * `test_metrics.json`: The model's performance on the test subset
 * `val_metrics.json`: The model's performance on the validation subset
+* `splits.csv`: Which files were used for training, validation, and as a holdout set. If split is specified in the labels file passed to training, `splits.csv` will not be saved out.
 
 ## Step-by-step tutorial
 
