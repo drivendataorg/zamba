@@ -70,10 +70,10 @@ Adding the argument `--output-class-names` will simplify the predictions to retu
 ```console
 $ zamba predict --data-dir example_vids/ --output-class-names
 $ cat zamba_predictions.csv
-vids/blank.mp4,blank
-vids/chimp.mp4,chimpanzee_bonobo
-vids/eleph.mp4,elephant
-vids/leopard.mp4,leopard
+blank.mp4,blank
+chimp.mp4,chimpanzee_bonobo
+eleph.mp4,elephant
+leopard.mp4,leopard
 ```
 
 There are three pretrained models that ship with `zamba`: `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
