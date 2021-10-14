@@ -121,11 +121,10 @@ example_vids/chimp.MP4,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,0.0,1.0,0.0,0.0,0.0,0.0,0.0
 
 ### 1. Specify the path to your videos
 
-Save all of your videos in one folder.
+Save all of your videos within one folder.
 
-* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
-* Your video folder must contain only valid video files, since zamba will try to load all of the files in the directory.
-* Your videos must all be in the top level of the video folder - `zamba` does not extract videos from nested directories.
+* They can be in nested directories within the folder.
+* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 Add the path to your video folder with `--data-dir`. For example, if your videos are in a folder called `example_vids`:
 

@@ -28,8 +28,8 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 
 To run `zamba train` in the command line, you must specify both `--data-directory` and `--labels`.
 
-* **`--data-dir PATH`:** Path to the folder containing your labeled videos.
-* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. The filepath column should be either full paths or paths relative to the `data-dir`. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
+* **`--data-dir PATH`:** Path to the folder containing your labeled videos. `zamba` will generate predictions for videos in the top level directory and in any nested folders.
+* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
 
 ```console
 $ cat example_labels.csv
@@ -149,11 +149,10 @@ val_metrics.json
 
 ### 1. Specify the path to your videos 
 
-Save all of your videos in one folder.
+Save all of your videos within one folder.
 
-* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features).
-* Your video folder must contain only valid video files, since zamba will try to load all of the files in the directory.
-* Your videos must all be in the top level of the video folder - `zamba` does not extract videos from nested directories.
+* They can be in nested directories within the folder.
+* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 Add the path to your video folder with `--data-dir`. For example, if your videos are in a folder called `example_vids`, add `--data-dir example_vids/` to your command.
 

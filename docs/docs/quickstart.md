@@ -16,11 +16,7 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 
 ## How do I organize my videos for `zamba`?
 
-You can input the path to a directory of videos to classify. 
-
-* **The folder must contain only valid video files**, since `zamba` will try to load all of the files in the directory. 
-* `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
-* `zamba` will only generate predictions for the videos in the top level of a directory (`zamba` does not currently extract videos from nested directories).
+You can input the path to a directory of videos or specify a list of file paths. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 For example, say we have a directory of videos called `example_vids` that we want to generate predictions for using `zamba`. Let's list the videos:
 
