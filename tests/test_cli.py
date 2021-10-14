@@ -170,13 +170,8 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     assert save_path.exists()
     # check config got saved out too
     assert (save_path.parent / "predict_configuration.yaml").exists()
-<<<<<<< HEAD
     assert (
         pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
     )
-=======
-    assert pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "bird"
-
     # check video was not cached
     assert not (tmp_path / "zamba_cache").exists()
->>>>>>> 8b48052... test cache dir is set but not used
