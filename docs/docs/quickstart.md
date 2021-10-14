@@ -1,5 +1,7 @@
 # Quickstart
 
+<script id="asciicast-BJixOG8gTI3NI9IAMXnZLBlad" src="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.js" async data-autoplay="true" data-loop=1></script>
+
 This section assumes you have successfully installed `zamba` and are ready to train a model or identify species in your videos!
 
 `zamba` can be used "out of the box" to generate predictions or train a model using your own videos. To perform inference, you simply need to run `zamba predict` followed by a set of arguments that let zamba know where your videos are located, which model you want to use, and where to save your output. To train a model, you can similarly run `zamba train` and specify your labels. The following sections provide details about these separate modules.
