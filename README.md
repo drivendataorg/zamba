@@ -16,3 +16,6 @@ Zamba can be used both as a command-line tool and as a Python package.
 Please visit https://zamba.drivendata.org/docs/ for documentation and tutorials.
 
 Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-submmitted models.
+
+[![asciicast](https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad)](https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad)
+
