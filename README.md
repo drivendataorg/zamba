@@ -19,4 +19,6 @@ Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-
 
 [![asciicast](https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.svg)](https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad)
 
-<a href="https://asciinema.org/a/14?autoplay=1"><img src="https://asciinema.org/a/14.png" width="836"/></a>
+<a href="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad" target="_blank"><img src="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.svg" /></a>
+
+<a href="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad?autoplay=1" target="_blank"><img src="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.svg" /></a>
