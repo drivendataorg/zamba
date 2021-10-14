@@ -123,8 +123,8 @@ By default, an efficient object detection model called [MegadetectorLiteYoloX](#
 The full default video loading configuration is:
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 224
+  model_input_width: 224
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -140,15 +140,15 @@ The above is pulled in by default if `time_distributed` is used in the command l
 === "YAML file"
     ```yaml
     video_loader_config:
-      video_height: # any integer
-      video_width: # any integer
+      model_input_height: # any integer
+      model_input_width: # any integer
       total_frames: 16
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-      video_height=..., # any integer
-      video_width=..., # any integer
+      model_input_height=..., # any integer
+      model_input_width=..., # any integer
       total_frames=16
     )
     ```
@@ -183,8 +183,8 @@ The full default video loading configuration is:
 
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 224
+  model_input_width: 224
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -200,15 +200,15 @@ The above is pulled in by default if `slowfast` is used in the command line. If 
 === "YAML file"
     ```yaml
     video_loader_config:
-      video_height: # any integer >= 200
-      video_width: # any integer >= 200
+      model_input_height: # any integer >= 200
+      model_input_width: # any integer >= 200
       total_frames: 32
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-      video_height=..., # any integer >= 200
-      video_width=..., # any integer >= 200
+      model_input_height=..., # any integer >= 200
+      model_input_width=..., # any integer >= 200
       total_frames=32
     )
     ```
@@ -239,8 +239,8 @@ By default, an efficient object detection model called [MegadetectorLiteYoloX](#
 The full default video loading configuration is:
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 224
+  model_input_width: 224
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -257,15 +257,15 @@ The above is pulled in by default if `european` is used in the command line. If 
 === "YAML file"
     ```yaml
     video_loader_config:
-      video_height: # any integer
-      video_width: # any integer
+      model_input_height: # any integer
+      model_input_width: # any integer
       total_frames: 16
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-      video_height=..., # any integer
-      video_width=..., # any integer
+      model_input_height=..., # any integer
+      model_input_width=..., # any integer
       total_frames=16
     )
     ```

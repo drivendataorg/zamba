@@ -43,7 +43,7 @@ Let's go through each of those arguments.
 
 #### `crop_bottom_pixels (int, optional)`
 
-Number of pixels to crop from the bottom of the video (prior to resizing to `video_height`). Defaults to `None`
+Number of pixels to crop from the bottom of the video (prior to resizing to `frame_selection_height`). Defaults to `None`
 
 #### `i_frames (bool, optional)`
 
@@ -148,7 +148,7 @@ The number of GPUs to use during inference. By default, all of the available GPU
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. By default, it will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system.
+The number of CPUs to use during training. `num_workers` cannot be greater than the number of GPUs in the system. Defaults to `3`
 
 #### `batch_size (int, optional)`
 
@@ -269,7 +269,7 @@ The number of GPUs to use during training. By default, all of the available GPUs
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. By default, it will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system.
+The number of CPUs to use during training. `num_workers` cannot be greater than the number of GPUs in the system. Defaults to `3`
 
 #### `max_epochs (int, optional)`
 

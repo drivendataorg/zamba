@@ -54,7 +54,7 @@ from zamba.data.video import VideoLoaderConfig
 
 train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv")
 video_loader_config = VideoLoaderConfig(
-    video_height=224, video_width=224, total_frames=16
+    model_input_height=224, model_input_width=224, total_frames=16
 )
 
 train_model(train_config=train_config, video_loader_config=video_loader_config)
@@ -73,7 +73,7 @@ To run `train_model` in Python, you must specify both `data_directory` and `labe
 
 In the command line, video loading configurations are loaded by default based on the model being used. This is not the case in Python. There are additional requirements for `VideoLoaderConfig` based on the model you are using.
 
-* **`video_height (int)`, `video_width (int)`:** Dimensions for resizing videos as they are loaded. 
+* **`model_input_height (int)`, `model_input_width (int)`:** Dimensions for resizing videos after frame selection. 
     - `time_distributed` or `european`: The suggested dimensions are 224x224, but any integers are acceptable
     - `slowfast`: Both must be greater than or equal to 200
 * **`total_frames (int)`:** The number of frames to select from each video and use during training. 
@@ -89,8 +89,8 @@ megadetector_config = MegadetectorLiteYoloXConfig(
     confidence=0.25, fill_mode="score_sorted", n_frames=16
 )
 video_loader_config = VideoLoaderConfig(
-    video_height=224,
-    video_width=224,
+    model_input_height=224,
+    model_input_width=224,
     crop_bottom_pixels=50,
     ensure_total_frames=True,
     megadetector_list_config=megadetector_config,

@@ -7,29 +7,29 @@ The basic structure of a YAML model configuration is:
 ```yaml
 $ cat basic_config.yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 224
+  model_input_width: 224
   total_frames: 16
   # other video loading parameters
 
 predict_config:
   model_name: time_distributed
   data_directoty: example_vids/
-  # other training parameters, eg. batch_size, video_height, video_width
+  # other training parameters, eg. batch_size
 
 train_config:
   model_name: time_distributed
   data_directory: example_vids/
   labels: example_labels.csv
-  # other training parameters, eg. batch_size, video_height, video_width
+  # other training parameters, eg. batch_size
 ```
 
 For example, the configuration below will predict labels for the videos in `example_vids` using the `time_distributed` model. When videos are loaded, each will be resized to 224x224 pixels and 16 frames will be selected:
 
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 224
+  model_input_width: 224
   total_frames: 16
 
 predict_config:
@@ -41,7 +41,7 @@ predict_config:
 
 Either `predict_config` or `train_config` is required, based on whether you will be running inference or training a model. See [All Optional Arguments](configurations.md) for a full list of what can be specified under each class. To run inference, either `data_directory` or `filepaths` must be specified. To train a model, both `data_directory` and `labels` must be specified.
 
-In `video_loader_config`, you must specify at least `video_height`, `video_width`, and `total_frames`. 
+In `video_loader_config`, you must specify at least `model_input_height`, `model_input_width`, and `total_frames`. 
 
 * For `time_distributed` or `european`, `total_frames` must be 16
 * For `slowfast`, `total_frames` must be 32
@@ -77,7 +77,7 @@ To instantiate the `ModelManager` based on a configuration file saved at `test_c
 ModelConfig(
   video_loader_config=VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False, 
                                         scene_threshold=None, megadetector_lite_config=None, 
-                                        video_height=224, video_width=224, 
+                                        model_input_height=224, model_input_width=224, 
                                         total_frames=16, ensure_total_frames=True, 
                                         fps=None, early_bias=False, frame_indices=None,
                                         evenly_sample_total_frames=False, pix_fmt='rgb24'
@@ -92,7 +92,7 @@ ModelConfig(
                                 checkpoint='zamba_time_distributed.ckpt', 
                                 model_params=ModelParams(scheduler=None, scheduler_params=None),
                                 model_name='time_distributed', species=None, 
-                                gpus=1, num_workers=7, batch_size=8, 
+                                gpus=1, num_workers=3, batch_size=8, 
                                 save=True, dry_run=False, proba_threshold=None,
                                 output_class_names=False, weight_download_region='us', 
                                 cache_dir=None, skip_load_validation=False)
@@ -117,8 +117,8 @@ For example, the default configuration for the [`time_distributed` model](models
 
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 224
+  model_input_width: 224
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -169,8 +169,8 @@ from zamba.models.config import TrainConfig
 from zamba.models.model_manager import train_model
 
 video_loader_config = VideoLoaderConfig(
-    video_height=224,
-    video_width=224,
+    model_input_height=224,
+    model_input_width=224,
     crop_bottom_pixels=50,
     ensure_total_frames=True,
     megadetector_lite_config={

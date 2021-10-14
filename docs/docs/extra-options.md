@@ -38,8 +38,8 @@ Say that you have a large number of videos, and you are more concerned with dete
 === "YAML file"
     ```yaml
     video_loader_config:
-        video_height: 50
-        video_width: 50
+        model_input_height: 50
+        model_input_width: 50
         total_frames: 16 # total_frames must always be specified
     ```
 === "Python"
@@ -47,7 +47,7 @@ Say that you have a large number of videos, and you are more concerned with dete
 
     ```python
     video_loader_config = VideoLoaderConfig(
-        video_height=50, video_width=50, total_frames=16
+        model_input_height=50, model_input_width=50, total_frames=16
     ) # total_frames must always be specified
     ```
 
@@ -64,8 +64,8 @@ Some camera traps begin recording a video when movement is detected. If this is 
 === "YAML File"
     ```yaml
     video_loader_config:
-    early_bias: True
-    # ... other parameters
+        early_bias: True
+        # ... other parameters
     ```
 === "Python"
     In Python, `early_bias` is specified when `VideoLoaderConfig` is instantiated:
@@ -117,8 +117,8 @@ For example, to take the 16 frames with the highest probability of detection:
     In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
     ```python hl_lines="6 7 8 9 10"
     video_loader_config = VideoLoaderConfig(
-        video_height=224,
-        video_width=224,
+        model_input_height=224,
+        model_input_width=224,
         crop_bottom_pixels=50,
         ensure_total_frames=True,
         megadetector_lite_config={
@@ -135,5 +135,30 @@ For example, to take the 16 frames with the highest probability of detection:
     ```
 
 To see all of the options that can be passed to `MegadetectorLiteYoloX`, see the `MegadetectorLiteYoloXConfig` class. <!-- TODO: add link to github code><!-->
+
+## Speeding up training
+
+Training will run faster if you increase `num_workers` or increase `batch_size`. `num_workers` is the number of subprocesses to use for data loading. The minimum is 0, meaning the data will be loaded in the main process, and the maximum is one less than the number of CPUs in your system. By default `num_workers` is set to 3 and `batch_size` is set to 8. Increasing either of these will use more GPU memory, and could raise an error if the memory required is more than your machine has available.
+
+Both can be specified in either [`predict_config`](configurations.md#prediction-arguments) or [`train_config`](configurations.md#training-arguments). To increase `num_workers` to 5 and `batch_size` to 10 for inference:
+
+=== "YAML file"
+    ```yaml
+    predict_config:
+        data_directory: example_vids/
+        num_workers: 5
+        batch_size: 10
+        # ... other parameters
+    ```
+=== "Python"
+    ```python
+        predict_config = PredictConfig(
+        data_directory="example_vids/",
+        num_workers=5,
+        batch_size=10,
+        # ... other parameters
+    )
+    ```
+
 
 And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.

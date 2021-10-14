@@ -36,25 +36,25 @@ The dry run will also catch any GPU memory errors. If you hit a GPU memory error
 
 #### Decreasing video size
 
-Resize video frames to be smaller before they are passed to the model. The default for all three models is 224x224 pixels. `video_height` and `video_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
+Resize video frames to be smaller before they are passed to the model. The default for all three models is 224x224 pixels. `model_input_height` and `model_input_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
 
 === "YAML file"
     ```yaml
     video_loader_config:
-        video_height: 100
-        video_width: 100
+        model_input_height: 100
+        model_input_width: 100
         total_frames: 16 # total_frames is always required
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-        video_height=100, video_width=100, total_frames=16
+        model_input_height=100, model_input_width=100, total_frames=16
     ) # total_frames is always required
     ```
 
 #### Reducing `num_workers`
 
-Reduce the number of workers (subprocesses) used for data loading. By default, `num_workers` will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system. `num_workers` cannot be passed directly to the command line, so if you are using the CLI it must be specified in a [YAML file](yaml-config.md).
+Reduce the number of workers (subprocesses) used for data loading. By default `num_workers` will be set to 3. The minimum value is 0, which means that the data will be loaded in the main process, and the maximum is one less than the number of CPUs in the system. `num_workers` cannot be passed directly to the command line, so if you are using the CLI it must be specified in a [YAML file](yaml-config.md).
 
 === "YAML file"
     In a YAML file, add `num_workers` to `predict_config` or `train_config`:
