@@ -449,7 +449,7 @@ def test_megadetector_lite_yolox_dog(tmp_path):
 
 
 def test_resize_after_frame_selection():
-    test_vid = TEST_VIDEOS_DIR / "data" / "raw" / "benjamin" / "05280418.MP4"
+    test_vid = TEST_VIDEOS_DIR / "data" / "raw" / "benjamin" / "04250002.MP4"
     resize_before_vlc = VideoLoaderConfig(
         frame_selection_height=10,
         frame_selection_width=12,

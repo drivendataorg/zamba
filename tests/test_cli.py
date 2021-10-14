@@ -148,7 +148,7 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
 def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     data_dir = tmp_path / "videos"
     data_dir.mkdir()
-    shutil.copy(TEST_VIDEOS_DIR / "data" / "raw" / "benjamin" / "05280418.MP4", data_dir)
+    shutil.copy(TEST_VIDEOS_DIR / "data" / "raw" / "benjamin" / "04250002.MP4", data_dir)
 
     save_path = tmp_path / "zamba" / "my_preds.csv"
 
@@ -171,4 +171,4 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     assert save_path.exists()
     # check config got saved out too
     assert (save_path.parent / "predict_configuration.yaml").exists()
-    assert pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "rodent"
+    assert pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "bird"
