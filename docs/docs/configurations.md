@@ -42,7 +42,7 @@ All video loading arguments can be specified either in a [YAML file](yaml-config
     predict_model(
         predict_config=predict_config, video_loader_config=video_loader_config
     )
-    ```python
+    ```
 
 Let's look at the class documentation in Python.
 
@@ -166,7 +166,7 @@ Path to a list of files for classification. Defaults to the files in the current
 
 Path to a model checkpoint to load and use for inference. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `checkpoint` is `zamba_time_distributed.ckpt`
 
-#### `model_name (time_distributed|slowfast|european, optional)
+#### `model_name (time_distributed|slowfast|european, optional)`
 
 Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
 
@@ -223,7 +223,8 @@ All possible model training parameters are defined by the `TrainConfig` class<!-
 >> help(TrainConfig)
 
 class TrainConfig(ZambaBaseModel)
- |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame],
+ |  TrainConfig(*, 
+ labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame],
  data_directory: pydantic.types.DirectoryPath = # your current working directory ,
  checkpoint: pydantic.types.FilePath = None,
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',

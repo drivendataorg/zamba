@@ -122,9 +122,11 @@ Add the path to your video folder with `--data-dir`. For example, if your videos
 
 === "Python"
     ```python
+    from zamba.models.model_manager import train_model
     from zamba.models.config import TrainConfig
 
     train_config = TrainConfig(data_directory='example_vids/')
+    train_model(train_config=train_config)
     ```
 Note that the above will not run yet because labels are not specified.
 
@@ -151,7 +153,10 @@ Add the path to your labels with `--labels`.  For example, if your videos are in
     In Python, the labels are passed in when `TrainConfig` is instantiated. The Python package allows you to pass in labels as either a file path or a pandas dataframe:
     ```python
     labels_dataframe = pd.read_csv('example_labels.csv', index_col='filepath')
-    train_config = TrainConfig(data_directory='example_vids/', labels=labels_dataframe)
+    train_config = TrainConfig(
+        data_directory='example_vids/', labels=labels_dataframe
+    )
+    train_model(train_config=train_config)
     ```
 
 #### Labels `zamba` has seen before
@@ -179,6 +184,7 @@ Add the model name to your command with `--model`. The `time_distributed` model 
         labels="example_euro_labels.csv",
         model_name="european",
     )
+    train_model(train_config=train_config)
     ```
 
 ### 4. Specify any additional parameters

@@ -86,7 +86,7 @@ This method was used by the winning solution of the [Pri-matrix Factorization](h
 
 ### Evenly distributed frames
 
-A simple option is to sample frames that are evenly distributed throughout a video. For example, to select 32 evenly distributed frames, add the following to a [YAML configuration file](yaml-config.md):
+A simple option is to sample frames that are evenly distributed throughout a video. For example, to select 32 evenly distributed frames:
 
 === "YAML file"
     ```yaml
@@ -144,11 +144,11 @@ For example, to take the 16 frames with the highest probability of detection:
 
 To see all of the options that can be passed to `MegadetectorLiteYoloX`, see the `MegadetectorLiteYoloXConfig` class. <!-- TODO: add link to github code><!-->
 
-## Speeding up training
+## Speed up training
 
 Training will run faster if you increase `num_workers` or increase `batch_size`. `num_workers` is the number of subprocesses to use for data loading. The minimum is 0, meaning the data will be loaded in the main process, and the maximum is one less than the number of CPUs in your system. By default `num_workers` is set to 3 and `batch_size` is set to 8. Increasing either of these will use more GPU memory, and could raise an error if the memory required is more than your machine has available.
 
-Both can be specified in either [`predict_config`](configurations.md#prediction-arguments) or [`train_config`](configurations.md#training-arguments). To increase `num_workers` to 5 and `batch_size` to 10 for inference:
+Both can be specified in either [`predict_config`](configurations.md#prediction-arguments) or [`train_config`](configurations.md#training-arguments). For example, to increase `num_workers` to 5 and `batch_size` to 10 for inference:
 
 === "YAML file"
     ```yaml
@@ -160,7 +160,7 @@ Both can be specified in either [`predict_config`](configurations.md#prediction-
     ```
 === "Python"
     ```python
-        predict_config = PredictConfig(
+    predict_config = PredictConfig(
         data_directory="example_vids/",
         num_workers=5,
         batch_size=10,

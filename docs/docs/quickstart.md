@@ -111,7 +111,8 @@ By default, the trained model and additional training output will be saved to a 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 $ ls zamba_time_distributed
-time_distributed.ckpt train_configuration.yaml  events.out.tfevents.1632250686.ip-172-31-15-179.14229.0  hparams.yaml
+time_distributed.ckpt 
+...
 ```
 
 ## Downloading model weights

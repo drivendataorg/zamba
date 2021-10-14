@@ -68,7 +68,7 @@ blank.MP4,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.
 chimp.MP4,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,4e-05,0.00162,0.0,0.0,0.0,0.0,0.0,2e-05,2e-05,0.0,1e-05,0.0,0.0038,4e-05,0.0
 ```
 
-The full configuration for the inference run will be also saved out in the same folder as the predictions under `predict_configuration.yaml`. To run the exact same inference process a second time, you can pass this YAML file as the configuration to `zamba predict` per the [Using YAML Configuration Files](yaml-config.md) page:
+The full prediction and video loadering configuration for the process will also be saved out, in the same folder as the predictions under `predict_configuration.yaml`. To run the exact same inference process a second time, you can pass this YAML file to `zamba predict` per the [Using YAML Configuration Files](yaml-config.md) page:
 ```console
 $ zamba predict --config predict_configuration.yaml
 ```
@@ -91,6 +91,7 @@ Add the path to your video folder. For example, if your videos are in a folder c
 === "Python"
     ```python
     predict_config = PredictConfig(data_directory='example_vids/')
+    predict_model(predict_config=predict_config)
     ```
 
 ### 2. Choose a model for prediction
@@ -110,7 +111,10 @@ Add the model name to your command. The `time_distributed` model will be used if
     ```
 === "Python"
     ```python
-    predict_config = PredictConfig(data_directory='example_vids/', model_name='slowfast')
+    predict_config = PredictConfig(
+        data_directory='example_vids/', model_name='slowfast'
+    )
+    predict_model(predict_config=predict_config)
     ```
 
 ### 3. Choose the output format
