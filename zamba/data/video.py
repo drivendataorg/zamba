@@ -18,14 +18,13 @@ import ffmpeg
 from loguru import logger
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, root_validator, validator
 
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
-from zamba.settings import VIDEO_CACHE_DIR
 
 logger.remove()
 log_level = os.environ["LOGURU_LEVEL"] if "LOGURU_LEVEL" in os.environ else "INFO"
@@ -185,6 +184,14 @@ class VideoLoaderConfig(BaseModel):
             in pixels.
         model_input_width (int, optional): After frame selection, resize the video to this width in
             pixels.
+        cache_dir (Path, optional): Cache directory where preprocessed videos will be saved
+            upon first load. Alternatively, can be set with VIDEO_CACHE_DIR environment variable.
+            Defaults to None, which means videos will not be cached. Provided there is enough space
+            on your machine, it is highly encouraged to cache videos for training as this will
+            speed up all subsequent epochs. If you are predicting on the same videos with the
+            same video loader configuration, this will save time on future runs.
+        cleanup_cache (bool): Whether to delete the cache dir after training or predicting ends.
+            Defaults to False.
     """
 
     crop_bottom_pixels: Optional[int] = None
@@ -202,9 +209,25 @@ class VideoLoaderConfig(BaseModel):
     pix_fmt: Optional[str] = "rgb24"
     model_input_height: Optional[int] = None
     model_input_width: Optional[int] = None
+    cache_dir: Optional[Path] = None
+    cleanup_cache: bool = False
 
     class Config:
         extra = "forbid"
+
+    @validator("cache_dir", always=True)
+    def validate_video_cache_dir(cls, cache_dir):
+        """Set up cache directory for preprocessed videos. Config argument takes precedence
+        over environment variable.
+        """
+        if cache_dir is None:
+            cache_dir = os.getenv("VIDEO_CACHE_DIR", None)
+
+        if cache_dir is not None:
+            cache_dir = Path(cache_dir)
+            cache_dir.mkdir(parents=True, exist_ok=True)
+
+        return cache_dir
 
     @root_validator(skip_on_failure=True)
     def check_height_and_width(cls, values):
@@ -306,8 +329,9 @@ class VideoLoaderConfig(BaseModel):
 
 
 class npy_cache:
-    def __init__(self, path: Optional[Path] = None):
+    def __init__(self, path: Optional[Path] = None, cleanup: bool = False):
         self.tmp_path = path
+        self.cleanup = cleanup
 
     def __call__(self, f):
         def _wrapped(*args, **kwargs):
@@ -355,11 +379,7 @@ class npy_cache:
             return f
 
     def __del__(self):
-        if (
-            hasattr(self, "tmp_path")
-            and (self.tmp_path != VIDEO_CACHE_DIR)
-            and self.tmp_path.exists()
-        ):
+        if hasattr(self, "tmp_path") and self.cleanup and self.tmp_path.exists():
             if self.tmp_path.parents[0] == Path(tempdir):
                 rmtree(self.tmp_path)
             else:
@@ -370,7 +390,14 @@ class npy_cache:
                 )
 
 
-@npy_cache(path=VIDEO_CACHE_DIR)
+def npy_cache_factory(path, callable, cleanup):
+    @npy_cache(path=path, cleanup=cleanup)
+    def decorated_callable(*args, **kwargs):
+        return callable(*args, **kwargs)
+
+    return decorated_callable
+
+
 def load_video_frames(
     filepath: os.PathLike,
     config: Optional[VideoLoaderConfig] = None,
@@ -476,3 +503,17 @@ def load_video_frames(
         arr = ensure_frame_number(arr, total_frames=config.total_frames)
 
     return arr
+
+
+def cached_load_video_frames(filepath: os.PathLike, config: Optional[VideoLoaderConfig] = None):
+    """Loads frames from videos using fast ffmpeg commands and caches to .npy file
+    if config.cache_dir is not None.
+
+    Args:
+        filepath (os.PathLike): Path to the video.
+        config (VideoLoaderConfig, optional): Configuration for video loading.
+    """
+    decorated_load_video_frames = npy_cache_factory(
+        path=config.cache_dir, callable=load_video_frames, cleanup=config.cleanup_cache
+    )
+    return decorated_load_video_frames(filepath=filepath, config=config)
