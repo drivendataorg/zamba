@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from fractions import Fraction
 from functools import reduce
 import hashlib
@@ -25,6 +26,8 @@ from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
+
+load_dotenv()
 
 logger.remove()
 log_level = os.environ["LOGURU_LEVEL"] if "LOGURU_LEVEL" in os.environ else "INFO"
@@ -505,13 +508,13 @@ def load_video_frames(
     return arr
 
 
-def cached_load_video_frames(filepath: os.PathLike, config: Optional[VideoLoaderConfig] = None):
+def cached_load_video_frames(filepath: os.PathLike, config: VideoLoaderConfig):
     """Loads frames from videos using fast ffmpeg commands and caches to .npy file
     if config.cache_dir is not None.
 
     Args:
         filepath (os.PathLike): Path to the video.
-        config (VideoLoaderConfig, optional): Configuration for video loading.
+        config (VideoLoaderConfig): Configuration for video loading.
     """
     decorated_load_video_frames = npy_cache_factory(
         path=config.cache_dir, callable=load_video_frames, cleanup=config.cleanup_cache

@@ -1,12 +1,16 @@
+import os
 import pytest
+import shutil
 import subprocess
 from typing import Any, Callable, Dict, Optional, Union
+from unittest import mock
 
 import numpy as np
 from PIL import Image
 from pydantic import BaseModel, ValidationError
 
 from zamba.data.video import (
+    cached_load_video_frames,
     load_video_frames,
     VideoLoaderConfig,
     MegadetectorLiteYoloXConfig,
@@ -380,25 +384,31 @@ def test_load_video_frames(case: Case, video_metadata: Dict[str, Any]):
                     assert video_shape[field] == value
 
 
-def test_same_filename_new_kwargs():
+@mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": "test_cache"})
+def test_same_filename_new_kwargs(tmp_path):
     """Test that load_video_frames does not load the npz file if the params change."""
     # use first test video
     test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
 
-    first_load = load_video_frames(test_vid, fps=1)
-    new_params_same_name = load_video_frames(test_vid, fps=2)
+    # cache is set in environment variable
+    assert os.environ["VIDEO_CACHE_DIR"] == "test_cache"
+
+    first_load = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
+    new_params_same_name = cached_load_video_frames(
+        filepath=test_vid, config=VideoLoaderConfig(fps=2)
+    )
     assert first_load != new_params_same_name
 
     # check no params
-    first_load = load_video_frames(test_vid)
+    first_load = cached_load_video_frames(filepath=test_vid)
     assert first_load != new_params_same_name
 
     # multiple params in config
     c1 = VideoLoaderConfig(scene_threshold=0.2)
     c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
 
-    first_load = load_video_frames(filepath=test_vid, config=c1)
-    new_params_same_name = load_video_frames(filepath=test_vid, config=c2)
+    first_load = cached_load_video_frames(filepath=test_vid, config=c1)
+    new_params_same_name = cached_load_video_frames(filepath=test_vid, config=c2)
     assert first_load != new_params_same_name
 
 
@@ -493,3 +503,29 @@ def test_validate_total_frames():
         megadetector_lite_config=MegadetectorLiteYoloXConfig(confidence=0.01, n_frames=8),
     )
     assert config.total_frames == 8
+
+
+def test_caching(tmp_path):
+    cache = tmp_path / "video_cache"
+    test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
+
+    # no caching by default
+    _ = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
+    assert not cache.exists()
+
+    # caching can be specifed in config
+    _ = cached_load_video_frames(
+        filepath=test_vid, config=VideoLoaderConfig(fps=1, cache_dir=cache)
+    )
+    # one file in cache
+    assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
+    shutil.rmtree(cache)
+
+    # or caching can be specified in environment variable
+    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
+        config = VideoLoaderConfig()
+        assert config.cache_dir == cache
+
+        _ = cached_load_video_frames(filepath=test_vid, config=config)
+        assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
+        shutil.rmtree(cache)
