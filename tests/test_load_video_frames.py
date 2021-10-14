@@ -384,32 +384,33 @@ def test_load_video_frames(case: Case, video_metadata: Dict[str, Any]):
                     assert video_shape[field] == value
 
 
-@mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": "test_cache"})
 def test_same_filename_new_kwargs(tmp_path):
     """Test that load_video_frames does not load the npz file if the params change."""
     # use first test video
     test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
+    cache = tmp_path / "test_cache"
 
-    # cache is set in environment variable
-    assert os.environ["VIDEO_CACHE_DIR"] == "test_cache"
+    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
+        # confirm cache is set in environment variable
+        assert os.environ["VIDEO_CACHE_DIR"] == str(cache)
 
-    first_load = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
-    new_params_same_name = cached_load_video_frames(
-        filepath=test_vid, config=VideoLoaderConfig(fps=2)
-    )
-    assert first_load != new_params_same_name
+        first_load = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
+        new_params_same_name = cached_load_video_frames(
+            filepath=test_vid, config=VideoLoaderConfig(fps=2)
+        )
+        assert first_load != new_params_same_name
 
-    # check no params
-    first_load = cached_load_video_frames(filepath=test_vid)
-    assert first_load != new_params_same_name
+        # check no params
+        first_load = cached_load_video_frames(filepath=test_vid)
+        assert first_load != new_params_same_name
 
-    # multiple params in config
-    c1 = VideoLoaderConfig(scene_threshold=0.2)
-    c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
+        # multiple params in config
+        c1 = VideoLoaderConfig(scene_threshold=0.2)
+        c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
 
-    first_load = cached_load_video_frames(filepath=test_vid, config=c1)
-    new_params_same_name = cached_load_video_frames(filepath=test_vid, config=c2)
-    assert first_load != new_params_same_name
+        first_load = cached_load_video_frames(filepath=test_vid, config=c1)
+        new_params_same_name = cached_load_video_frames(filepath=test_vid, config=c2)
+        assert first_load != new_params_same_name
 
 
 def test_megadetector_lite_yolox_dog(tmp_path):
@@ -523,9 +524,6 @@ def test_caching(tmp_path):
 
     # or caching can be specified in environment variable
     with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
-        config = VideoLoaderConfig()
-        assert config.cache_dir == cache
-
-        _ = cached_load_video_frames(filepath=test_vid, config=config)
+        _ = cached_load_video_frames(filepath=test_vid)
         assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
         shutil.rmtree(cache)
