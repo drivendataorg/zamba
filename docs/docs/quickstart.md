@@ -99,15 +99,15 @@ In either case, the commands for training are the same. Say that we have labels 
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 ```
 
-The labels file must have columns for both filepath and label. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. Let's print the example labels:
+The labels file must have columns for both filepath and label. The filepath column should relative to the `data-dir` provided. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. Let's print the example labels:
 
 ```console
 $ cat example_labels.csv
 filepath,label
-example_vids/eleph.MP4,elephant
-example_vids/leopard.MP4,leopard
-example_vids/blank.MP4,blank
-example_vids/chimp.MP4,chimpanzee_bonobo
+blank.MP4,blank
+chimp.MP4,chimpanzee_bonobo
+eleph.MP4,elephant
+leopard.MP4,leopard
 ```
 
 By default, the trained model and additional training output will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`. 
