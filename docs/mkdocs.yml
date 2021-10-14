@@ -6,7 +6,7 @@ theme:
   name: material
   features:
     - navigation.indexes
-    - navigation.expand
+    - navigation.sections
 
 extra_css:
   - stylesheets/extra.css
@@ -26,6 +26,29 @@ nav:
       - All Optional Arguments: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
       - Guide to Common Optional Parameters: "extra-options.md"
+  - API Reference:
+      - zamba.data:
+          - zamba.data.metadata: "api-reference/data-metadata.md"
+          - zamba.data.video: "api-reference/data-video.md"
+      - zamba.models:
+          - zamba.models.yolox_models: "api-reference/models-yolox_models.md"
+          - zamba.models.config: "api-reference/models-config.md"
+          - zamba.models.efficientnet_models: "api-reference/models-efficientnet_models.md"
+          - zamba.models.megadetector_lite_yolox: "api-reference/models-megadetector_lite_yolox.md"
+          - zamba.models.model_manager: "api-reference/models-model_manager.md"
+          - zamba.models.slowfast_models: "api-reference/models-slowfast_models.md"
+          - zamba.models.utils: "api-reference/models-utils.md"
+      - zamba.pytorch:
+          - zamba.pytorch.dataloaders: "api-reference/pytorch-dataloaders.md"
+          - zamba.pytorch.finetuning: "api-reference/pytorch-finetuning.md"
+          - zamba.pytorch.layers: "api-reference/pytorch-layers.md"
+          - zamba.pytorch.transforms: "api-reference/pytorch-transforms.md"
+          - zamba.pytorch.utils: "api-reference/pytorch-utils.md"
+      - zamba.pytorch_lightning:
+          - zamba.pytorch_lightning.utils: "api-reference/pytorch_lightning-utils.md"
+      - zamba.exceptions: "api-reference/exceptions.md"
+      - zamba.metrics: "api-reference/metrics.md"
+      - zamba.settings: "api-reference/settings.md"
   - "Contribute to zamba": "contribute.md"
   - "Changelog":
       - Version 2: "v2_updates.md"
@@ -40,6 +63,25 @@ markdown_extensions:
 
 plugins:
   - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          selection:
+            filters: ["!^_(?!_init__)"]
+            inherited_members: true
+          rendering:
+            show_root_heading: false
+            show_root_toc_entry: false
+            show_root_full_path: false
+            show_if_no_docstring: true
+            show_signature_annotations: true
+            show_source: true
+            heading_level: 2
+            group_by_category: true
+            show_category_heading: true
+      watch:
+        - zamba
 
 extra:
   version:
