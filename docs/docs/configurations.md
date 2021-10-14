@@ -21,20 +21,22 @@ The `VideoLoaderConfig` class <!-- TODO: add link to source code><!--> defines a
 >> help(VideoLoaderConfig)
 
 class VideoLoaderConfig(pydantic.main.BaseModel)
- |  VideoLoaderConfig(*, crop_bottom_pixels: int = None,
- i_frames: bool = False,
- scene_threshold: float = None,
- megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None,
- video_height: int = None,
- video_width: int = None,
- total_frames: int = None,
- ensure_total_frames: bool = True,
- fps: float = None,
- early_bias: bool = False,
- frame_indices: List[int] = None,
- evenly_sample_total_frames: bool = False,
- pix_fmt: str = 'rgb24',
- resize_after_frame_selection: bool = False) -> None
+ |  VideoLoaderConfig(*, 
+ crop_bottom_pixels: int = None, 
+ i_frames: bool = False, 
+ scene_threshold: float = None, 
+ megadetector_lite_config: zamba_algorithms.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
+ frame_selection_height: int = None, 
+ frame_selection_width: int = None, 
+ total_frames: int = None, 
+ ensure_total_frames: bool = True, 
+ fps: float = None, 
+ early_bias: bool = False, 
+ frame_indices: List[int] = None, 
+ evenly_sample_total_frames: bool = False, 
+ pix_fmt: str = 'rgb24', 
+ model_input_height: int = None, 
+ model_input_width: int = None) -> None
 ```
 
 Let's go through each of those arguments.
@@ -54,6 +56,8 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
 The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLiteYoloX model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLiteYoloX model will not be used to select frames.
+
+#### `frame_selection_height (int, optional), frame_selecto
 
 #### `video_height (int, optional), video_width (int, optional)`
 
