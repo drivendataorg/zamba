@@ -16,6 +16,36 @@ Here's a helpful diagram which shows how everything is related.
 
 The `VideoLoaderConfig` class <!-- TODO: add link to source code><!--> defines all of the optional parameters that can be specified for how videos are loaded before either inference or training. This includes selecting which frames to use from each video.
 
+All video loading arguments can be specified either in a [YAML file](yaml-config.md) or when instantiating the [`VideoLoaderConfig`](configurations.md#video-loading-arguments) class in Python. Some can also be specified directly in the command line.
+
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+        model_input_height: 50
+        model_input_width: 50
+        total_frames: 16
+        # ... other parameters
+    ```
+=== "Python"
+    ```python
+    from zamba.models.model_manager import predict_model
+    from zamba.models.config import PredictConfig
+    from zamba.data.video import VideoLoaderConfig
+
+    predict_config = PredictConfig(data_directory="example_vids/")
+    video_loader_config = VideoLoaderConfig(
+        model_input_height=224, 
+        model_input_width=224, 
+        total_frames=16.
+        # ... other parameters
+    ) 
+    predict_model(
+        predict_config=predict_config, video_loader_config=video_loader_config
+    )
+    ```python
+
+Let's look at the class documentation in Python.
+
 ```python
 >> from zamba.data.video import VideoLoaderConfig
 >> help(VideoLoaderConfig)
@@ -38,8 +68,6 @@ class VideoLoaderConfig(pydantic.main.BaseModel)
  model_input_height: int = None, 
  model_input_width: int = None) -> None
 ```
-
-Let's go through each of those arguments.
 
 #### `crop_bottom_pixels (int, optional)`
 

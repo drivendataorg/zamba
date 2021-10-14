@@ -36,18 +36,12 @@ Minimum example for prediction using the Python package:
 ```python
 from zamba.models.model_manager import predict_model
 from zamba.models.config import PredictConfig
-from zamba.data.video import VideoLoaderConfig
 
 predict_config = PredictConfig(data_directory="example_vids/")
-video_loader_config = VideoLoaderConfig(
-    model_input_height=224, model_input_width=224, total_frames=16
-)
-
-predict_model(predict_config=predict_config, video_loader_config=video_loader_config)
-
+predict_model(predict_config=predict_config)
 ```
 
-To specify various parameters when running `predict_model`, the first step is to instantiate [`PredictConfig`](configurations.md#prediction-arguments) and [`VideoLoaderConfig`](configurations.md#video-loading-arguments) with any specifications for prediction and video loading respectively. The only two arguments that can be specified in `predict_model` are `predict_config` and `video_loader_config`.
+The only two arguments that can be passed to `predict_model` are `predict_config` and (optionally) `video_loader_config`. The first step is to instantiate [`PredictConfig`](configurations.md#prediction-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments). 
 
 ### Required arguments
 
@@ -57,64 +51,26 @@ To run `predict_model` in Python, you must specify either `data_directory` or `f
 
 * **`filepaths (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
 
-In the command line, video loading configurations are loaded by default based on the model being used. This is not the case in Python. There are additional requirements for `VideoLoaderConfig` based on the model you are using.
-
-* **`model_input_height (int)`, `model_input_width (int)`:** Dimensions for resizing videos after frame selection. 
-    - `time_distributed` or `european`: The suggested dimensions are 224x224, but any integers are acceptable
-    - `slowfast`: Both must be greater than or equal to 200
-* **`total_frames (int)`:** The number of frames to select from each video and use during inference. 
-    * `time_distributed` or `european`: Must be 16
-    * `slowfast`: Must be 32
-
-The full recommended `VideoLoaderConfig` for the `time_distributed` or `european` model is:
-```python
-from zamba.data.video import VideoLoaderConfig
-
-video_loader_config = VideoLoaderConfig(
-    model_input_height=224,
-    model_input_width=224,
-    crop_bottom_pixels=50,
-    ensure_total_frames=True,
-    megadetector_lite_config={
-        "confidence": 0.25,
-        "fill_mode": "score_sorted",
-        "n_frames": 16,
-    },
-    total_frames=16,
-)
-```
-
-The full recommended `VideoLoaderConfig` for the `slowfast` model is:
-```python
-video_loader_config = VideoLoaderConfig(
-    model_input_height=224,
-    model_input_width=224,
-    crop_bottom_pixels=50,
-    ensure_total_frames=True,
-    megadetector_lite_config={
-        "confidence": 0.25,
-        "fill_mode": "score_sorted",
-        "n_frames": 32,
-    },
-    total_frames=32,
-)
-```
-
-You can see the full default configuration for each model in `models/config`<!-- TODO: add link to source and update if needed><!-->. For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
+For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
 
 ## Default behavior
 
-In each case, `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
+By default, the [`time_distributed`](models.md#time-distributed-model) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
 
 By default, predictions will be saved to `zamba_predictions.csv`. You can save predictions to a custom path using the `--save-path` argument.
 
 ```console
 $ cat zamba_predictions.csv
 filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal
-example_vids/eleph.MP4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-example_vids/leopard.MP4,0.0,0.0,0.0,0.0,2e-05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-example_vids/blank.MP4,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-example_vids/chimp.MP4,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,4e-05,0.00162,0.0,0.0,0.0,0.0,0.0,2e-05,2e-05,0.0,1e-05,0.0,0.0038,4e-05,0.0
+eleph.MP4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+leopard.MP4,0.0,0.0,0.0,0.0,2e-05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+blank.MP4,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+chimp.MP4,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,4e-05,0.00162,0.0,0.0,0.0,0.0,0.0,2e-05,2e-05,0.0,1e-05,0.0,0.0038,4e-05,0.0
+```
+
+The full configuration for the inference run will be also saved out in the same folder as the predictions under `predict_configuration.yaml`. To run the exact same inference process a second time, you can pass this YAML file as the configuration to `zamba predict` per the [Using YAML Configuration Files](yaml-config.md) page:
+```console
+$ zamba predict --config predict_configuration.yaml
 ```
 
 ## Step-by-step tutorial
@@ -126,16 +82,13 @@ Save all of your videos within one folder.
 * They can be in nested directories within the folder.
 * Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
-Add the path to your video folder with `--data-dir`. For example, if your videos are in a folder called `example_vids`:
+Add the path to your video folder. For example, if your videos are in a folder called `example_vids`:
 
 === "CLI"
-
     ```console
     $ zamba predict --data-dir example_vids/
     ```
-
 === "Python"
-
     ```python
     predict_config = PredictConfig(data_directory='example_vids/')
     ```
@@ -149,7 +102,7 @@ If your camera videos contain species common to central or west Africa:
 
 If your videos contain species common to Europe, use the [`european` model](models.md#european).
 
-Add the model name to your command with `--model`. The `time_distributed` model will be used if no model is specified. For example, if you want to use the `slowfast` model to classify the videos in `example_vids`:
+Add the model name to your command. The `time_distributed` model will be used if no model is specified. For example, if you want to use the `slowfast` model to classify the videos in `example_vids`:
 
 === "CLI"
     ```console
@@ -175,24 +128,27 @@ Say we want to generate predictions for the videos in `example_vids` indicating 
     $ zamba predict --data-dir example_vids/ --proba-threshold 0.5
     $ cat zamba_predictions.csv
     filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal
-    example_vids/eleph.MP4,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-    example_vids/leopard.MP4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
-    example_vids/blank.MP4,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-    example_vids/chimp.MP4,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    eleph.MP4,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    leopard.MP4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+    blank.MP4,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+    chimp.MP4,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     ```
 === "Python"
     ```python
-    predict_config = PredictConfig(data_directory="example_vids/", proba_threshold=0.5)
+    predict_config = PredictConfig(
+        data_directory="example_vids/", proba_threshold=0.5
+    )
+    predict_model(predict_config=predict_config)
     predictions = pd.read_csv("zamba_predictions.csv")
     predictions
     ```
 
-    | filepath                 | aardvark | antelope_duiker | badger | bat | bird | blank | cattle | cheetah | chimpanzee_bonobo | civet_genet | elephant | equid | forest_buffalo | fox | giraffe | gorilla | hare_rabbit | hippopotamus | hog | human | hyena | large_flightless_bird | leopard | lion | mongoose | monkey_prosimian | pangolin | porcupine | reptile | rodent | small_cat | wild_dog_jackal |
-    | ------------------------ | -------- | --------------- | ------ | --- | ---- | ----- | ------ | ------- | ----------------- | ----------- | -------- | ----- | -------------- | --- | ------- | ------- | ----------- | ------------ | --- | ----- | ----- | --------------------- | ------- | ---- | -------- | ---------------- | -------- | --------- | ------- | ------ | --------- | --------------- |
-    | example_vids/blank.MP4   | 0        | 0               | 0      | 0   | 0    | 1     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
-    | example_vids/chimp.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 1                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
-    | example_vids/eleph.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 1        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
-    | example_vids/leopard.MP4 | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 1       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | filepath    | aardvark | antelope_duiker | badger | bat | bird | blank | cattle | cheetah | chimpanzee_bonobo | civet_genet | elephant | equid | forest_buffalo | fox | giraffe | gorilla | hare_rabbit | hippopotamus | hog | human | hyena | large_flightless_bird | leopard | lion | mongoose | monkey_prosimian | pangolin | porcupine | reptile | rodent | small_cat | wild_dog_jackal |
+    | ----------- | -------- | --------------- | ------ | --- | ---- | ----- | ------ | ------- | ----------------- | ----------- | -------- | ----- | -------------- | --- | ------- | ------- | ----------- | ------------ | --- | ----- | ----- | --------------------- | ------- | ---- | -------- | ---------------- | -------- | --------- | ------- | ------ | --------- | --------------- |
+    | blank.MP4   | 0        | 0               | 0      | 0   | 0    | 1     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | chimp.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 1                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | eleph.MP4   | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 1        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 0       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
+    | leopard.MP4 | 0        | 0               | 0      | 0   | 0    | 0     | 0      | 0       | 0                 | 0           | 0        | 0     | 0              | 0   | 0       | 0       | 0           | 0            | 0   | 0     | 0     | 0                     | 1       | 0    | 0        | 0                | 0        | 0         | 0       | 0      | 0         | 0               |
 
 ### 4. Specify any additional parameters
 

@@ -45,10 +45,18 @@ Say that you have a large number of videos, and you are more concerned with dete
 === "Python"
     In Python, video resizing can be specified when `VideoLoaderConfig` is instantiated:
 
-    ```python
+    ```python hl_lines="6 7 8"
+    from zamba.models.model_manager import predict_model
+    from zamba.models.config import PredictConfig
+    from zamba.data.video import VideoLoaderConfig
+
+    predict_config = PredictConfig(data_directory="example_vids/")
     video_loader_config = VideoLoaderConfig(
         model_input_height=50, model_input_width=50, total_frames=16
     ) # total_frames must always be specified
+    predict_model(
+        predict_config=predict_config, video_loader_config=video_loader_config
+    )
     ```
 
 ## Frame selection
