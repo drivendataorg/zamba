@@ -329,7 +329,7 @@ def predict_model(
     # get default VLC for model if not specified
     if video_loader_config is None:
         video_loader_config = ModelConfig(
-            train_config=predict_config, video_loader_config=video_loader_config
+            predict_config=predict_config, video_loader_config=video_loader_config
         ).video_loader_config
 
     # set up model
