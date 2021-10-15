@@ -1,6 +1,6 @@
 # Quickstart
 
-<script id="asciicast-BJixOG8gTI3NI9IAMXnZLBlad" src="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.js" async data-autoplay="true" data-loop=1></script>
+<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1></script>
 
 This section assumes you have successfully installed `zamba` and are ready to train a model or identify species in your videos!
 
