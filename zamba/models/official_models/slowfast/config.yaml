@@ -1,0 +1,10 @@
+video_loader_config:
+  model_input_height: 224
+  model_input_width: 224
+  crop_bottom_pixels: 50
+  ensure_total_frames: True
+  megadetector_lite_config:
+    confidence: 0.25
+    fill_mode: "score_sorted"
+    n_frames: 32
+  total_frames: 32
