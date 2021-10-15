@@ -17,39 +17,31 @@ import yaml
 from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.slowfast_models import SlowFast
-from zamba.models.efficientnet_models import TimeDistributedEfficientNet
 from zamba.models.utils import RegionEnum
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES, ROOT_DIRECTORY
+from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
 
 GPUS_AVAILABLE = torch.cuda.device_count()
 
 MODEL_MAPPING = {
     "time_distributed": {
-        "full_name": "time_distributed_efficientnet_multilayer_head_mdlite",
-        "model_class": TimeDistributedEfficientNet,
-        "public_weights": "zamba_time_distributed_v2.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_multilayer_head_mdlite/version_1/checkpoints/epoch=15-step=128720-v4_zamba.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/time_distributed.yaml",
+        "public_weights": "zamba_time_distributed.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt",
         "transform": zamba_image_model_transforms(),
+        "n_frames": 16,
     },
     "european": {
-        "full_name": "time_distributed_efficientnet_finetuned_european",
-        "model_class": TimeDistributedEfficientNet,
-        "public_weights": "zamba_european_v2.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_finetuned_european/version_1/checkpoints/epoch=4-step=2820-v3_zamba.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/european.yaml",
+        "public_weights": "zamba_european.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/time_distributed.ckpt",
         "transform": zamba_image_model_transforms(),
+        "n_frames": 16,
     },
     "slowfast": {
-        "full_name": "slowfast_zamba_finetune_mdlite",
-        "model_class": SlowFast,
         "public_weights": "zamba_slowfast_v2.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5_zamba.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/slowfast.yaml",
         "transform": slowfast_transforms(),
+        "n_frames": 32,
     },
 }
 
@@ -309,7 +301,7 @@ class TrainConfig(ZambaBaseModel):
             for one epoch to detect any bugs prior to training the full model.
             Disables tuners, checkpoint callbacks, loggers, and logger callbacks.
             Defaults to False.
-        batch_size (int): Batch size to use for training. Defaults to 8.
+        batch_size (int): Batch size to use for training. Defaults to 2.
         auto_lr_find (bool): Use a learning rate finder algorithm when calling
             trainer.tune() to find a optimal initial learning rate. Defaults to True.
         backbone_finetune_params (BackboneFinetuneConfig, optional): Set parameters
@@ -320,9 +312,7 @@ class TrainConfig(ZambaBaseModel):
         gpus (int): Number of GPUs to train on applied per node.
             Defaults to all of the available GPUs found on the machine.
         num_workers (int): Number of subprocesses to use for data loading. 0 means
-            that the data will be loaded in the main process. Defauts to one less
-            than the number of CPUs in the system, or 1 if there is one CPU in the
-            system.
+            that the data will be loaded in the main process. Defauts to 3.
         max_epochs (int, optional): Stop training once this number of epochs is
             reached. Disabled by default (None), which stops training at 1000 epochs.
         early_stopping_config (EarlyStoppingConfig, optional): Configuration for
@@ -365,7 +355,7 @@ class TrainConfig(ZambaBaseModel):
     scheduler_config: Optional[Union[str, SchedulerConfig]] = "default"
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     dry_run: Union[bool, int] = False
-    batch_size: int = 8
+    batch_size: int = 2
     auto_lr_find: bool = True
     backbone_finetune_config: Optional[BackboneFinetuneConfig] = BackboneFinetuneConfig()
     gpus: int = GPUS_AVAILABLE
@@ -547,10 +537,8 @@ class PredictConfig(ZambaBaseModel):
         gpus (int): Number of GPUs to use for inference.
             Defaults to all of the available GPUs found on the machine.
         num_workers (int): Number of subprocesses to use for data loading. 0 means
-            that the data will be loaded in the main process. Defauts to one less
-            than the number of CPUs in the system, or 1 if there is one CPU in the
-            system.
-        batch_size (int): Batch size to use for inference. Defaults to 8.
+            that the data will be loaded in the main process. Defauts to 3.
+        batch_size (int): Batch size to use for inference. Defaults to 2.
         save (bool or Path): Path to a CSV to save predictions. If True is passed,
             "zamba_predictions.csv" is written to the current working directory.
             If False is passed, predictions are not saved. Defaults to True.
@@ -582,7 +570,7 @@ class PredictConfig(ZambaBaseModel):
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3
-    batch_size: int = 8
+    batch_size: int = 2
     save: Union[bool, Path] = True
     dry_run: bool = False
     proba_threshold: Optional[float] = None
@@ -753,7 +741,7 @@ class ModelConfig(ZambaBaseModel):
 
             logger.info(f"No video loader config specified. Using default for {model_name}.")
 
-            config_file = MODEL_MAPPING[model_name]["config"]
+            config_file = Path(f"official_models / {model_name} / config.yaml")
             with config_file.open() as f:
                 config_dict = yaml.safe_load(f)
 
