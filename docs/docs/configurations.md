@@ -66,7 +66,11 @@ class VideoLoaderConfig(pydantic.main.BaseModel)
  evenly_sample_total_frames: bool = False, 
  pix_fmt: str = 'rgb24', 
  model_input_height: int = None, 
- model_input_width: int = None) -> None
+ model_input_width: int = None,
+ cache_dir: pathlib.Path = None, 
+ cleanup_cache: bool = False) -> None
+
+ ...
 ```
 
 #### `crop_bottom_pixels (int, optional)`
@@ -122,6 +126,14 @@ FFmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bg
 
 After frame selection, resize the video to this height and width in pixels. Defaults to `None`
 
+#### `cache_dir (Path, optional)`
+
+Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with VIDEO_CACHE_DIR environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to `None`, which means videos will not be cached.
+
+#### `cleanup_cache (bool, optional)`
+
+Whether to delete the cache dir after training or predicting ends. Defaults to `False`
+
 <a id='prediction-arguments'></a>
 
 ## Prediction arguments
@@ -146,8 +158,8 @@ class PredictConfig(ZambaBaseModel)
  proba_threshold: float = None,
  output_class_names: bool = False,
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
- cache_dir: pathlib.Path = None,
- skip_load_validation: bool = False) -> None
+ skip_load_validation: bool = False,
+ model_cache_dir: pathlib.Path = None) -> None
 
  ...
 ```
@@ -198,19 +210,20 @@ By default no threshold is passed, `proba_threshold=None`. This will return a pr
 
 #### `output_class_names (bool, optional)`
 
-Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the species with the highest class probability, or `blank` if the most likely classification is no animal. Defaults to `False`
+Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the s pecies with the highest class probability, or `blank` if the most likely classification is no animal. Defaults to `False`
 
 #### `weight_download_region [us|eu|asia]`
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
-#### `cache_dir (FilePath, optional)`
-
-The directory where the model weights will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory at `~/.cache/zamba`
 
 #### `skip_load_validation (bool, optional)`
 
 By default, before kicking off inference `zamba` will iterate through all of the videos in the data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Validation can be very time intensive depending on the number of videos. It is recommended to run validation once, but not on future inference runs if the videos have not changed. Defaults to `False`
+
+#### `model_cache_dir (Path, optional)`
+
+Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory, which is often an automatic temp directory at `~/.cache/zamba`. Defaults to `None`.
 
 <a id='training-arguments'></a>
 
@@ -236,20 +249,20 @@ class TrainConfig(ZambaBaseModel)
             BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
             backbone_initial_ratio_lr=0.01, multiplier=1,
             pre_train_bn=False, train_bn=False, verbose=True),
-gpus: int = 0, 
-num_workers: int = 3,
-max_epochs: int = None,
-early_stopping_config: zamba.models.config.EarlyStoppingConfig =
+ gpus: int = 0, 
+ num_workers: int = 3,
+ max_epochs: int = None,
+ early_stopping_config: zamba.models.config.EarlyStoppingConfig =
             EarlyStoppingConfig(monitor='val_macro_f1', patience=3,
             verbose=True, mode='max'),
-weight_download_region: zamba.models.utils.RegionEnum = 'us',
-cache_dir: pathlib.Path = None,
-split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
-save_directory: pathlib.Path = # your current working directory , 
-overwrite_save_directory: bool = False, 
-skip_load_validation: bool = False,
-from_scratch: bool = False,
-predict_all_zamba_species: bool = True) -> None
+ weight_download_region: zamba.models.utils.RegionEnum = 'us',
+ split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
+ save_directory: pathlib.Path = # your current working directory , 
+ overwrite_save_directory: bool = False, 
+ skip_load_validation: bool = False,
+ from_scratch: bool = False,
+ predict_all_zamba_species: bool = True,
+ model_cache_dir: pathlib.Path = None) -> None
 
  ...
 ```
@@ -312,10 +325,6 @@ Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/P
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
-#### `cache_dir (FilePath, optional)`
-
-The directory where the trained model will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory at `~/.cache/zamba`
-
 #### `split_proportions (dict(str, int), optional)`
 
 The proportion of data to use during training, validation, and as a holdout set. Defaults to `{"train": 3, "val": 1, "holdout": 1}`
@@ -339,3 +348,7 @@ Whether to instantiate the model with base weights. This means starting from the
 #### `predict_all_zamba_species (bool, optional)`
 
 Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `predict_all_zamba_species` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`.
+
+#### `model_cache_dir (Path, optional)`
+
+Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory, which is often an automatic temp directory at `~/.cache/zamba`. Defaults to `None`.
