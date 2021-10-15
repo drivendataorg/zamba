@@ -1,2 +1,2 @@
-include zamba/models/configs/*.yaml
+include zamba/models/official_models/*/config.yaml
 include zamba/models/yolox_models/assets/yolox_nano_20210901.pth
