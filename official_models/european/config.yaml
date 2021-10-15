@@ -1,0 +1,30 @@
+train_config:
+  labels: data/processed/european_set_labels.csv
+  # time distributed on dev set (updated callbacks, species, and model class)
+  checkpoint: data/results/experiments/td_dev_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt
+  auto_lr_find: False
+  batch_size: 2
+  num_workers: 3
+  save_directory: experiments/european_td_dev_base/
+  skip_load_validation: True
+
+video_loader_config:
+  model_input_height: 240
+  model_input_width: 426
+  crop_bottom_pixels: 50
+  fps: 4
+  total_frames: 16
+  ensure_total_frames: True
+  megadetector_lite_config:
+    confidence: 0.25
+    fill_mode: score_sorted
+    n_frames: 16
+
+predict_config:
+  filepaths: data/processed/european_set_filepaths.csv
+  checkpoint: experiments/european_td_dev_base/version_0/time_distributed.ckpt
+  skip_load_validation: True
+  batch_size: 2
+  num_workers: 3
+  gpus: 1
+  skip_load_validation: True
