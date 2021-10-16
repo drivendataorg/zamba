@@ -1,5 +1,12 @@
 train_config:
   model_name: european
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 1
+    pre_train_bn: false
+    train_bn: false
+    unfreeze_backbone_at_epoch: 15
+    verbose: true
 
 video_loader_config:
   model_input_height: 240
