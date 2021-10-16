@@ -85,7 +85,7 @@ def train(
             config_dict = yaml.safe_load(f)
         config_file = config
     else:
-        with Path(MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
+        with (MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
             config_dict = yaml.safe_load(f)
         config_file = None
 
@@ -270,7 +270,7 @@ def predict(
             config_dict = yaml.safe_load(f)
         config_file = config
     else:
-        with Path(MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
+        with (MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
             config_dict = yaml.safe_load(f)
         config_file = None
 

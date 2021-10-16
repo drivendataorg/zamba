@@ -40,7 +40,7 @@ MODEL_MAPPING = {
         "n_frames": 16,
     },
     "slowfast": {
-        "public_weights": "zamba_slowfast_v2.ckpt",
+        "public_weights": "zamba_slowfast.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5_zamba.ckpt",
         "transform": slowfast_transforms(),
         "n_frames": 32,
@@ -743,7 +743,7 @@ class ModelConfig(ZambaBaseModel):
 
             logger.info(f"No video loader config specified. Using default for {model_name}.")
 
-            config_file = Path(MODELS_DIRECTORY / f"{model_name}/config.yaml")
+            config_file = MODELS_DIRECTORY / f"{model_name}/config.yaml"
             with config_file.open() as f:
                 config_dict = yaml.safe_load(f)
 
