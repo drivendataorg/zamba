@@ -162,7 +162,7 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
     assert model.species == ["kangaroo"]
 
 
-@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
+@pytest.mark.parametrize("model", ["time_distributed", "european"])
 def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
     config = TrainConfig(labels=labels_absolute_path, model_name=model, skip_load_validation=True)
     model = instantiate_model(
@@ -197,10 +197,9 @@ def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
             "bat",
             "bird",
             "blank",
-            "bonobo",
             "cattle",
             "cheetah",
-            "chimpanzee",
+            "chimpanzee_bonobo",
             "civet_genet",
             "elephant",
             "equid",
@@ -217,7 +216,7 @@ def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
             "leopard",
             "lion",
             "mongoose",
-            "monkey_or_prosimian",
+            "monkey_prosimian",
             "pangolin",
             "porcupine",
             "reptile",
