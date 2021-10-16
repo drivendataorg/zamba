@@ -19,7 +19,7 @@ from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.utils import RegionEnum
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
+from zamba.settings import MODELS_DIRECTORY, SPLIT_SEED, VIDEO_SUFFIXES
 
 
 GPUS_AVAILABLE = torch.cuda.device_count()
@@ -741,7 +741,7 @@ class ModelConfig(ZambaBaseModel):
 
             logger.info(f"No video loader config specified. Using default for {model_name}.")
 
-            config_file = Path(f"official_models / {model_name} / config.yaml")
+            config_file = Path(MODELS_DIRECTORY / f"{model_name}/config.yaml")
             with config_file.open() as f:
                 config_dict = yaml.safe_load(f)
 

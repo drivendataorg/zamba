@@ -6,6 +6,7 @@ from pathlib import Path
 load_dotenv()
 
 ROOT_DIRECTORY = Path(__file__).parents[1].resolve()
+MODELS_DIRECTORY = ROOT_DIRECTORY / "zamba" / "models" / "official_models"
 
 LOAD_VIDEO_FRAMES_CACHE_DIR = os.environ.get("LOAD_VIDEO_FRAMES_CACHE_DIR")
 if LOAD_VIDEO_FRAMES_CACHE_DIR == "":

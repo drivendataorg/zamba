@@ -8,7 +8,6 @@ import yaml
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
-    MODEL_MAPPING,
     ModelConfig,
     ModelEnum,
     PredictConfig,
@@ -16,6 +15,7 @@ from zamba.models.config import (
 )
 from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
+from zamba.settings import MODELS_DIRECTORY
 from zamba.version import __version__
 
 
@@ -85,7 +85,7 @@ def train(
             config_dict = yaml.safe_load(f)
         config_file = config
     else:
-        with MODEL_MAPPING[model.value]["config"].open() as f:
+        with Path(MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
             config_dict = yaml.safe_load(f)
         config_file = None
 
@@ -270,7 +270,7 @@ def predict(
             config_dict = yaml.safe_load(f)
         config_file = config
     else:
-        with MODEL_MAPPING[model.value]["config"].open() as f:
+        with Path(MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
             config_dict = yaml.safe_load(f)
         config_file = None
 
