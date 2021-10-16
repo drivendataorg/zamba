@@ -171,4 +171,6 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     assert save_path.exists()
     # check config got saved out too
     assert (save_path.parent / "predict_configuration.yaml").exists()
-    assert pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
+    assert (
+        pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
+    )

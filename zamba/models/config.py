@@ -17,8 +17,8 @@ import yaml
 from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.efficientnet_models import TimeDistributedEfficientNet
-from zamba.models.slowfast_models import SlowFast
+from zamba.models.efficientnet_models import TimeDistributedEfficientNet  # noqa: F401
+from zamba.models.slowfast_models import SlowFast  # noqa:  F401
 from zamba.models.utils import RegionEnum
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import MODELS_DIRECTORY, SPLIT_SEED, VIDEO_SUFFIXES
