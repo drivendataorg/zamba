@@ -1,6 +1,25 @@
+train_config:
+  model_name: slowfast
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 10
+    pre_train_bn: False
+    train_bn: False
+    unfreeze_backbone_at_epoch: 1
+    verbose: True
+  early_stopping_config:
+    patience: 5
+  scheduler_config:
+    scheduler: MultiStepLR
+    scheduler_params:
+      gamma: 0.5
+      milestones:
+      - 1
+      verbose: true
+
 video_loader_config:
-  model_input_height: 224
-  model_input_width: 224
+  frame_selection_height: 224
+  frame_selection_width: 224
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -8,3 +27,6 @@ video_loader_config:
     fill_mode: "score_sorted"
     n_frames: 32
   total_frames: 32
+
+predict_config:
+  model_name: slowfast
