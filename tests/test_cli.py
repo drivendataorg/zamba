@@ -173,5 +173,3 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     assert (
         pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
     )
-    # check video was not cached
-    assert not (tmp_path / "zamba_cache").exists()
