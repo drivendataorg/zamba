@@ -107,7 +107,9 @@ def ensure_frame_number(arr, total_frames: int):
     if (total_frames is None) or (arr.shape[0] == total_frames):
         return arr
     elif arr.shape[0] == 0:
-        logger.warn("No frames selected. Returning an array in the desired shape with all zeros.")
+        logger.warning(
+            "No frames selected. Returning an array in the desired shape with all zeros."
+        )
         return np.zeros((total_frames, arr.shape[1], arr.shape[2], arr.shape[3]), dtype="int")
     elif arr.shape[0] > total_frames:
         logger.info(
@@ -386,7 +388,7 @@ class npy_cache:
                 logger.info(f"Deleting cache dir {self.tmp_path}.")
                 rmtree(self.tmp_path)
             else:
-                logger.warn(
+                logger.warning(
                     "Bravely refusing to delete directory that is not a subdirectory of the "
                     "system temp directory. If you really want to delete, do so manually using:\n "
                     f"rm -r {self.tmp_path}"
