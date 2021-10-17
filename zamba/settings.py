@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-load_dotenv()
 
 ROOT_DIRECTORY = Path(__file__).parents[1].resolve()
 MODELS_DIRECTORY = ROOT_DIRECTORY / "zamba" / "models" / "official_models"

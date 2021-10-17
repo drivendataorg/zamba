@@ -26,10 +26,8 @@ from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloXConfig,
 )
 
-load_dotenv()
-
 logger.remove()
-log_level = os.environ["LOGURU_LEVEL"] if "LOGURU_LEVEL" in os.environ else "INFO"
+log_level = os.getenv("LOGURU_LEVEL", "INFO")
 logger.add(sys.stderr, level=log_level)
 
 
