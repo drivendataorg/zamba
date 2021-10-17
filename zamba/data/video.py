@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import subprocess
 from shutil import rmtree
-from tempfile import tempdir
+import tempfile
 from typing import Optional, Union, List
 
 import cv2
@@ -341,6 +341,9 @@ class npy_cache:
             except Exception:
                 config = kwargs
 
+            # don't include cleanup in the hashed config
+            config.pop("cleanup_cache")
+
             # hash config for inclusion in filename
             hash_str = hashlib.sha1(str(config).encode("utf-8")).hexdigest()
             logger.opt(lazy=True).debug(
@@ -370,14 +373,13 @@ class npy_cache:
                 return loaded_video
 
         if self.tmp_path is not None:
-
             return _wrapped
         else:
             return f
 
     def __del__(self):
         if hasattr(self, "tmp_path") and self.cleanup and self.tmp_path.exists():
-            if self.tmp_path.parents[0] == Path(tempdir):
+            if self.tmp_path.parents[0] == tempfile.gettempdir():
                 logger.info(f"Deleting cache dir {self.tmp_path}.")
                 rmtree(self.tmp_path)
             else:
