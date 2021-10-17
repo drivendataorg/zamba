@@ -8,7 +8,6 @@ import os
 from pathlib import Path
 import subprocess
 from shutil import rmtree
-import sys
 from tempfile import tempdir
 from typing import Optional, Union, List
 
@@ -25,10 +24,6 @@ from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
-
-logger.remove()
-log_level = os.getenv("LOGURU_LEVEL", "INFO")
-logger.add(sys.stderr, level=log_level)
 
 
 def ffprobe(path: os.PathLike) -> pd.Series:
