@@ -526,7 +526,6 @@ def test_caching(tmp_path, caplog):
     with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
         _ = cached_load_video_frames(filepath=test_vid)
         assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
-        shutil.rmtree(cache)
 
         # changing cleanup in config does not prompt new hashing of videos
         with mock.patch.dict(os.environ, {"LOG_LEVEL": "DEBUG"}):
