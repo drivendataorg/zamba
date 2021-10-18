@@ -7,7 +7,7 @@
 
 *Zamba means "forest" in the Lingala language.*
 
-Zamba is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos. You can use Zamba to:
+**Zamba is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos.** You can use Zamba to:
 
 - Filter out blank videos
 - Identify which species appear in each video
@@ -31,7 +31,7 @@ Then run:
 pip install zamba
 ```
 
-See the [Installation](https://zamba.drivendata.org/docs/install.md) page of the documentation for details.
+See the [Installation](https://zamba.drivendata.org/docs/install.html) page of the documentation for details.
 
 ## Example usage
 
@@ -56,7 +56,7 @@ Commands:
   train    Train a model on your labeled data.
 ```
 
-`zamba` can be used "out of the box" to generate predictions or train a model using your own videos. You can run zamba on any directory of video files. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
+`zamba` can be used "out of the box" to generate predictions or train a model using your own videos. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 **`zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.**
 
@@ -68,7 +68,7 @@ $ zamba predict --data-dir path/to/videos
 
 By default, predictions will be saved to `zamba_predictions.csv`. The output csv will have rows labeled by each video filename and columns for each species. The default prediction will store all class probabilities, so that cell (i,j) is the probability that animal j is present in video i.
 
-To see all possible options to can pass to `predict`, run `zamba predict --help` or see the All Optional Arguments page of the [docs](https://zamba.drivendata.org/docs/). For more details, see the [tutorial](https://zamba.drivendata.org/docs/predict-tutorial/).
+To see all possible options to pass to `predict`, run `zamba predict --help` or see the All Optional Arguments page of the [docs](https://zamba.drivendata.org/docs/). For more details, see the [tutorial](https://zamba.drivendata.org/docs/predict-tutorial/).
 
 ### Training a model
 
@@ -76,15 +76,15 @@ To see all possible options to can pass to `predict`, run `zamba predict --help`
 $ zamba train --data-dir path/to/videos --labels path_to_labels.csv
 ```
 
-The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and test and validation metrics.
+The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the pretrained `time_distributed` model (the default) will be saved in `zamba_time_distributed`. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and test and validation metrics.
 
 The labels csv must have columns for both filepath and label. Filepaths should be either full paths or relative to `data-dir`.
 
-To see all possible options to can pass to `train`, run `zamba train --help` or see the All Optional Arguments page of the [docs](https://zamba.drivendata.org/docs/). For more details, see the [tutorial](https://zamba.drivendata.org/docs/train-tutorial/).
+To see all possible options to pass to `train`, run `zamba train --help` or see the All Optional Arguments page of the [docs](https://zamba.drivendata.org/docs/). For more details, see the [tutorial](https://zamba.drivendata.org/docs/train-tutorial/).
 
 ### Running the `zamba` test suite
 
-The included `Makefile` contains code that uses pytest to run all tests in `zamba/tests`.
+The included [`Makefile`](https://github.com/drivendataorg/zamba/blob/master/Makefile) contains code that uses pytest to run all tests in `zamba/tests`.
 
 The command is (from the project root):
 
