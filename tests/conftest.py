@@ -66,7 +66,9 @@ class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLight
         return self.model(x)
 
 
-MODEL_MAPPING["dummy"] = {"transform": zamba_image_model_transforms()}
+MODEL_MAPPING["DummyZambaVideoClassificationLightningModule"] = {
+    "transform": zamba_image_model_transforms()
+}
 
 
 class DummyTrainConfig(TrainConfig):
