@@ -142,6 +142,8 @@ For example, to take the 16 frames with the highest probability of detection:
     train_model(video_loader_config=video_loader_config, train_config=train_config)
     ```
 
+Using `model_input_height` and `model_input_width` resizes images *after* any frame selection is done. If you are using the MegaDetector, the frames that are input into MegadetectorLiteYoloX will still be full size. Using `frame_selection_height` and `frame_selection_width` resizes images *before* they are input to MegadetectorLiteYoloX. Inputting full size images is recommended, especially if your species of interest are on the smaller side, but resizing before using MegadetectorLiteYoloX will speed up training. The above feeds full-size images to MegadetectorLiteYoloX, and then resizes images before running them through the neural network.
+
 To see all of the options that can be passed to `MegadetectorLiteYoloX`, see the `MegadetectorLiteYoloXConfig` class. <!-- TODO: add link to github code><!-->
 
 ## Speed up training
