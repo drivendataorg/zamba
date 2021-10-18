@@ -66,7 +66,7 @@ class VideoLoaderConfig(pydantic.main.BaseModel)
  evenly_sample_total_frames: bool = False, 
  pix_fmt: str = 'rgb24', 
  model_input_height: int = None, 
- model_input_width: int = None,
+ model_input_width: int = None, 
  cache_dir: pathlib.Path = None, 
  cleanup_cache: bool = False) -> None
 
@@ -91,7 +91,7 @@ The `megadetector_lite_config` is used to specify any parameters that should be 
 
 #### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
-Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. This is recommended for MegadetectorLite, especially if your species of interest are smaller. Default to `None`
+Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. Using full size videos (setting to `None`) is recommended for MegadetectorLite, especially if your species of interest are smaller. Default to `None`
 
 #### `total_frames (int, optional)`
 
@@ -152,7 +152,7 @@ class PredictConfig(ZambaBaseModel)
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  gpus: int = 0, 
  num_workers: int = 3,
- batch_size: int = 8,
+ batch_size: int = 2,
  save: Union[bool, pathlib.Path] = True,
  dry_run: bool = False,
  proba_threshold: float = None,
@@ -192,7 +192,7 @@ The number of CPUs to use during training. `num_workers` cannot be greater than 
 
 #### `batch_size (int, optional)`
 
-The batch size to use for inference. Defaults to `8`
+The batch size to use for inference. Defaults to `2`
 
 #### `save (bool, optional)`
 
@@ -243,7 +243,7 @@ class TrainConfig(ZambaBaseModel)
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  dry_run: Union[bool, int] = False,
- batch_size: int = 8,
+ batch_size: int = 2,
  auto_lr_find: bool = True,
  backbone_finetune_config: zamba.models.config.BackboneFinetuneConfig =
             BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
@@ -295,7 +295,7 @@ Specifying `True` is useful for trying out model implementations more quickly by
 
 #### `batch_size (int, optional)`
 
-The batch size to use for training. Defaults to `8`
+The batch size to use for training. Defaults to `2`
 
 #### `auto_lr_find (bool, optional)`
 
