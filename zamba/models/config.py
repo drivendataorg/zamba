@@ -26,25 +26,27 @@ from zamba.settings import MODELS_DIRECTORY, SPLIT_SEED, VIDEO_SUFFIXES
 
 GPUS_AVAILABLE = torch.cuda.device_count()
 
-MODEL_MAPPING = {
+WEIGHT_LOOKUP = {
     "time_distributed": {
         "public_weights": "zamba_time_distributed.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt",
-        "transform": zamba_image_model_transforms(),
-        "n_frames": 16,
     },
     "european": {
         "public_weights": "zamba_european.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/time_distributed.ckpt",
-        "transform": zamba_image_model_transforms(),
-        "n_frames": 16,
     },
     "slowfast": {
         "public_weights": "zamba_slowfast.ckpt",
         "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5_zamba.ckpt",
-        "transform": slowfast_transforms(),
-        "n_frames": 32,
     },
+}
+
+MODEL_MAPPING = {
+    "TimeDistributedEfficientNet": {
+        "transform": zamba_image_model_transforms(),
+        "n_frames": 16,
+    },
+    "SlowFast": {"transform": slowfast_transforms(), "n_frames": 32},
 }
 
 
@@ -160,7 +162,7 @@ def check_files_exist_and_load(
 
 def validate_model_name_and_checkpoint(cls, values):
     """Ensures a checkpoint file or model name is provided. If a model name is provided,
-    looks up the corresponding checkpoint file from MODEL_MAPPING.
+    looks up the corresponding checkpoint file from WEIGHT_LOOKUP.
     """
     checkpoint = values.get("checkpoint")
     model_name = values.get("model_name")
@@ -169,13 +171,15 @@ def validate_model_name_and_checkpoint(cls, values):
     if checkpoint is None and model_name is None:
         raise ValueError("Must provide either model_name or checkpoint path.")
 
-    # checkpoint always supercedes model
+    # checkpoint supercedes model
     elif checkpoint is not None and model_name is not None:
         logger.info(f"Using checkpoint file: {checkpoint}.")
+        # set model name to None so proper model class is retrieved from ckpt up upon instantiation
+        values["model_name"] = None
 
     elif checkpoint is None and model_name is not None:
         # look up public weights file based on model name
-        values["checkpoint"] = MODEL_MAPPING[model_name]["public_weights"]
+        values["checkpoint"] = WEIGHT_LOOKUP[model_name]["public_weights"]
 
     return values
 
@@ -451,6 +455,8 @@ class TrainConfig(ZambaBaseModel):
                 logger.warning(
                     "Labels contains split column yet split_proprtions are also provided. Split column in labels takes precendece."
                 )
+                # set to None for clarity in final configuration.yaml
+                values["split_proportions"] = None
 
         # error if labels are entirely null
         null_labels = labels.label.isnull()

@@ -6,7 +6,7 @@ from botocore.exceptions import ClientError
 import pytest
 import torch
 
-from zamba.models.config import MODEL_MAPPING
+from zamba.models.config import WEIGHT_LOOKUP
 from zamba.models.utils import download_weights
 from zamba.models.model_manager import train_model
 
@@ -163,7 +163,7 @@ def test_train_save_directory_overwrite(
 @pytest.mark.parametrize("model_name", ["time_distributed", "slowfast", "european"])
 @pytest.mark.parametrize("weight_region", ["us", "asia", "eu"])
 def test_download_weights(model_name, weight_region, tmp_path):
-    public_weights = MODEL_MAPPING[model_name]["public_weights"]
+    public_weights = WEIGHT_LOOKUP[model_name]["public_weights"]
     if weight_region != "us":
         region_bucket = f"drivendata-public-assets-{weight_region}"
     else:
