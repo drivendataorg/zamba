@@ -17,6 +17,8 @@ Please visit https://zamba.drivendata.org/docs/ for documentation and tutorials.
 
 Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-submmitted models.
 
+![leopard video](leopard.MP4)
+
 html
 <a href="https://asciinema.org/a/442474" target="_blank"><img src="https://asciinema.org/a/442474.svg" /></a>
 
