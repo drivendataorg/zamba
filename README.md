@@ -17,8 +17,11 @@ Please visit https://zamba.drivendata.org/docs/ for documentation and tutorials.
 
 Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-submmitted models.
 
-[![asciicast](https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.svg)](https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad)
+html
+<a href="https://asciinema.org/a/442474" target="_blank"><img src="https://asciinema.org/a/442474.svg" /></a>
 
-<a href="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad" target="_blank"><img src="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.svg" /></a>
+markdown
+[![asciicast](https://asciinema.org/a/442474.svg)](https://asciinema.org/a/442474)
 
-<a href="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad?autoplay=1" target="_blank"><img src="https://asciinema.org/a/BJixOG8gTI3NI9IAMXnZLBlad.svg" /></a>
+script
+<script id="asciicast-442474" src="https://asciinema.org/a/442474.js" async></script>
