@@ -56,7 +56,7 @@ Commands:
   train    Train a model on your labeled data.
 ```
 
-You can run zamba on any directory of video files. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
+`zamba` can be used "out of the box" to generate predictions or train a model using your own videos. You can run zamba on any directory of video files. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 **`zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.**
 
@@ -93,7 +93,3 @@ $ make tests
 ```
 
 See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/contribute.html) for details.
-
-
-
-
