@@ -188,7 +188,7 @@ The number of GPUs to use during inference. By default, all of the available GPU
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. `num_workers` cannot be greater than the number of GPUs in the system. Defaults to `3`
+The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available in the system. If you are using MegadetectorLiteYoloX, it is not recommended to use the total number of CPUs available. Defaults to `3`
 
 #### `batch_size (int, optional)`
 
@@ -311,7 +311,7 @@ The number of GPUs to use during training. By default, all of the available GPUs
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. `num_workers` cannot be greater than the number of GPUs in the system. Defaults to `3`
+The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available in the system. If you are using MegadetectorLiteYoloX, it is not recommended to use the total number of CPUs available. Defaults to `3`
 
 #### `max_epochs (int, optional)`
 
