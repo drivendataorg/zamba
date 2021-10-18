@@ -7,20 +7,12 @@
 
 *Zamba means "forest" in the Lingala language.*
 
-Zamba uses artificial intelligence and computer vision to perform intensive camera trap video processing work, freeing up more time for humans to focus on interpreting the content and using the results. 
+Zamba is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos. You can use Zamba to:
 
+- Filter out blank videos
+- Identify which species appear in each video
 
-Zamba is a tool built in Python that uses machine learning and computer vision techniques to automatically identify and
-Zamba is a tool built in Python to automatically identify the species seen
-in camera trap videos from sites in Africa and Europe.
-
-
- Using state-of-the-art
-computer vision and machine learning techniques, the tool makes predictions for
-42 common species in these videos (as well as blank, or, "no species present").
-If you have your own labeled videos, Zamba can also generate a retrained model
-adapted to your use case. Zamba can be used both as a command-line tool and as
-a Python package.
+The tool is already trained to recognize 42 species common to Africa and Europe (as well as blank, or "no species present"). Zamba can also finetune an existing model based on additional labeled videos to make predictions for new species or new contexts. Zamba can be used both as a command-line tool and as a Python package. It is also available as an accessible website application, [Zamba Cloud](https://www.zambacloud.com/).
 
 Please visit https://zamba.drivendata.org/docs/ for documentation and tutorials.
 
@@ -101,10 +93,6 @@ $ make tests
 ```
 
 See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/contribute.html) for details.
-
-### t end
-
-you can also run it as a python package, see the tutorial for your use case for details
 
 
 
