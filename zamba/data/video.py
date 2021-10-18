@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 from fractions import Fraction
 from functools import reduce
 import hashlib
