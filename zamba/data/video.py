@@ -7,10 +7,8 @@ import os
 from pathlib import Path
 import subprocess
 from shutil import rmtree
-import sys
-from tempfile import tempdir
+import tempfile
 from typing import Optional, Union, List
-import warnings
 
 import cv2
 from cloudpathlib import S3Path, AnyPath
@@ -18,18 +16,13 @@ import ffmpeg
 from loguru import logger
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, root_validator, validator
 
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
-from zamba.settings import LOAD_VIDEO_FRAMES_CACHE_DIR
-
-logger.remove()
-log_level = os.environ["LOGURU_LEVEL"] if "LOGURU_LEVEL" in os.environ else "INFO"
-logger.add(sys.stderr, level=log_level)
 
 
 def ffprobe(path: os.PathLike) -> pd.Series:
@@ -106,7 +99,9 @@ def ensure_frame_number(arr, total_frames: int):
     if (total_frames is None) or (arr.shape[0] == total_frames):
         return arr
     elif arr.shape[0] == 0:
-        logger.warn("No frames selected. Returning an array in the desired shape with all zeros.")
+        logger.warning(
+            "No frames selected. Returning an array in the desired shape with all zeros."
+        )
         return np.zeros((total_frames, arr.shape[1], arr.shape[2], arr.shape[3]), dtype="int")
     elif arr.shape[0] > total_frames:
         logger.info(
@@ -185,6 +180,14 @@ class VideoLoaderConfig(BaseModel):
             in pixels.
         model_input_width (int, optional): After frame selection, resize the video to this width in
             pixels.
+        cache_dir (Path, optional): Cache directory where preprocessed videos will be saved
+            upon first load. Alternatively, can be set with VIDEO_CACHE_DIR environment variable.
+            Defaults to None, which means videos will not be cached. Provided there is enough space
+            on your machine, it is highly encouraged to cache videos for training as this will
+            speed up all subsequent epochs. If you are predicting on the same videos with the
+            same video loader configuration, this will save time on future runs.
+        cleanup_cache (bool): Whether to delete the cache dir after training or predicting ends.
+            Defaults to False.
     """
 
     crop_bottom_pixels: Optional[int] = None
@@ -202,9 +205,25 @@ class VideoLoaderConfig(BaseModel):
     pix_fmt: Optional[str] = "rgb24"
     model_input_height: Optional[int] = None
     model_input_width: Optional[int] = None
+    cache_dir: Optional[Path] = None
+    cleanup_cache: bool = False
 
     class Config:
         extra = "forbid"
+
+    @validator("cache_dir", always=True)
+    def validate_video_cache_dir(cls, cache_dir):
+        """Set up cache directory for preprocessed videos. Config argument takes precedence
+        over environment variable.
+        """
+        if cache_dir is None:
+            cache_dir = os.getenv("VIDEO_CACHE_DIR", None)
+
+        if cache_dir is not None:
+            cache_dir = Path(cache_dir)
+            cache_dir.mkdir(parents=True, exist_ok=True)
+
+        return cache_dir
 
     @root_validator(skip_on_failure=True)
     def check_height_and_width(cls, values):
@@ -306,8 +325,9 @@ class VideoLoaderConfig(BaseModel):
 
 
 class npy_cache:
-    def __init__(self, path: Optional[Path] = None):
+    def __init__(self, path: Optional[Path] = None, cleanup: bool = False):
         self.tmp_path = path
+        self.cleanup = cleanup
 
     def __call__(self, f):
         def _wrapped(*args, **kwargs):
@@ -319,6 +339,9 @@ class npy_cache:
                 config = kwargs["config"].dict()
             except Exception:
                 config = kwargs
+
+            # don't include cleanup in the hashed config
+            config.pop("cleanup_cache")
 
             # hash config for inclusion in filename
             hash_str = hashlib.sha1(str(config).encode("utf-8")).hexdigest()
@@ -349,28 +372,31 @@ class npy_cache:
                 return loaded_video
 
         if self.tmp_path is not None:
-
             return _wrapped
         else:
             return f
 
     def __del__(self):
-        if (
-            hasattr(self, "tmp_path")
-            and (self.tmp_path != LOAD_VIDEO_FRAMES_CACHE_DIR)
-            and self.tmp_path.exists()
-        ):
-            if self.tmp_path.parents[0] == Path(tempdir):
+        if hasattr(self, "tmp_path") and self.cleanup and self.tmp_path.exists():
+            if self.tmp_path.parents[0] == tempfile.gettempdir():
+                logger.info(f"Deleting cache dir {self.tmp_path}.")
                 rmtree(self.tmp_path)
             else:
-                warnings.warn(
+                logger.warning(
                     "Bravely refusing to delete directory that is not a subdirectory of the "
                     "system temp directory. If you really want to delete, do so manually using:\n "
                     f"rm -r {self.tmp_path}"
                 )
 
 
-@npy_cache(path=LOAD_VIDEO_FRAMES_CACHE_DIR)
+def npy_cache_factory(path, callable, cleanup):
+    @npy_cache(path=path, cleanup=cleanup)
+    def decorated_callable(*args, **kwargs):
+        return callable(*args, **kwargs)
+
+    return decorated_callable
+
+
 def load_video_frames(
     filepath: os.PathLike,
     config: Optional[VideoLoaderConfig] = None,
@@ -476,3 +502,21 @@ def load_video_frames(
         arr = ensure_frame_number(arr, total_frames=config.total_frames)
 
     return arr
+
+
+def cached_load_video_frames(filepath: os.PathLike, config: Optional[VideoLoaderConfig] = None):
+    """Loads frames from videos using fast ffmpeg commands and caches to .npy file
+    if config.cache_dir is not None.
+
+    Args:
+        filepath (os.PathLike): Path to the video.
+        config (VideoLoaderConfig): Configuration for video loading.
+    """
+    if config is None:
+        # get environment variable for cache if it exists
+        config = VideoLoaderConfig()
+
+    decorated_load_video_frames = npy_cache_factory(
+        path=config.cache_dir, callable=load_video_frames, cleanup=config.cleanup_cache
+    )
+    return decorated_load_video_frames(filepath=filepath, config=config)

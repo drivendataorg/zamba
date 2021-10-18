@@ -152,7 +152,6 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
 
     save_path = tmp_path / "zamba" / "my_preds.csv"
 
-    # Prior to mocking, run one real prediction using config
     result = runner.invoke(
         app,
         [

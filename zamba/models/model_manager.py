@@ -37,7 +37,7 @@ def instantiate_model(
     checkpoint: Union[os.PathLike, str],
     weight_download_region: RegionEnum,
     scheduler_config: Optional[SchedulerConfig],
-    cache_dir: Optional[os.PathLike],
+    model_cache_dir: Optional[os.PathLike],
     labels: Optional[pd.DataFrame],
     from_scratch: bool = False,
     predict_all_zamba_species: bool = True,
@@ -58,7 +58,7 @@ def instantiate_model(
         weight_download_region (RegionEnum): Server region for downloading weights.
         scheduler_config (SchedulerConfig, optional): SchedulerConfig to use for training or finetuning.
             Only used if labels is not None.
-        cache_dir (path, optional): Directory in which to store pretrained model weights.
+        model_cache_dir (path, optional): Directory in which to store pretrained model weights.
         labels (pd.DataFrame, optional): Dataframe where filepath is the index and columns are one hot encoded species.
         from_scratch (bool): Whether to instantiate the model with base weights. This means starting
             from the imagenet weights for image based models and the Kinetics weights for video models.
@@ -75,7 +75,7 @@ def instantiate_model(
         checkpoint = download_weights(
             filename=str(checkpoint),
             weight_region=weight_download_region,
-            destination_dir=cache_dir,
+            destination_dir=model_cache_dir,
         )
 
     hparams = torch.load(checkpoint, map_location=torch.device("cpu"))["hyper_parameters"]
@@ -196,7 +196,7 @@ def train_model(
         checkpoint=train_config.checkpoint,
         scheduler_config=train_config.scheduler_config,
         weight_download_region=train_config.weight_download_region,
-        cache_dir=train_config.cache_dir,
+        model_cache_dir=train_config.model_cache_dir,
         labels=train_config.labels,
         from_scratch=train_config.from_scratch,
         predict_all_zamba_species=train_config.predict_all_zamba_species,
@@ -265,6 +265,11 @@ def train_model(
         else None,
     )
 
+    if video_loader_config.cache_dir is None:
+        logger.info("No cache dir is specified. Videos will not be cached.")
+    else:
+        logger.info(f"Videos will be cached to {video_loader_config.cache_dir}.")
+
     if train_config.auto_lr_find:
         logger.info("Finding best learning rate.")
         trainer.tune(model, data_module)
@@ -324,14 +329,14 @@ def predict_model(
     # get default VLC for model if not specified
     if video_loader_config is None:
         video_loader_config = ModelConfig(
-            train_config=predict_config, video_loader_config=video_loader_config
+            predict_config=predict_config, video_loader_config=video_loader_config
         ).video_loader_config
 
     # set up model
     model = instantiate_model(
         checkpoint=predict_config.checkpoint,
         weight_download_region=predict_config.weight_download_region,
-        cache_dir=predict_config.cache_dir,
+        model_cache_dir=predict_config.model_cache_dir,
         scheduler_config=None,
         labels=None,
     )
@@ -345,6 +350,12 @@ def predict_model(
     )
 
     validate_species(model, data_module)
+
+    if video_loader_config.cache_dir is None:
+        logger.info("No cache dir is specified. Videos will not be cached.")
+    else:
+        logger.info(f"Videos will be cached to {video_loader_config.cache_dir}.")
+
     trainer = pl.Trainer(
         gpus=predict_config.gpus, logger=False, fast_dev_run=predict_config.dry_run
     )

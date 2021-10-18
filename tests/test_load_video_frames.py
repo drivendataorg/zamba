@@ -1,12 +1,16 @@
+import os
 import pytest
+import shutil
 import subprocess
 from typing import Any, Callable, Dict, Optional, Union
+from unittest import mock
 
 import numpy as np
 from PIL import Image
 from pydantic import BaseModel, ValidationError
 
 from zamba.data.video import (
+    cached_load_video_frames,
     load_video_frames,
     VideoLoaderConfig,
     MegadetectorLiteYoloXConfig,
@@ -380,26 +384,33 @@ def test_load_video_frames(case: Case, video_metadata: Dict[str, Any]):
                     assert video_shape[field] == value
 
 
-def test_same_filename_new_kwargs():
+def test_same_filename_new_kwargs(tmp_path):
     """Test that load_video_frames does not load the npz file if the params change."""
     # use first test video
     test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
+    cache = tmp_path / "test_cache"
 
-    first_load = load_video_frames(test_vid, fps=1)
-    new_params_same_name = load_video_frames(test_vid, fps=2)
-    assert first_load != new_params_same_name
+    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
+        # confirm cache is set in environment variable
+        assert os.environ["VIDEO_CACHE_DIR"] == str(cache)
 
-    # check no params
-    first_load = load_video_frames(test_vid)
-    assert first_load != new_params_same_name
+        first_load = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
+        new_params_same_name = cached_load_video_frames(
+            filepath=test_vid, config=VideoLoaderConfig(fps=2)
+        )
+        assert first_load != new_params_same_name
 
-    # multiple params in config
-    c1 = VideoLoaderConfig(scene_threshold=0.2)
-    c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
+        # check no params
+        first_load = cached_load_video_frames(filepath=test_vid)
+        assert first_load != new_params_same_name
 
-    first_load = load_video_frames(filepath=test_vid, config=c1)
-    new_params_same_name = load_video_frames(filepath=test_vid, config=c2)
-    assert first_load != new_params_same_name
+        # multiple params in config
+        c1 = VideoLoaderConfig(scene_threshold=0.2)
+        c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
+
+        first_load = cached_load_video_frames(filepath=test_vid, config=c1)
+        new_params_same_name = cached_load_video_frames(filepath=test_vid, config=c2)
+        assert first_load != new_params_same_name
 
 
 def test_megadetector_lite_yolox_dog(tmp_path):
@@ -493,3 +504,56 @@ def test_validate_total_frames():
         megadetector_lite_config=MegadetectorLiteYoloXConfig(confidence=0.01, n_frames=8),
     )
     assert config.total_frames == 8
+
+
+def test_caching(tmp_path, caplog):
+    cache = tmp_path / "video_cache"
+    test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
+
+    # no caching by default
+    _ = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
+    assert not cache.exists()
+
+    # caching can be specifed in config
+    _ = cached_load_video_frames(
+        filepath=test_vid, config=VideoLoaderConfig(fps=1, cache_dir=cache)
+    )
+    # one file in cache
+    assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
+    shutil.rmtree(cache)
+
+    # or caching can be specified in environment variable
+    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
+        _ = cached_load_video_frames(filepath=test_vid)
+        assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
+
+        # changing cleanup in config does not prompt new hashing of videos
+        with mock.patch.dict(os.environ, {"LOG_LEVEL": "DEBUG"}):
+            _ = cached_load_video_frames(
+                filepath=test_vid, config=VideoLoaderConfig(cleanup_cache=True)
+            )
+            assert "Loading from cache" in caplog.text
+
+    # if no config is passed, this is equivalent to specifying None/False in all non-cache related VLC params
+    no_config = cached_load_video_frames(filepath=test_vid, config=None)
+    config_with_nones = cached_load_video_frames(
+        filepath=test_vid,
+        config=VideoLoaderConfig(
+            crop_bottom_pixels=None,
+            i_frames=False,
+            scene_threshold=None,
+            megadetector_lite_config=None,
+            frame_selection_height=None,
+            frame_selection_width=None,
+            total_frames=None,
+            ensure_total_frames=False,
+            fps=None,
+            early_bias=False,
+            frame_indices=None,
+            evenly_sample_total_frames=False,
+            pix_fmt="rgb24",
+            model_input_height=None,
+            model_input_width=None,
+        ),
+    )
+    assert np.all(no_config == config_with_nones)

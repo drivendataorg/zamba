@@ -245,16 +245,16 @@ def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplo
     assert "Found 1 duplicate row(s) in filepaths csv. Dropping duplicates" in caplog.text
 
 
-def test_cache_dir(labels_absolute_path, tmp_path):
+def test_model_cache_dir(labels_absolute_path, tmp_path):
     config = TrainConfig(labels=labels_absolute_path)
-    assert config.cache_dir == Path(appdirs.user_cache_dir()) / "zamba"
+    assert config.model_cache_dir == Path(appdirs.user_cache_dir()) / "zamba"
 
-    os.environ["ZAMBA_CACHE_DIR"] = str(tmp_path)
+    os.environ["MODEL_CACHE_DIR"] = str(tmp_path)
     config = TrainConfig(labels=labels_absolute_path)
-    assert config.cache_dir == tmp_path
+    assert config.model_cache_dir == tmp_path
 
-    config = PredictConfig(filepaths=labels_absolute_path, cache_dir=tmp_path / "my_cache")
-    assert config.cache_dir == tmp_path / "my_cache"
+    config = PredictConfig(filepaths=labels_absolute_path, model_cache_dir=tmp_path / "my_cache")
+    assert config.model_cache_dir == tmp_path / "my_cache"
 
 
 def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkpoint):

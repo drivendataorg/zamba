@@ -18,7 +18,7 @@ def test_scheduler_ignored_for_prediction(dummy_checkpoint, tmp_path):
         weight_download_region="us",
         scheduler_config=SchedulerConfig(scheduler="StepLR", scheduler_params=None),
         labels=None,
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
     # since labels is None, we are predicting. as a result, hparams are not updated
     assert model.hparams["scheduler"] is None
@@ -33,7 +33,7 @@ def test_default_scheduler_used(time_distributed_checkpoint, tmp_path):
         weight_download_region="us",
         scheduler_config="default",
         labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
 
     # with "default" scheduler_config, hparams from training are used
@@ -50,7 +50,7 @@ def test_scheduler_used_if_passed(time_distributed_checkpoint, tmp_path):
         weight_download_region="us",
         scheduler_config=SchedulerConfig(scheduler="StepLR"),
         labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
 
     # hparams reflect user specified scheduler config
@@ -64,7 +64,7 @@ def test_scheduler_used_if_passed(time_distributed_checkpoint, tmp_path):
         weight_download_region="us",
         scheduler_config=SchedulerConfig(scheduler="StepLR", scheduler_params={"gamma": 0.3}),
         labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
     assert scheduler_params_passed_model.hparams["scheduler_params"] == {"gamma": 0.3}
 
@@ -76,7 +76,7 @@ def test_remove_scheduler(time_distributed_checkpoint, tmp_path):
         weight_download_region="us",
         scheduler_config=SchedulerConfig(scheduler=None),
         labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
     # pretrained model has scheduler but this is overridden with SchedulerConfig
     assert remove_scheduler_model.hparams["scheduler"] is None
@@ -94,7 +94,7 @@ def test_head_not_replaced_for_species_subset(dummy_trained_model_checkpoint, tm
         weight_download_region="us",
         scheduler_config="default",
         labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
 
     assert (model.head.weight == original_model.head.weight).all()
@@ -118,7 +118,7 @@ def test_not_predict_all_zamba_species(dummy_trained_model_checkpoint, tmp_path)
         weight_download_region="us",
         scheduler_config="default",
         labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
         predict_all_zamba_species=False,
     )
 
@@ -141,7 +141,7 @@ def test_head_replaced_for_new_species(dummy_trained_model_checkpoint, tmp_path)
         weight_download_region="us",
         scheduler_config="default",
         labels=pd.DataFrame([{"filepath": "alien.mp4", "species_alien": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
 
     assert (model.head.weight != original_model.head.weight).all()
@@ -157,7 +157,7 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
         weight_download_region=config.weight_download_region,
         scheduler_config="default",
         labels=pd.DataFrame([{"filepath": "kangaroo.mp4", "species_kangaroo": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
     assert model.species == ["kangaroo"]
 
@@ -171,7 +171,7 @@ def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
         scheduler_config=SchedulerConfig(scheduler="StepLR", scheduler_params=None),
         # pick species that is present in all models
         labels=pd.DataFrame([{"filepath": "bird.mp4", "species_bird": 1}]),
-        cache_dir=tmp_path,
+        model_cache_dir=tmp_path,
     )
     assert model.hparams["scheduler"] == "StepLR"
 
