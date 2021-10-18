@@ -204,7 +204,7 @@ def train_model(
 
     data_module = ZambaDataModule(
         video_loader_config=video_loader_config,
-        transform=MODEL_MAPPING[train_config.model_name]["transform"],
+        transform=MODEL_MAPPING[model.__class__.__name__]["transform"],
         train_metadata=train_config.labels,
         batch_size=train_config.batch_size,
         num_workers=train_config.num_workers,
@@ -343,7 +343,7 @@ def predict_model(
 
     data_module = ZambaDataModule(
         video_loader_config=video_loader_config,
-        transform=MODEL_MAPPING[predict_config.model_name]["transform"],
+        transform=MODEL_MAPPING[model.__class__.__name__]["transform"],
         predict_metadata=predict_config.filepaths,
         batch_size=predict_config.batch_size,
         num_workers=predict_config.num_workers,
