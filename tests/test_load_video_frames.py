@@ -533,3 +533,27 @@ def test_caching(tmp_path, caplog):
                 filepath=test_vid, config=VideoLoaderConfig(cleanup_cache=True)
             )
             assert "Loading from cache" in caplog.text
+
+    # if no config is passed, this is equivalent to specifying None/False in all non-cache related VLC params
+    no_config = cached_load_video_frames(filepath=test_vid, config=None)
+    config_with_nones = cached_load_video_frames(
+        filepath=test_vid,
+        config=VideoLoaderConfig(
+            crop_bottom_pixels=None,
+            i_frames=False,
+            scene_threshold=None,
+            megadetector_lite_config=None,
+            frame_selection_height=None,
+            frame_selection_width=None,
+            total_frames=None,
+            ensure_total_frames=False,
+            fps=None,
+            early_bias=False,
+            frame_indices=None,
+            evenly_sample_total_frames=False,
+            pix_fmt="rgb24",
+            model_input_height=None,
+            model_input_width=None,
+        ),
+    )
+    assert np.all(no_config == config_with_nones)
