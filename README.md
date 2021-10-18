@@ -12,7 +12,7 @@
 - Filter out blank videos
 - Identify which species appear in each video
 
-The tool is already trained to recognize 42 species common to Africa and Europe (as well as blank, or "no species present"). Zamba can also finetune an existing model based on additional labeled videos to make predictions for new species or new contexts. Zamba can be used both as a command-line tool and as a Python package. It is also available as an accessible website application, [Zamba Cloud](https://www.zambacloud.com/).
+The tool is already trained to recognize 42 species common to Africa and Europe (as well as blank, or "no species present"). Users can also input their own labeled videos to finetune a model and make predictions for new species or new contexts. Zamba can be used both as a command-line tool and as a Python package. It is also available as an accessible website application, [Zamba Cloud](https://www.zambacloud.com/).
 
 Please visit https://zamba.drivendata.org/docs/ for documentation and tutorials.
 
