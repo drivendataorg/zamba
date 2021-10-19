@@ -1,51 +1,46 @@
-auto_lr_find: true
-backbone_finetune: true
-backbone_finetuning_params:
-  backbone_initial_ratio_lr: 0.01
-  multiplier: 10
-  pre_train_bn: false
-  train_bn: false
-  unfreeze_backbone_at_epoch: 1
-  verbose: true
 backbone_mode: train
-batch_size: 32
-dataset: zamba
-early_stopping_params:
-  patience: 5
-git_hash: b14fc245b42083fd8473ef91594be43243bb4951
-load_metadata_kwargs:
-  subset: half
-  zamba_label: new
-max_epochs: 100
-model_class: slowfast
-model_name: slowfast_zamba_finetune_mdlite
-num_classes: 33
-num_workers: 0
+head_dropout_rate: null
+head_hidden_layer_sizes: null
+lr: 0.001
+model_class: SlowFast
 output_with_global_average: true
 post_backbone_dropout: 0.0
-post_backbone_pool: null
-post_backbone_pool_output_size: 1
-scheduler: !!python/name:torch.optim.lr_scheduler.MultiStepLR ''
+scheduler: MultiStepLR
 scheduler_params:
   gamma: 0.5
   milestones:
   - 1
   verbose: true
-starting_learning_rate: 0.0019054607179632484
-training_start_time: '2021-08-03T10:02:42.076390'
-video_loader_config:
-  crop_bottom_pixels: 50
-  early_bias: false
-  ensure_total_frames: true
-  evenly_sample_total_frames: false
-  fps: null
-  frame_indices: null
-  i_frames: false
-  megadetector_lite: 0.25
-  megadetector_lite_kwargs:
-    fill_mode: score_sorted
-    n_frames: 32
-  scene_threshold: null
-  total_frames: 32
-  video_height: 224
-  video_width: 224
+species:
+- aardvark
+- antelope_duiker
+- badger
+- bat
+- bird
+- blank
+- cattle
+- cheetah
+- chimpanzee_bonobo
+- civet_genet
+- elephant
+- equid
+- forest_buffalo
+- fox
+- giraffe
+- gorilla
+- hare_rabbit
+- hippopotamus
+- hog
+- human
+- hyena
+- large_flightless_bird
+- leopard
+- lion
+- mongoose
+- monkey_prosimian
+- pangolin
+- porcupine
+- reptile
+- rodent
+- small_cat
+- wild_dog_jackal

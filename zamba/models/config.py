@@ -37,7 +37,7 @@ WEIGHT_LOOKUP = {
     },
     "slowfast": {
         "public_weights": "zamba_slowfast.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5_zamba.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_1/slowfast.ckpt",
     },
 }
 

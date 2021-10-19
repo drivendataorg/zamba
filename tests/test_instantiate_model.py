@@ -162,7 +162,7 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
     assert model.species == ["kangaroo"]
 
 
-@pytest.mark.parametrize("model", ["time_distributed", "european"])
+@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
 def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
     config = TrainConfig(labels=labels_absolute_path, model_name=model, skip_load_validation=True)
     model = instantiate_model(
