@@ -68,7 +68,7 @@ blank.MP4,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.
 chimp.MP4,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1e-05,4e-05,0.00162,0.0,0.0,0.0,0.0,0.0,2e-05,2e-05,0.0,1e-05,0.0,0.0038,4e-05,0.0
 ```
 
-The full prediction and video loadering configuration for the process will also be saved out, in the same folder as the predictions under `predict_configuration.yaml`. To run the exact same inference process a second time, you can pass this YAML file to `zamba predict` per the [Using YAML Configuration Files](yaml-config.md) page:
+The full prediction and video loading configuration for the process will also be saved out, in the same folder as the predictions under `predict_configuration.yaml`. To run the exact same inference process a second time, you can pass this YAML file to `zamba predict` per the [Using YAML Configuration Files](yaml-config.md) page:
 ```console
 $ zamba predict --config predict_configuration.yaml
 ```
