@@ -87,7 +87,7 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models.md#megadetectorlite) for frame selection. For all possible options, see the `MegadetectorLiteYoloXConfig` class<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models/index.md#megadetectorlite) for frame selection. For all possible options, see the `MegadetectorLiteYoloXConfig` class<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
 
 #### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
@@ -180,7 +180,7 @@ Path to a model checkpoint to load and use for inference. The default is `None`,
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
-Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
+Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/index.md) page for details. Defaults to `time_distributed`
 
 #### `gpus (int, optional)`
 
@@ -287,7 +287,7 @@ A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#ho
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
-Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
+Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/index.md) page for details. Defaults to `time_distributed`
 
 #### `dry_run (bool, optional)`
 

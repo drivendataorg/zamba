@@ -23,13 +23,13 @@ on 11 common species from western Europe. `time_distributed` and `european` are 
 - [Training a Model on Labeled Videos](train-tutorial.md)
 - [Debugging](debugging.md)
 
-### [Available Models](models.md)
+### [Available Models](models/index.md)
 
 ### Advanced Options
 - [All Optional Arguments](configurations.md)
 - [Using YAML Configuration Files](yaml-config.md)
 
-### [Contributing](contribute.md)
+### [Contribute](contribute/index.md)
 
 ### Changelog
 - [Version 2](v2_updates.md)
