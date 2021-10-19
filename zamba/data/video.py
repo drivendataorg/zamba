@@ -163,7 +163,7 @@ class VideoLoaderConfig(BaseModel):
             MegadetectorLiteYoloX frame selection model.
         frame_selection_height (int, optional): Resize the video to this height in pixels, prior to
             frame selection. If None, the full size video will be used for frame selection. Using full
-            size images (setting to None) is recommended for MegadetectorLite, especially if your 
+            size images (setting to None) is recommended for MegadetectorLite, especially if your
             species of interest are smaller.
         frame_selection_width (int, optional): Resize the video to this width in pixels, prior to
             frame selection.
