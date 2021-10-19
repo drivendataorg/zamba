@@ -26,6 +26,9 @@ nav:
       - All Optional Arguments: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
       - Guide to Common Optional Parameters: "extra-options.md"
+  - "Contribute to zamba": "contribute.md"
+  - "Changelog":
+      - Version 2: "v2_updates.md"
   - API Reference:
       - zamba.data:
           - zamba.data.metadata: "api-reference/data-metadata.md"
@@ -49,9 +52,6 @@ nav:
       - zamba.exceptions: "api-reference/exceptions.md"
       - zamba.metrics: "api-reference/metrics.md"
       - zamba.settings: "api-reference/settings.md"
-  - "Contribute to zamba": "contribute.md"
-  - "Changelog":
-      - Version 2: "v2_updates.md"
 
 markdown_extensions:
   - pymdownx.highlight
