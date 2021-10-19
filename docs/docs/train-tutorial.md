@@ -130,6 +130,8 @@ Add the path to your video folder with `--data-dir`. For example, if your videos
     ```
 Note that the above will not run yet because labels are not specified.
 
+The more training data you have, the better the resulting model will be. It is recommended to have a minimum of 100 example videos per species. Having an imbalanced dataset - for example, one where most of the vidoes are blank - will not negatively impact training, as long as there are sufficient videos per species.
+
 ### 2. Specify your labels
 
 Your labels should be saved in a `.csv` file with columns for filepath and label. For example:
