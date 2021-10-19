@@ -4,8 +4,8 @@ import sys
 
 from loguru import logger
 
-from zamba.models.efficientnet_models import TimeDistributedEfficientNet
-from zamba.models.slowfast_models import SlowFast
+from zamba.models.efficientnet_models import TimeDistributedEfficientNet  # noqa: F401
+from zamba.models.slowfast_models import SlowFast  # noqa: F401
 from zamba.version import __version__
 
 __version__

@@ -1,7 +1,5 @@
 import os
 
-from pathlib import Path
-
 
 VIDEO_SUFFIXES = os.environ.get("VIDEO_SUFFIXES")
 if VIDEO_SUFFIXES is not None:
