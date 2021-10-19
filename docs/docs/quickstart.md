@@ -1,5 +1,7 @@
 # Quickstart
 
+<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1></script>
+
 This section assumes you have successfully installed `zamba` and are ready to train a model or identify species in your videos!
 
 `zamba` can be used "out of the box" to generate predictions or train a model using your own videos. To perform inference, you simply need to run `zamba predict` followed by a set of arguments that let zamba know where your videos are located, which model you want to use, and where to save your output. To train a model, you can similarly run `zamba train` and specify your labels. The following sections provide details about these separate modules.
@@ -16,11 +18,7 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 
 ## How do I organize my videos for `zamba`?
 
-You can input the path to a directory of videos to classify. 
-
-* **The folder must contain only valid video files**, since `zamba` will try to load all of the files in the directory. 
-* `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
-* `zamba` will only generate predictions for the videos in the top level of a directory (`zamba` does not currently extract videos from nested directories).
+You can input the path to a directory of videos or specify a list of file paths. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 For example, say we have a directory of videos called `example_vids` that we want to generate predictions for using `zamba`. Let's list the videos:
 
@@ -66,7 +64,7 @@ To generate and save predictions for your videos using the default settings, run
 $ zamba predict --data-dir example_vids/
 ```
 
-`zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) is *the probability that animal j is present in video i.*  Comperehensive predictions are helpful when a single video contains multiple species.
+`zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) is *the probability that animal j is present in video i.*  Comprehensive predictions are helpful when a single video contains multiple species.
 Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions under a different name or in a different folder using the `--save-path` argument.
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
@@ -74,10 +72,10 @@ Adding the argument `--output-class-names` will simplify the predictions to retu
 ```console
 $ zamba predict --data-dir example_vids/ --output-class-names
 $ cat zamba_predictions.csv
-vids/blank.mp4,blank
-vids/chimp.mp4,chimpanzee_bonobo
-vids/eleph.mp4,elephant
-vids/leopard.mp4,leopard
+blank.mp4,blank
+chimp.mp4,chimpanzee_bonobo
+eleph.mp4,elephant
+leopard.mp4,leopard
 ```
 
 There are three pretrained models that ship with `zamba`: `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
@@ -99,15 +97,15 @@ In either case, the commands for training are the same. Say that we have labels 
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 ```
 
-The labels file must have columns for both filepath and label. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. Let's print the example labels:
+The labels file must have columns for both filepath and label. The filepath column should contain either absolute paths or paths relative to the `data-dir`. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. Let's print the example labels:
 
 ```console
 $ cat example_labels.csv
 filepath,label
-example_vids/eleph.MP4,elephant
-example_vids/leopard.MP4,leopard
-example_vids/blank.MP4,blank
-example_vids/chimp.MP4,chimpanzee_bonobo
+blank.MP4,blank
+chimp.MP4,chimpanzee_bonobo
+eleph.MP4,elephant
+leopard.MP4,leopard
 ```
 
 By default, the trained model and additional training output will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`. 
@@ -115,7 +113,8 @@ By default, the trained model and additional training output will be saved to a 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 $ ls zamba_time_distributed
-time_distributed.ckpt configuration.yaml  events.out.tfevents.1632250686.ip-172-31-15-179.14229.0  hparams.yaml
+time_distributed.ckpt 
+...
 ```
 
 ## Downloading model weights
@@ -140,75 +139,59 @@ Usage: zamba predict [OPTIONS]
 
   This is a command line interface for prediction on camera trap footage.
   Given a path to camera trap footage, the predict function use a deep
-  learning model to predict the presence or absense of a variety of species
-  of common interest to wildlife researchers working with camera trap data.
+  learning model to predict the presence or absense of a variety of species of
+  common interest to wildlife researchers working with camera trap data.
 
-  If an argument is specified in both the command line and in a yaml file,
-  the command line input will take precedence.
+  If an argument is specified in both the command line and in a yaml file, the
+  command line input will take precedence.
 
 Options:
   --data-dir PATH                 Path to folder containing videos.
   --filepaths PATH                Path to csv containing `filepath` column
                                   with videos.
-
   --model [time_distributed|slowfast|european]
                                   Model to use for inference. Model will be
                                   superseded by checkpoint if provided.
                                   [default: time_distributed]
-
   --checkpoint PATH               Model checkpoint path to use for inference.
                                   If provided, model is not required.
-
   --gpus INTEGER                  Number of GPUs to use for inference. If not
                                   specifiied, will use all GPUs found on
                                   machine.
-
   --batch-size INTEGER            Batch size to use for training.
   --save / --no-save              Whether to save out predictions to a csv
                                   file. If you want to specify the location of
                                   the csv, use save_path instead.
-
   --save-path PATH                Full path for prediction CSV file. Any
                                   needed parent directories will be created.
-
   --dry-run / --no-dry-run        Runs one batch of inference to check for
                                   bugs.
-
   --config PATH                   Specify options using yaml configuration
                                   file instead of through command line
                                   options.
-
   --proba-threshold FLOAT         Probability threshold for classification
                                   between 0 and 1. If specified binary
                                   predictions are returned with 1 being
                                   greater than the threshold, 0 being less
                                   than or equal to. If not specified,
                                   probabilities between 0 and 1 are returned.
-
   --output-class-names / --no-output-class-names
                                   If True, we just return a video and the name
                                   of the most likely class. If False, we
                                   return a probability or indicator (depending
                                   on --proba_threshold) for every possible
                                   class.
-
+  --num-workers INTEGER           Number of subprocesses to use for data
+                                  loading.
   --weight-download-region [us|eu|asia]
                                   Server region for downloading weights.
-  --cache-dir PATH                Path to directory for model weights.
-                                  Alternatively, specify with environment
-                                  variable `ZAMBA_CACHE_DIR`. If not
-                                  specified, user's cache directory is used.
-
   --skip-load-validation / --no-skip-load-validation
                                   Skip check that verifies all videos can be
                                   loaded prior to inference. Only use if
                                   you're very confident all your videos can be
                                   loaded.
-
   -y, --yes                       Skip confirmation of configuration and
-                                  proceed right to prediction.  [default:
-                                  False]
-
+                                  proceed right to prediction.
   --help                          Show this message and exit.
 ```
 
@@ -221,8 +204,8 @@ Usage: zamba train [OPTIONS]
 
   Train a model on your labeled data.
 
-  If an argument is specified in both the command line and in a yaml file,
-  the command line input will take precedence.
+  If an argument is specified in both the command line and in a yaml file, the
+  command line input will take precedence.
 
 Options:
   --data-dir PATH                 Path to folder containing videos.
@@ -231,43 +214,32 @@ Options:
                                   Model to train. Model will be superseded by
                                   checkpoint if provided.  [default:
                                   time_distributed]
-
   --checkpoint PATH               Model checkpoint path to use for training.
                                   If provided, model is not required.
-
   --config PATH                   Specify options using yaml configuration
                                   file instead of through command line
                                   options.
-
   --batch-size INTEGER            Batch size to use for training.
   --gpus INTEGER                  Number of GPUs to use for training. If not
                                   specifiied, will use all GPUs found on
                                   machine.
-
   --dry-run / --no-dry-run        Runs one batch of train and validation to
                                   check for bugs.
-
   --save-dir PATH                 Directory in which to save model checkpoint
                                   and configuration file. If not specified,
                                   will save to a folder called
                                   'zamba_{model_name}' in your working
                                   directory.
-
+  --num-workers INTEGER           Number of subprocesses to use for data
+                                  loading.
   --weight-download-region [us|eu|asia]
                                   Server region for downloading weights.
-  --cache-dir PATH                Path to directory for model weights.
-                                  Alternatively, specify with environment
-                                  variable `ZAMBA_CACHE_DIR`. If not
-                                  specified, user's cache directory is used.
-
   --skip-load-validation / --no-skip-load-validation
                                   Skip check that verifies all videos can be
                                   loaded prior to training. Only use if you're
                                   very confident all your videos can be
                                   loaded.
-
   -y, --yes                       Skip confirmation of configuration and
-                                  proceed right to training.  [default: False]
-
+                                  proceed right to training.
   --help                          Show this message and exit.
 ```
