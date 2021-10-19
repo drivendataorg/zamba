@@ -28,6 +28,7 @@ on 11 common species from western Europe. `time_distributed` and `european` are 
 ### Advanced Options
 - [All Optional Arguments](configurations.md)
 - [Using YAML Configuration Files](yaml-config.md)
+- [Guide to Common Optional Parameters](extra-options.md)
 
 ### [Contribute](contribute/index.md)
 

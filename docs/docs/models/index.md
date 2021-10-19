@@ -136,7 +136,7 @@ video_loader_config:
 
 ### Requirements
 
-The above is pulled in by default if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+The above is pulled in by default if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](../yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
 === "YAML file"
     ```yaml
     video_loader_config:
@@ -196,7 +196,7 @@ video_loader_config:
 
 ### Requirements
 
-The above is pulled in by default if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+The above is pulled in by default if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](../yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
 === "YAML file"
     ```yaml
     video_loader_config:
@@ -252,7 +252,7 @@ video_loader_config:
 
 ### Requirements
 
-The above is pulled in by default if `european` is used in the command line. If you are passing in a custom [YAML configuration file](yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
+The above is pulled in by default if `european` is used in the command line. If you are passing in a custom [YAML configuration file](../yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
 
 === "YAML file"
     ```yaml

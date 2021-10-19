@@ -55,7 +55,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 ## Default behavior
 
-By default, the [`time_distributed`](models/index.md#time-distributed-model) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
 
 By default, predictions will be saved to `zamba_predictions.csv`. You can save predictions to a custom path using the `--save-path` argument.
 

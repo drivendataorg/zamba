@@ -71,7 +71,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 ## Default behavior
 
-By default, the [`time_distributed`](models/index.md#time-distributed-model) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
 
 `zamba_time_distributed` contains:
 
