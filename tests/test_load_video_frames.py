@@ -398,11 +398,11 @@ def test_same_filename_new_kwargs(tmp_path):
         new_params_same_name = cached_load_video_frames(
             filepath=test_vid, config=VideoLoaderConfig(fps=2)
         )
-        assert first_load != new_params_same_name
+        assert first_load.shape != new_params_same_name.shape
 
         # check no params
         first_load = cached_load_video_frames(filepath=test_vid)
-        assert first_load != new_params_same_name
+        assert first_load.shape != new_params_same_name.shape
 
         # multiple params in config
         c1 = VideoLoaderConfig(scene_threshold=0.2)
@@ -410,7 +410,7 @@ def test_same_filename_new_kwargs(tmp_path):
 
         first_load = cached_load_video_frames(filepath=test_vid, config=c1)
         new_params_same_name = cached_load_video_frames(filepath=test_vid, config=c2)
-        assert first_load != new_params_same_name
+        assert first_load.shape != new_params_same_name.shape
 
 
 def test_megadetector_lite_yolox_dog(tmp_path):
@@ -556,4 +556,4 @@ def test_caching(tmp_path, caplog):
             model_input_width=None,
         ),
     )
-    assert np.all(no_config == config_with_nones)
+    assert np.array_equal(no_config, config_with_nones)
