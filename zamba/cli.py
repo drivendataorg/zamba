@@ -138,6 +138,9 @@ def train(
 
     config = manager.config
 
+    if config.train_config.save_directory is not None:
+        logger.add(config.train_config.save_directory / "train.log")
+
     # get species to confirm
     spacer = "\n\t- "
     species = spacer + spacer.join(
