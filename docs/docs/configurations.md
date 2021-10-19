@@ -87,7 +87,7 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [Megadetector model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the Megadetector model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models.md#megadetectorlite) for frame selection. For all possible options, see the `MegadetectorLiteYoloXConfig` class<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
 
 #### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
