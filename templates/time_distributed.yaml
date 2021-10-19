@@ -2,7 +2,6 @@ train_config:
   # data_directory: YOUR_DATA_DIRECTORY_HERE
   # labels: YOUR_LABELS_CSV_HERE
   model_name: time_distributed
-  auto_lr_find: True
   backbone_finetune_config:
     backbone_initial_ratio_lr: 0.01
     multiplier: 1
@@ -10,8 +9,6 @@ train_config:
     train_bn: False
     unfreeze_backbone_at_epoch: 3
     verbose: True
-  batch_size: 2
-  num_workers: 3
   early_stopping_config:
     patience: 5
   scheduler_config:
@@ -38,8 +35,6 @@ predict_config:
   # data_directory: YOUR_DATA_DIRECTORY_HERE
   # or
   # filepaths: YOUR_FILEPATH_CSV_HERE
-  batch_size: 2
-  num_workers: 3
   model_name: time_distributed
   # or
   # checkpoint: YOUR_CKPT_HERE
