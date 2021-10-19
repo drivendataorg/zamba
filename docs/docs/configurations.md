@@ -16,32 +16,66 @@ Here's a helpful diagram which shows how everything is related.
 
 The `VideoLoaderConfig` class <!-- TODO: add link to source code><!--> defines all of the optional parameters that can be specified for how videos are loaded before either inference or training. This includes selecting which frames to use from each video.
 
+All video loading arguments can be specified either in a [YAML file](yaml-config.md) or when instantiating the [`VideoLoaderConfig`](configurations.md#video-loading-arguments) class in Python. Some can also be specified directly in the command line.
+
+=== "YAML file"
+    ```yaml
+    video_loader_config:
+        model_input_height: 240
+        model_input_width: 426
+        total_frames: 16
+        # ... other parameters
+    ```
+=== "Python"
+    ```python
+    from zamba.models.model_manager import predict_model
+    from zamba.models.config import PredictConfig
+    from zamba.data.video import VideoLoaderConfig
+
+    predict_config = PredictConfig(data_directory="example_vids/")
+    video_loader_config = VideoLoaderConfig(
+        model_input_height=240, 
+        model_input_width=426, 
+        total_frames=16
+        # ... other parameters
+    ) 
+    predict_model(
+        predict_config=predict_config, video_loader_config=video_loader_config
+    )
+    ```
+
+Let's look at the class documentation in Python.
+
 ```python
 >> from zamba.data.video import VideoLoaderConfig
 >> help(VideoLoaderConfig)
 
 class VideoLoaderConfig(pydantic.main.BaseModel)
- |  VideoLoaderConfig(*, crop_bottom_pixels: int = None,
- i_frames: bool = False,
- scene_threshold: float = None,
- megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None,
- video_height: int = None,
- video_width: int = None,
- total_frames: int = None,
- ensure_total_frames: bool = True,
- fps: float = None,
- early_bias: bool = False,
- frame_indices: List[int] = None,
- evenly_sample_total_frames: bool = False,
- pix_fmt: str = 'rgb24',
- resize_after_frame_selection: bool = False) -> None
-```
+ |  VideoLoaderConfig(*, 
+ crop_bottom_pixels: int = None, 
+ i_frames: bool = False, 
+ scene_threshold: float = None, 
+ megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
+ frame_selection_height: int = None, 
+ frame_selection_width: int = None, 
+ total_frames: int = None, 
+ ensure_total_frames: bool = True, 
+ fps: float = None, 
+ early_bias: bool = False, 
+ frame_indices: List[int] = None, 
+ evenly_sample_total_frames: bool = False, 
+ pix_fmt: str = 'rgb24', 
+ model_input_height: int = None, 
+ model_input_width: int = None, 
+ cache_dir: pathlib.Path = None, 
+ cleanup_cache: bool = False) -> None
 
-Let's go through each of those arguments.
+ ...
+```
 
 #### `crop_bottom_pixels (int, optional)`
 
-Number of pixels to crop from the bottom of the video (prior to resizing to `video_height`). Defaults to `None`
+Number of pixels to crop from the bottom of the video (prior to resizing to `frame_selection_height`). Defaults to `None`
 
 #### `i_frames (bool, optional)`
 
@@ -53,11 +87,11 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLiteYoloX model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLiteYoloX model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models.md#megadetectorlite) for frame selection. For all possible options, see the `MegadetectorLiteYoloXConfig` class<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
 
-#### `video_height (int, optional), video_width (int, optional)`
+#### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
-Resize the video to this height and width in pixels. Defaults to `None`
+Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. Using full size videos (setting to `None`) is recommended for MegadetectorLite, especially if your species of interest are smaller. Defaults to `None`
 
 #### `total_frames (int, optional)`
 
@@ -88,6 +122,18 @@ Reach the total number of frames specified by evenly sampling from the duration 
 
 FFmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bgr24` for BGR.
 
+#### `model_input_height (int, optional), model_input_width (int, optional)`
+
+After frame selection, resize the video to this height and width in pixels. Defaults to `None`
+
+#### `cache_dir (Path, optional)`
+
+Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with VIDEO_CACHE_DIR environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to `None`, which means videos will not be cached.
+
+#### `cleanup_cache (bool, optional)`
+
+Whether to delete the cache directory after training or predicting ends. Defaults to `False`
+
 <a id='prediction-arguments'></a>
 
 ## Prediction arguments
@@ -99,21 +145,21 @@ All possible model inference parameters are defined by the `PredictConfig` class
 >> help(PredictConfig)
 
 class PredictConfig(ZambaBaseModel)
- |  PredictConfig(*, data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'),
- filepaths: pydantic.types.FilePath = None,
- checkpoint: pydantic.types.FilePath = None,
+ |  PredictConfig(*, 
+ data_directory: DirectoryPath = # your current working directory ,
+ filepaths: FilePath = None,
+ checkpoint: FilePath = None,
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
- species: List[str] = None,
- gpus: Union[List[int], str, int] = 1,
- num_workers: int = 7,
- batch_size: int = 8,
+ gpus: int = 0, 
+ num_workers: int = 3,
+ batch_size: int = 2,
  save: Union[bool, pathlib.Path] = True,
  dry_run: bool = False,
  proba_threshold: float = None,
  output_class_names: bool = False,
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
- cache_dir: pathlib.Path = None,
- skip_load_validation: bool = False) -> None
+ skip_load_validation: bool = False,
+ model_cache_dir: pathlib.Path = None) -> None
 
  ...
 ```
@@ -132,13 +178,9 @@ Path to a list of files for classification. Defaults to the files in the current
 
 Path to a model checkpoint to load and use for inference. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `checkpoint` is `zamba_time_distributed.ckpt`
 
-#### `model_name (time_distributed|slowfast|european, optional)
+#### `model_name (time_distributed|slowfast|european, optional)`
 
 Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models.md) page for details. Defaults to `time_distributed`
-
-#### `species (list(str), optional)`
-
-List of possible species class labels for the data.  The default is `None`, which automatically loads the classes associated with the model specified by `model_name`. Since the default `model_name` is `time_distributed`, the default is the [32 species](models.md#species-classes) (plus blank) from central and west Africa.
 
 #### `gpus (int, optional)`
 
@@ -146,11 +188,11 @@ The number of GPUs to use during inference. By default, all of the available GPU
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. By default, it will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system.
+The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available on the machine. If you are using MegadetectorLite for frame selection, it is not recommended to use the total number of CPUs available. Defaults to `3`
 
 #### `batch_size (int, optional)`
 
-The batch size to use for inference. Defaults to `8`
+The batch size to use for inference. Defaults to `2`
 
 #### `save (bool, optional)`
 
@@ -174,13 +216,14 @@ Setting this option to `True` yields the most concise output `zamba` is capable 
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
 
-#### `cache_dir (FilePath, optional)`
-
-The directory where the model weights will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory at `~/.cache/zamba`
 
 #### `skip_load_validation (bool, optional)`
 
 By default, before kicking off inference `zamba` will iterate through all of the videos in the data and verify that each can be loaded. Setting `skip_load_verification` to `True` skips this step. Validation can be very time intensive depending on the number of videos. It is recommended to run validation once, but not on future inference runs if the videos have not changed. Defaults to `False`
+
+#### `model_cache_dir (Path, optional)`
+
+Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory (e.g. `~/.cache`). Defaults to `None`
 
 <a id='training-arguments'></a>
 
@@ -193,34 +236,34 @@ All possible model training parameters are defined by the `TrainConfig` class<!-
 >> help(TrainConfig)
 
 class TrainConfig(ZambaBaseModel)
- |  TrainConfig(*, labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame],
- data_directory: pydantic.types.DirectoryPath = PosixPath('/home/ubuntu/zamba-algorithms'),
- checkpoint: pydantic.types.FilePath = None,
+ |  TrainConfig(*, 
+ labels: Union[FilePath, pandas.DataFrame],
+ data_directory: DirectoryPath = # your current working directory ,
+ checkpoint: FilePath = None,
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  dry_run: Union[bool, int] = False,
- batch_size: int = 8,
+ batch_size: int = 2,
  auto_lr_find: bool = True,
- backbone_finetune: bool = False,
- backbone_finetune_params: zamba.models.config.BackboneFinetuneConfig =
+ backbone_finetune_config: zamba.models.config.BackboneFinetuneConfig =
             BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
             backbone_initial_ratio_lr=0.01, multiplier=1,
             pre_train_bn=False, train_bn=False, verbose=True),
- gpus: Union[List[int], str, int] = 1,
- num_workers: int = 7,
+ gpus: int = 0, 
+ num_workers: int = 3,
  max_epochs: int = None,
- early_stopping: bool = True,
- early_stopping_params: zamba.models.config.EarlyStoppingConfig =
+ early_stopping_config: zamba.models.config.EarlyStoppingConfig =
             EarlyStoppingConfig(monitor='val_macro_f1', patience=3,
             verbose=True, mode='max'),
- tensorboard_log_dir: str = 'tensorboard_logs',
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
- cache_dir: pathlib.Path = None,
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
- save_directory: pathlib.Path = None,
+ save_directory: pathlib.Path = # your current working directory , 
+ overwrite_save_directory: bool = False, 
  skip_load_validation: bool = False,
  from_scratch: bool = False,
- predict_all_zamba_species: bool = True) -> None
+ predict_all_zamba_species: bool = True,
+ model_cache_dir: pathlib.Path = None) -> None
+
  ...
 ```
 
@@ -252,19 +295,15 @@ Specifying `True` is useful for trying out model implementations more quickly by
 
 #### `batch_size (int, optional)`
 
-The batch size to use for training. Defaults to `8`
+The batch size to use for training. Defaults to `2`
 
 #### `auto_lr_find (bool, optional)`
 
 Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to find the optimal initial learning rate. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `True`
 
-#### `backbone_finetune (bool, optional)`
+#### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
-Finetune a backbone model based on a learning rate user-defined scheduling. Derined from Pytorch Lightning's built-in `BackboneFinetuning`, but with the ability to freeze batch norm layers during the freeze phase. See `zamba.pytorch.finetuning` for details.<!-- TODO: add github link><!--> Defaults to `False`
-
-#### `backbone_finetune_params (zamba.models.config.BackboneFinetuneConfig, optional)`
-
-Parameters to pass to the `BackboneFinetuning` <!-- TODO: add link to github source code><!-->class if `backbone_finetune` is `True`. The default values are specified in the `BackboneFinetuneConfig` <!-- TODO: add link to github source code><!--> class: `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
+Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the `BackboneFinetuneConfig` <!-- TODO: add link to github source code><!--> class: `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
 
 #### `gpus (int, optional)`
 
@@ -272,31 +311,19 @@ The number of GPUs to use during training. By default, all of the available GPUs
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. By default, it will be set to either one less than the number of CPUs in the system, or one if there is only one CPU in the system.
+The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available in the system. If you are using the Megadetector, it is not recommended to use the total number of CPUs available. Defaults to `3`
 
 #### `max_epochs (int, optional)`
 
 The maximum number of epochs to run during training. Defaults to `None`
 
-#### `early_stopping (bool, optional)`
+#### `early_stopping_config (zamba.models.config.EarlyStoppingConfig, optional)`
 
-Whether to monitor a metric during model training and stop training when the metric stops improving. Uses [`pytorch_lightning.callbacks.early_stopping`](https://pytorch-lightning.readthedocs.io/en/latest/common/early_stopping.html). Defaults to `True`
-
-#### `early_stopping_params (zamba.models.config.EarlyStoppingConfig, optional)`
-
-Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) if `early_stopping` is `True`. The default values are specified in the `EarlyStoppingConfig` <!-- TODO: add link to github source code><!--> class: `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
-
-#### `tensorboard_log_dir (str, optional)`
-
-Pytorch Lightning can log to a local file system in TensorBoard format with [TensorBoardLogger](https://pytorch-lightning.readthedocs.io/en/latest/api/pytorch_lightning.loggers.tensorboard.html). The directory in which to save these logs is set to `zamba/models/<tensorboard_log_dir>/`. Defaults to `tensorboard_logs`
+Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the `EarlyStoppingConfig` <!-- TODO: add link to github source code><!--> class: `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
 
 #### `weight_download_region [us|eu|asia]`
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
-
-#### `cache_dir (FilePath, optional)`
-
-The directory where the trained model will be saved. If it is `None` (the default), the model will be cached to an automatic temp directory at `~/.cache/zamba`
 
 #### `split_proportions (dict(str, int), optional)`
 
@@ -305,6 +332,10 @@ The proportion of data to use during training, validation, and as a holdout set.
 #### `save_directory (Path, optional)`
 
 Directory in which to save model checkpoint and configuration file. If not specified, will save to a folder called 'zamba_{model_name}' in your working directory.
+
+#### `overwrite_save_directory (bool, optional)`
+
+ If True, will save outputs in `save_directory` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_directory` with model outputs. Defaults to `False`.
 
 #### `skip_load_validation (bool, optional)`
 
@@ -317,3 +348,7 @@ Whether to instantiate the model with base weights. This means starting from the
 #### `predict_all_zamba_species (bool, optional)`
 
 Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `predict_all_zamba_species` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`.
+
+#### `model_cache_dir (Path, optional)`
+
+Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory, which is often an automatic temp directory at `~/.cache/zamba`. Defaults to `None`.

@@ -118,13 +118,13 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
 <!-- TODO: add link to yaml file><!-->
 
-By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
 The full default video loading configuration is:
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 240
+  model_input_width: 426
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -140,15 +140,15 @@ The above is pulled in by default if `time_distributed` is used in the command l
 === "YAML file"
     ```yaml
     video_loader_config:
-      video_height: # any integer
-      video_width: # any integer
+      model_input_height: # any integer
+      model_input_width: # any integer
       total_frames: 16
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-      video_height=..., # any integer
-      video_width=..., # any integer
+      model_input_height=..., # any integer
+      model_input_width=..., # any integer
       total_frames=16
     )
     ```
@@ -177,14 +177,14 @@ The `slowfast` model was trained using the same data as the [`time_distributed` 
 
 <!-- TODO: add link to yaml file><!-->
 
-By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
 The full default video loading configuration is:
 
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 240
+  model_input_width: 426
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -200,15 +200,15 @@ The above is pulled in by default if `slowfast` is used in the command line. If 
 === "YAML file"
     ```yaml
     video_loader_config:
-      video_height: # any integer >= 200
-      video_width: # any integer >= 200
+      model_input_height: # any integer >= 200
+      model_input_width: # any integer >= 200
       total_frames: 32
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-      video_height=..., # any integer >= 200
-      video_width=..., # any integer >= 200
+      model_input_height=..., # any integer >= 200
+      model_input_width=..., # any integer >= 200
       total_frames=32
     )
     ```
@@ -234,13 +234,13 @@ Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning da
 
 <!-- TODO: add link to yaml file><!-->
 
-By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
 The full default video loading configuration is:
 ```yaml
 video_loader_config:
-  video_height: 224
-  video_width: 224
+  model_input_height: 240
+  model_input_width: 426
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -257,28 +257,28 @@ The above is pulled in by default if `european` is used in the command line. If 
 === "YAML file"
     ```yaml
     video_loader_config:
-      video_height: # any integer
-      video_width: # any integer
+      model_input_height: # any integer
+      model_input_width: # any integer
       total_frames: 16
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-      video_height=..., # any integer
-      video_width=..., # any integer
+      model_input_height=..., # any integer
+      model_input_width=..., # any integer
       total_frames=16
     )
     ```
 
-<a id='megadetectorliteyolox'></a>
+<a id='megadetectorlite'></a>
 
-## MegadetectorLiteYoloX
+## MegadetectorLite
 
-Running any of the three models that ship with `zamba` on all frames of a video would be incredibly time consuming and computationally intensive. Instead, `zamba` uses a more efficient object detection model called MegadetectorLiteYoloX to determine the likelihood that each frame contains an animal. Then, only the frames with the highest probability of detection can be passed to the model.
+Running any of the three models that ship with `zamba` on all frames of a video would be incredibly time consuming and computationally intensive. Instead, `zamba` uses a more efficient object detection model called MegadetectorLite to determine the likelihood that each frame contains an animal. Then, only the frames with the highest probability of detection can be passed to the model.
 
-MegadetectorLiteYoloX combines two open-source models:
+MegadetectorLite combines two open-source models:
 
 * [Megadetector](https://github.com/microsoft/CameraTraps/blob/master/megadetector.md) is a pretrained image model designed to detect animals, people, and vehicles in camera trap videos.
 * [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) is a high-performance, lightweight object detection model that is much less computationally intensive than Megadetector.
 
-Megadetector is much better at identifying frames with animals than YOLOX, but too computationally intensive to run on every frame. MegadetectorLiteYoloX was created by training the YOLOX model using the predictions of the Megadetector as ground truth - this method is called [student-teacher training](https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764).
+While highly accurate, Megadetector is too computationally intensive to run on every frame. MegadetectorLite was created by training a YOLOX model using the predictions of the Megadetector as ground truth - this method is called [student-teacher training](https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764).
