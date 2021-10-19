@@ -31,9 +31,9 @@ The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a mode
 
 ## Video size
 
-When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to either predict on or train from. The default video loading configuration for all three pretrained models resizes images to 224x224 pixels. 
+When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to either predict on or train from. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels. 
 
-Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. To resize all images to 50x50 pixels instead of the default 224x224: 
+Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. To resize all images to 50x50 pixels instead of the default 240x426: 
 
 === "YAML file"
     ```yaml
@@ -107,9 +107,9 @@ A simple option is to sample frames that are evenly distributed throughout a vid
     )
     ```
 
-### MegadetectorLiteYoloX
+### Megadetector
 
-You can use a pretrained object detection model called [MegadetectorLiteYoloX](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. If `megadetector_lite_config` is None, the MegadetectorLiteYoloX model will not be used. 
+You can use a pretrained object detection model called [Megadetector](models.md#megadetectorliteyolox) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the megadetector model. If `megadetector_lite_config` is None, the Megadetector model will not be used. 
 
 For example, to take the 16 frames with the highest probability of detection:
 
@@ -125,8 +125,8 @@ For example, to take the 16 frames with the highest probability of detection:
     In Python, these can be specified in the `megadetector_lite_config` argument passed to `VideoLoaderConfig`:
     ```python hl_lines="6 7 8 9 10"
     video_loader_config = VideoLoaderConfig(
-        model_input_height=224,
-        model_input_width=224,
+        model_input_height=240,
+        model_input_width=426,
         crop_bottom_pixels=50,
         ensure_total_frames=True,
         megadetector_lite_config={
@@ -142,22 +142,27 @@ For example, to take the 16 frames with the highest probability of detection:
     train_model(video_loader_config=video_loader_config, train_config=train_config)
     ```
 
-Using `model_input_height` and `model_input_width` resizes images *after* any frame selection is done. If you are using the MegaDetector, the frames that are input into MegadetectorLiteYoloX will still be full size. Using `frame_selection_height` and `frame_selection_width` resizes images *before* they are input to MegadetectorLiteYoloX. Inputting full size images is recommended, especially if your species of interest are on the smaller side, but resizing before using MegadetectorLiteYoloX will speed up training. The above feeds full-size images to MegadetectorLiteYoloX, and then resizes images before running them through the neural network.
+If you are using the [Megadetector](models.md#megadetectorliteyolox) for frame selection, there are two ways that you can specify frame resizing:
 
-To see all of the options that can be passed to `MegadetectorLiteYoloX`, see the `MegadetectorLiteYoloXConfig` class. <!-- TODO: add link to github code><!-->
+- `frame_selection_width` and `frame_selection_height` resize images *before* they are input to the frame selection method. If both are `None`, the full size images will be used during frame selection. Using full size images for selection is recommended for better detection of smaller species, but will slow down training and inference.
+- `model_input_height` and `model_input_width` resize images *after* frame selection. These specify the image size that is passed to the actual model.
+
+You can specify both of the above at once, just one, or neither. The example code feeds full-size images to the Megadetector, and then resizes images before running them through the neural network.
+
+To see all of the options that can be passed to the Megadetector, see the `MegadetectorLiteYoloXConfig` class. <!-- TODO: add link to github code><!-->
 
 ## Speed up training
 
-Training will run faster if you increase `num_workers` or increase `batch_size`. `num_workers` is the number of subprocesses to use for data loading. The minimum is 0, meaning the data will be loaded in the main process, and the maximum is one less than the number of CPUs in your system. By default `num_workers` is set to 3 and `batch_size` is set to 8. Increasing either of these will use more GPU memory, and could raise an error if the memory required is more than your machine has available.
+Training will run faster if you increase `num_workers` and/or increase `batch_size`. `num_workers` is the number of subprocesses to use for data loading. The minimum is 0, meaning the data will be loaded in the main process, and the maximum is one less than the number of CPUs in your system. By default `num_workers` is set to 3 and `batch_size` is set to 2. Increasing either of these will use more GPU memory, and could raise an error if the memory required is more than your machine has available.
 
-Both can be specified in either [`predict_config`](configurations.md#prediction-arguments) or [`train_config`](configurations.md#training-arguments). For example, to increase `num_workers` to 5 and `batch_size` to 10 for inference:
+Both can be specified in either [`predict_config`](configurations.md#prediction-arguments) or [`train_config`](configurations.md#training-arguments). For example, to increase `num_workers` to 5 and `batch_size` to 4 for inference:
 
 === "YAML file"
     ```yaml
     predict_config:
         data_directory: example_vids/
         num_workers: 5
-        batch_size: 10
+        batch_size: 4
         # ... other parameters
     ```
 === "Python"
@@ -165,7 +170,7 @@ Both can be specified in either [`predict_config`](configurations.md#prediction-
     predict_config = PredictConfig(
         data_directory="example_vids/",
         num_workers=5,
-        batch_size=10,
+        batch_size=4,
         # ... other parameters
     )
     ```

@@ -118,13 +118,13 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
 <!-- TODO: add link to yaml file><!-->
 
-By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [Megadetector](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
 The full default video loading configuration is:
 ```yaml
 video_loader_config:
-  model_input_height: 224
-  model_input_width: 224
+  model_input_height: 240
+  model_input_width: 426
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -177,14 +177,14 @@ The `slowfast` model was trained using the same data as the [`time_distributed` 
 
 <!-- TODO: add link to yaml file><!-->
 
-By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [Megadetector](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
 The full default video loading configuration is:
 
 ```yaml
 video_loader_config:
-  model_input_height: 224
-  model_input_width: 224
+  model_input_height: 240
+  model_input_width: 426
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:
@@ -234,13 +234,13 @@ Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning da
 
 <!-- TODO: add link to yaml file><!-->
 
-By default, an efficient object detection model called [MegadetectorLiteYoloX](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 224x224 pixels.
+By default, an efficient object detection model called [Megadetector](#megadetectorliteyolox) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
 The full default video loading configuration is:
 ```yaml
 video_loader_config:
-  model_input_height: 224
-  model_input_width: 224
+  model_input_height: 240
+  model_input_width: 426
   crop_bottom_pixels: 50
   ensure_total_frames: True
   megadetector_lite_config:

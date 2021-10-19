@@ -21,8 +21,8 @@ All video loading arguments can be specified either in a [YAML file](yaml-config
 === "YAML file"
     ```yaml
     video_loader_config:
-        model_input_height: 50
-        model_input_width: 50
+        model_input_height: 240
+        model_input_width: 426
         total_frames: 16
         # ... other parameters
     ```
@@ -34,9 +34,9 @@ All video loading arguments can be specified either in a [YAML file](yaml-config
 
     predict_config = PredictConfig(data_directory="example_vids/")
     video_loader_config = VideoLoaderConfig(
-        model_input_height=224, 
-        model_input_width=224, 
-        total_frames=16.
+        model_input_height=240, 
+        model_input_width=426, 
+        total_frames=16
         # ... other parameters
     ) 
     predict_model(
@@ -87,11 +87,11 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLiteYoloX model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the MegadetectorLiteYoloX model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [Megadetector model](models.md#megadetectorliteyolox) for frame selection. For all possible options, see the MegadetectorLiteYoloXConfig<!-- TODO: add github link><!-->. If `megadetector_lite_config` is `None` (the default), the Megadetector model will not be used to select frames.
 
 #### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
-Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. Using full size videos (setting to `None`) is recommended for MegadetectorLite, especially if your species of interest are smaller. Default to `None`
+Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. Using full size videos (setting to `None`) is recommended for MegadetectorLite, especially if your species of interest are smaller. Defaults to `None`
 
 #### `total_frames (int, optional)`
 
@@ -132,7 +132,7 @@ Cache directory where preprocessed videos will be saved upon first load. Alterna
 
 #### `cleanup_cache (bool, optional)`
 
-Whether to delete the cache dir after training or predicting ends. Defaults to `False`
+Whether to delete the cache directory after training or predicting ends. Defaults to `False`
 
 <a id='prediction-arguments'></a>
 
@@ -146,9 +146,9 @@ All possible model inference parameters are defined by the `PredictConfig` class
 
 class PredictConfig(ZambaBaseModel)
  |  PredictConfig(*, 
- data_directory: pydantic.types.DirectoryPath = # your current working directory ,
- filepaths: pydantic.types.FilePath = None,
- checkpoint: pydantic.types.FilePath = None,
+ data_directory: DirectoryPath = # your current working directory ,
+ filepaths: FilePath = None,
+ checkpoint: FilePath = None,
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  gpus: int = 0, 
  num_workers: int = 3,
@@ -188,7 +188,7 @@ The number of GPUs to use during inference. By default, all of the available GPU
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available in the system. If you are using MegadetectorLiteYoloX, it is not recommended to use the total number of CPUs available. Defaults to `3`
+The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available on the machine. If you are using MegadetectorLite for frame selection, it is not recommended to use the total number of CPUs available. Defaults to `3`
 
 #### `batch_size (int, optional)`
 
@@ -210,7 +210,7 @@ By default no threshold is passed, `proba_threshold=None`. This will return a pr
 
 #### `output_class_names (bool, optional)`
 
-Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the s pecies with the highest class probability, or `blank` if the most likely classification is no animal. Defaults to `False`
+Setting this option to `True` yields the most concise output `zamba` is capable of. The highest species probability in a video is taken to be the _only_ species in that video, and the output returned is simply the video name and the name of the species with the highest class probability, or `blank` if the most likely classification is no animal. Defaults to `False`
 
 #### `weight_download_region [us|eu|asia]`
 
@@ -223,7 +223,7 @@ By default, before kicking off inference `zamba` will iterate through all of the
 
 #### `model_cache_dir (Path, optional)`
 
-Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory, which is often an automatic temp directory at `~/.cache/zamba`. Defaults to `None`.
+Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory (e.g. `~/.cache`). Defaults to `None`
 
 <a id='training-arguments'></a>
 
@@ -237,9 +237,9 @@ All possible model training parameters are defined by the `TrainConfig` class<!-
 
 class TrainConfig(ZambaBaseModel)
  |  TrainConfig(*, 
- labels: Union[pydantic.types.FilePath, pandas.core.frame.DataFrame],
- data_directory: pydantic.types.DirectoryPath = # your current working directory ,
- checkpoint: pydantic.types.FilePath = None,
+ labels: Union[FilePath, pandas.DataFrame],
+ data_directory: DirectoryPath = # your current working directory ,
+ checkpoint: FilePath = None,
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  dry_run: Union[bool, int] = False,
@@ -303,7 +303,7 @@ Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.011
 
 #### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
-Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in `BackboneFinetuning`, but with the ability to freeze batch norm layers during the freeze phase. See `zamba.pytorch.finetuning` for details.<!-- TODO: add github link><!--> The default values are specified in the `BackboneFinetuneConfig` <!-- TODO: add link to github source code><!--> class: `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
+Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the `BackboneFinetuneConfig` <!-- TODO: add link to github source code><!--> class: `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
 
 #### `gpus (int, optional)`
 
@@ -311,7 +311,7 @@ The number of GPUs to use during training. By default, all of the available GPUs
 
 #### `num_workers (int, optional)`
 
-The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available in the system. If you are using MegadetectorLiteYoloX, it is not recommended to use the total number of CPUs available. Defaults to `3`
+The number of CPUs to use during training. The maximum value for `num_workers` is the number of CPUs available in the system. If you are using the Megadetector, it is not recommended to use the total number of CPUs available. Defaults to `3`
 
 #### `max_epochs (int, optional)`
 

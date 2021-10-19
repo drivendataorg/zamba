@@ -7,8 +7,8 @@ The basic structure of a YAML model configuration is:
 ```yaml
 $ cat basic_config.yaml
 video_loader_config:
-  model_input_height: 224
-  model_input_width: 224
+  model_input_height: 240
+  model_input_width: 426
   total_frames: 16
   # other video loading parameters
 
@@ -24,12 +24,12 @@ train_config:
   # other training parameters, eg. batch_size
 ```
 
-For example, the configuration below will predict labels for the videos in `example_vids` using the `time_distributed` model. When videos are loaded, each will be resized to 224x224 pixels and 16 frames will be selected:
+For example, the configuration below will predict labels for the videos in `example_vids` using the `time_distributed` model. When videos are loaded, each will be resized to 240x426 pixels and 16 frames will be selected:
 
 ```yaml
 video_loader_config:
-  model_input_height: 224
-  model_input_width: 224
+  model_input_height: 240
+  model_input_width: 426
   total_frames: 16
 
 predict_config:
@@ -77,7 +77,7 @@ To instantiate the `ModelManager` based on a configuration file saved at `test_c
 ModelConfig(
   video_loader_config=VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False, 
                                         scene_threshold=None, megadetector_lite_config=None, 
-                                        model_input_height=224, model_input_width=224, 
+                                        model_input_height=240, model_input_width=426, 
                                         total_frames=16, ensure_total_frames=True, 
                                         fps=None, early_bias=False, frame_indices=None,
                                         evenly_sample_total_frames=False, pix_fmt='rgb24'
@@ -116,49 +116,39 @@ In the command line, the default configuration for each model is passed in using
 For example, the default configuration for the [`time_distributed` model](models.md#time-distributed) is:
 
 ```yaml
-video_loader_config:
-  model_input_height: 224
-  model_input_width: 224
-  crop_bottom_pixels: 50
-  ensure_total_frames: True
-  megadetector_lite_config:
-    confidence: 0.25
-    fill_model: "score_sorted"
-    n_frames: 16
-  total_frames: 16
-
 train_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
-  # labels: YOUR_LABELS_CSV_HERE
   model_name: time_distributed
-  # or
-  # checkpoint: YOUR_CKPT_HERE
-  batch_size: 8
-  num_workers: 3
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 1
+    pre_train_bn: True
+    train_bn: False
+    unfreeze_backbone_at_epoch: 3
+    verbose: True
+  early_stopping_config:
+    patience: 5
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:
-      milestones: [3]
       gamma: 0.5
-      verbose: True
-  auto_lr_find: True
-  backbone_finetune: True
-  backbone_finetune_params:
-    unfreeze_backbone_at_epoch: 3
-    verbose: True
-    pre_train_bn: True
-    multiplier: 1
-  early_stopping: True
-  early_stopping_params:
-    patience: 5
+      milestones:
+      - 3
+      verbose: true
+
+video_loader_config:
+  model_input_height: 240
+  model_input_width: 426
+  crop_bottom_pixels: 50
+  fps: 4
+  total_frames: 16
+  ensure_total_frames: True
+  megadetector_lite_config:
+    confidence: 0.25
+    fill_mode: score_sorted
+    n_frames: 16
 
 predict_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
-  # or
-  # filepaths: YOUR_FILEPATH_HERE
   model_name: time_distributed
-  # or
-  # checkpoint: YOUR_CKPT_HERE
 ```
 
 For reference, the below shows how to specify the same video loading and training parameters using only the Python package:
@@ -169,37 +159,40 @@ from zamba.models.config import TrainConfig
 from zamba.models.model_manager import train_model
 
 video_loader_config = VideoLoaderConfig(
-    model_input_height=224,
-    model_input_width=224,
+    model_input_height=240,
+    model_input_width=426,
     crop_bottom_pixels=50,
+    fps=4,
+    total_frames=16,
     ensure_total_frames=True,
     megadetector_lite_config={
-        "confidence": 0.25,
-        "fill_mode": "score_sorted",
+        "confidence": 0.25, 
+        "fill_mode": "score_sorted", 
         "n_frames": 16,
     },
-    total_frames=16,
 )
 
 train_config = TrainConfig(
     # data_directory=YOUR_DATA_DIRECTORY_HERE,
     # labels=YOUR_LABELS_CSV_HERE,
     model_name="time_distributed",
-    # or
-    # checkpoint=YOUR_CKPT_HERE,
-    batch_size=8,
-    backbone_finetune=True,
-    backbone_finetune_params={
+    backbone_finetune_config={
+        "backbone_initial_ratio_lr": 0.01,
         "unfreeze_backbone_at_epoch": 3,
         "verbose": True,
         "pre_train_bn": True,
+        "train_bn": False,
         "multiplier": 1,
     },
-    num_workers=3,
-    auto_lr_find=True,
-    early_stopping=True,
-    early_stopping_params={"patience": 5,},
+    early_stopping_config={"patience": 5},
+    scheduler_config={
+        "scheduler": "MultiStepLR",
+        "scheduler_params": {"gamma": 0.5, "milestones": 3, "verbose": True,},
+    },
 )
 
-train_model(train_config=train_config, video_loader_config=video_loader_config)
+train_model(
+    train_config=train_config,
+    video_loader_config=video_loader_config,
+)
 ```

@@ -79,7 +79,7 @@ $ zamba predict --config predict_configuration.yaml
 
 Save all of your videos within one folder.
 
-* They can be in nested directories within the folder.
+* They can be in nested subdirectories within the folder.
 * Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 Add the path to your video folder. For example, if your videos are in a folder called `example_vids`:
