@@ -16,7 +16,7 @@ import ffmpeg
 from loguru import logger
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, root_validator, validator
+from pydantic import BaseModel, root_validator, validator, FilePath
 
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.megadetector_lite_yolox import (
@@ -205,8 +205,8 @@ class VideoLoaderConfig(BaseModel):
     pix_fmt: Optional[str] = "rgb24"
     model_input_height: Optional[int] = None
     model_input_width: Optional[int] = None
-    cache_dir: Optional[Path] = None
-    cleanup_cache: bool = False
+    cache_dir: Optional[FilePath] = None
+    cleanup_cache: Optional[bool] = False
 
     class Config:
         extra = "forbid"
