@@ -156,7 +156,13 @@ def test_train_save_directory_overwrite(
 
     assert not any([f.name.startswith("version_") for f in config.save_directory.iterdir()])
 
-    for f in ["train_configuration.yaml", "test_metrics.json", "val_metrics.json", "dummy.ckpt"]:
+    # when training from checkpoint, model_name is None so get PTL default ckpt name
+    for f in [
+        "train_configuration.yaml",
+        "test_metrics.json",
+        "val_metrics.json",
+        "epoch=0-step=10.ckpt",
+    ]:
         assert (config.save_directory / f).exists()
 
 
