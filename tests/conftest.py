@@ -20,10 +20,9 @@ from zamba.pytorch_lightning.utils import (
     register_model,
     ZambaVideoClassificationLightningModule,
 )
-from zamba.settings import ROOT_DIRECTORY
 
 
-ASSETS_DIR = ROOT_DIRECTORY / "tests" / "assets"
+ASSETS_DIR = Path(__file__).parent / "assets"
 TEST_VIDEOS_DIR = ASSETS_DIR / "videos"
 
 random.seed(56745)

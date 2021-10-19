@@ -8,14 +8,13 @@ from zamba.models.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
-from zamba.settings import ROOT_DIRECTORY
 
-TEST_ASSETS_DIRECTORY = ROOT_DIRECTORY / "tests" / "assets"
+from conftest import ASSETS_DIR
 
 
 @pytest.fixture
 def dog():
-    return Image.open(TEST_ASSETS_DIRECTORY / "dog.jpg")
+    return Image.open(ASSETS_DIR / "dog.jpg")
 
 
 @pytest.fixture

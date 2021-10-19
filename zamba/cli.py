@@ -13,9 +13,9 @@ from zamba.models.config import (
     PredictConfig,
     TrainConfig,
 )
+from zamba import MODELS_DIRECTORY
 from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
-from zamba.settings import MODELS_DIRECTORY
 from zamba.version import __version__
 
 
