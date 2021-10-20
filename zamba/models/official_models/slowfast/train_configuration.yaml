@@ -44,7 +44,7 @@ train_config:
     unfreeze_backbone_at_epoch: 3
     verbose: true
   batch_size: 2
-  checkpoint: zamba_slowfast.ckpt
+  checkpoint: null
   data_directory: /home/ubuntu/zamba-algorithms
   dry_run: false
   early_stopping_config:

@@ -45,7 +45,7 @@ train_config:
     verbose: true
   batch_size: 1
   cache_dir: /home/ubuntu/.cache/zamba
-  checkpoint: zamba_time_distributed.ckpt
+  checkpoint: null
   data_directory: /home/ubuntu/zamba-algorithms
   dry_run: false
   early_stopping_config:
