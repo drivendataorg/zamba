@@ -15,6 +15,7 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.plugins import DDPPlugin
 import torch
 
+from zamba import MODELS_DIRECTORY
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
     ModelConfig,
