@@ -58,3 +58,57 @@ Staging an older version looks something like this:
 ```bash
 mike deploy v1.1 --title="v1.1.5"
 ```
+
+## Adding a new model
+
+Only models that were trained with `zamba` can be released.
+
+### Training a model with zamba
+
+To train a new model, specify the desired parameters in a config.yaml and then run
+```
+zamba train --config my_config.yaml
+```
+
+To retrain an existing model, it's easiest to work from one of the templates. You'll want to add any data and machine specific parameters.
+
+If you're retraining and not finetuning, remember to set `from_scratch: true`.
+
+For example, you might want to add the following to `train_config` in your model template of choice.
+
+```
+labels: my_labels.csv
+batch_size: 2
+num_workers: 3
+gpus: 1
+save_dir: my_save_dir
+skip_load_validation: true
+from_scratch: true
+```
+
+### Publishing a model
+
+Once your model is trained, copy the resulting directory to a folder in `s3://drivendata-client-zamba/data/results`. The directory should contain the following files:
+
+- model checkpoint file
+- `config.yaml` (configuration used for training)
+- `train_configuration.yaml` (automatically generated)
+- `predict_configuration.yaml` (automatically generated)
+- `hparams.yaml` (automatically generated)
+
+*Note: all files should be in the same level as the checkpoint file.*
+
+To publish an improved version of an existing model,
+- update just the weights filepath for the model in `WEIGHT_LOOKUP` in `zamba/models/config.py`
+
+If you are adding a new model,
+- add the model and weights filepath as a new entry in the `WEIGHT_LOOKUP` dictionary
+- add the model name to `ModelEnum`
+- incorporate the new model into the test suite
+
+Then, run
+```
+make publish_models
+```
+
+This will generate a public file name for each model based on the config hash and upload the model weights to the three DrivenData public s3 buckets. This will generate a folder in `zamba/models/official_models/{your_name_name}` that contains the official config as well as reference yaml and json files. You should PR everything in this folder.
