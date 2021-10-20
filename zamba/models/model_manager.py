@@ -279,6 +279,10 @@ def train_model(
     except git.exc.InvalidGitRepositoryError:
         git_hash = None
 
+    # remove public checkpoint that was used to get default hparams
+    if train_config.from_scratch:
+        train_config.checkpoint = None
+
     configuration = {
         "git_hash": git_hash,
         "model_class": model.model_class,
