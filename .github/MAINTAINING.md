@@ -72,7 +72,7 @@ zamba train --config my_config.yaml
 
 To retrain an existing model, it's easiest to work from one of the templates. You'll want to add any data and machine specific parameters.
 
-If you're retraining and not finetuning, remember to set `from_scratch: true`.  This means starting with ImageNet weights for TimeDistributedEfficientNet and Ketics weights for SlowFast.
+If you're retraining and not finetuning, remember to set `from_scratch: true`. This means starting with ImageNet weights for TimeDistributedEfficientNet and Ketics weights for SlowFast.
 
 For example, you might want to add the following to `train_config` in your model template of choice.
 
