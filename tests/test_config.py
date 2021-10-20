@@ -224,7 +224,7 @@ def test_from_scratch(labels_absolute_path):
     assert config.model_name == "time_distributed"
     assert config.from_scratch
     # from lookup in validation
-    assert config.checkpoint == "zamba_time_distributed.ckpt"
+    assert config.checkpoint == "time_distributed_029d23b6a4e109cdea20056cd38006dbcbe3f330.ckpt"
 
     with pytest.raises(ValueError) as error:
         TrainConfig(labels=labels_absolute_path, from_scratch=True, model_name=None)
