@@ -168,8 +168,9 @@ def validate_model_name_and_checkpoint(cls, values):
         values["model_name"] = None
 
     elif checkpoint is None and model_name is not None:
-        # look up public weights file from official models config
-        values["checkpoint"] = get_model_checkpoint_filename(model_name)
+        if not values.get("from_scratch"):
+            # get public weights file from official models config
+            values["checkpoint"] = get_model_checkpoint_filename(model_name)
 
     return values
 

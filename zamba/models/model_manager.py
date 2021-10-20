@@ -18,6 +18,7 @@ import torch
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
     ModelConfig,
+    ModelEnum,
     MODEL_MAPPING,
     SchedulerConfig,
     TrainConfig,
@@ -40,6 +41,7 @@ def instantiate_model(
     model_cache_dir: Optional[os.PathLike],
     labels: Optional[pd.DataFrame],
     from_scratch: bool = False,
+    model_name: Optional[ModelEnum] = None,
     predict_all_zamba_species: bool = True,
 ) -> ZambaVideoClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
@@ -63,6 +65,8 @@ def instantiate_model(
         from_scratch (bool): Whether to instantiate the model with base weights. This means starting
             from the imagenet weights for image based models and the Kinetics weights for video models.
             Defaults to False. Only used if labels is not None.
+        model_name (ModelEnum, optional): Model name used to look up default hparams used for that model.
+            Only relevant if training from scratch.
         predict_all_zamba_species(bool): Whether the species outputted by the model should be all zamba species.
             If you want the model classes to only be the species in your labels file, set to False.
             Defaults to True. Only used if labels is not None.
@@ -70,15 +74,22 @@ def instantiate_model(
     Returns:
         ZambaVideoClassificationLightningModule: Instantiated model
     """
-    if not Path(checkpoint).exists():
-        logger.info("Downloading weights for model.")
-        checkpoint = download_weights(
-            filename=str(checkpoint),
-            weight_region=weight_download_region,
-            destination_dir=model_cache_dir,
-        )
+    if from_scratch:
+        # get hparams from official model
+        with (MODELS_DIRECTORY / f"{model_name}/hparams.yaml").open() as f:
+            hparams = yaml.safe_load(f)
 
-    hparams = torch.load(checkpoint, map_location=torch.device("cpu"))["hyper_parameters"]
+    else:
+        if not Path(checkpoint).exists():
+            logger.info("Downloading weights for model.")
+            checkpoint = download_weights(
+                filename=str(checkpoint),
+                weight_region=weight_download_region,
+                destination_dir=model_cache_dir,
+            )
+
+        hparams = torch.load(checkpoint, map_location=torch.device("cpu"))["hyper_parameters"]
+
     model_class = available_models[hparams["model_class"]]
 
     logger.info(f"Instantiating model: {model_class.__name__}")
@@ -199,6 +210,7 @@ def train_model(
         model_cache_dir=train_config.model_cache_dir,
         labels=train_config.labels,
         from_scratch=train_config.from_scratch,
+        model_name=train_config.model_name,
         predict_all_zamba_species=train_config.predict_all_zamba_species,
     )
 
@@ -278,10 +290,6 @@ def train_model(
         git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
     except git.exc.InvalidGitRepositoryError:
         git_hash = None
-
-    # remove public checkpoint that was used to get default hparams
-    if train_config.from_scratch:
-        train_config.checkpoint = None
 
     configuration = {
         "git_hash": git_hash,
