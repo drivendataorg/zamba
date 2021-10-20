@@ -116,7 +116,7 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
 ### Default configuration
 
-The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/v2/zamba/models/official_models/time_distributed/config.yaml).
+The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml).
 
 By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
@@ -175,7 +175,7 @@ The `slowfast` model was trained using the same data as the [`time_distributed` 
 
 ### Default configuration
 
-The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/v2/zamba/models/official_models/slowfast/config.yaml).
+The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/slowfast/config.yaml).
 
 By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `slowfast` is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
@@ -232,7 +232,7 @@ Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning da
 
 ### Default configuration
 
-The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/v2/zamba/models/official_models/european/config.yaml).
+The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/european/config.yaml).
 
 By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
 
