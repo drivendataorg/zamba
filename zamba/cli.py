@@ -8,12 +8,12 @@ import yaml
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
-    MODEL_MAPPING,
     ModelConfig,
     ModelEnum,
     PredictConfig,
     TrainConfig,
 )
+from zamba import MODELS_DIRECTORY
 from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
 from zamba.version import __version__
@@ -60,11 +60,6 @@ def train(
     weight_download_region: RegionEnum = typer.Option(
         None, help="Server region for downloading weights."
     ),
-    cache_dir: Path = typer.Option(
-        None,
-        exists=False,
-        help="Path to directory for model weights. Alternatively, specify with environment variable `ZAMBA_CACHE_DIR`. If not specified, user's cache directory is used.",
-    ),
     skip_load_validation: bool = typer.Option(
         None,
         help="Skip check that verifies all videos can be loaded prior to training. Only use if you're very confident all your videos can be loaded.",
@@ -85,7 +80,7 @@ def train(
             config_dict = yaml.safe_load(f)
         config_file = config
     else:
-        with MODEL_MAPPING[model.value]["config"].open() as f:
+        with (MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
             config_dict = yaml.safe_load(f)
         config_file = None
 
@@ -126,9 +121,6 @@ def train(
 
     if weight_download_region is not None:
         train_dict["weight_download_region"] = weight_download_region
-
-    if cache_dir is not None:
-        train_dict["cache_dir"] = cache_dir
 
     if skip_load_validation is not None:
         train_dict["skip_load_validation"] = skip_load_validation
@@ -171,7 +163,6 @@ def train(
     GPUs: {config.train_config.gpus}
     Dry run: {config.train_config.dry_run}
     Save directory: {config.train_config.save_directory}
-    Cache directory: {config.train_config.cache_dir}
     """
 
     if yes:
@@ -241,11 +232,6 @@ def predict(
     weight_download_region: RegionEnum = typer.Option(
         None, help="Server region for downloading weights."
     ),
-    cache_dir: Path = typer.Option(
-        None,
-        exists=False,
-        help="Path to directory for model weights. Alternatively, specify with environment variable `ZAMBA_CACHE_DIR`. If not specified, user's cache directory is used.",
-    ),
     skip_load_validation: bool = typer.Option(
         None,
         help="Skip check that verifies all videos can be loaded prior to inference. Only use if you're very confident all your videos can be loaded.",
@@ -270,7 +256,7 @@ def predict(
             config_dict = yaml.safe_load(f)
         config_file = config
     else:
-        with MODEL_MAPPING[model.value]["config"].open() as f:
+        with (MODELS_DIRECTORY / f"{model.value}/config.yaml").open() as f:
             config_dict = yaml.safe_load(f)
         config_file = None
 
@@ -322,9 +308,6 @@ def predict(
     if weight_download_region is not None:
         predict_dict["weight_download_region"] = weight_download_region
 
-    if cache_dir is not None:
-        predict_dict["cache_dir"] = cache_dir
-
     if skip_load_validation is not None:
         predict_dict["skip_load_validation"] = skip_load_validation
 
@@ -356,7 +339,6 @@ def predict(
     Proba threshold: {config.predict_config.proba_threshold}
     Output class names: {config.predict_config.output_class_names}
     Weight download region: {config.predict_config.weight_download_region}
-    Cache directory: {config.predict_config.cache_dir}
     """
 
     if yes:

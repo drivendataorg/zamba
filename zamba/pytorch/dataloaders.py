@@ -11,7 +11,7 @@ import torchvision.datasets.video_utils
 from torchvision.datasets.vision import VisionDataset
 import torchvision.transforms.transforms
 
-from zamba.data.video import load_video_frames, VideoLoaderConfig
+from zamba.data.video import cached_load_video_frames, VideoLoaderConfig
 
 
 def get_datasets(
@@ -96,7 +96,7 @@ class FfmpegZambaVideoDataset(VisionDataset):
 
     def __getitem__(self, index: int):
         try:
-            video = load_video_frames(
+            video = cached_load_video_frames(
                 filepath=self.video_paths[index], config=self.video_loader_config
             )
         except Exception as e:

@@ -14,43 +14,38 @@ import torch
 from tqdm import tqdm
 import yaml
 
+from zamba import MODELS_DIRECTORY
 from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.slowfast_models import SlowFast
-from zamba.models.efficientnet_models import TimeDistributedEfficientNet
 from zamba.models.utils import RegionEnum
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES, ROOT_DIRECTORY
+from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
 
 GPUS_AVAILABLE = torch.cuda.device_count()
 
-MODEL_MAPPING = {
+WEIGHT_LOOKUP = {
     "time_distributed": {
-        "full_name": "time_distributed_efficientnet_multilayer_head_mdlite",
-        "model_class": TimeDistributedEfficientNet,
-        "public_weights": "zamba_time_distributed_v2.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_multilayer_head_mdlite/version_1/checkpoints/epoch=15-step=128720-v4_zamba.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/time_distributed.yaml",
-        "transform": zamba_image_model_transforms(),
+        "public_weights": "zamba_time_distributed.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt",
     },
     "european": {
-        "full_name": "time_distributed_efficientnet_finetuned_european",
-        "model_class": TimeDistributedEfficientNet,
-        "public_weights": "zamba_european_v2.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/time_distributed_efficientnet_finetuned_european/version_1/checkpoints/epoch=4-step=2820-v3_zamba.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/european.yaml",
-        "transform": zamba_image_model_transforms(),
+        "public_weights": "zamba_european.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/time_distributed.ckpt",
     },
     "slowfast": {
-        "full_name": "slowfast_zamba_finetune_mdlite",
-        "model_class": SlowFast,
-        "public_weights": "zamba_slowfast_v2.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/slowfast_zamba_finetune_mdlite/version_0/checkpoints/epoch=9-step=20120-v5_zamba.ckpt",
-        "config": ROOT_DIRECTORY / "zamba/models/configs/slowfast.yaml",
-        "transform": slowfast_transforms(),
+        "public_weights": "zamba_slowfast.ckpt",
+        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_1/slowfast.ckpt",
     },
+}
+
+MODEL_MAPPING = {
+    "TimeDistributedEfficientNet": {
+        "transform": zamba_image_model_transforms(),
+        "n_frames": 16,
+    },
+    "SlowFast": {"transform": slowfast_transforms(), "n_frames": 32},
 }
 
 
@@ -79,16 +74,16 @@ def validate_gpus(gpus: int):
         return gpus
 
 
-def validate_cache_dir(cache_dir: Optional[Path]):
+def validate_model_cache_dir(model_cache_dir: Optional[Path]):
     """Set up cache directory for downloading model weight. Order of priority is:
     config argument, environment variable, or user's default cache dir.
     """
-    if cache_dir is None:
-        cache_dir = os.getenv("ZAMBA_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba")
+    if model_cache_dir is None:
+        model_cache_dir = os.getenv("MODEL_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba")
 
-    cache_dir = Path(cache_dir)
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    return cache_dir
+    model_cache_dir = Path(model_cache_dir)
+    model_cache_dir.mkdir(parents=True, exist_ok=True)
+    return model_cache_dir
 
 
 def check_files_exist_and_load(
@@ -166,7 +161,7 @@ def check_files_exist_and_load(
 
 def validate_model_name_and_checkpoint(cls, values):
     """Ensures a checkpoint file or model name is provided. If a model name is provided,
-    looks up the corresponding checkpoint file from MODEL_MAPPING.
+    looks up the corresponding checkpoint file from WEIGHT_LOOKUP.
     """
     checkpoint = values.get("checkpoint")
     model_name = values.get("model_name")
@@ -175,13 +170,15 @@ def validate_model_name_and_checkpoint(cls, values):
     if checkpoint is None and model_name is None:
         raise ValueError("Must provide either model_name or checkpoint path.")
 
-    # checkpoint always supercedes model
+    # checkpoint supercedes model
     elif checkpoint is not None and model_name is not None:
         logger.info(f"Using checkpoint file: {checkpoint}.")
+        # set model name to None so proper model class is retrieved from ckpt up upon instantiation
+        values["model_name"] = None
 
     elif checkpoint is None and model_name is not None:
         # look up public weights file based on model name
-        values["checkpoint"] = MODEL_MAPPING[model_name]["public_weights"]
+        values["checkpoint"] = WEIGHT_LOOKUP[model_name]["public_weights"]
 
     return values
 
@@ -309,7 +306,7 @@ class TrainConfig(ZambaBaseModel):
             for one epoch to detect any bugs prior to training the full model.
             Disables tuners, checkpoint callbacks, loggers, and logger callbacks.
             Defaults to False.
-        batch_size (int): Batch size to use for training. Defaults to 8.
+        batch_size (int): Batch size to use for training. Defaults to 2.
         auto_lr_find (bool): Use a learning rate finder algorithm when calling
             trainer.tune() to find a optimal initial learning rate. Defaults to True.
         backbone_finetune_params (BackboneFinetuneConfig, optional): Set parameters
@@ -321,7 +318,7 @@ class TrainConfig(ZambaBaseModel):
             Defaults to all of the available GPUs found on the machine.
         num_workers (int): Number of subprocesses to use for data loading. 0 means
             that the data will be loaded in the main process. The maximum value is
-            one less than the number of CPUs in the system. Defaults to 3.
+           the number of CPUs in the system. Defaults to 3.
         max_epochs (int, optional): Stop training once this number of epochs is
             reached. Disabled by default (None), which stops training at 1000 epochs.
         early_stopping_config (EarlyStoppingConfig, optional): Configuration for
@@ -331,9 +328,6 @@ class TrainConfig(ZambaBaseModel):
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (European Union), or "asia"
             (Asia Pacific). Defaults to "us".
-        cache_dir (Path, optional): Cache directory where downloaded model weights
-            will be saved. If None and the ZAMBA_CACHE_DIR environment variable is
-            not set, uses your default cache directory. Defaults to None.
         split_proportions (dict): Proportions used to divide data into training,
             validation, and holdout sets if a if a "split" column is not included in
             labels. Defaults to "train": 3, "val": 1, "holdout": 1.
@@ -356,6 +350,9 @@ class TrainConfig(ZambaBaseModel):
             Defaults to False.
         predict_all_zamba_species (bool): Output all zamba species rather than
             only the species in the labels file.
+        model_cache_dir (Path, optional): Cache directory where downloaded model weights
+            will be saved. If None and the MODEL_CACHE_DIR environment variable is
+            not set, uses your default cache directory. Defaults to None.
     """
 
     labels: Union[FilePath, pd.DataFrame]
@@ -364,7 +361,7 @@ class TrainConfig(ZambaBaseModel):
     scheduler_config: Optional[Union[str, SchedulerConfig]] = "default"
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     dry_run: Union[bool, int] = False
-    batch_size: int = 8
+    batch_size: int = 2
     auto_lr_find: bool = True
     backbone_finetune_config: Optional[BackboneFinetuneConfig] = BackboneFinetuneConfig()
     gpus: int = GPUS_AVAILABLE
@@ -372,20 +369,22 @@ class TrainConfig(ZambaBaseModel):
     max_epochs: Optional[int] = None
     early_stopping_config: Optional[EarlyStoppingConfig] = EarlyStoppingConfig()
     weight_download_region: RegionEnum = "us"
-    cache_dir: Optional[Path] = None
     split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
     save_directory: Path = Path.cwd()
     overwrite_save_directory: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
     predict_all_zamba_species: bool = True
+    model_cache_dir: Optional[Path] = None
 
     class Config:
         arbitrary_types_allowed = True
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
-    _validate_cache_dir = validator("cache_dir", allow_reuse=True, always=True)(validate_cache_dir)
+    _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
+        validate_model_cache_dir
+    )
 
     @root_validator(skip_on_failure=True)
     def validate_from_scratch_and_checkpoint(cls, values):
@@ -456,6 +455,8 @@ class TrainConfig(ZambaBaseModel):
                 logger.warning(
                     "Labels contains split column yet split_proprtions are also provided. Split column in labels takes precendece."
                 )
+                # set to None for clarity in final configuration.yaml
+                values["split_proportions"] = None
 
         # error if labels are entirely null
         null_labels = labels.label.isnull()
@@ -547,7 +548,7 @@ class PredictConfig(ZambaBaseModel):
             Defaults to all of the available GPUs found on the machine.
         num_workers (int): Number of subprocesses to use for data loading. 0 means
             that the data will be loaded in the main process. The maximum value is
-            one less than the number of CPUs in the system. Defaults to 3.
+            the number of CPUs in the system. Defaults to 3.
         batch_size (int): Batch size to use for inference. Defaults to 2.
         save (bool or Path): Path to a CSV to save predictions. If True is passed,
             "zamba_predictions.csv" is written to the current working directory.
@@ -564,14 +565,14 @@ class PredictConfig(ZambaBaseModel):
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (European Union), or "asia"
             (Asia Pacific). Defaults to "us".
-        cache_dir (Path, optional): Cache directory where downloaded model weights
-            will be saved. If None and no environment variable is set, will use your
-            default cache directory. Defaults to None.
-        skip_load_validation (bool). By default, zamba runs a check to verify that
+        skip_load_validation (bool): By default, zamba runs a check to verify that
             all videos can be loaded and skips files that cannot be loaded. This can
             be time intensive, depending on how many videos there are. If you are very
             confident all your videos can be loaded, you can set this to True and skip
             this check. Defaults to False.
+        model_cache_dir (Path, optional): Cache directory where downloaded model weights
+            will be saved. If None and no environment variable is set, will use your
+            default cache directory. Defaults to None.
     """
 
     data_directory: DirectoryPath = Path.cwd()
@@ -580,18 +581,20 @@ class PredictConfig(ZambaBaseModel):
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3
-    batch_size: int = 8
+    batch_size: int = 2
     save: Union[bool, Path] = True
     dry_run: bool = False
     proba_threshold: Optional[float] = None
     output_class_names: bool = False
     weight_download_region: RegionEnum = "us"
-    cache_dir: Optional[Path] = None
     skip_load_validation: bool = False
+    model_cache_dir: Optional[Path] = None
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
-    _validate_cache_dir = validator("cache_dir", allow_reuse=True, always=True)(validate_cache_dir)
+    _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
+        validate_model_cache_dir
+    )
 
     @root_validator(skip_on_failure=True)
     def validate_dry_run_and_save(cls, values):
@@ -751,7 +754,7 @@ class ModelConfig(ZambaBaseModel):
 
             logger.info(f"No video loader config specified. Using default for {model_name}.")
 
-            config_file = MODEL_MAPPING[model_name]["config"]
+            config_file = MODELS_DIRECTORY / f"{model_name}/config.yaml"
             with config_file.open() as f:
                 config_dict = yaml.safe_load(f)
 

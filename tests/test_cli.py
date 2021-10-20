@@ -152,7 +152,6 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
 
     save_path = tmp_path / "zamba" / "my_preds.csv"
 
-    # Prior to mocking, run one real prediction using config
     result = runner.invoke(
         app,
         [
@@ -171,4 +170,6 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     assert save_path.exists()
     # check config got saved out too
     assert (save_path.parent / "predict_configuration.yaml").exists()
-    assert pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "bird"
+    assert (
+        pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
+    )

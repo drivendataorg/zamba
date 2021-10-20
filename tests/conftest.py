@@ -20,10 +20,9 @@ from zamba.pytorch_lightning.utils import (
     register_model,
     ZambaVideoClassificationLightningModule,
 )
-from zamba.settings import ROOT_DIRECTORY
 
 
-ASSETS_DIR = ROOT_DIRECTORY / "tests" / "assets"
+ASSETS_DIR = Path(__file__).parent / "assets"
 TEST_VIDEOS_DIR = ASSETS_DIR / "videos"
 
 random.seed(56745)
@@ -66,7 +65,9 @@ class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLight
         return self.model(x)
 
 
-MODEL_MAPPING["dummy"] = {"transform": zamba_image_model_transforms()}
+MODEL_MAPPING["DummyZambaVideoClassificationLightningModule"] = {
+    "transform": zamba_image_model_transforms()
+}
 
 
 class DummyTrainConfig(TrainConfig):

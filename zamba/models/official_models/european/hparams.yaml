@@ -1,0 +1,21 @@
+lr: 0.001
+model_class: TimeDistributedEfficientNet
+num_frames: 16
+scheduler: MultiStepLR
+scheduler_params:
+  gamma: 0.5
+  milestones:
+  - 3
+  verbose: true
+species:
+- bird
+- blank
+- domestic_cat
+- european_badger
+- european_beaver
+- european_hare
+- european_roe_deer
+- north_american_raccoon
+- red_fox
+- weasel
+- wild_boar
