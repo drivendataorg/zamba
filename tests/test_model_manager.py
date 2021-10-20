@@ -1,13 +1,12 @@
 import json
 from pathlib import Path
-import yaml
 
 from botocore.exceptions import ClientError
 import pytest
 import torch
+import yaml
 
-from zamba.models.config import WEIGHT_LOOKUP
-from zamba.models.utils import download_weights
+from zamba.models.utils import download_weights, get_model_checkpoint_filename
 from zamba.models.model_manager import train_model
 
 from conftest import DummyTrainConfig, TEST_VIDEOS_DIR, labels_n_classes_df
@@ -169,11 +168,13 @@ def test_train_save_directory_overwrite(
 @pytest.mark.parametrize("model_name", ["time_distributed", "slowfast", "european"])
 @pytest.mark.parametrize("weight_region", ["us", "asia", "eu"])
 def test_download_weights(model_name, weight_region, tmp_path):
-    public_weights = WEIGHT_LOOKUP[model_name]["public_weights"]
+    public_weights = get_model_checkpoint_filename(model_name)
+
     if weight_region != "us":
         region_bucket = f"drivendata-public-assets-{weight_region}"
     else:
         region_bucket = "drivendata-public-assets"
+
     fspath = download_weights(
         filename=public_weights,
         weight_region=weight_region,
@@ -182,7 +183,7 @@ def test_download_weights(model_name, weight_region, tmp_path):
     # ensure weights exist
     assert Path(fspath).exists()
     # ensure path is correct
-    assert Path(fspath) == tmp_path / region_bucket / public_weights
+    assert Path(fspath) == tmp_path / region_bucket / "zamba_official_models" / public_weights
 
     # invalid filename
     with pytest.raises(ClientError):

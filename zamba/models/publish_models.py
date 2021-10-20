@@ -9,6 +9,17 @@ from zamba.models.config import WEIGHT_LOOKUP, ModelEnum
 
 
 def publish_model(model_name, private_checkpoint):
+    """
+    Creates the files for each folder in `official_models` based on the private checkpoint weights
+    and upload each model to the three DrivenData public buckets.
+
+    Args:
+        model_name (ModelEnum): Model name which will be folder name in `official_models`.
+        private_checkpoint (AnyPath): Path to private model checkpoint file. In addition to the
+            checkpoint file, the he parent folder should contain train_configuration.yaml,
+            predict_configuration.yaml, config.yaml, hparams.yaml, and val_metrics.json.
+    """
+
     # configs are expected to be in the same folder as model checkpoint
     trained_model_dir = AnyPath(private_checkpoint).parent
 
@@ -41,7 +52,7 @@ def publish_model(model_name, private_checkpoint):
             "early_stopping_config",
             "scheduler_config",
             "predict_all_zamba_species",
-            "checkpoint"
+            "checkpoint",
         ]:
             train_config[key] = config_dict["train_config"][key]
 
@@ -63,12 +74,14 @@ def publish_model(model_name, private_checkpoint):
         yaml.dump(official_config, f, sort_keys=False)
 
     # hash config file to generate public filename for model
-    hash_str = hashlib.sha1(str(config_dict).encode("utf-8")).hexdigest()
+    hash_str = hashlib.sha1(str(official_config).encode("utf-8")).hexdigest()
     public_file_name = f"{model_name}_{hash_str}.ckpt"
 
     # upload to three public buckets
     for bucket in ["", "-eu", "-asia"]:
-        public_checkpoint = S3Path(f"s3://drivendata-public-assets{bucket}/{public_file_name}")
+        public_checkpoint = S3Path(
+            f"s3://drivendata-public-assets{bucket}/zamba_official_models/{public_file_name}"
+        )
         logger.info(f"Uploading {private_checkpoint} to {public_checkpoint}")
         AnyPath(private_checkpoint).copy(public_checkpoint, force_overwrite_to_cloud=True)
 
@@ -76,5 +89,5 @@ def publish_model(model_name, private_checkpoint):
 if __name__ == "__main__":
     for model_name in ModelEnum.__members__.keys():
         private_checkpoint = WEIGHT_LOOKUP[model_name]
-        logger.info(f"==========\nPreparing {model_name} model\n==========")
+        logger.info(f"\n============\nPreparing {model_name} model\n============")
         publish_model(model_name, private_checkpoint)
