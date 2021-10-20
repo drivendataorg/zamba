@@ -29,3 +29,4 @@ video_loader_config:
     n_frames: 32
 predict_config:
   model_name: slowfast
+public_checkpoint: slowfast_501182d969aabf49805829a2b09ed8078b4255a3.ckpt

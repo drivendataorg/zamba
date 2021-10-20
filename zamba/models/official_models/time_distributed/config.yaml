@@ -29,3 +29,4 @@ video_loader_config:
     n_frames: 16
 predict_config:
   model_name: time_distributed
+public_checkpoint: time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt

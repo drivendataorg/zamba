@@ -40,6 +40,4 @@ def get_model_checkpoint_filename(model_name):
     config_file = MODELS_DIRECTORY / f"{model_name}/config.yaml"
     with config_file.open() as f:
         config_dict = yaml.safe_load(f)
-
-    hash_str = hashlib.sha1(str(config_dict).encode("utf-8")).hexdigest()
-    return f"{model_name}_{hash_str}.ckpt"
+    return config_dict["public_checkpoint"]

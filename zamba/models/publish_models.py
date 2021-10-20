@@ -77,14 +77,17 @@ def publish_model(model_name, trained_model_dir):
         predict_config=dict(model_name=model_name),
     )
 
-    # write out limited config
+    # hash train_configuration to generate public filename for model
+    hash_str = hashlib.sha1(str(config_dict["train_config"]).encode("utf-8")).hexdigest()
+    public_file_name = f"{model_name}_{hash_str}.ckpt"
+
+    # add that to official config
+    official_config["public_checkpoint"] = public_file_name
+
+    # write out official config
     logger.info(f"Writing out to {config_yaml}")
     with config_yaml.open("w") as f:
         yaml.dump(official_config, f, sort_keys=False)
-
-    # hash config file to generate public filename for model
-    hash_str = hashlib.sha1(str(official_config).encode("utf-8")).hexdigest()
-    public_file_name = f"{model_name}_{hash_str}.ckpt"
 
     # upload to three public buckets
     for bucket in ["", "-eu", "-asia"]:
