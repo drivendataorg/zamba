@@ -16,18 +16,16 @@ train_config:
       milestones:
       - 1
       verbose: true
-
 video_loader_config:
   model_input_height: 240
   model_input_width: 426
   crop_bottom_pixels: 50
   fps: 8
   total_frames: 32
-  ensure_total_frames: True
+  ensure_total_frames: true
   megadetector_lite_config:
     confidence: 0.25
     fill_mode: score_sorted
     n_frames: 32
-
 predict_config:
   model_name: slowfast
