@@ -1,5 +1,4 @@
 import hashlib
-from pathlib import Path
 
 from cloudpathlib import AnyPath, S3Path
 from loguru import logger
@@ -14,6 +13,9 @@ def publish_model(published_model_name, private_checkpoint):
     trained_model_dir = AnyPath(private_checkpoint).parent
 
     # copy over files from model directory
+    logger.info(
+        f"Copying over yaml and json files from {trained_model_dir} to {MODELS_DIRECTORY / published_model_name}."
+    )
     for file in [
         "train_configuration.yaml",
         "predict_configuration.yaml",
@@ -21,11 +23,11 @@ def publish_model(published_model_name, private_checkpoint):
         "hparams.yaml",
         "val_metrics.json",
     ]:
-
         (AnyPath(trained_model_dir) / file).copy(MODELS_DIRECTORY / published_model_name)
 
     # prepare config for use in official models dir
-    config_yaml = (MODELS_DIRECTORY / published_model_name / "config.yaml")
+    logger.info("Preparing official config file.")
+    config_yaml = MODELS_DIRECTORY / published_model_name / "config.yaml"
 
     with config_yaml.open() as f:
         config_dict = yaml.safe_load(f)
@@ -50,6 +52,7 @@ def publish_model(published_model_name, private_checkpoint):
     )
 
     # write out limited config
+    logger.info(f"Writing out to {config_yaml}.")
     with config_yaml.open("w") as f:
         yaml.dump(official_config, f, sort_keys=False)
 
@@ -61,10 +64,11 @@ def publish_model(published_model_name, private_checkpoint):
     for bucket in ["", "-eu", "-asia"]:
         public_checkpoint = S3Path(f"s3://drivendata-public-assets{bucket}/{public_file_name}")
         logger.info(f"Uploading {private_checkpoint} to {public_checkpoint}")
-        private_checkpoint.copy(public_checkpoint, force_overwrite_to_cloud=True)
+        AnyPath(private_checkpoint).copy(public_checkpoint, force_overwrite_to_cloud=True)
 
 
 if __name__ == "__main__":
     for model_name, private_model_dir in WEIGHT_LOOKUP.items():
-        if model_name == "slowfast":
+        logger.info(f"Preparing {model_name} model\n========")
+        if model_name != "european":
             publish_model(model_name, private_model_dir)
