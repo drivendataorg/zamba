@@ -46,7 +46,7 @@ In `video_loader_config`, you must specify at least `model_input_height`, `model
 * For `time_distributed` or `european`, `total_frames` must be 16
 * For `slowfast`, `total_frames` must be 32
 
-See the [Available Models](models.md) page for more details on each model's requirements.
+See the [Available Models](models/index.md) page for more details on each model's requirements.
 
 ## Command line interface
 
@@ -113,7 +113,7 @@ In our user tutorials, we refer to `train_model` and `predict_model` functions. 
 
 In the command line, the default configuration for each model is passed in using a specified YAML file that ships with `zamba`<!-- TODO: add link to github><!-->.
 
-For example, the default configuration for the [`time_distributed` model](models.md#time-distributed) is:
+For example, the default configuration for the [`time_distributed` model](models/index.md#time-distributed) is:
 
 ```yaml
 train_config:

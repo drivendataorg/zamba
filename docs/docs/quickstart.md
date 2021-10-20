@@ -78,7 +78,7 @@ eleph.mp4,elephant
 leopard.mp4,leopard
 ```
 
-There are three pretrained models that ship with `zamba`: `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
+There are three pretrained models that ship with `zamba`: `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models/index.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
 
 ```console
 $ zamba predict --data-dir example_vids/ --model slowfast
@@ -86,9 +86,9 @@ $ zamba predict --data-dir example_vids/ --model slowfast
 
 ## Training a model
 
-You can continue training one of the [models](models.md) that ships with `zamba` by either:
+You can continue training one of the [models](models/index.md) that ships with `zamba` by either:
 
-* Fine-tuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models.md#species-classes)
+* Fine-tuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models/index.md#species-classes)
 * Fine-tuning with labeled videos that include new species
 
 In either case, the commands for training are the same. Say that we have labels for the videos in the `example_vids` folder saved in `example_labels.csv`. To train a model, run:

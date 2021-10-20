@@ -9,7 +9,7 @@ This tutorial goes over the steps for using `zamba` if:
 
 `zamba` can run two types of model training:
 
-* Fine-tuning a model with labels that are a subset of the possible [zamba labels](models.md#species-classes)
+* Fine-tuning a model with labels that are a subset of the possible [zamba labels](models/index.md#species-classes)
 * Fine-tuning a model to predict an entirely new set of labels
 
 The process is the same for both cases.
@@ -71,7 +71,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 ## Default behavior
 
-By default, the [`time_distributed`](models.md#time-distributed-model) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
 
 `zamba_time_distributed` contains:
 
@@ -163,7 +163,7 @@ Add the path to your labels with `--labels`.  For example, if your videos are in
 
 #### Labels `zamba` has seen before
 
-Your labels may be included in the list of [`zamba` class labels](models.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
+Your labels may be included in the list of [`zamba` class labels](models/index.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
 
 #### Completely new labels
 
@@ -171,7 +171,7 @@ You can also train a model to predict completely new labels - the world is your 
 
 ### 3. Choose a model for training
 
-If your videos contain species common to central or west Africa, use the [`time_distributed` model](models.md#time-distributed). If they contain species common to western Europe, use the [`european` model](models.md#european). We do not recommend using the [`slowfast` model](models.md#slowfast) for training because it is much more computationally intensive and slower to run.
+If your videos contain species common to central or west Africa, use the [`time_distributed` model](models/index.md#time-distributed). If they contain species common to western Europe, use the [`european` model](models/index.md#european). We do not recommend using the [`slowfast` model](models/index.md#slowfast) for training because it is much more computationally intensive and slower to run.
 
 Add the model name to your command with `--model`. The `time_distributed` model will be used if no model is specified. For example, if you want to continue training the `european` model based on the videos in `example_euro_vids` and the labels in `example_euro_labels.csv`:
 

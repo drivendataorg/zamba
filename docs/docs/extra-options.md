@@ -109,7 +109,7 @@ A simple option is to sample frames that are evenly distributed throughout a vid
 
 ### MegadetectorLite
 
-You can use a pretrained object detection model called [MegadetectorLite](models.md#megadetectorlite) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the MegadetectorLite model. If `megadetector_lite_config` is None, the MegadetectorLite model will not be used. 
+You can use a pretrained object detection model called [MegadetectorLite](models/index.md#megadetectorlite) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the MegadetectorLite model. If `megadetector_lite_config` is None, the MegadetectorLite model will not be used. 
 
 For example, to take the 16 frames with the highest probability of detection:
 
@@ -142,7 +142,7 @@ For example, to take the 16 frames with the highest probability of detection:
     train_model(video_loader_config=video_loader_config, train_config=train_config)
     ```
 
-If you are using the [MegadetectorLite](models.md#megadetectorlite) for frame selection, there are two ways that you can specify frame resizing:
+If you are using the [MegadetectorLite](models/index.md#megadetectorlite) for frame selection, there are two ways that you can specify frame resizing:
 
 - `frame_selection_width` and `frame_selection_height` resize images *before* they are input to the frame selection method. If both are `None`, the full size images will be used during frame selection. Using full size images for selection is recommended for better detection of smaller species, but will slow down training and inference.
 - `model_input_height` and `model_input_width` resize images *after* frame selection. These specify the image size that is passed to the actual model.

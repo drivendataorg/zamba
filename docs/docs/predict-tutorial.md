@@ -6,7 +6,7 @@ This tutorial goes over the steps for using `zamba` if:
 
 * You already have `zamba` installed (for details see the [Installation](install.md) page)
 * You have unlabeled videos that you want to generate labels for
-* The possible class species labels for your videos are included in the list of possible [zamba labels](models.md#species-classes). If your species are not included in this list, you can [retrain a model](train-tutorial.md) using your own labeled data and then run inference.
+* The possible class species labels for your videos are included in the list of possible [zamba labels](models/index.md#species-classes). If your species are not included in this list, you can [retrain a model](train-tutorial.md) using your own labeled data and then run inference.
 
 ## Basic usage: command line interface
 
@@ -25,7 +25,7 @@ To run `zamba predict` in the command line, you must specify either `--data-dir`
 * **`--data-dir PATH`:** Path to the folder containing your videos.
 * **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
 
-All other flags are optional. To choose a model, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the three [pretrained models](models.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to `time_distributed`.
+All other flags are optional. To choose a model, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the three [pretrained models](models/index.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to `time_distributed`.
 
 ## Basic usage: Python package
 
@@ -55,7 +55,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 ## Default behavior
 
-By default, the [`time_distributed`](models.md#time-distributed-model) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
 
 By default, predictions will be saved to `zamba_predictions.csv`. You can save predictions to a custom path using the `--save-path` argument.
 
@@ -98,10 +98,10 @@ Add the path to your video folder. For example, if your videos are in a folder c
 
 If your camera videos contain species common to central or west Africa:
 
-* Use the [`time_distributed` model](models.md#time-distributed) if your priority is species classification
-* Use the [`slowfast` model](models.md#slowfast) if your priority is blank vs. non-blank video detection
+* Use the [`time_distributed` model](models/index.md#time-distributed) if your priority is species classification
+* Use the [`slowfast` model](models/index.md#slowfast) if your priority is blank vs. non-blank video detection
 
-If your videos contain species common to Europe, use the [`european` model](models.md#european).
+If your videos contain species common to Europe, use the [`european` model](models/index.md#european).
 
 Add the model name to your command. The `time_distributed` model will be used if no model is specified. For example, if you want to use the `slowfast` model to classify the videos in `example_vids`:
 
