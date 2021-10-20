@@ -5,16 +5,16 @@ from loguru import logger
 import yaml
 
 from zamba import MODELS_DIRECTORY
-from zamba.models.config import WEIGHT_LOOKUP
+from zamba.models.config import WEIGHT_LOOKUP, ModelEnum
 
 
-def publish_model(published_model_name, private_checkpoint):
+def publish_model(model_name, private_checkpoint):
     # configs are expected to be in the same folder as model checkpoint
     trained_model_dir = AnyPath(private_checkpoint).parent
 
     # copy over files from model directory
     logger.info(
-        f"Copying over yaml and json files from {trained_model_dir} to {MODELS_DIRECTORY / published_model_name}."
+        f"Copying over yaml and json files from {trained_model_dir} to {MODELS_DIRECTORY / model_name}."
     )
     for file in [
         "train_configuration.yaml",
@@ -23,11 +23,11 @@ def publish_model(published_model_name, private_checkpoint):
         "hparams.yaml",
         "val_metrics.json",
     ]:
-        (AnyPath(trained_model_dir) / file).copy(MODELS_DIRECTORY / published_model_name)
+        (AnyPath(trained_model_dir) / file).copy(MODELS_DIRECTORY / model_name)
 
     # prepare config for use in official models dir
     logger.info("Preparing official config file.")
-    config_yaml = MODELS_DIRECTORY / published_model_name / "config.yaml"
+    config_yaml = MODELS_DIRECTORY / model_name / "config.yaml"
 
     with config_yaml.open() as f:
         config_dict = yaml.safe_load(f)
@@ -41,24 +41,30 @@ def publish_model(published_model_name, private_checkpoint):
             "early_stopping_config",
             "scheduler_config",
             "predict_all_zamba_species",
-            "checkpoint",
+            "checkpoint"
         ]:
             train_config[key] = config_dict["train_config"][key]
+
+            # e.g. european model is trained from a checkpoint; we want to expose final model
+            # (model_name: european) not the base checkpoint
+            if "checkpoint" in train_config.keys():
+                train_config.pop("checkpoint")
+                train_config["model_name"] = model_name
 
     official_config = dict(
         train_config=train_config,
         video_loader_config=config_dict["video_loader_config"],
-        predict_config=dict(model_name=published_model_name),
+        predict_config=dict(model_name=model_name),
     )
 
     # write out limited config
-    logger.info(f"Writing out to {config_yaml}.")
+    logger.info(f"Writing out to {config_yaml}")
     with config_yaml.open("w") as f:
         yaml.dump(official_config, f, sort_keys=False)
 
     # hash config file to generate public filename for model
     hash_str = hashlib.sha1(str(config_dict).encode("utf-8")).hexdigest()
-    public_file_name = f"{published_model_name}_{hash_str}.ckpt"
+    public_file_name = f"{model_name}_{hash_str}.ckpt"
 
     # upload to three public buckets
     for bucket in ["", "-eu", "-asia"]:
@@ -68,7 +74,7 @@ def publish_model(published_model_name, private_checkpoint):
 
 
 if __name__ == "__main__":
-    for model_name, private_model_dir in WEIGHT_LOOKUP.items():
-        logger.info(f"Preparing {model_name} model\n========")
-        if model_name != "european":
-            publish_model(model_name, private_model_dir)
+    for model_name in ModelEnum.__members__.keys():
+        private_checkpoint = WEIGHT_LOOKUP[model_name]
+        logger.info(f"==========\nPreparing {model_name} model\n==========")
+        publish_model(model_name, private_checkpoint)
