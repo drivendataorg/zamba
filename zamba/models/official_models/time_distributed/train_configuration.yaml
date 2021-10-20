@@ -60,7 +60,7 @@ train_config:
   num_workers: 5
   overwrite_save_directory: false
   predict_all_zamba_species: true
-  save_directory: experiments/td_small_set_full_size_mdlite/results
+  save_directory: experiments/td_small_set_full_size_mdlite
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:

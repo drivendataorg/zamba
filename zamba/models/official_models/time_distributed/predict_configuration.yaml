@@ -3,7 +3,7 @@ model_class: TimeDistributedEfficientNet
 predict_config:
   batch_size: 1
   cache_dir: /home/ubuntu/.cache/zamba
-  checkpoint: experiments/td_small_set_full_size_mdlite/results/version_1/time_distributed.ckpt
+  checkpoint: experiments/td_small_set_full_size_mdlite/version_1/time_distributed.ckpt
   data_directory: /home/ubuntu/zamba-algorithms
   dry_run: false
   gpus: 1
@@ -11,7 +11,7 @@ predict_config:
   num_workers: 5
   output_class_names: false
   proba_threshold: null
-  save: experiments/td_small_set_full_size_mdlite/results/version_1/zamba_predictions.csv
+  save: experiments/td_small_set_full_size_mdlite/version_1/zamba_predictions.csv
   skip_load_validation: true
   weight_download_region: us
 species:
