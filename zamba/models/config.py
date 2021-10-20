@@ -1,5 +1,4 @@
 from enum import Enum
-import hashlib
 import os
 from pathlib import Path
 import random
@@ -19,7 +18,7 @@ from zamba import MODELS_DIRECTORY
 from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.utils import RegionEnum
+from zamba.models.utils import RegionEnum, get_model_checkpoint_filename
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
@@ -170,12 +169,7 @@ def validate_model_name_and_checkpoint(cls, values):
 
     elif checkpoint is None and model_name is not None:
         # look up public weights file based on model name and config hash
-        config_file = MODELS_DIRECTORY / f"{model_name}/config.yaml"
-        with config_file.open() as f:
-            config_dict = yaml.safe_load(f)
-
-        hash_str = hashlib.sha1(str(config_dict).encode("utf-8")).hexdigest()
-        values["checkpoint"] = f"{model_name}_{hash_str}.ckpt"
+        values["checkpoint"] = get_model_checkpoint_filename(model_name)
 
     return values
 
