@@ -96,13 +96,13 @@ Once your model is trained, copy the resulting directory to a folder in `s3://dr
 - `predict_configuration.yaml` (automatically generated)
 - `hparams.yaml` (automatically generated)
 
-*Note: all files should be in the same level as the checkpoint file.*
+*Note: all files should be in the same level.*
 
 To publish an improved version of an existing model,
-- update just the weights filepath for the model in `WEIGHT_LOOKUP` in `zamba/models/config.py`
+- update the folder containing model weights in `WEIGHT_LOOKUP` in `zamba/models/config.py`
 
 If you are adding a new model,
-- add the model and weights filepath as a new entry in the `WEIGHT_LOOKUP` dictionary
+- add the model and weights folder as a new entry in the `WEIGHT_LOOKUP` dictionary
 - add the model name to `ModelEnum`
 - incorporate the new model into the test suite
 
