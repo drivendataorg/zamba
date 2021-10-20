@@ -8,17 +8,26 @@ from zamba import MODELS_DIRECTORY
 from zamba.models.config import WEIGHT_LOOKUP, ModelEnum
 
 
-def publish_model(model_name, private_checkpoint):
+def publish_model(model_name, trained_model_dir):
     """
-    Creates the files for each folder in `official_models` based on the private checkpoint weights
-    and upload each model to the three DrivenData public buckets.
+    Creates the files for the model folder in `official_models` and uploads the model to the three
+    DrivenData public s3 buckets.
 
     Args:
         model_name (ModelEnum): Model name which will be folder name in `official_models`.
-        private_checkpoint (AnyPath): Path to private model checkpoint file. In addition to the
-            checkpoint file, the he parent folder should contain train_configuration.yaml,
-            predict_configuration.yaml, config.yaml, hparams.yaml, and val_metrics.json.
+        trained_model_dir (AnyPath): Directory containing model checkpoint file,
+            train_configuration.yaml, predict_configuration.yaml, config.yaml, hparams.yaml, and
+            val_metrics.json.
     """
+    checkpoints = AnyPath(trained_model_dir).rglob("*.ckpt")
+    if len(checkpoints) > 1:
+        raise ValueError(
+            f"{len(checkpoints)} were found in {trained_model_dir}. There can only be one. Checkpoints found include: {checkpoints}"
+        )
+    elif len(checkpoints) == 0:
+        raise ValueError(f"No checkpoint files were found in {trained_model_dir}.")
+    else:
+        private_checkpoint = checkpoints[0]
 
     # configs are expected to be in the same folder as model checkpoint
     trained_model_dir = AnyPath(private_checkpoint).parent

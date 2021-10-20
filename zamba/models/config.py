@@ -26,9 +26,9 @@ from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 GPUS_AVAILABLE = torch.cuda.device_count()
 
 WEIGHT_LOOKUP = {
-    "time_distributed": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/version_1/time_distributed.ckpt",
-    "european": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/time_distributed.ckpt",
-    "slowfast": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_1/slowfast.ckpt",
+    "time_distributed": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/version_1/",
+    "european": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/",
+    "slowfast": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_1/",
 }
 
 MODEL_MAPPING = {
