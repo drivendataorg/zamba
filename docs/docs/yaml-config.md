@@ -60,7 +60,7 @@ Only some of the possible parameters can be passed directly as arguments to the 
 
 ## Python package
 
-The main API for zamba is the [`ModelManager` class](https://github.com/drivendataorg/zamba/blob/master/zamba/models/model_manager.py#L404) that can be accessed with:
+The main API for zamba is the [`ModelManager` class](api-reference/models-model_manager.md#zamba.models.model_manager.ModelManager) that can be accessed with:
 
 ```python
 from zamba.models.manager import ModelManager

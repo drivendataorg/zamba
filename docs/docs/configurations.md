@@ -14,7 +14,7 @@ Here's a helpful diagram which shows how everything is related.
 
 ## Video loading arguments
 
-The [`VideoLoaderConfig` class](https://github.com/drivendataorg/zamba/blob/master/zamba/data/video.py#L146) defines all of the optional parameters that can be specified for how videos are loaded before either inference or training. This includes selecting which frames to use from each video.
+The [`VideoLoaderConfig` class](api-reference/data-video.md#zamba.data.video.VideoLoaderConfig) defines all of the optional parameters that can be specified for how videos are loaded before either inference or training. This includes selecting which frames to use from each video.
 
 All video loading arguments can be specified either in a [YAML file](yaml-config.md) or when instantiating the [`VideoLoaderConfig`](configurations.md#video-loading-arguments) class in Python. Some can also be specified directly in the command line.
 
@@ -87,7 +87,7 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models/index.md#megadetectorlite) for frame selection. For all possible options, see the [`MegadetectorLiteYoloXConfig` class](https://github.com/drivendataorg/zamba/blob/master/zamba/models/megadetector_lite_yolox.py#L36). If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models/index.md#megadetectorlite) for frame selection. For all possible options, see the [`MegadetectorLiteYoloXConfig` class](api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig). If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
 
 #### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
@@ -138,7 +138,7 @@ Whether to delete the cache directory after training or predicting ends. Default
 
 ## Prediction arguments
 
-All possible model inference parameters are defined by the [`PredictConfig` class](https://github.com/drivendataorg/zamba/blob/master/zamba/models/config.py#L531). Let's see the class documentation in Python:
+All possible model inference parameters are defined by the [`PredictConfig` class](api-reference/models-config.md#zamba.models.config.PredictConfig). Let's see the class documentation in Python:
 
 ```python
 >> from zamba.models.config import PredictConfig
@@ -229,7 +229,7 @@ Cache directory where downloaded model weights will be saved. If None and the MO
 
 ## Training arguments
 
-All possible model training parameters are defined by the [`TrainConfig` class](https://github.com/drivendataorg/zamba/blob/master/zamba/models/config.py#L284). Let's see the class documentation in Python:
+All possible model training parameters are defined by the [`TrainConfig` class](api-reference/models-config.md#zamba.models.config.TrainConfig). Let's see the class documentation in Python:
 
 ```python
 >> from zamba.models.config import TrainConfig
@@ -303,7 +303,7 @@ Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.011
 
 #### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
-Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the [`BackboneFinetuneConfig` class](https://github.com/drivendataorg/zamba/blob/master/zamba/models/config.py#L195): `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
+Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the [`BackboneFinetuneConfig` class](api-reference/models-config.md#zamba.models.config.BackboneFinetuneConfig): `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
 
 #### `gpus (int, optional)`
 
@@ -319,7 +319,7 @@ The maximum number of epochs to run during training. Defaults to `None`
 
 #### `early_stopping_config (zamba.models.config.EarlyStoppingConfig, optional)`
 
-Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the [`EarlyStoppingConfig` class](https://github.com/drivendataorg/zamba/blob/master/zamba/models/config.py#L221): `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
+Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the [`EarlyStoppingConfig` class](api-reference/models-config.md#zamba.models.config.EarlyStoppingConfig): `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
 
 #### `weight_download_region [us|eu|asia]`
 
