@@ -223,8 +223,7 @@ def test_from_scratch(labels_absolute_path):
     config = TrainConfig(labels=labels_absolute_path, from_scratch=True, checkpoint=None)
     assert config.model_name == "time_distributed"
     assert config.from_scratch
-    # will have checkpoint on config that is used to find default hparams for official model
-    assert config.checkpoint is not None
+    assert config.checkpoint is None
 
     with pytest.raises(ValueError) as error:
         TrainConfig(labels=labels_absolute_path, from_scratch=True, model_name=None)
