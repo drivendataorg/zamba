@@ -60,8 +60,7 @@ Only some of the possible parameters can be passed directly as arguments to the 
 
 ## Python package
 
-The main API for zamba is the `ModelManager` class that can be accessed with:
-<!-- TODO: add link to source code><!--> 
+The main API for zamba is the [`ModelManager` class](https://github.com/drivendataorg/zamba/blob/v2/zamba/models/model_manager.py#L404) that can be accessed with:
 
 ```python
 from zamba.models.manager import ModelManager
@@ -111,7 +110,7 @@ In our user tutorials, we refer to `train_model` and `predict_model` functions. 
 
 ## Default configurations
 
-In the command line, the default configuration for each model is passed in using a specified YAML file that ships with `zamba`<!-- TODO: add link to github><!-->.
+In the command line, the default configuration for each model is passed in using a specified YAML file that ships with `zamba`. You can see the default configuration YAML files on [Github](https://github.com/drivendataorg/zamba/tree/v2/zamba/models/official_models) in the `config.yaml` file within each model's folder.
 
 For example, the default configuration for the [`time_distributed` model](models/index.md#time-distributed) is:
 
