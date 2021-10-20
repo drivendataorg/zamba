@@ -152,7 +152,7 @@ def check_files_exist_and_load(
 
 def validate_model_name_and_checkpoint(cls, values):
     """Ensures a checkpoint file or model name is provided. If a model name is provided,
-    looks up the corresponding checkpoint file from WEIGHT_LOOKUP.
+    looks up the corresponding public checkpoint file from the official configs.
     """
     checkpoint = values.get("checkpoint")
     model_name = values.get("model_name")
@@ -168,7 +168,7 @@ def validate_model_name_and_checkpoint(cls, values):
         values["model_name"] = None
 
     elif checkpoint is None and model_name is not None:
-        # look up public weights file based on model name and config hash
+        # look up public weights file from official models config
         values["checkpoint"] = get_model_checkpoint_filename(model_name)
 
     return values
