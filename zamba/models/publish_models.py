@@ -5,7 +5,7 @@ from loguru import logger
 import yaml
 
 from zamba import MODELS_DIRECTORY
-from zamba.models.config import WEIGHT_LOOKUP, ModelEnum
+from zamba.models.config import WEIGHT_LOOKUP, ModelEnum, TrainConfig
 
 
 def publish_model(model_name, trained_model_dir):
@@ -52,24 +52,13 @@ def publish_model(model_name, trained_model_dir):
     with config_yaml.open() as f:
         config_dict = yaml.safe_load(f)
 
-    train_config = dict()
-    for key in config_dict["train_config"].keys():
-        # only keep config values that are not data or machine specific
-        if key in [
-            "model_name",
-            "backbone_finetune_config",
-            "early_stopping_config",
-            "scheduler_config",
-            "predict_all_zamba_species",
-            "checkpoint",
-        ]:
-            train_config[key] = config_dict["train_config"][key]
+    train_config = TrainConfig.construct(**config_dict["train_config"]).get_model_only_params()
 
-            # e.g. european model is trained from a checkpoint; we want to expose final model
-            # (model_name: european) not the base checkpoint
-            if "checkpoint" in train_config.keys():
-                train_config.pop("checkpoint")
-                train_config["model_name"] = model_name
+    # e.g. european model is trained from a checkpoint; we want to expose final model
+    # (model_name: european) not the base checkpoint
+    if "checkpoint" in train_config.keys():
+        train_config.pop("checkpoint")
+        train_config["model_name"] = model_name
 
     official_config = dict(
         train_config=train_config,
