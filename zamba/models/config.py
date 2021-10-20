@@ -1,4 +1,5 @@
 from enum import Enum
+import hashlib
 import os
 from pathlib import Path
 import random
@@ -26,18 +27,9 @@ from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 GPUS_AVAILABLE = torch.cuda.device_count()
 
 WEIGHT_LOOKUP = {
-    "time_distributed": {
-        "public_weights": "zamba_time_distributed.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt",
-    },
-    "european": {
-        "public_weights": "zamba_european.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/time_distributed.ckpt",
-    },
-    "slowfast": {
-        "public_weights": "zamba_slowfast.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_1/slowfast.ckpt",
-    },
+    "time_distributed": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/version_1/time_distributed.ckpt",
+    "european": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/time_distributed.ckpt",
+    "slowfast": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_1/slowfast.ckpt",
 }
 
 MODEL_MAPPING = {
@@ -177,8 +169,13 @@ def validate_model_name_and_checkpoint(cls, values):
         values["model_name"] = None
 
     elif checkpoint is None and model_name is not None:
-        # look up public weights file based on model name
-        values["checkpoint"] = WEIGHT_LOOKUP[model_name]["public_weights"]
+        # look up public weights file based on model name and config hash
+        config_file = MODELS_DIRECTORY / f"{model_name}/config.yaml"
+        with config_file.open() as f:
+            config_dict = yaml.safe_load(f)
+
+        hash_str = hashlib.sha1(str(config_dict).encode("utf-8")).hexdigest()
+        values["checkpoint"] = f"{model_name}_{hash_str}.ckpt"
 
     return values
 
