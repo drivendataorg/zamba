@@ -149,7 +149,7 @@ If you are using the [MegadetectorLite](models/index.md#megadetectorlite) for fr
 
 You can specify both of the above at once, just one, or neither. The example code feeds full-size images to MegadetectorLite, and then resizes images before running them through the neural network.
 
-To see all of the options that can be passed to the MegadetectorLite, see the `MegadetectorLiteYoloXConfig` class. <!-- TODO: add link to github code><!-->
+To see all of the options that can be passed to the MegadetectorLite, see the [`MegadetectorLiteYoloXConfig` class](api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig).
 
 ## Speed up training
 
