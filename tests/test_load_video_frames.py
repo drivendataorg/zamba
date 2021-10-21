@@ -385,6 +385,44 @@ def test_load_video_frames(case: Case, video_metadata: Dict[str, Any]):
                     assert video_shape[field] == value
 
 
+def test_same_filename_new_kwargs(tmp_path, train_metadata):
+    """Test that load_video_frames does not load the npz file if the params change."""
+    cache = tmp_path / "test_cache"
+
+    # prep labels for one video
+    labels = (
+        train_metadata[train_metadata.split == "train"]
+        .set_index("filepath")
+        .filter(regex="species")
+        .head(1)
+    )
+
+    def _generate_dataset(config):
+        """Return loaded video from FFmpegZambaVideoDataset."""
+        return FfmpegZambaVideoDataset(annotations=labels, video_loader_config=config).__getitem__(
+            index=0
+        )[0]
+
+    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
+        # confirm cache is set in environment variable
+        assert os.environ["VIDEO_CACHE_DIR"] == str(cache)
+
+        first_load = _generate_dataset(config=VideoLoaderConfig(fps=1))
+        new_params_same_name = _generate_dataset(config=VideoLoaderConfig(fps=2))
+        assert first_load.shape != new_params_same_name.shape
+
+        # check no params
+        no_params_same_name = _generate_dataset(config=None)
+        assert first_load.shape != new_params_same_name.shape != no_params_same_name.shape
+
+        # multiple params in config
+        first_load = _generate_dataset(config=VideoLoaderConfig(scene_threshold=0.2))
+        new_params_same_name = _generate_dataset(
+            config=VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
+        )
+        assert first_load.shape != new_params_same_name.shape
+
+
 def test_megadetector_lite_yolox_dog(tmp_path):
     dog = Image.open(ASSETS_DIR / "dog.jpg")
     blank = Image.new("RGB", dog.size, (64, 64, 64))
@@ -476,46 +514,6 @@ def test_validate_total_frames():
         megadetector_lite_config=MegadetectorLiteYoloXConfig(confidence=0.01, n_frames=8),
     )
     assert config.total_frames == 8
-
-
-def test_same_filename_new_kwargs(tmp_path, train_metadata):
-    """Test that load_video_frames does not load the npz file if the params change."""
-    # use first test video
-    # test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
-    cache = tmp_path / "test_cache"
-
-    # prep labels for one video
-    labels = (
-        train_metadata[train_metadata.split == "train"]
-        .set_index("filepath")
-        .filter(regex="species")
-        .head(1)
-    )
-
-    def _generate_dataset(config):
-        """Return loaded video from FFmpegZambaVideoDataset."""
-        return FfmpegZambaVideoDataset(annotations=labels, video_loader_config=config).__getitem__(
-            index=0
-        )[0]
-
-    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
-        # confirm cache is set in environment variable
-        assert os.environ["VIDEO_CACHE_DIR"] == str(cache)
-
-        first_load = _generate_dataset(config=VideoLoaderConfig(fps=1))
-        new_params_same_name = _generate_dataset(config=VideoLoaderConfig(fps=2))
-        assert first_load.shape != new_params_same_name.shape
-
-        # check no params
-        no_params_same_name = _generate_dataset(config=None)
-        assert first_load.shape != new_params_same_name.shape != no_params_same_name.shape
-
-        # multiple params in config
-        first_load = _generate_dataset(config=VideoLoaderConfig(scene_threshold=0.2))
-        new_params_same_name = _generate_dataset(
-            config=VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
-        )
-        assert first_load.shape != new_params_same_name.shape
 
 
 def test_caching(tmp_path, caplog, train_metadata):
