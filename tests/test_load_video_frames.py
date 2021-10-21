@@ -10,10 +10,10 @@ from PIL import Image
 from pydantic import BaseModel, ValidationError
 
 from zamba.data.video import (
-    npy_cache,
     load_video_frames,
-    VideoLoaderConfig,
     MegadetectorLiteYoloXConfig,
+    npy_cache,
+    VideoLoaderConfig,
 )
 from zamba.pytorch.dataloaders import FfmpegZambaVideoDataset
 
