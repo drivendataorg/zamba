@@ -12,7 +12,6 @@ from pydantic import BaseModel, ValidationError
 from zamba.data.video import (
     load_video_frames,
     MegadetectorLiteYoloXConfig,
-    npy_cache,
     VideoLoaderConfig,
 )
 from zamba.pytorch.dataloaders import FfmpegZambaVideoDataset
