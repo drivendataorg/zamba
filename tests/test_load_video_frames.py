@@ -10,11 +10,12 @@ from PIL import Image
 from pydantic import BaseModel, ValidationError
 
 from zamba.data.video import (
-    cached_load_video_frames,
+    npy_cache,
     load_video_frames,
     VideoLoaderConfig,
     MegadetectorLiteYoloXConfig,
 )
+from zamba.pytorch.dataloaders import FfmpegZambaVideoDataset
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
 
@@ -384,35 +385,6 @@ def test_load_video_frames(case: Case, video_metadata: Dict[str, Any]):
                     assert video_shape[field] == value
 
 
-def test_same_filename_new_kwargs(tmp_path):
-    """Test that load_video_frames does not load the npz file if the params change."""
-    # use first test video
-    test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
-    cache = tmp_path / "test_cache"
-
-    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
-        # confirm cache is set in environment variable
-        assert os.environ["VIDEO_CACHE_DIR"] == str(cache)
-
-        first_load = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
-        new_params_same_name = cached_load_video_frames(
-            filepath=test_vid, config=VideoLoaderConfig(fps=2)
-        )
-        assert first_load.shape != new_params_same_name.shape
-
-        # check no params
-        first_load = cached_load_video_frames(filepath=test_vid)
-        assert first_load.shape != new_params_same_name.shape
-
-        # multiple params in config
-        c1 = VideoLoaderConfig(scene_threshold=0.2)
-        c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
-
-        first_load = cached_load_video_frames(filepath=test_vid, config=c1)
-        new_params_same_name = cached_load_video_frames(filepath=test_vid, config=c2)
-        assert first_load.shape != new_params_same_name.shape
-
-
 def test_megadetector_lite_yolox_dog(tmp_path):
     dog = Image.open(ASSETS_DIR / "dog.jpg")
     blank = Image.new("RGB", dog.size, (64, 64, 64))
@@ -506,39 +478,99 @@ def test_validate_total_frames():
     assert config.total_frames == 8
 
 
-def test_caching(tmp_path, caplog):
+def generate_dataset(config):
+    """Return loaded video from FFmpegZambaVideoDataset."""
+    return FfmpegZambaVideoDataset(annotations=labels, video_loader_config=config).__getitem__(
+        index=0
+    )[0]
+
+
+def test_same_filename_new_kwargs(tmp_path, train_metadata):
+    """Test that load_video_frames does not load the npz file if the params change."""
+    # use first test video
+    # test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
+    cache = tmp_path / "test_cache"
+
+    # prep labels for one video
+    labels = (
+        train_metadata[train_metadata.split == "train"]
+        .set_index("filepath")
+        .filter(regex="species")
+        .head(1)
+    )
+
+
+    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
+        # confirm cache is set in environment variable
+        assert os.environ["VIDEO_CACHE_DIR"] == str(cache)
+
+        first_load = _generate_dataset(config=VideoLoaderConfig(fps=1))
+        new_params_same_name = _generate_dataset(config=VideoLoaderConfig(fps=2))
+        assert first_load.shape != new_params_same_name.shape
+
+        # check no params
+        no_params_same_name = _generate_dataset(config=None)
+        assert first_load.shape != new_params_same_name.shape != no_params_same_name.shape
+
+        # multiple params in config
+        c1 = VideoLoaderConfig(scene_threshold=0.2)
+        c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
+
+        first_load = _generate_dataset(config=c1)
+
+        new_params_same_name = _generate_dataset(config=c2)
+        assert first_load.shape != new_params_same_name.shape
+
+
+def test_caching(tmp_path, caplog, train_metadata):
     cache = tmp_path / "video_cache"
-    test_vid = [f for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()][0]
+
+    # prep labels for one video
+    labels = (
+        train_metadata[train_metadata.split == "train"]
+        .set_index("filepath")
+        .filter(regex="species")
+        .head(1)
+    )
 
     # no caching by default
-    _ = cached_load_video_frames(filepath=test_vid, config=VideoLoaderConfig(fps=1))
+    _ = FfmpegZambaVideoDataset(
+        annotations=labels,
+    ).__getitem__(index=0)
     assert not cache.exists()
 
     # caching can be specifed in config
-    _ = cached_load_video_frames(
-        filepath=test_vid, config=VideoLoaderConfig(fps=1, cache_dir=cache)
-    )
+    _ = FfmpegZambaVideoDataset(
+        annotations=labels, video_loader_config=VideoLoaderConfig(fps=1, cache_dir=cache)
+    ).__getitem__(index=0)
+
     # one file in cache
     assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
     shutil.rmtree(cache)
 
     # or caching can be specified in environment variable
     with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
-        _ = cached_load_video_frames(filepath=test_vid)
+        _ = FfmpegZambaVideoDataset(
+            annotations=labels,
+        ).__getitem__(index=0)
         assert len([f for f in cache.rglob("*") if f.is_file()]) == 1
 
         # changing cleanup in config does not prompt new hashing of videos
         with mock.patch.dict(os.environ, {"LOG_LEVEL": "DEBUG"}):
-            _ = cached_load_video_frames(
-                filepath=test_vid, config=VideoLoaderConfig(cleanup_cache=True)
-            )
+            _ = FfmpegZambaVideoDataset(
+                annotations=labels, video_loader_config=VideoLoaderConfig(cleanup_cache=True)
+            ).__getitem__(index=0)
+
             assert "Loading from cache" in caplog.text
 
     # if no config is passed, this is equivalent to specifying None/False in all non-cache related VLC params
-    no_config = cached_load_video_frames(filepath=test_vid, config=None)
-    config_with_nones = cached_load_video_frames(
-        filepath=test_vid,
-        config=VideoLoaderConfig(
+    no_config = FfmpegZambaVideoDataset(annotations=labels, video_loader_config=None).__getitem__(
+        index=0
+    )[0]
+
+    config_with_nones = FfmpegZambaVideoDataset(
+        annotations=labels,
+        video_loader_config=VideoLoaderConfig(
             crop_bottom_pixels=None,
             i_frames=False,
             scene_threshold=None,
@@ -555,5 +587,6 @@ def test_caching(tmp_path, caplog):
             model_input_height=None,
             model_input_width=None,
         ),
-    )
+    ).__getitem__(index=0)[0]
+
     assert np.array_equal(no_config, config_with_nones)

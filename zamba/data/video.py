@@ -326,8 +326,8 @@ class VideoLoaderConfig(BaseModel):
 
 
 class npy_cache:
-    def __init__(self, path: Optional[Path] = None, cleanup: bool = False):
-        self.tmp_path = path
+    def __init__(self, tmp_path: Optional[Path] = None, cleanup: bool = False):
+        self.tmp_path = tmp_path
         self.cleanup = cleanup
 
     def __call__(self, f):
@@ -388,14 +388,6 @@ class npy_cache:
                     "system temp directory. If you really want to delete, do so manually using:\n "
                     f"rm -r {self.tmp_path}"
                 )
-
-
-def npy_cache_factory(path, callable, cleanup):
-    @npy_cache(path=path, cleanup=cleanup)
-    def decorated_callable(*args, **kwargs):
-        return callable(*args, **kwargs)
-
-    return decorated_callable
 
 
 def load_video_frames(
@@ -503,21 +495,3 @@ def load_video_frames(
         arr = ensure_frame_number(arr, total_frames=config.total_frames)
 
     return arr
-
-
-def cached_load_video_frames(filepath: os.PathLike, config: Optional[VideoLoaderConfig] = None):
-    """Loads frames from videos using fast ffmpeg commands and caches to .npy file
-    if config.cache_dir is not None.
-
-    Args:
-        filepath (os.PathLike): Path to the video.
-        config (VideoLoaderConfig): Configuration for video loading.
-    """
-    if config is None:
-        # get environment variable for cache if it exists
-        config = VideoLoaderConfig()
-
-    decorated_load_video_frames = npy_cache_factory(
-        path=config.cache_dir, callable=load_video_frames, cleanup=config.cleanup_cache
-    )
-    return decorated_load_video_frames(filepath=filepath, config=config)
