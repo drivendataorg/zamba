@@ -1,8 +1,8 @@
-inference_start_time: '2021-10-18T22:25:16.187785'
+inference_start_time: '2021-10-20T06:41:28.280079'
 model_class: SlowFast
 predict_config:
   batch_size: 2
-  checkpoint: experiments/slowfast_small_set_full_size_mdlite/version_1/slowfast.ckpt
+  checkpoint: experiments/slowfast_small_set_full_size_mdlite/version_2/slowfast.ckpt
   data_directory: /home/ubuntu/zamba-algorithms
   dry_run: false
   gpus: 1
@@ -11,7 +11,7 @@ predict_config:
   num_workers: 3
   output_class_names: false
   proba_threshold: null
-  save: experiments/slowfast_small_set_full_size_mdlite/version_1/zamba_predictions.csv
+  save: experiments/slowfast_small_set_full_size_mdlite/version_2/zamba_predictions.csv
   skip_load_validation: true
   weight_download_region: us
 species:

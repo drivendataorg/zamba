@@ -1,4 +1,4 @@
-git_hash: 91e2d7ba926edd7cc15db96be7df24358f4737a3
+git_hash: edc7570a52a3c5edfa852a27cfabd7ed78a13d06
 model_class: SlowFast
 species:
 - aardvark
@@ -38,13 +38,13 @@ train_config:
   auto_lr_find: true
   backbone_finetune_config:
     backbone_initial_ratio_lr: 0.01
-    multiplier: 1
+    multiplier: 10
     pre_train_bn: false
     train_bn: false
     unfreeze_backbone_at_epoch: 3
     verbose: true
   batch_size: 2
-  checkpoint: zamba_slowfast.ckpt
+  checkpoint: null
   data_directory: /home/ubuntu/zamba-algorithms
   dry_run: false
   early_stopping_config:
@@ -71,7 +71,7 @@ train_config:
   skip_load_validation: true
   split_proportions: null
   weight_download_region: us
-training_start_time: '2021-10-18T04:25:42.161448'
+training_start_time: '2021-10-19T16:43:32.866905'
 video_loader_config:
   cache_dir: /tmp/zamba_cache
   cleanup_cache: false

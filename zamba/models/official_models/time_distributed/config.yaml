@@ -1,14 +1,4 @@
 train_config:
-  model_name: time_distributed
-  backbone_finetune_config:
-    backbone_initial_ratio_lr: 0.01
-    multiplier: 1
-    pre_train_bn: True
-    train_bn: False
-    unfreeze_backbone_at_epoch: 3
-    verbose: True
-  early_stopping_config:
-    patience: 5
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:
@@ -16,18 +6,27 @@ train_config:
       milestones:
       - 3
       verbose: true
-
+  model_name: time_distributed
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 1
+    pre_train_bn: true
+    train_bn: false
+    unfreeze_backbone_at_epoch: 3
+    verbose: true
+  early_stopping_config:
+    patience: 5
 video_loader_config:
   model_input_height: 240
   model_input_width: 426
   crop_bottom_pixels: 50
   fps: 4
   total_frames: 16
-  ensure_total_frames: True
+  ensure_total_frames: true
   megadetector_lite_config:
     confidence: 0.25
     fill_mode: score_sorted
     n_frames: 16
-
 predict_config:
   model_name: time_distributed
+public_checkpoint: time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt

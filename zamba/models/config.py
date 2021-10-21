@@ -18,7 +18,7 @@ from zamba import MODELS_DIRECTORY
 from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.utils import RegionEnum
+from zamba.models.utils import RegionEnum, get_model_checkpoint_filename
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
@@ -26,18 +26,9 @@ from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 GPUS_AVAILABLE = torch.cuda.device_count()
 
 WEIGHT_LOOKUP = {
-    "time_distributed": {
-        "public_weights": "zamba_time_distributed.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt",
-    },
-    "european": {
-        "public_weights": "zamba_european.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/time_distributed.ckpt",
-    },
-    "slowfast": {
-        "public_weights": "zamba_slowfast.ckpt",
-        "private_weights": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_1/slowfast.ckpt",
-    },
+    "time_distributed": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/version_1/",
+    "european": "s3://drivendata-client-zamba/data/results/experiments/european_td_dev_base/version_0/",
+    "slowfast": "s3://drivendata-client-zamba/data/results/experiments/slowfast_small_set_full_size_mdlite/version_2/",
 }
 
 MODEL_MAPPING = {
@@ -161,7 +152,7 @@ def check_files_exist_and_load(
 
 def validate_model_name_and_checkpoint(cls, values):
     """Ensures a checkpoint file or model name is provided. If a model name is provided,
-    looks up the corresponding checkpoint file from WEIGHT_LOOKUP.
+    looks up the corresponding public checkpoint file from the official configs.
     """
     checkpoint = values.get("checkpoint")
     model_name = values.get("model_name")
@@ -177,8 +168,9 @@ def validate_model_name_and_checkpoint(cls, values):
         values["model_name"] = None
 
     elif checkpoint is None and model_name is not None:
-        # look up public weights file based on model name
-        values["checkpoint"] = WEIGHT_LOOKUP[model_name]["public_weights"]
+        if not values.get("from_scratch"):
+            # get public weights file from official models config
+            values["checkpoint"] = get_model_checkpoint_filename(model_name)
 
     return values
 
@@ -526,6 +518,35 @@ class TrainConfig(ZambaBaseModel):
         # filepath becomes column instead of index
         values["labels"] = labels.reset_index()
         return values
+
+    def get_model_only_params(self):
+        """Return only params that are not data or machine specific.
+        Used for generating official configs.
+        """
+        train_config = self.dict()
+
+        # remove data and machine specific params
+        for key in [
+            "labels",
+            "data_directory",
+            "dry_run",
+            "batch_size",
+            "auto_lr_find",
+            "gpus",
+            "num_workers",
+            "max_epochs",
+            "weight_download_region",
+            "split_proportions",
+            "save_directory",
+            "overwrite_save_directory",
+            "skip_load_validation",
+            "from_scratch",
+            "model_cache_dir",
+            "predict_all_zamba_species",
+        ]:
+            train_config.pop(key)
+
+        return train_config
 
 
 class PredictConfig(ZambaBaseModel):
