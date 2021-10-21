@@ -511,12 +511,10 @@ def test_same_filename_new_kwargs(tmp_path, train_metadata):
         assert first_load.shape != new_params_same_name.shape != no_params_same_name.shape
 
         # multiple params in config
-        c1 = VideoLoaderConfig(scene_threshold=0.2)
-        c2 = VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
-
-        first_load = _generate_dataset(config=c1)
-
-        new_params_same_name = _generate_dataset(config=c2)
+        first_load = _generate_dataset(config=VideoLoaderConfig(scene_threshold=0.2))
+        new_params_same_name = _generate_dataset(
+            config=VideoLoaderConfig(scene_threshold=0.2, crop_bottom_pixels=2)
+        )
         assert first_load.shape != new_params_same_name.shape
 
 
