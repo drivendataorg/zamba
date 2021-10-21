@@ -478,13 +478,6 @@ def test_validate_total_frames():
     assert config.total_frames == 8
 
 
-def generate_dataset(config):
-    """Return loaded video from FFmpegZambaVideoDataset."""
-    return FfmpegZambaVideoDataset(annotations=labels, video_loader_config=config).__getitem__(
-        index=0
-    )[0]
-
-
 def test_same_filename_new_kwargs(tmp_path, train_metadata):
     """Test that load_video_frames does not load the npz file if the params change."""
     # use first test video
@@ -499,6 +492,11 @@ def test_same_filename_new_kwargs(tmp_path, train_metadata):
         .head(1)
     )
 
+    def _generate_dataset(config):
+        """Return loaded video from FFmpegZambaVideoDataset."""
+        return FfmpegZambaVideoDataset(annotations=labels, video_loader_config=config).__getitem__(
+            index=0
+        )[0]
 
     with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
         # confirm cache is set in environment variable
