@@ -1,0 +1,2085 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/models-model_manager/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.4">
+    
+    
+      
+        <title>zamba.models.model_manager - Zamba</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.db9e7362.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/custom_mkdocstrings.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#zambamodelsmodel_manager" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zamba" class="md-header__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zamba
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              zamba.models.model_manager
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zamba" class="md-nav__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Zamba
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        Installing Zamba
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          User Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../predict-tutorial/" class="md-nav__link">
+        Classifying Unlabeled Videos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../train-tutorial/" class="md-nav__link">
+        Training a Model on Labeled Videos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugging/" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../models/">Available Models</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Available Models" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Available Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Advanced Options
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Advanced Options" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced Options
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configurations/" class="md-nav__link">
+        All Optional Arguments
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yaml-config/" class="md-nav__link">
+        Using YAML configuration files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extra-options/" class="md-nav__link">
+        Guide to Common Optional Parameters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../contribute/">Contribute to zamba</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Contribute to zamba" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Contribute to zamba
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Changelog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Changelog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../v2_updates/" class="md-nav__link">
+        Version 2
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_1">
+          zamba.data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.data" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-metadata/" class="md-nav__link">
+        zamba.data.metadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-video/" class="md-nav__link">
+        zamba.data.video
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          zamba.models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-yolox_models/" class="md-nav__link">
+        zamba.models.yolox_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-config/" class="md-nav__link">
+        zamba.models.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-efficientnet_models/" class="md-nav__link">
+        zamba.models.efficientnet_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-megadetector_lite_yolox/" class="md-nav__link">
+        zamba.models.megadetector_lite_yolox
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          zamba.models.model_manager
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        zamba.models.model_manager
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.model_manager-classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.model_manager-functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-slowfast_models/" class="md-nav__link">
+        zamba.models.slowfast_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-utils/" class="md-nav__link">
+        zamba.models.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3">
+          zamba.pytorch
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-dataloaders/" class="md-nav__link">
+        zamba.pytorch.dataloaders
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-finetuning/" class="md-nav__link">
+        zamba.pytorch.finetuning
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-layers/" class="md-nav__link">
+        zamba.pytorch.layers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-transforms/" class="md-nav__link">
+        zamba.pytorch.transforms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-utils/" class="md-nav__link">
+        zamba.pytorch.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
+          zamba.pytorch_lightning
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_4">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch_lightning
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch_lightning-utils/" class="md-nav__link">
+        zamba.pytorch_lightning.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        zamba.exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metrics/" class="md-nav__link">
+        zamba.metrics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        zamba.settings
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.model_manager-classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.model_manager-functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/api-reference/models-model_manager.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="zambamodelsmodel_manager">zamba.models.model_manager<a class="headerlink" href="#zambamodelsmodel_manager" title="Permanent link">&para;</a></h1>
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h2 id="zamba.models.model_manager-classes">Classes<a href="#zamba.models.model_manager-classes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.model_manager.ModelManager" class="doc doc-heading">
+        <code>
+ModelManager        </code>
+
+
+
+<a href="#zamba.models.model_manager.ModelManager" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Mediates loading, configuration, and logic of model calls.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>config</code></td>
+        <td><code>ModelConfig</code></td>
+        <td><p>Instantiated ModelConfig.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.model_manager.ModelManager.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ModelConfig</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#zamba.models.model_manager.ModelManager.__init__" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ModelConfig</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.model_manager.ModelManager.from_yaml" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">from_yaml</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.model_manager.ModelManager.from_yaml" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ModelConfig</span><span class="p">):</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.model_manager.ModelManager.predict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.model_manager.ModelManager.predict" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">predict_model</span><span class="p">(</span>
+        <span class="n">predict_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">predict_config</span><span class="p">,</span>
+        <span class="n">video_loader_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">video_loader_config</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.model_manager.ModelManager.train" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">train</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.model_manager.ModelManager.train" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">train_model</span><span class="p">(</span>
+        <span class="n">train_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_config</span><span class="p">,</span>
+        <span class="n">video_loader_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">video_loader_config</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+<h2 id="zamba.models.model_manager-functions">Functions<a href="#zamba.models.model_manager-functions" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.model_manager.instantiate_model" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">instantiate_model</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span><span class="p">,</span> <span class="n">scheduler_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">zamba</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">SchedulerConfig</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">zamba</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">predict_all_zamba_species</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZambaVideoClassificationLightningModule</span></code>
+
+
+<a href="#zamba.models.model_manager.instantiate_model" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Instantiates the model from a checkpoint and detects whether the model head should be replaced.
+The model head is replaced if labels contain species that are not on the model or predict_all_zamba_species=False.</p>
+<p>Supports model instantiation for the following cases:
+- train from scratch (from_scratch=True)
+- finetune with new species (from_scratch=False, labels contains different species than model)
+- finetune with a subset of zamba species and output only the species in the labels file (predict_all_zamba_species=False)
+- finetune with a subset of zamba species but output all zamba species (predict_all_zamba_species=True)
+- predict using pretrained model (labels=None)</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>checkpoint</code></td>
+        <td><code>path or str</code></td>
+        <td><p>Either the path to a checkpoint on disk or the name of a
+checkpoint file in the S3 bucket, i.e., one that is discoverable by <code>download_weights</code>.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>weight_download_region</code></td>
+        <td><code>RegionEnum</code></td>
+        <td><p>Server region for downloading weights.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>scheduler_config</code></td>
+        <td><code>SchedulerConfig</code></td>
+        <td><p>SchedulerConfig to use for training or finetuning.
+Only used if labels is not None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>model_cache_dir</code></td>
+        <td><code>path</code></td>
+        <td><p>Directory in which to store pretrained model weights.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>labels</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>Dataframe where filepath is the index and columns are one hot encoded species.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>from_scratch</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to instantiate the model with base weights. This means starting
+from the imagenet weights for image based models and the Kinetics weights for video models.
+Defaults to False. Only used if labels is not None.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>model_name</code></td>
+        <td><code>ModelEnum</code></td>
+        <td><p>Model name used to look up default hparams used for that model.
+Only relevant if training from scratch.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>predict_all_zamba_species(bool)</code></td>
+        <td></td>
+        <td><p>Whether the species outputted by the model should be all zamba species.
+If you want the model classes to only be the species in your labels file, set to False.
+Defaults to True. Only used if labels is not None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ZambaVideoClassificationLightningModule</code></td>
+      <td><p>Instantiated model</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">instantiate_model</span><span class="p">(</span>
+    <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span><span class="p">,</span>
+    <span class="n">scheduler_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SchedulerConfig</span><span class="p">],</span>
+    <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span>
+    <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+    <span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">predict_all_zamba_species</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ZambaVideoClassificationLightningModule</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Instantiates the model from a checkpoint and detects whether the model head should be replaced.</span>
+<span class="sd">    The model head is replaced if labels contain species that are not on the model or predict_all_zamba_species=False.</span>
+
+<span class="sd">    Supports model instantiation for the following cases:</span>
+<span class="sd">    - train from scratch (from_scratch=True)</span>
+<span class="sd">    - finetune with new species (from_scratch=False, labels contains different species than model)</span>
+<span class="sd">    - finetune with a subset of zamba species and output only the species in the labels file (predict_all_zamba_species=False)</span>
+<span class="sd">    - finetune with a subset of zamba species but output all zamba species (predict_all_zamba_species=True)</span>
+<span class="sd">    - predict using pretrained model (labels=None)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        checkpoint (path or str): Either the path to a checkpoint on disk or the name of a</span>
+<span class="sd">            checkpoint file in the S3 bucket, i.e., one that is discoverable by `download_weights`.</span>
+<span class="sd">        weight_download_region (RegionEnum): Server region for downloading weights.</span>
+<span class="sd">        scheduler_config (SchedulerConfig, optional): SchedulerConfig to use for training or finetuning.</span>
+<span class="sd">            Only used if labels is not None.</span>
+<span class="sd">        model_cache_dir (path, optional): Directory in which to store pretrained model weights.</span>
+<span class="sd">        labels (pd.DataFrame, optional): Dataframe where filepath is the index and columns are one hot encoded species.</span>
+<span class="sd">        from_scratch (bool): Whether to instantiate the model with base weights. This means starting</span>
+<span class="sd">            from the imagenet weights for image based models and the Kinetics weights for video models.</span>
+<span class="sd">            Defaults to False. Only used if labels is not None.</span>
+<span class="sd">        model_name (ModelEnum, optional): Model name used to look up default hparams used for that model.</span>
+<span class="sd">            Only relevant if training from scratch.</span>
+<span class="sd">        predict_all_zamba_species(bool): Whether the species outputted by the model should be all zamba species.</span>
+<span class="sd">            If you want the model classes to only be the species in your labels file, set to False.</span>
+<span class="sd">            Defaults to True. Only used if labels is not None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ZambaVideoClassificationLightningModule: Instantiated model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">from_scratch</span><span class="p">:</span>
+        <span class="c1"># get hparams from official model</span>
+        <span class="k">with</span> <span class="p">(</span><span class="n">MODELS_DIRECTORY</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">/hparams.yaml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">hparams</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Downloading weights for model.&quot;</span><span class="p">)</span>
+            <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
+                <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">),</span>
+                <span class="n">weight_region</span><span class="o">=</span><span class="n">weight_download_region</span><span class="p">,</span>
+                <span class="n">destination_dir</span><span class="o">=</span><span class="n">model_cache_dir</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">hparams</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">))[</span><span class="s2">&quot;hyper_parameters&quot;</span><span class="p">]</span>
+
+    <span class="n">model_class</span> <span class="o">=</span> <span class="n">available_models</span><span class="p">[</span><span class="n">hparams</span><span class="p">[</span><span class="s2">&quot;model_class&quot;</span><span class="p">]]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instantiating model: </span><span class="si">{</span><span class="n">model_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># predict; load from checkpoint uses associated hparams</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading from checkpoint.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model_class</span><span class="o">.</span><span class="n">load_from_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="o">=</span><span class="n">checkpoint</span><span class="p">)</span>
+
+    <span class="c1"># get species from labels file</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">species</span><span class="p">]</span>
+
+    <span class="c1"># check if species in label file are a subset of pretrained model species</span>
+    <span class="n">is_subset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">species</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">hparams</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]))</span>
+
+    <span class="c1"># train from scratch</span>
+    <span class="k">if</span> <span class="n">from_scratch</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Training from scratch.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># default would use scheduler used for pretrained model</span>
+        <span class="k">if</span> <span class="n">scheduler_config</span> <span class="o">!=</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+            <span class="n">hparams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">scheduler_config</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+
+        <span class="n">hparams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">species</span><span class="p">})</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model_class</span><span class="p">(</span><span class="o">**</span><span class="n">hparams</span><span class="p">)</span>
+
+    <span class="c1"># replace the head</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">predict_all_zamba_species</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">is_subset</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">predict_all_zamba_species</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Limiting only to species in labels file. Replacing model head and finetuning.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Provided species do not fully overlap with Zamba species. Replacing model head and finetuning.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># update in case we want to finetune with different scheduler</span>
+        <span class="k">if</span> <span class="n">scheduler_config</span> <span class="o">!=</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+            <span class="n">hparams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">scheduler_config</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+
+        <span class="n">hparams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">species</span><span class="p">})</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model_class</span><span class="p">(</span><span class="n">finetune_from</span><span class="o">=</span><span class="n">checkpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">hparams</span><span class="p">)</span>
+
+    <span class="c1"># resume training; add additional species columns to labels file if needed</span>
+    <span class="k">elif</span> <span class="n">is_subset</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Provided species fully overlap with Zamba species. Resuming training from latest checkpoint.&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># update in case we want to resume with different scheduler</span>
+        <span class="k">if</span> <span class="n">scheduler_config</span> <span class="o">!=</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+            <span class="n">hparams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">scheduler_config</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model_class</span><span class="o">.</span><span class="n">load_from_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="o">=</span><span class="n">checkpoint</span><span class="p">,</span> <span class="o">**</span><span class="n">hparams</span><span class="p">)</span>
+
+        <span class="c1"># add in remaining columns for species that are not present</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">hparams</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">species</span><span class="p">)):</span>
+            <span class="c1"># labels are still OHE at this point</span>
+            <span class="n">labels</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;species_</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># sort columns so columns on dataloader are the same as columns on model</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using learning rate scheduler: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;scheduler&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using scheduler params: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;scheduler_params&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.model_manager.predict_model" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict_model</span><span class="p">(</span><span class="n">predict_config</span><span class="p">:</span> <span class="n">PredictConfig</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">VideoLoaderConfig</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.model_manager.predict_model" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Predicts from a model and writes out predictions to a csv.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>predict_config</code></td>
+        <td><code>PredictConfig</code></td>
+        <td><p>Pydantic config for performing inference.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>video_loader_config</code></td>
+        <td><code>VideoLoaderConfig</code></td>
+        <td><p>Pydantic config for preprocessing videos.
+If None, will use default for model specified in PredictConfig.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">predict_model</span><span class="p">(</span>
+    <span class="n">predict_config</span><span class="p">:</span> <span class="n">PredictConfig</span><span class="p">,</span>
+    <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">VideoLoaderConfig</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Predicts from a model and writes out predictions to a csv.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        predict_config (PredictConfig): Pydantic config for performing inference.</span>
+<span class="sd">        video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.</span>
+<span class="sd">            If None, will use default for model specified in PredictConfig.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># get default VLC for model if not specified</span>
+    <span class="k">if</span> <span class="n">video_loader_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="p">(</span>
+            <span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">video_loader_config</span>
+
+    <span class="c1"># set up model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">instantiate_model</span><span class="p">(</span>
+        <span class="n">checkpoint</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">,</span>
+        <span class="n">weight_download_region</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">weight_download_region</span><span class="p">,</span>
+        <span class="n">model_cache_dir</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">model_cache_dir</span><span class="p">,</span>
+        <span class="n">scheduler_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">data_module</span> <span class="o">=</span> <span class="n">ZambaDataModule</span><span class="p">(</span>
+        <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">MODEL_MAPPING</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="s2">&quot;transform&quot;</span><span class="p">],</span>
+        <span class="n">predict_metadata</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">filepaths</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">num_workers</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">validate_species</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data_module</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No cache dir is specified. Videos will not be cached.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Videos will be cached to </span><span class="si">{</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
+        <span class="n">gpus</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">gpus</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fast_dev_run</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">dry_run</span>
+    <span class="p">)</span>
+
+    <span class="n">configuration</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;model_class&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">model_class</span><span class="p">,</span>
+        <span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">,</span>
+        <span class="s2">&quot;predict_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">predict_config</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;filepaths&quot;</span><span class="p">})),</span>
+        <span class="s2">&quot;inference_start_time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s2">&quot;video_loader_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">json</span><span class="p">()),</span>
+    <span class="p">}</span>
+
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">data_module</span><span class="o">.</span><span class="n">predict_dataloader</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting prediction...&quot;</span><span class="p">)</span>
+    <span class="n">probas</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloaders</span><span class="o">=</span><span class="n">dataloader</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">probas</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">original_indices</span>
+    <span class="p">)</span>
+
+    <span class="c1"># change output format if specified</span>
+    <span class="k">if</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">proba_threshold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span> <span class="o">&gt;</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">proba_threshold</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">output_class_names</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># round to a useful number of places</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;predict_configuration.yaml&quot;</span>
+        <span class="n">config_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing out full configuration to </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving out predictions to </span><span class="si">{</span><span class="n">predict_config</span><span class="o">.</span><span class="n">save</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.model_manager.train_model" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">train_model</span><span class="p">(</span><span class="n">train_config</span><span class="p">:</span> <span class="n">TrainConfig</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">zamba</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">video</span><span class="o">.</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.model_manager.train_model" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Trains a model.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>train_config</code></td>
+        <td><code>TrainConfig</code></td>
+        <td><p>Pydantic config for training.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>video_loader_config</code></td>
+        <td><code>VideoLoaderConfig</code></td>
+        <td><p>Pydantic config for preprocessing videos.
+If None, will use default for model specified in TrainConfig.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span>
+    <span class="n">train_config</span><span class="p">:</span> <span class="n">TrainConfig</span><span class="p">,</span>
+    <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Trains a model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        train_config (TrainConfig): Pydantic config for training.</span>
+<span class="sd">        video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.</span>
+<span class="sd">            If None, will use default for model specified in TrainConfig.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># get default VLC for model if not specified</span>
+    <span class="k">if</span> <span class="n">video_loader_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="p">(</span>
+            <span class="n">train_config</span><span class="o">=</span><span class="n">train_config</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">video_loader_config</span>
+
+    <span class="c1"># set up model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">instantiate_model</span><span class="p">(</span>
+        <span class="n">checkpoint</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">,</span>
+        <span class="n">scheduler_config</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">scheduler_config</span><span class="p">,</span>
+        <span class="n">weight_download_region</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">weight_download_region</span><span class="p">,</span>
+        <span class="n">model_cache_dir</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">model_cache_dir</span><span class="p">,</span>
+        <span class="n">labels</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+        <span class="n">from_scratch</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">from_scratch</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
+        <span class="n">predict_all_zamba_species</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">predict_all_zamba_species</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">data_module</span> <span class="o">=</span> <span class="n">ZambaDataModule</span><span class="p">(</span>
+        <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">MODEL_MAPPING</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="s2">&quot;transform&quot;</span><span class="p">],</span>
+        <span class="n">train_metadata</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">num_workers</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">validate_species</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data_module</span><span class="p">)</span>
+
+    <span class="n">train_config</span><span class="o">.</span><span class="n">save_directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># add folder version_n that auto increments if we are not overwriting</span>
+    <span class="n">tensorboard_version</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">train_config</span><span class="o">.</span><span class="n">save_directory</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">train_config</span><span class="o">.</span><span class="n">overwrite_save_directory</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="n">tensorboard_save_dir</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">train_config</span><span class="o">.</span><span class="n">save_directory</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">if</span> <span class="n">train_config</span><span class="o">.</span><span class="n">overwrite_save_directory</span>
+        <span class="k">else</span> <span class="n">train_config</span><span class="o">.</span><span class="n">save_directory</span>
+    <span class="p">)</span>
+
+    <span class="n">tensorboard_logger</span> <span class="o">=</span> <span class="n">TensorBoardLogger</span><span class="p">(</span>
+        <span class="n">save_dir</span><span class="o">=</span><span class="n">tensorboard_save_dir</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">tensorboard_version</span><span class="p">,</span>
+        <span class="n">default_hp_metric</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">logging_and_save_dir</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">tensorboard_logger</span><span class="o">.</span><span class="n">log_dir</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">train_config</span><span class="o">.</span><span class="n">overwrite_save_directory</span>
+        <span class="k">else</span> <span class="n">train_config</span><span class="o">.</span><span class="n">save_directory</span>
+    <span class="p">)</span>
+
+    <span class="n">model_checkpoint</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span>
+        <span class="n">dirpath</span><span class="o">=</span><span class="n">logging_and_save_dir</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
+        <span class="n">monitor</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">early_stopping_config</span><span class="o">.</span><span class="n">monitor</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">early_stopping_config</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_checkpoint</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">train_config</span><span class="o">.</span><span class="n">early_stopping_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="o">**</span><span class="n">train_config</span><span class="o">.</span><span class="n">early_stopping_config</span><span class="o">.</span><span class="n">dict</span><span class="p">()))</span>
+
+    <span class="k">if</span> <span class="n">train_config</span><span class="o">.</span><span class="n">backbone_finetune_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BackboneFinetuning</span><span class="p">(</span><span class="o">**</span><span class="n">train_config</span><span class="o">.</span><span class="n">backbone_finetune_config</span><span class="o">.</span><span class="n">dict</span><span class="p">()))</span>
+
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
+        <span class="n">gpus</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">gpus</span><span class="p">,</span>
+        <span class="n">max_epochs</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">max_epochs</span><span class="p">,</span>
+        <span class="n">auto_lr_find</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">auto_lr_find</span><span class="p">,</span>
+        <span class="n">logger</span><span class="o">=</span><span class="n">tensorboard_logger</span><span class="p">,</span>
+        <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span>
+        <span class="n">fast_dev_run</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
+        <span class="n">accelerator</span><span class="o">=</span><span class="s2">&quot;ddp&quot;</span> <span class="k">if</span> <span class="n">data_module</span><span class="o">.</span><span class="n">multiprocessing_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plugins</span><span class="o">=</span><span class="n">DDPPlugin</span><span class="p">(</span><span class="n">find_unused_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data_module</span><span class="o">.</span><span class="n">multiprocessing_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No cache dir is specified. Videos will not be cached.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Videos will be cached to </span><span class="si">{</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">train_config</span><span class="o">.</span><span class="n">auto_lr_find</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finding best learning rate.&quot;</span><span class="p">)</span>
+        <span class="n">trainer</span><span class="o">.</span><span class="n">tune</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data_module</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">git_hash</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="n">search_parent_directories</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span>
+    <span class="k">except</span> <span class="n">git</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">InvalidGitRepositoryError</span><span class="p">:</span>
+        <span class="n">git_hash</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">configuration</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;git_hash&quot;</span><span class="p">:</span> <span class="n">git_hash</span><span class="p">,</span>
+        <span class="s2">&quot;model_class&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">model_class</span><span class="p">,</span>
+        <span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">,</span>
+        <span class="s2">&quot;starting_learning_rate&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span>
+        <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">train_config</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;labels&quot;</span><span class="p">})),</span>
+        <span class="s2">&quot;training_start_time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s2">&quot;video_loader_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">json</span><span class="p">()),</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">train_config</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;train_configuration.yaml&quot;</span>
+        <span class="n">config_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing out full configuration to </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting training...&quot;</span><span class="p">)</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data_module</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">train_config</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating metrics on holdout set.&quot;</span><span class="p">)</span>
+            <span class="n">test_metrics</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">dataloaders</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;test_metrics.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">test_metrics</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating metrics on validation set.&quot;</span><span class="p">)</span>
+            <span class="n">val_metrics</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">dataloaders</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;val_metrics.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">val_metrics</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">trainer</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.model_manager.validate_species" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_species</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ZambaVideoClassificationLightningModule</span><span class="p">,</span> <span class="n">data_module</span><span class="p">:</span> <span class="n">ZambaDataModule</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.model_manager.validate_species" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/model_manager.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">validate_species</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ZambaVideoClassificationLightningModule</span><span class="p">,</span> <span class="n">data_module</span><span class="p">:</span> <span class="n">ZambaDataModule</span><span class="p">):</span>
+    <span class="n">conflicts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dataloader_name</span><span class="p">,</span> <span class="n">dataloader</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="p">(</span><span class="s2">&quot;Train&quot;</span><span class="p">,</span> <span class="s2">&quot;Val&quot;</span><span class="p">,</span> <span class="s2">&quot;Test&quot;</span><span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">data_module</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">(),</span>
+            <span class="n">data_module</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">(),</span>
+            <span class="n">data_module</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">(),</span>
+        <span class="p">),</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">dataloader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">species</span> <span class="o">!=</span> <span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">):</span>
+            <span class="n">conflicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">dataloader_name</span><span class="si">}</span><span class="s2"> dataset includes:</span><span class="se">\n</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">species</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">conflicts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;Model predicts:</span><span class="se">\n</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">conflict_msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conflicts</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Dataloader species and model species do not match.</span><span class="se">\n\n</span><span class="si">{</span><span class="n">conflict_msg</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../models-megadetector_lite_yolox/" class="md-footer__link md-footer__link--prev" aria-label="Previous: zamba.models.megadetector_lite_yolox" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              zamba.models.megadetector_lite_yolox
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../models-slowfast_models/" class="md-footer__link md-footer__link--next" aria-label="Next: zamba.models.slowfast_models" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              zamba.models.slowfast_models
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.8397ff9e.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1e84347e.min.js"></script>
+      
+    
+  </body>
+</html>
