@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Optional
+import warnings
 
 from loguru import logger
 from pydantic.error_wrappers import ValidationError
@@ -14,6 +15,7 @@ from zamba.models.config import (
     TrainConfig,
 )
 from zamba import MODELS_DIRECTORY
+from zamba.models.densepose import DensePoseConfig, DensePoseOutputEnum
 from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
 from zamba.version import __version__
@@ -375,6 +377,127 @@ def main(
     """Zamba is a tool built in Python to automatically identify the species seen
     in camera trap videos from sites in Africa and Europe. Visit
     https://zamba.drivendata.org/docs for more in-depth documentation."""
+
+
+@app.command()
+def densepose(
+    data_dir: Path = typer.Option(
+        None, exists=True, help="Path to video or image file or folder containing images/videos."
+    ),
+    filepaths: Path = typer.Option(
+        None, exists=True, help="Path to csv containing `filepath` column with videos."
+    ),
+    save_path: Path = typer.Option(
+        None,
+        help="An optional directory for saving the output. Defaults to the current working directory.",
+    ),
+    config: Path = typer.Option(
+        None,
+        exists=True,
+        help="Specify options using yaml configuration file instead of through command line options.",
+    ),
+    fps: float = typer.Option(
+        1.0, help="Number of frames per second to process. Defaults to 1.0 (1 frame per second)."
+    ),
+    output_type: DensePoseOutputEnum = typer.Option(
+        "chimp_anatomy",
+        help="If 'chimp_anatomy' will apply anatomy model from densepose to the rendering and create a CSV with "
+        "the anatomy visible in each frame. If 'segmentation', will just output the segmented area where an animal "
+        "is identified, which works for more species than chimpanzees.",
+    ),
+    render_output: bool = typer.Option(
+        False,
+        help="If True, generate an output image or video with either the segmentation or anatomy rendered "
+        "depending on the `output_type` that is chosen.",
+    ),
+    weight_download_region: RegionEnum = typer.Option(
+        None, help="Server region for downloading weights."
+    ),
+    cache_dir: Path = typer.Option(
+        None,
+        exists=False,
+        help="Path to directory for model weights. Alternatively, specify with environment variable `ZAMBA_CACHE_DIR`. If not specified, user's cache directory is used.",
+    ),
+    yes: bool = typer.Option(
+        False,
+        "--yes",
+        "-y",
+        help="Skip confirmation of configuration and proceed right to prediction.",
+    ),
+):
+    """Run densepose algorithm on videos.
+
+    If an argument is specified in both the command line and in a yaml file, the command line input will take precedence.
+    """
+    if config is not None:
+        with config.open() as f:
+            config_dict = yaml.safe_load(f)
+        config_file = config
+    else:
+        config_dict = {}
+        config_file = None
+
+    if "video_loader_config" not in config_dict.keys():
+        config_dict["video_loader_config"] = dict()
+
+    if fps is not None:
+        config_dict["video_loader_config"]["fps"] = fps
+
+    predict_dict = config_dict
+
+    # override if any command line arguments are passed
+    if data_dir is not None:
+        predict_dict["data_directory"] = data_dir
+
+    if filepaths is not None:
+        predict_dict["filepaths"] = filepaths
+
+    if save_path is not None:
+        predict_dict["save_path"] = save_path
+
+    if weight_download_region is not None:
+        predict_dict["weight_download_region"] = weight_download_region
+
+    if cache_dir is not None:
+        predict_dict["cache_dir"] = cache_dir
+
+    if output_type is not None:
+        predict_dict["output_type"] = output_type
+
+    if render_output is not None:
+        predict_dict["render_output"] = render_output
+
+    try:
+        densepose_config = DensePoseConfig(**predict_dict)
+    except ValidationError as ex:
+        logger.error("Invalid configuration.")
+        raise typer.Exit(ex)
+
+    msg = f"""The following configuration will be used for inference:
+
+    Config file: {config_file}
+    Output type: {densepose_config.output_type}
+    Render output: {densepose_config.render_output}
+    Data directory: {data_dir if data_dir is not None else config_dict.get("data_directory")}
+    Filepath csv: {filepaths if filepaths is not None else config_dict.get("filepaths")}
+    Weight download region: {densepose_config.weight_download_region}
+    Cache directory: {densepose_config.cache_dir}
+    """
+
+    if yes:
+        typer.echo(f"{msg}\n\nSkipping confirmation and proceeding to prediction.")
+    else:
+        yes = typer.confirm(
+            f"{msg}\n\nIs this correct?",
+            abort=False,
+            default=True,
+        )
+
+    if yes:
+        # kick off prediction
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore")
+            densepose_config.run_model()
 
 
 if __name__ == "__main__":

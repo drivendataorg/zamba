@@ -173,3 +173,28 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     assert (
         pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
     )
+
+
+def test_densepose_cli_options(mocker):  # noqa: F811
+    """Test CLI options that are shared between train and predict commands."""
+
+    mocker.patch("zamba.models.densepose.config.DensePoseConfig.run_model", pred_mock)
+
+    result = runner.invoke(
+        app,
+        [
+            "densepose",
+            "--help",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert "Run densepose algorithm on videos." in result.output
+
+    result = runner.invoke(
+        app,
+        ["densepose", "--data-dir", str(ASSETS_DIR / "densepose_tests"), "--yes"],
+    )
+
+    assert result.exit_code == 0
+    assert "The following configuration will be used" in result.output

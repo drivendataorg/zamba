@@ -78,7 +78,7 @@ docs-serve:
 	cd docs && mkdocs serve
 
 publish_models:
-	python zamba/models/publish_models.py
+	python -m zamba.models.publish_models
 
 #################################################################################
 # Self Documenting Commands                                                     #
