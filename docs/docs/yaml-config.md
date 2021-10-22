@@ -12,15 +12,15 @@ video_loader_config:
   total_frames: 16
   # other video loading parameters
 
-predict_config:
-  model_name: time_distributed
-  data_directoty: example_vids/
-  # other training parameters, eg. batch_size
-
 train_config:
   model_name: time_distributed
   data_directory: example_vids/
   labels: example_labels.csv
+  # other training parameters, eg. batch_size
+
+predict_config:
+  model_name: time_distributed
+  data_directoty: example_vids/
   # other training parameters, eg. batch_size
 ```
 
@@ -39,14 +39,12 @@ predict_config:
 
 ## Required arguments
 
-Either `predict_config` or `train_config` is required, based on whether you will be running inference or training a model. See [All Optional Arguments](configurations.md) for a full list of what can be specified under each class. To run inference, either `data_directory` or `filepaths` must be specified. To train a model, both `data_directory` and `labels` must be specified.
+Either `predict_config` or `train_config` is required, based on whether you will be running inference or training a model. See [All Configuration Options](configurations.md) for a full list of what can be specified under each class. To run inference, `data_directory`and/or `filepaths` must be specified. To train a model, `labels` must be specified.
 
-In `video_loader_config`, you must specify at least `model_input_height`, `model_input_width`, and `total_frames`. 
+In `video_loader_config`, you must specify at least `model_input_height`, `model_input_width`, and `total_frames`. While this is the minimum required, we strongly recommend being intentional in your choice of frame selection method. `total_frames` by itself will just take the first `n` frames. For a full list of frame selection methods, see the section on [Video loading arguments](configurations.md#video-loading-arguments).
 
 * For `time_distributed` or `european`, `total_frames` must be 16
 * For `slowfast`, `total_frames` must be 32
-
-See the [Available Models](models/index.md) page for more details on each model's requirements.
 
 ## Command line interface
 
@@ -66,7 +64,7 @@ The main API for zamba is the [`ModelManager` class](api-reference/models-model_
 from zamba.models.manager import ModelManager
 ```
 
-The `ModelManager` class is used by `zamba`’s command line interface to handle preprocessing the filenames, loading the videos, serving them to the model, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
+The `ModelManager` class is used by `zamba`’s command line interface to handle preprocessing the filenames, loading the videos, training the model, performing inference, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
 
 To instantiate the `ModelManager` based on a configuration file saved at `test_config.yaml`:
 ```python
@@ -74,26 +72,26 @@ To instantiate the `ModelManager` based on a configuration file saved at `test_c
 >>> manager.config
 
 ModelConfig(
-  video_loader_config=VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False, 
-                                        scene_threshold=None, megadetector_lite_config=None, 
-                                        model_input_height=240, model_input_width=426, 
-                                        total_frames=16, ensure_total_frames=True, 
+  video_loader_config=VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False,
+                                        scene_threshold=None, megadetector_lite_config=None,
+                                        model_input_height=240, model_input_width=426,
+                                        total_frames=16, ensure_total_frames=True,
                                         fps=None, early_bias=False, frame_indices=None,
                                         evenly_sample_total_frames=False, pix_fmt='rgb24'
-                                      ), 
-  train_config=None, 
-  predict_config=PredictConfig(data_directory=PosixPath('vids'), 
+                                      ),
+  train_config=None,
+  predict_config=PredictConfig(data_directory=PosixPath('vids'),
                                filepaths=                         filepath
                                           0    /home/ubuntu/vids/eleph.MP4
                                           1  /home/ubuntu/vids/leopard.MP4
                                           2    /home/ubuntu/vids/blank.MP4
-                                          3    /home/ubuntu/vids/chimp.MP4, 
-                                checkpoint='zamba_time_distributed.ckpt', 
+                                          3    /home/ubuntu/vids/chimp.MP4,
+                                checkpoint='zamba_time_distributed.ckpt',
                                 model_params=ModelParams(scheduler=None, scheduler_params=None),
-                                model_name='time_distributed', species=None, 
-                                gpus=1, num_workers=3, batch_size=8, 
+                                model_name='time_distributed', species=None,
+                                gpus=1, num_workers=3, batch_size=8,
                                 save=True, dry_run=False, proba_threshold=None,
-                                output_class_names=False, weight_download_region='us', 
+                                output_class_names=False, weight_download_region='us',
                                 cache_dir=None, skip_load_validation=False)
                               )
 ```
@@ -116,16 +114,6 @@ For example, the default configuration for the [`time_distributed` model](models
 
 ```yaml
 train_config:
-  model_name: time_distributed
-  backbone_finetune_config:
-    backbone_initial_ratio_lr: 0.01
-    multiplier: 1
-    pre_train_bn: True
-    train_bn: False
-    unfreeze_backbone_at_epoch: 3
-    verbose: True
-  early_stopping_config:
-    patience: 5
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:
@@ -133,21 +121,30 @@ train_config:
       milestones:
       - 3
       verbose: true
-
+  model_name: time_distributed
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 1
+    pre_train_bn: true
+    train_bn: false
+    unfreeze_backbone_at_epoch: 3
+    verbose: true
+  early_stopping_config:
+    patience: 5
 video_loader_config:
   model_input_height: 240
   model_input_width: 426
   crop_bottom_pixels: 50
   fps: 4
   total_frames: 16
-  ensure_total_frames: True
+  ensure_total_frames: true
   megadetector_lite_config:
     confidence: 0.25
     fill_mode: score_sorted
     n_frames: 16
-
 predict_config:
   model_name: time_distributed
+public_checkpoint: time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt
 ```
 
 For reference, the below shows how to specify the same video loading and training parameters using only the Python package:
@@ -165,8 +162,8 @@ video_loader_config = VideoLoaderConfig(
     total_frames=16,
     ensure_total_frames=True,
     megadetector_lite_config={
-        "confidence": 0.25, 
-        "fill_mode": "score_sorted", 
+        "confidence": 0.25,
+        "fill_mode": "score_sorted",
         "n_frames": 16,
     },
 )
@@ -195,3 +192,7 @@ train_model(
     video_loader_config=video_loader_config,
 )
 ```
+
+## Templates
+
+To make modifying existing mod easier, we've set up the official models as templates in the [`templates` folder](https://github.com/drivendataorg/zamba/tree/master/templates). Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some [training](train_tutorial.md). Happy modeling!
