@@ -88,8 +88,8 @@ $ zamba predict --data-dir example_vids/ --model slowfast
 
 You can continue training one of the [models](models/index.md) that ships with `zamba` by either:
 
-* Fine-tuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models/index.md#species-classes)
-* Fine-tuning with labeled videos that include new species
+* Finetuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models/index.md#species-classes)
+* Finetuning with labeled videos that include new species
 
 In either case, the commands for training are the same. Say that we have labels for the videos in the `example_vids` folder saved in `example_labels.csv`. To train a model, run:
 
