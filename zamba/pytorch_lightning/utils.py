@@ -96,7 +96,7 @@ class ZambaDataModule(LightningDataModule):
                 shuffle=True,
                 multiprocessing_context=self.multiprocessing_context,
                 prefetch_factor=self.prefetch_factor,
-                persistent_workers=True,
+                persistent_workers=self.num_workers > 0,
             )
 
     def val_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
@@ -108,7 +108,7 @@ class ZambaDataModule(LightningDataModule):
                 shuffle=False,
                 multiprocessing_context=self.multiprocessing_context,
                 prefetch_factor=self.prefetch_factor,
-                persistent_workers=True,
+                persistent_workers=self.num_workers > 0,
             )
 
     def test_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
@@ -120,7 +120,7 @@ class ZambaDataModule(LightningDataModule):
                 shuffle=False,
                 multiprocessing_context=self.multiprocessing_context,
                 prefetch_factor=self.prefetch_factor,
-                persistent_workers=True,
+                persistent_workers=self.num_workers > 0,
             )
 
     def predict_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
