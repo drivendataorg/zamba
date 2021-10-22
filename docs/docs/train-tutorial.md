@@ -9,8 +9,8 @@ This tutorial goes over the steps for using `zamba` if:
 
 `zamba` can run two types of model training:
 
-* Fine-tuning a model with labels that are a subset of the possible [zamba labels](models/index.md#species-classes)
-* Fine-tuning a model to predict an entirely new set of labels
+* Finetuning a model with labels that are a subset of the possible [zamba labels](models/index.md#species-classes)
+* Finetuning a model to predict an entirely new set of labels
 
 The process is the same for both cases.
 
