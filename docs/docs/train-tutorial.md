@@ -16,7 +16,7 @@ The process is the same for both cases.
 
 ## Basic usage: command line interface
 
-Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`. 
+Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`.
 
 Minimum example for training in the command line:
 
@@ -43,7 +43,7 @@ leopard.MP4,leopard
 
 ## Basic usage: Python package
 
-Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`. 
+Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`.
 
 Minimum example for training using the Python package:
 
@@ -57,7 +57,7 @@ train_config = TrainConfig(
 train_model(train_config=train_config)
 ```
 
-The only two arguments that can be passed to `train_model` are `train_config` and (optionally) `video_loader_config`. The first step is to instantiate [`TrainConfig`](configurations.md#training-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments). 
+The only two arguments that can be passed to `train_model` are `train_config` and (optionally) `video_loader_config`. The first step is to instantiate [`TrainConfig`](configurations.md#training-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments).
 
 ### Required arguments
 
@@ -71,7 +71,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 ## Default behavior
 
-By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`.
 
 `zamba_time_distributed` contains:
 
@@ -106,7 +106,7 @@ By default, the [`time_distributed`](models/index.md#time-distributed) model wil
 
 ## Step-by-step tutorial
 
-### 1. Specify the path to your videos 
+### 1. Specify the path to your videos
 
 Save all of your videos within one folder.
 
@@ -191,7 +191,7 @@ Add the model name to your command with `--model`. The `time_distributed` model 
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or specify a different path where your model should be saved (`--save-directory`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or specify a different path where your model should be saved (`--save-path`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
 
 ### 5. Test your configuration with a dry run
 
