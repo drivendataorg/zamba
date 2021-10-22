@@ -63,7 +63,7 @@ $ pip install -U zamba
 ```
 
 
-## Operating Systems that have been tested
+## Operating systems that have been tested
 
 ### macOS
 

@@ -1,8 +1,9 @@
-# Help Make `zamba` Better
+# Help make `zamba` better
 
 `zamba` is an open source project, which means _you_ can help make it better!
 
-## Develop the Github Repository
+## Develop the github repository
+
 To get involved, check out the Github [code repository](https://github.com/drivendataorg/zamba).
 There you can find [open issues](https://github.com/drivendataorg/zamba/issues) with comments and links to help you along.
 

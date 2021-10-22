@@ -1,4 +1,4 @@
-# All Configuration Options
+# All configuration options
 
 Three main configuration classes are specific in `zamba`:
 

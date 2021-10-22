@@ -1,4 +1,4 @@
-# Available Models
+# Available models
 
 The algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. There are three models that ship with the `zamba` package: `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
 
@@ -92,7 +92,7 @@ All models support training, fine-tuning, and inference. For fine-tuning, we rec
 
 ## `time_distributed` model
 
-### Algorithm
+### Architecture
 
 The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) (Tan, M., & Le, Q., 2019) to identify the species in our camera trap videos. EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. The model is wrapped in a [`TimeDistributed` layer](https://docs.fast.ai/layers.html#TimeDistributed) which enables a single prediction per video.
 
@@ -157,7 +157,7 @@ You can choose different frame selection methods and vary the size of the images
 
 ## `slowfast` model
 
-### Algorithm
+### Architecture
 
 The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operates at a high frame rate to capture motion over time.
 
@@ -203,7 +203,7 @@ You can choose different frame selection methods and vary the size of the images
 
 ## `european` model
 
-### Algorithm
+### Architecture
 
 The `european` model starts from the trained `time_distributed` model, and then replaces and trains the final output layer to predict European species.
 

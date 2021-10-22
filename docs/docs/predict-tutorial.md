@@ -1,4 +1,4 @@
-# User Tutorial: Classifying Unlabeled Videos
+# User tutorial: Classifying unlabeled videos
 
 This section walks through how to classify videos using `zamba`. If you are new to `zamba` and just want to classify some videos as soon as possible, see the [Quickstart](quickstart.md) guide.
 

@@ -1,4 +1,4 @@
-# Guide to Common Optional Parameters
+# Guide to common optional parameters
 
 There are a LOT of ways to customize model training or inference. Here, we take that elephant-sized list of options and condense it to a manageable monkey-sized list of common considerations. To read about all possible customizations, see [All Configuration Options](configurations.md).
 
