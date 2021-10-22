@@ -18,7 +18,7 @@ macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, thi
 
 ## How do I organize my videos for `zamba`?
 
-You can input the path to a directory of videos or specify a list of file paths. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
+You can specify the path to a directory of videos or specify a list of filepaths in a `.csv` file. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
 For example, say we have a directory of videos called `example_vids` that we want to generate predictions for using `zamba`. Let's list the videos:
 
@@ -64,7 +64,7 @@ To generate and save predictions for your videos using the default settings, run
 $ zamba predict --data-dir example_vids/
 ```
 
-`zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) is *the probability that animal j is present in video i.*  Comprehensive predictions are helpful when a single video contains multiple species.
+`zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell `(i,j)` is *the probability that animal `j` is present in video `i`.*  Comprehensive predictions are helpful when a single video contains multiple species.
 Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions under a different name or in a different folder using the `--save-path` argument.
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
@@ -108,25 +108,25 @@ eleph.MP4,elephant
 leopard.MP4,leopard
 ```
 
-By default, the trained model and additional training output will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`. 
+By default, the trained model and additional training output will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`.
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
 $ ls zamba_time_distributed
-time_distributed.ckpt 
+time_distributed.ckpt
 ...
 ```
 
 ## Downloading model weights
 
-**`zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.** 
+**`zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.**
 Once a model's weights are downloaded, the tool will use the local version and will not need to perform this download again. If you are not in the US, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server the faster the downloads will be.
 
 <a id='getting-help'></a>
 
 ## Getting help
 
-Once zamba is installed, you can see more details of each function with `--help`. 
+Once zamba is installed, you can see more details of each function with `--help`.
 
 To get help with `zamba predict`:
 
