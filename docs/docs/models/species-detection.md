@@ -101,7 +101,9 @@ The `time_distributed` model was built by re-training a well-known image classif
 
 `time_distributed` was trained using data collected and annotated by partners at [The Max Planck Institute for
 Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp &
-See](https://www.chimpandsee.org/). The data included camera trap videos from:
+See](https://www.chimpandsee.org/).
+
+The data included camera trap videos from:
 
 <table>
   <tr>
@@ -121,10 +123,10 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
   </tr>
   <tr>
     <td rowspan=3>Côte d'Ivoire</td>
-    <td>Guiroutou</td>
+    <td>Comoé National Park</td>
   </tr>
   <tr>
-    <td>Comoé National Park</td>
+    <td>Guiroutou</td>
   </tr>
   <tr>
     <td>Taï National Park</td>
