@@ -109,104 +109,92 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
     <th>Location</th>
   </tr>
   <tr>
-    <td>Bakoun Classified Forest</td>
-    <td> Guinea</td>
-  </tr>
-  <tr>
-    <td>Bili-Uele Protect Area</td>
-    <td> Democratic Republic of tde Congo</td>
-  </tr>
-  <tr>
-    <td>Budongo Forest Reserve</td>
-    <td> Uganda</td>
-  </tr>
-  <tr>
-    <td>Bwindi Forest National Park</td>
-    <td> Uganda</td>
-  </tr>
-  <tr>
-  <td>Campo Ma'an National Park</td>
-    <td> Cameroon</td>
-  </tr>
-  <tr>
-    <td>Conkouati-Douli National Park</td>
-    <td> Republic of tde Congo</td>
-  </tr>
-  <tr>
-    <td>Dzanga-Sangha Protected Area</td>
-    <td> Central African Republic</td>
-  </tr>
-  <tr>
-    <td>East Nimba Nature Reserve</td>
-    <td> Liberia</td>
-  </tr>
-  <tr>
-    <td>Guiroutou</td>
-    <td> Côte d'Ivoire</td>
-  </tr>
-  <tr>
-    <td>Gashaka-Gumti National Park</td>
-    <td> Nigeria</td>
-  </tr>
-  <tr>
-    <td>Gorongosa National Park</td>
-    <td> Mozambique</td>
-  </tr>
-  <tr>
-    <td>Grebo-Krahn National Park</td>
-    <td> Liberia</td>
-  </tr>
-  <tr>
-    <td>Grumeti Game Reserve</td>
-    <td> Tanzania</td>
-  </tr>
-  <tr>
-    <td>Comoé National Park</td>
-    <td> Côte d'Ivoire</td>
-  </tr>
-  <tr>
-    <td>Kayan</td>
-    <td> Senegal</td>
+    <td rowspan=2>Cameroon</td>
+    <td>Campo Ma'an National Park</td>
   </tr>
   <tr>
     <td>Korup National Park</td>
-    <td> Cameroon</td>
   </tr>
   <tr>
-    <td>Loango National Park</td>
-    <td> Gabon</td>
+    <td>Central African Republic</td>
+    <td>Dzanga-Sangha Protected Area</td>
   </tr>
   <tr>
-    <td>Lopé National Park</td>
-    <td> Gabon</td>
+    <td rowspan=3>Côte d'Ivoire</td>
+    <td>Guiroutou</td>
   </tr>
   <tr>
-    <td>Moyen-Bafing National Park</td>
-    <td> Guinea</td>
-  </tr>
-  <tr>
-    <td>Ngogo and Kibale National Park</td>
-    <td> Uganda</td>
-  </tr>
-  <tr>
-    <td>Nouabale-Ndoki National Park</td>
-    <td> Republic of tde Congo</td>
-  </tr>
-  <tr>
-    <td>Salonga National Park</td>
-    <td> Democratic Republic of tde Congo</td>
-  </tr>
-  <tr>
-    <td>Sapo National Park</td>
-    <td> Liberia</td>
+    <td>Comoé National Park</td>
   </tr>
   <tr>
     <td>Taï National Park</td>
-    <td> Côte d'Ivoire</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Democratic Republic of the Congo</td>
+    <td>Bili-Uele Protect Area</td>
+  </tr>
+  <tr>
+    <td>Salonga National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Gabon</td>
+    <td>Loango National Park</td>
+  </tr>
+  <tr>
+    <td>Lopé National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Guinea</td>
+    <td>Bakoun Classified Forest</td>
+  </tr>
+  <tr>
+    <td>Moyen-Bafing National Park</td>
+  </tr>
+  <tr>
+    <td rowspan-3>Liberia</td>
+    <td>East Nimba Nature Reserve</td>
+  </tr>
+  <tr>
+    <td>Grebo-Krahn National Park</td>
+  </tr>
+  <tr>
+    <td>Sapo National Park</td>
+  </tr>
+  <tr>
+    <td>Mozambique</td>
+    <td>Gorongosa National Park</td>
+  </tr>
+  <tr>
+    <td>Nigeria</td>
+    <td>Gashaka-Gumti National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Republic of the Congo</td>
+    <td>Conkouati-Douli National Park</td>
+  </tr>
+  <tr>
+    <td>Nouabale-Ndoki National Park</td>
+  </tr>
+  <tr>
+    <td>Senegal</td>
+    <td>Kayan</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Tanzania</td>
+    <td>Grumeti Game Reserve</td>
   </tr>
   <tr>
     <td>Ugalla River National Park</td>
-    <td> Tanzania</td>
+  </tr>
+  <tr>
+    <td rowspan=3>Uganda</td>
+    <td>Budongo Forest Reserve</td>
+  </tr>
+  <tr>
+    <td>Bwindi Forest National Park</td>
+  </tr>
+  <tr>
+    <td>Ngogo and Kibale National Park</td>
   </tr>
 </table>
 
