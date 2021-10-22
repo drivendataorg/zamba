@@ -21,7 +21,7 @@ Before kicking off a full run of inference or model training, we recommend testi
 The dry run will also catch any GPU memory errors. If you hit a GPU memory error, there are a couple fixes.
 
 #### Reducing the batch size
-  
+
 === "CLI"
     ```console
     zamba train --data-dir example_vids/ --labels example_labels.csv --batch-size 1
