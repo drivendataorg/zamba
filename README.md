@@ -7,8 +7,6 @@
 
 https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-b9df-380528091f9e.mp4
 
-## [DOCUMENTATION](https://zamba.drivendata.org/docs/)
-
 > *zamba* means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.
 
 **`zamba` is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos.** You can use `zamba` to:
