@@ -112,7 +112,7 @@ By default, the trained model and additional training output will be saved to a 
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
-$ ls version_0
+$ ls version_0/
 hparams.yaml
 time_distributed.ckpt
 train_configuration.yamml

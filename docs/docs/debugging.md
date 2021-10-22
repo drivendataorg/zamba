@@ -69,3 +69,7 @@ Reduce the number of workers (subprocesses) used for data loading. By default `n
         data_directory="example_vids/", num_workers=1
     )
     ```
+
+## Logging
+
+To check that videos are getting loaded and cached as expected, set your environment variabe `LOG_LEVEL` to `debug`. The default log level is `info`.
