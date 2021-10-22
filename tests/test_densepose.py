@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from pydantic import ValidationError
@@ -19,7 +21,10 @@ def chimp_image_path():
     return ASSETS_DIR / "densepose_tests" / "chimp.jpg"
 
 
-# Tests for DensePoseManager
+@pytest.mark.skipif(
+    bool(os.environ.get("CI")) and not bool(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", False)),
+    reason="Skip on CI if not running the densepose specific tests"
+)
 @pytest.mark.parametrize("model", ("animals", "chimps"))
 def test_image(model, chimp_image_path, tmp_path):
     dpm = DensePoseManager(model=MODELS[model])
@@ -59,6 +64,10 @@ def test_image(model, chimp_image_path, tmp_path):
         assert (tmp_path / f"anatomized_{model}.csv").stat().st_size > 0
 
 
+@pytest.mark.skipif(
+    bool(os.environ.get("CI")) and not bool(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", False)),
+    reason="Skip on CI if not running the densepose specific tests"
+)
 @pytest.mark.parametrize("model", ("animals", "chimps"))
 def test_video(model, chimp_video_path, tmp_path):
     dpm = DensePoseManager(model=MODELS[model])
@@ -100,7 +109,10 @@ def test_video(model, chimp_video_path, tmp_path):
         assert (tmp_path / f"anatomized_{model}.csv").stat().st_size > 0
 
 
-# Tests for DensePoseConfig
+@pytest.mark.skipif(
+    bool(os.environ.get("CI")) and not bool(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", False)),
+    reason="Skip on CI if not running the densepose specific tests"
+)
 @pytest.mark.parametrize("model", ("animals", "chimps"))
 def test_denseposeconfig(model, tmp_path):
     # validation failures

@@ -46,7 +46,6 @@ class ModelEnum(str, Enum):
     time_distributed = "time_distributed"
     slowfast = "slowfast"
     european = "european"
-    densepose = "densepose"
 
 
 class MonitorEnum(str, Enum):

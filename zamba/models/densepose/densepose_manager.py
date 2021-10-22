@@ -3,22 +3,33 @@ import logging
 from pathlib import Path
 
 import cv2
-from densepose import add_densepose_config
-from densepose.data.utils import get_class_to_mesh_name_mapping
-from densepose.modeling.build import build_densepose_embedder
-from densepose.structures.cse import DensePoseEmbeddingPredictorOutput
-from densepose.vis.densepose_outputs_vertex import (
-    DensePoseOutputsTextureVisualizer,
-    DensePoseOutputsVertexVisualizer,
-)
-from densepose.vis.densepose_results_textures import get_texture_atlas
-from densepose.vis.extractor import (
-    create_extractor,
-)
-from detectron2.config import get_cfg
-from detectron2.data.detection_utils import read_image
-from detectron2.engine.defaults import DefaultPredictor
-from detectron2.structures.instances import Instances
+
+try:
+    from densepose import add_densepose_config
+    from densepose.data.utils import get_class_to_mesh_name_mapping
+    from densepose.modeling.build import build_densepose_embedder
+    from densepose.structures.cse import DensePoseEmbeddingPredictorOutput
+    from densepose.vis.densepose_outputs_vertex import (
+        DensePoseOutputsTextureVisualizer,
+        DensePoseOutputsVertexVisualizer,
+    )
+    from densepose.vis.densepose_results_textures import get_texture_atlas
+    from densepose.vis.extractor import (
+        create_extractor,
+    )
+    from detectron2.config import get_cfg
+    from detectron2.data.detection_utils import read_image
+    from detectron2.engine.defaults import DefaultPredictor
+    from detectron2.structures.instances import Instances
+
+    DENSEPOSE_AVAILABLE = True
+except ImportError:
+    DENSEPOSE_AVAILABLE = False
+    DensePoseOutputsTextureVisualizer = None  # dummies for static defs
+    DensePoseOutputsVertexVisualizer = None
+    get_texture_atlas = lambda x: None  # noqa: E731
+
+
 import numpy as np
 import pandas as pd
 import torch
@@ -75,6 +86,11 @@ class DensePoseManager:
         model : dict, optional (default MODELS['chimps'])
             A dictionary with the densepose model defintion like those defined in MODELS.
         """
+        if not DENSEPOSE_AVAILABLE:
+            raise ImportError(
+                "Densepose not installed; install it as an extra with `pip install zamba[densepose]`."
+            )
+
         # setup configuration for densepose
         self.cfg = get_cfg()
         add_densepose_config(self.cfg)

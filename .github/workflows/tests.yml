@@ -62,17 +62,36 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          pip install -r requirements-dev.txt
+          pip install -e .[tests]
 
       - name: Run tests
         run: |
           make tests
+
+      - name: Run densepose tests
+        env:
+          ZAMBA_RUN_DENSEPOSE_TESTS: 1
+        run: |
+          # torch is alread installed, so just add the densepose extra
+          pip install -e .[tests,densepose]
+          make densepose-tests
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1
         with:
           file: ./coverage.xml
           fail_ci_if_error: true
+
+  test-densepose-extra:
+    name: Densepose test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    needs: code-quality
+    runs-on: ${{ matrix.os }}
+    env:
+      DISTUTILS_USE_SDK: 1 # for MSVC compiler
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: [3.7, 3.8]
 
   test-install:
     name: Test install from built distributions
