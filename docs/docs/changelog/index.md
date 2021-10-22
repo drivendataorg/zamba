@@ -1,8 +1,8 @@
-# `zamba` changelog
+# zamba Changelog
 
-## v2 (2021-10-22)
+## v2 <!-- TODO: add release date as, eg, (2021-10-22)>
 
-### Previous model: Machine learning competition
+### Previous Model - Machine Learning Competition
 
 The algorithms used by `zamba` v1 were based on the winning solution from the
 [Pri-matrix Factorization](https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/) machine learning
