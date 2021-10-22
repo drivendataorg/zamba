@@ -23,7 +23,7 @@ nav:
       - Debugging: "debugging.md"
       - Guide to Common Optional Parameters: "extra-options.md"
   - "Available Models":
-      - Species Detection Models: "models/species-detection.md"
+      - Species Detection: "models/species-detection.md"
       - DensePose: "models/denspose.md"
   - "Advanced Options":
       - All Configuration Options: "configurations.md"
