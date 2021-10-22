@@ -65,7 +65,7 @@ $ zamba predict --data-dir example_vids/
 ```
 
 `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell `(i,j)` is *the probability that animal `j` is present in video `i`.*  Comprehensive predictions are helpful when a single video contains multiple species.
-Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions under a different name or in a different folder using the `--save-path` argument.
+Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions to a different folder using the `--save-path` argument.
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
 
@@ -108,19 +108,22 @@ eleph.MP4,elephant
 leopard.MP4,leopard
 ```
 
-By default, the trained model and additional training output will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model will be saved in `zamba_time_distributed`.
+By default, the trained model and additional training output will be saved to a `version_*` folder in the current working directory. For example,
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
-$ ls zamba_time_distributed
+$ ls version_0
+hparams.yaml
 time_distributed.ckpt
+train_configuration.yamml
+val_metrics.json
 ...
 ```
 
 ## Downloading model weights
 
-**`zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~200-500 MB of files with these weights depending which model you choose.**
-Once a model's weights are downloaded, the tool will use the local version and will not need to perform this download again. If you are not in the US, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server the faster the downloads will be.
+**`zamba` needs to download the "weights" files for the models it uses to make predictions. On first run, it will download ~200-500 MB of files with these weights depending which model you choose.**
+Once a model's weights are downloaded, `zamba` will use the local version and will not need to perform this download again. If you are not in the United States, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server, the faster the downloads will be.
 
 <a id='getting-help'></a>
 
