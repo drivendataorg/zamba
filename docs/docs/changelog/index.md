@@ -16,10 +16,10 @@ In v2, the stacked ensemble algorithm from v1 is replaced with three more powerf
 
 ### New geographies and species
 
-`zamba` v2 incorporates data from western Europe (Germany) in additional to locations in central and west Africa. The new data is packaged in the pretrained `european` model, which can predict 11 common European species not present in `zamba` v1.
+`zamba` v2 incorporates data from western Europe (Germany). The new data is packaged in the pretrained `european` model, which can predict 11 common European species not present in `zamba` v1.
 
-`zamba` v2 also incorporates new training data for central and west Africa. `zamba` v1 was primarily focused on species commonly found on savannas. v2 incorporates data from camera traps in jungle ecosystems, adding 13 additional species to the pretrained models for central and west Africa.
+`zamba` v2 also incorporates new training data from 15 countries in central and west Africa, and adds 12 additional species to the pretrained African models.
 
 ### Retraining flexibility
 
-Model training is easier to reproduce in `zamba` v2, so users can finetune a pretrained model using their own data. `zamba` v2 also allows users to retrain a model on completely new labels.
+Model training is made available `zamba` v2, so users can finetune a pretrained model using their own data to improve performance for a specific ecology or set of sites. `zamba` v2 also allows users to retrain a model on completely new species labels.
