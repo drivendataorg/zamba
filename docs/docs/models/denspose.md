@@ -45,9 +45,57 @@ Once that is done, here's how to run the DensePose model:
     densepose_conf.run_model()
     ```
 
-
 <video controls>
   <source src="../../media/densepose_zamba_vid.mp4" type="video/mp4">
 </videp>
 
+
+## Getting help
+
 To see all of the available options, run `zamba densepose --help`.
+
+```console
+$ zamba densepose --help
+Usage: zamba densepose [OPTIONS]
+
+  Run densepose algorithm on videos.
+
+  If an argument is specified in both the command line and in a yaml file, the
+  command line input will take precedence.
+
+Options:
+  --data-dir PATH                 Path to video or image file or folder
+                                  containing images/videos.
+  --filepaths PATH                Path to csv containing `filepath` column
+                                  with videos.
+  --save-path PATH                An optional directory for saving the output.
+                                  Defaults to the current working directory.
+  --config PATH                   Specify options using yaml configuration
+                                  file instead of through command line
+                                  options.
+  --fps FLOAT                     Number of frames per second to process.
+                                  Defaults to 1.0 (1 frame per second).
+                                  [default: 1.0]
+  --output-type [segmentation|chimp_anatomy]
+                                  If 'chimp_anatomy' will apply anatomy model
+                                  from densepose to the rendering and create a
+                                  CSV with the anatomy visible in each frame.
+                                  If 'segmentation', will just output the
+                                  segmented area where an animal is
+                                  identified, which works for more species
+                                  than chimpanzees.  [default: chimp_anatomy]
+  --render-output / --no-render-output
+                                  If True, generate an output image or video
+                                  with either the segmentation or anatomy
+                                  rendered depending on the `output_type` that
+                                  is chosen.  [default: no-render-output]
+  --weight-download-region [us|eu|asia]
+                                  Server region for downloading weights.
+  --cache-dir PATH                Path to directory for model weights.
+                                  Alternatively, specify with environment
+                                  variable `ZAMBA_CACHE_DIR`. If not
+                                  specified, user's cache directory is used.
+  -y, --yes                       Skip confirmation of configuration and
+                                  proceed right to prediction.
+  --help                          Show this message and exit.
+```

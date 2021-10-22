@@ -8,7 +8,7 @@ Three main configuration classes are specific in `zamba`:
 
 Here's a helpful diagram which shows how everything is related.
 
-![](config_diagram.png)
+![](../media/zamba_config_diagram.png)
 
 <a id='video-loading-arguments'></a>
 
