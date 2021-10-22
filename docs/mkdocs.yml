@@ -14,19 +14,19 @@ extra_css:
 
 nav:
   - Home: "index.md"
-  - "Getting Started":
-      - Installing Zamba: "install.md"
+  - "Getting started":
+      - Installing zamba: "install.md"
       - Quickstart: "quickstart.md"
   - "User Tutorials":
-      - Classifying Unlabeled Videos: "predict-tutorial.md"
-      - Training a Model on Labeled Videos: "train-tutorial.md"
+      - Classifying unlabeled videos: "predict-tutorial.md"
+      - Training a model on labeled videos: "train-tutorial.md"
       - Debugging: "debugging.md"
-      - Guide to Common Optional Parameters: "extra-options.md"
+      - Guide to common optional parameters: "extra-options.md"
   - "Available Models":
-      - Species Detection: "models/species-detection.md"
+      - Species detection: "models/species-detection.md"
       - DensePose: "models/denspose.md"
   - "Advanced Options":
-      - All Configuration Options: "configurations.md"
+      - All configuration options: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
   - "Contribute to zamba":
       - "contribute/index.md"

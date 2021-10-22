@@ -81,7 +81,10 @@ By default, the [`time_distributed`](models/index.md#time-distributed) model wil
     ```console
     $ zamba train --checkpoint time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
     ```
-* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs
+* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs. You can view these with tensorboard:
+    ```console
+    $ tensorboard --logdir version_0/
+    ```
 * `val_metrics.json`: The model's performance on the validation subset
 * `test_metrics.json`: The model's performance on the test (holdout) subset
 * `splits.csv`: Which files were used for training, validation, and as a holdout set. If split is specified in the labels file passed to training, `splits.csv` will not be saved out.
