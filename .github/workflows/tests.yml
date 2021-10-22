@@ -62,11 +62,19 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          pip install -r requirements-dev.txt
+          pip install -e .[tests]
 
       - name: Run tests
         run: |
           make tests
+
+      - name: Run densepose tests
+        env:
+          ZAMBA_RUN_DENSEPOSE_TESTS: 1
+        run: |
+          # torch is alread installed, so just add the densepose extra
+          pip install -e .[tests,densepose]
+          make densepose-tests
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1

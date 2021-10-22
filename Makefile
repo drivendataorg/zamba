@@ -64,6 +64,10 @@ lint:
 tests:
 	pytest tests -vv
 
+## Run the tests that are just for densepose
+densepose-tests:
+	pytest tests/test_densepose.py tests/test_cli.py::test_densepose_cli_options -vv
+
 ## Set up python interpreter environment
 create_environment:
 	conda create --name $(PROJECT_NAME) python=$(PYTHON_VERSION) -y
@@ -78,7 +82,7 @@ docs-serve:
 	cd docs && mkdocs serve
 
 publish_models:
-	python zamba/models/publish_models.py
+	python -m zamba.models.publish_models
 
 #################################################################################
 # Self Documenting Commands                                                     #

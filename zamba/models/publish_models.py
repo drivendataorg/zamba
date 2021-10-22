@@ -1,4 +1,7 @@
 import hashlib
+from pathlib import Path
+from tempfile import TemporaryDirectory
+import urllib.request
 
 from cloudpathlib import AnyPath, S3Path
 from loguru import logger
@@ -6,6 +9,7 @@ import yaml
 
 from zamba import MODELS_DIRECTORY
 from zamba.models.config import WEIGHT_LOOKUP, ModelEnum, TrainConfig
+from zamba.models.densepose import MODELS as DENSEPOSE_MODELS
 
 
 def publish_model(model_name, trained_model_dir):
@@ -78,13 +82,17 @@ def publish_model(model_name, trained_model_dir):
     with config_yaml.open("w") as f:
         yaml.dump(official_config, f, sort_keys=False)
 
+    upload_to_all_public_buckets(private_checkpoint, public_file_name)
+
+
+def upload_to_all_public_buckets(file, public_file_name):
     # upload to three public buckets
     for bucket in ["", "-eu", "-asia"]:
         public_checkpoint = S3Path(
             f"s3://drivendata-public-assets{bucket}/zamba_official_models/{public_file_name}"
         )
-        logger.info(f"Uploading {private_checkpoint} to {public_checkpoint}")
-        AnyPath(private_checkpoint).copy(public_checkpoint, force_overwrite_to_cloud=True)
+        logger.info(f"Uploading {file} to {public_checkpoint}")
+        public_checkpoint.upload_from(file, force_overwrite_to_cloud=True)
 
 
 if __name__ == "__main__":
@@ -92,3 +100,27 @@ if __name__ == "__main__":
         private_checkpoint = WEIGHT_LOOKUP[model_name]
         logger.info(f"\n============\nPreparing {model_name} model\n============")
         publish_model(model_name, private_checkpoint)
+
+    for name, model in DENSEPOSE_MODELS.items():
+        logger.info(f"\n============\nPreparing DensePose model: {name}\n============")
+
+        if S3Path(
+            f"s3://drivendata-public-assets/zamba_official_models/{model['weights']}"
+        ).exists():
+            logger.info("Skipping since model exists on main public S3 bucket.")
+            continue
+
+        with TemporaryDirectory() as tmpdir:
+            tmpdir = Path(tmpdir)
+            tmp_download_path = tmpdir / model["weights"]
+
+            # download from the facebook servers
+            logger.info(f"Downloading weights: {model['densepose_weights_url']}")
+            urllib.request.urlretrieve(model["densepose_weights_url"], tmp_download_path)
+
+            # upload to the zamba buckets, renaming to model["weights"]
+            logger.info(f"Uploading to zamba buckets: {model['weights']}")
+            upload_to_all_public_buckets(tmp_download_path, model["weights"])
+
+            # remove local temp file that was downloaded
+            tmp_download_path.unlink()
