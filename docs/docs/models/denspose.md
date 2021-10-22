@@ -47,7 +47,7 @@ Once that is done, here's how to run the DensePose model:
 
 
 <video controls>
-  <source src="../media/densepose_zamba_vid.mp4" type="video/mp4">
+  <source src="../../media/densepose_zamba_vid.mp4" type="video/mp4">
 </videp>
 
 To see all of the available options, run `zamba densepose --help`.
