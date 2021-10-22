@@ -82,17 +82,6 @@ jobs:
           file: ./coverage.xml
           fail_ci_if_error: true
 
-  test-densepose-extra:
-    name: Densepose test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
-    needs: code-quality
-    runs-on: ${{ matrix.os }}
-    env:
-      DISTUTILS_USE_SDK: 1 # for MSVC compiler
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: [3.7, 3.8]
-
   test-install:
     name: Test install from built distributions
     needs: tests
