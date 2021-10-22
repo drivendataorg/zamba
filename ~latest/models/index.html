@@ -1156,6 +1156,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#densepose" class="md-nav__link">
+    Densepose
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1406,6 +1413,41 @@ Evolutionary Anthropology</a>. The finetuning data included camera trap videos f
 <li><a href="https://github.com/Megvii-BaseDetection/YOLOX">YOLOX</a> is a high-performance, lightweight object detection model that is much less computationally intensive than Megadetector.</li>
 </ul>
 <p>While highly accurate, Megadetector is too computationally intensive to run on every frame. MegadetectorLite was created by training a YOLOX model using the predictions of the Megadetector as ground truth - this method is called <a href="https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764">student-teacher training</a>.</p>
+<h2 id="densepose">Densepose<a class="headerlink" href="#densepose" title="Permanent link">&para;</a></h2>
+<p>Facebook AI Research has published a model, DensePose (<a href="https://arxiv.org/abs/2011.12438v1">Neverova et al, 2021</a>), which can be used to get segmentations for animals that appear in videos. This was trained on the following animals, but often works for other species as well: sheep, zebra, horse, giraffe, elephant, cow, ear, cat, dog. Here's an example of the segmentation output for a frame:</p>
+<p><img alt="segmentation of duiker" src="../media/seg_out.jpg" /></p>
+<p>Additionally, the model provides mapping of the segmentation output to specific anatomy for chimpanzees. This can be helpful for determining the orientation of chimpanzees in videos and for their behaviors. Here is an example of what that output looks like:</p>
+<p><img alt="chimpanzee texture output" src="../media/texture_out.png" /></p>
+<p>For more information on the algorithms and outputs of the DensePose model, see the <a href="https://github.com/facebookresearch/detectron2/tree/main/projects/DensePose">Facebook DensePose Github Repository</a>.</p>
+<p>The Zamba package supports running Densepose on videos to generate three types of outputs:</p>
+<ul>
+<li>A <code>.json</code> file with details of segmentations per video frame.</li>
+<li>A <code>.mp4</code> file where the original video has the segmentation rendered on top of animal so that the output can be vsiually inspected.</li>
+<li>A <code>.csv</code> (when <code>--output-type chimp_anatomy</code>) that contains the height and width of the bounding box around each chimpanzee, the frame number and timestamp of the observation, and the percentage of pixels in the bounding box that correspond with each anatomical part.</li>
+</ul>
+<p>Generally, running the densepose model is computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. Another caveat is that because the output JSON output contains the full embedding, these files can be quite large. These are not written out by default.</p>
+<p>In order to use the densepose model, you must have PyTorch already installed on your system, and then you must install the <code>densepose</code> extra:</p>
+<div class="highlight"><pre><span></span><code>pip install torch  <span class="c1"># see https://pytorch.org/get-started/locally/</span>
+pip install <span class="s2">&quot;zamba[densepose]&quot;</span>
+</code></pre></div>
+<p>Once that is done, here's how to run the DensePose model:</p>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="c1"># create a segmentation output video for each input video in PATH_TO_VIDEOS</span>
+zamba densepose --data-dir PATH_TO_VIDEOS --render-output
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.densepose</span> <span class="kn">import</span> <span class="n">DensePoseConfig</span>
+<span class="n">densepose_conf</span> <span class="o">=</span> <span class="n">DensePoseConfig</span><span class="p">(</span><span class="n">data_directory</span><span class="o">=</span><span class="s2">&quot;PATH_TO_VIDEOS&quot;</span><span class="p">,</span> <span class="n">render_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">densepose_conf</span><span class="o">.</span><span class="n">run_model</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<video controls>
+  <source src="../media/densepose_zamba_vid.mp4" type="video/mp4">
+</videp>
+
+To see all of the available options, run `zamba densepose --help`.
                 
               
               
