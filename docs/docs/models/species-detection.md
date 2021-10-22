@@ -196,7 +196,7 @@ video_loader_config:
 ```
 
 You can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The two requirements for the `slowfast` model are that:
-- the video loader must return 32 frames.
+- the video loader must return 32 frames
 - videos inputted into the model must be at least 200 x 200 pixels
 
 <a id='european'></a>
