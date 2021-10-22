@@ -69,31 +69,6 @@ The `ModelManager` class is used by `zamba`’s command line interface to handle
 To instantiate the `ModelManager` based on a configuration file saved at `test_config.yaml`:
 ```python
 >>> manager = ModelManager.from_yaml('test_config.yaml')
->>> manager.config
-
-ModelConfig(
-  video_loader_config=VideoLoaderConfig(crop_bottom_pixels=None, i_frames=False,
-                                        scene_threshold=None, megadetector_lite_config=None,
-                                        model_input_height=240, model_input_width=426,
-                                        total_frames=16, ensure_total_frames=True,
-                                        fps=None, early_bias=False, frame_indices=None,
-                                        evenly_sample_total_frames=False, pix_fmt='rgb24'
-                                      ),
-  train_config=None,
-  predict_config=PredictConfig(data_directory=PosixPath('vids'),
-                               filepaths=                         filepath
-                                          0    /home/ubuntu/vids/eleph.MP4
-                                          1  /home/ubuntu/vids/leopard.MP4
-                                          2    /home/ubuntu/vids/blank.MP4
-                                          3    /home/ubuntu/vids/chimp.MP4,
-                                checkpoint='zamba_time_distributed.ckpt',
-                                model_params=ModelParams(scheduler=None, scheduler_params=None),
-                                model_name='time_distributed', species=None,
-                                gpus=1, num_workers=3, batch_size=8,
-                                save=True, dry_run=False, proba_threshold=None,
-                                output_class_names=False, weight_download_region='us',
-                                cache_dir=None, skip_load_validation=False)
-                              )
 ```
 
 We can now run inference or model training without specifying any additional parameters, because they are already associated with our instance of the `ModelManager` class. To run inference or training:
@@ -145,52 +120,6 @@ video_loader_config:
 predict_config:
   model_name: time_distributed
 public_checkpoint: time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt
-```
-
-For reference, the below shows how to specify the same video loading and training parameters using only the Python package:
-
-```python
-from zamba.data.video import VideoLoaderConfig
-from zamba.models.config import TrainConfig
-from zamba.models.model_manager import train_model
-
-video_loader_config = VideoLoaderConfig(
-    model_input_height=240,
-    model_input_width=426,
-    crop_bottom_pixels=50,
-    fps=4,
-    total_frames=16,
-    ensure_total_frames=True,
-    megadetector_lite_config={
-        "confidence": 0.25,
-        "fill_mode": "score_sorted",
-        "n_frames": 16,
-    },
-)
-
-train_config = TrainConfig(
-    # data_directory=YOUR_DATA_DIRECTORY_HERE,
-    # labels=YOUR_LABELS_CSV_HERE,
-    model_name="time_distributed",
-    backbone_finetune_config={
-        "backbone_initial_ratio_lr": 0.01,
-        "unfreeze_backbone_at_epoch": 3,
-        "verbose": True,
-        "pre_train_bn": True,
-        "train_bn": False,
-        "multiplier": 1,
-    },
-    early_stopping_config={"patience": 5},
-    scheduler_config={
-        "scheduler": "MultiStepLR",
-        "scheduler_params": {"gamma": 0.5, "milestones": 3, "verbose": True,},
-    },
-)
-
-train_model(
-    train_config=train_config,
-    video_loader_config=video_loader_config,
-)
 ```
 
 ## Templates
