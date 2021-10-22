@@ -44,6 +44,9 @@ nav:
           - zamba.models.model_manager: "api-reference/models-model_manager.md"
           - zamba.models.slowfast_models: "api-reference/models-slowfast_models.md"
           - zamba.models.utils: "api-reference/models-utils.md"
+          - zamba.models.densepose:
+            - zamba.models.densepose.config: "api-reference/densepose_config.md"
+            - zamba.models.densepose.densepose_manager: "api-reference/densepose_manager.md"
       - zamba.pytorch:
           - zamba.pytorch.dataloaders: "api-reference/pytorch-dataloaders.md"
           - zamba.pytorch.finetuning: "api-reference/pytorch-finetuning.md"
