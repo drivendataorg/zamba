@@ -151,7 +151,7 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
     <td>Moyen-Bafing National Park</td>
   </tr>
   <tr>
-    <td rowspan-3>Liberia</td>
+    <td rowspan=3>Liberia</td>
     <td>East Nimba Nature Reserve</td>
   </tr>
   <tr>
