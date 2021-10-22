@@ -30,7 +30,7 @@ nav:
   - "Contribute to zamba": 
       - "contribute/index.md"
   - "Changelog":
-      - Version 2: "v2_updates.md"
+      - "changelog/index.md"
   - API Reference:
       - zamba.data:
           - zamba.data.metadata: "api-reference/data-metadata.md"

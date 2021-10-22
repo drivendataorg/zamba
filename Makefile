@@ -73,12 +73,26 @@ create_environment:
 	conda create --name $(PROJECT_NAME) python=$(PYTHON_VERSION) -y
 	@echo ">>> conda env created. Activate with:\nconda activate $(PROJECT_NAME)"
 
+## Generate the index.md page of the docs automatically from README.md
+docs-setup:
+	sed 's|https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-b9df-380528091f9e.mp4| \
+	<div class="embed-responsive embed-responsive-16by9" width=500> \
+    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" \
+	frameborder="0" allowfullscreen=""></iframe></div>|g' README.md \
+	| sed 's|Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.||g' \
+	| sed 's|https://user-images.githubusercontent.com /46792169/137787221-de590183-042e-4d30-b32b-1d1c2cc96589.mov| \
+	<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1></script>|g' \
+	| sed 's|https://zamba.drivendata.org/docs/||g' \
+	> docs/docs/index.md
+
+	sed 's|https://zamba.drivendata.org/docs/|../|g' HISTORY.md > docs/docs/changelog/index.md
+
 ## Build the static version of the docs
-docs:
+docs: docs-setup
 	cd docs && mkdocs build
 
 ## Serve documentation to livereload while you work on them
-docs-serve:
+docs-serve: docs-setup
 	cd docs && mkdocs serve
 
 publish_models:
