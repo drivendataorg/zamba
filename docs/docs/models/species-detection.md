@@ -9,7 +9,7 @@ The algorithms in `zamba` are designed to identify species of animals that appea
     <th>Model</th>
     <th>Geography</th>
     <th>Relative strengths</th>
-    <th>Architecutre</th>
+    <th>Architecture</th>
   </tr>
   <tr>
     <td><code>time_distributed</code></td>
