@@ -79,7 +79,7 @@ By default, the [`time_distributed`](models/index.md#time-distributed) model wil
 * `hparams.yaml`: Model hyperparameters. These are included in the checkpoint file as well.
 * `time_distributed.ckpt`: Model checkpoint. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
     ```console
-    $ zamba train --checkpoint time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
+    $ zamba train --checkpoint version_0/time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
     ```
 * `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs. You can view these with tensorboard:
     ```console

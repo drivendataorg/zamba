@@ -14,7 +14,7 @@ https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-
 - Identify which species appear in each video
 - Filter out blank videos
 
-The models in zamba can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species commmon to Europe. Users can also finetune models using their own labeled videos to then make predictions for new species and/or new ecologies.
+The models in `zamba` can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species commmon to Europe. Users can also finetune models using their own labeled videos to then make predictions for new species and/or new ecologies.
 
 `zamba` can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, [Zamba Cloud](https://www.zambacloud.com/).
 
