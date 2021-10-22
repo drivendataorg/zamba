@@ -178,7 +178,7 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
 
 @pytest.mark.skipif(
     bool(os.environ.get("CI")) and not bool(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", False)),
-    reason="Skip on CI if not running the densepose specific tests"
+    reason="Skip on CI if not running the densepose specific tests",
 )
 def test_densepose_cli_options(mocker):  # noqa: F811
     """Test CLI options that are shared between train and predict commands."""
