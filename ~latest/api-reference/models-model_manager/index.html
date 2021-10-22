@@ -1532,7 +1532,7 @@ Defaults to True. Only used if labels is not None.</p></td>
             <span class="n">hparams</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">checkpoint</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Downloading weights for model.&quot;</span><span class="p">)</span>
             <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
                 <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">),</span>

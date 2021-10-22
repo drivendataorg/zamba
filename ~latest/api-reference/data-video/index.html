@@ -2670,7 +2670,7 @@ npy_cache        </code>
 
 
 <h5 id="zamba.data.video.npy_cache.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -2683,8 +2683,8 @@ npy_cache        </code>
 
         <details class="quote">
           <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tmp_path</span> <span class="o">=</span> <span class="n">path</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span> <span class="o">=</span> <span class="n">cache_path</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span> <span class="o">=</span> <span class="n">cleanup</span>
 </code></pre></div>
         </details>
@@ -2704,72 +2704,6 @@ npy_cache        </code>
 
 
 <h2 id="zamba.data.video-functions">Functions<a href="#zamba.data.video-functions" class="headerlink" title="Permanent link">&para;</a></h2>
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="zamba.data.video.cached_load_video_frames" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cached_load_video_frames</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">PathLike</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">zamba</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">video</span><span class="o">.</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span></code>
-
-
-<a href="#zamba.data.video.cached_load_video_frames" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Loads frames from videos using fast ffmpeg commands and caches to .npy file
-if config.cache_dir is not None.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>filepath</code></td>
-        <td><code>os.PathLike</code></td>
-        <td><p>Path to the video.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>config</code></td>
-        <td><code>VideoLoaderConfig</code></td>
-        <td><p>Configuration for video loading.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cached_load_video_frames</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Loads frames from videos using fast ffmpeg commands and caches to .npy file</span>
-<span class="sd">    if config.cache_dir is not None.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        filepath (os.PathLike): Path to the video.</span>
-<span class="sd">        config (VideoLoaderConfig): Configuration for video loading.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># get environment variable for cache if it exists</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">()</span>
-
-    <span class="n">decorated_load_video_frames</span> <span class="o">=</span> <span class="n">npy_cache_factory</span><span class="p">(</span>
-        <span class="n">path</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">callable</span><span class="o">=</span><span class="n">load_video_frames</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">cleanup_cache</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">decorated_load_video_frames</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">filepath</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
 
   <div class="doc doc-object doc-function">
 
@@ -3124,35 +3058,6 @@ the end or dulpicating the last frame.</p>
         <span class="n">arr</span> <span class="o">=</span> <span class="n">ensure_frame_number</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">total_frames</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">total_frames</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">arr</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="zamba.data.video.npy_cache_factory" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">npy_cache_factory</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">callable</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">)</span></code>
-
-
-<a href="#zamba.data.video.npy_cache_factory" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">npy_cache_factory</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">callable</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">):</span>
-    <span class="nd">@npy_cache</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="n">cleanup</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">decorated_callable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">callable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">decorated_callable</span>
 </code></pre></div>
         </details>
     </div>
