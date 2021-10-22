@@ -217,7 +217,7 @@ class EarlyStoppingConfig(ZambaBaseModel):
         monitor (str): Metric to be monitored. Options are "val_macro_f1" or
             "val_loss". Defaults to "val_macro_f1".
         patience (int): Number of epochs with no improvement after which training
-            will be stopped. Defaults to 3.
+            will be stopped. Defaults to 5.
         verbose (bool): Verbosity mode. Defaults to True.
         mode (str, optional): Options are "min" or "max". In "min" mode, training
             will stop when the quantity monitored has stopped decreasing and in
@@ -226,7 +226,7 @@ class EarlyStoppingConfig(ZambaBaseModel):
     """
 
     monitor: MonitorEnum = "val_macro_f1"
-    patience: int = 3
+    patience: int = 5
     verbose: bool = True
     mode: Optional[str] = None
 
@@ -316,7 +316,7 @@ class TrainConfig(ZambaBaseModel):
         early_stopping_config (EarlyStoppingConfig, optional): Configuration for
             early stopping, which monitors a metric during training and stops training
             when the metric stops improving. Defaults to EarlyStoppingConfig(monitor='val_macro_f1',
-            patience=3, verbose=True, mode='max').
+            patience=5, verbose=True, mode='max').
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (European Union), or "asia"
             (Asia Pacific). Defaults to "us".

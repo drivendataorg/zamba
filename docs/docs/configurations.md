@@ -253,7 +253,7 @@ class TrainConfig(ZambaBaseModel)
  num_workers: int = 3,
  max_epochs: int = None,
  early_stopping_config: zamba.models.config.EarlyStoppingConfig =
-            EarlyStoppingConfig(monitor='val_macro_f1', patience=3,
+            EarlyStoppingConfig(monitor='val_macro_f1', patience=5,
             verbose=True, mode='max'),
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
@@ -319,7 +319,7 @@ The maximum number of epochs to run during training. Defaults to `None`
 
 #### `early_stopping_config (zamba.models.config.EarlyStoppingConfig, optional)`
 
-Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the [`EarlyStoppingConfig` class](api-reference/models-config.md#zamba.models.config.EarlyStoppingConfig): `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
+Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the [`EarlyStoppingConfig` class](api-reference/models-config.md#zamba.models.config.EarlyStoppingConfig): `EarlyStoppingConfig(monitor='val_macro_f1', patience=5, verbose=True, mode='max')`
 
 #### `weight_download_region [us|eu|asia]`
 
