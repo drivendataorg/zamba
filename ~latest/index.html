@@ -71,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-zambas-documentation" class="md-skip">
+        <a href="#zamba" class="md-skip">
           Skip to content
         </a>
       
@@ -225,9 +225,60 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         Home
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-zamba" class="md-nav__link">
+    Installing zamba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    Getting started
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    Example usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-zamba-test-suite" class="md-nav__link">
+    Running the zamba test suite
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -588,13 +639,17 @@
       
         
           
+            
+          
         
       
       
-        <label class="md-nav__link" for="__nav_7">
-          Changelog
-          <span class="md-nav__icon md-icon"></span>
-        </label>
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="changelog/">Changelog</a>
+          
+        </div>
       
       <nav class="md-nav" aria-label="Changelog" data-md-level="1">
         <label class="md-nav__title" for="__nav_7">
@@ -604,17 +659,6 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="v2_updates/" class="md-nav__link">
-        Version 2
-      </a>
-    </li>
-  
-
             
           
         </ul>
@@ -1116,6 +1160,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-zamba" class="md-nav__link">
+    Installing zamba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    Getting started
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    Example usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-zamba-test-suite" class="md-nav__link">
+    Running the zamba test suite
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1131,39 +1211,79 @@
                   </a>
                 
                 
-                <h1 id="welcome-to-zambas-documentation">Welcome to zamba's documentation!<a class="headerlink" href="#welcome-to-zambas-documentation" title="Permanent link">&para;</a></h1>
-<div class="embed-responsive embed-responsive-16by9" width=500>
-    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" frameborder="0" allowfullscreen=""></iframe>
-</div>
+                <h1 id="zamba">zamba<a class="headerlink" href="#zamba" title="Permanent link">&para;</a></h1>
+<p><a href=""><img alt="Docs Status" src="https://img.shields.io/badge/docs-stable-informational" /></a>
+<a href="https://pypi.org/project/zamba/"><img alt="PyPI" src="https://img.shields.io/pypi/v/zamba.svg" /></a>
+<a href="https://github.com/drivendataorg/zamba/actions?query=workflow%3Atests+branch%3Amaster"><img alt="tests" src="https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master" /></a>
+<a href="https://codecov.io/gh/drivendataorg/zamba"><img alt="codecov" src="https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg" /></a></p>
+<div class="embed-responsive embed-responsive-16by9" width=500> 
+    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" 
+frameborder="0" allowfullscreen=""></iframe></div>
 
-<p><em>Zamba means "forest" in the Lingala language.</em></p>
-<p>Zamba is a tool built in Python to automatically detect and classify the species seen in camera trap videos. Using state-of-the-art computer vision and machine learning, the tool is trained to identify 42 common species from sites in Africa and Europe (as well as blank, or "no species present"). Users can also input their own labeled videos to finetune a model and make predictions for new species or new contexts. <code>zamba</code> can be accessed as both a command-line tool and a Python package.</p>
-<p>Zamba ships with three model options. <code>time_distributed</code> and <code>slowfast</code> are
-trained on 32 common species from central and west Africa. <code>european</code> is trained
-on 11 common species from western Europe. <code>time_distributed</code> and <code>european</code> are image-based models while <code>slowfast</code> is a video-based model.</p>
-<h3 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><em>zamba</em> means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.</p>
+</blockquote>
+<p><strong><code>zamba</code> is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos.</strong> You can use <code>zamba</code> to:</p>
 <ul>
-<li><a href="install/">Installing Zamba</a></li>
-<li><a href="quickstart/">Quickstart</a></li>
+<li>Filter out blank videos</li>
+<li>Identify which species appear in each video</li>
 </ul>
-<h3 id="user-tutorials">User Tutorials<a class="headerlink" href="#user-tutorials" title="Permanent link">&para;</a></h3>
+<p>The tool is already trained to identify 42 species common to Africa and Europe (as well as blank, or "no species present"). Users can also input their own labeled videos to finetune a model and make predictions for new species or new contexts.</p>
+<p><code>zamba</code> can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, <a href="https://www.zambacloud.com/">Zamba Cloud</a>.</p>
+<p>Check out the <a href="https://github.com/drivendataorg/zamba/wiki">Wiki</a> for community-submitted models.</p>
+<h2 id="installing-zamba">Installing <code>zamba</code><a class="headerlink" href="#installing-zamba" title="Permanent link">&para;</a></h2>
+<p>First, make sure you have the prerequisites installed:</p>
 <ul>
-<li><a href="predict-tutorial/">Classifying Unlabeled Videos</a></li>
-<li><a href="train-tutorial/">Training a Model on Labeled Videos</a></li>
-<li><a href="debugging/">Debugging</a></li>
+<li>Python 3.7 or 3.8</li>
+<li>FFmpeg</li>
 </ul>
-<h3 id="available-models"><a href="models/">Available Models</a><a class="headerlink" href="#available-models" title="Permanent link">&para;</a></h3>
-<h3 id="advanced-options">Advanced Options<a class="headerlink" href="#advanced-options" title="Permanent link">&para;</a></h3>
+<p>Then run:
+<div class="highlight"><pre><span></span><code><span class="go">pip install zamba</span>
+</code></pre></div></p>
+<p>See the <a href="install/">Installation</a> page of the documentation for details.</p>
+<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<p>Once you have <code>zamba</code> installed, some good starting points are:</p>
 <ul>
-<li><a href="configurations/">All Optional Arguments</a></li>
-<li><a href="yaml-config/">Using YAML Configuration Files</a></li>
-<li><a href="extra-options/">Guide to Common Optional Parameters</a></li>
+<li>The <a href="quickstart/">Quickstart</a> page for basic examples of usage</li>
+<li>The user tutorial for either <a href="predict-tutorial/">classifying videos</a> or <a href="train-tutorial/">training a model</a> depending on what you want to do with <code>zamba</code></li>
 </ul>
-<h3 id="contribute"><a href="contribute/">Contribute</a><a class="headerlink" href="#contribute" title="Permanent link">&para;</a></h3>
-<h3 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h3>
-<ul>
-<li><a href="v2_updates/">Version 2</a></li>
-</ul>
+<h2 id="example-usage">Example usage<a class="headerlink" href="#example-usage" title="Permanent link">&para;</a></h2>
+<p>Once <code>zamba</code> is installed, you can see the basic command options with:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba --help
+<span class="go">Usage: zamba [OPTIONS] COMMAND [ARGS]...</span>
+
+<span class="go">  Zamba is a tool built in Python to automatically identify the species seen</span>
+<span class="go">  in camera trap videos from sites in Africa and Europe. Visit</span>
+<span class="go">  https://zamba.drivendata.org/docs for more in-depth documentation.</span>
+
+<span class="go">Options:</span>
+<span class="go">  --version             Show zamba version and exit.</span>
+<span class="go">  --install-completion  Install completion for the current shell.</span>
+<span class="go">  --show-completion     Show completion for the current shell, to copy it or</span>
+<span class="go">                        customize the installation.</span>
+<span class="go">  --help                Show this message and exit.</span>
+
+<span class="go">Commands:</span>
+<span class="go">  predict  Identify species in a video.</span>
+<span class="go">  train    Train a model on your labeled data.</span>
+</code></pre></div></p>
+<p><code>zamba</code> can be used "out of the box" to generate predictions or train a model using your own videos. <code>zamba</code> supports the same video formats as FFmpeg, <a href="https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features">which are listed here</a>. Any videos that fail a set of FFmpeg checks will be skipped during inference or training.</p>
+<h3 id="classifying-unlabeled-videos">Classifying unlabeled videos<a class="headerlink" href="#classifying-unlabeled-videos" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --data-dir path/to/videos
+</code></pre></div>
+<p>By default, predictions will be saved to <code>zamba_predictions.csv</code>. Run <code>zamba predict --help</code> to list all possible options to pass to <code>predict</code>.</p>
+<p>See the <a href="quickstart/">Quickstart</a> page or the user tutorial on <a href="predict-tutorial/">classifying videos</a> for more details.</p>
+<h3 id="training-a-model">Training a model<a class="headerlink" href="#training-a-model" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir path/to/videos --labels path_to_labels.csv
+</code></pre></div>
+<p>The newly trained model will be saved to a folder in the current working directory called <code>zamba_{model_name}</code>. For example, a model finetuned from the pretrained <code>time_distributed</code> model (the default) will be saved in <code>zamba_time_distributed</code>. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and test and validation metrics. Run <code>zamba train --help</code> to list all possible options to pass to <code>train</code>.</p>
+<p>See the <a href="quickstart/">Quickstart</a> page or the user tutorial on <a href="train-tutorial/">training a model</a> for more details.</p>
+<h2 id="running-the-zamba-test-suite">Running the <code>zamba</code> test suite<a class="headerlink" href="#running-the-zamba-test-suite" title="Permanent link">&para;</a></h2>
+<p>The included <a href="https://github.com/drivendataorg/zamba/blob/master/Makefile"><code>Makefile</code></a> contains code that uses pytest to run all tests in <code>zamba/tests</code>.</p>
+<p>The command is (from the project root):</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make tests
+</code></pre></div>
+<p>See the docs page on <a href="contribute/">contributing to <code>zamba</code></a> for details.</p>
                 
               
               

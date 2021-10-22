@@ -41,11 +41,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://zamba.drivendata.org/docs/~latest/v2_updates/</loc>
-         <lastmod>2021-10-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://zamba.drivendata.org/docs/~latest/yaml-config/</loc>
          <lastmod>2021-10-22</lastmod>
          <changefreq>daily</changefreq>
@@ -137,6 +132,11 @@
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/~latest/api-reference/settings/</loc>
+         <lastmod>2021-10-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://zamba.drivendata.org/docs/~latest/changelog/</loc>
          <lastmod>2021-10-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
