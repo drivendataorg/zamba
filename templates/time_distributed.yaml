@@ -7,7 +7,7 @@ train_config:
     multiplier: 1
     pre_train_bn: True
     train_bn: False
-    unfreeze_backbone_at_epoch: 3
+    unfreeze_backbone_at_epoch: 5
     verbose: True
   early_stopping_config:
     patience: 5

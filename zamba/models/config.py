@@ -189,7 +189,7 @@ class BackboneFinetuneConfig(ZambaBaseModel):
 
     Args:
         unfreeze_backbone_at_epoch (int, optional): Epoch at which the backbone
-            will be unfrozen. Defaults to 15.
+            will be unfrozen. Defaults to 5.
         backbone_initial_ratio_lr (float, optional): Used to scale down the backbone
             learning rate compared to rest of model. Defaults to 0.01.
         multiplier (int or float, optional): Multiply the learning rate by a constant
@@ -202,7 +202,7 @@ class BackboneFinetuneConfig(ZambaBaseModel):
             Defaults to True.
     """
 
-    unfreeze_backbone_at_epoch: Optional[int] = 15
+    unfreeze_backbone_at_epoch: Optional[int] = 5
     backbone_initial_ratio_lr: Optional[float] = 0.01
     multiplier: Optional[Union[int, float]] = 1
     pre_train_bn: Optional[bool] = False  # freeze batch norm layers prior to finetuning
@@ -306,7 +306,7 @@ class TrainConfig(ZambaBaseModel):
             poor model training. Use with caution.
         backbone_finetune_params (BackboneFinetuneConfig, optional): Set parameters
             to finetune a backbone model to align with the current learning rate.
-            Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
+            Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
             backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False,
             train_bn=False, verbose=True).
         gpus (int): Number of GPUs to train on applied per node.

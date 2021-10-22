@@ -246,7 +246,7 @@ class TrainConfig(ZambaBaseModel)
  batch_size: int = 2,
  auto_lr_find: bool = False,
  backbone_finetune_config: zamba.models.config.BackboneFinetuneConfig =
-            BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
+            BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
             backbone_initial_ratio_lr=0.01, multiplier=1,
             pre_train_bn=False, train_bn=False, verbose=True),
  gpus: int = 0, 
@@ -303,7 +303,7 @@ Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.011
 
 #### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
-Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the [`BackboneFinetuneConfig` class](api-reference/models-config.md#zamba.models.config.BackboneFinetuneConfig): `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
+Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the [`BackboneFinetuneConfig` class](api-reference/models-config.md#zamba.models.config.BackboneFinetuneConfig): `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
 
 #### `gpus (int, optional)`
 
