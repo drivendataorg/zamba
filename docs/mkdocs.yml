@@ -25,7 +25,7 @@ nav:
       - Species Detection Models: "models/species-detection.md"
       - DensePose: "models/denspose.md"
   - "Advanced Options":
-      - All Optional Arguments: "configurations.md"
+      - All Configuration Options: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
       - Guide to Common Optional Parameters: "extra-options.md"
   - "Contribute to zamba":
