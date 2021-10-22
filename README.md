@@ -98,4 +98,4 @@ The command is (from the project root):
 $ make tests
 ```
 
-See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/contribute/index/) for details.
+See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/contribute/index.md) for details.
