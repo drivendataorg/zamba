@@ -29,7 +29,6 @@ The algorithms in `zamba` are designed to identify species of animals that appea
     <td>Trained on non-jungle ecologies</td>
     <td>Finetuned <code>time_distributed</code>model</td>
   </tr>
-
 </table>
 
 All models support training, fine-tuning, and inference. For fine-tuning, we recommend using the `time_distributed` model as the starting point.
@@ -104,31 +103,112 @@ The `time_distributed` model was built by re-training a well-known image classif
 Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp &
 See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
-* Bakoun Classified Forest, Guinea
-* Bili-Uele Protect Area, Democratic Republic of the Congo
-* Budongo Forest Reserve, Uganda
-* Bwindi Forest National Park, Uganda
-* Campo Ma'an National Park, Cameroon
-* Conkouati-Douli National Park, Republic of the Congo
-* Dzanga-Sangha Protected Area, Central African Republic
-* East Nimba Nature Reserve, Liberia
-* Guiroutou, Côte d'Ivoire
-* Gashaka-Gumti National Park, Nigeria
-* Gorongosa National Park, Mozambique
-* Grebo-Krahn National Park, Liberia
-* Grumeti Game Reserve, Tanzania
-* Comoé National Park, Côte d'Ivoire
-* Kayan, Senegal
-* Korup National Park, Cameroon
-* Loango National Park, Gabon
-* Lopé National Park, Gabon
-* Moyen-Bafing National Park, Guinea
-* Ngogo and Kibale National Park, Uganda
-* Nouabale-Ndoki National Park, Republic of the Congo
-* Salonga National Park, Democratic Republic of the Congo
-* Sapo National Park, Liberia
-* Taï National Park, Côte d'Ivoire
-* Ugalla River National Park, Tanzania
+<table>
+  <tr>
+    <th>Country</th>
+    <th>Location</th>
+  </tr>
+  <tr>
+    <td>Bakoun Classified Forest</td>
+    <td> Guinea</td>
+  </tr>
+  <tr>
+    <td>Bili-Uele Protect Area</td>
+    <td> Democratic Republic of tde Congo</td>
+  </tr>
+  <tr>
+    <td>Budongo Forest Reserve</td>
+    <td> Uganda</td>
+  </tr>
+  <tr>
+    <td>Bwindi Forest National Park</td>
+    <td> Uganda</td>
+  </tr>
+  <tr>
+  <td>Campo Ma'an National Park</td>
+    <td> Cameroon</td>
+  </tr>
+  <tr>
+    <td>Conkouati-Douli National Park</td>
+    <td> Republic of tde Congo</td>
+  </tr>
+  <tr>
+    <td>Dzanga-Sangha Protected Area</td>
+    <td> Central African Republic</td>
+  </tr>
+  <tr>
+    <td>East Nimba Nature Reserve</td>
+    <td> Liberia</td>
+  </tr>
+  <tr>
+    <td>Guiroutou</td>
+    <td> Côte d'Ivoire</td>
+  </tr>
+  <tr>
+    <td>Gashaka-Gumti National Park</td>
+    <td> Nigeria</td>
+  </tr>
+  <tr>
+    <td>Gorongosa National Park</td>
+    <td> Mozambique</td>
+  </tr>
+  <tr>
+    <td>Grebo-Krahn National Park</td>
+    <td> Liberia</td>
+  </tr>
+  <tr>
+    <td>Grumeti Game Reserve</td>
+    <td> Tanzania</td>
+  </tr>
+  <tr>
+    <td>Comoé National Park</td>
+    <td> Côte d'Ivoire</td>
+  </tr>
+  <tr>
+    <td>Kayan</td>
+    <td> Senegal</td>
+  </tr>
+  <tr>
+    <td>Korup National Park</td>
+    <td> Cameroon</td>
+  </tr>
+  <tr>
+    <td>Loango National Park</td>
+    <td> Gabon</td>
+  </tr>
+  <tr>
+    <td>Lopé National Park</td>
+    <td> Gabon</td>
+  </tr>
+  <tr>
+    <td>Moyen-Bafing National Park</td>
+    <td> Guinea</td>
+  </tr>
+  <tr>
+    <td>Ngogo and Kibale National Park</td>
+    <td> Uganda</td>
+  </tr>
+  <tr>
+    <td>Nouabale-Ndoki National Park</td>
+    <td> Republic of tde Congo</td>
+  </tr>
+  <tr>
+    <td>Salonga National Park</td>
+    <td> Democratic Republic of tde Congo</td>
+  </tr>
+  <tr>
+    <td>Sapo National Park</td>
+    <td> Liberia</td>
+  </tr>
+  <tr>
+    <td>Taï National Park</td>
+    <td> Côte d'Ivoire</td>
+  </tr>
+  <tr>
+    <td>Ugalla River National Park</td>
+    <td> Tanzania</td>
+  </tr>
+</table>
 
 ### Default configuration
 
