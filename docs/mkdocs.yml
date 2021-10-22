@@ -21,13 +21,13 @@ nav:
       - Classifying Unlabeled Videos: "predict-tutorial.md"
       - Training a Model on Labeled Videos: "train-tutorial.md"
       - Debugging: "debugging.md"
+      - Guide to Common Optional Parameters: "extra-options.md"
   - "Available Models":
       - Species Detection Models: "models/species-detection.md"
       - DensePose: "models/denspose.md"
   - "Advanced Options":
       - All Configuration Options: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
-      - Guide to Common Optional Parameters: "extra-options.md"
   - "Contribute to zamba":
       - "contribute/index.md"
   - "Changelog":

@@ -1,6 +1,6 @@
 # Guide to Common Optional Parameters
 
-There are a LOT of ways to customize model training or inference. Here, we take that elephant-sized list of options and condense it to a manageable monkey-sized list of common considerations. To read about all possible customizations, see the [All Optional Arguments](configurations.md) page.
+There are a LOT of ways to customize model training or inference. Here, we take that elephant-sized list of options and condense it to a manageable monkey-sized list of common considerations. To read about all possible customizations, see the [All Configuration Options](configurations.md) page.
 
 Many of the options below cannot be passed directly to the command line. Instead, some must be passed as part of a YAML configuration file. For example:
 
@@ -31,9 +31,9 @@ The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a mode
 
 ## Video size
 
-When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to either predict on or train from. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels. 
+When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to either predict on or train from. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels.
 
-Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. To resize all images to 50x50 pixels instead of the default 240x426: 
+Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. To resize all images to 50x50 pixels instead of the default 240x426:
 
 === "YAML file"
     ```yaml
@@ -65,9 +65,9 @@ Each video is simply a series of frames, or images. Most of the videos on which 
 
 The model only trains or generates prediction based on a subset of the frames in a video, because using every frame would be far too computationally intensive. There are a number of different ways to select frames. For a full list of options, see the section on [Video loading arguments](configurations.md#video-loading-arguments). A few common approaches are explained below.
 
-### Early bias 
+### Early bias
 
-Some camera traps begin recording a video when movement is detected. If this is the case, you may be more likely to see an animal towards when the video starts. Setting `early_bias` to True selects 16 frames towards the beginning of a video. 
+Some camera traps begin recording a video when movement is detected. If this is the case, you may be more likely to see an animal towards when the video starts. Setting `early_bias` to True selects 16 frames towards the beginning of a video.
 
 === "YAML File"
     ```yaml
@@ -100,8 +100,8 @@ A simple option is to sample frames that are evenly distributed throughout a vid
     In Python, these arguments can be specified when `VideoLoaderConfig` is instantiated:
     ```python
     video_loader_config = VideoLoaderConfig(
-        total_frames=32, 
-        evenly_sample_total_frames=True, 
+        total_frames=32,
+        evenly_sample_total_frames=True,
         ensure_total_frames=True,
         ...
     )
@@ -109,7 +109,7 @@ A simple option is to sample frames that are evenly distributed throughout a vid
 
 ### MegadetectorLite
 
-You can use a pretrained object detection model called [MegadetectorLite](models/index.md#megadetectorlite) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the MegadetectorLite model. If `megadetector_lite_config` is None, the MegadetectorLite model will not be used. 
+You can use a pretrained object detection model called [MegadetectorLite](models/index.md#megadetectorlite) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the MegadetectorLite model. If `megadetector_lite_config` is None, the MegadetectorLite model will not be used.
 
 For example, to take the 16 frames with the highest probability of detection:
 
