@@ -102,7 +102,7 @@ class FfmpegZambaVideoDataset(VisionDataset):
     def __getitem__(self, index: int):
         try:
             cached_load_video_frames = npy_cache(
-                tmp_path=self.video_loader_config.cache_dir,
+                cache_path=self.video_loader_config.cache_dir,
                 cleanup=self.video_loader_config.cleanup_cache,
             )(load_video_frames)
 
