@@ -5,9 +5,9 @@
 [![tests](https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master)](https://github.com/drivendataorg/zamba/actions?query=workflow%3Atests+branch%3Amaster)
 [![codecov](https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/zamba)
 
- 
-<div class="embed-responsive embed-responsive-16by9" width=500> 
-    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" 
+
+<div class="embed-responsive embed-responsive-16by9" width=500>
+    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4"
 frameborder="0" allowfullscreen=""></iframe></div>
 
 > *zamba* means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.
@@ -85,7 +85,7 @@ See the [Quickstart](quickstart/) page or the user tutorial on [classifying vide
 ### Training a model
 
 ```console
-$ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save-dir my_trained_model
+$ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save-path my_trained_model
 ```
 
 The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run `zamba train --help` to list all possible options to pass to `train`.

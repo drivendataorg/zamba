@@ -82,7 +82,7 @@ See the [Quickstart](https://zamba.drivendata.org/docs/quickstart/) page or the 
 ### Training a model
 
 ```console
-$ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save-dir my_trained_model
+$ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save-path my_trained_model
 ```
 
 The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run `zamba train --help` to list all possible options to pass to `train`.
