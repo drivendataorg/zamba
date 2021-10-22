@@ -18,13 +18,14 @@ The tool is already trained to identify 42 species common to Africa and Europe (
 
 `zamba` can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, [Zamba Cloud](https://www.zambacloud.com/).
 
-Please visit https://zamba.drivendata.org/docs/ for documentation and tutorials.
+Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-submitted models.
 
-Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-submmitted models.
+Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
 
 ## Installing `zamba`
 
 First, make sure you have the prerequisites installed:
+
 * Python 3.7 or 3.8
 * FFmpeg
 
@@ -33,7 +34,7 @@ Then run:
 pip install zamba
 ```
 
-See the [Installation](https://zamba.drivendata.org/docs/install.html) page of the documentation for details.
+See the [Installation](https://zamba.drivendata.org/docs/install/) page of the documentation for details.
 
 ## Getting started
 
@@ -41,7 +42,7 @@ Once you have `zamba` installed, some good starting points are:
 
 - The [Quickstart](https://zamba.drivendata.org/docs/quickstart/) page for basic examples of usage
 - The user tutorial for either [classifying videos](https://zamba.drivendata.org/docs/predict-tutorial/) or [training a model](https://zamba.drivendata.org/docs/train-tutorial/) depending on what you want to do with `zamba`
-- 
+
 ## Example usage
 
 Once `zamba` is installed, you can see the basic command options with:
@@ -67,7 +68,7 @@ Commands:
 
 `zamba` can be used "out of the box" to generate predictions or train a model using your own videos. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
-**Classifying unlabeled videos**
+### Classifying unlabeled videos
 
 ```console
 $ zamba predict --data-dir path/to/videos
@@ -77,7 +78,7 @@ By default, predictions will be saved to `zamba_predictions.csv`. Run `zamba pre
 
 See the [Quickstart](https://zamba.drivendata.org/docs/quickstart/) page or the user tutorial on [classifying videos](https://zamba.drivendata.org/docs/predict-tutorial/) for more details.
 
-**Training a model**
+### Training a model
 
 ```console
 $ zamba train --data-dir path/to/videos --labels path_to_labels.csv
@@ -87,7 +88,7 @@ The newly trained model will be saved to a folder in the current working directo
 
 See the [Quickstart](https://zamba.drivendata.org/docs/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/train-tutorial/) for more details.
 
-### Running the `zamba` test suite
+## Running the `zamba` test suite
 
 The included [`Makefile`](https://github.com/drivendataorg/zamba/blob/master/Makefile) contains code that uses pytest to run all tests in `zamba/tests`.
 
@@ -97,4 +98,4 @@ The command is (from the project root):
 $ make tests
 ```
 
-See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/contribute.html) for details.
+See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/contribute/index/) for details.
