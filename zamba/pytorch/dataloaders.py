@@ -11,7 +11,7 @@ import torchvision.datasets.video_utils
 from torchvision.datasets.vision import VisionDataset
 import torchvision.transforms.transforms
 
-from zamba.data.video import cached_load_video_frames, VideoLoaderConfig
+from zamba.data.video import npy_cache, load_video_frames, VideoLoaderConfig
 
 
 def get_datasets(
@@ -87,6 +87,11 @@ class FfmpegZambaVideoDataset(VisionDataset):
         self.targets = annotations
 
         self.transform = transform
+
+        # get environment variable for cache if it exists
+        if video_loader_config is None:
+            video_loader_config = VideoLoaderConfig()
+
         self.video_loader_config = video_loader_config
 
         super().__init__(root=None, transform=transform)
@@ -96,6 +101,11 @@ class FfmpegZambaVideoDataset(VisionDataset):
 
     def __getitem__(self, index: int):
         try:
+            cached_load_video_frames = npy_cache(
+                cache_path=self.video_loader_config.cache_dir,
+                cleanup=self.video_loader_config.cleanup_cache,
+            )(load_video_frames)
+
             video = cached_load_video_frames(
                 filepath=self.video_paths[index], config=self.video_loader_config
             )

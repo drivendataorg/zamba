@@ -326,8 +326,8 @@ class VideoLoaderConfig(BaseModel):
 
 
 class npy_cache:
-    def __init__(self, path: Optional[Path] = None, cleanup: bool = False):
-        self.tmp_path = path
+    def __init__(self, cache_path: Optional[Path] = None, cleanup: bool = False):
+        self.cache_path = cache_path
         self.cleanup = cleanup
 
     def __call__(self, f):
@@ -358,7 +358,7 @@ class npy_cache:
             if isinstance(vid_path, S3Path):
                 vid_path = AnyPath(vid_path.key)
 
-            npy_path = self.tmp_path / hash_str / vid_path.with_suffix(".npy")
+            npy_path = self.cache_path / hash_str / vid_path.with_suffix(".npy")
             # make parent directories since we're using absolute paths
             npy_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -372,30 +372,22 @@ class npy_cache:
                 logger.debug(f"Wrote to cache {npy_path}: size {npy_path.stat().st_size}")
                 return loaded_video
 
-        if self.tmp_path is not None:
+        if self.cache_path is not None:
             return _wrapped
         else:
             return f
 
     def __del__(self):
-        if hasattr(self, "tmp_path") and self.cleanup and self.tmp_path.exists():
-            if self.tmp_path.parents[0] == tempfile.gettempdir():
-                logger.info(f"Deleting cache dir {self.tmp_path}.")
-                rmtree(self.tmp_path)
+        if hasattr(self, "cache_path") and self.cleanup and self.cache_path.exists():
+            if self.cache_path.parents[0] == tempfile.gettempdir():
+                logger.info(f"Deleting cache dir {self.cache_path}.")
+                rmtree(self.cache_path)
             else:
                 logger.warning(
                     "Bravely refusing to delete directory that is not a subdirectory of the "
                     "system temp directory. If you really want to delete, do so manually using:\n "
-                    f"rm -r {self.tmp_path}"
+                    f"rm -r {self.cache_path}"
                 )
-
-
-def npy_cache_factory(path, callable, cleanup):
-    @npy_cache(path=path, cleanup=cleanup)
-    def decorated_callable(*args, **kwargs):
-        return callable(*args, **kwargs)
-
-    return decorated_callable
 
 
 def load_video_frames(
@@ -503,21 +495,3 @@ def load_video_frames(
         arr = ensure_frame_number(arr, total_frames=config.total_frames)
 
     return arr
-
-
-def cached_load_video_frames(filepath: os.PathLike, config: Optional[VideoLoaderConfig] = None):
-    """Loads frames from videos using fast ffmpeg commands and caches to .npy file
-    if config.cache_dir is not None.
-
-    Args:
-        filepath (os.PathLike): Path to the video.
-        config (VideoLoaderConfig): Configuration for video loading.
-    """
-    if config is None:
-        # get environment variable for cache if it exists
-        config = VideoLoaderConfig()
-
-    decorated_load_video_frames = npy_cache_factory(
-        path=config.cache_dir, callable=load_video_frames, cleanup=config.cleanup_cache
-    )
-    return decorated_load_video_frames(filepath=filepath, config=config)

@@ -81,7 +81,7 @@ def instantiate_model(
             hparams = yaml.safe_load(f)
 
     else:
-        if not Path(checkpoint).exists():
+        if not (model_cache_dir / checkpoint).exists():
             logger.info("Downloading weights for model.")
             checkpoint = download_weights(
                 filename=str(checkpoint),
