@@ -104,6 +104,7 @@ The `time_distributed` model was built by re-training a well-known image classif
 Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp &
 See](https://www.chimpandsee.org/). The data included camera trap videos from:
 
+* Bakoun Classified Forest, Guinea
 * Bili-Uele Protect Area, Democratic Republic of the Congo
 * Budongo Forest Reserve, Uganda
 * Bwindi Forest National Park, Uganda
@@ -117,6 +118,7 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 * Grebo-Krahn National Park, Liberia
 * Grumeti Game Reserve, Tanzania
 * Comoé National Park, Côte d'Ivoire
+* Kayan, Senegal
 * Korup National Park, Cameroon
 * Loango National Park, Gabon
 * Lopé National Park, Gabon
