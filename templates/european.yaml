@@ -7,7 +7,7 @@ train_config:
     multiplier: 1
     pre_train_bn: false
     train_bn: false
-    unfreeze_backbone_at_epoch: 5
+    unfreeze_backbone_at_epoch: 15
     verbose: true
 
 video_loader_config:
