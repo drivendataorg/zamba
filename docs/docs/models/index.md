@@ -2,44 +2,43 @@
 
 The algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. There are three models that ship with the `zamba` package: `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
 
-## Basic usage
+## Model summary
 
 <table>
   <tr>
     <th>Model</th>
-    <th>Use cases</th>
-    <th>Strengths</th>
     <th>Geography</th>
+    <th>Relative strengths</th>
+    <th>Architecutre</th>
   </tr>
   <tr>
     <td><code>time_distributed</code></td>
-    <td rowspan=2>Model training or fine tuning</td>
-    <td rowspan=2>Classifying species<br/>Running more quickly</td>
-    <td>Central and west Africa</td>
+    <td>Central and West Africa</td>
+    <td>Better than <code>slowfast</code> at duikers, chimps, and gorillas and other larger species</td>
+    <td>Image-based <code>TimeDistributedEfficientNet</code></td>
   </tr>
+  <tr>
+      <td><code>slowfast</code></td>
+      <td>Central and West Africa</td>
+      <td>Better than <code>time_distributed</code> at blank detection and small species detection</td>
+      <td>Video-native <code>SlowFast</code></td>
+    </tr>
   <tr>
     <td><code>european</code></td>
     <td>Western Europe</td>
+    <td>Trained on non-jungle ecologies</td>
+    <td>Finetuned <code>time_distributed</code>model</td>
   </tr>
-<tr>
-    <td><code>slowfast</code></td>
-    <td>Detailed prediction of blank vs. non-blank</td>
-    <td>Identifying blank vs. non-blank videos</td>
-    <td>Central and west Africa</td>
-  </tr>
+
 </table>
 
-`time_distributed` and `european` use the same basic algorithm. The main difference is that they predict different species based on their intended geography.
-
-For training or fine tuning, either the `time_distributed` and `european` model is recommended. These run much more quickly thatn the `slowfast` model.
-
-For inference, `slowfast` is recommended if the highest priority is differentiating between blank and non-blank videos. If the priority is species classification, either `time_distributed` or `european` is recommended based on the given geography.
+All models support training, fine-tuning, and inference. For fine-tuning, we recommend using the `time_distributed` model as the starting point.
 
 <h2 id="species-classes"></h2>
 
 ## What species can `zamba` detect?
 
-`time_distributed` and `slowfast` are both trained to identify 32 common species from central and west Africa. The possible class labels in these models are:
+`time_distributed` and `slowfast` are both trained to identify 32 common species from Central and West Africa. The output labels in these models are:
 
 * `aardvark`
 * `antelope_duiker`
@@ -95,7 +94,7 @@ For inference, `slowfast` is recommended if the highest priority is differentiat
 
 ### Algorithm
 
-The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
+The `time_distributed` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) (Tan, M., & Le, Q., 2019) to identify the species in our camera trap videos. EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. The model is wrapped in a [`TimeDistributed` layer](https://docs.fast.ai/layers.html#TimeDistributed) which enables a single prediction per video.
 
 <a id='time-distributed-training-data'></a>
 
@@ -113,45 +112,46 @@ See](https://www.chimpandsee.org/). The data included camera trap videos from:
 * Nouabale-Ndoki National Park, Republic of the Congo
 * Salonga National Park, Democratic Republic of the Congo
 * Taï National Park, Côte d'Ivoire
+* Bili-Uere'
+* Budongo'
+* Bwindi'
+* Campo Ma'an National Park
+* Conkouati'
+* Guiroutou'
+* TRS_Bakoun'
+* Gashaka-Gumti National Park
+* TRS_Grebo'
+* Comoe National Park'
+* Kayan'
+* Korup National Park'
+* Loango'
+* Ngogo'
+* East Nimba'
+* Sapo'
+* Ugalla'
 
 ### Default configuration
 
 The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml).
 
-By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
+By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `time_distributed` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.
 
-The full default video loading configuration is:
+The default video loading configuration for `time_distributed` is:
 ```yaml
 video_loader_config:
   model_input_height: 240
   model_input_width: 426
   crop_bottom_pixels: 50
-  ensure_total_frames: True
+  fps: 4
+  total_frames: 16
+  ensure_total_frames: true
   megadetector_lite_config:
     confidence: 0.25
-    fill_model: "score_sorted"
+    fill_mode: score_sorted
     n_frames: 16
-  total_frames: 16
 ```
 
-### Requirements
-
-The above is pulled in by default if `time_distributed` is used in the command line. If you are passing in a custom [YAML configuration file](../yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-=== "YAML file"
-    ```yaml
-    video_loader_config:
-      model_input_height: # any integer
-      model_input_width: # any integer
-      total_frames: 16
-    ```
-=== "Python"
-    ```python
-    video_loader_config = VideoLoaderConfig(
-      model_input_height=..., # any integer
-      model_input_width=..., # any integer
-      total_frames=16
-    )
-    ```
+You can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The only requirement for the `time_distributed` model is that the video loader must return 16 frames.
 
 <a id='slowfast'></a>
 
@@ -159,7 +159,7 @@ The above is pulled in by default if `time_distributed` is used in the command l
 
 ### Algorithm
 
-The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operates at a high frame rate to capture motion over time. The basic architectures are deep [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) using [pytorch](https://pytorch.org/).
+The `slowfast` model was built by re-training a video classification backbone called [SlowFast](https://arxiv.org/abs/1812.03982) (Feichtenhofer, C., Fan, H., Malik, J., & He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operates at a high frame rate to capture motion over time.
 
 <div style="text-align:center;">
 <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-slowfast-diagram.png" alt="Architecture showing the two pathways of the slowfast model" style="width:400px;"/>
@@ -186,32 +186,18 @@ video_loader_config:
   model_input_height: 240
   model_input_width: 426
   crop_bottom_pixels: 50
-  ensure_total_frames: True
+  fps: 8
+  total_frames: 32
+  ensure_total_frames: true
   megadetector_lite_config:
     confidence: 0.25
-    fill_model: "score_sorted"
+    fill_mode: score_sorted
     n_frames: 32
-  total_frames: 32
 ```
 
-### Requirements
-
-The above is pulled in by default if `slowfast` is used in the command line. If you are passing in a custom [YAML configuration file](../yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-=== "YAML file"
-    ```yaml
-    video_loader_config:
-      model_input_height: # any integer >= 200
-      model_input_width: # any integer >= 200
-      total_frames: 32
-    ```
-=== "Python"
-    ```python
-    video_loader_config = VideoLoaderConfig(
-      model_input_height=..., # any integer >= 200
-      model_input_width=..., # any integer >= 200
-      total_frames=32
-    )
-    ```
+You can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The two requirements for the `slowfast` model are that:
+- the video loader must return 32 frames.
+- videos inputted into the model must be at least 200 x 200 pixels
 
 <a id='european'></a>
 
@@ -219,22 +205,17 @@ The above is pulled in by default if `slowfast` is used in the command line. If 
 
 ### Algorithm
 
-The `european` model has the same backbone as the `time_distributed` model, but is trained on data from camera traps in western Europe instead of central and west Africa.
-
-The `european` model was built by re-training a well-known image classification architecture called [EfficientNetV2](https://arxiv.org/abs/1905.11946) to identify the species in our camera trap videos (Tan, M., & Le, Q., 2019). EfficientNetV2 models are convolutional [neural networks](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. It does take into account the relationship between frames in the video.
-
-`european` combines the EfficientNetV2 architecture with an open-source image object detection model to implement frame selection. The [YOLOX](https://arxiv.org/abs/2107.08430) detection model is run on all frames in a video. Only the frames with the highest probability of detection are then passed to the more computationally intensive EfficientNetV2 for detailed detection and classification.
+The `european` model starts from the trained `time_distributed` model, and then replaces and trains the final output layer to predict European species.
 
 ### Training data
 
-The `european` model is built by starting with the fully trained `time_distributed` model. The network is then finetuned with data collected and annotated by partners at [The Max Planck Institute for
-Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
+The `european` model is finetuned with data collected and annotated by partners at [The Max Planck Institute for Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
 
 ### Default configuration
 
 The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/european/config.yaml).
 
-By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.
+The `european` model uses the same frame selection as the `time_distributed` model. By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.
 
 The full default video loading configuration is:
 ```yaml
@@ -242,33 +223,16 @@ video_loader_config:
   model_input_height: 240
   model_input_width: 426
   crop_bottom_pixels: 50
-  ensure_total_frames: True
+  fps: 4
+  total_frames: 16
+  ensure_total_frames: true
   megadetector_lite_config:
     confidence: 0.25
-    fill_model: "score_sorted"
+    fill_mode: score_sorted
     n_frames: 16
-  total_frames: 16
 ```
 
-### Requirements
-
-The above is pulled in by default if `european` is used in the command line. If you are passing in a custom [YAML configuration file](../yaml-config.md) or using `zamba` as a Python package, at a minimum you must specify:
-
-=== "YAML file"
-    ```yaml
-    video_loader_config:
-      model_input_height: # any integer
-      model_input_width: # any integer
-      total_frames: 16
-    ```
-=== "Python"
-    ```python
-    video_loader_config = VideoLoaderConfig(
-      model_input_height=..., # any integer
-      model_input_width=..., # any integer
-      total_frames=16
-    )
-    ```
+As with all models, you can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The only requirement for the `european` model is that the video loader must return 16 frames.
 
 <a id='megadetectorlite'></a>
 
@@ -331,4 +295,3 @@ Once that is done, here's how to run the DensePose model:
 </videp>
 
 To see all of the available options, run `zamba densepose --help`.
-
