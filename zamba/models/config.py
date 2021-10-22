@@ -189,7 +189,7 @@ class BackboneFinetuneConfig(ZambaBaseModel):
 
     Args:
         unfreeze_backbone_at_epoch (int, optional): Epoch at which the backbone
-            will be unfrozen. Defaults to 15.
+            will be unfrozen. Defaults to 5.
         backbone_initial_ratio_lr (float, optional): Used to scale down the backbone
             learning rate compared to rest of model. Defaults to 0.01.
         multiplier (int or float, optional): Multiply the learning rate by a constant
@@ -202,7 +202,7 @@ class BackboneFinetuneConfig(ZambaBaseModel):
             Defaults to True.
     """
 
-    unfreeze_backbone_at_epoch: Optional[int] = 15
+    unfreeze_backbone_at_epoch: Optional[int] = 5
     backbone_initial_ratio_lr: Optional[float] = 0.01
     multiplier: Optional[Union[int, float]] = 1
     pre_train_bn: Optional[bool] = False  # freeze batch norm layers prior to finetuning
@@ -217,7 +217,7 @@ class EarlyStoppingConfig(ZambaBaseModel):
         monitor (str): Metric to be monitored. Options are "val_macro_f1" or
             "val_loss". Defaults to "val_macro_f1".
         patience (int): Number of epochs with no improvement after which training
-            will be stopped. Defaults to 3.
+            will be stopped. Defaults to 5.
         verbose (bool): Verbosity mode. Defaults to True.
         mode (str, optional): Options are "min" or "max". In "min" mode, training
             will stop when the quantity monitored has stopped decreasing and in
@@ -226,7 +226,7 @@ class EarlyStoppingConfig(ZambaBaseModel):
     """
 
     monitor: MonitorEnum = "val_macro_f1"
-    patience: int = 3
+    patience: int = 5
     verbose: bool = True
     mode: Optional[str] = None
 
@@ -300,10 +300,13 @@ class TrainConfig(ZambaBaseModel):
             Defaults to False.
         batch_size (int): Batch size to use for training. Defaults to 2.
         auto_lr_find (bool): Use a learning rate finder algorithm when calling
-            trainer.tune() to find a optimal initial learning rate. Defaults to True.
+            trainer.tune() to try to find an optimal initial learning rate. Defaults to
+            False. The learning rate finder is not guaranteed to find a good learning
+            rate; depending on the dataset, it can select a learning rate that leads to
+            poor model training. Use with caution.
         backbone_finetune_params (BackboneFinetuneConfig, optional): Set parameters
             to finetune a backbone model to align with the current learning rate.
-            Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
+            Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
             backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False,
             train_bn=False, verbose=True).
         gpus (int): Number of GPUs to train on applied per node.
@@ -316,7 +319,7 @@ class TrainConfig(ZambaBaseModel):
         early_stopping_config (EarlyStoppingConfig, optional): Configuration for
             early stopping, which monitors a metric during training and stops training
             when the metric stops improving. Defaults to EarlyStoppingConfig(monitor='val_macro_f1',
-            patience=3, verbose=True, mode='max').
+            patience=5, verbose=True, mode='max').
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (European Union), or "asia"
             (Asia Pacific). Defaults to "us".
@@ -354,7 +357,7 @@ class TrainConfig(ZambaBaseModel):
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     dry_run: Union[bool, int] = False
     batch_size: int = 2
-    auto_lr_find: bool = True
+    auto_lr_find: bool = False
     backbone_finetune_config: Optional[BackboneFinetuneConfig] = BackboneFinetuneConfig()
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3

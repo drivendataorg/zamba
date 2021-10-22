@@ -244,16 +244,16 @@ class TrainConfig(ZambaBaseModel)
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  dry_run: Union[bool, int] = False,
  batch_size: int = 2,
- auto_lr_find: bool = True,
+ auto_lr_find: bool = False,
  backbone_finetune_config: zamba.models.config.BackboneFinetuneConfig =
-            BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
+            BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
             backbone_initial_ratio_lr=0.01, multiplier=1,
             pre_train_bn=False, train_bn=False, verbose=True),
  gpus: int = 0, 
  num_workers: int = 3,
  max_epochs: int = None,
  early_stopping_config: zamba.models.config.EarlyStoppingConfig =
-            EarlyStoppingConfig(monitor='val_macro_f1', patience=3,
+            EarlyStoppingConfig(monitor='val_macro_f1', patience=5,
             verbose=True, mode='max'),
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
@@ -299,11 +299,11 @@ The batch size to use for training. Defaults to `2`
 
 #### `auto_lr_find (bool, optional)`
 
-Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to find the optimal initial learning rate. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `True`
+Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to try to find an optimal initial learning rate. The learning rate finder is not guaranteed to find a good learning rate; depending on the dataset, it can select a learning rate that leads to poor model training. Use with caution. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `False`.
 
 #### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
-Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the [`BackboneFinetuneConfig` class](api-reference/models-config.md#zamba.models.config.BackboneFinetuneConfig): `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
+Set parameters to finetune a backbone model to align with the current learning rate. Derived from Pytorch Lightning's built-in [`BackboneFinetuning`](https://pytorch-lightning.readthedocs.io/en/latest/_modules/pytorch_lightning/callbacks/finetuning.html). The default values are specified in the [`BackboneFinetuneConfig` class](api-reference/models-config.md#zamba.models.config.BackboneFinetuneConfig): `BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5, backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False, train_bn=False, verbose=True)`
 
 #### `gpus (int, optional)`
 
@@ -319,7 +319,7 @@ The maximum number of epochs to run during training. Defaults to `None`
 
 #### `early_stopping_config (zamba.models.config.EarlyStoppingConfig, optional)`
 
-Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the [`EarlyStoppingConfig` class](api-reference/models-config.md#zamba.models.config.EarlyStoppingConfig): `EarlyStoppingConfig(monitor='val_macro_f1', patience=3, verbose=True, mode='max')`
+Parameters to pass to Pytorch lightning's [`EarlyStopping`](https://github.com/PyTorchLightning/pytorch-lightning/blob/c7451b3ccf742b0e8971332caf2e041ceabd9fe8/pytorch_lightning/callbacks/early_stopping.py#L35) to monitor a metric during model training and stop training when the metric stops improving. The default values are specified in the [`EarlyStoppingConfig` class](api-reference/models-config.md#zamba.models.config.EarlyStoppingConfig): `EarlyStoppingConfig(monitor='val_macro_f1', patience=5, verbose=True, mode='max')`
 
 #### `weight_download_region [us|eu|asia]`
 
