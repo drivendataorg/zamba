@@ -300,7 +300,10 @@ class TrainConfig(ZambaBaseModel):
             Defaults to False.
         batch_size (int): Batch size to use for training. Defaults to 2.
         auto_lr_find (bool): Use a learning rate finder algorithm when calling
-            trainer.tune() to find a optimal initial learning rate. Defaults to True.
+            trainer.tune() to try to find an optimal initial learning rate. Defaults to
+            False. The learning rate finder is not guaranteed to find a good learning
+            rate; depending on the dataset, it can select a learning rate that leads to
+            poor model training. Use with caution.
         backbone_finetune_params (BackboneFinetuneConfig, optional): Set parameters
             to finetune a backbone model to align with the current learning rate.
             Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
@@ -354,7 +357,7 @@ class TrainConfig(ZambaBaseModel):
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     dry_run: Union[bool, int] = False
     batch_size: int = 2
-    auto_lr_find: bool = True
+    auto_lr_find: bool = False
     backbone_finetune_config: Optional[BackboneFinetuneConfig] = BackboneFinetuneConfig()
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3

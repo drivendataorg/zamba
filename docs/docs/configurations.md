@@ -244,7 +244,7 @@ class TrainConfig(ZambaBaseModel)
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  dry_run: Union[bool, int] = False,
  batch_size: int = 2,
- auto_lr_find: bool = True,
+ auto_lr_find: bool = False,
  backbone_finetune_config: zamba.models.config.BackboneFinetuneConfig =
             BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
             backbone_initial_ratio_lr=0.01, multiplier=1,
@@ -299,7 +299,7 @@ The batch size to use for training. Defaults to `2`
 
 #### `auto_lr_find (bool, optional)`
 
-Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to find the optimal initial learning rate. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `True`
+Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to try to find an optimal initial learning rate. The learning rate finder is not guaranteed to find a good learning rate; depending on the dataset, it can select a learning rate that leads to poor model training. Use with caution. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `False`.
 
 #### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
