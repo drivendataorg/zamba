@@ -4,13 +4,9 @@
 
 ## Develop the Github Repository
 To get involved, check out the Github [code repository](https://github.com/drivendataorg/zamba).
-There you can find [open issues](https://github.com/drivendataorg/zamba/issues)
-, [project goals](https://github.com/drivendataorg/zamba/projects), and plenty
-of comments and links to help you along.
+There you can find [open issues](https://github.com/drivendataorg/zamba/issues) with comments and links to help you along.
 
-`zamba` uses continuous integration and test-driven-development to ensure
-that we always have a working project. So what are you
-waiting for? `git` going!
+`zamba` uses continuous integration and test-driven-development to ensure that we always have a working project. So what are you waiting for? `git` going!
 
 ## Installation for development
 
@@ -20,7 +16,7 @@ To install for development:
 ```console
 $ git clone https://github.com/drivendataorg/zamba.git
 $ cd zamba
-$ pip install --editable .
+$ pip install -r requirements-dev.txt
 ```
 
 ## Running the `zamba` test suite
@@ -36,4 +32,3 @@ $ make tests
 ## Submit additional training videos
 
 If you have additional labeled videos that may be useful for improving the basic models that ship with `zamba`, we'd love to hear from you! You can get in touch at [info@drivendata.org](mailto:info@drivendata.org)
-
