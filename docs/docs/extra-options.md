@@ -1,6 +1,6 @@
 # Guide to Common Optional Parameters
 
-There are a LOT of ways to customize model training or inference. Here, we take that elephant-sized list of options and condense it to a manageable monkey-sized list of common considerations. To read about all possible customizations, see the [All Configuration Options](configurations.md) page.
+There are a LOT of ways to customize model training or inference. Here, we take that elephant-sized list of options and condense it to a manageable monkey-sized list of common considerations. To read about all possible customizations, see [All Configuration Options](configurations.md).
 
 Many of the options below cannot be passed directly to the command line. Instead, some must be passed as part of a YAML configuration file. For example:
 
@@ -27,11 +27,11 @@ For using a YAML file with the Python package and other details, see the [YAML C
     )
     ```
 
-The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a model's weights are downloaded, the tool will use the local version and will not need to perform this download again.
+The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a model's weights are downloaded, `zamba` will use the local version and will not need to perform this download again.
 
 ## Video size
 
-When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to more detailed accuracy in prediction, but will use more memory and take longer to either predict on or train from. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels.
+When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to superior accuracy in prediction, but will use more memory and take longer to train and/or predict. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels.
 
 Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. To resize all images to 50x50 pixels instead of the default 240x426:
 
@@ -46,14 +46,16 @@ Say that you have a large number of videos, and you are more concerned with dete
     In Python, video resizing can be specified when `VideoLoaderConfig` is instantiated:
 
     ```python hl_lines="6 7 8"
-    from zamba.models.model_manager import predict_model
-    from zamba.models.config import PredictConfig
     from zamba.data.video import VideoLoaderConfig
+    from zamba.models.config import PredictConfig
+    from zamba.models.model_manager import predict_model
 
     predict_config = PredictConfig(data_directory="example_vids/")
+
     video_loader_config = VideoLoaderConfig(
         model_input_height=50, model_input_width=50, total_frames=16
     ) # total_frames must always be specified
+
     predict_model(
         predict_config=predict_config, video_loader_config=video_loader_config
     )
@@ -63,7 +65,7 @@ Say that you have a large number of videos, and you are more concerned with dete
 
 Each video is simply a series of frames, or images. Most of the videos on which `zamba` was trained had 30 frames per second. That means even just a 15-second video would contain 450 frames.
 
-The model only trains or generates prediction based on a subset of the frames in a video, because using every frame would be far too computationally intensive. There are a number of different ways to select frames. For a full list of options, see the section on [Video loading arguments](configurations.md#video-loading-arguments). A few common approaches are explained below.
+All models only use a subset of the frames in a video, because using every frame would be far too computationally intensive. There are a number of different ways to select frames. For a full list of options, see the section on [Video loading arguments](configurations.md#video-loading-arguments). A few common approaches are explained below.
 
 ### Early bias
 
@@ -176,4 +178,4 @@ Both can be specified in either [`predict_config`](configurations.md#prediction-
     ```
 
 
-And that's just the tip of the iceberg! See the [All Optional Arguments](configurations.md) page for more possibilities.
+And that's just the tip of the iceberg! See [All Configuration Options](configurations.md) page for more possibilities.

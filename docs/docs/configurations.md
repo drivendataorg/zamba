@@ -28,9 +28,9 @@ All video loading arguments can be specified either in a [YAML file](yaml-config
     ```
 === "Python"
     ```python
+    from zamba.data.video import VideoLoaderConfig
     from zamba.models.config import PredictConfig
     from zamba.models.model_manager import predict_model
-    from zamba.data.video import VideoLoaderConfig
 
     predict_config = PredictConfig(data_directory="example_vids/")
     video_loader_config = VideoLoaderConfig(
