@@ -457,10 +457,10 @@ class DensePoseManager:
                 frame_height = round(video_arr.shape[1] * scale)
 
             # setup output for writing
-            output_path = output_path.with_suffix(".mp4")  # must be avi container for AVC1
+            output_path = output_path.with_suffix(".mp4")
             out = cv2.VideoWriter(
                 str(output_path),
-                cv2.VideoWriter_fourcc(*"avc1"),
+                cv2.VideoWriter_fourcc(*"mp4v"),
                 max(1, int(fps)),
                 (frame_width, frame_height),
             )
