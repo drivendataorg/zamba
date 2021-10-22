@@ -75,11 +75,9 @@ $ pip install -U zamba
 
 `zamba` has been tested on [Ubuntu](https://www.ubuntu.com/) versions 16 and 17.
 
-### Windows
+**Note: `zamba` has not been tested on Windows 10.**
 
-`zamba` has been tested on Windows 10.
-
-## Using GPU
+## Using GPU(s)
 
 `zamba` is much faster on a machine with a graphics processing unit (GPU), but has also been developed and tested for machines without GPU(s).
 
