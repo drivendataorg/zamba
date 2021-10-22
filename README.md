@@ -29,6 +29,14 @@ First, make sure you have the prerequisites installed:
 * Python 3.7 or 3.8
 * FFmpeg
 
+[FFmpeg](https://ffmpeg.org/ffmpeg.html) is an open source library for loading videos of different codecs. Using FFmpeg means that `zamba` can be flexible in terms of the video formats we support. FFmpeg can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos and instructions walking through FFmpeg installation:
+
+ - [FFmpeg download link](https://www.ffmpeg.org/download.html)
+ - [Install on Ubuntu or Linux](https://www.tecmint.com/install-ffmpeg-in-linux/).
+     - In the command line, enter `sudo apt update` and then `sudo apt install ffmpeg`.
+ - [MacOS install video](https://www.youtube.com/watch?v=8nbuqYw2OCw&t=5s)
+     - First, install [Homebrew](https://brew.sh/). Then run `brew install ffmpeg`
+
 Then run:
 ```console
 pip install zamba
