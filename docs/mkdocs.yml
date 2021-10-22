@@ -31,7 +31,7 @@ nav:
   - "Contribute to zamba":
       - "contribute/index.md"
   - "Changelog":
-      - "changelog/index.md"
+      - "changelog.md"
   - API Reference:
       - zamba.data:
           - zamba.data.metadata: "api-reference/data-metadata.md"
