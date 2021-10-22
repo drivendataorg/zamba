@@ -1295,7 +1295,7 @@ BackboneFinetuneConfig            (<a title="zamba.models.config.ZambaBaseModel"
         <td><code>unfreeze_backbone_at_epoch</code></td>
         <td><code>int</code></td>
         <td><p>Epoch at which the backbone
-will be unfrozen. Defaults to 15.</p></td>
+will be unfrozen. Defaults to 5.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
@@ -1621,7 +1621,7 @@ EarlyStoppingConfig            (<a title="zamba.models.config.ZambaBaseModel" hr
         <td><code>patience</code></td>
         <td><code>int</code></td>
         <td><p>Number of epochs with no improvement after which training
-will be stopped. Defaults to 3.</p></td>
+will be stopped. Defaults to 5.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
@@ -3479,7 +3479,10 @@ Defaults to False.</p></td>
         <td><code>auto_lr_find</code></td>
         <td><code>bool</code></td>
         <td><p>Use a learning rate finder algorithm when calling
-trainer.tune() to find a optimal initial learning rate. Defaults to True.</p></td>
+trainer.tune() to try to find an optimal initial learning rate. Defaults to
+False. The learning rate finder is not guaranteed to find a good learning
+rate; depending on the dataset, it can select a learning rate that leads to
+poor model training. Use with caution.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
@@ -3487,7 +3490,7 @@ trainer.tune() to find a optimal initial learning rate. Defaults to True.</p></t
         <td><code>BackboneFinetuneConfig</code></td>
         <td><p>Set parameters
 to finetune a backbone model to align with the current learning rate.
-Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=15,
+Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
 backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False,
 train_bn=False, verbose=True).</p></td>
         <td><em>required</em></td>
@@ -3520,7 +3523,7 @@ reached. Disabled by default (None), which stops training at 1000 epochs.</p></t
         <td><p>Configuration for
 early stopping, which monitors a metric during training and stops training
 when the metric stops improving. Defaults to EarlyStoppingConfig(monitor='val_macro_f1',
-patience=3, verbose=True, mode='max').</p></td>
+patience=5, verbose=True, mode='max').</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
