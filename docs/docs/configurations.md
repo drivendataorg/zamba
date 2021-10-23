@@ -146,14 +146,15 @@ All possible model inference parameters are defined by the [`PredictConfig` clas
 
 class PredictConfig(ZambaBaseModel)
  |  PredictConfig(*,
- data_dir: DirectoryPath = Path.cwd()
+ data_dir: DirectoryPath = Path.cwd(),
  filepaths: FilePath = None,
  checkpoint: FilePath = None,
- model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
+ model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,,
  gpus: int = 0,
  num_workers: int = 3,
  batch_size: int = 2,
- save: Union[bool, pathlib.Path] = True,
+ save: bool = True,
+ save_dir: Optional[Path] = None,
  dry_run: bool = False,
  proba_threshold: float = None,
  output_class_names: bool = False,
@@ -194,9 +195,15 @@ The number of CPUs to use during training. The maximum value for `num_workers` i
 
 The batch size to use for inference. Defaults to `2`
 
-#### `save (bool, optional)`
+#### `save (bool)`
 
-Whether to save out the predictions to a CSV file. By default, predictions will be saved at `zamba_predictions.csv`. Defaults to `True`
+Whether to save out predictions. If `False`, predictions are not saved. Defaults to `True`.
+
+#### `save_dir (Path, optional)`
+
+An optional directory in which to save the model predictions and configuration yaml.  If
+no save_dir is specified and save=True, outputs will be written to the current working directory.
+Defaults to `None`
 
 #### `dry_run (bool, optional)`
 
@@ -328,7 +335,7 @@ The proportion of data to use during training, validation, and as a holdout set.
 
 #### `save_dir (Path, optional)`
 
-Directory in which to save model checkpoint and configuration file. If not specified, will save to a `version_*` folder in your working directory.
+Directory in which to save model checkpoint and configuration file. If not specified, will save to a `version_n` folder in your current working directory.
 
 #### `overwrite_save_dir (bool, optional)`
 

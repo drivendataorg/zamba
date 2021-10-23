@@ -574,9 +574,12 @@ class PredictConfig(ZambaBaseModel):
             that the data will be loaded in the main process. The maximum value is
             the number of CPUs in the system. Defaults to 3.
         batch_size (int): Batch size to use for inference. Defaults to 2.
-        save (bool or Path): Path to a CSV to save predictions. If True is passed,
-            "zamba_predictions.csv" is written to the current working directory.
-            If False is passed, predictions are not saved. Defaults to True.
+        save (bool): Whether to save out predictions. If False, predictions are
+            not saved. Defaults to True.
+        save_dir (Path, optional): An optional directory in which to save the model
+             predictions and configuration yaml. ath to a CSV to save predictions.
+             If no save_dir is specified and save=True, outputs will be written to
+             the current working directory. Defaults to None.
         dry_run (bool): Perform inference on a single batch for testing. Predictions
             will not be saved. Defaults to False.
         proba_threshold (float, optional): Probability threshold for classification.

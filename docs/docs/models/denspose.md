@@ -68,7 +68,7 @@ Options:
                                   containing images/videos.
   --filepaths PATH                Path to csv containing `filepath` column
                                   with videos.
-  --save-path PATH                An optional directory for saving the output.
+  --save-dir PATH                 An optional directory for saving the output.
                                   Defaults to the current working directory.
   --config PATH                   Specify options using yaml configuration
                                   file instead of through command line

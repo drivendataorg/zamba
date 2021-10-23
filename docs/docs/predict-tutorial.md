@@ -153,7 +153,7 @@ Say we want to generate predictions for the videos in `example_vids` indicating 
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or specify a different path where your predictions should be saved (`--save`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or specify a different folder where your predictions should be saved (`--save-dir`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
 
 ### 5. Test your configuration with a dry run
 

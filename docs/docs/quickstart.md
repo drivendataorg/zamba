@@ -135,8 +135,6 @@ Once zamba is installed, you can see more details of each function with `--help`
 To get help with `zamba predict`:
 
 ```console
-$ zamba predict --help
-
 Usage: zamba predict [OPTIONS]
 
   Identify species in a video.
@@ -163,11 +161,13 @@ Options:
                                   specifiied, will use all GPUs found on
                                   machine.
   --batch-size INTEGER            Batch size to use for training.
-  --save / --no-save              Whether to save out predictions to a csv
-                                  file. If you want to specify the location of
-                                  the csv, use save_path instead.
-  --save-path PATH                Full path for prediction CSV file. Any
-                                  needed parent directories will be created.
+  --save / --no-save              Whether to save out predictions. If you want
+                                  to specify the output directory, use
+                                  save_dir instead.
+  --save-dir PATH                 An optional directory in which to save the
+                                  model predictions and configuration yaml.
+                                  Defaults to the current working directory if
+                                  save is True.
   --dry-run / --no-dry-run        Runs one batch of inference to check for
                                   bugs.
   --config PATH                   Specify options using yaml configuration
@@ -229,11 +229,10 @@ Options:
                                   machine.
   --dry-run / --no-dry-run        Runs one batch of train and validation to
                                   check for bugs.
-  --save-dir PATH                 Directory in which to save model checkpoint
-                                  and configuration file. If not specified,
-                                  will save to a folder called
-                                  'zamba_{model_name}' in your working
-                                  directory.
+  --save-dir PATH                 An optional directory in which to save the
+                                  model checkpoint and configuration file. If
+                                  not specified, will save to a `version_n`
+                                  folder in your working directory.
   --num-workers INTEGER           Number of subprocesses to use for data
                                   loading.
   --weight-download-region [us|eu|asia]

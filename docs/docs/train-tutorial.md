@@ -71,7 +71,7 @@ For detailed explanations of all possible configuration arguments, see [All Conf
 
 ## Default behavior
 
-By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. You can specify where the outputs should be saved with `--save-dir`. If no save directory is specified, `zamba` will write out incremental `version_*` folders to your current working directory. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `version_0`.
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. You can specify where the outputs should be saved with `--save-dir`. If no save directory is specified, `zamba` will write out incremental `version_n` folders to your current working directory. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `version_0`.
 
 `version_0` contains:
 
