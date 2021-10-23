@@ -3,7 +3,7 @@ model_class: SlowFast
 predict_config:
   batch_size: 2
   checkpoint: experiments/slowfast_small_set_full_size_mdlite/version_2/slowfast.ckpt
-  data_directory: /home/ubuntu/zamba-algorithms
+  data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
   gpus: 1
   model_cache_dir: /home/ubuntu/.cache/zamba

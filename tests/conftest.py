@@ -161,7 +161,7 @@ def dummy_train_config(labels_absolute_path, dummy_checkpoint, tmp_path_factory)
     tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
     return DummyTrainConfig(
         labels=labels_absolute_path,
-        data_directory=TEST_VIDEOS_DIR,
+        data_dir=TEST_VIDEOS_DIR,
         model_name="dummy",
         checkpoint=dummy_checkpoint,
         max_epochs=1,

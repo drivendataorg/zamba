@@ -75,7 +75,7 @@ def test_save_metrics_less_than_two_classes(
     trainer = train_model(
         train_config=DummyTrainConfig(
             labels=labels,
-            data_directory=TEST_VIDEOS_DIR,
+            data_dir=TEST_VIDEOS_DIR,
             model_name="dummy",
             checkpoint=dummy_checkpoint,
             max_epochs=1,
@@ -135,7 +135,7 @@ def test_train_save_dir_overwrite(
 ):
     config = DummyTrainConfig(
         labels=labels_absolute_path,
-        data_directory=TEST_VIDEOS_DIR,
+        data_dir=TEST_VIDEOS_DIR,
         model_name="dummy",
         checkpoint=dummy_checkpoint,
         save_dir=tmp_path / "my_model",

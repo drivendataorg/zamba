@@ -1,5 +1,5 @@
 train_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
+  # data_dir: YOUR_data_dir_HERE
   # labels: YOUR_LABELS_CSV_HERE
   model_name: slowfast
   backbone_finetune_config:
@@ -32,7 +32,7 @@ video_loader_config:
     n_frames: 32
 
 predict_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
+  # data_dir: YOUR_data_dir_HERE
   # or
   # filepaths: YOUR_FILEPATH_CSV_HERE
   model_name: slowfast

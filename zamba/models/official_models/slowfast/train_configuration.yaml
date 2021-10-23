@@ -45,7 +45,7 @@ train_config:
     verbose: true
   batch_size: 2
   checkpoint: null
-  data_directory: /home/ubuntu/zamba-algorithms
+  data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
   early_stopping_config:
     mode: max

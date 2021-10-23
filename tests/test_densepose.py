@@ -122,7 +122,7 @@ def test_denseposeconfig(model, tmp_path):
             output_type="bananas",
             render_output=True,
             embeddings_in_json=False,
-            data_directory=ASSETS_DIR / "densepose_tests",
+            data_dir=ASSETS_DIR / "densepose_tests",
             save_dir=tmp_path,
         )
 
@@ -131,7 +131,7 @@ def test_denseposeconfig(model, tmp_path):
         output_type="segmentation" if model == "animals" else "chimp_anatomy",
         render_output=True,
         embeddings_in_json=False,
-        data_directory=ASSETS_DIR / "densepose_tests",
+        data_dir=ASSETS_DIR / "densepose_tests",
         save_dir=tmp_path,
     )
 

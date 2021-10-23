@@ -95,7 +95,7 @@ def train(
 
     # override if any command line arguments are passed
     if data_dir is not None:
-        train_dict["data_directory"] = data_dir
+        train_dict["data_dir"] = data_dir
 
     if labels is not None:
         train_dict["labels"] = labels
@@ -154,7 +154,7 @@ def train(
     msg = f"""The following configuration will be used for training:
 
     Config file: {config_file}
-    Data directory: {data_dir if data_dir is not None else config_dict["train_config"].get("data_directory")}
+    Data directory: {data_dir if data_dir is not None else config_dict["train_config"].get("data_dir")}
     Labels csv: {labels if labels is not None else config_dict["train_config"].get("labels")}
     Species: {species}
     Model name: {config.train_config.model_name}
@@ -272,7 +272,7 @@ def predict(
 
     # override if any command line arguments are passed
     if data_dir is not None:
-        predict_dict["data_directory"] = data_dir
+        predict_dict["data_dir"] = data_dir
 
     if filepaths is not None:
         predict_dict["filepaths"] = filepaths
@@ -330,7 +330,7 @@ def predict(
     msg = f"""The following configuration will be used for inference:
 
     Config file: {config_file}
-    Data directory: {data_dir if data_dir is not None else config_dict["predict_config"].get("data_directory")}
+    Data directory: {data_dir if data_dir is not None else config_dict["predict_config"].get("data_dir")}
     Filepath csv: {filepaths if filepaths is not None else config_dict["predict_config"].get("filepaths")}
     Model: {config.predict_config.model_name}
     Checkpoint: {checkpoint if checkpoint is not None else config_dict["predict_config"].get("checkpoint")}
@@ -448,7 +448,7 @@ def densepose(
 
     # override if any command line arguments are passed
     if data_dir is not None:
-        predict_dict["data_directory"] = data_dir
+        predict_dict["data_dir"] = data_dir
 
     if filepaths is not None:
         predict_dict["filepaths"] = filepaths
@@ -479,7 +479,7 @@ def densepose(
     Config file: {config_file}
     Output type: {densepose_config.output_type}
     Render output: {densepose_config.render_output}
-    Data directory: {data_dir if data_dir is not None else config_dict.get("data_directory")}
+    Data directory: {data_dir if data_dir is not None else config_dict.get("data_dir")}
     Filepath csv: {filepaths if filepaths is not None else config_dict.get("filepaths")}
     Weight download region: {densepose_config.weight_download_region}
     Cache directory: {densepose_config.cache_dir}

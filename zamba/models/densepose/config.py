@@ -34,7 +34,7 @@ class DensePoseConfig(ZambaBaseModel):
             Defaults to False.
         embeddings_in_json (bool): Whether to save the embeddings matrices in the json of the
             DensePose result. Setting to True can result in large json files. Defaults to False.
-        data_directory (Path): Where to find the files listed in filepaths (or where to look if
+        data_dir (Path): Where to find the files listed in filepaths (or where to look if
             filepaths is not provided).
         filepaths (Path, optional): Path to a CSV file with a list of filepaths to process.
         save_dir (Path, optional): Directory for where to save the output files;
@@ -49,7 +49,7 @@ class DensePoseConfig(ZambaBaseModel):
     output_type: DensePoseOutputEnum
     render_output: bool = False
     embeddings_in_json: bool = False
-    data_directory: Path
+    data_dir: Path
     filepaths: Optional[Path] = None
     save_dir: Optional[Path] = None
     cache_dir: Optional[Path] = None
@@ -112,12 +112,12 @@ class DensePoseConfig(ZambaBaseModel):
         contains files with valid suffixes.
         """
         if values["filepaths"] is None:
-            logger.info(f"Getting files in {values['data_directory']}.")
+            logger.info(f"Getting files in {values['data_dir']}.")
             files = []
             new_suffixes = []
 
             # iterate over all files in data directory
-            for f in values["data_directory"].rglob("*"):
+            for f in values["data_dir"].rglob("*"):
                 if f.is_file():
                     # keep just files with supported suffixes
                     if f.suffix.lower() in VIDEO_SUFFIXES:
@@ -131,9 +131,9 @@ class DensePoseConfig(ZambaBaseModel):
                 )
 
             if len(files) == 0:
-                raise ValueError(f"No video files found in {values['data_directory']}.")
+                raise ValueError(f"No video files found in {values['data_dir']}.")
 
-            logger.info(f"Found {len(files)} videos in {values['data_directory']}.")
+            logger.info(f"Found {len(files)} videos in {values['data_dir']}.")
             values["filepaths"] = pd.DataFrame(files, columns=["filepath"])
         return values
 
@@ -159,7 +159,7 @@ class DensePoseConfig(ZambaBaseModel):
 
         values["filepaths"] = check_files_exist_and_load(
             df=files_df,
-            data_directory=values["data_directory"],
+            data_dir=values["data_dir"],
             skip_load_validation=True,
         )
         return values

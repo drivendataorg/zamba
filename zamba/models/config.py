@@ -78,14 +78,14 @@ def validate_model_cache_dir(model_cache_dir: Optional[Path]):
 
 
 def check_files_exist_and_load(
-    df: pd.DataFrame, data_directory: DirectoryPath, skip_load_validation: bool
+    df: pd.DataFrame, data_dir: DirectoryPath, skip_load_validation: bool
 ):
     """Check whether files in file list exist and can be loaded with ffmpeg.
     Warn and skip files that don't exist or can't be loaded.
 
     Args:
         df (pd.DataFrame): DataFrame with a "filepath" column
-        data_directory (Path): Data folder to prepend if filepath is not an
+        data_dir (Path): Data folder to prepend if filepath is not an
             absolute path.
         skip_load_validation (bool): Skip ffprobe check that verifies all videos
             can be loaded.
@@ -94,7 +94,7 @@ def check_files_exist_and_load(
         pd.DataFrame: DataFrame with valid and loadable videos.
     """
     # update filepath column to prepend data_dir if filepath column is not an absolute path
-    data_dir = Path(data_directory).resolve()
+    data_dir = Path(data_dir).resolve()
     df["filepath"] = str(data_dir) / df.filepath.path
 
     # we can have multiple rows per file with labels so limit just to one row per file for these checks
@@ -109,7 +109,7 @@ def check_files_exist_and_load(
     # if no files exist
     if len(invalid_files) == len(files_df):
         raise ValueError(
-            f"None of the video filepaths exist. Are you sure they're specified correctly? Here's an example invalid path: {invalid_files.filepath.values[0]}. Either specify absolute filepaths in the csv or provide filepaths relative to `data_directory`."
+            f"None of the video filepaths exist. Are you sure they're specified correctly? Here's an example invalid path: {invalid_files.filepath.values[0]}. Either specify absolute filepaths in the csv or provide filepaths relative to `data_dir`."
         )
 
     # if at least some files exist
@@ -280,10 +280,10 @@ class TrainConfig(ZambaBaseModel):
     Args:
         labels (FilePath or pandas DataFrame): Path to a CSV or pandas DataFrame
             containing labels for training, with one row per label. There must be
-            columns called 'filepath' (absolute or relative to the data_directory) and
+            columns called 'filepath' (absolute or relative to the data_dir) and
             'label', and optionally columns called 'split' ("train", "val", or "holdout")
             and 'site'. Labels must be specified to train a model.
-        data_directory (DirectoryPath): Path to a directory containing training
+        data_dir (DirectoryPath): Path to a directory containing training
             videos. Defaults to the working directory.
         model_name (str, optional): Name of the model to use for training. Options
             are: time_distributed, slowfast, european. Defaults to time_distributed.
@@ -351,7 +351,7 @@ class TrainConfig(ZambaBaseModel):
     """
 
     labels: Union[FilePath, pd.DataFrame]
-    data_directory: DirectoryPath = Path.cwd()
+    data_dir: DirectoryPath = Path.cwd()
     checkpoint: Optional[FilePath] = None
     scheduler_config: Optional[Union[str, SchedulerConfig]] = "default"
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
@@ -466,7 +466,7 @@ class TrainConfig(ZambaBaseModel):
         # check that all videos exist and can be loaded
         values["labels"] = check_files_exist_and_load(
             df=labels,
-            data_directory=values["data_directory"],
+            data_dir=values["data_dir"],
             skip_load_validation=values["skip_load_validation"],
         )
         return values
@@ -531,7 +531,7 @@ class TrainConfig(ZambaBaseModel):
         # remove data and machine specific params
         for key in [
             "labels",
-            "data_directory",
+            "data_dir",
             "dry_run",
             "batch_size",
             "auto_lr_find",
@@ -558,10 +558,10 @@ class PredictConfig(ZambaBaseModel):
 
     Args:
         filepaths (FilePath): Path to a CSV containing videos for inference, with
-            one row per video in the data_directory. There must be a column called
-            'filepath' (absolute or relative to the data_directory). If None, uses
-            all files in data_directory. Defaults to None.
-        data_directory (DirectoryPath): Path to a directory containing videos for
+            one row per video in the data_dir. There must be a column called
+            'filepath' (absolute or relative to the data_dir). If None, uses
+            all files in data_dir. Defaults to None.
+        data_dir (DirectoryPath): Path to a directory containing videos for
             inference. Defaults to the working directory.
         model_name (str, optional): Name of the model to use for inference. Options
             are: time_distributed, slowfast, european. Defaults to time_distributed.
@@ -599,7 +599,7 @@ class PredictConfig(ZambaBaseModel):
             default cache directory. Defaults to None.
     """
 
-    data_directory: DirectoryPath = Path.cwd()
+    data_dir: DirectoryPath = Path.cwd()
     filepaths: Optional[FilePath] = None
     checkpoint: Optional[FilePath] = None
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
@@ -678,12 +678,12 @@ class PredictConfig(ZambaBaseModel):
         contains files with valid suffixes.
         """
         if values["filepaths"] is None:
-            logger.info(f"Getting files in {values['data_directory']}.")
+            logger.info(f"Getting files in {values['data_dir']}.")
             files = []
             new_suffixes = []
 
             # iterate over all files in data directory
-            for f in values["data_directory"].rglob("*"):
+            for f in values["data_dir"].rglob("*"):
                 if f.is_file():
                     # keep just files with supported suffixes
                     if f.suffix.lower() in VIDEO_SUFFIXES:
@@ -697,9 +697,9 @@ class PredictConfig(ZambaBaseModel):
                 )
 
             if len(files) == 0:
-                raise ValueError(f"No video files found in {values['data_directory']}.")
+                raise ValueError(f"No video files found in {values['data_dir']}.")
 
-            logger.info(f"Found {len(files)} videos in {values['data_directory']}.")
+            logger.info(f"Found {len(files)} videos in {values['data_dir']}.")
             values["filepaths"] = pd.DataFrame(files, columns=["filepath"])
         return values
 
@@ -725,7 +725,7 @@ class PredictConfig(ZambaBaseModel):
 
         values["filepaths"] = check_files_exist_and_load(
             df=files_df,
-            data_directory=values["data_directory"],
+            data_dir=values["data_dir"],
             skip_load_validation=values["skip_load_validation"],
         )
         return values

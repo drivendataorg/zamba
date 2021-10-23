@@ -25,7 +25,7 @@ train_config:
   batch_size: 2
   cache_dir: /home/ubuntu/.cache/zamba
   checkpoint: data/results/experiments/td_dev_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt
-  data_directory: /home/ubuntu/zamba-algorithms
+  data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
   early_stopping_config:
     mode: max

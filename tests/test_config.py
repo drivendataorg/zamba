@@ -20,7 +20,7 @@ from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
 
 def test_train_data_dir_only():
     with pytest.raises(ValidationError) as error:
-        TrainConfig(data_directory=TEST_VIDEOS_DIR)
+        TrainConfig(data_dir=TEST_VIDEOS_DIR)
     # labels is missing
     assert error.value.errors() == [
         {"loc": ("labels",), "msg": "field required", "type": "value_error.missing"}
@@ -29,19 +29,19 @@ def test_train_data_dir_only():
 
 def test_train_data_dir_and_labels(tmp_path, labels_relative_path, labels_absolute_path):
     # correct data dir
-    config = TrainConfig(data_directory=TEST_VIDEOS_DIR, labels=labels_relative_path)
-    assert config.data_directory is not None
+    config = TrainConfig(data_dir=TEST_VIDEOS_DIR, labels=labels_relative_path)
+    assert config.data_dir is not None
     assert config.labels is not None
 
     # data dir ignored if absolute path provided in filepath
-    config = TrainConfig(data_directory=tmp_path, labels=labels_absolute_path)
-    assert config.data_directory is not None
+    config = TrainConfig(data_dir=tmp_path, labels=labels_absolute_path)
+    assert config.data_dir is not None
     assert config.labels is not None
     assert not config.labels.filepath.str.startswith(str(tmp_path)).any()
 
     # incorrect data dir with relative filepaths
     with pytest.raises(ValidationError) as error:
-        TrainConfig(data_directory=ASSETS_DIR, labels=labels_relative_path)
+        TrainConfig(data_dir=ASSETS_DIR, labels=labels_relative_path)
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
@@ -51,8 +51,8 @@ def test_train_labels_only(labels_absolute_path):
 
 
 def test_predict_data_dir_only():
-    config = PredictConfig(data_directory=TEST_VIDEOS_DIR)
-    assert config.data_directory == TEST_VIDEOS_DIR
+    config = PredictConfig(data_dir=TEST_VIDEOS_DIR)
+    assert config.data_dir == TEST_VIDEOS_DIR
     assert isinstance(config.filepaths, pd.DataFrame)
     assert sorted(config.filepaths.filepath.values) == sorted(
         [str(f) for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()]
@@ -62,14 +62,14 @@ def test_predict_data_dir_only():
 
 def test_predict_data_dir_and_filepaths(labels_absolute_path, labels_relative_path):
     # correct data dir
-    config = PredictConfig(data_directory=TEST_VIDEOS_DIR, filepaths=labels_relative_path)
-    assert config.data_directory is not None
+    config = PredictConfig(data_dir=TEST_VIDEOS_DIR, filepaths=labels_relative_path)
+    assert config.data_dir is not None
     assert config.filepaths is not None
     assert config.filepaths.filepath.str.startswith(str(TEST_VIDEOS_DIR)).all()
 
     # incorrect data dir
     with pytest.raises(ValidationError) as error:
-        PredictConfig(data_directory=ASSETS_DIR, filepaths=labels_relative_path)
+        PredictConfig(data_dir=ASSETS_DIR, filepaths=labels_relative_path)
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
@@ -203,15 +203,13 @@ def test_labels_with_invalid_split(labels_absolute_path):
 
 
 def test_labels_no_splits(labels_no_splits, tmp_path):
-    config = TrainConfig(
-        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, save_dir=tmp_path
-    )
+    config = TrainConfig(data_dir=TEST_VIDEOS_DIR, labels=labels_no_splits, save_dir=tmp_path)
     assert set(config.labels.split.unique()) == set(("holdout", "train", "val"))
 
 
 def test_labels_split_proportions(labels_no_splits, tmp_path):
     config = TrainConfig(
-        data_directory=TEST_VIDEOS_DIR,
+        data_dir=TEST_VIDEOS_DIR,
         labels=labels_no_splits,
         split_proportions={"a": 3, "b": 1},
         save_dir=tmp_path,
