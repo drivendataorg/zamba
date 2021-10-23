@@ -65,7 +65,8 @@ $ zamba predict --data-dir example_vids/
 ```
 
 `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell `(i,j)` is *the probability that animal `j` is present in video `i`.*  Comprehensive predictions are helpful when a single video contains multiple species.
-Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions to a different folder using the `--save-path` argument.
+
+Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions to a different folder using the `--save-dir` argument.
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
 
@@ -108,7 +109,7 @@ eleph.MP4,elephant
 leopard.MP4,leopard
 ```
 
-By default, the trained model and additional training output will be saved to a `version_*` folder in the current working directory. For example,
+By default, the trained model and additional training output will be saved to a `version_n` folder in the current working directory. For example,
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv

@@ -256,8 +256,8 @@ class TrainConfig(ZambaBaseModel)
             verbose=True, mode='max'),
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
- save_directory: pathlib.Path = # your current working directory ,
- overwrite_save_directory: bool = False,
+ save_dir: pathlib.Path = # your current working directory ,
+ overwrite_save_dir: bool = False,
  skip_load_validation: bool = False,
  from_scratch: bool = False,
  predict_all_zamba_species: bool = True,
@@ -326,13 +326,13 @@ Because `zamba` needs to download pretrained weights for the neural network arch
 
 The proportion of data to use during training, validation, and as a holdout set. Defaults to `{"train": 3, "val": 1, "holdout": 1}`
 
-#### `save_directory (Path, optional)`
+#### `save_dir (Path, optional)`
 
 Directory in which to save model checkpoint and configuration file. If not specified, will save to a `version_*` folder in your working directory.
 
-#### `overwrite_save_directory (bool, optional)`
+#### `overwrite_save_dir (bool, optional)`
 
- If `True`, will save outputs in `save_directory` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_directory` with model outputs. Defaults to `False`.
+ If `True`, will save outputs in `save_dir` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_dir` with model outputs. Defaults to `False`.
 
 #### `skip_load_validation (bool, optional)`
 
