@@ -12,7 +12,7 @@ Before kicking off a full run of inference or model training, we recommend testi
     In Python, add `dry_run=True` to [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):
     ```python
     predict_config = PredictConfig(
-        data_directory="example_vids/", dry_run=True
+        data_dir="example_vids/", dry_run=True
     )
     ```
 
@@ -30,7 +30,7 @@ The dry run will also catch any GPU memory errors. If you hit a GPU memory error
     In Python, add `batch_size` to [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):
     ```python
     predict_config = PredictConfig(
-        data_directory="example_vids/", batch_size=1
+        data_dir="example_vids/", batch_size=1
     )
     ```
 
@@ -66,7 +66,7 @@ Reduce the number of workers (subprocesses) used for data loading. By default `n
     In Python, add `num_workers` to [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):
     ```python
     predict_config = PredictConfig(
-        data_directory="example_vids/", num_workers=1
+        data_dir="example_vids/", num_workers=1
     )
     ```
 

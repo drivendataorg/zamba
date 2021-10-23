@@ -32,7 +32,7 @@ All video loading arguments can be specified either in a [YAML file](yaml-config
     from zamba.models.config import PredictConfig
     from zamba.models.model_manager import predict_model
 
-    predict_config = PredictConfig(data_directory="example_vids/")
+    predict_config = PredictConfig(data_dir="example_vids/")
     video_loader_config = VideoLoaderConfig(
         model_input_height=240,
         model_input_width=426,
@@ -146,7 +146,7 @@ All possible model inference parameters are defined by the [`PredictConfig` clas
 
 class PredictConfig(ZambaBaseModel)
  |  PredictConfig(*,
- data_directory: DirectoryPath = Path.cwd()
+ data_dir: DirectoryPath = Path.cwd()
  filepaths: FilePath = None,
  checkpoint: FilePath = None,
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
@@ -164,9 +164,9 @@ class PredictConfig(ZambaBaseModel)
  ...
 ```
 
-**Either `data_directory` or `filepaths` must be specified to instantiate `PredictConfig`.** If neither is specified, the current working directory will be used as the default `data_directory`.
+**Either `data_dir` or `filepaths` must be specified to instantiate `PredictConfig`.** If neither is specified, the current working directory will be used as the default `data_dir`.
 
-#### `data_directory (DirectoryPath, optional)`
+#### `data_dir (DirectoryPath, optional)`
 
 Path to the directory containing videos for inference. Defaults to the current working directory.
 
@@ -237,7 +237,7 @@ All possible model training parameters are defined by the [`TrainConfig` class](
 class TrainConfig(ZambaBaseModel)
  |  TrainConfig(*,
  labels: Union[FilePath, pandas.DataFrame],
- data_directory: DirectoryPath = # your current working directory ,
+ data_dir: DirectoryPath = # your current working directory ,
  checkpoint: FilePath = None,
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
@@ -270,7 +270,7 @@ class TrainConfig(ZambaBaseModel)
 
 Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`. **`labels` must be specified to instantiate `TrainConfig`.**
 
-#### `data_directory (DirectoryPath, optional)`
+#### `data_dir (DirectoryPath, optional)`
 
 Path to the directory containing training videos. Defaults to the current working directory.
 

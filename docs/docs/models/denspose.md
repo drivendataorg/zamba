@@ -41,7 +41,7 @@ Once that is done, here's how to run the DensePose model:
 === "Python"
     ```python
     from zamba.models.densepose import DensePoseConfig
-    densepose_conf = DensePoseConfig(data_directory="PATH_TO_VIDEOS", render_output=True)
+    densepose_conf = DensePoseConfig(data_dir="PATH_TO_VIDEOS", render_output=True)
     densepose_conf.run_model()
     ```
 
