@@ -273,6 +273,26 @@ def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkp
     assert config.save is True
     assert (tmp_path / "my_dir").exists()
 
+    save_dir = tmp_path / "save_dir"
+    save_dir.mkdir()
+
+    with pytest.raises(ValueError) as error:
+        config = PredictConfig(
+            filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
+        )
+        assert (
+            f"{save_dir} already exists. If you would like to overwrite, set overwrite_save_dir=True"
+            == error.value.errors()[0]["msg"]
+        )
+
+    config = PredictConfig(
+        filepaths=labels_absolute_path,
+        save_dir=save_dir,
+        skip_load_validation=True,
+        overwrite_save_dir=True,
+    )
+    assert config.save_dir == save_dir
+
 
 def test_validate_scheduler(labels_absolute_path):
     # None gets transformed into SchedulerConfig
