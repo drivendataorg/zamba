@@ -155,6 +155,7 @@ class PredictConfig(ZambaBaseModel)
  batch_size: int = 2,
  save: bool = True,
  save_dir: Optional[Path] = None,
+ overwrite_save_dir: bool = False,
  dry_run: bool = False,
  proba_threshold: float = None,
  output_class_names: bool = False,
@@ -203,6 +204,10 @@ Whether to save out predictions. If `False`, predictions are not saved. Defaults
 
 An optional directory in which to save the model predictions and configuration yaml.  If
 no `save_dir` is specified and `save` is True, outputs will be written to the current working directory. Defaults to `None`
+
+#### `overwrite_save_dir (bool)`
+
+If True, will overwrite outputs in `save_dir` if they exist. Defaults to False.
 
 #### `dry_run (bool, optional)`
 
