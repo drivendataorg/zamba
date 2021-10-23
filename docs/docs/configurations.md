@@ -149,7 +149,7 @@ class PredictConfig(ZambaBaseModel)
  data_dir: DirectoryPath = Path.cwd(),
  filepaths: FilePath = None,
  checkpoint: FilePath = None,
- model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,,
+ model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  gpus: int = 0,
  num_workers: int = 3,
  batch_size: int = 2,
@@ -202,8 +202,7 @@ Whether to save out predictions. If `False`, predictions are not saved. Defaults
 #### `save_dir (Path, optional)`
 
 An optional directory in which to save the model predictions and configuration yaml.  If
-no save_dir is specified and save=True, outputs will be written to the current working directory.
-Defaults to `None`
+no `save_dir` is specified and `save` is True, outputs will be written to the current working directory. Defaults to `None`
 
 #### `dry_run (bool, optional)`
 
