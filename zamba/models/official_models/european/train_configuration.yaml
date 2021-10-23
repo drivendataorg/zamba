@@ -37,9 +37,9 @@ train_config:
   max_epochs: null
   model_name: null
   num_workers: 3
-  overwrite_save_directory: false
+  overwrite_save_dir: false
   predict_all_zamba_species: true
-  save_directory: experiments/european_td_dev_base
+  save_dir: experiments/european_td_dev_base
   scheduler_config: default
   skip_load_validation: true
   split_proportions: null

@@ -53,7 +53,7 @@ def train(
     ),
     save_dir: Path = typer.Option(
         None,
-        help="Directory in which to save model checkpoint and configuration file. If not specified, will save to a folder called 'zamba_{model_name}' in your working directory.",
+        help="An optional directory in which to save the model checkpoint and configuration file. If not specified, will save to a `version_n` folder in your working directory.",
     ),
     num_workers: int = typer.Option(
         None,
@@ -116,7 +116,7 @@ def train(
         train_dict["dry_run"] = dry_run
 
     if save_dir is not None:
-        train_dict["save_directory"] = save_dir
+        train_dict["save_dir"] = save_dir
 
     if num_workers is not None:
         train_dict["num_workers"] = num_workers
@@ -164,7 +164,7 @@ def train(
     Number of workers: {config.train_config.num_workers}
     GPUs: {config.train_config.gpus}
     Dry run: {config.train_config.dry_run}
-    Save directory: {config.train_config.save_directory}
+    Save directory: {config.train_config.save_dir}
     """
 
     if yes:
@@ -203,11 +203,12 @@ def predict(
     batch_size: int = typer.Option(None, help="Batch size to use for training."),
     save: bool = typer.Option(
         None,
-        help="Whether to save out predictions to a csv file. If you want to specify the location of the csv, use save_path instead.",
+        help="Whether to save out predictions. If you want to specify the output directory, use save_dir instead.",
     ),
-    save_path: Path = typer.Option(
+    save_dir: Path = typer.Option(
         None,
-        help="Full path for prediction CSV file. Any needed parent directories will be created.",
+        help="An optional directory in which to save the model predictions and configuration yaml. "
+        "Defaults to the current working directory if save is True.",
     ),
     dry_run: bool = typer.Option(None, help="Runs one batch of inference to check for bugs."),
     config: Path = typer.Option(
@@ -294,9 +295,9 @@ def predict(
     if save is not None:
         predict_dict["save"] = save
 
-    # save path takes precedence over save
-    if save_path is not None:
-        predict_dict["save"] = save_path
+    # save_dir takes precedence over save
+    if save_dir is not None:
+        predict_dict["save_dir"] = save_dir
 
     if proba_threshold is not None:
         predict_dict["proba_threshold"] = proba_threshold
@@ -387,7 +388,7 @@ def densepose(
     filepaths: Path = typer.Option(
         None, exists=True, help="Path to csv containing `filepath` column with videos."
     ),
-    save_path: Path = typer.Option(
+    save_dir: Path = typer.Option(
         None,
         help="An optional directory for saving the output. Defaults to the current working directory.",
     ),
@@ -452,8 +453,8 @@ def densepose(
     if filepaths is not None:
         predict_dict["filepaths"] = filepaths
 
-    if save_path is not None:
-        predict_dict["save_path"] = save_path
+    if save_dir is not None:
+        predict_dict["save_dir"] = save_dir
 
     if weight_download_region is not None:
         predict_dict["weight_download_region"] = weight_download_region

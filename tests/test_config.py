@@ -204,7 +204,7 @@ def test_labels_with_invalid_split(labels_absolute_path):
 
 def test_labels_no_splits(labels_no_splits, tmp_path):
     config = TrainConfig(
-        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, save_directory=tmp_path
+        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, save_dir=tmp_path
     )
     assert set(config.labels.split.unique()) == set(("holdout", "train", "val"))
 
@@ -214,7 +214,7 @@ def test_labels_split_proportions(labels_no_splits, tmp_path):
         data_directory=TEST_VIDEOS_DIR,
         labels=labels_no_splits,
         split_proportions={"a": 3, "b": 1},
-        save_directory=tmp_path,
+        save_dir=tmp_path,
     )
     assert config.labels.split.value_counts().to_dict() == {"a": 14, "b": 5}
 
@@ -257,40 +257,23 @@ def test_model_cache_dir(labels_absolute_path, tmp_path):
 
 
 def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkpoint):
-    # if save is True, use default save path
+    # if save is True, save in current working directory
     config = PredictConfig(filepaths=labels_absolute_path, skip_load_validation=True)
-    assert config.save == Path.cwd() / "zamba_predictions.csv"
+    assert config.save_dir == Path.cwd()
 
     config = PredictConfig(filepaths=labels_absolute_path, save=False, skip_load_validation=True)
     assert config.save is False
+    assert config.save_dir is None
 
-    # use checkpoint directory if checkpoint exists
+    # if save_dir is specified, set save to True
     config = PredictConfig(
         filepaths=labels_absolute_path,
+        save=False,
+        save_dir=tmp_path / "my_dir",
         skip_load_validation=True,
-        checkpoint=dummy_trained_model_checkpoint,
     )
-    assert config.save == Path(dummy_trained_model_checkpoint).parent / "zamba_predictions.csv"
-
-    # case does not matter as long as it's a csv
-    config = PredictConfig(
-        filepaths=labels_absolute_path, save=tmp_path / "zamba/my_model/my_predictions.CSV"
-    )
-    assert config.save == tmp_path / "zamba/my_model/my_predictions.CSV"
-
-    # cannot pass in directories, must specify full path
-    with pytest.raises(ValueError) as error:
-        PredictConfig(
-            filepaths=labels_absolute_path, save="zamba/my_model/", skip_load_validation=True
-        )
-    assert "Save path must end with .csv" in error.value.errors()[0]["msg"]
-
-    # cannot use path that already exists
-    save_path = tmp_path / "pred.csv"
-    save_path.touch()
-    with pytest.raises(ValueError) as error:
-        PredictConfig(filepaths=labels_absolute_path, save=save_path, skip_load_validation=True)
-    assert "already exists" in error.value.errors()[0]["msg"]
+    assert config.save is True
+    assert (tmp_path / "my_dir").exists()
 
 
 def test_validate_scheduler(labels_absolute_path):

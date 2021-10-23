@@ -58,9 +58,9 @@ train_config:
   max_epochs: null
   model_name: time_distributed
   num_workers: 5
-  overwrite_save_directory: false
+  overwrite_save_dir: false
   predict_all_zamba_species: true
-  save_directory: experiments/td_small_set_full_size_mdlite
+  save_dir: experiments/td_small_set_full_size_mdlite
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:

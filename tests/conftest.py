@@ -168,7 +168,7 @@ def dummy_train_config(labels_absolute_path, dummy_checkpoint, tmp_path_factory)
         batch_size=1,
         auto_lr_find=False,
         num_workers=2,
-        save_directory=tmp_path / "my_model",
+        save_dir=tmp_path / "my_model",
         skip_load_validation=True,
     )
 

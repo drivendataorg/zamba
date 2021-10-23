@@ -326,16 +326,16 @@ class TrainConfig(ZambaBaseModel):
         split_proportions (dict): Proportions used to divide data into training,
             validation, and holdout sets if a if a "split" column is not included in
             labels. Defaults to "train": 3, "val": 1, "holdout": 1.
-        save_directory (Path, optional): Path to a directory where training files
+        save_dir (Path, optional): Path to a directory where training files
             will be saved. Files include the best model checkpoint (``model_name``.ckpt),
             training configuration (configuration.yaml), Tensorboard logs
             (events.out.tfevents...), test metrics (test_metrics.json), validation
             metrics (val_metrics.json), and model hyperparameters (hparams.yml).
             If None, a folder is created in the working directory called
             "zamba_``model_name``". Defaults to None.
-        overwrite_save_directory (bool): If True, will save outputs in `save_directory`
+        overwrite_save_dir (bool): If True, will save outputs in `save_dir`
             overwriting if those exist. If False, will create auto-incremented `version_n` folder
-            in `save_directory` with model outputs. Defaults to False.
+            in `save_dir` with model outputs. Defaults to False.
         skip_load_validation (bool). Skip ffprobe check, which verifies that all
             videos can be loaded and skips files that cannot be loaded. Defaults
             to False.
@@ -365,8 +365,8 @@ class TrainConfig(ZambaBaseModel):
     early_stopping_config: Optional[EarlyStoppingConfig] = EarlyStoppingConfig()
     weight_download_region: RegionEnum = "us"
     split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
-    save_directory: Path = Path.cwd()
-    overwrite_save_directory: bool = False
+    save_dir: Path = Path.cwd()
+    overwrite_save_dir: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
     predict_all_zamba_species: bool = True
@@ -508,14 +508,14 @@ class TrainConfig(ZambaBaseModel):
                 )
 
                 logger.info(
-                    f"Writing out split information to {values['save_directory'] / 'splits.csv'}."
+                    f"Writing out split information to {values['save_dir'] / 'splits.csv'}."
                 )
 
                 # create the directory to save if we need to.
-                values["save_directory"].mkdir(parents=True, exist_ok=True)
+                values["save_dir"].mkdir(parents=True, exist_ok=True)
 
                 labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(
-                    values["save_directory"] / "splits.csv", index=False
+                    values["save_dir"] / "splits.csv", index=False
                 )
 
         # filepath becomes column instead of index
@@ -540,8 +540,8 @@ class TrainConfig(ZambaBaseModel):
             "max_epochs",
             "weight_download_region",
             "split_proportions",
-            "save_directory",
-            "overwrite_save_directory",
+            "save_dir",
+            "overwrite_save_dir",
             "skip_load_validation",
             "from_scratch",
             "model_cache_dir",
@@ -606,7 +606,8 @@ class PredictConfig(ZambaBaseModel):
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3
     batch_size: int = 2
-    save: Union[bool, Path] = True
+    save: bool = True
+    save_dir: Optional[Path] = None
     dry_run: bool = False
     proba_threshold: Optional[float] = None
     output_class_names: bool = False
@@ -629,35 +630,26 @@ class PredictConfig(ZambaBaseModel):
         return values
 
     @root_validator(skip_on_failure=True)
-    def validate_save(cls, values):
-        # do this check before we look up checkpoints based on model name so we can see if checkpoint is None
+    def validate_save_dir(cls, values):
+        save_dir = values["save_dir"]
         save = values["save"]
-        checkpoint = values["checkpoint"]
 
-        # if False, no predictions will be written out
-        if save is False:
-            return values
+        # if no save_dir but save is True, use current working directory
+        if save_dir is None:
+            if save:
+                save_dir = Path.cwd()
 
+        # if save dir is not None
         else:
-            # if save=True and we have a local checkpoint, save in checkpoint directory
-            if save is True and checkpoint is not None:
-                save = checkpoint.parent / "zamba_predictions.csv"
+            # make a directory if needed
+            save_dir.mkdir(parents=True, exist_ok=True)
 
-            # else, save to current working directory
-            elif save is True and checkpoint is None:
-                save = Path.cwd() / "zamba_predictions.csv"
+            # set set to True is save_dir is set (save dir takes precedence)
+            if not save:
+                save = True
 
-        # validate save path
-        if isinstance(save, Path):
-            if save.suffix.lower() != ".csv":
-                raise ValueError("Save path must end with .csv")
-            elif save.exists():
-                raise ValueError(f"Save path {save} already exists.")
-            else:
-                values["save"] = save
-
-            # create any needed parent directories
-            save.parent.mkdir(parents=True, exist_ok=True)
+        values["save_dir"] = save_dir
+        values["save"] = save
 
         return values
 

@@ -37,7 +37,7 @@ class DensePoseConfig(ZambaBaseModel):
         data_directory (Path): Where to find the files listed in filepaths (or where to look if
             filepaths is not provided).
         filepaths (Path, optional): Path to a CSV file with a list of filepaths to process.
-        save_path (Path, optional): Directory for where to save the output files;
+        save_dir (Path, optional): Directory for where to save the output files;
             defaults to os.getcwd().
         cache_dir (Path, optional): Path for downloading and saving model weights. Defaults
             to env var `MODEL_CACHE_DIR` or the OS app cache dir.
@@ -51,7 +51,7 @@ class DensePoseConfig(ZambaBaseModel):
     embeddings_in_json: bool = False
     data_directory: Path
     filepaths: Optional[Path] = None
-    save_path: Optional[Path] = None
+    save_dir: Optional[Path] = None
     cache_dir: Optional[Path] = None
     weight_download_region: RegionEnum = RegionEnum("us")
 
@@ -71,7 +71,7 @@ class DensePoseConfig(ZambaBaseModel):
         else:
             raise Exception(f"invalid {self.output_type}")
 
-        output_dir = Path(os.getcwd()) if self.save_path is None else self.save_path
+        output_dir = Path(os.getcwd()) if self.save_dir is None else self.save_dir
 
         dpm = DensePoseManager(
             model, model_cache_dir=self.cache_dir, download_region=self.weight_download_region

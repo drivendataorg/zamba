@@ -151,7 +151,7 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     data_dir.mkdir()
     shutil.copy(TEST_VIDEOS_DIR / "data" / "raw" / "benjamin" / "04250002.MP4", data_dir)
 
-    save_path = tmp_path / "zamba" / "my_preds.csv"
+    save_dir = tmp_path / "zamba"
 
     result = runner.invoke(
         app,
@@ -162,17 +162,20 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
             "--config",
             str(ASSETS_DIR / "sample_predict_config.yaml"),
             "--yes",
-            "--save-path",
-            str(save_path),
+            "--save-dir",
+            str(save_dir),
         ],
     )
     assert result.exit_code == 0
     # check preds file got saved out
-    assert save_path.exists()
+    assert save_dir.exists()
     # check config got saved out too
-    assert (save_path.parent / "predict_configuration.yaml").exists()
+    assert (save_dir / "predict_configuration.yaml").exists()
     assert (
-        pd.read_csv(save_path, index_col="filepath").idxmax(axis=1).values[0] == "monkey_prosimian"
+        pd.read_csv(save_dir / "zamba_predictions.csv", index_col="filepath")
+        .idxmax(axis=1)
+        .values[0]
+        == "monkey_prosimian"
     )
 
 
