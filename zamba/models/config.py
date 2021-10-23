@@ -580,8 +580,8 @@ class PredictConfig(ZambaBaseModel):
              predictions and configuration yaml. ath to a CSV to save predictions.
              If no save_dir is specified and save=True, outputs will be written to
              the current working directory. Defaults to None.
-        overwrite_save_dir (bool): If True, will save outputs in `save_dir`
-            overwriting if those exist. Defaults to False.
+        overwrite_save_dir (bool): If True, overwrite outputs in save_dir if they exist.
+            Defaults to False.
         dry_run (bool): Perform inference on a single batch for testing. Predictions
             will not be saved. Defaults to False.
         proba_threshold (float, optional): Probability threshold for classification.
