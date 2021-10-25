@@ -82,7 +82,7 @@ def instantiate_model(
 
     else:
         # check for local checkpoint or cached checkpoint
-        if not checkpoint.exists() or not (model_cache_dir / checkpoint).exists():
+        if not checkpoint.exists() and not (model_cache_dir / checkpoint).exists():
             logger.info("Downloading weights for model.")
             checkpoint = download_weights(
                 filename=str(checkpoint),
