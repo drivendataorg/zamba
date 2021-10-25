@@ -46,6 +46,8 @@ train_config:
   weight_download_region: us
 training_start_time: '2021-10-13T16:46:39.593515'
 video_loader_config:
+  cache_dir: /tmp/zamba_cache
+  cleanup_cache: false
   crop_bottom_pixels: 50
   early_bias: false
   ensure_total_frames: true

@@ -31,7 +31,6 @@ video_loader_config:
   i_frames: false
   megadetector_lite_config:
     confidence: 0.25
-    device: cuda
     fill_mode: score_sorted
     image_height: 416
     image_width: 416
@@ -46,4 +45,4 @@ video_loader_config:
   total_frames: 16
 predict_config:
   model_name: time_distributed
-public_checkpoint: time_distributed_c68adb0e9eb4a6cf49b83e86f03dea55b0edc77f.ckpt
+public_checkpoint: time_distributed_7f74686b7b6537efe3f436d6745e077d9731e23b.ckpt

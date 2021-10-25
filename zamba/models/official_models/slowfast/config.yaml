@@ -20,8 +20,6 @@ train_config:
       - 1
       verbose: true
 video_loader_config:
-  cache_dir: /tmp/zamba_cache
-  cleanup_cache: false
   crop_bottom_pixels: 50
   early_bias: false
   ensure_total_frames: true
@@ -33,7 +31,6 @@ video_loader_config:
   i_frames: false
   megadetector_lite_config:
     confidence: 0.25
-    device: cuda
     fill_mode: score_sorted
     image_height: 416
     image_width: 416
@@ -48,4 +45,4 @@ video_loader_config:
   total_frames: 32
 predict_config:
   model_name: slowfast
-public_checkpoint: slowfast_23ad8c41beb9c86eef8fd0f0dc02a35a7807e4c6.ckpt
+public_checkpoint: slowfast_3c9d5d0c720d0082af043aa1ed5f86a60a681eb7.ckpt

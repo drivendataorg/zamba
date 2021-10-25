@@ -12,31 +12,43 @@ from zamba.models.config import WEIGHT_LOOKUP, ModelEnum
 from zamba.models.densepose import MODELS as DENSEPOSE_MODELS
 
 
-def get_model_only_params(train_config):
+def get_model_only_params(full_configuration, subset="train_config"):
     """Return only params that are not data or machine specific.
     Used for generating official configs.
     """
     # remove data and machine specific params
-    for key in [
-        "data_dir",
-        "dry_run",
-        "batch_size",
-        "auto_lr_find",
-        "gpus",
-        "num_workers",
-        "max_epochs",
-        "weight_download_region",
-        "split_proportions",
-        "save_dir",
-        "overwrite",
-        "skip_load_validation",
-        "from_scratch",
-        "model_cache_dir",
-        "predict_all_zamba_species",
-    ]:
-        train_config.pop(key)
 
-    return train_config
+    if subset == "train_config":
+        config = full_configuration[subset]
+        for key in [
+            "data_dir",
+            "dry_run",
+            "batch_size",
+            "auto_lr_find",
+            "gpus",
+            "num_workers",
+            "max_epochs",
+            "weight_download_region",
+            "split_proportions",
+            "save_dir",
+            "overwrite",
+            "skip_load_validation",
+            "from_scratch",
+            "model_cache_dir",
+            "predict_all_zamba_species",
+        ]:
+            config.pop(key)
+
+    elif subset == "video_loader_config":
+        config = full_configuration[subset]
+
+        if "megadetector_lite_config" in config.keys():
+            config["megadetector_lite_config"].pop("device")
+
+        for key in ["cache_dir", "cleanup_cache"]:
+            config.pop(key)
+
+    return config
 
 
 def publish_model(model_name, trained_model_dir):
@@ -84,7 +96,7 @@ def publish_model(model_name, trained_model_dir):
         train_configuration_full_dict = yaml.safe_load(f)
 
     # get limited train config
-    train_config = get_model_only_params(train_configuration_full_dict["train_config"])
+    train_config = get_model_only_params(train_configuration_full_dict, subset="train_config")
 
     # e.g. european model is trained from a checkpoint; we want to expose final model
     # (model_name: european) not the base checkpoint
@@ -94,7 +106,9 @@ def publish_model(model_name, trained_model_dir):
 
     official_config = dict(
         train_config=train_config,
-        video_loader_config=train_configuration_full_dict["video_loader_config"],
+        video_loader_config=get_model_only_params(
+            train_configuration_full_dict, subset="video_loader_config"
+        ),
         predict_config=dict(model_name=model_name),
     )
 
@@ -111,7 +125,7 @@ def publish_model(model_name, trained_model_dir):
     with config_yaml.open("w") as f:
         yaml.dump(official_config, f, sort_keys=False)
 
-    upload_to_all_public_buckets(private_checkpoint, public_file_name)
+    # upload_to_all_public_buckets(private_checkpoint, public_file_name)
 
 
 def upload_to_all_public_buckets(file, public_file_name):
