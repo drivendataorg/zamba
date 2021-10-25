@@ -228,9 +228,18 @@ def test_from_scratch(labels_absolute_path):
     assert "If from_scratch=True, model_name cannot be None." == error.value.errors()[0]["msg"]
 
 
-def test_predict_dry_run_and_save(labels_absolute_path, caplog):
-    PredictConfig(filepaths=labels_absolute_path, dry_run=True, save=True)
-    assert "Cannot save when predicting with dry_run=True. Setting save=False." in caplog.text
+def test_predict_dry_run_and_save(labels_absolute_path, caplog, tmp_path):
+    config = PredictConfig(filepaths=labels_absolute_path, dry_run=True, save=True)
+    assert (
+        "Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None."
+        in caplog.text
+    )
+    assert not config.save
+    assert config.save_dir is None
+
+    config = PredictConfig(filepaths=labels_absolute_path, dry_run=True, save_dir=tmp_path)
+    assert not config.save
+    assert config.save_dir is None
 
 
 def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplog):
