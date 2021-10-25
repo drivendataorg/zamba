@@ -194,6 +194,8 @@ Options:
                                   loaded prior to inference. Only use if
                                   you're very confident all your videos can be
                                   loaded.
+  -o, --overwrite                 Overwrite outputs in the save directory if
+                                  they exist.
   -y, --yes                       Skip confirmation of configuration and
                                   proceed right to prediction.
   --help                          Show this message and exit.

@@ -240,7 +240,7 @@ def predict(
         help="Skip check that verifies all videos can be loaded prior to inference. Only use if you're very confident all your videos can be loaded.",
     ),
     overwrite: bool = typer.Option(
-        None, "--overwrite", "-o", help="Overwrite outputs in save directory if they exist."
+        None, "--overwrite", "-o", help="Overwrite outputs in the save directory if they exist."
     ),
     yes: bool = typer.Option(
         False,
