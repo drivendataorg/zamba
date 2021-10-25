@@ -113,7 +113,7 @@ make publish_models
 
 This will generate a public file name for each model based on the config hash and upload the model weights to the three DrivenData public s3 buckets. This will generate a folder in `zamba/models/official_models/{your_name_name}` that contains the official config as well as reference yaml and json files. You should PR everything in this folder.
 
-Lastly, you need to update the template in `templates`. The template should contain all the same info as the model's `config.yaml`, plus placeholders for `data_directory` and `labels` in `train_config`, and `data_directory`, `filepaths`, and `checkpoint` in `predict_config`.
+Lastly, you need to update the template in `templates`. The template should contain all the same info as the model's `config.yaml`, plus placeholders for `data_dir` and `labels` in `train_config`, and `data_dir`, `filepaths`, and `checkpoint` in `predict_config`.
 
 ### New model checklist
 

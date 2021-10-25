@@ -14,35 +14,39 @@ extra_css:
 
 nav:
   - Home: "index.md"
-  - "Getting Started":
-      - Installing Zamba: "install.md"
+  - "Getting started":
+      - Installing zamba: "install.md"
       - Quickstart: "quickstart.md"
   - "User Tutorials":
-      - Classifying Unlabeled Videos: "predict-tutorial.md"
-      - Training a Model on Labeled Videos: "train-tutorial.md"
+      - Classifying unlabeled videos: "predict-tutorial.md"
+      - Training a model on labeled videos: "train-tutorial.md"
       - Debugging: "debugging.md"
+      - Guide to common optional parameters: "extra-options.md"
   - "Available Models":
-      - "models/index.md"
+      - Species detection: "models/species-detection.md"
+      - DensePose: "models/denspose.md"
   - "Advanced Options":
-      - All Optional Arguments: "configurations.md"
+      - All configuration options: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
-      - Guide to Common Optional Parameters: "extra-options.md"
-  - "Contribute to zamba": 
+  - "Contribute to zamba":
       - "contribute/index.md"
   - "Changelog":
-      - "changelog/index.md"
+      - "changelog.md"
   - API Reference:
       - zamba.data:
           - zamba.data.metadata: "api-reference/data-metadata.md"
           - zamba.data.video: "api-reference/data-video.md"
       - zamba.models:
-          - zamba.models.yolox_models: "api-reference/models-yolox_models.md"
           - zamba.models.config: "api-reference/models-config.md"
+          - zamba.models.densepose:
+            - zamba.models.densepose.config: "api-reference/densepose_config.md"
+            - zamba.models.densepose.densepose_manager: "api-reference/densepose_manager.md"
           - zamba.models.efficientnet_models: "api-reference/models-efficientnet_models.md"
           - zamba.models.megadetector_lite_yolox: "api-reference/models-megadetector_lite_yolox.md"
           - zamba.models.model_manager: "api-reference/models-model_manager.md"
           - zamba.models.slowfast_models: "api-reference/models-slowfast_models.md"
           - zamba.models.utils: "api-reference/models-utils.md"
+          - zamba.models.yolox_models: "api-reference/models-yolox_models.md"
       - zamba.pytorch:
           - zamba.pytorch.dataloaders: "api-reference/pytorch-dataloaders.md"
           - zamba.pytorch.finetuning: "api-reference/pytorch-finetuning.md"

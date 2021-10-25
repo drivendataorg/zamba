@@ -1,5 +1,5 @@
 train_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
+  # data_dir: YOUR_DATA_DIR HERE
   # labels: YOUR_LABELS_CSV_HERE
   model_name: european
   backbone_finetune_config:
@@ -9,6 +9,8 @@ train_config:
     train_bn: false
     unfreeze_backbone_at_epoch: 15
     verbose: true
+  early_stopping_config:
+    patience: 3
 
 video_loader_config:
   model_input_height: 240
@@ -23,7 +25,7 @@ video_loader_config:
     n_frames: 16
 
 predict_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
+  # data_dir: YOUR_DATA_DIR HERE
   # or
   # filepaths: YOUR_FILEPATH_CSV_HERE
   model_name: european

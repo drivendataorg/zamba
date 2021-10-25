@@ -1,4 +1,4 @@
-# All Optional Arguments
+# All configuration options
 
 Three main configuration classes are specific in `zamba`:
 
@@ -8,7 +8,7 @@ Three main configuration classes are specific in `zamba`:
 
 Here's a helpful diagram which shows how everything is related.
 
-![](config_diagram.png)
+![](../media/zamba_config_diagram.png)
 
 <a id='video-loading-arguments'></a>
 
@@ -28,17 +28,17 @@ All video loading arguments can be specified either in a [YAML file](yaml-config
     ```
 === "Python"
     ```python
-    from zamba.models.model_manager import predict_model
-    from zamba.models.config import PredictConfig
     from zamba.data.video import VideoLoaderConfig
+    from zamba.models.config import PredictConfig
+    from zamba.models.model_manager import predict_model
 
-    predict_config = PredictConfig(data_directory="example_vids/")
+    predict_config = PredictConfig(data_dir="example_vids/")
     video_loader_config = VideoLoaderConfig(
-        model_input_height=240, 
-        model_input_width=426, 
+        model_input_height=240,
+        model_input_width=426,
         total_frames=16
         # ... other parameters
-    ) 
+    )
     predict_model(
         predict_config=predict_config, video_loader_config=video_loader_config
     )
@@ -51,23 +51,23 @@ Let's look at the class documentation in Python.
 >> help(VideoLoaderConfig)
 
 class VideoLoaderConfig(pydantic.main.BaseModel)
- |  VideoLoaderConfig(*, 
- crop_bottom_pixels: int = None, 
- i_frames: bool = False, 
- scene_threshold: float = None, 
- megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None, 
- frame_selection_height: int = None, 
- frame_selection_width: int = None, 
- total_frames: int = None, 
- ensure_total_frames: bool = True, 
- fps: float = None, 
- early_bias: bool = False, 
- frame_indices: List[int] = None, 
- evenly_sample_total_frames: bool = False, 
- pix_fmt: str = 'rgb24', 
- model_input_height: int = None, 
- model_input_width: int = None, 
- cache_dir: pathlib.Path = None, 
+ |  VideoLoaderConfig(*,
+ crop_bottom_pixels: int = None,
+ i_frames: bool = False,
+ scene_threshold: float = None,
+ megadetector_lite_config: zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig = None,
+ frame_selection_height: int = None,
+ frame_selection_width: int = None,
+ total_frames: int = None,
+ ensure_total_frames: bool = True,
+ fps: float = None,
+ early_bias: bool = False,
+ frame_indices: List[int] = None,
+ evenly_sample_total_frames: bool = False,
+ pix_fmt: str = 'rgb24',
+ model_input_height: int = None,
+ model_input_width: int = None,
+ cache_dir: pathlib.Path = None,
  cleanup_cache: bool = False) -> None
 
  ...
@@ -99,7 +99,7 @@ Number of frames that should ultimately be returned. Defaults to `None`
 
 #### `ensure_total_frames (bool)`
 
-Selecting the number of frames by resampling may result in one more or fewer frames due to rounding. If True, ensure the requested number of frames is returned by either clipping or duplicating the final frame. Raises an error if no frames have been selected. Otherwise, return the array unchanged. Defaults to `True`
+Some frame selection methods may yield varying numbers of frames. If `True`, ensure the requested number of frames is returned by either clipping or duplicating the final frame. If no frames are selected, returns an array of the desired shape with all zeros. Otherwise, return the array unchanged. Defaults to `True`
 
 #### `fps (int, optional)`
 
@@ -107,7 +107,7 @@ Resample the video evenly from the entire duration to a specific number of frame
 
 #### `early_bias (bool, optional)`
 
-Resamples to 24 fps and selects 16 frames biased toward the front. This strategy was used by the [Pri-matrix Factorization](https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/) machine learning
+Resamples to 24 fps and selects 16 frames biased toward the beginning of the video. This strategy was used by the [Pri-matrix Factorization](https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/) machine learning
 competition winner. Defaults to `False`
 
 #### `frame_indices (list(int), optional)`
@@ -128,7 +128,7 @@ After frame selection, resize the video to this height and width in pixels. Defa
 
 #### `cache_dir (Path, optional)`
 
-Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with VIDEO_CACHE_DIR environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to `None`, which means videos will not be cached.
+Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with `VIDEO_CACHE_DIR` environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to `None`, which means videos will not be cached.
 
 #### `cleanup_cache (bool, optional)`
 
@@ -145,15 +145,17 @@ All possible model inference parameters are defined by the [`PredictConfig` clas
 >> help(PredictConfig)
 
 class PredictConfig(ZambaBaseModel)
- |  PredictConfig(*, 
- data_directory: DirectoryPath = # your current working directory ,
+ |  PredictConfig(*,
+ data_dir: DirectoryPath = Path.cwd(),
  filepaths: FilePath = None,
  checkpoint: FilePath = None,
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
- gpus: int = 0, 
+ gpus: int = 0,
  num_workers: int = 3,
  batch_size: int = 2,
- save: Union[bool, pathlib.Path] = True,
+ save: bool = True,
+ save_dir: Optional[Path] = None,
+ overwrite: bool = False,
  dry_run: bool = False,
  proba_threshold: float = None,
  output_class_names: bool = False,
@@ -164,19 +166,19 @@ class PredictConfig(ZambaBaseModel)
  ...
 ```
 
-**Either `data_directory` or `filepaths` must be specified to instantiate `PredictConfig`.** Otherwise the current working directory will be used as the default `data_directory`.
+**Either `data_dir` or `filepaths` must be specified to instantiate `PredictConfig`.** If neither is specified, the current working directory will be used as the default `data_dir`.
 
-#### `data_directory (DirectoryPath, optional)`
+#### `data_dir (DirectoryPath, optional)`
 
-Path to the directory containing training videos. Defaults to the current working directory.
+Path to the directory containing videos for inference. Defaults to the current working directory.
 
 #### `filepaths (FilePath, optional)`
 
-Path to a list of files for classification. Defaults to the files in the current working directory
+Path to a csv containing a `filepath` column with videos for classification.
 
 #### `checkpoint (Path or str, optional)`
 
-Path to a model checkpoint to load and use for inference. The default is `None`, which automatically loads the pretrained checkpoint for the model specified by `model_name`. Since the default `model_name` is `time_distributed` the default `checkpoint` is `zamba_time_distributed.ckpt`
+Path to a model checkpoint to load and use for inference. The default is `None`, which will load the pretrained checkpoint if the model specified by `model_name`.
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
@@ -194,9 +196,18 @@ The number of CPUs to use during training. The maximum value for `num_workers` i
 
 The batch size to use for inference. Defaults to `2`
 
-#### `save (bool, optional)`
+#### `save (bool)`
 
-Whether to save out the predictions to a CSV file. y default, predictions will be saved at `zamba_predictions.csv` in the current working directory. Defaults to `True`
+Whether to save out predictions. If `False`, predictions are not saved. Defaults to `True`.
+
+#### `save_dir (Path, optional)`
+
+An optional directory in which to save the model predictions and configuration yaml.  If
+no `save_dir` is specified and `save` is True, outputs will be written to the current working directory. Defaults to `None`
+
+#### `overwrite (bool)`
+
+If True, will overwrite `zamba_predictions.csv` and `predict_configuration.yaml` in `save_dir` if they exist. Defaults to False.
 
 #### `dry_run (bool, optional)`
 
@@ -204,7 +215,7 @@ Specifying `True` is useful for trying out model implementations more quickly by
 
 #### `proba_threshold (float between 0 and 1, optional)`
 
-For advanced uses, you may want the algorithm to be more or less sensitive to if a species is present. This parameter is a `FLOAT` number, e.g., `0.64` corresponding to the probability threshold beyond which an animal is considered to be present in the video being analyzed.
+For advanced uses, you may want the algorithm to be more or less sensitive to if a species is present. This parameter is a float, e.g., `0.6` corresponding to the probability threshold beyond which an animal is considered to be present in the video being analyzed.
 
 By default no threshold is passed, `proba_threshold=None`. This will return a probability from 0-1 for each species that could occur in each video. If a threshold is passed, then the final prediction value returned for each class is `probability >= proba_threshold`, so that all class values become `0` (`False`, the species does not appear) or `1` (`True`, the species does appear).
 
@@ -215,7 +226,6 @@ Setting this option to `True` yields the most concise output `zamba` is capable 
 #### `weight_download_region [us|eu|asia]`
 
 Because `zamba` needs to download pretrained weights for the neural network architecture, we make these weights available in different regions. `us` is the default, but if you are not in the US you should use either `eu` for the European Union or `asia` for Asia Pacific to make sure that these download as quickly as possible for you.
-
 
 #### `skip_load_validation (bool, optional)`
 
@@ -236,9 +246,9 @@ All possible model training parameters are defined by the [`TrainConfig` class](
 >> help(TrainConfig)
 
 class TrainConfig(ZambaBaseModel)
- |  TrainConfig(*, 
+ |  TrainConfig(*,
  labels: Union[FilePath, pandas.DataFrame],
- data_directory: DirectoryPath = # your current working directory ,
+ data_dir: DirectoryPath = # your current working directory ,
  checkpoint: FilePath = None,
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
@@ -249,7 +259,7 @@ class TrainConfig(ZambaBaseModel)
             BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
             backbone_initial_ratio_lr=0.01, multiplier=1,
             pre_train_bn=False, train_bn=False, verbose=True),
- gpus: int = 0, 
+ gpus: int = 0,
  num_workers: int = 3,
  max_epochs: int = None,
  early_stopping_config: zamba.models.config.EarlyStoppingConfig =
@@ -257,8 +267,8 @@ class TrainConfig(ZambaBaseModel)
             verbose=True, mode='max'),
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
- save_directory: pathlib.Path = # your current working directory , 
- overwrite_save_directory: bool = False, 
+ save_dir: pathlib.Path = # your current working directory ,
+ overwrite: bool = False,
  skip_load_validation: bool = False,
  from_scratch: bool = False,
  predict_all_zamba_species: bool = True,
@@ -267,13 +277,11 @@ class TrainConfig(ZambaBaseModel)
  ...
 ```
 
-**`data_directory` and `labels` must be specified to instantiate `TrainConfig`.** If no `data_directory` is provided, it will default the current working directory.
-
 #### `labels (FilePath or pd.DataFrame, required)`
 
-Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`.
+Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`. **`labels` must be specified to instantiate `TrainConfig`.**
 
-#### `data_directory (DirectoryPath, optional)`
+#### `data_dir (DirectoryPath, optional)`
 
 Path to the directory containing training videos. Defaults to the current working directory.
 
@@ -329,13 +337,13 @@ Because `zamba` needs to download pretrained weights for the neural network arch
 
 The proportion of data to use during training, validation, and as a holdout set. Defaults to `{"train": 3, "val": 1, "holdout": 1}`
 
-#### `save_directory (Path, optional)`
+#### `save_dir (Path, optional)`
 
-Directory in which to save model checkpoint and configuration file. If not specified, will save to a folder called 'zamba_{model_name}' in your working directory.
+Directory in which to save model checkpoint and configuration file. If not specified, will save to a `version_n` folder in your current working directory.
 
-#### `overwrite_save_directory (bool, optional)`
+#### `overwrite (bool, optional)`
 
- If True, will save outputs in `save_directory` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_directory` with model outputs. Defaults to `False`.
+ If `True`, will save outputs in `save_dir` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_dir` with model outputs. Defaults to `False`.
 
 #### `skip_load_validation (bool, optional)`
 
@@ -347,8 +355,8 @@ Whether to instantiate the model with base weights. This means starting from the
 
 #### `predict_all_zamba_species (bool, optional)`
 
-Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `predict_all_zamba_species` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`.
+Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `predict_all_zamba_species` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`
 
 #### `model_cache_dir (Path, optional)`
 
-Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory, which is often an automatic temp directory at `~/.cache/zamba`. Defaults to `None`.
+Cache directory where downloaded model weights will be saved. If None and the `MODEL_CACHE_DIR` environment variable is not set, will use your default cache directory, which is often an automatic temp directory at `~/.cache/zamba`. Defaults to `None`

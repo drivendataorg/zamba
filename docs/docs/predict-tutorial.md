@@ -1,4 +1,4 @@
-# User Tutorial: Classifying Unlabeled Videos
+# User tutorial: Classifying unlabeled videos
 
 This section walks through how to classify videos using `zamba`. If you are new to `zamba` and just want to classify some videos as soon as possible, see the [Quickstart](quickstart.md) guide.
 
@@ -20,10 +20,10 @@ $ zamba predict --data-dir example_vids/
 
 ### Required arguments
 
-To run `zamba predict` in the command line, you must specify either `--data-dir` or `--filepaths`. 
+To run `zamba predict` in the command line, you must specify `--data-dir` and/or `--filepaths`.
 
 * **`--data-dir PATH`:** Path to the folder containing your videos.
-* **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
+* **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute or relative to the data directory.
 
 All other flags are optional. To choose a model, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the three [pretrained models](models/index.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to `time_distributed`.
 
@@ -37,27 +37,27 @@ Minimum example for prediction using the Python package:
 from zamba.models.model_manager import predict_model
 from zamba.models.config import PredictConfig
 
-predict_config = PredictConfig(data_directory="example_vids/")
+predict_config = PredictConfig(data_dir="example_vids/")
 predict_model(predict_config=predict_config)
 ```
 
-The only two arguments that can be passed to `predict_model` are `predict_config` and (optionally) `video_loader_config`. The first step is to instantiate [`PredictConfig`](configurations.md#prediction-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments). 
+The only two arguments that can be passed to `predict_model` are `predict_config` and (optionally) `video_loader_config`. The first step is to instantiate [`PredictConfig`](configurations.md#prediction-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments).
 
 ### Required arguments
 
-To run `predict_model` in Python, you must specify either `data_directory` or `filepaths` when `PredictConfig` is instantiated.
+To run `predict_model` in Python, you must specify either `data_dir` or `filepaths` when `PredictConfig` is instantiated.
 
-* **`data_directory (DirectoryPath)`:** Path to the folder containing your videos.
+* **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
 
-* **`filepaths (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`.
+* **`filepaths (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute or relative to the data directory.
 
 For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
 
 ## Default behavior
 
-By default, the [`time_distributed`](models/index.md#time-distributed) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.* 
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.*
 
-By default, predictions will be saved to `zamba_predictions.csv`. You can save predictions to a custom path using the `--save-path` argument.
+By default, predictions will be saved to `zamba_predictions.csv` in your working directory. You can save predictions to a custom directory using the `--save-dir` argument.
 
 ```console
 $ cat zamba_predictions.csv
@@ -80,7 +80,7 @@ $ zamba predict --config predict_configuration.yaml
 Save all of your videos within one folder.
 
 * They can be in nested subdirectories within the folder.
-* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
+* Your videos should be in be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training. By default, `zamba` will look for files with the following suffixes: `.avi`, `.mp4`, `.asf`. To use other video suffixes that are supported by FFmpeg, set your `VIDEO_SUFFIXES` environment variable.
 
 Add the path to your video folder. For example, if your videos are in a folder called `example_vids`:
 
@@ -90,16 +90,13 @@ Add the path to your video folder. For example, if your videos are in a folder c
     ```
 === "Python"
     ```python
-    predict_config = PredictConfig(data_directory='example_vids/')
+    predict_config = PredictConfig(data_dir='example_vids/')
     predict_model(predict_config=predict_config)
     ```
 
 ### 2. Choose a model for prediction
 
-If your camera videos contain species common to central or west Africa:
-
-* Use the [`time_distributed` model](models/index.md#time-distributed) if your priority is species classification
-* Use the [`slowfast` model](models/index.md#slowfast) if your priority is blank vs. non-blank video detection
+If your camera videos contain species common to Central or West Africa, use either the [`time_distributed` model](models/index.md#time-distributed) or [`slowfast` model](models/index.md#slowfast) model. `slowfast` is better for blank and small species detection. `time_distributed` performs better if you have many different species of interest, or are focused on duikers, chimpanzees, and/or gorillas.
 
 If your videos contain species common to Europe, use the [`european` model](models/index.md#european).
 
@@ -112,7 +109,7 @@ Add the model name to your command. The `time_distributed` model will be used if
 === "Python"
     ```python
     predict_config = PredictConfig(
-        data_directory='example_vids/', model_name='slowfast'
+        data_dir='example_vids/', model_name='slowfast'
     )
     predict_model(predict_config=predict_config)
     ```
@@ -121,8 +118,8 @@ Add the model name to your command. The `time_distributed` model will be used if
 
 There are three options for how to format predictions, listed from most information to least:
 
-1. **Store all probabilities (default):** Return predictions with a row for each filename and a column for each class label, with probabilities between 0 and 1. Cell (i,j) is the probability that animal j is present in video i.
-2. **Presence/absence:** Return predictions with a row for each filename and a column for each class label, with cells indicating either presence or absense based on a user-specified probability threshold. Cell (i, j) indicates whether animal j is present (`1`) or not present (`0`) in video i. The probability threshold cutoff is specified with `--proba-threshold` in the CLI. 
+1. **Store all probabilities (default):** Return predictions with a row for each filename and a column for each class label, with probabilities between 0 and 1. Cell `(i,j)` is the probability that animal `j` is present in video `i`.
+2. **Presence/absence:** Return predictions with a row for each filename and a column for each class label, with cells indicating either presence or absense based on a user-specified probability threshold. Cell `(i, j)` indicates whether animal `j` is present (`1`) or not present (`0`) in video `i`. The probability threshold cutoff is specified with `--proba-threshold` in the CLI.
 3. **Most likely class:** Return predictions with a row for each filename and one column for the most likely class in each video. The most likely class can also be blank. To get the most likely class, add `--output-class-names` to your command. In Python, it can be specified by adding `output_class_names=True` when `PredictConfig` is instantiated. This is not recommended if you'd like to detect more than one species in each video.
 
 Say we want to generate predictions for the videos in `example_vids` indicating which animals are present in each video based on a probability threshold of 50%:
@@ -140,7 +137,7 @@ Say we want to generate predictions for the videos in `example_vids` indicating 
 === "Python"
     ```python
     predict_config = PredictConfig(
-        data_directory="example_vids/", proba_threshold=0.5
+        data_dir="example_vids/", proba_threshold=0.5
     )
     predict_model(predict_config=predict_config)
     predictions = pd.read_csv("zamba_predictions.csv")
@@ -156,7 +153,7 @@ Say we want to generate predictions for the videos in `example_vids` indicating 
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or specify a different path where your predictions should be saved (`--save`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or specify a different folder where your predictions should be saved (`--save-dir`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
 
 ### 5. Test your configuration with a dry run
 

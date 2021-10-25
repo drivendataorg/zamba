@@ -7,5 +7,5 @@ video_loader_config:
   total_frames: 16
 
 predict_config:
-  data_directory: tests/assets/videos
+  data_dir: tests/assets/videos
   model_name: time_distributed

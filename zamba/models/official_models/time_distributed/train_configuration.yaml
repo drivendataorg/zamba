@@ -44,9 +44,8 @@ train_config:
     unfreeze_backbone_at_epoch: 3
     verbose: true
   batch_size: 1
-  cache_dir: /home/ubuntu/.cache/zamba
   checkpoint: null
-  data_directory: /home/ubuntu/zamba-algorithms
+  data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
   early_stopping_config:
     mode: max
@@ -56,11 +55,12 @@ train_config:
   from_scratch: true
   gpus: 1
   max_epochs: null
+  model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: time_distributed
   num_workers: 5
-  overwrite_save_directory: false
+  overwrite: false
   predict_all_zamba_species: true
-  save_directory: experiments/td_small_set_full_size_mdlite
+  save_dir: experiments/td_small_set_full_size_mdlite
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:
@@ -73,6 +73,8 @@ train_config:
   weight_download_region: us
 training_start_time: '2021-09-29T23:50:09.687298'
 video_loader_config:
+  cache_dir: /tmp/zamba_cache
+  cleanup_cache: false
   crop_bottom_pixels: 50
   early_bias: false
   ensure_total_frames: true

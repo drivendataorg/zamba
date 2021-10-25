@@ -20,7 +20,7 @@ from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
 
 def test_train_data_dir_only():
     with pytest.raises(ValidationError) as error:
-        TrainConfig(data_directory=TEST_VIDEOS_DIR)
+        TrainConfig(data_dir=TEST_VIDEOS_DIR)
     # labels is missing
     assert error.value.errors() == [
         {"loc": ("labels",), "msg": "field required", "type": "value_error.missing"}
@@ -29,19 +29,19 @@ def test_train_data_dir_only():
 
 def test_train_data_dir_and_labels(tmp_path, labels_relative_path, labels_absolute_path):
     # correct data dir
-    config = TrainConfig(data_directory=TEST_VIDEOS_DIR, labels=labels_relative_path)
-    assert config.data_directory is not None
+    config = TrainConfig(data_dir=TEST_VIDEOS_DIR, labels=labels_relative_path)
+    assert config.data_dir is not None
     assert config.labels is not None
 
     # data dir ignored if absolute path provided in filepath
-    config = TrainConfig(data_directory=tmp_path, labels=labels_absolute_path)
-    assert config.data_directory is not None
+    config = TrainConfig(data_dir=tmp_path, labels=labels_absolute_path)
+    assert config.data_dir is not None
     assert config.labels is not None
     assert not config.labels.filepath.str.startswith(str(tmp_path)).any()
 
     # incorrect data dir with relative filepaths
     with pytest.raises(ValidationError) as error:
-        TrainConfig(data_directory=ASSETS_DIR, labels=labels_relative_path)
+        TrainConfig(data_dir=ASSETS_DIR, labels=labels_relative_path)
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
@@ -51,8 +51,8 @@ def test_train_labels_only(labels_absolute_path):
 
 
 def test_predict_data_dir_only():
-    config = PredictConfig(data_directory=TEST_VIDEOS_DIR)
-    assert config.data_directory == TEST_VIDEOS_DIR
+    config = PredictConfig(data_dir=TEST_VIDEOS_DIR)
+    assert config.data_dir == TEST_VIDEOS_DIR
     assert isinstance(config.filepaths, pd.DataFrame)
     assert sorted(config.filepaths.filepath.values) == sorted(
         [str(f) for f in TEST_VIDEOS_DIR.rglob("*") if f.is_file()]
@@ -62,14 +62,14 @@ def test_predict_data_dir_only():
 
 def test_predict_data_dir_and_filepaths(labels_absolute_path, labels_relative_path):
     # correct data dir
-    config = PredictConfig(data_directory=TEST_VIDEOS_DIR, filepaths=labels_relative_path)
-    assert config.data_directory is not None
+    config = PredictConfig(data_dir=TEST_VIDEOS_DIR, filepaths=labels_relative_path)
+    assert config.data_dir is not None
     assert config.filepaths is not None
     assert config.filepaths.filepath.str.startswith(str(TEST_VIDEOS_DIR)).all()
 
     # incorrect data dir
     with pytest.raises(ValidationError) as error:
-        PredictConfig(data_directory=ASSETS_DIR, filepaths=labels_relative_path)
+        PredictConfig(data_dir=ASSETS_DIR, filepaths=labels_relative_path)
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
@@ -203,18 +203,16 @@ def test_labels_with_invalid_split(labels_absolute_path):
 
 
 def test_labels_no_splits(labels_no_splits, tmp_path):
-    config = TrainConfig(
-        data_directory=TEST_VIDEOS_DIR, labels=labels_no_splits, save_directory=tmp_path
-    )
+    config = TrainConfig(data_dir=TEST_VIDEOS_DIR, labels=labels_no_splits, save_dir=tmp_path)
     assert set(config.labels.split.unique()) == set(("holdout", "train", "val"))
 
 
 def test_labels_split_proportions(labels_no_splits, tmp_path):
     config = TrainConfig(
-        data_directory=TEST_VIDEOS_DIR,
+        data_dir=TEST_VIDEOS_DIR,
         labels=labels_no_splits,
         split_proportions={"a": 3, "b": 1},
-        save_directory=tmp_path,
+        save_dir=tmp_path,
     )
     assert config.labels.split.value_counts().to_dict() == {"a": 14, "b": 5}
 
@@ -230,9 +228,18 @@ def test_from_scratch(labels_absolute_path):
     assert "If from_scratch=True, model_name cannot be None." == error.value.errors()[0]["msg"]
 
 
-def test_predict_dry_run_and_save(labels_absolute_path, caplog):
-    PredictConfig(filepaths=labels_absolute_path, dry_run=True, save=True)
-    assert "Cannot save when predicting with dry_run=True. Setting save=False." in caplog.text
+def test_predict_dry_run_and_save(labels_absolute_path, caplog, tmp_path):
+    config = PredictConfig(filepaths=labels_absolute_path, dry_run=True, save=True)
+    assert (
+        "Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None."
+        in caplog.text
+    )
+    assert not config.save
+    assert config.save_dir is None
+
+    config = PredictConfig(filepaths=labels_absolute_path, dry_run=True, save_dir=tmp_path)
+    assert not config.save
+    assert config.save_dir is None
 
 
 def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplog):
@@ -257,40 +264,60 @@ def test_model_cache_dir(labels_absolute_path, tmp_path):
 
 
 def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkpoint):
-    # if save is True, use default save path
+    # if save is True, save in current working directory
     config = PredictConfig(filepaths=labels_absolute_path, skip_load_validation=True)
-    assert config.save == Path.cwd() / "zamba_predictions.csv"
+    assert config.save_dir == Path.cwd()
 
     config = PredictConfig(filepaths=labels_absolute_path, save=False, skip_load_validation=True)
     assert config.save is False
+    assert config.save_dir is None
 
-    # use checkpoint directory if checkpoint exists
+    # if save_dir is specified, set save to True
     config = PredictConfig(
         filepaths=labels_absolute_path,
+        save=False,
+        save_dir=tmp_path / "my_dir",
         skip_load_validation=True,
-        checkpoint=dummy_trained_model_checkpoint,
     )
-    assert config.save == Path(dummy_trained_model_checkpoint).parent / "zamba_predictions.csv"
+    assert config.save is True
+    # save dir gets created
+    assert (tmp_path / "my_dir").exists()
 
-    # case does not matter as long as it's a csv
+    # empty save dir does not error
+    save_dir = tmp_path / "save_dir"
+    save_dir.mkdir()
+
     config = PredictConfig(
-        filepaths=labels_absolute_path, save=tmp_path / "zamba/my_model/my_predictions.CSV"
+        filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
     )
-    assert config.save == tmp_path / "zamba/my_model/my_predictions.CSV"
+    assert config.save_dir == save_dir
 
-    # cannot pass in directories, must specify full path
-    with pytest.raises(ValueError) as error:
-        PredictConfig(
-            filepaths=labels_absolute_path, save="zamba/my_model/", skip_load_validation=True
+    # save dir with prediction csv or yaml will error
+    for pred_file in [
+        (save_dir / "zamba_predictions.csv"),
+        (save_dir / "predict_configuration.yaml"),
+    ]:
+        # just takes one of the two files to raise error
+        pred_file.touch()
+        with pytest.raises(ValueError) as error:
+            PredictConfig(
+                filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
+            )
+        assert (
+            f"zamba_predictions.csv and/or predict_configuration.yaml already exist in {save_dir}. If you would like to overwrite, set overwrite=True"
+            == error.value.errors()[0]["msg"]
         )
-    assert "Save path must end with .csv" in error.value.errors()[0]["msg"]
+        pred_file.unlink()
 
-    # cannot use path that already exists
-    save_path = tmp_path / "pred.csv"
-    save_path.touch()
-    with pytest.raises(ValueError) as error:
-        PredictConfig(filepaths=labels_absolute_path, save=save_path, skip_load_validation=True)
-    assert "already exists" in error.value.errors()[0]["msg"]
+    # can overwrite
+    pred_file.touch()
+    config = PredictConfig(
+        filepaths=labels_absolute_path,
+        save_dir=save_dir,
+        skip_load_validation=True,
+        overwrite=True,
+    )
+    assert config.save_dir == save_dir
 
 
 def test_validate_scheduler(labels_absolute_path):

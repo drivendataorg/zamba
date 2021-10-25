@@ -53,7 +53,7 @@ def train(
     ),
     save_dir: Path = typer.Option(
         None,
-        help="Directory in which to save model checkpoint and configuration file. If not specified, will save to a folder called 'zamba_{model_name}' in your working directory.",
+        help="An optional directory in which to save the model checkpoint and configuration file. If not specified, will save to a `version_n` folder in your working directory.",
     ),
     num_workers: int = typer.Option(
         None,
@@ -95,7 +95,7 @@ def train(
 
     # override if any command line arguments are passed
     if data_dir is not None:
-        train_dict["data_directory"] = data_dir
+        train_dict["data_dir"] = data_dir
 
     if labels is not None:
         train_dict["labels"] = labels
@@ -116,7 +116,7 @@ def train(
         train_dict["dry_run"] = dry_run
 
     if save_dir is not None:
-        train_dict["save_directory"] = save_dir
+        train_dict["save_dir"] = save_dir
 
     if num_workers is not None:
         train_dict["num_workers"] = num_workers
@@ -154,17 +154,17 @@ def train(
     msg = f"""The following configuration will be used for training:
 
     Config file: {config_file}
-    Data directory: {data_dir if data_dir is not None else config_dict["train_config"].get("data_directory")}
+    Data directory: {data_dir if data_dir is not None else config_dict["train_config"].get("data_dir")}
     Labels csv: {labels if labels is not None else config_dict["train_config"].get("labels")}
     Species: {species}
     Model name: {config.train_config.model_name}
     Checkpoint: {checkpoint if checkpoint is not None else config_dict["train_config"].get("checkpoint")}
-    Weight download region: {config.train_config.weight_download_region}
     Batch size: {config.train_config.batch_size}
     Number of workers: {config.train_config.num_workers}
     GPUs: {config.train_config.gpus}
     Dry run: {config.train_config.dry_run}
-    Save directory: {config.train_config.save_directory}
+    Save directory: {config.train_config.save_dir}
+    Weight download region: {config.train_config.weight_download_region}
     """
 
     if yes:
@@ -203,11 +203,12 @@ def predict(
     batch_size: int = typer.Option(None, help="Batch size to use for training."),
     save: bool = typer.Option(
         None,
-        help="Whether to save out predictions to a csv file. If you want to specify the location of the csv, use save_path instead.",
+        help="Whether to save out predictions. If you want to specify the output directory, use save_dir instead.",
     ),
-    save_path: Path = typer.Option(
+    save_dir: Path = typer.Option(
         None,
-        help="Full path for prediction CSV file. Any needed parent directories will be created.",
+        help="An optional directory in which to save the model predictions and configuration yaml. "
+        "Defaults to the current working directory if save is True.",
     ),
     dry_run: bool = typer.Option(None, help="Runs one batch of inference to check for bugs."),
     config: Path = typer.Option(
@@ -237,6 +238,9 @@ def predict(
     skip_load_validation: bool = typer.Option(
         None,
         help="Skip check that verifies all videos can be loaded prior to inference. Only use if you're very confident all your videos can be loaded.",
+    ),
+    overwrite: bool = typer.Option(
+        None, "--overwrite", "-o", help="Overwrite outputs in the save directory if they exist."
     ),
     yes: bool = typer.Option(
         False,
@@ -271,7 +275,7 @@ def predict(
 
     # override if any command line arguments are passed
     if data_dir is not None:
-        predict_dict["data_directory"] = data_dir
+        predict_dict["data_dir"] = data_dir
 
     if filepaths is not None:
         predict_dict["filepaths"] = filepaths
@@ -294,9 +298,9 @@ def predict(
     if save is not None:
         predict_dict["save"] = save
 
-    # save path takes precedence over save
-    if save_path is not None:
-        predict_dict["save"] = save_path
+    # save_dir takes precedence over save
+    if save_dir is not None:
+        predict_dict["save_dir"] = save_dir
 
     if proba_threshold is not None:
         predict_dict["proba_threshold"] = proba_threshold
@@ -312,6 +316,9 @@ def predict(
 
     if skip_load_validation is not None:
         predict_dict["skip_load_validation"] = skip_load_validation
+
+    if overwrite is not None:
+        predict_dict["overwrite"] = overwrite
 
     try:
         manager = ModelManager(
@@ -329,7 +336,7 @@ def predict(
     msg = f"""The following configuration will be used for inference:
 
     Config file: {config_file}
-    Data directory: {data_dir if data_dir is not None else config_dict["predict_config"].get("data_directory")}
+    Data directory: {data_dir if data_dir is not None else config_dict["predict_config"].get("data_dir")}
     Filepath csv: {filepaths if filepaths is not None else config_dict["predict_config"].get("filepaths")}
     Model: {config.predict_config.model_name}
     Checkpoint: {checkpoint if checkpoint is not None else config_dict["predict_config"].get("checkpoint")}
@@ -337,7 +344,7 @@ def predict(
     Number of workers: {config.predict_config.num_workers}
     GPUs: {config.predict_config.gpus}
     Dry run: {config.predict_config.dry_run}
-    Save: {config.predict_config.save}
+    Save directory: {config.predict_config.save_dir}
     Proba threshold: {config.predict_config.proba_threshold}
     Output class names: {config.predict_config.output_class_names}
     Weight download region: {config.predict_config.weight_download_region}
@@ -387,7 +394,7 @@ def densepose(
     filepaths: Path = typer.Option(
         None, exists=True, help="Path to csv containing `filepath` column with videos."
     ),
-    save_path: Path = typer.Option(
+    save_dir: Path = typer.Option(
         None,
         help="An optional directory for saving the output. Defaults to the current working directory.",
     ),
@@ -447,13 +454,13 @@ def densepose(
 
     # override if any command line arguments are passed
     if data_dir is not None:
-        predict_dict["data_directory"] = data_dir
+        predict_dict["data_dir"] = data_dir
 
     if filepaths is not None:
         predict_dict["filepaths"] = filepaths
 
-    if save_path is not None:
-        predict_dict["save_path"] = save_path
+    if save_dir is not None:
+        predict_dict["save_dir"] = save_dir
 
     if weight_download_region is not None:
         predict_dict["weight_download_region"] = weight_download_region
@@ -478,7 +485,7 @@ def densepose(
     Config file: {config_file}
     Output type: {densepose_config.output_type}
     Render output: {densepose_config.render_output}
-    Data directory: {data_dir if data_dir is not None else config_dict.get("data_directory")}
+    Data directory: {data_dir if data_dir is not None else config_dict.get("data_dir")}
     Filepath csv: {filepaths if filepaths is not None else config_dict.get("filepaths")}
     Weight download region: {densepose_config.weight_download_region}
     Cache directory: {densepose_config.cache_dir}

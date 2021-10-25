@@ -17,7 +17,6 @@ Prerequisites:
 We recommend [Python installation using Anaconda](https://www.anaconda.com/download/) for all platforms. For more information about how to install Anaconda, here are some useful YouTube videos of installation:
 
  - [Anaconda download link](https://www.anaconda.com/download/)
-
  - [Windows install video](https://www.youtube.com/watch?v=0OXBHvFeH_U)
  - [macOS installation video](https://www.youtube.com/watch?v=nVlrpNf3EdM)
 
@@ -27,7 +26,6 @@ We recommend [Python installation using Anaconda](https://www.anaconda.com/downl
 [FFmpeg](https://ffmpeg.org/ffmpeg.html) is an open source library for loading videos of different codecs. Using FFmpeg means that `zamba` can be flexible in terms of the video formats we support. FFmpeg can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos and instructions walking through FFmpeg installation:
 
  - [FFmpeg download link](https://www.ffmpeg.org/download.html)
-
  - [Install on Ubuntu or Linux](https://www.tecmint.com/install-ffmpeg-in-linux/).
      - In the command line, enter `sudo apt update` and then `sudo apt install ffmpeg`.
  - [MacOS install video](https://www.youtube.com/watch?v=8nbuqYw2OCw&t=5s)
@@ -65,7 +63,7 @@ $ pip install -U zamba
 ```
 
 
-## Operating Systems that have been tested
+## Operating systems that have been tested
 
 ### macOS
 
@@ -75,11 +73,9 @@ $ pip install -U zamba
 
 `zamba` has been tested on [Ubuntu](https://www.ubuntu.com/) versions 16 and 17.
 
-### Windows
+**Note: `zamba` has not been tested on Windows 10.**
 
-`zamba` has been tested on Windows 10.
-
-## Using GPU
+## Using GPU(s)
 
 `zamba` is much faster on a machine with a graphics processing unit (GPU), but has also been developed and tested for machines without GPU(s).
 

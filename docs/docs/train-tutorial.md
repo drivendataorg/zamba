@@ -1,4 +1,4 @@
-# User Tutorial: Training a Model on Labaled Videos
+# User tutorial: Training a model on labaled videos
 
 This section walks through how to train a model using `zamba`. If you are new to `zamba` and just want to classify some videos as soon as possible, see the [Quickstart](quickstart.md) guide.
 
@@ -9,14 +9,14 @@ This tutorial goes over the steps for using `zamba` if:
 
 `zamba` can run two types of model training:
 
-* Fine-tuning a model with labels that are a subset of the possible [zamba labels](models/index.md#species-classes)
-* Fine-tuning a model to predict an entirely new set of labels
+* Finetuning a model with labels that are a subset of the possible [zamba labels](models/index.md#species-classes)
+* Finetuning a model to predict an entirely new set of labels
 
 The process is the same for both cases.
 
 ## Basic usage: command line interface
 
-Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`. 
+Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`.
 
 Minimum example for training in the command line:
 
@@ -43,7 +43,7 @@ leopard.MP4,leopard
 
 ## Basic usage: Python package
 
-Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`. 
+Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`.
 
 Minimum example for training using the Python package:
 
@@ -52,66 +52,51 @@ from zamba.models.model_manager import train_model
 from zamba.models.config import TrainConfig
 
 train_config = TrainConfig(
-    data_directory="example_vids/", labels="example_labels.csv"
+    data_dir="example_vids/", labels="example_labels.csv"
 )
 train_model(train_config=train_config)
 ```
 
-The only two arguments that can be passed to `train_model` are `train_config` and (optionally) `video_loader_config`. The first step is to instantiate [`TrainConfig`](configurations.md#training-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments). 
+The only two arguments that can be passed to `train_model` are `train_config` and (optionally) `video_loader_config`. The first step is to instantiate [`TrainConfig`](configurations.md#training-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments).
 
 ### Required arguments
 
-To run `train_model` in Python, you must specify both `data_directory` and `labels` when `TrainConfig` is instantiated.
+To run `train_model` in Python, you must specify both `data_dir` and `labels` when `TrainConfig` is instantiated.
 
-* **`data_directory (DirectoryPath)`:** Path to the folder containing your videos.
+* **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
 
 * **`labels (FilePath or pd.DataFrame)`:** Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`.
 
-For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
+For detailed explanations of all possible configuration arguments, see [All Configuration Options](configurations.md).
 
 ## Default behavior
 
-By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. The newly trained model will be saved to a folder in the current working directory called `zamba_{model_name}`. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `zamba_time_distributed`. 
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. You can specify where the outputs should be saved with `--save-dir`. If no save directory is specified, `zamba` will write out incremental `version_n` folders to your current working directory. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `version_0`.
 
-`zamba_time_distributed` contains:
+`version_0` contains:
 
-* `train_configuration.yaml`: The full model configuration used to generate the given model, including `video_loader_config` and `train_config`. To continue training using the same configuration, or to train another model using the same configuration, you can pass in `train_configurations.yaml` (see [Specifying Model Configurations with a YAML File](yaml-config.md)).
-* `hparams.yaml`: Model hyperparameters. For example, the YAML file below tells us that the model was trained with a learning rate (`lr`) of 0.001:
-    ```yaml
-    $ cat zamba_time_distributed/hparams.yaml
-
-    lr: 0.001
-    model_class: TimeDistributedEfficientNetMultiLayerHead
-    num_frames: 16
-    scheduler: MultiStepLR
-    scheduler_params:
-    gamma: 0.5
-    milestones:
-    - 3
-    verbose: true
-    species:
-    - species_blank
-    - species_chimpanzee_bonobo
-    - species_elephant
-    - species_leopard
-    ```
-* `time_distributed.ckpt`: Model checkpoint. The model checkpoint also includes both the model configuration in `train_configuration.yaml` and the model hyperparameters in `hparams.yaml`. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
+* `train_configuration.yaml`: The full model configuration used to generate the given model, including `video_loader_config` and `train_config`. To continue training using the same configuration, or to train another model using the same configuration, you can pass in `train_configurations.yaml` (see [Specifying Model Configurations with a YAML File](yaml-config.md)) along with the `labels` filepath.
+* `hparams.yaml`: Model hyperparameters. These are included in the checkpoint file as well.
+* `time_distributed.ckpt`: Model checkpoint. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
     ```console
-    $ zamba train --checkpoint time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
+    $ zamba train --checkpoint version_0/time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
     ```
-* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs
-* `test_metrics.json`: The model's performance on the test subset
+* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs. You can view these with tensorboard:
+    ```console
+    $ tensorboard --logdir version_0/
+    ```
 * `val_metrics.json`: The model's performance on the validation subset
+* `test_metrics.json`: The model's performance on the test (holdout) subset
 * `splits.csv`: Which files were used for training, validation, and as a holdout set. If split is specified in the labels file passed to training, `splits.csv` will not be saved out.
 
 ## Step-by-step tutorial
 
-### 1. Specify the path to your videos 
+### 1. Specify the path to your videos
 
-Save all of your videos within one folder.
+Save all of your videos in a folder.
 
 * They can be in nested directories within the folder.
-* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
+* Your videos should all be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training. By default, `zamba` will look for files with the following suffixes: `.avi`, `.mp4`, `.asf`. To use other video suffixes that are supported by FFmpeg, set your `VIDEO_SUFFIXES` environment variable.
 
 Add the path to your video folder with `--data-dir`. For example, if your videos are in a folder called `example_vids`, add `--data-dir example_vids/` to your command.
 
@@ -122,10 +107,10 @@ Add the path to your video folder with `--data-dir`. For example, if your videos
 
 === "Python"
     ```python
-    from zamba.models.model_manager import train_model
     from zamba.models.config import TrainConfig
+    from zamba.models.model_manager import train_model
 
-    train_config = TrainConfig(data_directory='example_vids/')
+    train_config = TrainConfig(data_dir='example_vids/')
     train_model(train_config=train_config)
     ```
 Note that the above will not run yet because labels are not specified.
@@ -156,7 +141,7 @@ Add the path to your labels with `--labels`.  For example, if your videos are in
     ```python
     labels_dataframe = pd.read_csv('example_labels.csv', index_col='filepath')
     train_config = TrainConfig(
-        data_directory='example_vids/', labels=labels_dataframe
+        data_dir='example_vids/', labels=labels_dataframe
     )
     train_model(train_config=train_config)
     ```
@@ -167,11 +152,13 @@ Your labels may be included in the list of [`zamba` class labels](models/index.m
 
 #### Completely new labels
 
-You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final [neural network](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) layer with a new head that predicts *your* labels instead of those that ship with `zamba`. [Backpropogation](https://www.youtube.com/watch?v=Ilg3gGewQ5U) will continue from that point with the new head. This process is called [transfer learning](https://keras.io/guides/transfer_learning/).
+You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final [neural network](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) layer with a new head that predicts *your* labels instead of those that ship with `zamba`.
 
 ### 3. Choose a model for training
 
-If your videos contain species common to central or west Africa, use the [`time_distributed` model](models/index.md#time-distributed). If they contain species common to western Europe, use the [`european` model](models/index.md#european). We do not recommend using the [`slowfast` model](models/index.md#slowfast) for training because it is much more computationally intensive and slower to run.
+Any of the models that ship with `zamba` can be trained. If you're training on entirely new species or new ecologies, we recommend starting with the [`time_distributed` model](models/index.md#time-distributed) as this model is less computationally intensive than the [`slowfast` model](models/index.md#slowfast).
+
+However, if you're tuning a model to a subset of species (e.g. a `european_beaver` or `blank` model), use the model that was trained on data that is most similar to your new data.
 
 Add the model name to your command with `--model`. The `time_distributed` model will be used if no model is specified. For example, if you want to continue training the `european` model based on the videos in `example_euro_vids` and the labels in `example_euro_labels.csv`:
 
@@ -182,7 +169,7 @@ Add the model name to your command with `--model`. The `time_distributed` model 
 === "Python"
     ```python
     train_config = TrainConfig(
-        data_directory="example_euro_vids/",
+        data_dir="example_euro_vids/",
         labels="example_euro_labels.csv",
         model_name="european",
     )
@@ -191,7 +178,7 @@ Add the model name to your command with `--model`. The `time_distributed` model 
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or specify a different path where your model should be saved (`--save-directory`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), start training from a saved model checkpoint (`--checkpoint`), or specify a different path where your model should be saved (`--save-dir`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
 
 ### 5. Test your configuration with a dry run
 
