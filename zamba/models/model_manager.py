@@ -376,6 +376,13 @@ def predict_model(
         "video_loader_config": json.loads(video_loader_config.json()),
     }
 
+    if predict_config.save is not False:
+
+        config_path = predict_config.save_dir / "predict_configuration.yaml"
+        logger.info(f"Writing out full configuration to {config_path}.")
+        with config_path.open("w") as fp:
+            yaml.dump(configuration, fp)
+
     dataloader = data_module.predict_dataloader()
     logger.info("Starting prediction...")
     probas = trainer.predict(model=model, dataloaders=dataloader)
@@ -395,11 +402,6 @@ def predict_model(
         df = df.round(5)
 
     if predict_config.save is not False:
-
-        config_path = predict_config.save_dir / "predict_configuration.yaml"
-        logger.info(f"Writing out full configuration to {config_path}.")
-        with config_path.open("w") as fp:
-            yaml.dump(configuration, fp)
 
         preds_path = predict_config.save_dir / "zamba_predictions.csv"
         logger.info(f"Saving out predictions to {preds_path}.")
