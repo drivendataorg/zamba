@@ -81,7 +81,7 @@ def instantiate_model(
             hparams = yaml.safe_load(f)
 
     else:
-        # check for local checkpoint or cached checkpoint
+        # download if neither local checkpoint nor cached checkpoint exist
         if not checkpoint.exists() and not (model_cache_dir / checkpoint).exists():
             logger.info("Downloading weights for model.")
             checkpoint = download_weights(

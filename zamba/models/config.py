@@ -331,11 +331,10 @@ class TrainConfig(ZambaBaseModel):
             training configuration (configuration.yaml), Tensorboard logs
             (events.out.tfevents...), test metrics (test_metrics.json), validation
             metrics (val_metrics.json), and model hyperparameters (hparams.yml).
-            If None, a folder is created in the working directory called
-            "zamba_``model_name``". Defaults to None.
-        overwrite (bool): If True, will save outputs in `save_dir`
-            overwriting if those exist. If False, will create auto-incremented `version_n` folder
-            in `save_dir` with model outputs. Defaults to False.
+            If None, a folder is created in the working directory. Defaults to None.
+        overwrite (bool): If True, will save outputs in `save_dir` overwriting if those
+            exist. If False, will create auto-incremented `version_n` folder in `save_dir`
+            with model outputs. Defaults to False.
         skip_load_validation (bool). Skip ffprobe check, which verifies that all
             videos can be loaded and skips files that cannot be loaded. Defaults
             to False.
@@ -548,9 +547,8 @@ class PredictConfig(ZambaBaseModel):
         save (bool): Whether to save out predictions. If False, predictions are
             not saved. Defaults to True.
         save_dir (Path, optional): An optional directory in which to save the model
-             predictions and configuration yaml. ath to a CSV to save predictions.
-             If no save_dir is specified and save=True, outputs will be written to
-             the current working directory. Defaults to None.
+             predictions and configuration yaml. If no save_dir is specified and save=True,
+             outputs will be written to the current working directory. Defaults to None.
         overwrite (bool): If True, overwrite outputs in save_dir if they exist.
             Defaults to False.
         dry_run (bool): Perform inference on a single batch for testing. Predictions
@@ -633,7 +631,7 @@ class PredictConfig(ZambaBaseModel):
             # make a directory if needed
             save_dir.mkdir(parents=True, exist_ok=True)
 
-            # set save to True if save_dir is set (save dir takes precedence)
+            # set save to True if save_dir is set
             if not save:
                 save = True
 

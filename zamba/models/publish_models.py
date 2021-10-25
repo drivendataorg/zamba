@@ -16,8 +16,6 @@ def get_model_only_params(full_configuration, subset="train_config"):
     """Return only params that are not data or machine specific.
     Used for generating official configs.
     """
-    # remove data and machine specific params
-
     if subset == "train_config":
         config = full_configuration[subset]
         for key in [
@@ -91,7 +89,7 @@ def publish_model(model_name, trained_model_dir):
     # prepare config for use in official models dir
     logger.info("Preparing official config file.")
 
-    # start will full train configuration
+    # start with full train configuration
     with (MODELS_DIRECTORY / model_name / "train_configuration.yaml").open() as f:
         train_configuration_full_dict = yaml.safe_load(f)
 
