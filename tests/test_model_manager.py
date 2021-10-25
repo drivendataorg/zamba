@@ -140,7 +140,7 @@ def test_train_save_dir_overwrite(
         checkpoint=dummy_checkpoint,
         save_dir=tmp_path / "my_model",
         skip_load_validation=True,
-        overwrite_save_dir=True,
+        overwrite=True,
         max_epochs=1,
         batch_size=1,
         auto_lr_find=False,
