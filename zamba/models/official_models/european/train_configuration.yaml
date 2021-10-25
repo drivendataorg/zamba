@@ -23,7 +23,6 @@ train_config:
     unfreeze_backbone_at_epoch: 15
     verbose: true
   batch_size: 2
-  cache_dir: /home/ubuntu/.cache/zamba
   checkpoint: data/results/experiments/td_dev_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt
   data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
@@ -35,6 +34,7 @@ train_config:
   from_scratch: false
   gpus: 1
   max_epochs: null
+  model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: null
   num_workers: 3
   overwrite_save_dir: false

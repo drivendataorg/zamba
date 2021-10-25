@@ -1,12 +1,4 @@
 train_config:
-  scheduler_config:
-    scheduler: MultiStepLR
-    scheduler_params:
-      gamma: 0.5
-      milestones:
-      - 3
-      verbose: true
-  model_name: time_distributed
   backbone_finetune_config:
     backbone_initial_ratio_lr: 0.01
     multiplier: 1
@@ -15,18 +7,43 @@ train_config:
     unfreeze_backbone_at_epoch: 3
     verbose: true
   early_stopping_config:
+    mode: max
+    monitor: val_macro_f1
     patience: 5
+    verbose: true
+  model_name: time_distributed
+  scheduler_config:
+    scheduler: MultiStepLR
+    scheduler_params:
+      gamma: 0.5
+      milestones:
+      - 3
+      verbose: true
 video_loader_config:
-  model_input_height: 240
-  model_input_width: 426
   crop_bottom_pixels: 50
-  fps: 4
-  total_frames: 16
+  early_bias: false
   ensure_total_frames: true
+  evenly_sample_total_frames: false
+  fps: 4.0
+  frame_indices: null
+  frame_selection_height: null
+  frame_selection_width: null
+  i_frames: false
   megadetector_lite_config:
     confidence: 0.25
+    device: cuda
     fill_mode: score_sorted
+    image_height: 416
+    image_width: 416
     n_frames: 16
+    nms_threshold: 0.45
+    seed: 55
+    sort_by_time: true
+  model_input_height: 240
+  model_input_width: 426
+  pix_fmt: rgb24
+  scene_threshold: null
+  total_frames: 16
 predict_config:
   model_name: time_distributed
-public_checkpoint: time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt
+public_checkpoint: time_distributed_c68adb0e9eb4a6cf49b83e86f03dea55b0edc77f.ckpt
