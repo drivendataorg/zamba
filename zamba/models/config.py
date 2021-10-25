@@ -599,6 +599,19 @@ class PredictConfig(ZambaBaseModel):
     )
 
     @root_validator(skip_on_failure=True)
+    def validate_dry_run_and_save(cls, values):
+        if values["dry_run"] and (
+            (values["save"] is not False) or (values["save_dir"] is not None)
+        ):
+            logger.warning(
+                "Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None."
+            )
+            values["save"] = False
+            values["save_dir"] = None
+
+        return values
+
+    @root_validator(skip_on_failure=True)
     def validate_save_dir(cls, values):
         save_dir = values["save_dir"]
         save = values["save"]
@@ -626,19 +639,6 @@ class PredictConfig(ZambaBaseModel):
 
         values["save_dir"] = save_dir
         values["save"] = save
-
-        return values
-
-    @root_validator(skip_on_failure=True)
-    def validate_dry_run_and_save(cls, values):
-        if values["dry_run"] and (
-            (values["save"] is not False) or (values["save_dir"] is not None)
-        ):
-            logger.warning(
-                "Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None."
-            )
-            values["save"] = False
-            values["save_dir"] = None
 
         return values
 
