@@ -551,7 +551,7 @@ class PredictConfig(ZambaBaseModel):
              predictions and configuration yaml. ath to a CSV to save predictions.
              If no save_dir is specified and save=True, outputs will be written to
              the current working directory. Defaults to None.
-        overwrite_save_dir (bool): If True, overwrite outputs in save_dir if they exist.
+        overwrite (bool): If True, overwrite outputs in save_dir if they exist.
             Defaults to False.
         dry_run (bool): Perform inference on a single batch for testing. Predictions
             will not be saved. Defaults to False.
@@ -584,7 +584,7 @@ class PredictConfig(ZambaBaseModel):
     batch_size: int = 2
     save: bool = True
     save_dir: Optional[Path] = None
-    overwrite_save_dir: bool = False
+    overwrite: bool = False
     dry_run: bool = False
     proba_threshold: Optional[float] = None
     output_class_names: bool = False
@@ -610,7 +610,6 @@ class PredictConfig(ZambaBaseModel):
     def validate_save_dir(cls, values):
         save_dir = values["save_dir"]
         save = values["save"]
-        overwrite_save_dir = values["overwrite_save_dir"]
 
         # if no save_dir but save is True, use current working directory
         if save_dir is None:
@@ -619,9 +618,12 @@ class PredictConfig(ZambaBaseModel):
 
         # if save dir is not None
         else:
-            if save_dir.exists() and not overwrite_save_dir:
+            if (
+                (save_dir / "zamba_predictions.csv").exists()
+                or (save_dir / "predict_configuration.yaml").exists()
+            ) and not values["overwrite"]:
                 raise ValueError(
-                    f"{save_dir} already exists. If you would like to overwrite, set overwrite_save_dir=True"
+                    "Predictions csv and/or yaml files already exist. If you would like to overwrite, set overwrite=True"
                 )
             else:
                 # make a directory if needed
