@@ -159,12 +159,12 @@ def train(
     Species: {species}
     Model name: {config.train_config.model_name}
     Checkpoint: {checkpoint if checkpoint is not None else config_dict["train_config"].get("checkpoint")}
-    Weight download region: {config.train_config.weight_download_region}
     Batch size: {config.train_config.batch_size}
     Number of workers: {config.train_config.num_workers}
     GPUs: {config.train_config.gpus}
     Dry run: {config.train_config.dry_run}
     Save directory: {config.train_config.save_dir}
+    Weight download region: {config.train_config.weight_download_region}
     """
 
     if yes:
@@ -344,7 +344,7 @@ def predict(
     Number of workers: {config.predict_config.num_workers}
     GPUs: {config.predict_config.gpus}
     Dry run: {config.predict_config.dry_run}
-    Save: {config.predict_config.save}
+    Save directory: {config.predict_config.save_dir}
     Proba threshold: {config.predict_config.proba_threshold}
     Output class names: {config.predict_config.output_class_names}
     Weight download region: {config.predict_config.weight_download_region}
