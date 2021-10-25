@@ -120,8 +120,11 @@ def upload_to_all_public_buckets(file, public_file_name):
         public_checkpoint = S3Path(
             f"s3://drivendata-public-assets{bucket}/zamba_official_models/{public_file_name}"
         )
-        logger.info(f"Uploading {file} to {public_checkpoint}")
-        public_checkpoint.upload_from(file, force_overwrite_to_cloud=True)
+        if public_checkpoint.exists():
+            logger.info(f"Skipping since {public_checkpoint} exists.")
+        else:
+            logger.info(f"Uploading {file} to {public_checkpoint}")
+            public_checkpoint.upload_from(file, force_overwrite_to_cloud=True)
 
 
 if __name__ == "__main__":
