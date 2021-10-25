@@ -113,7 +113,7 @@ def publish_model(model_name, trained_model_dir):
     )
 
     # hash train_configuration to generate public filename for model
-    hash_str = hashlib.sha1(str(train_configuration_full_dict).encode("utf-8")).hexdigest()
+    hash_str = hashlib.sha1(str(train_configuration_full_dict).encode("utf-8")).hexdigest()[:10]
     public_file_name = f"{model_name}_{hash_str}.ckpt"
 
     # add that to official config
@@ -125,7 +125,7 @@ def publish_model(model_name, trained_model_dir):
     with config_yaml.open("w") as f:
         yaml.dump(official_config, f, sort_keys=False)
 
-    # upload_to_all_public_buckets(private_checkpoint, public_file_name)
+    upload_to_all_public_buckets(private_checkpoint, public_file_name)
 
 
 def upload_to_all_public_buckets(file, public_file_name):

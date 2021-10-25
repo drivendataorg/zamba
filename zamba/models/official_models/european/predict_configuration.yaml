@@ -2,16 +2,18 @@ inference_start_time: '2021-10-15T03:46:08.256520'
 model_class: TimeDistributedEfficientNet
 predict_config:
   batch_size: 2
-  cache_dir: /home/ubuntu/.cache/zamba
   checkpoint: experiments/european_td_dev_base/version_0/time_distributed.ckpt
   data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
   gpus: 1
-  model_name: time_distributed
+  model_cache_dir: /home/ubuntu/.cache/zamba
+  model_name: null
   num_workers: 3
   output_class_names: false
+  overwrite: false
   proba_threshold: null
-  save: experiments/european_td_dev_base/version_0/zamba_predictions.csv
+  save: true
+  save_dir: experiments/european_td_dev_base/version_0
   skip_load_validation: true
   weight_download_region: us
 species:
@@ -27,6 +29,8 @@ species:
 - weasel
 - wild_boar
 video_loader_config:
+  cache_dir: /tmp/zamba_cache
+  cleanup_cache: false
   crop_bottom_pixels: 50
   early_bias: false
   ensure_total_frames: true

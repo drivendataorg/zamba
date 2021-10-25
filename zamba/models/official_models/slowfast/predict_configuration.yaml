@@ -10,8 +10,10 @@ predict_config:
   model_name: null
   num_workers: 3
   output_class_names: false
+  overwrite: false
   proba_threshold: null
-  save: experiments/slowfast_small_set_full_size_mdlite/version_2/zamba_predictions.csv
+  save: true
+  save_dir: experiments/slowfast_small_set_full_size_mdlite/version_2
   skip_load_validation: true
   weight_download_region: us
 species:

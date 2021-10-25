@@ -39,4 +39,4 @@ video_loader_config:
   total_frames: 16
 predict_config:
   model_name: european
-public_checkpoint: european_0a80dc77bf7eb419dc8aa3b9390910ceba2c7ddf.ckpt
+public_checkpoint: european_0a80dc77bf.ckpt
