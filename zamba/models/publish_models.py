@@ -8,8 +8,35 @@ from loguru import logger
 import yaml
 
 from zamba import MODELS_DIRECTORY
-from zamba.models.config import WEIGHT_LOOKUP, ModelEnum, TrainConfig
+from zamba.models.config import WEIGHT_LOOKUP, ModelEnum
 from zamba.models.densepose import MODELS as DENSEPOSE_MODELS
+
+
+def get_model_only_params(train_config):
+    """Return only params that are not data or machine specific.
+    Used for generating official configs.
+    """
+    # remove data and machine specific params
+    for key in [
+        "data_dir",
+        "dry_run",
+        "batch_size",
+        "auto_lr_find",
+        "gpus",
+        "num_workers",
+        "max_epochs",
+        "weight_download_region",
+        "split_proportions",
+        "save_dir",
+        "overwrite_save_dir",
+        "skip_load_validation",
+        "from_scratch",
+        "model_cache_dir",
+        "predict_all_zamba_species",
+    ]:
+        train_config.pop(key)
+
+    return train_config
 
 
 def publish_model(model_name, trained_model_dir):
@@ -51,12 +78,13 @@ def publish_model(model_name, trained_model_dir):
 
     # prepare config for use in official models dir
     logger.info("Preparing official config file.")
-    config_yaml = MODELS_DIRECTORY / model_name / "config.yaml"
 
-    with config_yaml.open() as f:
-        config_dict = yaml.safe_load(f)
+    # start will full train configuration
+    with (MODELS_DIRECTORY / model_name / "train_configuration.yaml").open() as f:
+        train_configuration_full_dict = yaml.safe_load(f)
 
-    train_config = TrainConfig.construct(**config_dict["train_config"]).get_model_only_params()
+    # get limited train config
+    train_config = get_model_only_params(train_configuration_full_dict["train_config"])
 
     # e.g. european model is trained from a checkpoint; we want to expose final model
     # (model_name: european) not the base checkpoint
@@ -66,18 +94,19 @@ def publish_model(model_name, trained_model_dir):
 
     official_config = dict(
         train_config=train_config,
-        video_loader_config=config_dict["video_loader_config"],
+        video_loader_config=train_configuration_full_dict["video_loader_config"],
         predict_config=dict(model_name=model_name),
     )
 
     # hash train_configuration to generate public filename for model
-    hash_str = hashlib.sha1(str(config_dict["train_config"]).encode("utf-8")).hexdigest()
+    hash_str = hashlib.sha1(str(train_configuration_full_dict).encode("utf-8")).hexdigest()
     public_file_name = f"{model_name}_{hash_str}.ckpt"
 
     # add that to official config
     official_config["public_checkpoint"] = public_file_name
 
     # write out official config
+    config_yaml = MODELS_DIRECTORY / model_name / "config.yaml"
     logger.info(f"Writing out to {config_yaml}")
     with config_yaml.open("w") as f:
         yaml.dump(official_config, f, sort_keys=False)

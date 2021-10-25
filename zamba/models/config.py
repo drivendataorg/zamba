@@ -522,35 +522,6 @@ class TrainConfig(ZambaBaseModel):
         values["labels"] = labels.reset_index()
         return values
 
-    def get_model_only_params(self):
-        """Return only params that are not data or machine specific.
-        Used for generating official configs.
-        """
-        train_config = self.dict()
-
-        # remove data and machine specific params
-        for key in [
-            "labels",
-            "data_dir",
-            "dry_run",
-            "batch_size",
-            "auto_lr_find",
-            "gpus",
-            "num_workers",
-            "max_epochs",
-            "weight_download_region",
-            "split_proportions",
-            "save_dir",
-            "overwrite_save_dir",
-            "skip_load_validation",
-            "from_scratch",
-            "model_cache_dir",
-            "predict_all_zamba_species",
-        ]:
-            train_config.pop(key)
-
-        return train_config
-
 
 class PredictConfig(ZambaBaseModel):
     """
