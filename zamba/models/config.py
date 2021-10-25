@@ -333,7 +333,7 @@ class TrainConfig(ZambaBaseModel):
             metrics (val_metrics.json), and model hyperparameters (hparams.yml).
             If None, a folder is created in the working directory called
             "zamba_``model_name``". Defaults to None.
-        overwrite_save_dir (bool): If True, will save outputs in `save_dir`
+        overwrite (bool): If True, will save outputs in `save_dir`
             overwriting if those exist. If False, will create auto-incremented `version_n` folder
             in `save_dir` with model outputs. Defaults to False.
         skip_load_validation (bool). Skip ffprobe check, which verifies that all
@@ -366,7 +366,7 @@ class TrainConfig(ZambaBaseModel):
     weight_download_region: RegionEnum = "us"
     split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
     save_dir: Path = Path.cwd()
-    overwrite_save_dir: bool = False
+    overwrite: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
     predict_all_zamba_species: bool = True

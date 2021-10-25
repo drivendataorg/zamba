@@ -268,7 +268,7 @@ class TrainConfig(ZambaBaseModel)
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
  save_dir: pathlib.Path = # your current working directory ,
- overwrite_save_dir: bool = False,
+ overwrite: bool = False,
  skip_load_validation: bool = False,
  from_scratch: bool = False,
  predict_all_zamba_species: bool = True,
@@ -341,7 +341,7 @@ The proportion of data to use during training, validation, and as a holdout set.
 
 Directory in which to save model checkpoint and configuration file. If not specified, will save to a `version_n` folder in your current working directory.
 
-#### `overwrite_save_dir (bool, optional)`
+#### `overwrite (bool, optional)`
 
  If `True`, will save outputs in `save_dir` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_dir` with model outputs. Defaults to `False`.
 

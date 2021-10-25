@@ -58,7 +58,7 @@ train_config:
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: time_distributed
   num_workers: 5
-  overwrite_save_dir: false
+  overwrite: false
   predict_all_zamba_species: true
   save_dir: experiments/td_small_set_full_size_mdlite
   scheduler_config:

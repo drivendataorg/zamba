@@ -228,9 +228,9 @@ def train_model(
     train_config.save_dir.mkdir(parents=True, exist_ok=True)
 
     # add folder version_n that auto increments if we are not overwriting
-    tensorboard_version = train_config.save_dir.name if train_config.overwrite_save_dir else None
+    tensorboard_version = train_config.save_dir.name if train_config.overwrite else None
     tensorboard_save_dir = (
-        train_config.save_dir.parent if train_config.overwrite_save_dir else train_config.save_dir
+        train_config.save_dir.parent if train_config.overwrite else train_config.save_dir
     )
 
     tensorboard_logger = TensorBoardLogger(
@@ -241,9 +241,7 @@ def train_model(
     )
 
     logging_and_save_dir = (
-        tensorboard_logger.log_dir
-        if not train_config.overwrite_save_dir
-        else train_config.save_dir
+        tensorboard_logger.log_dir if not train_config.overwrite else train_config.save_dir
     )
 
     model_checkpoint = ModelCheckpoint(

@@ -295,7 +295,7 @@ def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkp
                 filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
             )
             assert (
-                "zamba_predictions.csv and/or predict_configuration.yaml already exist in /home/emily/zamba. If you would like to overwrite, set overwrite=True"
+                f"zamba_predictions.csv and/or predict_configuration.yaml already exist in {save_dir}. If you would like to overwrite, set overwrite=True"
                 == error.value.errors()[0]["msg"]
             )
             pred_file.unlink()

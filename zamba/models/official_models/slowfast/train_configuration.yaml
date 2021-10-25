@@ -58,7 +58,7 @@ train_config:
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: slowfast
   num_workers: 3
-  overwrite_save_dir: false
+  overwrite: false
   predict_all_zamba_species: true
   save_dir: experiments/slowfast_small_set_full_size_mdlite
   scheduler_config:

@@ -28,7 +28,7 @@ def get_model_only_params(train_config):
         "weight_download_region",
         "split_proportions",
         "save_dir",
-        "overwrite_save_dir",
+        "overwrite",
         "skip_load_validation",
         "from_scratch",
         "model_cache_dir",
