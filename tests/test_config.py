@@ -271,25 +271,42 @@ def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkp
         skip_load_validation=True,
     )
     assert config.save is True
+    # save dir gets created
     assert (tmp_path / "my_dir").exists()
 
+    # empty save dir does not error
     save_dir = tmp_path / "save_dir"
     save_dir.mkdir()
 
-    with pytest.raises(ValueError) as error:
-        config = PredictConfig(
-            filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
-        )
-        assert (
-            f"{save_dir} already exists. If you would like to overwrite, set overwrite_save_dir=True"
-            == error.value.errors()[0]["msg"]
-        )
+    config = PredictConfig(
+        filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
+    )
+    assert config.save_dir == save_dir
 
+    # save dir with prediction csv or yaml will error
+    for pred_file in [
+        (save_dir / "zamba_predictions.csv"),
+        (save_dir / "predict_configuration.yaml"),
+    ]:
+        with pytest.raises(ValueError) as error:
+            # just takes one of the two files to raise error
+            pred_file.touch()
+            config = PredictConfig(
+                filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
+            )
+            assert (
+                "Predictions csv and/or yaml files already exist. If you would like to overwrite, set overwrite=True"
+                == error.value.errors()[0]["msg"]
+            )
+            pred_file.unlink()
+
+    # can overwrite
+    pred_file.touch()
     config = PredictConfig(
         filepaths=labels_absolute_path,
         save_dir=save_dir,
         skip_load_validation=True,
-        overwrite_save_dir=True,
+        overwrite=True,
     )
     assert config.save_dir == save_dir
 
