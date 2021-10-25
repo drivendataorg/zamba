@@ -36,6 +36,9 @@ def download_weights(
 
 
 def get_model_checkpoint_filename(model_name):
+    if isinstance(model_name, Enum):
+        model_name = model_name.value
+
     config_file = MODELS_DIRECTORY / model_name / "config.yaml"
     with config_file.open() as f:
         config_dict = yaml.safe_load(f)
