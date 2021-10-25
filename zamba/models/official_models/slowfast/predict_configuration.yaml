@@ -3,15 +3,17 @@ model_class: SlowFast
 predict_config:
   batch_size: 2
   checkpoint: experiments/slowfast_small_set_full_size_mdlite/version_2/slowfast.ckpt
-  data_directory: /home/ubuntu/zamba-algorithms
+  data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
   gpus: 1
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: null
   num_workers: 3
   output_class_names: false
+  overwrite: false
   proba_threshold: null
-  save: experiments/slowfast_small_set_full_size_mdlite/version_2/zamba_predictions.csv
+  save: true
+  save_dir: experiments/slowfast_small_set_full_size_mdlite/version_2
   skip_load_validation: true
   weight_download_region: us
 species:

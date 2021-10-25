@@ -81,7 +81,8 @@ def instantiate_model(
             hparams = yaml.safe_load(f)
 
     else:
-        if not (model_cache_dir / checkpoint).exists():
+        # download if neither local checkpoint nor cached checkpoint exist
+        if not checkpoint.exists() and not (model_cache_dir / checkpoint).exists():
             logger.info("Downloading weights for model.")
             checkpoint = download_weights(
                 filename=str(checkpoint),
@@ -225,16 +226,12 @@ def train_model(
 
     validate_species(model, data_module)
 
-    train_config.save_directory.mkdir(parents=True, exist_ok=True)
+    train_config.save_dir.mkdir(parents=True, exist_ok=True)
 
     # add folder version_n that auto increments if we are not overwriting
-    tensorboard_version = (
-        train_config.save_directory.name if train_config.overwrite_save_directory else None
-    )
+    tensorboard_version = train_config.save_dir.name if train_config.overwrite else None
     tensorboard_save_dir = (
-        train_config.save_directory.parent
-        if train_config.overwrite_save_directory
-        else train_config.save_directory
+        train_config.save_dir.parent if train_config.overwrite else train_config.save_dir
     )
 
     tensorboard_logger = TensorBoardLogger(
@@ -245,9 +242,7 @@ def train_model(
     )
 
     logging_and_save_dir = (
-        tensorboard_logger.log_dir
-        if not train_config.overwrite_save_directory
-        else train_config.save_directory
+        tensorboard_logger.log_dir if not train_config.overwrite else train_config.save_dir
     )
 
     model_checkpoint = ModelCheckpoint(
@@ -381,6 +376,13 @@ def predict_model(
         "video_loader_config": json.loads(video_loader_config.json()),
     }
 
+    if predict_config.save is not False:
+
+        config_path = predict_config.save_dir / "predict_configuration.yaml"
+        logger.info(f"Writing out full configuration to {config_path}.")
+        with config_path.open("w") as fp:
+            yaml.dump(configuration, fp)
+
     dataloader = data_module.predict_dataloader()
     logger.info("Starting prediction...")
     probas = trainer.predict(model=model, dataloaders=dataloader)
@@ -401,14 +403,9 @@ def predict_model(
 
     if predict_config.save is not False:
 
-        config_path = predict_config.save.parent / "predict_configuration.yaml"
-        config_path.parent.mkdir(exist_ok=True, parents=True)
-        logger.info(f"Writing out full configuration to {config_path}.")
-        with config_path.open("w") as fp:
-            yaml.dump(configuration, fp)
-
-        logger.info(f"Saving out predictions to {predict_config.save}.")
-        with predict_config.save.open("w") as fp:
+        preds_path = predict_config.save_dir / "zamba_predictions.csv"
+        logger.info(f"Saving out predictions to {preds_path}.")
+        with preds_path.open("w") as fp:
             df.to_csv(fp, index=True)
 
     return df

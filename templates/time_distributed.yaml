@@ -1,14 +1,14 @@
 train_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
+  # data_dir: YOUR_DATA_DIR HERE
   # labels: YOUR_LABELS_CSV_HERE
   model_name: time_distributed
   backbone_finetune_config:
     backbone_initial_ratio_lr: 0.01
     multiplier: 1
-    pre_train_bn: True
-    train_bn: False
+    pre_train_bn: true
+    train_bn: false
     unfreeze_backbone_at_epoch: 3
-    verbose: True
+    verbose: true
   early_stopping_config:
     patience: 5
   scheduler_config:
@@ -25,14 +25,14 @@ video_loader_config:
   crop_bottom_pixels: 50
   fps: 4
   total_frames: 16
-  ensure_total_frames: True
+  ensure_total_frames: true
   megadetector_lite_config:
     confidence: 0.25
     fill_mode: score_sorted
     n_frames: 16
 
 predict_config:
-  # data_directory: YOUR_DATA_DIRECTORY_HERE
+  # data_dir: YOUR_DATA_DIR HERE
   # or
   # filepaths: YOUR_FILEPATH_CSV_HERE
   model_name: time_distributed

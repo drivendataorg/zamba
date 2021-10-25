@@ -41,7 +41,7 @@ Once that is done, here's how to run the DensePose model:
 === "Python"
     ```python
     from zamba.models.densepose import DensePoseConfig
-    densepose_conf = DensePoseConfig(data_directory="PATH_TO_VIDEOS", render_output=True)
+    densepose_conf = DensePoseConfig(data_dir="PATH_TO_VIDEOS", render_output=True)
     densepose_conf.run_model()
     ```
 
@@ -68,7 +68,7 @@ Options:
                                   containing images/videos.
   --filepaths PATH                Path to csv containing `filepath` column
                                   with videos.
-  --save-path PATH                An optional directory for saving the output.
+  --save-dir PATH                 An optional directory for saving the output.
                                   Defaults to the current working directory.
   --config PATH                   Specify options using yaml configuration
                                   file instead of through command line

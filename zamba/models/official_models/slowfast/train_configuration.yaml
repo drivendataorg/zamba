@@ -45,7 +45,7 @@ train_config:
     verbose: true
   batch_size: 2
   checkpoint: null
-  data_directory: /home/ubuntu/zamba-algorithms
+  data_dir: /home/ubuntu/zamba-algorithms
   dry_run: false
   early_stopping_config:
     mode: max
@@ -58,9 +58,9 @@ train_config:
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: slowfast
   num_workers: 3
-  overwrite_save_directory: false
+  overwrite: false
   predict_all_zamba_species: true
-  save_directory: experiments/slowfast_small_set_full_size_mdlite
+  save_dir: experiments/slowfast_small_set_full_size_mdlite
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:

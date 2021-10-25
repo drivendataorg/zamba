@@ -37,7 +37,7 @@ Minimum example for prediction using the Python package:
 from zamba.models.model_manager import predict_model
 from zamba.models.config import PredictConfig
 
-predict_config = PredictConfig(data_directory="example_vids/")
+predict_config = PredictConfig(data_dir="example_vids/")
 predict_model(predict_config=predict_config)
 ```
 
@@ -45,9 +45,9 @@ The only two arguments that can be passed to `predict_model` are `predict_config
 
 ### Required arguments
 
-To run `predict_model` in Python, you must specify either `data_directory` or `filepaths` when `PredictConfig` is instantiated.
+To run `predict_model` in Python, you must specify either `data_dir` or `filepaths` when `PredictConfig` is instantiated.
 
-* **`data_directory (DirectoryPath)`:** Path to the folder containing your videos.
+* **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
 
 * **`filepaths (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute or relative to the data directory.
 
@@ -57,7 +57,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 By default, the [`time_distributed`](models/index.md#time-distributed) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.*
 
-By default, predictions will be saved to `zamba_predictions.csv`. You can save predictions to a custom directory using the `--save-path` argument.
+By default, predictions will be saved to `zamba_predictions.csv` in your working directory. You can save predictions to a custom directory using the `--save-dir` argument.
 
 ```console
 $ cat zamba_predictions.csv
@@ -90,7 +90,7 @@ Add the path to your video folder. For example, if your videos are in a folder c
     ```
 === "Python"
     ```python
-    predict_config = PredictConfig(data_directory='example_vids/')
+    predict_config = PredictConfig(data_dir='example_vids/')
     predict_model(predict_config=predict_config)
     ```
 
@@ -109,7 +109,7 @@ Add the model name to your command. The `time_distributed` model will be used if
 === "Python"
     ```python
     predict_config = PredictConfig(
-        data_directory='example_vids/', model_name='slowfast'
+        data_dir='example_vids/', model_name='slowfast'
     )
     predict_model(predict_config=predict_config)
     ```
@@ -137,7 +137,7 @@ Say we want to generate predictions for the videos in `example_vids` indicating 
 === "Python"
     ```python
     predict_config = PredictConfig(
-        data_directory="example_vids/", proba_threshold=0.5
+        data_dir="example_vids/", proba_threshold=0.5
     )
     predict_model(predict_config=predict_config)
     predictions = pd.read_csv("zamba_predictions.csv")
@@ -153,7 +153,7 @@ Say we want to generate predictions for the videos in `example_vids` indicating 
 
 ### 4. Specify any additional parameters
 
-And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or specify a different path where your predictions should be saved (`--save`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
+And there's so much more! You can also do things like specify your region for faster model download (`--weight-download-region`), use a saved model checkpoint (`--checkpoint`), or specify a different folder where your predictions should be saved (`--save-dir`). To read about a few common considerations, see the [Guide to Common Optional Parameters](extra-options.md) page.
 
 ### 5. Test your configuration with a dry run
 

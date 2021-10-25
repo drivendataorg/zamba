@@ -65,7 +65,8 @@ $ zamba predict --data-dir example_vids/
 ```
 
 `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell `(i,j)` is *the probability that animal `j` is present in video `i`.*  Comprehensive predictions are helpful when a single video contains multiple species.
-Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions to a different folder using the `--save-path` argument.
+
+Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions to a different folder using the `--save-dir` argument.
 
 Adding the argument `--output-class-names` will simplify the predictions to return only the *most likely* animal in each video:
 
@@ -108,7 +109,7 @@ eleph.MP4,elephant
 leopard.MP4,leopard
 ```
 
-By default, the trained model and additional training output will be saved to a `version_*` folder in the current working directory. For example,
+By default, the trained model and additional training output will be saved to a `version_n` folder in the current working directory. For example,
 
 ```console
 $ zamba train --data-dir example_vids/ --labels example_labels.csv
@@ -134,8 +135,6 @@ Once zamba is installed, you can see more details of each function with `--help`
 To get help with `zamba predict`:
 
 ```console
-$ zamba predict --help
-
 Usage: zamba predict [OPTIONS]
 
   Identify species in a video.
@@ -162,11 +161,13 @@ Options:
                                   specifiied, will use all GPUs found on
                                   machine.
   --batch-size INTEGER            Batch size to use for training.
-  --save / --no-save              Whether to save out predictions to a csv
-                                  file. If you want to specify the location of
-                                  the csv, use save_path instead.
-  --save-path PATH                Full path for prediction CSV file. Any
-                                  needed parent directories will be created.
+  --save / --no-save              Whether to save out predictions. If you want
+                                  to specify the output directory, use
+                                  save_dir instead.
+  --save-dir PATH                 An optional directory in which to save the
+                                  model predictions and configuration yaml.
+                                  Defaults to the current working directory if
+                                  save is True.
   --dry-run / --no-dry-run        Runs one batch of inference to check for
                                   bugs.
   --config PATH                   Specify options using yaml configuration
@@ -193,6 +194,8 @@ Options:
                                   loaded prior to inference. Only use if
                                   you're very confident all your videos can be
                                   loaded.
+  -o, --overwrite                 Overwrite outputs in the save directory if
+                                  they exist.
   -y, --yes                       Skip confirmation of configuration and
                                   proceed right to prediction.
   --help                          Show this message and exit.
@@ -228,11 +231,10 @@ Options:
                                   machine.
   --dry-run / --no-dry-run        Runs one batch of train and validation to
                                   check for bugs.
-  --save-dir PATH                 Directory in which to save model checkpoint
-                                  and configuration file. If not specified,
-                                  will save to a folder called
-                                  'zamba_{model_name}' in your working
-                                  directory.
+  --save-dir PATH                 An optional directory in which to save the
+                                  model checkpoint and configuration file. If
+                                  not specified, will save to a `version_n`
+                                  folder in your working directory.
   --num-workers INTEGER           Number of subprocesses to use for data
                                   loading.
   --weight-download-region [us|eu|asia]

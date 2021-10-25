@@ -22,7 +22,7 @@ For using a YAML file with the Python package and other details, see the [YAML C
     In Python this can be specified in [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):
     ```python
     predict_config = PredictConfig(
-        data_directory="example_vids/",
+        data_dir="example_vids/",
         weight_download_region='asia',
     )
     ```
@@ -50,7 +50,7 @@ Say that you have a large number of videos, and you are more concerned with dete
     from zamba.models.config import PredictConfig
     from zamba.models.model_manager import predict_model
 
-    predict_config = PredictConfig(data_directory="example_vids/")
+    predict_config = PredictConfig(data_dir="example_vids/")
 
     video_loader_config = VideoLoaderConfig(
         model_input_height=50, model_input_width=50, total_frames=16
@@ -139,7 +139,7 @@ For example, to take the 16 frames with the highest probability of detection:
         total_frames=16,
     )
 
-    train_config = TrainConfig(data_directory="example_vids/", labels="example_labels.csv",)
+    train_config = TrainConfig(data_dir="example_vids/", labels="example_labels.csv",)
 
     train_model(video_loader_config=video_loader_config, train_config=train_config)
     ```
@@ -162,7 +162,7 @@ Both can be specified in either [`predict_config`](configurations.md#prediction-
 === "YAML file"
     ```yaml
     predict_config:
-        data_directory: example_vids/
+        data_dir: example_vids/
         num_workers: 5
         batch_size: 4
         # ... other parameters
@@ -170,7 +170,7 @@ Both can be specified in either [`predict_config`](configurations.md#prediction-
 === "Python"
     ```python
     predict_config = PredictConfig(
-        data_directory="example_vids/",
+        data_dir="example_vids/",
         num_workers=5,
         batch_size=4,
         # ... other parameters

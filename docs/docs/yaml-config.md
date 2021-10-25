@@ -14,7 +14,7 @@ video_loader_config:
 
 train_config:
   model_name: time_distributed
-  data_directory: example_vids/
+  data_dir: example_vids/
   labels: example_labels.csv
   # other training parameters, eg. batch_size
 
@@ -39,7 +39,7 @@ predict_config:
 
 ## Required arguments
 
-Either `predict_config` or `train_config` is required, based on whether you will be running inference or training a model. See [All Configuration Options](configurations.md) for a full list of what can be specified under each class. To run inference, `data_directory`and/or `filepaths` must be specified. To train a model, `labels` must be specified.
+Either `predict_config` or `train_config` is required, based on whether you will be running inference or training a model. See [All Configuration Options](configurations.md) for a full list of what can be specified under each class. To run inference, `data_dir`and/or `filepaths` must be specified. To train a model, `labels` must be specified.
 
 In `video_loader_config`, you must specify at least `model_input_height`, `model_input_width`, and `total_frames`. While this is the minimum required, we strongly recommend being intentional in your choice of frame selection method. `total_frames` by itself will just take the first `n` frames. For a full list of frame selection methods, see the section on [Video loading arguments](configurations.md#video-loading-arguments).
 

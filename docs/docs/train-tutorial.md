@@ -52,7 +52,7 @@ from zamba.models.model_manager import train_model
 from zamba.models.config import TrainConfig
 
 train_config = TrainConfig(
-    data_directory="example_vids/", labels="example_labels.csv"
+    data_dir="example_vids/", labels="example_labels.csv"
 )
 train_model(train_config=train_config)
 ```
@@ -61,9 +61,9 @@ The only two arguments that can be passed to `train_model` are `train_config` an
 
 ### Required arguments
 
-To run `train_model` in Python, you must specify both `data_directory` and `labels` when `TrainConfig` is instantiated.
+To run `train_model` in Python, you must specify both `data_dir` and `labels` when `TrainConfig` is instantiated.
 
-* **`data_directory (DirectoryPath)`:** Path to the folder containing your videos.
+* **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
 
 * **`labels (FilePath or pd.DataFrame)`:** Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`.
 
@@ -71,7 +71,7 @@ For detailed explanations of all possible configuration arguments, see [All Conf
 
 ## Default behavior
 
-By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. You can specify where the outputs should be saved with `--save-dir`. If no save directory is specified, `zamba` will write out incremental `version_*` folders to your current working directory. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `version_0`.
+By default, the [`time_distributed`](models/index.md#time-distributed) model will be used as a starting point. You can specify where the outputs should be saved with `--save-dir`. If no save directory is specified, `zamba` will write out incremental `version_n` folders to your current working directory. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `version_0`.
 
 `version_0` contains:
 
@@ -110,7 +110,7 @@ Add the path to your video folder with `--data-dir`. For example, if your videos
     from zamba.models.config import TrainConfig
     from zamba.models.model_manager import train_model
 
-    train_config = TrainConfig(data_directory='example_vids/')
+    train_config = TrainConfig(data_dir='example_vids/')
     train_model(train_config=train_config)
     ```
 Note that the above will not run yet because labels are not specified.
@@ -141,7 +141,7 @@ Add the path to your labels with `--labels`.  For example, if your videos are in
     ```python
     labels_dataframe = pd.read_csv('example_labels.csv', index_col='filepath')
     train_config = TrainConfig(
-        data_directory='example_vids/', labels=labels_dataframe
+        data_dir='example_vids/', labels=labels_dataframe
     )
     train_model(train_config=train_config)
     ```
@@ -169,7 +169,7 @@ Add the model name to your command with `--model`. The `time_distributed` model 
 === "Python"
     ```python
     train_config = TrainConfig(
-        data_directory="example_euro_vids/",
+        data_dir="example_euro_vids/",
         labels="example_euro_labels.csv",
         model_name="european",
     )

@@ -32,7 +32,7 @@ All video loading arguments can be specified either in a [YAML file](yaml-config
     from zamba.models.config import PredictConfig
     from zamba.models.model_manager import predict_model
 
-    predict_config = PredictConfig(data_directory="example_vids/")
+    predict_config = PredictConfig(data_dir="example_vids/")
     video_loader_config = VideoLoaderConfig(
         model_input_height=240,
         model_input_width=426,
@@ -146,14 +146,16 @@ All possible model inference parameters are defined by the [`PredictConfig` clas
 
 class PredictConfig(ZambaBaseModel)
  |  PredictConfig(*,
- data_directory: DirectoryPath = Path.cwd()
+ data_dir: DirectoryPath = Path.cwd(),
  filepaths: FilePath = None,
  checkpoint: FilePath = None,
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
  gpus: int = 0,
  num_workers: int = 3,
  batch_size: int = 2,
- save: Union[bool, pathlib.Path] = True,
+ save: bool = True,
+ save_dir: Optional[Path] = None,
+ overwrite: bool = False,
  dry_run: bool = False,
  proba_threshold: float = None,
  output_class_names: bool = False,
@@ -164,9 +166,9 @@ class PredictConfig(ZambaBaseModel)
  ...
 ```
 
-**Either `data_directory` or `filepaths` must be specified to instantiate `PredictConfig`.** If neither is specified, the current working directory will be used as the default `data_directory`.
+**Either `data_dir` or `filepaths` must be specified to instantiate `PredictConfig`.** If neither is specified, the current working directory will be used as the default `data_dir`.
 
-#### `data_directory (DirectoryPath, optional)`
+#### `data_dir (DirectoryPath, optional)`
 
 Path to the directory containing videos for inference. Defaults to the current working directory.
 
@@ -194,9 +196,18 @@ The number of CPUs to use during training. The maximum value for `num_workers` i
 
 The batch size to use for inference. Defaults to `2`
 
-#### `save (bool, optional)`
+#### `save (bool)`
 
-Whether to save out the predictions to a CSV file. By default, predictions will be saved at `zamba_predictions.csv`. Defaults to `True`
+Whether to save out predictions. If `False`, predictions are not saved. Defaults to `True`.
+
+#### `save_dir (Path, optional)`
+
+An optional directory in which to save the model predictions and configuration yaml.  If
+no `save_dir` is specified and `save` is True, outputs will be written to the current working directory. Defaults to `None`
+
+#### `overwrite (bool)`
+
+If True, will overwrite `zamba_predictions.csv` and `predict_configuration.yaml` in `save_dir` if they exist. Defaults to False.
 
 #### `dry_run (bool, optional)`
 
@@ -237,7 +248,7 @@ All possible model training parameters are defined by the [`TrainConfig` class](
 class TrainConfig(ZambaBaseModel)
  |  TrainConfig(*,
  labels: Union[FilePath, pandas.DataFrame],
- data_directory: DirectoryPath = # your current working directory ,
+ data_dir: DirectoryPath = # your current working directory ,
  checkpoint: FilePath = None,
  scheduler_config: Union[str, zamba.models.config.SchedulerConfig, NoneType] = 'default',
  model_name: zamba.models.config.ModelEnum = <ModelEnum.time_distributed: 'time_distributed'>,
@@ -256,8 +267,8 @@ class TrainConfig(ZambaBaseModel)
             verbose=True, mode='max'),
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  split_proportions: Dict[str, int] = {'train': 3, 'val': 1, 'holdout': 1},
- save_directory: pathlib.Path = # your current working directory ,
- overwrite_save_directory: bool = False,
+ save_dir: pathlib.Path = # your current working directory ,
+ overwrite: bool = False,
  skip_load_validation: bool = False,
  from_scratch: bool = False,
  predict_all_zamba_species: bool = True,
@@ -270,7 +281,7 @@ class TrainConfig(ZambaBaseModel)
 
 Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`. **`labels` must be specified to instantiate `TrainConfig`.**
 
-#### `data_directory (DirectoryPath, optional)`
+#### `data_dir (DirectoryPath, optional)`
 
 Path to the directory containing training videos. Defaults to the current working directory.
 
@@ -326,13 +337,13 @@ Because `zamba` needs to download pretrained weights for the neural network arch
 
 The proportion of data to use during training, validation, and as a holdout set. Defaults to `{"train": 3, "val": 1, "holdout": 1}`
 
-#### `save_directory (Path, optional)`
+#### `save_dir (Path, optional)`
 
-Directory in which to save model checkpoint and configuration file. If not specified, will save to a `version_*` folder in your working directory.
+Directory in which to save model checkpoint and configuration file. If not specified, will save to a `version_n` folder in your current working directory.
 
-#### `overwrite_save_directory (bool, optional)`
+#### `overwrite (bool, optional)`
 
- If `True`, will save outputs in `save_directory` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_directory` with model outputs. Defaults to `False`.
+ If `True`, will save outputs in `save_dir` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_dir` with model outputs. Defaults to `False`.
 
 #### `skip_load_validation (bool, optional)`
 

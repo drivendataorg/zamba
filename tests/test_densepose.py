@@ -122,8 +122,8 @@ def test_denseposeconfig(model, tmp_path):
             output_type="bananas",
             render_output=True,
             embeddings_in_json=False,
-            data_directory=ASSETS_DIR / "densepose_tests",
-            save_path=tmp_path,
+            data_dir=ASSETS_DIR / "densepose_tests",
+            save_dir=tmp_path,
         )
 
     dpc = DensePoseConfig(
@@ -131,13 +131,13 @@ def test_denseposeconfig(model, tmp_path):
         output_type="segmentation" if model == "animals" else "chimp_anatomy",
         render_output=True,
         embeddings_in_json=False,
-        data_directory=ASSETS_DIR / "densepose_tests",
-        save_path=tmp_path,
+        data_dir=ASSETS_DIR / "densepose_tests",
+        save_dir=tmp_path,
     )
 
     dpc.run_model()
 
-    # ensure all outputs are saved in save_path
+    # ensure all outputs are saved in save_dir
     assert (tmp_path / "chimp_denspose_video.mp4").exists()
     assert (tmp_path / "chimp_denspose_labels.json").exists()
 

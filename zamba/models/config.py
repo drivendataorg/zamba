@@ -78,14 +78,14 @@ def validate_model_cache_dir(model_cache_dir: Optional[Path]):
 
 
 def check_files_exist_and_load(
-    df: pd.DataFrame, data_directory: DirectoryPath, skip_load_validation: bool
+    df: pd.DataFrame, data_dir: DirectoryPath, skip_load_validation: bool
 ):
     """Check whether files in file list exist and can be loaded with ffmpeg.
     Warn and skip files that don't exist or can't be loaded.
 
     Args:
         df (pd.DataFrame): DataFrame with a "filepath" column
-        data_directory (Path): Data folder to prepend if filepath is not an
+        data_dir (Path): Data folder to prepend if filepath is not an
             absolute path.
         skip_load_validation (bool): Skip ffprobe check that verifies all videos
             can be loaded.
@@ -94,7 +94,7 @@ def check_files_exist_and_load(
         pd.DataFrame: DataFrame with valid and loadable videos.
     """
     # update filepath column to prepend data_dir if filepath column is not an absolute path
-    data_dir = Path(data_directory).resolve()
+    data_dir = Path(data_dir).resolve()
     df["filepath"] = str(data_dir) / df.filepath.path
 
     # we can have multiple rows per file with labels so limit just to one row per file for these checks
@@ -109,7 +109,7 @@ def check_files_exist_and_load(
     # if no files exist
     if len(invalid_files) == len(files_df):
         raise ValueError(
-            f"None of the video filepaths exist. Are you sure they're specified correctly? Here's an example invalid path: {invalid_files.filepath.values[0]}. Either specify absolute filepaths in the csv or provide filepaths relative to `data_directory`."
+            f"None of the video filepaths exist. Are you sure they're specified correctly? Here's an example invalid path: {invalid_files.filepath.values[0]}. Either specify absolute filepaths in the csv or provide filepaths relative to `data_dir`."
         )
 
     # if at least some files exist
@@ -280,10 +280,10 @@ class TrainConfig(ZambaBaseModel):
     Args:
         labels (FilePath or pandas DataFrame): Path to a CSV or pandas DataFrame
             containing labels for training, with one row per label. There must be
-            columns called 'filepath' (absolute or relative to the data_directory) and
+            columns called 'filepath' (absolute or relative to the data_dir) and
             'label', and optionally columns called 'split' ("train", "val", or "holdout")
             and 'site'. Labels must be specified to train a model.
-        data_directory (DirectoryPath): Path to a directory containing training
+        data_dir (DirectoryPath): Path to a directory containing training
             videos. Defaults to the working directory.
         model_name (str, optional): Name of the model to use for training. Options
             are: time_distributed, slowfast, european. Defaults to time_distributed.
@@ -326,16 +326,15 @@ class TrainConfig(ZambaBaseModel):
         split_proportions (dict): Proportions used to divide data into training,
             validation, and holdout sets if a if a "split" column is not included in
             labels. Defaults to "train": 3, "val": 1, "holdout": 1.
-        save_directory (Path, optional): Path to a directory where training files
+        save_dir (Path, optional): Path to a directory where training files
             will be saved. Files include the best model checkpoint (``model_name``.ckpt),
             training configuration (configuration.yaml), Tensorboard logs
             (events.out.tfevents...), test metrics (test_metrics.json), validation
             metrics (val_metrics.json), and model hyperparameters (hparams.yml).
-            If None, a folder is created in the working directory called
-            "zamba_``model_name``". Defaults to None.
-        overwrite_save_directory (bool): If True, will save outputs in `save_directory`
-            overwriting if those exist. If False, will create auto-incremented `version_n` folder
-            in `save_directory` with model outputs. Defaults to False.
+            If None, a folder is created in the working directory. Defaults to None.
+        overwrite (bool): If True, will save outputs in `save_dir` overwriting if those
+            exist. If False, will create auto-incremented `version_n` folder in `save_dir`
+            with model outputs. Defaults to False.
         skip_load_validation (bool). Skip ffprobe check, which verifies that all
             videos can be loaded and skips files that cannot be loaded. Defaults
             to False.
@@ -351,7 +350,7 @@ class TrainConfig(ZambaBaseModel):
     """
 
     labels: Union[FilePath, pd.DataFrame]
-    data_directory: DirectoryPath = Path.cwd()
+    data_dir: DirectoryPath = Path.cwd()
     checkpoint: Optional[FilePath] = None
     scheduler_config: Optional[Union[str, SchedulerConfig]] = "default"
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
@@ -365,8 +364,8 @@ class TrainConfig(ZambaBaseModel):
     early_stopping_config: Optional[EarlyStoppingConfig] = EarlyStoppingConfig()
     weight_download_region: RegionEnum = "us"
     split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
-    save_directory: Path = Path.cwd()
-    overwrite_save_directory: bool = False
+    save_dir: Path = Path.cwd()
+    overwrite: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
     predict_all_zamba_species: bool = True
@@ -466,7 +465,7 @@ class TrainConfig(ZambaBaseModel):
         # check that all videos exist and can be loaded
         values["labels"] = check_files_exist_and_load(
             df=labels,
-            data_directory=values["data_directory"],
+            data_dir=values["data_dir"],
             skip_load_validation=values["skip_load_validation"],
         )
         return values
@@ -508,48 +507,19 @@ class TrainConfig(ZambaBaseModel):
                 )
 
                 logger.info(
-                    f"Writing out split information to {values['save_directory'] / 'splits.csv'}."
+                    f"Writing out split information to {values['save_dir'] / 'splits.csv'}."
                 )
 
                 # create the directory to save if we need to.
-                values["save_directory"].mkdir(parents=True, exist_ok=True)
+                values["save_dir"].mkdir(parents=True, exist_ok=True)
 
                 labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(
-                    values["save_directory"] / "splits.csv", index=False
+                    values["save_dir"] / "splits.csv", index=False
                 )
 
         # filepath becomes column instead of index
         values["labels"] = labels.reset_index()
         return values
-
-    def get_model_only_params(self):
-        """Return only params that are not data or machine specific.
-        Used for generating official configs.
-        """
-        train_config = self.dict()
-
-        # remove data and machine specific params
-        for key in [
-            "labels",
-            "data_directory",
-            "dry_run",
-            "batch_size",
-            "auto_lr_find",
-            "gpus",
-            "num_workers",
-            "max_epochs",
-            "weight_download_region",
-            "split_proportions",
-            "save_directory",
-            "overwrite_save_directory",
-            "skip_load_validation",
-            "from_scratch",
-            "model_cache_dir",
-            "predict_all_zamba_species",
-        ]:
-            train_config.pop(key)
-
-        return train_config
 
 
 class PredictConfig(ZambaBaseModel):
@@ -558,10 +528,10 @@ class PredictConfig(ZambaBaseModel):
 
     Args:
         filepaths (FilePath): Path to a CSV containing videos for inference, with
-            one row per video in the data_directory. There must be a column called
-            'filepath' (absolute or relative to the data_directory). If None, uses
-            all files in data_directory. Defaults to None.
-        data_directory (DirectoryPath): Path to a directory containing videos for
+            one row per video in the data_dir. There must be a column called
+            'filepath' (absolute or relative to the data_dir). If None, uses
+            all files in data_dir. Defaults to None.
+        data_dir (DirectoryPath): Path to a directory containing videos for
             inference. Defaults to the working directory.
         model_name (str, optional): Name of the model to use for inference. Options
             are: time_distributed, slowfast, european. Defaults to time_distributed.
@@ -574,9 +544,13 @@ class PredictConfig(ZambaBaseModel):
             that the data will be loaded in the main process. The maximum value is
             the number of CPUs in the system. Defaults to 3.
         batch_size (int): Batch size to use for inference. Defaults to 2.
-        save (bool or Path): Path to a CSV to save predictions. If True is passed,
-            "zamba_predictions.csv" is written to the current working directory.
-            If False is passed, predictions are not saved. Defaults to True.
+        save (bool): Whether to save out predictions. If False, predictions are
+            not saved. Defaults to True.
+        save_dir (Path, optional): An optional directory in which to save the model
+             predictions and configuration yaml. If no save_dir is specified and save=True,
+             outputs will be written to the current working directory. Defaults to None.
+        overwrite (bool): If True, overwrite outputs in save_dir if they exist.
+            Defaults to False.
         dry_run (bool): Perform inference on a single batch for testing. Predictions
             will not be saved. Defaults to False.
         proba_threshold (float, optional): Probability threshold for classification.
@@ -599,14 +573,16 @@ class PredictConfig(ZambaBaseModel):
             default cache directory. Defaults to None.
     """
 
-    data_directory: DirectoryPath = Path.cwd()
+    data_dir: DirectoryPath = Path.cwd()
     filepaths: Optional[FilePath] = None
     checkpoint: Optional[FilePath] = None
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3
     batch_size: int = 2
-    save: Union[bool, Path] = True
+    save: bool = True
+    save_dir: Optional[Path] = None
+    overwrite: bool = False
     dry_run: bool = False
     proba_threshold: Optional[float] = None
     output_class_names: bool = False
@@ -622,42 +598,45 @@ class PredictConfig(ZambaBaseModel):
 
     @root_validator(skip_on_failure=True)
     def validate_dry_run_and_save(cls, values):
-        if values["dry_run"] and (values["save"] is not False):
-            logger.warning("Cannot save when predicting with dry_run=True. Setting save=False.")
+        if values["dry_run"] and (
+            (values["save"] is not False) or (values["save_dir"] is not None)
+        ):
+            logger.warning(
+                "Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None."
+            )
             values["save"] = False
+            values["save_dir"] = None
 
         return values
 
     @root_validator(skip_on_failure=True)
-    def validate_save(cls, values):
-        # do this check before we look up checkpoints based on model name so we can see if checkpoint is None
+    def validate_save_dir(cls, values):
+        save_dir = values["save_dir"]
         save = values["save"]
-        checkpoint = values["checkpoint"]
 
-        # if False, no predictions will be written out
-        if save is False:
-            return values
+        # if no save_dir but save is True, use current working directory
+        if save_dir is None and save:
+            save_dir = Path.cwd()
 
-        else:
-            # if save=True and we have a local checkpoint, save in checkpoint directory
-            if save is True and checkpoint is not None:
-                save = checkpoint.parent / "zamba_predictions.csv"
+        if save_dir is not None:
+            # check if files exist
+            if (
+                (save_dir / "zamba_predictions.csv").exists()
+                or (save_dir / "predict_configuration.yaml").exists()
+            ) and not values["overwrite"]:
+                raise ValueError(
+                    f"zamba_predictions.csv and/or predict_configuration.yaml already exist in {save_dir}. If you would like to overwrite, set overwrite=True"
+                )
 
-            # else, save to current working directory
-            elif save is True and checkpoint is None:
-                save = Path.cwd() / "zamba_predictions.csv"
+            # make a directory if needed
+            save_dir.mkdir(parents=True, exist_ok=True)
 
-        # validate save path
-        if isinstance(save, Path):
-            if save.suffix.lower() != ".csv":
-                raise ValueError("Save path must end with .csv")
-            elif save.exists():
-                raise ValueError(f"Save path {save} already exists.")
-            else:
-                values["save"] = save
+            # set save to True if save_dir is set
+            if not save:
+                save = True
 
-            # create any needed parent directories
-            save.parent.mkdir(parents=True, exist_ok=True)
+        values["save_dir"] = save_dir
+        values["save"] = save
 
         return values
 
@@ -686,12 +665,12 @@ class PredictConfig(ZambaBaseModel):
         contains files with valid suffixes.
         """
         if values["filepaths"] is None:
-            logger.info(f"Getting files in {values['data_directory']}.")
+            logger.info(f"Getting files in {values['data_dir']}.")
             files = []
             new_suffixes = []
 
             # iterate over all files in data directory
-            for f in values["data_directory"].rglob("*"):
+            for f in values["data_dir"].rglob("*"):
                 if f.is_file():
                     # keep just files with supported suffixes
                     if f.suffix.lower() in VIDEO_SUFFIXES:
@@ -705,9 +684,9 @@ class PredictConfig(ZambaBaseModel):
                 )
 
             if len(files) == 0:
-                raise ValueError(f"No video files found in {values['data_directory']}.")
+                raise ValueError(f"No video files found in {values['data_dir']}.")
 
-            logger.info(f"Found {len(files)} videos in {values['data_directory']}.")
+            logger.info(f"Found {len(files)} videos in {values['data_dir']}.")
             values["filepaths"] = pd.DataFrame(files, columns=["filepath"])
         return values
 
@@ -733,7 +712,7 @@ class PredictConfig(ZambaBaseModel):
 
         values["filepaths"] = check_files_exist_and_load(
             df=files_df,
-            data_directory=values["data_directory"],
+            data_dir=values["data_dir"],
             skip_load_validation=values["skip_load_validation"],
         )
         return values

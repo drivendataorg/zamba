@@ -7,7 +7,7 @@ video_loader_config:
   total_frames: 16
 
 train_config:
-  data_directory: tests/assets/videos
+  data_dir: tests/assets/videos
   labels: tests/assets/labels.csv
   model_name: time_distributed
   predict_all_zamba_species: True
