@@ -291,11 +291,11 @@ def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkp
         with pytest.raises(ValueError) as error:
             # just takes one of the two files to raise error
             pred_file.touch()
-            config = PredictConfig(
+            _ = PredictConfig(
                 filepaths=labels_absolute_path, save_dir=save_dir, skip_load_validation=True
             )
             assert (
-                "Predictions csv and/or yaml files already exist. If you would like to overwrite, set overwrite=True"
+                "zamba_predictions.csv and/or predict_configuration.yaml already exist in /home/emily/zamba. If you would like to overwrite, set overwrite=True"
                 == error.value.errors()[0]["msg"]
             )
             pred_file.unlink()

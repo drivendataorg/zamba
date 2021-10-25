@@ -145,6 +145,14 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
     )
     assert result.exit_code == 0
 
+    # test save overwrite
+    (tmp_path / "zamba_predictions.csv").touch()
+    result = runner.invoke(
+        app,
+        minimum_valid_predict + ["--output-class-names", "--save-dir", str(tmp_path), "-o"],
+    )
+    assert result.exit_code == 0
+
 
 def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
     data_dir = tmp_path / "videos"
