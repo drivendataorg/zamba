@@ -11,14 +11,14 @@
       
       
       
-        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/pytorch-utils/">
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/models/denspose/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.4">
     
     
       
-        <title>zamba.pytorch.utils - Zamba</title>
+        <title>DensePose - Zamba</title>
       
     
     
@@ -71,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#zambapytorchutils" class="md-skip">
+        <a href="#densepose" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              zamba.pytorch.utils
+              DensePose
             
           </span>
         </div>
@@ -401,14 +401,16 @@
 
   
   
+    
+  
   
     
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       
       
@@ -437,7 +439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../models/species-detection/" class="md-nav__link">
+      <a href="../species-detection/" class="md-nav__link">
         Species detection
       </a>
     </li>
@@ -449,11 +451,65 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../models/denspose/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          DensePose
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         DensePose
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    Outputs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-densepose" class="md-nav__link">
+    Running DensePose
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -642,16 +698,14 @@
 
   
   
-    
-  
   
     
       
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       
       
@@ -722,7 +776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data-metadata/" class="md-nav__link">
+      <a href="../../api-reference/data-metadata/" class="md-nav__link">
         zamba.data.metadata
       </a>
     </li>
@@ -736,7 +790,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../data-video/" class="md-nav__link">
+      <a href="../../api-reference/data-video/" class="md-nav__link">
         zamba.data.video
       </a>
     </li>
@@ -801,7 +855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-config/" class="md-nav__link">
+      <a href="../../api-reference/models-config/" class="md-nav__link">
         zamba.models.config
       </a>
     </li>
@@ -847,7 +901,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../densepose_config/" class="md-nav__link">
+      <a href="../../api-reference/densepose_config/" class="md-nav__link">
         zamba.models.densepose.config
       </a>
     </li>
@@ -861,7 +915,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../densepose_manager/" class="md-nav__link">
+      <a href="../../api-reference/densepose_manager/" class="md-nav__link">
         zamba.models.densepose.densepose_manager
       </a>
     </li>
@@ -882,7 +936,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-efficientnet_models/" class="md-nav__link">
+      <a href="../../api-reference/models-efficientnet_models/" class="md-nav__link">
         zamba.models.efficientnet_models
       </a>
     </li>
@@ -896,7 +950,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-megadetector_lite_yolox/" class="md-nav__link">
+      <a href="../../api-reference/models-megadetector_lite_yolox/" class="md-nav__link">
         zamba.models.megadetector_lite_yolox
       </a>
     </li>
@@ -910,7 +964,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-model_manager/" class="md-nav__link">
+      <a href="../../api-reference/models-model_manager/" class="md-nav__link">
         zamba.models.model_manager
       </a>
     </li>
@@ -924,7 +978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-slowfast_models/" class="md-nav__link">
+      <a href="../../api-reference/models-slowfast_models/" class="md-nav__link">
         zamba.models.slowfast_models
       </a>
     </li>
@@ -938,7 +992,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-utils/" class="md-nav__link">
+      <a href="../../api-reference/models-utils/" class="md-nav__link">
         zamba.models.utils
       </a>
     </li>
@@ -952,7 +1006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-yolox_models/" class="md-nav__link">
+      <a href="../../api-reference/models-yolox_models/" class="md-nav__link">
         zamba.models.yolox_models
       </a>
     </li>
@@ -971,14 +1025,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
       
       
       
@@ -1013,7 +1065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pytorch-dataloaders/" class="md-nav__link">
+      <a href="../../api-reference/pytorch-dataloaders/" class="md-nav__link">
         zamba.pytorch.dataloaders
       </a>
     </li>
@@ -1027,7 +1079,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pytorch-finetuning/" class="md-nav__link">
+      <a href="../../api-reference/pytorch-finetuning/" class="md-nav__link">
         zamba.pytorch.finetuning
       </a>
     </li>
@@ -1041,7 +1093,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pytorch-layers/" class="md-nav__link">
+      <a href="../../api-reference/pytorch-layers/" class="md-nav__link">
         zamba.pytorch.layers
       </a>
     </li>
@@ -1055,7 +1107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pytorch-transforms/" class="md-nav__link">
+      <a href="../../api-reference/pytorch-transforms/" class="md-nav__link">
         zamba.pytorch.transforms
       </a>
     </li>
@@ -1067,51 +1119,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          zamba.pytorch.utils
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../api-reference/pytorch-utils/" class="md-nav__link">
         zamba.pytorch.utils
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#zamba.pytorch.utils-functions" class="md-nav__link">
-    Functions
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1160,7 +1172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pytorch_lightning-utils/" class="md-nav__link">
+      <a href="../../api-reference/pytorch_lightning-utils/" class="md-nav__link">
         zamba.pytorch_lightning.utils
       </a>
     </li>
@@ -1181,7 +1193,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../exceptions/" class="md-nav__link">
+      <a href="../../api-reference/exceptions/" class="md-nav__link">
         zamba.exceptions
       </a>
     </li>
@@ -1195,7 +1207,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../metrics/" class="md-nav__link">
+      <a href="../../api-reference/metrics/" class="md-nav__link">
         zamba.metrics
       </a>
     </li>
@@ -1209,7 +1221,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../settings/" class="md-nav__link">
+      <a href="../../api-reference/settings/" class="md-nav__link">
         zamba.settings
       </a>
     </li>
@@ -1249,8 +1261,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#zamba.pytorch.utils-functions" class="md-nav__link">
-    Functions
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    Outputs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-densepose" class="md-nav__link">
+    Running DensePose
   </a>
   
 </li>
@@ -1267,186 +1293,97 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/api-reference/pytorch-utils.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/models/denspose.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="zambapytorchutils">zamba.pytorch.utils<a class="headerlink" href="#zambapytorchutils" title="Permanent link">&para;</a></h1>
-
-
-  <div class="doc doc-object doc-module">
-
-
-    <div class="doc doc-contents first">
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-<h2 id="zamba.pytorch.utils-functions">Functions<a href="#zamba.pytorch.utils-functions" class="headerlink" title="Permanent link">&para;</a></h2>
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="zamba.pytorch.utils.build_multilayer_perceptron" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">build_multilayer_perceptron</span><span class="p">(</span><span class="n">input_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">hidden_layer_sizes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">output_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">activation</span><span class="o">.</span><span class="n">ReLU</span><span class="s1">&#39;&gt;, dropout: Optional[float] = None, output_dropout: Optional[float] = None, output_activation: Optional[torch.nn.modules.module.Module] = None) -&gt; Sequential</span></code>
-
-
-<a href="#zamba.pytorch.utils.build_multilayer_perceptron" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Builds a multilayer perceptron.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>input_size</code></td>
-        <td><code>int</code></td>
-        <td><p>Size of first input layer.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>hidden_layer_sizes</code></td>
-        <td><code>tuple of int</code></td>
-        <td><p>If provided, size of hidden layers.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>output_size</code></td>
-        <td><code>int</code></td>
-        <td><p>Size of the last output layer.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>activation</code></td>
-        <td><code>torch.nn.Module</code></td>
-        <td><p>Activation layer between each pair of layers.</p></td>
-        <td><code>&lt;class &#39;torch.nn.modules.activation.ReLU&#39;&gt;</code></td>
-      </tr>
-      <tr>
-        <td><code>dropout</code></td>
-        <td><code>float</code></td>
-        <td><p>If provided, insert dropout layers with the following dropout
-rate in between each pair of layers.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>output_dropout</code></td>
-        <td><code>float</code></td>
-        <td><p>If provided, insert a dropout layer with the following
-dropout rate before the output.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>output_activation</code></td>
-        <td><code>torch.nn.Module</code></td>
-        <td><p>Activation layer after the final layer.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Sequential</code></td>
-      <td><p>torch.nn.Sequential</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>zamba/pytorch/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">build_multilayer_perceptron</span><span class="p">(</span>
-    <span class="n">input_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">hidden_layer_sizes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
-    <span class="n">output_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">,</span>
-    <span class="n">dropout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">output_dropout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">output_activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Builds a multilayer perceptron.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        input_size (int): Size of first input layer.</span>
-<span class="sd">        hidden_layer_sizes (tuple of int, optional): If provided, size of hidden layers.</span>
-<span class="sd">        output_size (int): Size of the last output layer.</span>
-<span class="sd">        activation (torch.nn.Module, optional): Activation layer between each pair of layers.</span>
-<span class="sd">        dropout (float, optional): If provided, insert dropout layers with the following dropout</span>
-<span class="sd">            rate in between each pair of layers.</span>
-<span class="sd">        output_dropout (float, optional): If provided, insert a dropout layer with the following</span>
-<span class="sd">            dropout rate before the output.</span>
-<span class="sd">        output_activation (torch.nn.Module, optional): Activation layer after the final layer.</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        torch.nn.Sequential</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">hidden_layer_sizes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">hidden_layer_sizes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
-
-    <span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_layer_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
-    <span class="k">if</span> <span class="n">activation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activation</span><span class="p">())</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">dropout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">))</span>
-
-    <span class="k">for</span> <span class="n">in_size</span><span class="p">,</span> <span class="n">out_size</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">hidden_layer_sizes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">hidden_layer_sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_size</span><span class="p">,</span> <span class="n">out_size</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">activation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activation</span><span class="p">())</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="n">dropout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">dropout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">))</span>
-
-    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_layer_sizes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">output_size</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">output_dropout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">output_dropout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="n">output_activation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_activation</span><span class="p">())</span>
-
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+                <h1 id="densepose">Densepose<a class="headerlink" href="#densepose" title="Permanent link">&para;</a></h1>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>Facebook AI Research has published a model, DensePose (<a href="https://arxiv.org/abs/2011.12438v1">Neverova et al, 2021</a>), which can be used to get segmentations for animals that appear in videos. This was trained on the following animals, but often works for other species as well: sheep, zebra, horse, giraffe, elephant, cow, ear, cat, dog. Here's an example of the segmentation output for a frame:</p>
+<p><img alt="segmentation of duiker" src="../../media/seg_out.jpg" /></p>
+<p>Additionally, the model provides mapping of the segmentation output to specific anatomy for chimpanzees. This can be helpful for determining the orientation of chimpanzees in videos and for their behaviors. Here is an example of what that output looks like:</p>
+<p><img alt="chimpanzee texture output" src="../../media/texture_out.png" /></p>
+<p>For more information on the algorithms and outputs of the DensePose model, see the <a href="https://github.com/facebookresearch/detectron2/tree/main/projects/DensePose">Facebook DensePose Github Repository</a>.</p>
+<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
+<p>The Zamba package supports running Densepose on videos to generate three types of outputs:</p>
+<ul>
+<li>A <code>.json</code> file with details of segmentations per video frame.</li>
+<li>A <code>.mp4</code> file where the original video has the segmentation rendered on top of animal so that the output can be vsiually inspected.</li>
+<li>A <code>.csv</code> (when <code>--output-type chimp_anatomy</code>) that contains the height and width of the bounding box around each chimpanzee, the frame number and timestamp of the observation, and the percentage of pixels in the bounding box that correspond with each anatomical part.</li>
+</ul>
+<p>Generally, running the densepose model is computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. Another caveat is that because the output JSON output contains the full embedding, these files can be quite large. These are not written out by default.</p>
+<p>In order to use the densepose model, you must have PyTorch already installed on your system, and then you must install the <code>densepose</code> extra:</p>
+<div class="highlight"><pre><span></span><code>pip install torch  <span class="c1"># see https://pytorch.org/get-started/locally/</span>
+pip install <span class="s2">&quot;zamba[densepose]&quot;</span>
 </code></pre></div>
-        </details>
-    </div>
+<h2 id="running-densepose">Running DensePose<a class="headerlink" href="#running-densepose" title="Permanent link">&para;</a></h2>
+<p>Once that is done, here's how to run the DensePose model:</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="c1"># create a segmentation output video for each input video in PATH_TO_VIDEOS</span>
+zamba densepose --data-dir PATH_TO_VIDEOS --render-output
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.densepose</span> <span class="kn">import</span> <span class="n">DensePoseConfig</span>
+<span class="n">densepose_conf</span> <span class="o">=</span> <span class="n">DensePoseConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;PATH_TO_VIDEOS&quot;</span><span class="p">,</span> <span class="n">render_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">densepose_conf</span><span class="o">.</span><span class="n">run_model</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<video controls>
+  <source src="../../media/densepose_zamba_vid.mp4" type="video/mp4">
+</videp>
 
-  </div>
 
+## Getting help
 
+To see all of the available options, run `zamba densepose --help`.
 
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba densepose --help
+<span class="go">Usage: zamba densepose [OPTIONS]</span>
 
+<span class="go">  Run densepose algorithm on videos.</span>
 
+<span class="go">  If an argument is specified in both the command line and in a yaml file, the</span>
+<span class="go">  command line input will take precedence.</span>
 
-  </div>
-
-    </div>
-
-  </div>
+<span class="go">Options:</span>
+<span class="go">  --data-dir PATH                 Path to video or image file or folder</span>
+<span class="go">                                  containing images/videos.</span>
+<span class="go">  --filepaths PATH                Path to csv containing `filepath` column</span>
+<span class="go">                                  with videos.</span>
+<span class="go">  --save-dir PATH                 An optional directory for saving the output.</span>
+<span class="go">                                  Defaults to the current working directory.</span>
+<span class="go">  --config PATH                   Specify options using yaml configuration</span>
+<span class="go">                                  file instead of through command line</span>
+<span class="go">                                  options.</span>
+<span class="go">  --fps FLOAT                     Number of frames per second to process.</span>
+<span class="go">                                  Defaults to 1.0 (1 frame per second).</span>
+<span class="go">                                  [default: 1.0]</span>
+<span class="go">  --output-type [segmentation|chimp_anatomy]</span>
+<span class="go">                                  If &#39;chimp_anatomy&#39; will apply anatomy model</span>
+<span class="go">                                  from densepose to the rendering and create a</span>
+<span class="go">                                  CSV with the anatomy visible in each frame.</span>
+<span class="go">                                  If &#39;segmentation&#39;, will just output the</span>
+<span class="go">                                  segmented area where an animal is</span>
+<span class="go">                                  identified, which works for more species</span>
+<span class="go">                                  than chimpanzees.  [default: chimp_anatomy]</span>
+<span class="go">  --render-output / --no-render-output</span>
+<span class="go">                                  If True, generate an output image or video</span>
+<span class="go">                                  with either the segmentation or anatomy</span>
+<span class="go">                                  rendered depending on the `output_type` that</span>
+<span class="go">                                  is chosen.  [default: no-render-output]</span>
+<span class="go">  --weight-download-region [us|eu|asia]</span>
+<span class="go">                                  Server region for downloading weights.</span>
+<span class="go">  --cache-dir PATH                Path to directory for model weights.</span>
+<span class="go">                                  Alternatively, specify with environment</span>
+<span class="go">                                  variable `ZAMBA_CACHE_DIR`. If not</span>
+<span class="go">                                  specified, user&#39;s cache directory is used.</span>
+<span class="go">  -y, --yes                       Skip confirmation of configuration and</span>
+<span class="go">                                  proceed right to prediction.</span>
+<span class="go">  --help                          Show this message and exit.</span>
+</code></pre></div>
                 
               
               
@@ -1466,7 +1403,7 @@ dropout rate before the output.</p></td>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../pytorch-transforms/" class="md-footer__link md-footer__link--prev" aria-label="Previous: zamba.pytorch.transforms" rel="prev">
+        <a href="../species-detection/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Species detection" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1475,20 +1412,20 @@ dropout rate before the output.</p></td>
               <span class="md-footer__direction">
                 Previous
               </span>
-              zamba.pytorch.transforms
+              Species detection
             </div>
           </div>
         </a>
       
       
         
-        <a href="../pytorch_lightning-utils/" class="md-footer__link md-footer__link--next" aria-label="Next: zamba.pytorch_lightning.utils" rel="next">
+        <a href="../../configurations/" class="md-footer__link md-footer__link--next" aria-label="Next: All configuration options" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              zamba.pytorch_lightning.utils
+              All configuration options
             </div>
           </div>
           <div class="md-footer__button md-icon">
