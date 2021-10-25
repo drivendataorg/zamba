@@ -34,14 +34,14 @@ Then run:
 pip install zamba
 ```
 
-See the [Installation](https://zamba.drivendata.org/docs/install/) page of the documentation for details.
+See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.
 
 ## Getting started
 
 Once you have `zamba` installed, some good starting points are:
 
-- The [Quickstart](https://zamba.drivendata.org/docs/quickstart/) page for basic examples of usage
-- The user tutorial for either [classifying videos](https://zamba.drivendata.org/docs/predict-tutorial/) or [training a model](https://zamba.drivendata.org/docs/train-tutorial/) depending on what you want to do with `zamba`
+- The [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page for basic examples of usage
+- The user tutorial for either [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) or [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) depending on what you want to do with `zamba`
 
 ## Example usage
 
@@ -77,7 +77,7 @@ $ zamba predict --data-dir path/to/videos
 
 By default, predictions will be saved to `zamba_predictions.csv`. Run `zamba predict --help` to list all possible options to pass to `predict`.
 
-See the [Quickstart](https://zamba.drivendata.org/docs/quickstart/) page or the user tutorial on [classifying videos](https://zamba.drivendata.org/docs/predict-tutorial/) for more details.
+See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) for more details.
 
 ### Training a model
 
@@ -87,7 +87,7 @@ $ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save_dir m
 
 The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run `zamba train --help` to list all possible options to pass to `train`.
 
-See the [Quickstart](https://zamba.drivendata.org/docs/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/train-tutorial/) for more details.
+See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) for more details.
 
 ## Running the `zamba` test suite
 
@@ -99,4 +99,4 @@ The command is (from the project root):
 $ make tests
 ```
 
-See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/contribute/index.md) for details.
+See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/stable/contribute/index.md) for details.
