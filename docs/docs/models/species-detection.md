@@ -99,9 +99,7 @@ The `time_distributed` model was built by re-training a well-known image classif
 
 ### Training data
 
-`time_distributed` was trained using data collected and annotated by partners at [The Max Planck Institute for
-Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp &
-See](https://www.chimpandsee.org/).
+`time_distributed` was trained using data collected and annotated by partners at [The Max Planck Institute for Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp&See](https://www.chimpandsee.org/).
 
 The data included camera trap videos from:
 
