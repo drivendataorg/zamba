@@ -18,6 +18,8 @@ The [`VideoLoaderConfig` class](api-reference/data-video.md#zamba.data.video.Vid
 
 All video loading arguments can be specified either in a [YAML file](yaml-config.md) or when instantiating the [`VideoLoaderConfig`](configurations.md#video-loading-arguments) class in Python. Some can also be specified directly in the command line.
 
+Each model comes with a default video loading configuration. If no user-specified video loading configuration is passed - either through a YAML file or the Python `VideoLoaderConfig` class - all video loading arguments will be set based on the defaults for the given model.
+
 === "YAML file"
     ```yaml
     video_loader_config:
@@ -87,7 +89,7 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models/species-detection.md#megadetectorlite) for frame selection. For all possible options, see the [`MegadetectorLiteYoloXConfig` class](api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig). If `megadetector_lite_config` is `None`, the MegadetectorLite model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models/species-detection.md#megadetectorlite) for frame selection. For all possible options, see the [`MegadetectorLiteYoloXConfig` class](api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig). If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
 
 #### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
