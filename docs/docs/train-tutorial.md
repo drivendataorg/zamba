@@ -1,4 +1,4 @@
-# User tutorial: Training a model on labaled videos
+# User tutorial: Training a model on labeled videos
 
 This section walks through how to train a model using `zamba`. If you are new to `zamba` and just want to classify some videos as soon as possible, see the [Quickstart](quickstart.md) guide.
 
