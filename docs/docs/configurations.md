@@ -16,7 +16,7 @@ Here's a helpful diagram which shows how everything is related.
 
 The [`VideoLoaderConfig` class](api-reference/data-video.md#zamba.data.video.VideoLoaderConfig) defines all of the optional parameters that can be specified for how videos are loaded before either inference or training. This includes selecting which frames to use from each video.
 
-All video loading arguments can be specified either in a [YAML file](yaml-config.md) or when instantiating the [`VideoLoaderConfig`](configurations.md#video-loading-arguments) class in Python. Some can also be specified directly in the command line.
+All video loading arguments can be specified either in a [YAML file](yaml-config.md) or when instantiating the [`VideoLoaderConfig` class](api-reference/data-video.md#zamba.data.video.VideoLoaderConfig) in Python. Some can also be specified directly in the command line.
 
 Each model comes with a default video loading configuration. If no user-specified video loading configuration is passed - either through a YAML file or the Python `VideoLoaderConfig` class - all video loading arguments will be set based on the defaults for the given model.
 
@@ -235,7 +235,7 @@ By default, before kicking off inference `zamba` will iterate through all of the
 
 #### `model_cache_dir (Path, optional)`
 
-Cache directory where downloaded model weights will be saved. If None and the MODEL_CACHE_DIR environment variable is not set, will use your default cache directory (e.g. `~/.cache`). Defaults to `None`
+Cache directory where downloaded model weights will be saved. If None and the `MODEL_CACHE_DIR` environment variable is not set, will use your default cache directory (e.g. `~/.cache`). Defaults to `None`
 
 <a id='training-arguments'></a>
 
@@ -293,7 +293,7 @@ Path to a model checkpoint to load and resume training from. The default is `Non
 
 #### `scheduler_config (zamba.models.config.SchedulerConfig, optional)`
 
-A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate) to adjust the learning rate based on the number of epochs. Scheduler can either be `default` (the default), `None`, or a [`torch.optim.lr_scheduler`](https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py). If `default`,
+A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate) to adjust the learning rate based on the number of epochs. Scheduler can either be `default` (the default), `None`, or a [`torch.optim.lr_scheduler`](https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py).
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
@@ -309,7 +309,7 @@ The batch size to use for training. Defaults to `2`
 
 #### `auto_lr_find (bool, optional)`
 
-Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to try to find an optimal initial learning rate. The learning rate finder is not guaranteed to find a good learning rate; depending on the dataset, it can select a learning rate that leads to poor model training. Use with caution. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `False`.
+Whether to run a [learning rate finder algorithm](https://arxiv.org/abs/1506.01186) when calling `pytorch_lightning.trainer.tune()` to try to find an optimal initial learning rate. The learning rate finder is not guaranteed to find a good learning rate; depending on the dataset, it can select a learning rate that leads to poor model training. Use with caution. See the PyTorch Lightning [docs](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#auto-lr-find) for more details. Defaults to `False`
 
 #### `backbone_finetune_config (zamba.models.config.BackboneFinetuneConfig, optional)`
 
@@ -345,7 +345,7 @@ Directory in which to save model checkpoint and configuration file. If not speci
 
 #### `overwrite (bool, optional)`
 
- If `True`, will save outputs in `save_dir` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_dir` with model outputs. Defaults to `False`.
+ If `True`, will save outputs in `save_dir` and overwrite the directory if it exists. If False, will create an auto-incremented `version_n` folder within `save_dir` with model outputs. Defaults to `False`
 
 #### `skip_load_validation (bool, optional)`
 
