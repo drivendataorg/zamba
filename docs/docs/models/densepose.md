@@ -6,7 +6,7 @@ DensePose ([Neverova et al, 2021](https://arxiv.org/abs/2011.12438v1)) is a mode
 
 ![segmentation of duiker](../media/seg_out.jpg)
 
-Additionally, the model provides mapping of the segmentation output to specific anatomy for chimpanzees. This can be helpful for determining the orientation of chimpanzees in videos and understanding their behaviors. Here is an example of what that output looks like:
+Additionally, the model provides mapping of the segmentation output to specific anatomy for chimpanzees. This can be helpful for determining the orientation of chimpanzees in videos and for understanding their behaviors. Here is an example of what that output looks like:
 
 ![chimpanzee texture output](../media/texture_out.png)
 
