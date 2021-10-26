@@ -1,4 +1,4 @@
-# Densepose
+# DensePose
 
 ## Background
 
@@ -14,15 +14,15 @@ For more information on the algorithms and outputs of the DensePose model, see t
 
 ## Outputs
 
-The Zamba package supports running Densepose on videos to generate three types of outputs:
+The Zamba package supports running DensePose on videos to generate three types of outputs:
 
  - A `.json` file with details of segmentations per video frame.
  - A `.mp4` file where the original video has the segmentation rendered on top of animal so that the output can be visually inspected.
  - A `.csv` that contains the height and width of the bounding box around each chimpanzee, the frame number and timestamp of the observation, and the percentage of pixels in the bounding box that correspond with each anatomical part. This is specified by adding `--output-type chimp_anatomy`.
 
-Running the densepose model is fairly computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. JSON output files can also be quite large because they contain the full embedding. These are not written out by default.
+Running the DensePose model is fairly computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. JSON output files can also be quite large because they contain the full embedding. These are not written out by default.
 
-In order to use the densepose model, you must have [PyTorch](https://pytorch.org/get-started/locally/) already installed on your system. Then you must install the `densepose` extra:
+In order to use the DensePose model, you must have [PyTorch](https://pytorch.org/get-started/locally/) already installed on your system. Then you must install the `densepose` extra:
 
 ```bash
 pip install torch
