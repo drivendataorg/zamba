@@ -1,6 +1,6 @@
 # Quickstart
 
-<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1></script>
+<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1 data-cols=90></script>
 
 This section assumes you have successfully installed `zamba` and are ready to train a model or identify species in your videos!
 
@@ -79,7 +79,7 @@ eleph.mp4,elephant
 leopard.mp4,leopard
 ```
 
-There are three pretrained models that ship with `zamba`: `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models/index.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
+There are three pretrained models that ship with `zamba`: `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models/species-detection.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
 
 ```console
 $ zamba predict --data-dir example_vids/ --model slowfast
@@ -87,9 +87,9 @@ $ zamba predict --data-dir example_vids/ --model slowfast
 
 ## Training a model
 
-You can continue training one of the [models](models/index.md) that ships with `zamba` by either:
+You can continue training one of the [models](models/species-detection.md) that ships with `zamba` by either:
 
-* Finetuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models/index.md#species-classes)
+* Finetuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models/species-detection.md#species-classes)
 * Finetuning with labeled videos that include new species
 
 In either case, the commands for training are the same. Say that we have labels for the videos in the `example_vids` folder saved in `example_labels.csv`. To train a model, run:
