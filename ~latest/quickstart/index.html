@@ -521,7 +521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/denspose/" class="md-nav__link">
+      <a href="../models/densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -1327,7 +1327,7 @@
                 
                 
                 <h1 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h1>
-<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1></script>
+<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1 data-cols=90></script>
 
 <p>This section assumes you have successfully installed <code>zamba</code> and are ready to train a model or identify species in your videos!</p>
 <p><code>zamba</code> can be used "out of the box" to generate predictions or train a model using your own videos. To perform inference, you simply need to run <code>zamba predict</code> followed by a set of arguments that let zamba know where your videos are located, which model you want to use, and where to save your output. To train a model, you can similarly run <code>zamba train</code> and specify your labels. The following sections provide details about these separate modules.</p>
@@ -1387,13 +1387,13 @@ probably be named something much less useful!</p>
 <span class="go">eleph.mp4,elephant</span>
 <span class="go">leopard.mp4,leopard</span>
 </code></pre></div>
-<p>There are three pretrained models that ship with <code>zamba</code>: <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. Which model you should use depends on your priorities and geography (see the <a href="models/index.md">Available Models</a> page for more details). By default <code>zamba</code> will use the <code>time_distributed</code> model. Add the <code>--model</code> argument to specify one of other options:</p>
+<p>There are three pretrained models that ship with <code>zamba</code>: <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. Which model you should use depends on your priorities and geography (see the <a href="../models/species-detection/">Available Models</a> page for more details). By default <code>zamba</code> will use the <code>time_distributed</code> model. Add the <code>--model</code> argument to specify one of other options:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --data-dir example_vids/ --model slowfast
 </code></pre></div>
 <h2 id="training-a-model">Training a model<a class="headerlink" href="#training-a-model" title="Permanent link">&para;</a></h2>
-<p>You can continue training one of the <a href="models/index.md">models</a> that ships with <code>zamba</code> by either:</p>
+<p>You can continue training one of the <a href="../models/species-detection/">models</a> that ships with <code>zamba</code> by either:</p>
 <ul>
-<li>Finetuning with additional labeled videos where the species are included in the list of <a href="models/index.md#species-classes"><code>zamba</code> class labels</a></li>
+<li>Finetuning with additional labeled videos where the species are included in the list of <a href="../models/species-detection/#species-classes"><code>zamba</code> class labels</a></li>
 <li>Finetuning with labeled videos that include new species</li>
 </ul>
 <p>In either case, the commands for training are the same. Say that we have labels for the videos in the <code>example_vids</code> folder saved in <code>example_labels.csv</code>. To train a model, run:</p>

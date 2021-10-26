@@ -451,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/denspose/" class="md-nav__link">
+      <a href="../models/densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -1279,7 +1279,7 @@ competition, hosted by <a href="https://www.drivendata.org/">DrivenData</a>. Dat
 <p>The core algorithm in <code>zamba</code> v1 was a <a href="https://en.wikipedia.org/wiki/Ensemble_learning#Stacking">stacked ensemble</a> which consisted of a first layer of models that were then combined into a final prediction in a second layer. The first level of the stack consisted of 5 <code>keras</code> deep
 learning models, whose individual predictions were combined in the second level
 of the stack to form the final prediction.</p>
-<p>In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful <a href="../models/index.md">single-model options</a>: <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.</p>
+<p>In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful <a href="../models/species-detection/">single-model options</a>: <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.</p>
 <h3 id="new-geographies-and-species">New geographies and species<a class="headerlink" href="#new-geographies-and-species" title="Permanent link">&para;</a></h3>
 <p><code>zamba</code> v2 incorporates data from western Europe (Germany). The new data is packaged in the pretrained <code>european</code> model, which can predict 11 common European species not present in <code>zamba</code> v1.</p>
 <p><code>zamba</code> v2 also incorporates new training data from 15 countries in central and west Africa, and adds 12 additional species to the pretrained African models.</p>

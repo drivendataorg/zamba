@@ -451,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../models/denspose/" class="md-nav__link">
+      <a href="../../models/densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -4195,7 +4195,7 @@ accessed from this module using the given name</p></td>
 
 
 <h5 id="zamba.pytorch_lightning.utils.ZambaVideoClassificationLightningModule.add_to_queue" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f7d731b44f0</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">add_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f4a5eb174f0</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -4221,7 +4221,7 @@ To avoid issues with memory sharing, we cast the data to numpy.</p>
   <tbody>
       <tr>
         <td><code>queue</code></td>
-        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7f7d731b44f0&gt;&gt;</code></td>
+        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7f4a5eb174f0&gt;&gt;</code></td>
         <td><p>the instance of the queue to append the data.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -5652,7 +5652,7 @@ their serialized pickled form changes.</p>
 
 
 <h5 id="zamba.pytorch_lightning.utils.ZambaVideoClassificationLightningModule.get_from_queue" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_from_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f7d731b44f0</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">get_from_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f4a5eb174f0</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -5678,7 +5678,7 @@ To preserve consistency, we cast back the data to <code>torch.Tensor</code>.</p>
   <tbody>
       <tr>
         <td><code>queue</code></td>
-        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7f7d731b44f0&gt;&gt;</code></td>
+        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7f4a5eb174f0&gt;&gt;</code></td>
         <td><p>the instance of the queue from where to get the data.</p></td>
         <td><em>required</em></td>
       </tr>

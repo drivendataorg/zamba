@@ -11,7 +11,7 @@
       
       
       
-        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/models/denspose/">
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/models/densepose/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.4">
@@ -502,6 +502,13 @@
         <li class="md-nav__item">
   <a href="#running-densepose" class="md-nav__link">
     Running DensePose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    Getting help
   </a>
   
 </li>
@@ -1281,6 +1288,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    Getting help
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1293,28 +1307,28 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/models/denspose.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/models/densepose.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="densepose">Densepose<a class="headerlink" href="#densepose" title="Permanent link">&para;</a></h1>
+                <h1 id="densepose">DensePose<a class="headerlink" href="#densepose" title="Permanent link">&para;</a></h1>
 <h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
-<p>Facebook AI Research has published a model, DensePose (<a href="https://arxiv.org/abs/2011.12438v1">Neverova et al, 2021</a>), which can be used to get segmentations for animals that appear in videos. This was trained on the following animals, but often works for other species as well: sheep, zebra, horse, giraffe, elephant, cow, ear, cat, dog. Here's an example of the segmentation output for a frame:</p>
+<p>DensePose (<a href="https://arxiv.org/abs/2011.12438v1">Neverova et al, 2021</a>) is a model published by Facebook AI Research that can be used to get segmentations for animals that appear in videos. The model was trained on the following animals, but often works for other species as well: bear, cat, cow, dog, elephant, giraffe, horse, sheep, zebra. Here's an example of the segmentation output for a frame:</p>
 <p><img alt="segmentation of duiker" src="../../media/seg_out.jpg" /></p>
-<p>Additionally, the model provides mapping of the segmentation output to specific anatomy for chimpanzees. This can be helpful for determining the orientation of chimpanzees in videos and for their behaviors. Here is an example of what that output looks like:</p>
+<p>Additionally, the model provides mapping of the segmentation output to specific anatomy for chimpanzees. This can be helpful for determining the orientation of chimpanzees in videos and for understanding their behaviors. Here is an example of what that output looks like:</p>
 <p><img alt="chimpanzee texture output" src="../../media/texture_out.png" /></p>
 <p>For more information on the algorithms and outputs of the DensePose model, see the <a href="https://github.com/facebookresearch/detectron2/tree/main/projects/DensePose">Facebook DensePose Github Repository</a>.</p>
 <h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
-<p>The Zamba package supports running Densepose on videos to generate three types of outputs:</p>
+<p>The Zamba package supports running DensePose on videos to generate three types of outputs:</p>
 <ul>
 <li>A <code>.json</code> file with details of segmentations per video frame.</li>
-<li>A <code>.mp4</code> file where the original video has the segmentation rendered on top of animal so that the output can be vsiually inspected.</li>
-<li>A <code>.csv</code> (when <code>--output-type chimp_anatomy</code>) that contains the height and width of the bounding box around each chimpanzee, the frame number and timestamp of the observation, and the percentage of pixels in the bounding box that correspond with each anatomical part.</li>
+<li>A <code>.mp4</code> file where the original video has the segmentation rendered on top of animal so that the output can be visually inspected.</li>
+<li>A <code>.csv</code> that contains the height and width of the bounding box around each chimpanzee, the frame number and timestamp of the observation, and the percentage of pixels in the bounding box that correspond with each anatomical part. This is specified by adding <code>--output-type chimp_anatomy</code>.</li>
 </ul>
-<p>Generally, running the densepose model is computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. Another caveat is that because the output JSON output contains the full embedding, these files can be quite large. These are not written out by default.</p>
-<p>In order to use the densepose model, you must have PyTorch already installed on your system, and then you must install the <code>densepose</code> extra:</p>
-<div class="highlight"><pre><span></span><code>pip install torch  <span class="c1"># see https://pytorch.org/get-started/locally/</span>
+<p>Running the DensePose model is fairly computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. JSON output files can also be quite large because they contain the full embedding. These are not written out by default.</p>
+<p>In order to use the DensePose model, you must have <a href="https://pytorch.org/get-started/locally/">PyTorch</a> already installed on your system. Then you must install the <code>densepose</code> extra:</p>
+<div class="highlight"><pre><span></span><code>pip install torch
 pip install <span class="s2">&quot;zamba[densepose]&quot;</span>
 </code></pre></div>
 <h2 id="running-densepose">Running DensePose<a class="headerlink" href="#running-densepose" title="Permanent link">&para;</a></h2>
@@ -1333,13 +1347,10 @@ zamba densepose --data-dir PATH_TO_VIDEOS --render-output
 </div>
 <video controls>
   <source src="../../media/densepose_zamba_vid.mp4" type="video/mp4">
-</videp>
+</video>
 
-
-## Getting help
-
-To see all of the available options, run `zamba densepose --help`.
-
+<h2 id="getting-help">Getting help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<p>To see all of the available options, run <code>zamba densepose --help</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba densepose --help
 <span class="go">Usage: zamba densepose [OPTIONS]</span>
 

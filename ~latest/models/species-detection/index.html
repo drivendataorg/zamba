@@ -528,7 +528,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../denspose/" class="md-nav__link">
+      <a href="../densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -1430,9 +1430,7 @@
 <p>The <code>time_distributed</code> model was built by re-training a well-known image classification architecture called <a href="https://arxiv.org/abs/1905.11946">EfficientNetV2</a> (Tan, M., &amp; Le, Q., 2019) to identify the species in our camera trap videos. EfficientNetV2 models are convolutional <a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=995s">neural networks</a> designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. The model is wrapped in a <a href="https://docs.fast.ai/layers.html#TimeDistributed"><code>TimeDistributed</code> layer</a> which enables a single prediction per video.</p>
 <p><a id='time-distributed-training-data'></a></p>
 <h3 id="training-data">Training data<a class="headerlink" href="#training-data" title="Permanent link">&para;</a></h3>
-<p><code>time_distributed</code> was trained using data collected and annotated by partners at <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for
-Evolutionary Anthropology</a> and <a href="https://www.chimpandsee.org/">Chimp &amp;
-See</a>.</p>
+<p><code>time_distributed</code> was trained using data collected and annotated by partners at <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for Evolutionary Anthropology</a> and <a href="https://www.chimpandsee.org/">Chimp&amp;See</a>.</p>
 <p>The data included camera trap videos from:</p>
 <table>
   <tr>
@@ -1575,9 +1573,11 @@ See</a>.</p>
     <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
     <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">32</span>
 </code></pre></div>
-<p>You can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The two requirements for the <code>slowfast</code> model are that:
-- the video loader must return 32 frames
-- videos inputted into the model must be at least 200 x 200 pixels</p>
+<p>You can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The two requirements for the <code>slowfast</code> model are that:</p>
+<ul>
+<li>the video loader must return 32 frames</li>
+<li>videos inputted into the model must be at least 200 x 200 pixels</li>
+</ul>
 <p><a id='european'></a></p>
 <h2 id="european-model"><code>european</code> model<a class="headerlink" href="#european-model" title="Permanent link">&para;</a></h2>
 <h3 id="architecture_2">Architecture<a class="headerlink" href="#architecture_2" title="Permanent link">&para;</a></h3>
@@ -1645,7 +1645,7 @@ See</a>.</p>
       
       
         
-        <a href="../denspose/" class="md-footer__link md-footer__link--next" aria-label="Next: DensePose" rel="next">
+        <a href="../densepose/" class="md-footer__link md-footer__link--next" aria-label="Next: DensePose" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">

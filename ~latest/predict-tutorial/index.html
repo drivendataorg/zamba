@@ -514,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/denspose/" class="md-nav__link">
+      <a href="../models/densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -1318,7 +1318,7 @@
 <ul>
 <li>You already have <code>zamba</code> installed (for details see the <a href="../install/">Installation</a> page)</li>
 <li>You have unlabeled videos that you want to generate labels for</li>
-<li>The possible class species labels for your videos are included in the list of possible <a href="models/index.md#species-classes">zamba labels</a>. If your species are not included in this list, you can <a href="../train-tutorial/">retrain a model</a> using your own labeled data and then run inference.</li>
+<li>The possible class species labels for your videos are included in the list of possible <a href="../models/species-detection/#species-classes">zamba labels</a>. If your species are not included in this list, you can <a href="../train-tutorial/">retrain a model</a> using your own labeled data and then run inference.</li>
 </ul>
 <h2 id="basic-usage-command-line-interface">Basic usage: command line interface<a class="headerlink" href="#basic-usage-command-line-interface" title="Permanent link">&para;</a></h2>
 <p>Say that we want to classify the videos in a folder called <code>example_vids</code> as simply as possible using all of the default settings.</p>
@@ -1331,7 +1331,7 @@
 <li><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your videos.</li>
 <li><strong><code>--filepaths PATH</code>:</strong> Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for <code>filepath</code>. Filepaths can be absolute or relative to the data directory.</li>
 </ul>
-<p>All other flags are optional. To choose a model, either <code>--model</code> or <code>--checkpoint</code> must be specified. Use <code>--model</code> to specify one of the three <a href="models/index.md">pretrained models</a> that ship with <code>zamba</code>. Use <code>--checkpoint</code> to run inference with a locally saved model. <code>--model</code> defaults to <code>time_distributed</code>.</p>
+<p>All other flags are optional. To choose a model, either <code>--model</code> or <code>--checkpoint</code> must be specified. Use <code>--model</code> to specify one of the three <a href="../models/species-detection/">pretrained models</a> that ship with <code>zamba</code>. Use <code>--checkpoint</code> to run inference with a locally saved model. <code>--model</code> defaults to <code>time_distributed</code>.</p>
 <h2 id="basic-usage-python-package">Basic usage: Python package<a class="headerlink" href="#basic-usage-python-package" title="Permanent link">&para;</a></h2>
 <p>Say that we want to classify the videos in a folder called <code>example_vids</code> as simply as possible using all of the default settings.</p>
 <p>Minimum example for prediction using the Python package:</p>
@@ -1354,7 +1354,7 @@
 </ul>
 <p>For detailed explanations of all possible configuration arguments, see <a href="../configurations/">All Optional Arguments</a>.</p>
 <h2 id="default-behavior">Default behavior<a class="headerlink" href="#default-behavior" title="Permanent link">&para;</a></h2>
-<p>By default, the <a href="models/index.md#time-distributed"><code>time_distributed</code></a> model will be used. <code>zamba</code> will output a <code>.csv</code> file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as <em>the probability that animal j is present in video i.</em></p>
+<p>By default, the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code></a> model will be used. <code>zamba</code> will output a <code>.csv</code> file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as <em>the probability that animal j is present in video i.</em></p>
 <p>By default, predictions will be saved to <code>zamba_predictions.csv</code> in your working directory. You can save predictions to a custom directory using the <code>--save-dir</code> argument.</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat zamba_predictions.csv
 <span class="go">filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal</span>
@@ -1385,8 +1385,8 @@
 </div>
 </div>
 <h3 id="2-choose-a-model-for-prediction">2. Choose a model for prediction<a class="headerlink" href="#2-choose-a-model-for-prediction" title="Permanent link">&para;</a></h3>
-<p>If your camera videos contain species common to Central or West Africa, use either the <a href="models/index.md#time-distributed"><code>time_distributed</code> model</a> or <a href="models/index.md#slowfast"><code>slowfast</code> model</a> model. <code>slowfast</code> is better for blank and small species detection. <code>time_distributed</code> performs better if you have many different species of interest, or are focused on duikers, chimpanzees, and/or gorillas.</p>
-<p>If your videos contain species common to Europe, use the <a href="models/index.md#european"><code>european</code> model</a>.</p>
+<p>If your camera videos contain species common to Central or West Africa, use either the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code> model</a> or <a href="../models/species-detection/#slowfast"><code>slowfast</code> model</a> model. <code>slowfast</code> is better for blank and small species detection. <code>time_distributed</code> performs better if you have many different species of interest, or are focused on duikers, chimpanzees, and/or gorillas.</p>
+<p>If your videos contain species common to Europe, use the <a href="../models/species-detection/#european"><code>european</code> model</a>.</p>
 <p>Add the model name to your command. The <code>time_distributed</code> model will be used if no model is specified. For example, if you want to use the <code>slowfast</code> model to classify the videos in <code>example_vids</code>:</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">CLI</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --data-dir example_vids/ --model slowfast

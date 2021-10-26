@@ -451,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/denspose/" class="md-nav__link">
+      <a href="../models/densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -1385,7 +1385,7 @@
 <p>In our user tutorials, we refer to <code>train_model</code> and <code>predict_model</code> functions. The <code>ModelManager</code> class calls these same functions behind the scenes when <code>.predict()</code> or <code>.train()</code> is run.</p>
 <h2 id="default-configurations">Default configurations<a class="headerlink" href="#default-configurations" title="Permanent link">&para;</a></h2>
 <p>In the command line, the default configuration for each model is passed in using a specified YAML file that ships with <code>zamba</code>. You can see the default configuration YAML files on <a href="https://github.com/drivendataorg/zamba/tree/master/zamba/models/official_models">Github</a> in the <code>config.yaml</code> file within each model's folder.</p>
-<p>For example, the default configuration for the <a href="models/index.md#time-distributed"><code>time_distributed</code> model</a> is:</p>
+<p>For example, the default configuration for the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code> model</a> is:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">train_config</span><span class="p">:</span>
   <span class="nt">scheduler_config</span><span class="p">:</span>
     <span class="nt">scheduler</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">MultiStepLR</span>
@@ -1420,7 +1420,7 @@
 <span class="nt">public_checkpoint</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt</span>
 </code></pre></div>
 <h2 id="templates">Templates<a class="headerlink" href="#templates" title="Permanent link">&para;</a></h2>
-<p>To make modifying existing mod easier, we've set up the official models as templates in the <a href="https://github.com/drivendataorg/zamba/tree/master/templates"><code>templates</code> folder</a>. Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some <a href="train_tutorial.md">training</a>. Happy modeling!</p>
+<p>To make modifying the existing defaults easier, we've set up the official models as templates in the <a href="https://github.com/drivendataorg/zamba/tree/master/templates"><code>templates</code> folder</a>. Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some <a href="../train-tutorial/">training</a>. Happy modeling!</p>
                 
               
               

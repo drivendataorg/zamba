@@ -514,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/denspose/" class="md-nav__link">
+      <a href="../models/densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -1351,11 +1351,11 @@
 <span class="kn">from</span> <span class="nn">zamba.models.model_manager</span> <span class="kn">import</span> <span class="n">predict_model</span>
 
 <span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">)</span>
-<span class="hll">
-</span><span class="hll"><span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span>
-</span><span class="hll">    <span class="n">model_input_height</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">model_input_width</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span>
-</span><span class="p">)</span> <span class="c1"># total_frames must always be specified</span>
 
+<span class="hll"><span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span>
+</span><span class="hll">    <span class="n">model_input_height</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">model_input_width</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span>
+</span><span class="hll"><span class="p">)</span> <span class="c1"># total_frames must always be specified</span>
+</span>
 <span class="n">predict_model</span><span class="p">(</span>
     <span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span>
 <span class="p">)</span>
@@ -1402,7 +1402,7 @@
 </div>
 </div>
 <h3 id="megadetectorlite">MegadetectorLite<a class="headerlink" href="#megadetectorlite" title="Permanent link">&para;</a></h3>
-<p>You can use a pretrained object detection model called <a href="models/index.md#megadetectorlite">MegadetectorLite</a> to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter <code>megadetector_lite_config</code> is used to specify any arguments that should be passed to the MegadetectorLite model. If <code>megadetector_lite_config</code> is None, the MegadetectorLite model will not be used.</p>
+<p>You can use a pretrained object detection model called <a href="../models/species-detection/#megadetectorlite">MegadetectorLite</a> to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter <code>megadetector_lite_config</code> is used to specify any arguments that should be passed to the MegadetectorLite model. If <code>megadetector_lite_config</code> is None, the MegadetectorLite model will not be used.</p>
 <p>For example, to take the 16 frames with the highest probability of detection:</p>
 <div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">YAML file</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
@@ -1433,7 +1433,7 @@
 </code></pre></div></p>
 </div>
 </div>
-<p>If you are using the <a href="models/index.md#megadetectorlite">MegadetectorLite</a> for frame selection, there are two ways that you can specify frame resizing:</p>
+<p>If you are using the <a href="../models/species-detection/#megadetectorlite">MegadetectorLite</a> for frame selection, there are two ways that you can specify frame resizing:</p>
 <ul>
 <li><code>frame_selection_width</code> and <code>frame_selection_height</code> resize images <em>before</em> they are input to the frame selection method. If both are <code>None</code>, the full size images will be used during frame selection. Using full size images for selection is recommended for better detection of smaller species, but will slow down training and inference.</li>
 <li><code>model_input_height</code> and <code>model_input_width</code> resize images <em>after</em> frame selection. These specify the image size that is passed to the actual model.</li>

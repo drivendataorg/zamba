@@ -71,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#user-tutorial-training-a-model-on-labaled-videos" class="md-skip">
+        <a href="#user-tutorial-training-a-model-on-labeled-videos" class="md-skip">
           Skip to content
         </a>
       
@@ -514,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/denspose/" class="md-nav__link">
+      <a href="../models/densepose/" class="md-nav__link">
         DensePose
       </a>
     </li>
@@ -1312,7 +1312,7 @@
                   </a>
                 
                 
-                <h1 id="user-tutorial-training-a-model-on-labaled-videos">User tutorial: Training a model on labaled videos<a class="headerlink" href="#user-tutorial-training-a-model-on-labaled-videos" title="Permanent link">&para;</a></h1>
+                <h1 id="user-tutorial-training-a-model-on-labeled-videos">User tutorial: Training a model on labeled videos<a class="headerlink" href="#user-tutorial-training-a-model-on-labeled-videos" title="Permanent link">&para;</a></h1>
 <p>This section walks through how to train a model using <code>zamba</code>. If you are new to <code>zamba</code> and just want to classify some videos as soon as possible, see the <a href="../quickstart/">Quickstart</a> guide.</p>
 <p>This tutorial goes over the steps for using <code>zamba</code> if:</p>
 <ul>
@@ -1321,7 +1321,7 @@
 </ul>
 <p><code>zamba</code> can run two types of model training:</p>
 <ul>
-<li>Finetuning a model with labels that are a subset of the possible <a href="models/index.md#species-classes">zamba labels</a></li>
+<li>Finetuning a model with labels that are a subset of the possible <a href="../models/species-detection/#species-classes">zamba labels</a></li>
 <li>Finetuning a model to predict an entirely new set of labels</li>
 </ul>
 <p>The process is the same for both cases.</p>
@@ -1368,7 +1368,7 @@
 </ul>
 <p>For detailed explanations of all possible configuration arguments, see <a href="../configurations/">All Configuration Options</a>.</p>
 <h2 id="default-behavior">Default behavior<a class="headerlink" href="#default-behavior" title="Permanent link">&para;</a></h2>
-<p>By default, the <a href="models/index.md#time-distributed"><code>time_distributed</code></a> model will be used as a starting point. You can specify where the outputs should be saved with <code>--save-dir</code>. If no save directory is specified, <code>zamba</code> will write out incremental <code>version_n</code> folders to your current working directory. For example, a model finetuned from the provided <code>time_distributed</code> model (the default) will be saved in <code>version_0</code>.</p>
+<p>By default, the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code></a> model will be used as a starting point. You can specify where the outputs should be saved with <code>--save-dir</code>. If no save directory is specified, <code>zamba</code> will write out incremental <code>version_n</code> folders to your current working directory. For example, a model finetuned from the provided <code>time_distributed</code> model (the default) will be saved in <code>version_0</code>.</p>
 <p><code>version_0</code> contains:</p>
 <ul>
 <li><code>train_configuration.yaml</code>: The full model configuration used to generate the given model, including <code>video_loader_config</code> and <code>train_config</code>. To continue training using the same configuration, or to train another model using the same configuration, you can pass in <code>train_configurations.yaml</code> (see <a href="../yaml-config/">Specifying Model Configurations with a YAML File</a>) along with the <code>labels</code> filepath.</li>
@@ -1431,11 +1431,11 @@
 </div>
 </div>
 <h4 id="labels-zamba-has-seen-before">Labels <code>zamba</code> has seen before<a class="headerlink" href="#labels-zamba-has-seen-before" title="Permanent link">&para;</a></h4>
-<p>Your labels may be included in the list of <a href="models/index.md#species-classes"><code>zamba</code> class labels</a> that the provided models are trained to predict. If so, the relevant model that ships with <code>zamba</code> will essentially be used as a checkpoint, and model training will resume from that checkpoint.</p>
+<p>Your labels may be included in the list of <a href="../models/species-detection/#species-classes"><code>zamba</code> class labels</a> that the provided models are trained to predict. If so, the relevant model that ships with <code>zamba</code> will essentially be used as a checkpoint, and model training will resume from that checkpoint.</p>
 <h4 id="completely-new-labels">Completely new labels<a class="headerlink" href="#completely-new-labels" title="Permanent link">&para;</a></h4>
 <p>You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final <a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=995s">neural network</a> layer with a new head that predicts <em>your</em> labels instead of those that ship with <code>zamba</code>.</p>
 <h3 id="3-choose-a-model-for-training">3. Choose a model for training<a class="headerlink" href="#3-choose-a-model-for-training" title="Permanent link">&para;</a></h3>
-<p>Any of the models that ship with <code>zamba</code> can be trained. If you're training on entirely new species or new ecologies, we recommend starting with the <a href="models/index.md#time-distributed"><code>time_distributed</code> model</a> as this model is less computationally intensive than the <a href="models/index.md#slowfast"><code>slowfast</code> model</a>.</p>
+<p>Any of the models that ship with <code>zamba</code> can be trained. If you're training on entirely new species or new ecologies, we recommend starting with the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code> model</a> as this model is less computationally intensive than the <a href="../models/species-detection/#slowfast"><code>slowfast</code> model</a>.</p>
 <p>However, if you're tuning a model to a subset of species (e.g. a <code>european_beaver</code> or <code>blank</code> model), use the model that was trained on data that is most similar to your new data.</p>
 <p>Add the model name to your command with <code>--model</code>. The <code>time_distributed</code> model will be used if no model is specified. For example, if you want to continue training the <code>european</code> model based on the videos in <code>example_euro_vids</code> and the labels in <code>example_euro_labels.csv</code>:</p>
 <div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">CLI</label><div class="tabbed-content">
