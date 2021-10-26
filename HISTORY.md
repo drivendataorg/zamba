@@ -12,7 +12,7 @@ The core algorithm in `zamba` v1 was a [stacked ensemble](https://en.wikipedia.o
 learning models, whose individual predictions were combined in the second level
 of the stack to form the final prediction.
 
-In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful [single-model options](../models/index.md): `time_distributed`, `slowfast`, and `european`. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.
+In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful [single-model options](../models/species-detection.md): `time_distributed`, `slowfast`, and `european`. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.
 
 ### New geographies and species
 
