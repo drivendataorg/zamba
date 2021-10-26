@@ -87,7 +87,7 @@ Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
-The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models/species-detection.md#megadetectorlite) for frame selection. For all possible options, see the [`MegadetectorLiteYoloXConfig` class](api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig). If `megadetector_lite_config` is `None` (the default), the MegadetectorLite model will not be used to select frames.
+The `megadetector_lite_config` is used to specify any parameters that should be passed to the [MegadetectorLite model](models/species-detection.md#megadetectorlite) for frame selection. For all possible options, see the [`MegadetectorLiteYoloXConfig` class](api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig). If `megadetector_lite_config` is `None`, the MegadetectorLite model will not be used to select frames.
 
 #### `frame_selection_height (int, optional), frame_selection_width (int, optional)`
 
