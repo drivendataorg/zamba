@@ -99,9 +99,7 @@ The `time_distributed` model was built by re-training a well-known image classif
 
 ### Training data
 
-`time_distributed` was trained using data collected and annotated by partners at [The Max Planck Institute for
-Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp &
-See](https://www.chimpandsee.org/).
+`time_distributed` was trained using data collected and annotated by partners at [The Max Planck Institute for Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp&See](https://www.chimpandsee.org/).
 
 The data included camera trap videos from:
 
@@ -266,6 +264,7 @@ video_loader_config:
 ```
 
 You can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The two requirements for the `slowfast` model are that:
+
 - the video loader must return 32 frames
 - videos inputted into the model must be at least 200 x 200 pixels
 

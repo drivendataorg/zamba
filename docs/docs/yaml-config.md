@@ -85,7 +85,7 @@ In our user tutorials, we refer to `train_model` and `predict_model` functions. 
 
 In the command line, the default configuration for each model is passed in using a specified YAML file that ships with `zamba`. You can see the default configuration YAML files on [Github](https://github.com/drivendataorg/zamba/tree/master/zamba/models/official_models) in the `config.yaml` file within each model's folder.
 
-For example, the default configuration for the [`time_distributed` model](models/index.md#time-distributed) is:
+For example, the default configuration for the [`time_distributed` model](models/species-detection.md#time-distributed) is:
 
 ```yaml
 train_config:
@@ -124,4 +124,4 @@ public_checkpoint: time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckp
 
 ## Templates
 
-To make modifying existing mod easier, we've set up the official models as templates in the [`templates` folder](https://github.com/drivendataorg/zamba/tree/master/templates). Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some [training](train_tutorial.md). Happy modeling!
+To make modifying the existing defaults easier, we've set up the official models as templates in the [`templates` folder](https://github.com/drivendataorg/zamba/tree/master/templates). Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some [training](train-tutorial.md). Happy modeling!

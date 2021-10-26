@@ -2,12 +2,12 @@
 
 `zamba` is an open source project, which means _you_ can help make it better!
 
-## Develop the github repository
+## Develop the GitHub repository
 
-To get involved, check out the Github [code repository](https://github.com/drivendataorg/zamba).
+To get involved, check out the GitHub [code repository](https://github.com/drivendataorg/zamba).
 There you can find [open issues](https://github.com/drivendataorg/zamba/issues) with comments and links to help you along.
 
-`zamba` uses continuous integration and test-driven-development to ensure that we always have a working project. So what are you waiting for? `git` going!
+`zamba` uses continuous integration and test-driven development to ensure that we always have a working project. So what are you waiting for? `git` going!
 
 ## Installation for development
 
@@ -22,9 +22,9 @@ $ pip install -r requirements-dev.txt
 
 ## Running the `zamba` test suite
 
-The included `Makefile` contains code that uses pytest to run all tests in `zamba/tests`.
+The included [`Makefile`](https://github.com/drivendataorg/zamba/blob/master/Makefile) contains code that uses pytest to run all tests in `zamba/tests`.
 
-The command is (from the project root),
+The command is (from the project root):
 
 ```console
 $ make tests

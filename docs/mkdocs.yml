@@ -24,7 +24,7 @@ nav:
       - Guide to common optional parameters: "extra-options.md"
   - "Available Models":
       - Species detection: "models/species-detection.md"
-      - DensePose: "models/denspose.md"
+      - DensePose: "models/densepose.md"
   - "Advanced Options":
       - All configuration options: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
