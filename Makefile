@@ -82,10 +82,10 @@ docs-setup:
 	| sed 's|Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.||g' \
 	| sed 's|https://user-images.githubusercontent.com /46792169/137787221-de590183-042e-4d30-b32b-1d1c2cc96589.mov| \
 	<script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1></script>|g' \
-	| sed 's|https://zamba.drivendata.org/docs/||g' \
+	| sed 's|https://zamba.drivendata.org/docs/stable/||g' \
 	> docs/docs/index.md
 
-	sed 's|https://zamba.drivendata.org/docs/|../|g' HISTORY.md > docs/docs/changelog.md
+	sed 's|https://zamba.drivendata.org/docs/stable/|../|g' HISTORY.md > docs/docs/changelog.md
 
 ## Build the static version of the docs
 docs: docs-setup
