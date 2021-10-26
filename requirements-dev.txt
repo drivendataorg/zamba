@@ -1,7 +1,4 @@
-pytest==5.4.3
-pytest-cov==2.10.0
-pytest-mock==3.1.1
-twine==1.11.0
+-e .[tests,densepose]
 
--r requirements.txt
--r docs/requirements.txt
+-r requirements-dev/docs.txt
+-r requirements-dev/lint.txt

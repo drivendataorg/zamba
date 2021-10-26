@@ -1,3 +1,2 @@
-include requirements.txt
-include README.md
-recursive-include zamba *.txt
+include zamba/models/official_models/*/config.yaml
+include zamba/models/yolox_models/assets/yolox_nano_20210901.pth

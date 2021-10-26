@@ -1,0 +1,3 @@
+# zamba.exceptions
+
+::: zamba.exceptions

@@ -1,0 +1,46 @@
+backbone_mode: train
+head_dropout_rate: null
+head_hidden_layer_sizes: null
+lr: 0.001
+model_class: SlowFast
+output_with_global_average: true
+post_backbone_dropout: 0.0
+scheduler: MultiStepLR
+scheduler_params:
+  gamma: 0.5
+  milestones:
+  - 1
+  verbose: true
+species:
+- aardvark
+- antelope_duiker
+- badger
+- bat
+- bird
+- blank
+- cattle
+- cheetah
+- chimpanzee_bonobo
+- civet_genet
+- elephant
+- equid
+- forest_buffalo
+- fox
+- giraffe
+- gorilla
+- hare_rabbit
+- hippopotamus
+- hog
+- human
+- hyena
+- large_flightless_bird
+- leopard
+- lion
+- mongoose
+- monkey_prosimian
+- pangolin
+- porcupine
+- reptile
+- rodent
+- small_cat
+- wild_dog_jackal

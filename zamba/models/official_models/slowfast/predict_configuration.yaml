@@ -1,0 +1,78 @@
+inference_start_time: '2021-10-20T06:41:28.280079'
+model_class: SlowFast
+predict_config:
+  batch_size: 2
+  checkpoint: experiments/slowfast_small_set_full_size_mdlite/version_2/slowfast.ckpt
+  data_dir: /home/ubuntu/zamba-algorithms
+  dry_run: false
+  gpus: 1
+  model_cache_dir: /home/ubuntu/.cache/zamba
+  model_name: null
+  num_workers: 3
+  output_class_names: false
+  overwrite: false
+  proba_threshold: null
+  save: true
+  save_dir: experiments/slowfast_small_set_full_size_mdlite/version_2
+  skip_load_validation: true
+  weight_download_region: us
+species:
+- aardvark
+- antelope_duiker
+- badger
+- bat
+- bird
+- blank
+- cattle
+- cheetah
+- chimpanzee_bonobo
+- civet_genet
+- elephant
+- equid
+- forest_buffalo
+- fox
+- giraffe
+- gorilla
+- hare_rabbit
+- hippopotamus
+- hog
+- human
+- hyena
+- large_flightless_bird
+- leopard
+- lion
+- mongoose
+- monkey_prosimian
+- pangolin
+- porcupine
+- reptile
+- rodent
+- small_cat
+- wild_dog_jackal
+video_loader_config:
+  cache_dir: /tmp/zamba_cache
+  cleanup_cache: false
+  crop_bottom_pixels: 50
+  early_bias: false
+  ensure_total_frames: true
+  evenly_sample_total_frames: false
+  fps: 8.0
+  frame_indices: null
+  frame_selection_height: null
+  frame_selection_width: null
+  i_frames: false
+  megadetector_lite_config:
+    confidence: 0.25
+    device: cuda
+    fill_mode: score_sorted
+    image_height: 416
+    image_width: 416
+    n_frames: 32
+    nms_threshold: 0.45
+    seed: 55
+    sort_by_time: true
+  model_input_height: 240
+  model_input_width: 426
+  pix_fmt: rgb24
+  scene_threshold: null
+  total_frames: 32

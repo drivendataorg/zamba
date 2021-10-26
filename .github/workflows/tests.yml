@@ -2,67 +2,147 @@ name: tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-  schedule:
-    # Run every Sunday
-    - cron: '0 0 * * 0'
+    branches:
+      - v2
+      - master
 
 jobs:
-  build:
-    name: ${{ matrix.os }}, Python ${{ matrix.python-version }}
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev/lint.txt
+
+      - name: Lint package
+        run: |
+          make lint
+
+  tests:
+    name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    needs: code-quality
+    runs-on: ${{ matrix.os }}
+    env:
+      DISTUTILS_USE_SDK: 1 # for MSVC compiler
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: [3.7, 3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v1
+        with:
+          # Not strictly necessary, but it may prevent rate limit
+          # errors especially on GitHub-hosted macos machines.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Windows compilers
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -e .[tests]
+
+      - name: Run tests
+        run: |
+          make tests
+
+      - name: Run densepose tests
+        env:
+          ZAMBA_RUN_DENSEPOSE_TESTS: 1
+        run: |
+          # torch is alread installed, so just add the densepose extra
+          pip install -e .[tests,densepose]
+          make densepose-tests
+
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: true
+
+  test-install:
+    name: Test install from built distributions
+    needs: tests
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.6, 3.7]
+        os: [ubuntu-latest]
+        python-version: [3.8]
 
     steps:
+      - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v1
+        with:
+          # Not strictly necessary, but it may prevent rate limit
+          # errors especially on GitHub-hosted macos machines.
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Python ${{ matrix.python-version }} with Miniconda
-      uses: conda-incubator/setup-miniconda@v2.0.0
-      with:
-        auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Get pip cache dir
-      id: pip-cache
-      shell: bash -l {0}
-      run: |
-        echo "::set-output name=dir::$(python -m pip cache dir)"
-      
-    - name: Load pip cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ matrix.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements*.txt') }}
-        restore-keys: |
-          ${{ matrix.os }}-${{ matrix.python-version }}-pip-
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
 
-    - name: Install ffmpeg
-      shell: bash -l {0}
-      run: |
-        conda install -y ffmpeg
+      - name: Build package
+        run: |
+          make dist
 
-    - name: Install dependencies
-      shell: bash -l {0}
-      run: |
-        pip install Cython==0.28.1 --install-option="--no-cython-compile"
-        make reqs
+      - name: Install wheel and test CLI
+        run: |
+          python -m venv .venv-whl
+          PYTHON_BIN=bin/python
+          .venv-whl/$PYTHON_BIN -m pip install --upgrade pip
+          .venv-whl/$PYTHON_BIN -m pip install dist/zamba-*.whl
+          .venv-whl/$PYTHON_BIN -m zamba --help
 
-    - name: Lint Package
-      shell: bash -l {0}
-      run: |
-        make lint
+      - name: Install source and test CLI
+        run: |
+          python -m venv .venv-sdist
+          PYTHON_BIN=bin/python
+          .venv-sdist/$PYTHON_BIN -m pip install --upgrade pip
+          .venv-sdist/$PYTHON_BIN -m pip install dist/zamba-*.tar.gz
+          .venv-sdist/$PYTHON_BIN -m zamba --help
 
-    - name: Test Package
-      shell: bash -l {0}
-      run: |
-        make test
-
-    - name: Test Build Docs
-      shell: bash -l {0}
-      run: |
-        make docs
+  notify:
+    name: Notify failed build
+    needs: [code-quality, tests, test-install]
+    if: failure() && (github.event_name == 'push' || github.event_name == 'schedule')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          RUN_NUMBER: ${{ github.run_number}}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          filename: .github/failed_build_issue_template.md

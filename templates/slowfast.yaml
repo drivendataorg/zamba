@@ -1,0 +1,40 @@
+train_config:
+  # data_dir: YOUR_DATA_DIR HERE
+  # labels: YOUR_LABELS_CSV_HERE
+  model_name: slowfast
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 10
+    pre_train_bn: false
+    train_bn: false
+    unfreeze_backbone_at_epoch: 3
+    verbose: true
+  early_stopping_config:
+    patience: 5
+  scheduler_config:
+    scheduler: MultiStepLR
+    scheduler_params:
+      gamma: 0.5
+      milestones:
+      - 1
+      verbose: true
+
+video_loader_config:
+  model_input_height: 240
+  model_input_width: 426
+  crop_bottom_pixels: 50
+  fps: 8
+  total_frames: 32
+  ensure_total_frames: True
+  megadetector_lite_config:
+    confidence: 0.25
+    fill_mode: score_sorted
+    n_frames: 32
+
+predict_config:
+  # data_dir: YOUR_DATA_DIR HERE
+  # or
+  # filepaths: YOUR_FILEPATH_CSV_HERE
+  model_name: slowfast
+  # or
+  # checkpoint: YOUR_CKPT_HERE
