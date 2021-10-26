@@ -1,0 +1,74 @@
+git_hash: 37e29a5955d71e124b5e98cf7859409906315754
+model_class: TimeDistributedEfficientNet
+species:
+- bird
+- blank
+- domestic_cat
+- european_badger
+- european_beaver
+- european_hare
+- european_roe_deer
+- north_american_raccoon
+- red_fox
+- weasel
+- wild_boar
+starting_learning_rate: 0.001
+train_config:
+  auto_lr_find: false
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 1
+    pre_train_bn: false
+    train_bn: false
+    unfreeze_backbone_at_epoch: 15
+    verbose: true
+  batch_size: 2
+  checkpoint: data/results/experiments/td_dev_set_full_size_mdlite/results/version_1/time_distributed_zamba.ckpt
+  data_dir: /home/ubuntu/zamba-algorithms
+  dry_run: false
+  early_stopping_config:
+    mode: max
+    monitor: val_macro_f1
+    patience: 3
+    verbose: true
+  from_scratch: false
+  gpus: 1
+  max_epochs: null
+  model_cache_dir: /home/ubuntu/.cache/zamba
+  model_name: null
+  num_workers: 3
+  overwrite: false
+  predict_all_zamba_species: true
+  save_dir: experiments/european_td_dev_base
+  scheduler_config: default
+  skip_load_validation: true
+  split_proportions: null
+  weight_download_region: us
+training_start_time: '2021-10-13T16:46:39.593515'
+video_loader_config:
+  cache_dir: /tmp/zamba_cache
+  cleanup_cache: false
+  crop_bottom_pixels: 50
+  early_bias: false
+  ensure_total_frames: true
+  evenly_sample_total_frames: false
+  fps: 4.0
+  frame_indices: null
+  frame_selection_height: null
+  frame_selection_width: null
+  i_frames: false
+  megadetector_lite_config:
+    confidence: 0.25
+    device: cuda
+    fill_mode: score_sorted
+    image_height: 416
+    image_width: 416
+    n_frames: 16
+    nms_threshold: 0.45
+    seed: 55
+    sort_by_time: true
+  model_input_height: 240
+  model_input_width: 426
+  pix_fmt: rgb24
+  scene_threshold: null
+  total_frames: 16

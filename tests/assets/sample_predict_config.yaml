@@ -1,0 +1,11 @@
+video_loader_config:
+  frame_selection_height: 224
+  frame_selection_width: 224
+  crop_bottom_pixels: 0
+  ensure_total_frames: True
+  megadetector_lite_config:
+  total_frames: 16
+
+predict_config:
+  data_dir: tests/assets/videos
+  model_name: time_distributed

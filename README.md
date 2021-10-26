@@ -1,135 +1,102 @@
-# zamba - a command line interface for species classification
+# zamba
 
-![build status](https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master) [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/)
+[![Docs Status](https://img.shields.io/badge/docs-stable-informational)](https://zamba.drivendata.org/docs/)
+[![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/)
+[![tests](https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master)](https://github.com/drivendataorg/zamba/actions?query=workflow%3Atests+branch%3Amaster)
+[![codecov](https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/zamba)
 
-### [HOMEPAGE](http://zamba.drivendata.org/)
+https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-b9df-380528091f9e.mp4
 
-### [DOCUMENTATION](http://zamba.drivendata.org/docs/)
+> *zamba* means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.
 
-_Zamba means "forest" in the Lingala language._
+**`zamba` is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos.** You can use `zamba` to:
 
-Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa. The tool makes predictions for 24 common species in these videos. For more information, see the documentation.
+- Identify which species appear in each video
+- Filter out blank videos
 
-The `zamba` command will be the entry point for users (see example usage below).
+The models in `zamba` can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species commmon to Europe. Users can also finetune models using their own labeled videos to then make predictions for new species and/or new ecologies.
 
+`zamba` can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, [Zamba Cloud](https://www.zambacloud.com/).
 
-## Prerequisites (for more detail, see [the documentation](http://zamba.drivendata.org/docs/))
+Check out the [Wiki](https://github.com/drivendataorg/zamba/wiki) for community-submitted models.
 
- - [Python](https://www.python.org/) 3.6
- - [ffmpeg](https://www.ffmpeg.org/download.html), codecs for handling the video loading
+Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
 
+## Installing `zamba`
 
-## Installing `zamba` (for more detail, see [the documentation](http://zamba.drivendata.org/docs/))
+First, make sure you have the prerequisites installed:
 
-### GPU or CPU
+* Python 3.7 or 3.8
+* FFmpeg
 
-`zamba` is significantly faster when using a machine with a GPU instead of just a CPU. To use a GPU, you must be using an [nvidia gpu](https://www.nvidia.com/Download/index.aspx?lang=en-us), [installed and configured CUDA](https://developer.nvidia.com/cuda-downloads), and [installed and configured CuDNN](https://developer.nvidia.com/cudnn) per their specifications. Once this is done, you can select to install the version of zamaba that uses `tensorflow` compiled for GPU.
-
-When a user installs `zamba` that user must specify to install the GPU or CPU version. If the user fails to make this specification, **no version of tensorflow will be installed, thus everything will fail.**
-
-To install with **tensorflow cpu** (you do not have a GPU)
-```
-$ pip install zamba[cpu]
-```
-
-To install with **tensorflow gpu**
-```
-$ pip install zamba[gpu]
+Then run:
+```console
+pip install zamba
 ```
 
+See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.
+
+## Getting started
+
+Once you have `zamba` installed, some good starting points are:
+
+- The [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page for basic examples of usage
+- The user tutorial for either [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) or [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) depending on what you want to do with `zamba`
 
 ## Example usage
 
-Once zamba is installed, you can see the commands with `zamba`:
-
-`zamba`
-
-```
+Once `zamba` is installed, you can see the basic command options with:
+```console
+$ zamba --help
 Usage: zamba [OPTIONS] COMMAND [ARGS]...
 
+  Zamba is a tool built in Python to automatically identify the species seen
+  in camera trap videos from sites in Africa and Europe. Visit
+  https://zamba.drivendata.org/docs for more in-depth documentation.
+
 Options:
-  --help  Show this message and exit.
+  --version             Show zamba version and exit.
+  --install-completion  Install completion for the current shell.
+  --show-completion     Show completion for the current shell, to copy it or
+                        customize the installation.
+  --help                Show this message and exit.
 
 Commands:
-  predict  Identify species in a video.
-  train    [NOT IMPLEMENTED] Retrain network from...
-  tune     [NOT IMPLEMENTED] Update network with new...
+  densepose  Run densepose algorithm on videos.
+  predict    Identify species in a video.
+  train      Train a model on your labeled data.
 ```
 
-And you can see the options you can pass to the `predict` command with:
+`zamba` can be used "out of the box" to generate predictions or train a model using your own videos. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
 
-`zamba predict --help`
+### Classifying unlabeled videos
 
-```
-Usage: zamba predict [OPTIONS] [DATA_PATH] [PRED_PATH]
-
-  Identify species in a video.
-
-  This is a command line interface for prediction on camera trap footage.
-  Given a path to camera trap footage, the predict function use a deep
-  learning model to predict the presence or absense of a variety of species
-  of common interest to wildlife researchers working with camera trap data.
-
-Options:
-  --tempdir PATH                 Path to temporary directory. If not
-                                 specified, OS temporary directory is used.
-  --proba_threshold FLOAT        Probability threshold for classification. if
-                                 specified binary predictions are returned
-                                 with 1 being greater than the threshold, 0
-                                 being less than or equal to. If not
-                                 specified, probabilities between 0 and 1 are
-                                 returned.
-  --output_class_names           If True, we just return a video and the name
-                                 of the most likely class. If False, we return
-                                 a probability or indicator (depending on
-                                 --proba_threshold) for every possible class.
-  --model_profile TEXT           Defaults to 'full' which is slow and
-                                 accurate; can be 'fast' which is faster and
-                                 less accurate.
-  --weight_download_region TEXT  Defaults to 'us', can also be 'eu' or 'asia'.
-                                 Region for server to download weights.
-  --verbose                      Displays additional logging information
-                                 during processing.
-  --help                         Show this message and exit.
+```console
+$ zamba predict --data-dir path/to/videos
 ```
 
-![demo](https://s3.amazonaws.com/drivendata-public-assets/zamba-demo.gif)
+By default, predictions will be saved to `zamba_predictions.csv`. Run `zamba predict --help` to list all possible options to pass to `predict`.
 
+See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) for more details.
 
-Once `zamba` is installed, you can execute it on any directory of video files. The tool does not recursively search directories, so all of the files must be at the top level of the directory. The algorithm will work the best with 15 second videos since that is what it is trained on, though it will sample frames from longer videos, which may be less reliable.
+### Training a model
 
-**NOTE: `zamba` needs to download the "weights" files for the neural networks that it uses to make predictions. On first run it will download ~1GB of files with these weights.** Once these are downloaded, the tool will use the local versions and will not need to perform this download again.
+```console
+$ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save_dir my_trained_model
+```
 
-`zamba predict path/to/videos`
+The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run `zamba train --help` to list all possible options to pass to `train`.
 
-By default the output will be written to the file `output.csv` in the current directory. If the file exists, it will be overwritten.
+See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) for more details.
 
 ## Running the `zamba` test suite
 
-The included `Makefile` contains code that uses pytest to run all tests in `zamba/tests`.
+The included [`Makefile`](https://github.com/drivendataorg/zamba/blob/master/Makefile) contains code that uses pytest to run all tests in `zamba/tests`.
 
-The command is (from the project root),
+The command is (from the project root):
 
-```
-$ make test
-```
-
-### Testing End-To-End Prediction With `test_cnnensemble.py`
-The test `tests/test_cnnensemble.py` runs an end-to-end prediction with `CnnEnsemble.predict(data_dir)` using a video that automatically gets downloaded along with the `input` directory (this and all required directories are downloaded upon instantiation of `CnnEnsemble` if they are not already present in the project).
-
-By default this test is skipped due to the `pytest` decorator
-
-```
-@pytest.mark.skip(reason="This test takes hours to run, makes network calls, and is really for local dev only.")
-def test_predict():
-    data_dir = Path(__file__).parent.parent / "models" / "cnnensemble" / "input" / "raw_test"
-
-    manager = ModelManager('', model_class='cnnensemble', proba_threshold=0.5)
-    manager.predict(data_dir, save=True)
+```console
+$ make tests
 ```
 
-It is reccomended that the **decorator be commented out in order to test end-to-end prediction locally**. However, this change should never be pushed, as the lightweight machines on codeship will not be happy, or able, to complete the end-to-end prediction.
-
-To test end-to-end prediction using `make test` on a different set of videos, simply edit `data_dir`.
-
-
+See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/stable/contribute/index.md) for details.

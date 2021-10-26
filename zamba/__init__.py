@@ -1,22 +1,17 @@
-# avoid using a backend when not installed
-# as a framework.
-import zamba.config
-import zamba.utils  # noqa: F401
+import os
+from pathlib import Path
+import sys
 
-import matplotlib
-matplotlib.use('Agg')
+from loguru import logger
 
-# import h5py first and ignore warnings which will go away in 2.7.2 (prevents annoying messages on start)
-# import tensorflow and ignore compiletime mismatch for tensorflow.framework.fast_tensor_util. Does no impact
-# performance. see https://github.com/tensorflow/tensorflow/issues/14182
-import warnings  # noqa: E402
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=FutureWarning)
-    import h5py  # noqa: F401
+from zamba.models.efficientnet_models import TimeDistributedEfficientNet  # noqa: F401
+from zamba.models.slowfast_models import SlowFast  # noqa: F401
+from zamba.version import __version__
 
-    warnings.filterwarnings("ignore", category=RuntimeWarning)
-    import tensorflow  # noqa: F401
+__version__
 
-# set tensorflow logging to ignore warnings for deprecated alias `normal` for `truncated_normal`. Warning arises from
-# within keras that is packaged inside of tensorflow
-tensorflow.compat.v1.logging.set_verbosity(tensorflow.compat.v1.logging.ERROR)
+logger.remove()
+log_level = os.getenv("LOG_LEVEL", "INFO")
+logger.add(sys.stderr, level=log_level)
+
+MODELS_DIRECTORY = Path(__file__).parents[1] / "zamba" / "models" / "official_models"
