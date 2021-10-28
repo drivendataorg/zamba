@@ -5,3 +5,7 @@
 .md-header-nav__title {
   padding-left: 0.05rem !important;
 }
+
+h4 > code {
+  color: #388e3c !important;
+}

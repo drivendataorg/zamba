@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/zamba)
 <!-- [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/) -->
 
-https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-b9df-380528091f9e.mp4
+ <div class="embed-responsive embed-responsive-16by9" width=500>     <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" frameborder="0" allowfullscreen=""></iframe></div>
 
 > *zamba* means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.
 
@@ -20,9 +20,9 @@ The officials models in `zamba` can identify blank videos (where no animal is pr
 
 `zamba` can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, [Zamba Cloud](https://www.zambacloud.com/).
 
-We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki) for others to be able to use!
+We encourage people to share their custom models trained with Zamba. Please add them to the [Wiki](https://github.com/drivendataorg/zamba/wiki) for others to be able to use!
 
-Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
+
 
 ## Installing `zamba`
 
@@ -36,14 +36,14 @@ Then run:
 pip install git+https://github.com/drivendataorg/zamba
 ```
 
-See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.
+See the [Installation](install/) page of the documentation for details.
 
 ## Getting started
 
 Once you have `zamba` installed, some good starting points are:
 
-- The [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page for basic examples of usage
-- The user tutorial for either [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) or [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) depending on what you want to do with `zamba`
+- The [Quickstart](quickstart/) page for basic examples of usage
+- The user tutorial for either [classifying videos](predict-tutorial/) or [training a model](train-tutorial/) depending on what you want to do with `zamba`
 
 ## Example usage
 
@@ -79,7 +79,7 @@ $ zamba predict --data-dir path/to/videos
 
 By default, predictions will be saved to `zamba_predictions.csv`. Run `zamba predict --help` to list all possible options to pass to `predict`.
 
-See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) for more details.
+See the [Quickstart](quickstart/) page or the user tutorial on [classifying videos](predict-tutorial/) for more details.
 
 ### Training a model
 
@@ -89,15 +89,10 @@ $ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save_dir m
 
 The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run `zamba train --help` to list all possible options to pass to `train`.
 
-You can use your trained model on new videos by:
- - Edit the 
-
-See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) for more details.
-
-You can then
+See the [Quickstart](quickstart/) page or the user tutorial on [training a model](train-tutorial/) for more details.
 
 ## Contributing
 
 We would love your contributions of code fixes, new models, additional training data, docs revisisions, and anything else you can bring to the project!
 
-See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/stable/contribute/index.md) for details.
+See the docs page on [contributing to `zamba`](contribute/index.md) for details.

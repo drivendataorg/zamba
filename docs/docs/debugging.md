@@ -38,23 +38,28 @@ The dry run will also catch any GPU memory errors. If you hit a GPU memory error
 
 Resize video frames to be smaller before they are passed to the model. The default for all three models is 240x426 pixels. `model_input_height` and `model_input_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
 
+If you are using MegadetectorLite to select frames (which is the default for the official models we ship with), you can also decrease the size of the frame used at this stage by setting [`frame_selection_height` and `frame_selection_width`](configurations/#frame_selection_height-int-optional-frame_selection_width-int-optional).
+
 === "YAML file"
     ```yaml
     video_loader_config:
         model_input_height: 100
         model_input_width: 100
+        frame_selection_height: 400  # if using megadetectorlite
+        frame_selection_width: 600  # if using megadetectorlite
         total_frames: 16 # total_frames is always required
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-        model_input_height=100, model_input_width=100, total_frames=16
+        model_input_height=100, model_input_width=100, total_frames=16,
+        frame_selection_height=400, frame_selection_width=600,  # if using megadetectorlite
     ) # total_frames is always required
     ```
 
 #### Reducing `num_workers`
 
-Reduce the number of workers (subprocesses) used for data loading. By default `num_workers` will be set to 3. The minimum value is 0, which means that the data will be loaded in the main process, and the maximum is one less than the number of CPUs in the system.
+Reduce the number of workers (subprocesses) used for data loading. By default `num_workers` will be set to 3. The minimum value is 0, which means that the data will be loaded in the main process, and the maximum is one less than the number of CPUs in the system. We recommend trying 1 if 3 is too many.
 
 === "CLI"
     ```console
@@ -72,4 +77,8 @@ Reduce the number of workers (subprocesses) used for data loading. By default `n
 
 ## Logging
 
-To check that videos are getting loaded and cached as expected, set your environment variabe `LOG_LEVEL` to `debug`. The default log level is `info`.
+To check that videos are getting loaded and cached as expected, set your environment variabe `LOG_LEVEL` to `debug`. The default log level is `info`. For example:
+
+```console
+$ LOG_LEVEL=debug zamba predict --data-dir example_vids/
+```

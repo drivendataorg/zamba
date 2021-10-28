@@ -22,10 +22,10 @@ $ zamba predict --data-dir example_vids/
 
 To run `zamba predict` in the command line, you must specify `--data-dir` and/or `--filepaths`.
 
-* **`--data-dir PATH`:** Path to the folder containing your videos.
-* **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute or relative to the data directory.
+* **`--data-dir PATH`:** Path to the folder containing your videos. If you don't also provide `filepaths`, Zamba will recursively search this folder for videos.
+* **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute on your system or relative to the data directory that your provide in `--data-dir`.
 
-All other flags are optional. To choose a model, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the three [pretrained models](models/species-detection.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to `time_distributed`.
+All other flags are optional. To choose the model you want to use for prediction, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the three [pretrained models](models/species-detection.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to [`time_distributed`](models/species-detection.md#what-species-can-zamba-detect).
 
 ## Basic usage: Python package
 
@@ -47,9 +47,9 @@ The only two arguments that can be passed to `predict_model` are `predict_config
 
 To run `predict_model` in Python, you must specify either `data_dir` or `filepaths` when `PredictConfig` is instantiated.
 
-* **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
+* **`data_dir (DirectoryPath)`:** Path to the folder containing your videos. If you don't also provide `filepaths`, Zamba will recursively search this folder for videos.
 
-* **`filepaths (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute or relative to the data directory.
+* **`filepaths (FilePath)`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute or relative to the data directory provided as `data_dir`.
 
 For detailed explanations of all possible configuration arguments, see [All Optional Arguments](configurations.md).
 
@@ -57,7 +57,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 By default, the [`time_distributed`](models/species-detection.md#time-distributed) model will be used. `zamba` will output a `.csv` file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as *the probability that animal j is present in video i.*
 
-By default, predictions will be saved to `zamba_predictions.csv` in your working directory. You can save predictions to a custom directory using the `--save-dir` argument.
+By default, predictions will be saved to a file called `zamba_predictions.csv` in your working directory. You can save predictions to a custom directory using the `--save-dir` argument.
 
 ```console
 $ cat zamba_predictions.csv
@@ -77,9 +77,9 @@ $ zamba predict --config predict_configuration.yaml
 
 ### 1. Specify the path to your videos
 
-Save all of your videos within one folder.
+Save all of your videos within one parent folder.
 
-* They can be in nested subdirectories within the folder.
+* Videos can be in nested subdirectories within the folder.
 * Your videos should be in be saved in formats that are suppored by FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training. By default, `zamba` will look for files with the following suffixes: `.avi`, `.mp4`, `.asf`. To use other video suffixes that are supported by FFmpeg, set your `VIDEO_SUFFIXES` environment variable.
 
 Add the path to your video folder. For example, if your videos are in a folder called `example_vids`:

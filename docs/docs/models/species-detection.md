@@ -198,6 +198,8 @@ The data included camera trap videos from:
   </tr>
 </table>
 
+The most recent release of models trained took around 2-3 days to train on a single GPU machine on approximately 14,000 1-minute long videos (for the African species), and around 13,000 videos for the European species. These models will be updated in the future, and you can always check the [changelog](../../changelog) to see if there have been updates.
+
 ### Default configuration
 
 The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml).
@@ -315,3 +317,16 @@ MegadetectorLite combines two open-source models:
 * [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX) is a high-performance, lightweight object detection model that is much less computationally intensive than Megadetector.
 
 While highly accurate, Megadetector is too computationally intensive to run on every frame. MegadetectorLite was created by training a YOLOX model using the predictions of the Megadetector as ground truth - this method is called [student-teacher training](https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764).
+
+MegadetectorLite can be imported into Python code and used directly since it has convenient methods for `detect_image` and `detect_video`. See [the API documentation for more details](../../api-reference/models-megadetector_lite_yolox).
+
+
+## User contributed models
+
+We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki) for others to be able to use!
+
+To use one of these models, download the weights file and the configuration file from the Model Zoo Wiki. You'll need to create a [prediction config](../configurations.md) to use that at least contains the same `video_loader_config` from the configuration yaml you downloaded. Then you can run the model with:
+
+```console
+$ zamba predict --checkpoint downloaded_weights.ckpt --config predict_config.yaml
+```

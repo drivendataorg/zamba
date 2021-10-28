@@ -29,7 +29,9 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 To run `zamba train` in the command line, you must specify both `--data-directory` and `--labels`.
 
 * **`--data-dir PATH`:** Path to the folder containing your labeled videos. `zamba` will generate predictions for videos in the top level directory and in any nested folders.
-* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Filepaths should be either absolute paths or relative to `data-dir`. Optionally, there can also be columns for `split` (`train`, `val`, or `holdout`) and `site`. If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
+* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Filepaths should be either absolute paths or relative to `data-dir`. Optionally, there can also be columns for `split` (which can have one of the three values for each row: `train`, `val`, or `holdout`) and `site` (which can contain any string identifying the location of the camera). If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument (see below).
+
+Here we start with a simple CSV that just has a `filepath` and a `label` column:
 
 ```console
 $ cat example_labels.csv
@@ -59,9 +61,11 @@ train_model(train_config=train_config)
 
 The only two arguments that can be passed to `train_model` are `train_config` and (optionally) `video_loader_config`. The first step is to instantiate [`TrainConfig`](configurations.md#training-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments).
 
+You'll want to go over the documentation to familiarize yourself with the options in both of these configurations since what you choose can have a large impact on the results of your model. We've tried to include in the documentation sane defaults and recommendations for how to set these parameters.
+
 ### Required arguments
 
-To run `train_model` in Python, you must specify both `data_dir` and `labels` when `TrainConfig` is instantiated.
+To run the `train_model` function, you must specify the miunimem set of arg both `data_dir` and `labels` when `TrainConfig` is instantiated.
 
 * **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
 
@@ -150,9 +154,13 @@ Add the path to your labels with `--labels`.  For example, if your videos are in
 
 Your labels may be included in the list of [`zamba` class labels](models/species-detection.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
 
+This means that the model you train will continue to output all of the Zamba class labels, not just the ones in your dataset.
+
 #### Completely new labels
 
 You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final [neural network](https://www.youtube.com/watch?v=aircAruvnKk&t=995s) layer with a new head that predicts *your* labels instead of those that ship with `zamba`.
+
+You can then make your model available to others by adding it to the [Model Zoo on our wiki](https://github.com/drivendataorg/zamba/wiki).
 
 ### 3. Choose a model for training
 

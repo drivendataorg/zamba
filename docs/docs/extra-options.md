@@ -33,13 +33,13 @@ The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a mode
 
 When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to superior accuracy in prediction, but will use more memory and take longer to train and/or predict. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels.
 
-Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. To resize all images to 50x50 pixels instead of the default 240x426:
+Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. For example, to resize all images to 150x150 pixels instead of the default 240x426:
 
 === "YAML file"
     ```yaml
     video_loader_config:
-        model_input_height: 50
-        model_input_width: 50
+        model_input_height: 150
+        model_input_width: 150
         total_frames: 16 # total_frames must always be specified
     ```
 === "Python"
@@ -53,7 +53,7 @@ Say that you have a large number of videos, and you are more concerned with dete
     predict_config = PredictConfig(data_dir="example_vids/")
 
     video_loader_config = VideoLoaderConfig(
-        model_input_height=50, model_input_width=50, total_frames=16
+        model_input_height=150, model_input_width=150, total_frames=16
     ) # total_frames must always be specified
 
     predict_model(
@@ -65,7 +65,7 @@ Say that you have a large number of videos, and you are more concerned with dete
 
 Each video is simply a series of frames, or images. Most of the videos on which `zamba` was trained had 30 frames per second. That means even just a 15-second video would contain 450 frames.
 
-All models only use a subset of the frames in a video, because using every frame would be far too computationally intensive. There are a number of different ways to select frames. For a full list of options, see the section on [Video loading arguments](configurations.md#video-loading-arguments). A few common approaches are explained below.
+All models only use a subset of the frames in a video, because using every frame would be far too computationally intensive, and many frames are not different enough from each other to look at independently. There are a number of different ways to select frames. For a full list of options, see the section on [Video loading arguments](configurations.md#video-loading-arguments). A few common approaches are explained below.
 
 ### Early bias
 
@@ -85,6 +85,8 @@ Some camera traps begin recording a video when movement is detected. If this is 
     ```
 
 This method was used by the winning solution of the [Pri-matrix Factorization](https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/) machine learning competition, which was the basis for `zamba` v1.
+
+This is a simple heuristic approach that is computationally cheap, works decently for camera traps that motion-triggered and short in total duration.
 
 ### Evenly distributed frames
 
@@ -146,8 +148,8 @@ For example, to take the 16 frames with the highest probability of detection:
 
 If you are using the [MegadetectorLite](models/species-detection.md#megadetectorlite) for frame selection, there are two ways that you can specify frame resizing:
 
-- `frame_selection_width` and `frame_selection_height` resize images *before* they are input to the frame selection method. If both are `None`, the full size images will be used during frame selection. Using full size images for selection is recommended for better detection of smaller species, but will slow down training and inference.
-- `model_input_height` and `model_input_width` resize images *after* frame selection. These specify the image size that is passed to the actual model.
+- `frame_selection_width` and `frame_selection_height` resize images *before* they are input to the frame selection method (in this case, before being fed into MegadetectorLite). If both are `None`, the **full size images will be used during frame selection**. Using full size images for selection is recommended for better detection of smaller species, but will slow down training and inference.
+- `model_input_height` and `model_input_width` resize images *after* frame selection. These specify the image size that is passed to the actual model for classification.
 
 You can specify both of the above at once, just one, or neither. The example code feeds full-size images to MegadetectorLite, and then resizes images before running them through the neural network.
 
@@ -156,6 +158,8 @@ To see all of the options that can be passed to the MegadetectorLite, see the [`
 ## Speed up training
 
 Training will run faster if you increase `num_workers` and/or increase `batch_size`. `num_workers` is the number of subprocesses to use for data loading. The minimum is 0, meaning the data will be loaded in the main process, and the maximum is one less than the number of CPUs in your system. By default `num_workers` is set to 3 and `batch_size` is set to 2. Increasing either of these will use more GPU memory, and could raise an error if the memory required is more than your machine has available.
+
+You may need to try a few configuration of `num_workers`, `batch_size` and the image sizes above to settle on a configuration that works on your particular hardware.
 
 Both can be specified in either [`predict_config`](configurations.md#prediction-arguments) or [`train_config`](configurations.md#training-arguments). For example, to increase `num_workers` to 5 and `batch_size` to 4 for inference:
 
