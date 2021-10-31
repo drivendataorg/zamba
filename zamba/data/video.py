@@ -167,7 +167,7 @@ class VideoLoaderConfig(BaseModel):
             more or fewer frames due to rounding. If True, ensure the requested number of frames
             is returned by either clipping or duplicating the final frame. Raises an error if no
             frames have been selected. Otherwise, return the array unchanged.
-        fps (int, optional): Resample the video evenly from the entire duration to a specific
+        fps (float, optional): Resample the video evenly from the entire duration to a specific
             number of frames per second.
         early_bias (bool, optional): Resamples to 24 fps and selects 16 frames biased toward the
             front (strategy used by competition winner).

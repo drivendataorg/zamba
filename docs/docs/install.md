@@ -47,9 +47,9 @@ To check your installed version, run `ffmpeg -version`.
 
 On macOS, run these commands in the terminal (⌘+space, "Terminal"). On Windows, run them in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
-To install for development:
+To install zamba:
 ```console
-$ pip install zamba
+$ pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 ```
 
 To check what version of zamba you have installed:
@@ -59,7 +59,7 @@ $ pip show zamba
 
 To update zamba to the most recent version if needed:
 ```console
-$ pip install -U zamba
+$ pip install -U https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 ```
 
 
@@ -73,7 +73,7 @@ $ pip install -U zamba
 
 `zamba` has been tested on [Ubuntu](https://www.ubuntu.com/) versions 16 and 17.
 
-**Note: `zamba` has not been tested on Windows 10.**
+**Note: `zamba` does not currently work on Windows because one of our dependencies fails to build.**
 
 ## Using GPU(s)
 
@@ -84,3 +84,5 @@ To use a GPU, you must be using an
 have installed and configured [CUDA](https://developer.nvidia.com/cuda-downloads),
 and have installed and configured [CuDNN](https://developer.nvidia.com/cudnn) per
 their specifications.
+
+If you are using `conda`, these dependencies can be installed through the [`cudatoolkit` package](https://anaconda.org/anaconda/cudatoolkit). If using a GPU, you will also want to make sure that you install a compatible version of PyTorch with the version of CUDA you use. See the [PyTorch installation docs](https://pytorch.org/get-started/locally/) for the easiest way to install the right version on your system.

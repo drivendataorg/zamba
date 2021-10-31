@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/zamba)
 <!-- [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/) -->
 
-https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-b9df-380528091f9e.mp4
+ <div class="embed-responsive embed-responsive-16by9" width=500>     <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" frameborder="0" allowfullscreen=""></iframe></div>
 
 > *Zamba* means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.
 
@@ -22,7 +22,7 @@ The official models in `zamba` can identify blank videos (where no animal is pre
 
 We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki) for others to be able to use!
 
-Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
+
 
 ## Installing `zamba`
 
@@ -36,14 +36,14 @@ Then run:
 pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 ```
 
-See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.
+See the [Installation](install/) page of the documentation for details.
 
 ## Getting started
 
 Once you have `zamba` installed, some good starting points are:
 
-- The [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page for basic examples of usage
-- The user tutorial for either [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) or [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) depending on what you want to do with `zamba`
+- The [Quickstart](quickstart/) page for basic examples of usage
+- The user tutorial for either [classifying videos](predict-tutorial/) or [training a model](train-tutorial/) depending on what you want to do with `zamba`
 
 ## Example usage
 
@@ -79,7 +79,7 @@ $ zamba predict --data-dir path/to/videos
 
 By default, predictions will be saved to `zamba_predictions.csv`. Run `zamba predict --help` to list all possible options to pass to `predict`.
 
-See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) for more details.
+See the [Quickstart](quickstart/) page or the user tutorial on [classifying videos](predict-tutorial/) for more details.
 
 ### Training a model
 
@@ -101,7 +101,7 @@ predict_config:
 
 ```
 
-Now you can pass this configuration to the command line. See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) for more details.
+Now you can pass this configuration to the command line. See the [Quickstart](quickstart/) page or the user tutorial on [training a model](train-tutorial/) for more details.
 
 You can then share your model with others by adding it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki).
 
@@ -110,4 +110,4 @@ You can then share your model with others by adding it to the [Model Zoo Wiki](h
 
 We would love your contributions of code fixes, new models, additional training data, docs revisions, and anything else you can bring to the project!
 
-See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/stable/contribute/index.md) for details.
+See the docs page on [contributing to `zamba`](contribute/index.md) for details.

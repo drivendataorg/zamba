@@ -1,6 +1,10 @@
 # All configuration options
 
-Three main configuration classes are specific in `zamba`:
+To make it easy to associate a model configuration with and a set of results, zamba accepts a `yaml` file to define all of the relevant parameters for training or prediction. You can then store the configuration you used with the results in order to easily reproduce it in the future.
+
+In general, we've tried to pick defaults that are reasonable, but it is worth it to familiarize yourself with the options available.
+
+The primary configurations you may want to set are:
 
 * `VideoLoaderConfig`: Defines all possible parameters for how videos are loaded
 * `PredictConfig`: Defines all possible parameters for model inference
@@ -77,15 +81,15 @@ class VideoLoaderConfig(pydantic.main.BaseModel)
 
 #### `crop_bottom_pixels (int, optional)`
 
-Number of pixels to crop from the bottom of the video (prior to resizing to `frame_selection_height`). Defaults to `None`
+Number of pixels to crop from the bottom of the video (prior to resizing to `frame_selection_height`). This can sometimes be useful if your videos have a persistent timestamp/camera brand logo at the bottom. Defaults to `None`
 
 #### `i_frames (bool, optional)`
 
-Only load the [I-Frames](https://en.wikipedia.org/wiki/Video_compression_picture_types#Intra-coded_(I)_frames/slices_(key_frames)). Defaults to `False`
+Only load the [I-Frames](https://en.wikipedia.org/wiki/Video_compression_picture_types#Intra-coded_(I)_frames/slices_(key_frames)). I-frames are highly dependent on the encoding of the video, so it is not recommended to use them unless you have verified that the i-frames of your videos are useful. Defaults to `False`
 
 #### `scene_threshold (float, optional)`
 
-Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect). Defaults to `None`
+Only load frames that correspond to [scene changes](http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect), which are detected when `scene_threshold` percent of pixels are different. This can be useful for selecting frames efficiently if in general you have large animals and stable backgrounds. Defaults to `None`
 
 #### `megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)`
 
@@ -101,11 +105,11 @@ Number of frames that should ultimately be returned. Defaults to `None`
 
 #### `ensure_total_frames (bool)`
 
-Some frame selection methods may yield varying numbers of frames. If `True`, ensure the requested number of frames is returned by either clipping or duplicating the final frame. If no frames are selected, returns an array of the desired shape with all zeros. Otherwise, return the array unchanged. Defaults to `True`
+Some frame selection methods may yield varying numbers of frames depending on timestamps of the video frames. If `True`, ensure the requested number of frames is returned by either clipping or duplicating the final frame. If no frames are selected, returns an array of the desired shape with all zeros. Otherwise, return the array unchanged. Defaults to `True`
 
-#### `fps (int, optional)`
+#### `fps (float, optional)`
 
-Resample the video evenly from the entire duration to a specific number of frames per second. Defaults to `None`
+Resample the video evenly from the entire duration to a specific number of frames per second. Use values less than 1 for rates lower than a single frame per second (e.g., `fps=0.5` will result in 1 frame every 2 seconds). Defaults to `None`
 
 #### `early_bias (bool, optional)`
 
@@ -126,11 +130,11 @@ FFmpeg pixel format, defaults to `rgb24` for RGB channels; can be changed to `bg
 
 #### `model_input_height (int, optional), model_input_width (int, optional)`
 
-After frame selection, resize the video to this height and width in pixels. Defaults to `None`
+After frame selection, resize the video to this height and width in pixels. This controls the height and width of the video frames returned by `load_video_frames`.  Defaults to `None`
 
 #### `cache_dir (Path, optional)`
 
-Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with `VIDEO_CACHE_DIR` environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to `None`, which means videos will not be cached.
+Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with `VIDEO_CACHE_DIR` environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs after the first. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to `None`, which means videos will not be cached.
 
 #### `cleanup_cache (bool, optional)`
 
@@ -176,11 +180,11 @@ Path to the directory containing videos for inference. Defaults to the current w
 
 #### `filepaths (FilePath, optional)`
 
-Path to a csv containing a `filepath` column with videos for classification.
+Path to a csv containing a `filepath` column with paths to the videos that should be classified.
 
 #### `checkpoint (Path or str, optional)`
 
-Path to a model checkpoint to load and use for inference. The default is `None`, which will load the pretrained checkpoint if the model specified by `model_name`.
+Path to a model checkpoint to load and use for inference. If you train your own custom models, this is how you can pass those models to zamba when you want to predict on new videos. The default is `None`, which will load the pretrained checkpoint if the model specified by `model_name`.
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
@@ -213,7 +217,7 @@ If True, will overwrite `zamba_predictions.csv` and `predict_configuration.yaml`
 
 #### `dry_run (bool, optional)`
 
-Specifying `True` is useful for trying out model implementations more quickly by running only a single batch of inference. Defaults to `False`
+Specifying `True` is useful for ensuring a model implementation or configuration works properly by running only a single batch of inference. Defaults to `False`
 
 #### `proba_threshold (float between 0 and 1, optional)`
 

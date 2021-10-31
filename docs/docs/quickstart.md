@@ -9,7 +9,9 @@ This section assumes you have successfully installed `zamba` and are ready to tr
 There are two ways to interact with the `zamba` package:
 
 1. Use `zamba` as a command line interface tool. This page provides an overview of how to use the CLI.
-2. Import `zamba` in Python and use it as a Python package. For instructions on using the Python package, see the user tutorial that corresponds to your use case.
+2. Import `zamba` in Python and use it as a Python package.
+
+This guide uses the CLI, but you can see the [prediction tutorial](predict-tutorial.md) or the [training tutorial](train-tutorial.md), which have both the CLI and Python approaches documented.
 
 Installation is the same for both the command line interface tool and the Python package.
 
@@ -130,9 +132,7 @@ Once a model's weights are downloaded, `zamba` will use the local version and wi
 
 ## Getting help
 
-Once zamba is installed, you can see more details of each function with `--help`.
-
-To get help with `zamba predict`:
+Once zamba is installed, you can see more details of each function with `--help`. For example, you can run `zamba predict --help`:
 
 ```console
 Usage: zamba predict [OPTIONS]
@@ -201,7 +201,7 @@ Options:
   --help                          Show this message and exit.
 ```
 
-To get help with `zamba train`:
+Or if you are training a model, you can run `zamba train --help`:
 
 ```console
 $ zamba train --help

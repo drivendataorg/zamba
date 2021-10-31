@@ -22,11 +22,13 @@ The Zamba package supports running DensePose on videos to generate three types o
 
 Running the DensePose model is fairly computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. JSON output files can also be quite large because they contain the full embedding. These are not written out by default.
 
+## Installation
+
 In order to use the DensePose model, you must have [PyTorch](https://pytorch.org/get-started/locally/) already installed on your system. Then you must install the `densepose` extra:
 
 ```bash
 pip install torch
-pip install "zamba[densepose]"
+pip install "https://github.com/pjbull/release-test/releases/latest/download/zamba.tar.gz#egg=zamba[densepose]"
 ```
 
 ## Running DensePose

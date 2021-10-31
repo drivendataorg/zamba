@@ -36,25 +36,35 @@ jobs:
       - name: Build package
         run: |
           make dist
+          cp dist/*.tar.gz zamba.tar.gz  # rename source package so URL can be consistent
+
+      - name: Add source package to release
+        run: |
+          curl \
+            -H "Authorization: token ${{ github.token }}" \
+            -H "Content-Type: $(file -b --mime-type zamba.tar.gz)" \
+            --data-binary @zamba.tar.gz \
+            $(echo "${{ github.event.release.upload_url }}" | sed "s/{?name,label}/?name=zamba.tar.gz/g")
 
       - name: Build docs
         run: |
           make docs
 
-      - name: Publish to Test PyPI
-        uses: pypa/gh-action-pypi-publish@v1.3.0
-        with:
-          user: ${{ secrets.PYPI_TEST_USERNAME }}
-          password: ${{ secrets.PYPI_TEST_PASSWORD }}
-          repository_url: https://test.pypi.org/legacy/
-          skip_existing: true
+      # PUBLISHING CURRENTLY BLOCKED BY ISSUE #160
+      # - name: Publish to Test PyPI
+      #   uses: pypa/gh-action-pypi-publish@v1.3.0
+      #   with:
+      #     user: ${{ secrets.PYPI_TEST_USERNAME }}
+      #     password: ${{ secrets.PYPI_TEST_PASSWORD }}
+      #     repository_url: https://test.pypi.org/legacy/
+      #     skip_existing: true
 
-      - name: Publish to Production PyPI
-        uses: pypa/gh-action-pypi-publish@v1.3.0
-        with:
-          user: ${{ secrets.PYPI_PROD_USERNAME }}
-          password: ${{ secrets.PYPI_PROD_PASSWORD }}
-          skip_existing: false
+      # - name: Publish to Production PyPI
+      #   uses: pypa/gh-action-pypi-publish@v1.3.0
+      #   with:
+      #     user: ${{ secrets.PYPI_PROD_USERNAME }}
+      #     password: ${{ secrets.PYPI_PROD_PASSWORD }}
+      #     skip_existing: false
 
       - name: Stage 'stable' docs on gh-pages
         working-directory: docs
