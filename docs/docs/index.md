@@ -20,7 +20,7 @@ The officials models in `zamba` can identify blank videos (where no animal is pr
 
 `zamba` can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, [Zamba Cloud](https://www.zambacloud.com/).
 
-We encourage people to share their custom models trained with Zamba. Please add them to the [Wiki](https://github.com/drivendataorg/zamba/wiki) for others to be able to use!
+We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki) for others to be able to use!
 
 
 
@@ -33,7 +33,7 @@ First, make sure you have the prerequisites installed:
 
 Then run:
 ```console
-pip install git+https://github.com/drivendataorg/zamba
+pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 ```
 
 See the [Installation](install/) page of the documentation for details.
@@ -89,7 +89,12 @@ $ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save_dir m
 
 The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run `zamba train --help` to list all possible options to pass to `train`.
 
+You can use your trained model on new videos by:
+ - Edit the 
+
 See the [Quickstart](quickstart/) page or the user tutorial on [training a model](train-tutorial/) for more details.
+
+You can then
 
 ## Contributing
 

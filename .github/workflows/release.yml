@@ -36,6 +36,15 @@ jobs:
       - name: Build package
         run: |
           make dist
+          cp dist/*.tar.gz zamba.tar.gz  # rename source package so URL can be consistent
+
+      - name: Add source package to release
+        run: |
+          curl \
+            -H "Authorization: token ${{ github.token }}" \
+            -H "Content-Type: $(file -b --mime-type zamba.tar.gz)" \
+            --data-binary @zamba.tar.gz \
+            $(echo "${{ github.event.release.upload_url }}" | sed "s/{?name,label}/?name=zamba.tar.gz/g")
 
       - name: Build docs
         run: |

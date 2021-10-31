@@ -88,7 +88,7 @@ class DensePoseManager:
         """
         if not DENSEPOSE_AVAILABLE:
             raise ImportError(
-                "Densepose not installed; install it as an extra with `pip install zamba[densepose]`."
+                "Densepose not installed. See: https://zamba.drivendata.org/docs/stable/models/densepose/#installation"
             )
 
         # setup configuration for densepose

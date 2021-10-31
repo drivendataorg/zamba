@@ -49,7 +49,7 @@ On macOS, run these commands in the terminal (⌘+space, "Terminal"). On Windows
 
 To install zamba:
 ```console
-$ pip install git+https://github.com/drivendataorg/zamba
+$ pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 ```
 
 To check what version of zamba you have installed:
@@ -59,7 +59,7 @@ $ pip show zamba
 
 To update zamba to the most recent version if needed:
 ```console
-$ pip uninstall zamba && pip install git+https://github.com/drivendataorg/zamba
+$ pip install -U https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 ```
 
 

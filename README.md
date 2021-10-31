@@ -33,7 +33,7 @@ First, make sure you have the prerequisites installed:
 
 Then run:
 ```console
-pip install git+https://github.com/drivendataorg/zamba
+pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 ```
 
 See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.
