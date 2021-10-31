@@ -1338,8 +1338,9 @@
 <p>There are two ways to interact with the <code>zamba</code> package:</p>
 <ol>
 <li>Use <code>zamba</code> as a command line interface tool. This page provides an overview of how to use the CLI.</li>
-<li>Import <code>zamba</code> in Python and use it as a Python package. For instructions on using the Python package, see the user tutorial that corresponds to your use case.</li>
+<li>Import <code>zamba</code> in Python and use it as a Python package.</li>
 </ol>
+<p>This guide uses the CLI, but you can see the <a href="../predict-tutorial/">prediction tutorial</a> or the <a href="../train-tutorial/">training tutorial</a>, which have both the CLI and Python approaches documented.</p>
 <p>Installation is the same for both the command line interface tool and the Python package.</p>
 <p>All of the commands on this page should be run at the command line. On
 macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start &gt; Anaconda3 &gt; Anaconda Prompt).</p>
@@ -1425,8 +1426,7 @@ probably be named something much less useful!</p>
 Once a model's weights are downloaded, <code>zamba</code> will use the local version and will not need to perform this download again. If you are not in the United States, we recommend running the above command with the additional flag either <code>--weight_download_region eu</code> or <code>--weight_download_region asia</code> depending on your location. The closer you are to the server, the faster the downloads will be.</p>
 <p><a id='getting-help'></a></p>
 <h2 id="getting-help">Getting help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
-<p>Once zamba is installed, you can see more details of each function with <code>--help</code>.</p>
-<p>To get help with <code>zamba predict</code>:</p>
+<p>Once zamba is installed, you can see more details of each function with <code>--help</code>. For example, you can run <code>zamba predict --help</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="go">Usage: zamba predict [OPTIONS]</span>
 
 <span class="go">  Identify species in a video.</span>
@@ -1492,7 +1492,7 @@ Once a model's weights are downloaded, <code>zamba</code> will use the local ver
 <span class="go">                                  proceed right to prediction.</span>
 <span class="go">  --help                          Show this message and exit.</span>
 </code></pre></div>
-<p>To get help with <code>zamba train</code>:</p>
+<p>Or if you are training a model, you can run <code>zamba train --help</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --help
 
 <span class="go">Usage: zamba train [OPTIONS]</span>

@@ -1332,10 +1332,10 @@
 <h3 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h3>
 <p>To run <code>zamba predict</code> in the command line, you must specify <code>--data-dir</code> and/or <code>--filepaths</code>.</p>
 <ul>
-<li><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your videos.</li>
-<li><strong><code>--filepaths PATH</code>:</strong> Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for <code>filepath</code>. Filepaths can be absolute or relative to the data directory.</li>
+<li><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your videos. If you don't also provide <code>filepaths</code>, Zamba will recursively search this folder for videos.</li>
+<li><strong><code>--filepaths PATH</code>:</strong> Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for <code>filepath</code>. Filepaths can be absolute on your system or relative to the data directory that your provide in <code>--data-dir</code>.</li>
 </ul>
-<p>All other flags are optional. To choose a model, either <code>--model</code> or <code>--checkpoint</code> must be specified. Use <code>--model</code> to specify one of the three <a href="../models/species-detection/">pretrained models</a> that ship with <code>zamba</code>. Use <code>--checkpoint</code> to run inference with a locally saved model. <code>--model</code> defaults to <code>time_distributed</code>.</p>
+<p>All other flags are optional. To choose the model you want to use for prediction, either <code>--model</code> or <code>--checkpoint</code> must be specified. Use <code>--model</code> to specify one of the three <a href="../models/species-detection/">pretrained models</a> that ship with <code>zamba</code>. Use <code>--checkpoint</code> to run inference with a locally saved model. <code>--model</code> defaults to <a href="../models/species-detection/#what-species-can-zamba-detect"><code>time_distributed</code></a>.</p>
 <h2 id="basic-usage-python-package">Basic usage: Python package<a class="headerlink" href="#basic-usage-python-package" title="Permanent link">&para;</a></h2>
 <p>Say that we want to classify the videos in a folder called <code>example_vids</code> as simply as possible using all of the default settings.</p>
 <p>Minimum example for prediction using the Python package:</p>
@@ -1350,16 +1350,16 @@
 <p>To run <code>predict_model</code> in Python, you must specify either <code>data_dir</code> or <code>filepaths</code> when <code>PredictConfig</code> is instantiated.</p>
 <ul>
 <li>
-<p><strong><code>data_dir (DirectoryPath)</code>:</strong> Path to the folder containing your videos.</p>
+<p><strong><code>data_dir (DirectoryPath)</code>:</strong> Path to the folder containing your videos. If you don't also provide <code>filepaths</code>, Zamba will recursively search this folder for videos.</p>
 </li>
 <li>
-<p><strong><code>filepaths (FilePath)</code>:</strong> Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for <code>filepath</code>. Filepaths can be absolute or relative to the data directory.</p>
+<p><strong><code>filepaths (FilePath)</code>:</strong> Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for <code>filepath</code>. Filepaths can be absolute or relative to the data directory provided as <code>data_dir</code>.</p>
 </li>
 </ul>
 <p>For detailed explanations of all possible configuration arguments, see <a href="../configurations/">All Optional Arguments</a>.</p>
 <h2 id="default-behavior">Default behavior<a class="headerlink" href="#default-behavior" title="Permanent link">&para;</a></h2>
 <p>By default, the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code></a> model will be used. <code>zamba</code> will output a <code>.csv</code> file with rows labeled by each video filename and columns for each class (ie. species). The default prediction will store all class probabilities, so that cell (i,j) can be interpreted as <em>the probability that animal j is present in video i.</em></p>
-<p>By default, predictions will be saved to <code>zamba_predictions.csv</code> in your working directory. You can save predictions to a custom directory using the <code>--save-dir</code> argument.</p>
+<p>By default, predictions will be saved to a file called <code>zamba_predictions.csv</code> in your working directory. You can save predictions to a custom directory using the <code>--save-dir</code> argument.</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat zamba_predictions.csv
 <span class="go">filepath,aardvark,antelope_duiker,badger,bat,bird,blank,cattle,cheetah,chimpanzee_bonobo,civet_genet,elephant,equid,forest_buffalo,fox,giraffe,gorilla,hare_rabbit,hippopotamus,hog,human,hyena,large_flightless_bird,leopard,lion,mongoose,monkey_prosimian,pangolin,porcupine,reptile,rodent,small_cat,wild_dog_jackal</span>
 <span class="go">eleph.MP4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0</span>
@@ -1372,9 +1372,9 @@
 </code></pre></div></p>
 <h2 id="step-by-step-tutorial">Step-by-step tutorial<a class="headerlink" href="#step-by-step-tutorial" title="Permanent link">&para;</a></h2>
 <h3 id="1-specify-the-path-to-your-videos">1. Specify the path to your videos<a class="headerlink" href="#1-specify-the-path-to-your-videos" title="Permanent link">&para;</a></h3>
-<p>Save all of your videos within one folder.</p>
+<p>Save all of your videos within one parent folder.</p>
 <ul>
-<li>They can be in nested subdirectories within the folder.</li>
+<li>Videos can be in nested subdirectories within the folder.</li>
 <li>Your videos should be in be saved in formats that are suppored by FFmpeg, <a href="https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features">which are listed here</a>. Any videos that fail a set of FFmpeg checks will be skipped during inference or training. By default, <code>zamba</code> will look for files with the following suffixes: <code>.avi</code>, <code>.mp4</code>, <code>.asf</code>. To use other video suffixes that are supported by FFmpeg, set your <code>VIDEO_SUFFIXES</code> environment variable.</li>
 </ul>
 <p>Add the path to your video folder. For example, if your videos are in a folder called <code>example_vids</code>:</p>

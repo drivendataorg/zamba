@@ -1342,21 +1342,21 @@ GPU configurations.</p>
 <p>To check your installed version, run <code>ffmpeg -version</code>.</p>
 <h3 id="2-install-zamba">2. Install <code>zamba</code><a class="headerlink" href="#2-install-zamba" title="Permanent link">&para;</a></h3>
 <p>On macOS, run these commands in the terminal (⌘+space, "Terminal"). On Windows, run them in a command prompt, or if you installed Anaconda an anaconda prompt (Start &gt; Anaconda3 &gt; Anaconda Prompt).</p>
-<p>To install for development:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install zamba
+<p>To install zamba:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 </code></pre></div></p>
 <p>To check what version of zamba you have installed:
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip show zamba
 </code></pre></div></p>
 <p>To update zamba to the most recent version if needed:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install -U zamba
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install -U https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
 </code></pre></div></p>
 <h2 id="operating-systems-that-have-been-tested">Operating systems that have been tested<a class="headerlink" href="#operating-systems-that-have-been-tested" title="Permanent link">&para;</a></h2>
 <h3 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
 <p><code>zamba</code> has been tested on macOS High Sierra.</p>
 <h3 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h3>
 <p><code>zamba</code> has been tested on <a href="https://www.ubuntu.com/">Ubuntu</a> versions 16 and 17.</p>
-<p><strong>Note: <code>zamba</code> has not been tested on Windows 10.</strong></p>
+<p><strong>Note: <code>zamba</code> does not currently work on Windows because one of our dependencies fails to build.</strong></p>
 <h2 id="using-gpus">Using GPU(s)<a class="headerlink" href="#using-gpus" title="Permanent link">&para;</a></h2>
 <p><code>zamba</code> is much faster on a machine with a graphics processing unit (GPU), but has also been developed and tested for machines without GPU(s).</p>
 <p>To use a GPU, you must be using an
@@ -1364,6 +1364,7 @@ GPU configurations.</p>
 have installed and configured <a href="https://developer.nvidia.com/cuda-downloads">CUDA</a>,
 and have installed and configured <a href="https://developer.nvidia.com/cudnn">CuDNN</a> per
 their specifications.</p>
+<p>If you are using <code>conda</code>, these dependencies can be installed through the <a href="https://anaconda.org/anaconda/cudatoolkit"><code>cudatoolkit</code> package</a>. If using a GPU, you will also want to make sure that you install a compatible version of PyTorch with the version of CUDA you use. See the <a href="https://pytorch.org/get-started/locally/">PyTorch installation docs</a> for the easiest way to install the right version on your system.</p>
                 
               
               

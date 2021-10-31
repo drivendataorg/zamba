@@ -502,6 +502,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#running-densepose" class="md-nav__link">
     Running DensePose
   </a>
@@ -1286,6 +1293,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#running-densepose" class="md-nav__link">
     Running DensePose
   </a>
@@ -1331,9 +1345,10 @@
 <li>A <code>.csv</code> that contains the height and width of the bounding box around each chimpanzee, the frame number and timestamp of the observation, and the percentage of pixels in the bounding box that correspond with each anatomical part. This is specified by adding <code>--output-type chimp_anatomy</code>.</li>
 </ul>
 <p>Running the DensePose model is fairly computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. JSON output files can also be quite large because they contain the full embedding. These are not written out by default.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p>In order to use the DensePose model, you must have <a href="https://pytorch.org/get-started/locally/">PyTorch</a> already installed on your system. Then you must install the <code>densepose</code> extra:</p>
 <div class="highlight"><pre><span></span><code>pip install torch
-pip install <span class="s2">&quot;zamba[densepose]&quot;</span>
+pip install <span class="s2">&quot;https://github.com/pjbull/release-test/releases/latest/download/zamba.tar.gz#egg=zamba[densepose]&quot;</span>
 </code></pre></div>
 <h2 id="running-densepose">Running DensePose<a class="headerlink" href="#running-densepose" title="Permanent link">&para;</a></h2>
 <p>Once that is done, here's how to run the DensePose model:</p>

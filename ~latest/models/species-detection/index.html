@@ -515,6 +515,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#user-contributed-models" class="md-nav__link">
+    User contributed models
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1327,6 +1334,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#user-contributed-models" class="md-nav__link">
+    User contributed models
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1413,7 +1427,7 @@
 <li><code>small_cat</code></li>
 <li><code>wild_dog_jackal</code></li>
 </ul>
-<p><code>european</code> is trained to identify 11 common species in western Europe. The possible class labels are:</p>
+<p><code>european</code> is trained to identify 11 common species in Western Europe. The possible class labels are:</p>
 <ul>
 <li><code>bird</code></li>
 <li><code>blank</code></li>
@@ -1531,6 +1545,7 @@
   </tr>
 </table>
 
+<p>The most recent release of trained models took around 2-3 days to train on a single GPU machine on approximately 14,000 1-minute long videos for the African species, and around 13,000 videos for the European species. These models will be updated in the future, and you can always check the <a href="../../changelog">changelog</a> to see if there have been updates.</p>
 <h3 id="default-configuration">Default configuration<a class="headerlink" href="#default-configuration" title="Permanent link">&para;</a></h3>
 <p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml">Github</a>.</p>
 <p>By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>time_distributed</code> is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.</p>
@@ -1614,6 +1629,12 @@
 <li><a href="https://github.com/Megvii-BaseDetection/YOLOX">YOLOX</a> is a high-performance, lightweight object detection model that is much less computationally intensive than Megadetector.</li>
 </ul>
 <p>While highly accurate, Megadetector is too computationally intensive to run on every frame. MegadetectorLite was created by training a YOLOX model using the predictions of the Megadetector as ground truth - this method is called <a href="https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764">student-teacher training</a>.</p>
+<p>MegadetectorLite can be imported into Python code and used directly since it has convenient methods for <code>detect_image</code> and <code>detect_video</code>. See <a href="../../api-reference/models-megadetector_lite_yolox">the API documentation for more details</a>.</p>
+<h2 id="user-contributed-models">User contributed models<a class="headerlink" href="#user-contributed-models" title="Permanent link">&para;</a></h2>
+<p>We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a> for others to be able to use!</p>
+<p>To use one of these models, download the weights file and the configuration file from the Model Zoo Wiki. You'll need to create a <a href="../../yaml-config/">configuration yaml</a> to use that at least contains the same <code>video_loader_config</code> from the configuration yaml you downloaded. Then you can run the model with:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --checkpoint downloaded_weights.ckpt --config predict_config.yaml
+</code></pre></div>
                 
               
               

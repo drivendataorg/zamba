@@ -1321,8 +1321,11 @@
 </div>
 <h4 id="decreasing-video-size">Decreasing video size<a class="headerlink" href="#decreasing-video-size" title="Permanent link">&para;</a></h4>
 <p>Resize video frames to be smaller before they are passed to the model. The default for all three models is 240x426 pixels. <code>model_input_height</code> and <code>model_input_width</code> cannot be passed directly to the command line, so if you are using the CLI these must be specified in a <a href="../yaml-config/">YAML file</a>.</p>
+<p>If you are using MegadetectorLite to select frames (which is the default for the official models we ship with), you can also decrease the size of the frame used at this stage by setting <a href="configurations/#frame_selection_height-int-optional-frame_selection_width-int-optional"><code>frame_selection_height</code> and <code>frame_selection_width</code></a>.</p>
 <div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">YAML file</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
+    <span class="nt">frame_selection_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">400</span>  <span class="c1"># if using megadetectorlite</span>
+    <span class="nt">frame_selection_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">600</span>  <span class="c1"># if using megadetectorlite</span>
     <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
     <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
     <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span> <span class="c1"># total_frames is always required</span>
@@ -1330,13 +1333,15 @@
 </div>
 <input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span>
-    <span class="n">model_input_height</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">model_input_width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span>
+    <span class="n">frame_selection_height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">frame_selection_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>  <span class="c1"># if using megadetectorlite</span>
+    <span class="n">model_input_height</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">model_input_width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
 <span class="p">)</span> <span class="c1"># total_frames is always required</span>
 </code></pre></div>
 </div>
 </div>
 <h4 id="reducing-num_workers">Reducing <code>num_workers</code><a class="headerlink" href="#reducing-num_workers" title="Permanent link">&para;</a></h4>
-<p>Reduce the number of workers (subprocesses) used for data loading. By default <code>num_workers</code> will be set to 3. The minimum value is 0, which means that the data will be loaded in the main process, and the maximum is one less than the number of CPUs in the system.</p>
+<p>Reduce the number of workers (subprocesses) used for data loading. By default <code>num_workers</code> will be set to 3. The minimum value is 0, which means that the data will be loaded in the main process, and the maximum is one less than the number of CPUs in the system. We recommend trying 1 if 3 is too many.</p>
 <div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">CLI</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --data-dir example_vids/ --num-workers <span class="m">1</span>
 
@@ -1352,7 +1357,9 @@
 </div>
 </div>
 <h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
-<p>To check that videos are getting loaded and cached as expected, set your environment variabe <code>LOG_LEVEL</code> to <code>debug</code>. The default log level is <code>info</code>.</p>
+<p>To check that videos are getting loaded and cached as expected, set your environment variabe <code>LOG_LEVEL</code> to <code>debug</code>. The default log level is <code>info</code>. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>debug zamba predict --data-dir example_vids/
+</code></pre></div>
                 
               
               

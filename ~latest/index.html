@@ -272,8 +272,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-the-zamba-test-suite" class="md-nav__link">
-    Running the zamba test suite
+  <a href="#contributing" class="md-nav__link">
+    Contributing
   </a>
   
 </li>
@@ -1291,8 +1291,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-the-zamba-test-suite" class="md-nav__link">
-    Running the zamba test suite
+  <a href="#contributing" class="md-nav__link">
+    Contributing
   </a>
   
 </li>
@@ -1314,34 +1314,37 @@
                   </a>
                 
                 
-                <h1 id="zamba">zamba<a class="headerlink" href="#zamba" title="Permanent link">&para;</a></h1>
+                <h1 id="zamba">Zamba<a class="headerlink" href="#zamba" title="Permanent link">&para;</a></h1>
 <p><a href="https://zamba.drivendata.org/docs/"><img alt="Docs Status" src="https://img.shields.io/badge/docs-stable-informational" /></a>
-<a href="https://pypi.org/project/zamba/"><img alt="PyPI" src="https://img.shields.io/pypi/v/zamba.svg" /></a>
 <a href="https://github.com/drivendataorg/zamba/actions?query=workflow%3Atests+branch%3Amaster"><img alt="tests" src="https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master" /></a>
 <a href="https://codecov.io/gh/drivendataorg/zamba"><img alt="codecov" src="https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg" /></a></p>
+<!-- [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/) -->
+
 <div class="embed-responsive embed-responsive-16by9" width=500> 
     <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" 
 frameborder="0" allowfullscreen=""></iframe></div>
 
 <blockquote>
-<p><em>zamba</em> means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.</p>
+<p><em>Zamba</em> means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.</p>
 </blockquote>
 <p><strong><code>zamba</code> is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos.</strong> You can use <code>zamba</code> to:</p>
 <ul>
 <li>Identify which species appear in each video</li>
 <li>Filter out blank videos</li>
+<li>Create your own custom models that identify your species in your habitats</li>
+<li>And more! 🙈 🙉 🙊</li>
 </ul>
-<p>The models in <code>zamba</code> can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species commmon to Europe. Users can also finetune models using their own labeled videos to then make predictions for new species and/or new ecologies.</p>
+<p>The official models in <code>zamba</code> can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species common to Europe. Users can also finetune models using their own labeled videos to then make predictions for new species and/or new ecologies.</p>
 <p><code>zamba</code> can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, <a href="https://www.zambacloud.com/">Zamba Cloud</a>.</p>
-<p>Check out the <a href="https://github.com/drivendataorg/zamba/wiki">Wiki</a> for community-submitted models.</p>
+<p>We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a> for others to be able to use!</p>
 <h2 id="installing-zamba">Installing <code>zamba</code><a class="headerlink" href="#installing-zamba" title="Permanent link">&para;</a></h2>
 <p>First, make sure you have the prerequisites installed:</p>
 <ul>
 <li>Python 3.7 or 3.8</li>
-<li>FFmpeg</li>
+<li>FFmpeg &gt; 4.3</li>
 </ul>
 <p>Then run:
-<div class="highlight"><pre><span></span><code><span class="go">pip install zamba</span>
+<div class="highlight"><pre><span></span><code><span class="go">pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz</span>
 </code></pre></div></p>
 <p>See the <a href="install/">Installation</a> page of the documentation for details.</p>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
@@ -1381,12 +1384,18 @@ frameborder="0" allowfullscreen=""></iframe></div>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir path/to/videos --labels path_to_labels.csv --save_dir my_trained_model
 </code></pre></div>
 <p>The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run <code>zamba train --help</code> to list all possible options to pass to <code>train</code>.</p>
-<p>See the <a href="quickstart/">Quickstart</a> page or the user tutorial on <a href="train-tutorial/">training a model</a> for more details.</p>
-<h2 id="running-the-zamba-test-suite">Running the <code>zamba</code> test suite<a class="headerlink" href="#running-the-zamba-test-suite" title="Permanent link">&para;</a></h2>
-<p>The included <a href="https://github.com/drivendataorg/zamba/blob/master/Makefile"><code>Makefile</code></a> contains code that uses pytest to run all tests in <code>zamba/tests</code>.</p>
-<p>The command is (from the project root):</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make tests
+<p>You can use your trained model on new videos by editing the <code>train_configuration.yaml</code> that is generated by <code>zamba</code>. Add a <code>predict_config</code> section to the yaml that points to the checkpoint file that is generated:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">...</span>
+<span class="c1"># generated train_config and video_loader_config</span>
+<span class="nn">...</span>
+
+<span class="nt">predict_config</span><span class="p">:</span>
+  <span class="nt">checkpoint</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">PATH_TO_YOUR_CHECKPOINT_FILE</span>
 </code></pre></div>
+<p>Now you can pass this configuration to the command line. See the <a href="quickstart/">Quickstart</a> page or the user tutorial on <a href="train-tutorial/">training a model</a> for more details.</p>
+<p>You can then share your model with others by adding it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a>.</p>
+<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h2>
+<p>We would love your contributions of code fixes, new models, additional training data, docs revisions, and anything else you can bring to the project!</p>
 <p>See the docs page on <a href="contribute/">contributing to <code>zamba</code></a> for details.</p>
                 
               

@@ -1303,7 +1303,9 @@
                 
                 
                 <h1 id="all-configuration-options">All configuration options<a class="headerlink" href="#all-configuration-options" title="Permanent link">&para;</a></h1>
-<p>Three main configuration classes are specific in <code>zamba</code>:</p>
+<p>To make it easy to associate a model configuration with and a set of results, zamba accepts a <code>yaml</code> file to define all of the relevant parameters for training or prediction. You can then store the configuration you used with the results in order to easily reproduce it in the future.</p>
+<p>In general, we've tried to pick defaults that are reasonable, but it is worth it to familiarize yourself with the options available.</p>
+<p>The primary configurations you may want to set are:</p>
 <ul>
 <li><code>VideoLoaderConfig</code>: Defines all possible parameters for how videos are loaded</li>
 <li><code>PredictConfig</code>: Defines all possible parameters for model inference</li>
@@ -1369,11 +1371,11 @@
  <span class="o">...</span>
 </code></pre></div>
 <h4 id="crop_bottom_pixels-int-optional"><code>crop_bottom_pixels (int, optional)</code><a class="headerlink" href="#crop_bottom_pixels-int-optional" title="Permanent link">&para;</a></h4>
-<p>Number of pixels to crop from the bottom of the video (prior to resizing to <code>frame_selection_height</code>). Defaults to <code>None</code></p>
+<p>Number of pixels to crop from the bottom of the video (prior to resizing to <code>frame_selection_height</code>). This can sometimes be useful if your videos have a persistent timestamp/camera brand logo at the bottom. Defaults to <code>None</code></p>
 <h4 id="i_frames-bool-optional"><code>i_frames (bool, optional)</code><a class="headerlink" href="#i_frames-bool-optional" title="Permanent link">&para;</a></h4>
-<p>Only load the <a href="https://en.wikipedia.org/wiki/Video_compression_picture_types#Intra-coded_(I)_frames/slices_(key_frames)">I-Frames</a>. Defaults to <code>False</code></p>
+<p>Only load the <a href="https://en.wikipedia.org/wiki/Video_compression_picture_types#Intra-coded_(I)_frames/slices_(key_frames)">I-Frames</a>. I-frames are highly dependent on the encoding of the video, so it is not recommended to use them unless you have verified that the i-frames of your videos are useful. Defaults to <code>False</code></p>
 <h4 id="scene_threshold-float-optional"><code>scene_threshold (float, optional)</code><a class="headerlink" href="#scene_threshold-float-optional" title="Permanent link">&para;</a></h4>
-<p>Only load frames that correspond to <a href="http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect">scene changes</a>. Defaults to <code>None</code></p>
+<p>Only load frames that correspond to <a href="http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect">scene changes</a>, which are detected when <code>scene_threshold</code> percent of pixels are different. This can be useful for selecting frames efficiently if in general you have large animals and stable backgrounds. Defaults to <code>None</code></p>
 <h4 id="megadetector_lite_config-megadetectorliteyoloxconfig-optional"><code>megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)</code><a class="headerlink" href="#megadetector_lite_config-megadetectorliteyoloxconfig-optional" title="Permanent link">&para;</a></h4>
 <p>The <code>megadetector_lite_config</code> is used to specify any parameters that should be passed to the <a href="../models/species-detection/#megadetectorlite">MegadetectorLite model</a> for frame selection. For all possible options, see the <a href="../api-reference/models-megadetector_lite_yolox/#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>. If <code>megadetector_lite_config</code> is <code>None</code> (the default), the MegadetectorLite model will not be used to select frames.</p>
 <h4 id="frame_selection_height-int-optional-frame_selection_width-int-optional"><code>frame_selection_height (int, optional), frame_selection_width (int, optional)</code><a class="headerlink" href="#frame_selection_height-int-optional-frame_selection_width-int-optional" title="Permanent link">&para;</a></h4>
@@ -1381,9 +1383,9 @@
 <h4 id="total_frames-int-optional"><code>total_frames (int, optional)</code><a class="headerlink" href="#total_frames-int-optional" title="Permanent link">&para;</a></h4>
 <p>Number of frames that should ultimately be returned. Defaults to <code>None</code></p>
 <h4 id="ensure_total_frames-bool"><code>ensure_total_frames (bool)</code><a class="headerlink" href="#ensure_total_frames-bool" title="Permanent link">&para;</a></h4>
-<p>Some frame selection methods may yield varying numbers of frames. If <code>True</code>, ensure the requested number of frames is returned by either clipping or duplicating the final frame. If no frames are selected, returns an array of the desired shape with all zeros. Otherwise, return the array unchanged. Defaults to <code>True</code></p>
-<h4 id="fps-int-optional"><code>fps (int, optional)</code><a class="headerlink" href="#fps-int-optional" title="Permanent link">&para;</a></h4>
-<p>Resample the video evenly from the entire duration to a specific number of frames per second. Defaults to <code>None</code></p>
+<p>Some frame selection methods may yield varying numbers of frames depending on timestamps of the video frames. If <code>True</code>, ensure the requested number of frames is returned by either clipping or duplicating the final frame. If no frames are selected, returns an array of the desired shape with all zeros. Otherwise, return the array unchanged. Defaults to <code>True</code></p>
+<h4 id="fps-float-optional"><code>fps (float, optional)</code><a class="headerlink" href="#fps-float-optional" title="Permanent link">&para;</a></h4>
+<p>Resample the video evenly from the entire duration to a specific number of frames per second. Use values less than 1 for rates lower than a single frame per second (e.g., <code>fps=0.5</code> will result in 1 frame every 2 seconds). Defaults to <code>None</code></p>
 <h4 id="early_bias-bool-optional"><code>early_bias (bool, optional)</code><a class="headerlink" href="#early_bias-bool-optional" title="Permanent link">&para;</a></h4>
 <p>Resamples to 24 fps and selects 16 frames biased toward the beginning of the video. This strategy was used by the <a href="https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/">Pri-matrix Factorization</a> machine learning
 competition winner. Defaults to <code>False</code></p>
@@ -1394,9 +1396,9 @@ competition winner. Defaults to <code>False</code></p>
 <h4 id="pix_fmt-str-optional"><code>pix_fmt (str, optional)</code><a class="headerlink" href="#pix_fmt-str-optional" title="Permanent link">&para;</a></h4>
 <p>FFmpeg pixel format, defaults to <code>rgb24</code> for RGB channels; can be changed to <code>bgr24</code> for BGR.</p>
 <h4 id="model_input_height-int-optional-model_input_width-int-optional"><code>model_input_height (int, optional), model_input_width (int, optional)</code><a class="headerlink" href="#model_input_height-int-optional-model_input_width-int-optional" title="Permanent link">&para;</a></h4>
-<p>After frame selection, resize the video to this height and width in pixels. Defaults to <code>None</code></p>
+<p>After frame selection, resize the video to this height and width in pixels. This controls the height and width of the video frames returned by <code>load_video_frames</code>.  Defaults to <code>None</code></p>
 <h4 id="cache_dir-path-optional"><code>cache_dir (Path, optional)</code><a class="headerlink" href="#cache_dir-path-optional" title="Permanent link">&para;</a></h4>
-<p>Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with <code>VIDEO_CACHE_DIR</code> environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to <code>None</code>, which means videos will not be cached.</p>
+<p>Cache directory where preprocessed videos will be saved upon first load. Alternatively, can be set with <code>VIDEO_CACHE_DIR</code> environment variable. Provided there is enough space on your machine, it is highly encouraged to cache videos for training as this will speed up all subsequent epochs after the first. If you are predicting on the same videos with the same video loader configuration, this will save time on future runs. Defaults to <code>None</code>, which means videos will not be cached.</p>
 <h4 id="cleanup_cache-bool-optional"><code>cleanup_cache (bool, optional)</code><a class="headerlink" href="#cleanup_cache-bool-optional" title="Permanent link">&para;</a></h4>
 <p>Whether to delete the cache directory after training or predicting ends. Defaults to <code>False</code></p>
 <p><a id='prediction-arguments'></a></p>
@@ -1430,9 +1432,9 @@ competition winner. Defaults to <code>False</code></p>
 <h4 id="data_dir-directorypath-optional"><code>data_dir (DirectoryPath, optional)</code><a class="headerlink" href="#data_dir-directorypath-optional" title="Permanent link">&para;</a></h4>
 <p>Path to the directory containing videos for inference. Defaults to the current working directory.</p>
 <h4 id="filepaths-filepath-optional"><code>filepaths (FilePath, optional)</code><a class="headerlink" href="#filepaths-filepath-optional" title="Permanent link">&para;</a></h4>
-<p>Path to a csv containing a <code>filepath</code> column with videos for classification.</p>
+<p>Path to a csv containing a <code>filepath</code> column with paths to the videos that should be classified.</p>
 <h4 id="checkpoint-path-or-str-optional"><code>checkpoint (Path or str, optional)</code><a class="headerlink" href="#checkpoint-path-or-str-optional" title="Permanent link">&para;</a></h4>
-<p>Path to a model checkpoint to load and use for inference. The default is <code>None</code>, which will load the pretrained checkpoint if the model specified by <code>model_name</code>.</p>
+<p>Path to a model checkpoint to load and use for inference. If you train your own custom models, this is how you can pass those models to zamba when you want to predict on new videos. The default is <code>None</code>, which will load the pretrained checkpoint if the model specified by <code>model_name</code>.</p>
 <h4 id="model_name-time_distributedslowfasteuropean-optional"><code>model_name (time_distributed|slowfast|european, optional)</code><a class="headerlink" href="#model_name-time_distributedslowfasteuropean-optional" title="Permanent link">&para;</a></h4>
 <p>Name of the model to use for inference. The three model options that ship with <code>zamba</code> are <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. See the <a href="../models/species-detection/">Available Models</a> page for details. Defaults to <code>time_distributed</code></p>
 <h4 id="gpus-int-optional"><code>gpus (int, optional)</code><a class="headerlink" href="#gpus-int-optional" title="Permanent link">&para;</a></h4>
@@ -1449,7 +1451,7 @@ no <code>save_dir</code> is specified and <code>save</code> is True, outputs wil
 <h4 id="overwrite-bool"><code>overwrite (bool)</code><a class="headerlink" href="#overwrite-bool" title="Permanent link">&para;</a></h4>
 <p>If True, will overwrite <code>zamba_predictions.csv</code> and <code>predict_configuration.yaml</code> in <code>save_dir</code> if they exist. Defaults to False.</p>
 <h4 id="dry_run-bool-optional"><code>dry_run (bool, optional)</code><a class="headerlink" href="#dry_run-bool-optional" title="Permanent link">&para;</a></h4>
-<p>Specifying <code>True</code> is useful for trying out model implementations more quickly by running only a single batch of inference. Defaults to <code>False</code></p>
+<p>Specifying <code>True</code> is useful for ensuring a model implementation or configuration works properly by running only a single batch of inference. Defaults to <code>False</code></p>
 <h4 id="proba_threshold-float-between-0-and-1-optional"><code>proba_threshold (float between 0 and 1, optional)</code><a class="headerlink" href="#proba_threshold-float-between-0-and-1-optional" title="Permanent link">&para;</a></h4>
 <p>For advanced uses, you may want the algorithm to be more or less sensitive to if a species is present. This parameter is a float, e.g., <code>0.6</code> corresponding to the probability threshold beyond which an animal is considered to be present in the video being analyzed.</p>
 <p>By default no threshold is passed, <code>proba_threshold=None</code>. This will return a probability from 0-1 for each species that could occur in each video. If a threshold is passed, then the final prediction value returned for each class is <code>probability &gt;= proba_threshold</code>, so that all class values become <code>0</code> (<code>False</code>, the species does not appear) or <code>1</code> (<code>True</code>, the species does appear).</p>
