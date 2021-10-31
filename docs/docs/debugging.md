@@ -43,17 +43,18 @@ If you are using MegadetectorLite to select frames (which is the default for the
 === "YAML file"
     ```yaml
     video_loader_config:
-        model_input_height: 100
-        model_input_width: 100
         frame_selection_height: 400  # if using megadetectorlite
         frame_selection_width: 600  # if using megadetectorlite
+        model_input_height: 100
+        model_input_width: 100
         total_frames: 16 # total_frames is always required
     ```
 === "Python"
     ```python
     video_loader_config = VideoLoaderConfig(
-        model_input_height=100, model_input_width=100, total_frames=16,
         frame_selection_height=400, frame_selection_width=600,  # if using megadetectorlite
+        model_input_height=100, model_input_width=100,
+        total_frames=16,
     ) # total_frames is always required
     ```
 

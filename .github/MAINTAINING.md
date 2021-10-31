@@ -1,6 +1,6 @@
 # Maintainers Documentation
 
-This page contains documentation for zamba maintainers.
+This page contains documentation for Zamba maintainers.
 
 ## Release Instructions
 

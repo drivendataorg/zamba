@@ -29,7 +29,7 @@ $ zamba train --data-dir example_vids/ --labels example_labels.csv
 To run `zamba train` in the command line, you must specify both `--data-directory` and `--labels`.
 
 * **`--data-dir PATH`:** Path to the folder containing your labeled videos. `zamba` will generate predictions for videos in the top level directory and in any nested folders.
-* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Filepaths should be either absolute paths or relative to `data-dir`. Optionally, there can also be columns for `split` (which can have one of the three values for each row: `train`, `val`, or `holdout`) and `site` (which can contain any string identifying the location of the camera). If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument (see below).
+* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Filepaths should be either absolute paths or relative to `data-dir`. Optionally, there can also be columns for `split` (which can have one of the three values for each row: `train`, `val`, or `holdout`) and `site` (which can contain any string identifying the location of the camera). If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
 
 Here we start with a simple CSV that just has a `filepath` and a `label` column:
 
@@ -65,11 +65,11 @@ You'll want to go over the documentation to familiarize yourself with the option
 
 ### Required arguments
 
-To run the `train_model` function, you must specify the miunimem set of arg both `data_dir` and `labels` when `TrainConfig` is instantiated.
+To run the `train_model` function, you must specify both where your videos are and what the label for each video is when `TrainConfig` is instantiated.
 
 * **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
 
-* **`labels (FilePath or pd.DataFrame)`:** Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`.
+* **`labels (FilePath or pd.DataFrame)`:** Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`. If the `filename` column has absolute paths, `data_dir` is not required.
 
 For detailed explanations of all possible configuration arguments, see [All Configuration Options](configurations.md).
 

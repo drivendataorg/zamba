@@ -72,7 +72,7 @@ All models support training, fine-tuning, and inference. For fine-tuning, we rec
 * `small_cat`
 * `wild_dog_jackal`
 
-`european` is trained to identify 11 common species in western Europe. The possible class labels are:
+`european` is trained to identify 11 common species in Western Europe. The possible class labels are:
 
 * `bird`
 * `blank`
@@ -198,7 +198,7 @@ The data included camera trap videos from:
   </tr>
 </table>
 
-The most recent release of models trained took around 2-3 days to train on a single GPU machine on approximately 14,000 1-minute long videos (for the African species), and around 13,000 videos for the European species. These models will be updated in the future, and you can always check the [changelog](../../changelog) to see if there have been updates.
+The most recent release of trained models took around 2-3 days to train on a single GPU machine on approximately 14,000 1-minute long videos for the African species, and around 13,000 videos for the European species. These models will be updated in the future, and you can always check the [changelog](../../changelog) to see if there have been updates.
 
 ### Default configuration
 
@@ -325,7 +325,7 @@ MegadetectorLite can be imported into Python code and used directly since it has
 
 We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki) for others to be able to use!
 
-To use one of these models, download the weights file and the configuration file from the Model Zoo Wiki. You'll need to create a [prediction config](../configurations.md) to use that at least contains the same `video_loader_config` from the configuration yaml you downloaded. Then you can run the model with:
+To use one of these models, download the weights file and the configuration file from the Model Zoo Wiki. You'll need to create a [configuration yaml](../yaml-config.md) to use that at least contains the same `video_loader_config` from the configuration yaml you downloaded. Then you can run the model with:
 
 ```console
 $ zamba predict --checkpoint downloaded_weights.ckpt --config predict_config.yaml

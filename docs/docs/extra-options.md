@@ -86,7 +86,7 @@ Some camera traps begin recording a video when movement is detected. If this is 
 
 This method was used by the winning solution of the [Pri-matrix Factorization](https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/) machine learning competition, which was the basis for `zamba` v1.
 
-This is a simple heuristic approach that is computationally cheap, works decently for camera traps that motion-triggered and short in total duration.
+This is a simple heuristic approach that is computationally cheap, and works decently for camera traps that are motion-triggered and short in total duration.
 
 ### Evenly distributed frames
 

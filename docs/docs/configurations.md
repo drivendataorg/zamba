@@ -1,6 +1,6 @@
 # All configuration options
 
-To make it easy to associate the configuration you run with and a set of results, zamba accepts a `yaml` file to define all of the relevant parameters for training or prediction. You can then store the configuration you used with the results in order to be able to easily reproduce it in the future.
+To make it easy to associate a model configuration with and a set of results, zamba accepts a `yaml` file to define all of the relevant parameters for training or prediction. You can then store the configuration you used with the results in order to easily reproduce it in the future.
 
 In general, we've tried to pick defaults that are reasonable, but it is worth it to familiarize yourself with the options available.
 
@@ -184,7 +184,7 @@ Path to a csv containing a `filepath` column with paths to the videos that shoul
 
 #### `checkpoint (Path or str, optional)`
 
-Path to a model checkpoint to load and use for inference. If you train your own custom models, this is how you can pass those models to Zamba when you want to predict on new videos. The default is `None`, which will load the pretrained checkpoint if the model specified by `model_name`.
+Path to a model checkpoint to load and use for inference. If you train your own custom models, this is how you can pass those models to zamba when you want to predict on new videos. The default is `None`, which will load the pretrained checkpoint if the model specified by `model_name`.
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 

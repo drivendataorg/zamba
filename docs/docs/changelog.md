@@ -16,7 +16,7 @@ In v2, the stacked ensemble algorithm from v1 is replaced with three more powerf
 
 ### New geographies and species
 
-`zamba` v2 incorporates data from western Europe (Germany). The new data is packaged in the pretrained `european` model, which can predict 11 common European species not present in `zamba` v1.
+`zamba` v2 incorporates data from Western Europe (Germany). The new data is packaged in the pretrained `european` model, which can predict 11 common European species not present in `zamba` v1.
 
 `zamba` v2 also incorporates new training data from 15 countries in central and west Africa, and adds 12 additional species to the pretrained African models.
 
