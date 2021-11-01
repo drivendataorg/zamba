@@ -28,7 +28,7 @@ In order to use the DensePose model, you must have [PyTorch](https://pytorch.org
 
 ```bash
 pip install torch
-pip install "https://github.com/pjbull/release-test/releases/latest/download/zamba.tar.gz#egg=zamba[densepose]"
+pip install "https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz#egg=zamba[densepose]"
 ```
 
 ## Running DensePose
