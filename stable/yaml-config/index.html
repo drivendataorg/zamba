@@ -14,7 +14,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/yaml-config/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
     
     
       
@@ -22,7 +22,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.5143246d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.a57b2b03.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
@@ -39,6 +39,8 @@
       
     
     
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
       <link rel="stylesheet" href="../stylesheets/extra.css">
     
@@ -229,10 +231,12 @@
   
   
     
-    <li class="md-nav__item md-nav__item--nested">
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
       
       
@@ -244,14 +248,14 @@
       
       
         <label class="md-nav__link" for="__nav_2">
-          Getting Started
+          Getting started
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
-          Getting Started
+          Getting started
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -262,7 +266,7 @@
   
     <li class="md-nav__item">
       <a href="../install/" class="md-nav__link">
-        Installing Zamba
+        Installing zamba
       </a>
     </li>
   
@@ -297,13 +301,17 @@
   
   
     
-    <li class="md-nav__item md-nav__item--nested">
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
       
+        
+          
         
           
         
@@ -332,7 +340,7 @@
   
     <li class="md-nav__item">
       <a href="../predict-tutorial/" class="md-nav__link">
-        Classifying Unlabeled Videos
+        Classifying unlabeled videos
       </a>
     </li>
   
@@ -346,7 +354,7 @@
   
     <li class="md-nav__item">
       <a href="../train-tutorial/" class="md-nav__link">
-        Training a Model on Labeled Videos
+        Training a model on labeled videos
       </a>
     </li>
   
@@ -367,6 +375,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extra-options/" class="md-nav__link">
+        Guide to common optional parameters
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -380,10 +402,65 @@
   
   
   
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Available Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Available Models" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Available Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../models/" class="md-nav__link">
-        Available Models
+      <a href="../models/species-detection/" class="md-nav__link">
+        Species detection
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/densepose/" class="md-nav__link">
+        DensePose
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -398,15 +475,15 @@
   
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
       
         <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
       
       
       
-        
-          
         
           
         
@@ -433,7 +510,7 @@
   
     <li class="md-nav__item">
       <a href="../configurations/" class="md-nav__link">
-        All Optional Arguments
+        All configuration options
       </a>
     </li>
   
@@ -465,6 +542,8 @@
       </a>
       
         
+
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -506,24 +585,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#templates" class="md-nav__link">
+    Templates
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../extra-options/" class="md-nav__link">
-        Guide to Common Optional Parameters
-      </a>
     </li>
   
 
@@ -542,10 +614,42 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../contribute/" class="md-nav__link">
-        Contribute to <code>zamba</code>
-      </a>
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../contribute/">Contribute to zamba</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Contribute to zamba" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Contribute to zamba
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -558,10 +662,12 @@
   
   
     
-    <li class="md-nav__item md-nav__item--nested">
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" data-md-state="indeterminate" type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
       
@@ -588,8 +694,551 @@
   
   
     <li class="md-nav__item">
-      <a href="../v2_updates/" class="md-nav__link">
-        Version 2
+      <a href="../changelog/" class="md-nav__link">
+        `zamba` changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_1">
+          zamba.data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.data" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/data-metadata/" class="md-nav__link">
+        zamba.data.metadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/data-video/" class="md-nav__link">
+        zamba.data.video
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          zamba.models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-config/" class="md-nav__link">
+        zamba.models.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_2">
+          zamba.models.densepose
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models.densepose" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models.densepose
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/densepose_config/" class="md-nav__link">
+        zamba.models.densepose.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/densepose_manager/" class="md-nav__link">
+        zamba.models.densepose.densepose_manager
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-efficientnet_models/" class="md-nav__link">
+        zamba.models.efficientnet_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-megadetector_lite_yolox/" class="md-nav__link">
+        zamba.models.megadetector_lite_yolox
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-model_manager/" class="md-nav__link">
+        zamba.models.model_manager
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-slowfast_models/" class="md-nav__link">
+        zamba.models.slowfast_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-utils/" class="md-nav__link">
+        zamba.models.utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-yolox_models/" class="md-nav__link">
+        zamba.models.yolox_models
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3">
+          zamba.pytorch
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-dataloaders/" class="md-nav__link">
+        zamba.pytorch.dataloaders
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-finetuning/" class="md-nav__link">
+        zamba.pytorch.finetuning
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-layers/" class="md-nav__link">
+        zamba.pytorch.layers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-transforms/" class="md-nav__link">
+        zamba.pytorch.transforms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-utils/" class="md-nav__link">
+        zamba.pytorch.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
+          zamba.pytorch_lightning
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_4">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch_lightning
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch_lightning-utils/" class="md-nav__link">
+        zamba.pytorch_lightning.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/exceptions/" class="md-nav__link">
+        zamba.exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/metrics/" class="md-nav__link">
+        zamba.metrics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/settings/" class="md-nav__link">
+        zamba.settings
       </a>
     </li>
   
@@ -614,6 +1263,8 @@
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -655,6 +1306,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#templates" class="md-nav__link">
+    Templates
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -672,31 +1330,31 @@
                   </a>
                 
                 
-                <h1 id="using-yaml-configuration-files">Using YAML Configuration Files<a class="headerlink" href="#using-yaml-configuration-files" title="Permanent link">&para;</a></h1>
+                <h1 id="using-yaml-configuration-files">Using YAML configuration files<a class="headerlink" href="#using-yaml-configuration-files" title="Permanent link">&para;</a></h1>
 <p>In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file instead of passing arguments directly. YAML files (<code>.yml</code> or <code>.yaml</code>) are commonly used to serialize data in an easily readable way.</p>
 <p>The basic structure of a YAML model configuration is:</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">$ cat basic_config.yaml</span>
 <span class="l l-Scalar l-Scalar-Plain">video_loader_config</span><span class="p p-Indicator">:</span>
-  <span class="nt">video_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">224</span>
-  <span class="nt">video_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">224</span>
+  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
+  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
   <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
   <span class="c1"># other video loading parameters</span>
+
+<span class="nt">train_config</span><span class="p">:</span>
+  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
+  <span class="nt">data_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
+  <span class="nt">labels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_labels.csv</span>
+  <span class="c1"># other training parameters, eg. batch_size</span>
 
 <span class="nt">predict_config</span><span class="p">:</span>
   <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
   <span class="nt">data_directoty</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
-  <span class="c1"># other training parameters, eg. batch_size, video_height, video_width</span>
-
-<span class="nt">train_config</span><span class="p">:</span>
-  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-  <span class="nt">data_directory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
-  <span class="nt">labels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_labels.csv</span>
-  <span class="c1"># other training parameters, eg. batch_size, video_height, video_width</span>
+  <span class="c1"># other training parameters, eg. batch_size</span>
 </code></pre></div>
-<p>For example, the configuration below will predict labels for the videos in <code>example_vids</code> using the <code>time_distributed</code> model. When videos are loaded, each will be resized to 224x224 pixels and 16 frames will be selected:</p>
+<p>For example, the configuration below will predict labels for the videos in <code>example_vids</code> using the <code>time_distributed</code> model. When videos are loaded, each will be resized to 240x426 pixels and 16 frames will be selected:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-  <span class="nt">video_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">224</span>
-  <span class="nt">video_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">224</span>
+  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
+  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
   <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
 
 <span class="nt">predict_config</span><span class="p">:</span>
@@ -704,52 +1362,24 @@
   <span class="nt">data_directoty</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
 </code></pre></div>
 <h2 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h2>
-<p>Either <code>predict_config</code> or <code>train_config</code> is required, based on whether you will be running inference or training a model. See <a href="../configurations/">All Optional Arguments</a> for a full list of what can be specified under each class. To run inference, either <code>data_directory</code> or <code>filepaths</code> must be specified. To train a model, both <code>data_directory</code> and <code>labels</code> must be specified.</p>
-<p>In <code>video_loader_config</code>, you must specify at least <code>video_height</code>, <code>video_width</code>, and <code>total_frames</code>. </p>
+<p>Either <code>predict_config</code> or <code>train_config</code> is required, based on whether you will be running inference or training a model. See <a href="../configurations/">All Configuration Options</a> for a full list of what can be specified under each class. To run inference, <code>data_dir</code>and/or <code>filepaths</code> must be specified. To train a model, <code>labels</code> must be specified.</p>
+<p>In <code>video_loader_config</code>, you must specify at least <code>model_input_height</code>, <code>model_input_width</code>, and <code>total_frames</code>. While this is the minimum required, we strongly recommend being intentional in your choice of frame selection method. <code>total_frames</code> by itself will just take the first <code>n</code> frames. For a full list of frame selection methods, see the section on <a href="../configurations/#video-loading-arguments">Video loading arguments</a>.</p>
 <ul>
 <li>For <code>time_distributed</code> or <code>european</code>, <code>total_frames</code> must be 16</li>
 <li>For <code>slowfast</code>, <code>total_frames</code> must be 32</li>
 </ul>
-<p>See the <a href="../models/">Available Models</a> page for more details on each model's requirements.</p>
 <h2 id="command-line-interface">Command line interface<a class="headerlink" href="#command-line-interface" title="Permanent link">&para;</a></h2>
 <p>A YAML configuration file can be passed to the command line interface with the <code>--config</code> argument. For example, say the example configuration above is saved as <code>example_config.yaml</code>. To run prediction:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --config example_config.yaml
 </code></pre></div>
 <p>Only some of the possible parameters can be passed directly as arguments to the command line. Those not listed in <code>zamba predict --help</code> or <code>zamba train --help</code> must be passed in a YAML file (see the <a href="../quickstart/#getting-help">Quickstart guide</a> for details).</p>
 <h2 id="python-package">Python package<a class="headerlink" href="#python-package" title="Permanent link">&para;</a></h2>
-<p>The main API for zamba is the <code>ModelManager</code> class that can be accessed with:</p>
-<!-- TODO: add link to source code><!-->
-
+<p>The main API for zamba is the <a href="../api-reference/models-model_manager/#zamba.models.model_manager.ModelManager"><code>ModelManager</code> class</a> that can be accessed with:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.manager</span> <span class="kn">import</span> <span class="n">ModelManager</span>
 </code></pre></div>
-<p>The <code>ModelManager</code> class is used by <code>zamba</code>’s command line interface to handle preprocessing the filenames, loading the videos, serving them to the model, and saving predictions. Therefore any functionality available to the command line interface is accessible via the <code>ModelManager</code> class.</p>
+<p>The <code>ModelManager</code> class is used by <code>zamba</code>’s command line interface to handle preprocessing the filenames, loading the videos, training the model, performing inference, and saving predictions. Therefore any functionality available to the command line interface is accessible via the <code>ModelManager</code> class.</p>
 <p>To instantiate the <code>ModelManager</code> based on a configuration file saved at <code>test_config.yaml</code>:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">ModelManager</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s1">&#39;test_config.yaml&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">manager</span><span class="o">.</span><span class="n">config</span>
-
-<span class="n">ModelConfig</span><span class="p">(</span>
-  <span class="n">video_loader_config</span><span class="o">=</span><span class="n">VideoLoaderConfig</span><span class="p">(</span><span class="n">crop_bottom_pixels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">i_frames</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-                                        <span class="n">scene_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">megadetector_lite_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                                        <span class="n">video_height</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span> <span class="n">video_width</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span> 
-                                        <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">ensure_total_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-                                        <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">early_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frame_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                        <span class="n">evenly_sample_total_frames</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="s1">&#39;rgb24&#39;</span>
-                                      <span class="p">),</span> 
-  <span class="n">train_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-  <span class="n">predict_config</span><span class="o">=</span><span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_directory</span><span class="o">=</span><span class="n">PosixPath</span><span class="p">(</span><span class="s1">&#39;vids&#39;</span><span class="p">),</span> 
-                               <span class="n">filepaths</span><span class="o">=</span>                         <span class="n">filepath</span>
-                                          <span class="mi">0</span>    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">vids</span><span class="o">/</span><span class="n">eleph</span><span class="o">.</span><span class="n">MP4</span>
-                                          <span class="mi">1</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">vids</span><span class="o">/</span><span class="n">leopard</span><span class="o">.</span><span class="n">MP4</span>
-                                          <span class="mi">2</span>    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">vids</span><span class="o">/</span><span class="n">blank</span><span class="o">.</span><span class="n">MP4</span>
-                                          <span class="mi">3</span>    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">vids</span><span class="o">/</span><span class="n">chimp</span><span class="o">.</span><span class="n">MP4</span><span class="p">,</span> 
-                                <span class="n">checkpoint</span><span class="o">=</span><span class="s1">&#39;zamba_time_distributed.ckpt&#39;</span><span class="p">,</span> 
-                                <span class="n">model_params</span><span class="o">=</span><span class="n">ModelParams</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scheduler_params</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
-                                <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;time_distributed&#39;</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                                <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> 
-                                <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">proba_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                <span class="n">output_class_names</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">weight_download_region</span><span class="o">=</span><span class="s1">&#39;us&#39;</span><span class="p">,</span> 
-                                <span class="n">cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_load_validation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                              <span class="p">)</span>
 </code></pre></div></p>
 <p>We can now run inference or model training without specifying any additional parameters, because they are already associated with our instance of the <code>ModelManager</code> class. To run inference or training:
 <div class="highlight"><pre><span></span><code><span class="n">manager</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span> <span class="c1"># inference</span>
@@ -758,92 +1388,43 @@
 </code></pre></div></p>
 <p>In our user tutorials, we refer to <code>train_model</code> and <code>predict_model</code> functions. The <code>ModelManager</code> class calls these same functions behind the scenes when <code>.predict()</code> or <code>.train()</code> is run.</p>
 <h2 id="default-configurations">Default configurations<a class="headerlink" href="#default-configurations" title="Permanent link">&para;</a></h2>
-<p>In the command line, the default configuration for each model is passed in using a specified YAML file that ships with <code>zamba</code>&lt;!-- TODO: add link to github&gt;&lt;!--&gt;.</p>
-<p>For example, the default configuration for the <a href="../models/#time-distributed"><code>time_distributed</code> model</a> is:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-  <span class="nt">video_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">224</span>
-  <span class="nt">video_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">224</span>
-  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
-    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
-    <span class="nt">fill_model</span><span class="p">:</span> <span class="s">&quot;score_sorted&quot;</span>
-    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
-  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
-
-<span class="nt">train_config</span><span class="p">:</span>
-  <span class="c1"># data_directory: YOUR_DATA_DIRECTORY_HERE</span>
-  <span class="c1"># labels: YOUR_LABELS_CSV_HERE</span>
-  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-  <span class="c1"># or</span>
-  <span class="c1"># checkpoint: YOUR_CKPT_HERE</span>
-  <span class="nt">batch_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
-  <span class="nt">num_workers</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<p>In the command line, the default configuration for each model is passed in using a specified YAML file that ships with <code>zamba</code>. You can see the default configuration YAML files on <a href="https://github.com/drivendataorg/zamba/tree/master/zamba/models/official_models">Github</a> in the <code>config.yaml</code> file within each model's folder.</p>
+<p>For example, the default configuration for the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code> model</a> is:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">train_config</span><span class="p">:</span>
   <span class="nt">scheduler_config</span><span class="p">:</span>
     <span class="nt">scheduler</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">MultiStepLR</span>
     <span class="nt">scheduler_params</span><span class="p">:</span>
-      <span class="nt">milestones</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">3</span><span class="p p-Indicator">]</span>
       <span class="nt">gamma</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.5</span>
-      <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-  <span class="nt">auto_lr_find</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-  <span class="nt">backbone_finetune</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-  <span class="nt">backbone_finetune_params</span><span class="p">:</span>
-    <span class="nt">unfreeze_backbone_at_epoch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
-    <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-    <span class="nt">pre_train_bn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-    <span class="nt">multiplier</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-  <span class="nt">early_stopping</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-  <span class="nt">early_stopping_params</span><span class="p">:</span>
-    <span class="nt">patience</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-
-<span class="nt">predict_config</span><span class="p">:</span>
-  <span class="c1"># data_directory: YOUR_DATA_DIRECTORY_HERE</span>
-  <span class="c1"># or</span>
-  <span class="c1"># filepaths: YOUR_FILEPATH_HERE</span>
+      <span class="nt">milestones</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+      <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
   <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-  <span class="c1"># or</span>
-  <span class="c1"># checkpoint: YOUR_CKPT_HERE</span>
+  <span class="nt">backbone_finetune_config</span><span class="p">:</span>
+    <span class="nt">backbone_initial_ratio_lr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.01</span>
+    <span class="nt">multiplier</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">pre_train_bn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">train_bn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">unfreeze_backbone_at_epoch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">early_stopping_config</span><span class="p">:</span>
+    <span class="nt">patience</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">video_loader_config</span><span class="p">:</span>
+  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
+  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
+  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
+  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
+    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
+    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
+    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+<span class="nt">predict_config</span><span class="p">:</span>
+  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
+<span class="nt">public_checkpoint</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt</span>
 </code></pre></div>
-<p>For reference, the below shows how to specify the same video loading and training parameters using only the Python package:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.data.video</span> <span class="kn">import</span> <span class="n">VideoLoaderConfig</span>
-<span class="kn">from</span> <span class="nn">zamba.models.config</span> <span class="kn">import</span> <span class="n">TrainConfig</span>
-<span class="kn">from</span> <span class="nn">zamba.models.model_manager</span> <span class="kn">import</span> <span class="n">train_model</span>
-
-<span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span>
-    <span class="n">video_height</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
-    <span class="n">video_width</span><span class="o">=</span><span class="mi">224</span><span class="p">,</span>
-    <span class="n">crop_bottom_pixels</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">ensure_total_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">megadetector_lite_config</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-        <span class="s2">&quot;fill_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;score_sorted&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;n_frames&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">train_config</span> <span class="o">=</span> <span class="n">TrainConfig</span><span class="p">(</span>
-    <span class="c1"># data_directory=YOUR_DATA_DIRECTORY_HERE,</span>
-    <span class="c1"># labels=YOUR_LABELS_CSV_HERE,</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;time_distributed&quot;</span><span class="p">,</span>
-    <span class="c1"># or</span>
-    <span class="c1"># checkpoint=YOUR_CKPT_HERE,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-    <span class="n">backbone_finetune</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">backbone_finetune_params</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;unfreeze_backbone_at_epoch&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;pre_train_bn&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;multiplier&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">num_workers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">auto_lr_find</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">early_stopping_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;patience&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,},</span>
-<span class="p">)</span>
-
-<span class="n">train_model</span><span class="p">(</span><span class="n">train_config</span><span class="o">=</span><span class="n">train_config</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">)</span>
-</code></pre></div>
+<h2 id="templates">Templates<a class="headerlink" href="#templates" title="Permanent link">&para;</a></h2>
+<p>To make modifying the existing defaults easier, we've set up the official models as templates in the <a href="https://github.com/drivendataorg/zamba/tree/master/templates"><code>templates</code> folder</a>. Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some <a href="../train-tutorial/">training</a>. Happy modeling!</p>
                 
               
               
@@ -863,7 +1444,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../configurations/" class="md-footer__link md-footer__link--prev" aria-label="Previous: All Optional Arguments" rel="prev">
+        <a href="../configurations/" class="md-footer__link md-footer__link--prev" aria-label="Previous: All configuration options" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -872,20 +1453,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              All Optional Arguments
+              All configuration options
             </div>
           </div>
         </a>
       
       
         
-        <a href="../extra-options/" class="md-footer__link md-footer__link--next" aria-label="Next: Guide to Common Optional Parameters" rel="next">
+        <a href="../contribute/" class="md-footer__link md-footer__link--next" aria-label="Next: Help make `zamba` better" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Guide to Common Optional Parameters
+              Help make `zamba` better
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -916,10 +1497,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.8397ff9e.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.f89c2efe.min.js"></script>
+      <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
       
     
   </body>

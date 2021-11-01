@@ -1,0 +1,4984 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/api-reference/models-config/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>zamba.models.config - Zamba</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/custom_mkdocstrings.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#zambamodelsconfig" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zamba" class="md-header__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zamba
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              zamba.models.config
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zamba" class="md-nav__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Zamba
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Getting started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        Installing zamba
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          User Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../predict-tutorial/" class="md-nav__link">
+        Classifying unlabeled videos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../train-tutorial/" class="md-nav__link">
+        Training a model on labeled videos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugging/" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extra-options/" class="md-nav__link">
+        Guide to common optional parameters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Available Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Available Models" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Available Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/species-detection/" class="md-nav__link">
+        Species detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/densepose/" class="md-nav__link">
+        DensePose
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Advanced Options
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Advanced Options" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced Options
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configurations/" class="md-nav__link">
+        All configuration options
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yaml-config/" class="md-nav__link">
+        Using YAML configuration files
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../contribute/">Contribute to zamba</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Contribute to zamba" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Contribute to zamba
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Changelog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Changelog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        `zamba` changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_1">
+          zamba.data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.data" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-metadata/" class="md-nav__link">
+        zamba.data.metadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-video/" class="md-nav__link">
+        zamba.data.video
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          zamba.models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          zamba.models.config
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        zamba.models.config
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.config-classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.config-functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_2">
+          zamba.models.densepose
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models.densepose" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models.densepose
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../densepose_config/" class="md-nav__link">
+        zamba.models.densepose.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../densepose_manager/" class="md-nav__link">
+        zamba.models.densepose.densepose_manager
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-efficientnet_models/" class="md-nav__link">
+        zamba.models.efficientnet_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-megadetector_lite_yolox/" class="md-nav__link">
+        zamba.models.megadetector_lite_yolox
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-model_manager/" class="md-nav__link">
+        zamba.models.model_manager
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-slowfast_models/" class="md-nav__link">
+        zamba.models.slowfast_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-utils/" class="md-nav__link">
+        zamba.models.utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models-yolox_models/" class="md-nav__link">
+        zamba.models.yolox_models
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3">
+          zamba.pytorch
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-dataloaders/" class="md-nav__link">
+        zamba.pytorch.dataloaders
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-finetuning/" class="md-nav__link">
+        zamba.pytorch.finetuning
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-layers/" class="md-nav__link">
+        zamba.pytorch.layers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-transforms/" class="md-nav__link">
+        zamba.pytorch.transforms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch-utils/" class="md-nav__link">
+        zamba.pytorch.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
+          zamba.pytorch_lightning
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_4">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch_lightning
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pytorch_lightning-utils/" class="md-nav__link">
+        zamba.pytorch_lightning.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        zamba.exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metrics/" class="md-nav__link">
+        zamba.metrics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        zamba.settings
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.config-classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.config-functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/api-reference/models-config.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="zambamodelsconfig">zamba.models.config<a class="headerlink" href="#zambamodelsconfig" title="Permanent link">&para;</a></h1>
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="zamba.models.config.GPUS_AVAILABLE" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">GPUS_AVAILABLE</span></code>
+
+
+<a href="#zamba.models.config.GPUS_AVAILABLE" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="zamba.models.config.MODEL_MAPPING" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">MODEL_MAPPING</span></code>
+
+
+<a href="#zamba.models.config.MODEL_MAPPING" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="zamba.models.config.WEIGHT_LOOKUP" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">WEIGHT_LOOKUP</span></code>
+
+
+<a href="#zamba.models.config.WEIGHT_LOOKUP" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+<h2 id="zamba.models.config-classes">Classes<a href="#zamba.models.config-classes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.BackboneFinetuneConfig" class="doc doc-heading">
+        <code>
+BackboneFinetuneConfig            (<a title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Configuration containing parameters to be used for backbone finetuning.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>unfreeze_backbone_at_epoch</code></td>
+        <td><code>int</code></td>
+        <td><p>Epoch at which the backbone
+will be unfrozen. Defaults to 5.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>backbone_initial_ratio_lr</code></td>
+        <td><code>float</code></td>
+        <td><p>Used to scale down the backbone
+learning rate compared to rest of model. Defaults to 0.01.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>multiplier</code></td>
+        <td><code>int or float</code></td>
+        <td><p>Multiply the learning rate by a constant
+value at the end of each epoch. Defaults to 1.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>pre_train_bn</code></td>
+        <td><code>bool</code></td>
+        <td><p>Train batch normalization layers prior to
+finetuning. False is recommended for slowfast models and True is recommended
+for time distributed models. Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>train_bn</code></td>
+        <td><code>bool</code></td>
+        <td><p>Make batch normalization trainable. Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>Display current learning rate for model and backbone.
+Defaults to True.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.backbone_initial_ratio_lr" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">backbone_initial_ratio_lr</span><span class="p">:</span> <span class="nb">float</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.backbone_initial_ratio_lr" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.multiplier" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">multiplier</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.multiplier" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.pre_train_bn" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pre_train_bn</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.pre_train_bn" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.train_bn" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">train_bn</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.train_bn" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.unfreeze_backbone_at_epoch" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">unfreeze_backbone_at_epoch</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.unfreeze_backbone_at_epoch" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.verbose" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.verbose" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.Config" class="doc doc-heading">
+        <code>
+Config        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.BackboneFinetuneConfig.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span></code>
+
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.BackboneFinetuneConfig.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span></code>
+
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.BackboneFinetuneConfig.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span></code>
+
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.EarlyStoppingConfig" class="doc doc-heading">
+        <code>
+EarlyStoppingConfig            (<a title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#zamba.models.config.EarlyStoppingConfig" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Configuration containing parameters to be used for early stopping.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>monitor</code></td>
+        <td><code>str</code></td>
+        <td><p>Metric to be monitored. Options are "val_macro_f1" or
+"val_loss". Defaults to "val_macro_f1".</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>patience</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of epochs with no improvement after which training
+will be stopped. Defaults to 5.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>Verbosity mode. Defaults to True.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>mode</code></td>
+        <td><code>str</code></td>
+        <td><p>Options are "min" or "max". In "min" mode, training
+will stop when the quantity monitored has stopped decreasing and in
+"max" mode it will stop when the quantity monitored has stopped increasing.
+If None, mode will be inferred from monitor. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.EarlyStoppingConfig.mode" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">mode</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.EarlyStoppingConfig.mode" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.EarlyStoppingConfig.monitor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">monitor</span><span class="p">:</span> <span class="n">MonitorEnum</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.EarlyStoppingConfig.monitor" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.EarlyStoppingConfig.patience" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">patience</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.EarlyStoppingConfig.patience" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.EarlyStoppingConfig.verbose" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.EarlyStoppingConfig.verbose" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.EarlyStoppingConfig.Config" class="doc doc-heading">
+        <code>
+Config        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a href="#zamba.models.config.EarlyStoppingConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.EarlyStoppingConfig.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span></code>
+
+
+<a href="#zamba.models.config.EarlyStoppingConfig.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.EarlyStoppingConfig.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span></code>
+
+
+<a href="#zamba.models.config.EarlyStoppingConfig.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.EarlyStoppingConfig.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span></code>
+
+
+<a href="#zamba.models.config.EarlyStoppingConfig.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.EarlyStoppingConfig.validate_mode" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_mode</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.EarlyStoppingConfig.validate_mode" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span>
+<span class="k">def</span> <span class="nf">validate_mode</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;val_macro_f1&quot;</span><span class="p">:</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;val_loss&quot;</span><span class="p">:</span> <span class="s2">&quot;min&quot;</span><span class="p">}[</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;monitor&quot;</span><span class="p">)]</span>
+    <span class="n">user_mode</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">user_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span>
+    <span class="k">elif</span> <span class="n">user_mode</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Provided mode </span><span class="si">{</span><span class="n">user_mode</span><span class="si">}</span><span class="s2"> is incorrect for </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;monitor&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> monitor.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.ModelConfig" class="doc doc-heading">
+        <code>
+ModelConfig            (<a title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#zamba.models.config.ModelConfig" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Contains all configs necessary to use a model for training or inference.
+Must contain a train_config or a predict_config at a minimum.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>video_loader_config</code></td>
+        <td><code>VideoLoaderConfig</code></td>
+        <td><p>An instantiated VideoLoaderConfig.
+If None, will use default video loader config for model specified in TrainConfig or
+PredictConfig.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>train_config</code></td>
+        <td><code>TrainConfig</code></td>
+        <td><p>An instantiated TrainConfig.
+Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>predict_config</code></td>
+        <td><code>PredictConfig</code></td>
+        <td><p>An instantiated PredictConfig.
+Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.ModelConfig.predict_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict_config</span><span class="p">:</span> <span class="n">PredictConfig</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.ModelConfig.predict_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.ModelConfig.train_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">train_config</span><span class="p">:</span> <span class="n">TrainConfig</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.ModelConfig.train_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.ModelConfig.video_loader_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">video_loader_config</span><span class="p">:</span> <span class="n">VideoLoaderConfig</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.ModelConfig.video_loader_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+<h4 id="zamba.models.config.ModelConfig-classes">Classes<a href="#zamba.models.config.ModelConfig-classes" class="headerlink" title="Permanent link">&para;</a></h4>
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.ModelConfig.Config" class="doc doc-heading">
+        <code>
+Config        </code>
+
+
+
+<a href="#zamba.models.config.ModelConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<h6 id="zamba.models.config.ModelConfig.Config-methods">Methods<a href="#zamba.models.config.ModelConfig.Config-methods" class="headerlink" title="Permanent link">&para;</a></h6>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="zamba.models.config.ModelConfig.Config.json_loads" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">json_loads</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.config.ModelConfig.Config.json_loads" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>Parse the first YAML document in a stream
+and produce the corresponding Python object.</p>
+<p>Resolve only basic YAML tags. This is known
+to be safe for untrusted input.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse the first YAML document in a stream</span>
+<span class="sd">    and produce the corresponding Python object.</span>
+
+<span class="sd">    Resolve only basic YAML tags. This is known</span>
+<span class="sd">    to be safe for untrusted input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">SafeLoader</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.ModelConfig.get_default_video_loader_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_default_video_loader_config</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.ModelConfig.get_default_video_loader_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_default_video_loader_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;video_loader_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_name</span>
+            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;predict_config&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_name</span>
+        <span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No video loader config specified. Using default for </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">MODELS_DIRECTORY</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">/config.yaml&quot;</span>
+        <span class="k">with</span> <span class="n">config_file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">config_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;video_loader_config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;video_loader_config&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.ModelConfig.one_config_must_exist" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">one_config_must_exist</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.ModelConfig.one_config_must_exist" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">one_config_must_exist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;predict_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must provide either `train_config` or `predict_config`.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.ModelEnum" class="doc doc-heading">
+        <code>
+ModelEnum            (<span title="str">str</span>, <span title="enum.Enum">Enum</span>)
+        </code>
+
+
+
+<a href="#zamba.models.config.ModelEnum" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Shorthand names of models supported by zamba.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.ModelEnum.european" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">european</span></code>
+
+
+<a href="#zamba.models.config.ModelEnum.european" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.ModelEnum.slowfast" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">slowfast</span></code>
+
+
+<a href="#zamba.models.config.ModelEnum.slowfast" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.ModelEnum.time_distributed" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">time_distributed</span></code>
+
+
+<a href="#zamba.models.config.ModelEnum.time_distributed" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.MonitorEnum" class="doc doc-heading">
+        <code>
+MonitorEnum            (<span title="str">str</span>, <span title="enum.Enum">Enum</span>)
+        </code>
+
+
+
+<a href="#zamba.models.config.MonitorEnum" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Validation metric to monitor for early stopping. Training is stopped when no
+improvement is observed.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.MonitorEnum.val_loss" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">val_loss</span></code>
+
+
+<a href="#zamba.models.config.MonitorEnum.val_loss" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.MonitorEnum.val_macro_f1" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">val_macro_f1</span></code>
+
+
+<a href="#zamba.models.config.MonitorEnum.val_macro_f1" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.PredictConfig" class="doc doc-heading">
+        <code>
+PredictConfig            (<a title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Configuration for using a model for inference.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>filepaths</code></td>
+        <td><code>FilePath</code></td>
+        <td><p>Path to a CSV containing videos for inference, with
+one row per video in the data_dir. There must be a column called
+'filepath' (absolute or relative to the data_dir). If None, uses
+all files in data_dir. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data_dir</code></td>
+        <td><code>DirectoryPath</code></td>
+        <td><p>Path to a directory containing videos for
+inference. Defaults to the working directory.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>model_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of the model to use for inference. Options
+are: time_distributed, slowfast, european. Defaults to time_distributed.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>checkpoint</code></td>
+        <td><code>FilePath</code></td>
+        <td><p>Path to a custom checkpoint file (.ckpt)
+generated by zamba that can be used to generate predictions. If None,
+defaults to a pretrained model. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>gpus</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of GPUs to use for inference.
+Defaults to all of the available GPUs found on the machine.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>num_workers</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of subprocesses to use for data loading. 0 means
+that the data will be loaded in the main process. The maximum value is
+the number of CPUs in the system. Defaults to 3.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>batch_size</code></td>
+        <td><code>int</code></td>
+        <td><p>Batch size to use for inference. Defaults to 2.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>save</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to save out predictions. If False, predictions are
+not saved. Defaults to True.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>save_dir</code></td>
+        <td><code>Path</code></td>
+        <td><p>An optional directory in which to save the model
+ predictions and configuration yaml. If no save_dir is specified and save=True,
+ outputs will be written to the current working directory. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>overwrite</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, overwrite outputs in save_dir if they exist.
+Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>dry_run</code></td>
+        <td><code>bool</code></td>
+        <td><p>Perform inference on a single batch for testing. Predictions
+will not be saved. Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>proba_threshold</code></td>
+        <td><code>float</code></td>
+        <td><p>Probability threshold for classification.
+If specified, binary predictions are returned with 1 being greater than the
+threshold and 0 being less than or equal to the threshold. If None, return
+probability scores for each species. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>output_class_names</code></td>
+        <td><code>bool</code></td>
+        <td><p>Output the species with the highest probability
+score as a single prediction for each video. If False, return probabilty
+scores for each species. Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>weight_download_region</code></td>
+        <td><code>str</code></td>
+        <td><p>s3 region to download pretrained weights from.
+Options are "us" (United States), "eu" (European Union), or "asia"
+(Asia Pacific). Defaults to "us".</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>skip_load_validation</code></td>
+        <td><code>bool</code></td>
+        <td><p>By default, zamba runs a check to verify that
+all videos can be loaded and skips files that cannot be loaded. This can
+be time intensive, depending on how many videos there are. If you are very
+confident all your videos can be loaded, you can set this to True and skip
+this check. Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>model_cache_dir</code></td>
+        <td><code>Path</code></td>
+        <td><p>Cache directory where downloaded model weights
+will be saved. If None and no environment variable is set, will use your
+default cache directory. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.batch_size" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.batch_size" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.checkpoint" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">checkpoint</span><span class="p">:</span> <span class="n">FilePath</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.checkpoint" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.data_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.data_dir" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.dry_run" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.dry_run" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.filepaths" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">filepaths</span><span class="p">:</span> <span class="n">FilePath</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.filepaths" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.gpus" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.gpus" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.model_cache_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.model_cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.model_name" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">model_name</span><span class="p">:</span> <span class="n">ModelEnum</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.model_name" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.num_workers" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.num_workers" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.output_class_names" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">output_class_names</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.output_class_names" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.overwrite" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.overwrite" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.proba_threshold" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">proba_threshold</span><span class="p">:</span> <span class="nb">float</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.proba_threshold" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.save" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">save</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.save" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.save_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">save_dir</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.save_dir" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.skip_load_validation" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.skip_load_validation" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.weight_download_region" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.weight_download_region" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.Config" class="doc doc-heading">
+        <code>
+Config        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.PredictConfig.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span></code>
+
+
+<a href="#zamba.models.config.PredictConfig.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.PredictConfig.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span></code>
+
+
+<a href="#zamba.models.config.PredictConfig.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.PredictConfig.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span></code>
+
+
+<a href="#zamba.models.config.PredictConfig.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+<h4 id="zamba.models.config.PredictConfig-methods">Methods<a href="#zamba.models.config.PredictConfig-methods" class="headerlink" title="Permanent link">&para;</a></h4>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.get_filepaths" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_filepaths</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.get_filepaths" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>If no file list is passed, get all files in data directory. Warn if there
+are unsupported suffixes. Filepaths is set to a dataframe, where column <code>filepath</code>
+contains files with valid suffixes.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_filepaths</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;If no file list is passed, get all files in data directory. Warn if there</span>
+<span class="sd">    are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`</span>
+<span class="sd">    contains files with valid suffixes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting files in </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;data_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_suffixes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># iterate over all files in data directory</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;data_dir&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="c1"># keep just files with supported suffixes</span>
+                <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">VIDEO_SUFFIXES</span><span class="p">:</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_suffixes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Ignoring </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2"> file(s) with suffixes </span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">new_suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">. To include, specify all video suffixes with a VIDEO_SUFFIXES environment variable.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No video files found in </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;data_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos in </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;data_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.validate_dry_run_and_save" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_dry_run_and_save</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.validate_dry_run_and_save" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_dry_run_and_save</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.validate_files" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_files</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.validate_files" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_files</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="c1"># if globbing from data directory, already have valid dataframe</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="n">files_df</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># make into dataframe even if only one column for clearer indexing</span>
+        <span class="n">files_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="s2">&quot;filepath&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;filepaths&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain a `filepath` column.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># can only contain one row per filepath</span>
+    <span class="n">num_duplicates</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">files_df</span><span class="p">)</span> <span class="o">-</span> <span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">num_duplicates</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">num_duplicates</span><span class="si">}</span><span class="s2"> duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">files_df</span><span class="p">,</span>
+        <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;data_dir&quot;</span><span class="p">],</span>
+        <span class="n">skip_load_validation</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.validate_proba_threshold" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_proba_threshold</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.validate_proba_threshold" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_proba_threshold</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Setting proba_threshold outside of the range (0, 1) will cause all probabilities to be rounded to the same value.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;output_class_names&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;`output_class_names` will be ignored because `proba_threshold` is specified.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.validate_save_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_save_dir</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.PredictConfig.validate_save_dir" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_save_dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">save_dir</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span>
+    <span class="n">save</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span>
+
+    <span class="c1"># if no save_dir but save is True, use current working directory</span>
+    <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">save</span><span class="p">:</span>
+        <span class="n">save_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># check if files exist</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">&quot;zamba_predictions.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">&quot;predict_configuration.yaml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;overwrite&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;zamba_predictions.csv and/or predict_configuration.yaml already exist in </span><span class="si">{</span><span class="n">save_dir</span><span class="si">}</span><span class="s2">. If you would like to overwrite, set overwrite=True&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># make a directory if needed</span>
+        <span class="n">save_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># set save to True if save_dir is set</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">save</span><span class="p">:</span>
+            <span class="n">save</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_dir</span>
+    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save</span>
+
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.SchedulerConfig" class="doc doc-heading">
+        <code>
+SchedulerConfig            (<a title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#zamba.models.config.SchedulerConfig" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Configuration containing parameters for a custom pytorch learning rate scheduler.
+See https://pytorch.org/docs/stable/optim.html for options.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>scheduler</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of learning rate scheduler to use. See
+https://pytorch.org/docs/stable/optim.html for options.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>scheduler_params</code></td>
+        <td><code>dict</code></td>
+        <td><p>Parameters passed to learning rate
+scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
+"verbose": True}). Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.SchedulerConfig.scheduler" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">scheduler</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.SchedulerConfig.scheduler" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.SchedulerConfig.scheduler_params" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">scheduler_params</span><span class="p">:</span> <span class="nb">dict</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.SchedulerConfig.scheduler_params" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.SchedulerConfig.Config" class="doc doc-heading">
+        <code>
+Config        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a href="#zamba.models.config.SchedulerConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.SchedulerConfig.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span></code>
+
+
+<a href="#zamba.models.config.SchedulerConfig.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.SchedulerConfig.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span></code>
+
+
+<a href="#zamba.models.config.SchedulerConfig.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.SchedulerConfig.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span></code>
+
+
+<a href="#zamba.models.config.SchedulerConfig.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.SchedulerConfig.validate_scheduler" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_scheduler</span><span class="p">(</span><span class="n">scheduler</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.SchedulerConfig.validate_scheduler" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_scheduler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">scheduler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">elif</span> <span class="n">scheduler</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Scheduler is not a `torch.optim.lr_scheduler`. &quot;</span>
+            <span class="s2">&quot;See https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py &quot;</span>
+            <span class="s2">&quot;for options.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">scheduler</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.TrainConfig" class="doc doc-heading">
+        <code>
+TrainConfig            (<a title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Configuration for training a model.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>labels</code></td>
+        <td><code>FilePath or pandas DataFrame</code></td>
+        <td><p>Path to a CSV or pandas DataFrame
+containing labels for training, with one row per label. There must be
+columns called 'filepath' (absolute or relative to the data_dir) and
+'label', and optionally columns called 'split' ("train", "val", or "holdout")
+and 'site'. Labels must be specified to train a model.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data_dir</code></td>
+        <td><code>DirectoryPath</code></td>
+        <td><p>Path to a directory containing training
+videos. Defaults to the working directory.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>model_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of the model to use for training. Options
+are: time_distributed, slowfast, european. Defaults to time_distributed.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>checkpoint</code></td>
+        <td><code>FilePath</code></td>
+        <td><p>Path to a custom checkpoint file (.ckpt)
+generated by zamba that can be used to resume training. If None, defaults
+to a pretrained model. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>scheduler_config</code></td>
+        <td><code>SchedulerConfig or str</code></td>
+        <td><p>Config for setting up
+the learning rate scheduler on the model. If "default", uses scheduler
+that was used for training. If None, will not use a scheduler.
+Defaults to "default".</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>dry_run</code></td>
+        <td><code>bool or int, Optional</code></td>
+        <td><p>Run one training and validation batch
+for one epoch to detect any bugs prior to training the full model.
+Disables tuners, checkpoint callbacks, loggers, and logger callbacks.
+Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>batch_size</code></td>
+        <td><code>int</code></td>
+        <td><p>Batch size to use for training. Defaults to 2.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>auto_lr_find</code></td>
+        <td><code>bool</code></td>
+        <td><p>Use a learning rate finder algorithm when calling
+trainer.tune() to try to find an optimal initial learning rate. Defaults to
+False. The learning rate finder is not guaranteed to find a good learning
+rate; depending on the dataset, it can select a learning rate that leads to
+poor model training. Use with caution.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>backbone_finetune_params</code></td>
+        <td><code>BackboneFinetuneConfig</code></td>
+        <td><p>Set parameters
+to finetune a backbone model to align with the current learning rate.
+Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
+backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False,
+train_bn=False, verbose=True).</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>gpus</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of GPUs to train on applied per node.
+Defaults to all of the available GPUs found on the machine.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>num_workers</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of subprocesses to use for data loading. 0 means
+that the data will be loaded in the main process. The maximum value is
+the number of CPUs in the system. Defaults to 3.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>max_epochs</code></td>
+        <td><code>int</code></td>
+        <td><p>Stop training once this number of epochs is
+reached. Disabled by default (None), which stops training at 1000 epochs.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>early_stopping_config</code></td>
+        <td><code>EarlyStoppingConfig</code></td>
+        <td><p>Configuration for
+early stopping, which monitors a metric during training and stops training
+when the metric stops improving. Defaults to EarlyStoppingConfig(monitor='val_macro_f1',
+patience=5, verbose=True, mode='max').</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>weight_download_region</code></td>
+        <td><code>str</code></td>
+        <td><p>s3 region to download pretrained weights from.
+Options are "us" (United States), "eu" (European Union), or "asia"
+(Asia Pacific). Defaults to "us".</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>split_proportions</code></td>
+        <td><code>dict</code></td>
+        <td><p>Proportions used to divide data into training,
+validation, and holdout sets if a if a "split" column is not included in
+labels. Defaults to "train": 3, "val": 1, "holdout": 1.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>save_dir</code></td>
+        <td><code>Path</code></td>
+        <td><p>Path to a directory where training files
+will be saved. Files include the best model checkpoint (<code>model_name</code>.ckpt),
+training configuration (configuration.yaml), Tensorboard logs
+(events.out.tfevents...), test metrics (test_metrics.json), validation
+metrics (val_metrics.json), and model hyperparameters (hparams.yml).
+If None, a folder is created in the working directory. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>overwrite</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, will save outputs in <code>save_dir</code> overwriting if those
+exist. If False, will create auto-incremented <code>version_n</code> folder in <code>save_dir</code>
+with model outputs. Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>from_scratch</code></td>
+        <td><code>bool</code></td>
+        <td><p>Instantiate the model with base weights. This means
+starting with ImageNet weights for image-based models (time_distributed
+and european) and Kinetics weights for video-based models (slowfast).
+Defaults to False.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>predict_all_zamba_species</code></td>
+        <td><code>bool</code></td>
+        <td><p>Output all zamba species rather than
+only the species in the labels file.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>model_cache_dir</code></td>
+        <td><code>Path</code></td>
+        <td><p>Cache directory where downloaded model weights
+will be saved. If None and the MODEL_CACHE_DIR environment variable is
+not set, uses your default cache directory. Defaults to None.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.auto_lr_find" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">auto_lr_find</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.auto_lr_find" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.backbone_finetune_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">backbone_finetune_config</span><span class="p">:</span> <span class="n">BackboneFinetuneConfig</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.backbone_finetune_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.batch_size" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.batch_size" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.checkpoint" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">checkpoint</span><span class="p">:</span> <span class="n">FilePath</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.checkpoint" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.data_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.data_dir" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.dry_run" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">dry_run</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.dry_run" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.early_stopping_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">early_stopping_config</span><span class="p">:</span> <span class="n">EarlyStoppingConfig</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.early_stopping_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.from_scratch" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.from_scratch" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.gpus" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.gpus" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.labels" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">labels</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">FilePath</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.labels" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.max_epochs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">max_epochs</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.max_epochs" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.model_cache_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.model_cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.model_name" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">model_name</span><span class="p">:</span> <span class="n">ModelEnum</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.model_name" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.num_workers" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.num_workers" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.overwrite" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.overwrite" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.predict_all_zamba_species" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict_all_zamba_species</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.predict_all_zamba_species" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.save_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">save_dir</span><span class="p">:</span> <span class="n">Path</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.save_dir" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.scheduler_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">scheduler_config</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">zamba</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">SchedulerConfig</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.scheduler_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.skip_load_validation" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.skip_load_validation" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.split_proportions" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">split_proportions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.split_proportions" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.weight_download_region" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.weight_download_region" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.Config" class="doc doc-heading">
+        <code>
+Config        </code>
+
+
+
+<a href="#zamba.models.config.TrainConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.preprocess_labels" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">preprocess_labels</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.preprocess_labels" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">preprocess_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels into one hot encoded labels with one row per video.&quot;</span><span class="p">)</span>
+    <span class="c1"># one hot encode collapse to one row per video</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;species&quot;</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;filepath&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># if no &quot;split&quot; column, set up train, val, and holdout split</span>
+    <span class="k">if</span> <span class="s2">&quot;split&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Dividing videos into train, val, and holdout sets using the following split proportions: </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;split_proportions&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># use site info if we have it</span>
+        <span class="k">if</span> <span class="s2">&quot;site&quot;</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using provided &#39;site&#39; column to do a site-specific split&quot;</span><span class="p">)</span>
+            <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_site_specific_splits</span><span class="p">(</span>
+                <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;site&quot;</span><span class="p">],</span> <span class="n">proportions</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;No &#39;site&#39; column found so videos will be randomly allocated to splits.&quot;</span>
+            <span class="p">)</span>
+            <span class="c1"># otherwise randomly allocate</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SPLIT_SEED</span><span class="p">)</span>
+            <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+                <span class="n">weights</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                <span class="n">k</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Writing out split information to </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;save_dir&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="s1">&#39;splits.csv&#39;</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># create the directory to save if we need to.</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;split&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;splits.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+
+    <span class="c1"># filepath becomes column instead of index</span>
+    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.turn_off_load_validation_if_dry_run" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">turn_off_load_validation_if_dry_run</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.turn_off_load_validation_if_dry_run" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">turn_off_load_validation_if_dry_run</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">]:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Turning off video loading check since dry_run=True.&quot;</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.validate_filepaths_and_labels" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_filepaths_and_labels</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.validate_filepaths_and_labels" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_filepaths_and_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validating labels csv.&quot;</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;filepath&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain `filepath` and `label` columns.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># validate split column has no partial nulls or invalid values</span>
+    <span class="k">if</span> <span class="s2">&quot;split&quot;</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+
+        <span class="c1"># if split is entirely null, warn, drop column, and generate splits automatically</span>
+        <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Split column is entirely null. Will generate splits automatically using `split_proportions`.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># error if split column has null values</span>
+        <span class="k">elif</span> <span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> row(s) with null `split`. Fill in these rows with either `train`, `val`, or `holdout`. Alternatively, do not include a `split` column in your labels and we&#39;ll generate splits for you using `split_proportions`.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># otherwise check that split values are valid</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">({</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;holdout&quot;</span><span class="p">}):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Found the following invalid values for `split`: </span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">({</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">,</span> <span class="s1">&#39;holdout&#39;</span><span class="p">})</span><span class="si">}</span><span class="s2">. `split` can only contain `train`, `val`, or `holdout.`&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Labels contains split column yet split_proprtions are also provided. Split column in labels takes precendece.&quot;</span>
+            <span class="p">)</span>
+            <span class="c1"># set to None for clarity in final configuration.yaml</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># error if labels are entirely null</span>
+    <span class="n">null_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">null_labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Species cannot be null for all videos.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># skip and warn about any videos without species label</span>
+    <span class="k">elif</span> <span class="nb">sum</span><span class="p">(</span><span class="n">null_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">null_labels</span><span class="p">)</span><span class="si">}</span><span class="s2"> filepath(s) with no label. Will skip.&quot;</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="o">~</span><span class="n">null_labels</span><span class="p">]</span>
+
+    <span class="c1"># check that all videos exist and can be loaded</span>
+    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+        <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;data_dir&quot;</span><span class="p">],</span>
+        <span class="n">skip_load_validation</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.validate_from_scratch_and_checkpoint" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_from_scratch_and_checkpoint</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.validate_from_scratch_and_checkpoint" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_from_scratch_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;from_scratch&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If from_scratch=True, you cannot specify a checkpoint.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If from_scratch=True, model_name cannot be None.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.models.config.TrainConfig.validate_scheduler_config" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_scheduler_config</span><span class="p">(</span><span class="n">scheduler_config</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#zamba.models.config.TrainConfig.validate_scheduler_config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler_config&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_scheduler_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scheduler_config</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">scheduler_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SchedulerConfig</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler_config</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">scheduler_config</span> <span class="o">!=</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Scheduler can either be &#39;default&#39;, None, or a SchedulerConfig.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">scheduler_config</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="zamba.models.config.ZambaBaseModel" class="doc doc-heading">
+        <code>
+ZambaBaseModel            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Set defaults for all models that inherit from the pydantic base model.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.ZambaBaseModel.Config" class="doc doc-heading">
+        <code>
+Config        </code>
+
+
+
+<a href="#zamba.models.config.ZambaBaseModel.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span></code>
+
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span></code>
+
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span></code>
+
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+<h2 id="zamba.models.config-functions">Functions<a href="#zamba.models.config-functions" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.config.check_files_exist_and_load" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">check_files_exist_and_load</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span><span class="p">,</span> <span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.config.check_files_exist_and_load" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Check whether files in file list exist and can be loaded with ffmpeg.
+Warn and skip files that don't exist or can't be loaded.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>df</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>DataFrame with a "filepath" column</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data_dir</code></td>
+        <td><code>Path</code></td>
+        <td><p>Data folder to prepend if filepath is not an
+absolute path.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>skip_load_validation</code></td>
+        <td><code>bool</code></td>
+        <td><p>Skip ffprobe check that verifies all videos
+can be loaded.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>pd.DataFrame</code></td>
+      <td><p>DataFrame with valid and loadable videos.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_files_exist_and_load</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span><span class="p">,</span> <span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check whether files in file list exist and can be loaded with ffmpeg.</span>
+<span class="sd">    Warn and skip files that don&#39;t exist or can&#39;t be loaded.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (pd.DataFrame): DataFrame with a &quot;filepath&quot; column</span>
+<span class="sd">        data_dir (Path): Data folder to prepend if filepath is not an</span>
+<span class="sd">            absolute path.</span>
+<span class="sd">        skip_load_validation (bool): Skip ffprobe check that verifies all videos</span>
+<span class="sd">            can be loaded.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame with valid and loadable videos.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># update filepath column to prepend data_dir if filepath column is not an absolute path</span>
+    <span class="n">data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">path</span>
+
+    <span class="c1"># we can have multiple rows per file with labels so limit just to one row per file for these checks</span>
+    <span class="n">files_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+    <span class="c1"># check data exists</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Checking all </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files_df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> filepaths exist. Can take up to a minute for every couple thousand files.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">invalid_files</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[</span><span class="o">~</span><span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()]</span>
+
+    <span class="c1"># if no files exist</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">invalid_files</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">files_df</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;None of the video filepaths exist. Are you sure they&#39;re specified correctly? Here&#39;s an example invalid path: </span><span class="si">{</span><span class="n">invalid_files</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">. Either specify absolute filepaths in the csv or provide filepaths relative to `data_dir`.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># if at least some files exist</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">invalid_files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The following files could not be found: </span><span class="si">{</span><span class="s1">&#39;/n&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">invalid_files</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Skipping </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> file(s) that could not be found. For example, </span><span class="si">{</span><span class="n">invalid_files</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># remove invalid files to prep for ffprobe check on remaining</span>
+        <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[</span><span class="o">~</span><span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">invalid_files</span><span class="o">.</span><span class="n">filepath</span><span class="p">)]</span>
+
+    <span class="n">bad_load</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_load_validation</span><span class="p">:</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Checking that all videos can be loaded. If you&#39;re very confident all your videos can be loaded, you can skip this with `skip_load_validation`, but it&#39;s not recommended.&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># ffprobe check</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ffmpeg</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">ffmpeg</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">ZambaFfmpegException</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">stderr</span><span class="p">))</span>
+                <span class="n">bad_load</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bad_load</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Skipping </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bad_load</span><span class="p">)</span><span class="si">}</span><span class="s2"> file(s) that could not be loaded with ffmpeg.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
+        <span class="p">(</span><span class="o">~</span><span class="n">df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">bad_load</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">invalid_files</span><span class="o">.</span><span class="n">filepath</span><span class="p">))</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.config.validate_gpus" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_gpus</span><span class="p">(</span><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.config.validate_gpus" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Ensure the number of GPUs requested is equal to or less than the number of GPUs
+available on the machine.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">validate_gpus</span><span class="p">(</span><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ensure the number of GPUs requested is equal to or less than the number of GPUs</span>
+<span class="sd">    available on the machine.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gpus</span> <span class="o">&gt;</span> <span class="n">GPUS_AVAILABLE</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found only </span><span class="si">{</span><span class="n">GPUS_AVAILABLE</span><span class="si">}</span><span class="s2"> GPU(s). Cannot use </span><span class="si">{</span><span class="n">gpus</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">gpus</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.config.validate_model_cache_dir" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_model_cache_dir</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span></code>
+
+
+<a href="#zamba.models.config.validate_model_cache_dir" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Set up cache directory for downloading model weight. Order of priority is:
+config argument, environment variable, or user's default cache dir.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">validate_model_cache_dir</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Set up cache directory for downloading model weight. Order of priority is:</span>
+<span class="sd">    config argument, environment variable, or user&#39;s default cache dir.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">model_cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model_cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MODEL_CACHE_DIR&quot;</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">appdirs</span><span class="o">.</span><span class="n">user_cache_dir</span><span class="p">())</span> <span class="o">/</span> <span class="s2">&quot;zamba&quot;</span><span class="p">)</span>
+
+    <span class="n">model_cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="p">)</span>
+    <span class="n">model_cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model_cache_dir</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.config.validate_model_name_and_checkpoint" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_model_name_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></code>
+
+
+<a href="#zamba.models.config.validate_model_name_and_checkpoint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Ensures a checkpoint file or model name is provided. If a model name is provided,
+looks up the corresponding public checkpoint file from the official configs.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/models/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">validate_model_name_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ensures a checkpoint file or model name is provided. If a model name is provided,</span>
+<span class="sd">    looks up the corresponding public checkpoint file from the official configs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">)</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_name&quot;</span><span class="p">)</span>
+
+    <span class="c1"># must specify either checkpoint or model name</span>
+    <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must provide either model_name or checkpoint path.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># checkpoint supercedes model</span>
+    <span class="k">elif</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using checkpoint file: </span><span class="si">{</span><span class="n">checkpoint</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="c1"># set model name to None so proper model class is retrieved from ckpt up upon instantiation</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">elif</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;from_scratch&quot;</span><span class="p">):</span>
+            <span class="c1"># get public weights file from official models config</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_model_checkpoint_filename</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../data-video/" class="md-footer__link md-footer__link--prev" aria-label="Previous: zamba.data.video" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              zamba.data.video
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../densepose_config/" class="md-footer__link md-footer__link--next" aria-label="Next: zamba.models.densepose.config" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              zamba.models.densepose.config
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

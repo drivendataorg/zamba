@@ -1,0 +1,1717 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa.">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/models/species-detection/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>Species detection - Zamba</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/custom_mkdocstrings.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#available-models" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Zamba" class="md-header__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zamba
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Species detection
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Zamba" class="md-nav__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Zamba
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Getting started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        Installing zamba
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          User Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../predict-tutorial/" class="md-nav__link">
+        Classifying unlabeled videos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../train-tutorial/" class="md-nav__link">
+        Training a model on labeled videos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debugging/" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../extra-options/" class="md-nav__link">
+        Guide to common optional parameters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Available Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Available Models" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Available Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Species detection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Species detection
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-summary" class="md-nav__link">
+    Model summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-species-can-zamba-detect" class="md-nav__link">
+    What species can zamba detect?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time_distributed-model" class="md-nav__link">
+    time_distributed model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slowfast-model" class="md-nav__link">
+    slowfast model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#european-model" class="md-nav__link">
+    european model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#megadetectorlite" class="md-nav__link">
+    MegadetectorLite
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-contributed-models" class="md-nav__link">
+    User contributed models
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../densepose/" class="md-nav__link">
+        DensePose
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Advanced Options
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Advanced Options" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced Options
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configurations/" class="md-nav__link">
+        All configuration options
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yaml-config/" class="md-nav__link">
+        Using YAML configuration files
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../contribute/">Contribute to zamba</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Contribute to zamba" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Contribute to zamba
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Changelog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Changelog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        `zamba` changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_1">
+          zamba.data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.data" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/data-metadata/" class="md-nav__link">
+        zamba.data.metadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/data-video/" class="md-nav__link">
+        zamba.data.video
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          zamba.models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/models-config/" class="md-nav__link">
+        zamba.models.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_2">
+          zamba.models.densepose
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models.densepose" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models.densepose
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/densepose_config/" class="md-nav__link">
+        zamba.models.densepose.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/densepose_manager/" class="md-nav__link">
+        zamba.models.densepose.densepose_manager
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/models-efficientnet_models/" class="md-nav__link">
+        zamba.models.efficientnet_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/models-megadetector_lite_yolox/" class="md-nav__link">
+        zamba.models.megadetector_lite_yolox
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/models-model_manager/" class="md-nav__link">
+        zamba.models.model_manager
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/models-slowfast_models/" class="md-nav__link">
+        zamba.models.slowfast_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/models-utils/" class="md-nav__link">
+        zamba.models.utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/models-yolox_models/" class="md-nav__link">
+        zamba.models.yolox_models
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3">
+          zamba.pytorch
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/pytorch-dataloaders/" class="md-nav__link">
+        zamba.pytorch.dataloaders
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/pytorch-finetuning/" class="md-nav__link">
+        zamba.pytorch.finetuning
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/pytorch-layers/" class="md-nav__link">
+        zamba.pytorch.layers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/pytorch-transforms/" class="md-nav__link">
+        zamba.pytorch.transforms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/pytorch-utils/" class="md-nav__link">
+        zamba.pytorch.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
+          zamba.pytorch_lightning
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_4">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch_lightning
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/pytorch_lightning-utils/" class="md-nav__link">
+        zamba.pytorch_lightning.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/exceptions/" class="md-nav__link">
+        zamba.exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/metrics/" class="md-nav__link">
+        zamba.metrics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/settings/" class="md-nav__link">
+        zamba.settings
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-summary" class="md-nav__link">
+    Model summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-species-can-zamba-detect" class="md-nav__link">
+    What species can zamba detect?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time_distributed-model" class="md-nav__link">
+    time_distributed model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slowfast-model" class="md-nav__link">
+    slowfast model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#european-model" class="md-nav__link">
+    european model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#megadetectorlite" class="md-nav__link">
+    MegadetectorLite
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-contributed-models" class="md-nav__link">
+    User contributed models
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/models/species-detection.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="available-models">Available models<a class="headerlink" href="#available-models" title="Permanent link">&para;</a></h1>
+<p>The algorithms in <code>zamba</code> are designed to identify species of animals that appear in camera trap videos. There are three models that ship with the <code>zamba</code> package: <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. For more details of each, read on!</p>
+<h2 id="model-summary">Model summary<a class="headerlink" href="#model-summary" title="Permanent link">&para;</a></h2>
+<table>
+  <tr>
+    <th>Model</th>
+    <th>Geography</th>
+    <th>Relative strengths</th>
+    <th>Architecture</th>
+  </tr>
+  <tr>
+    <td><code>time_distributed</code></td>
+    <td>Central and West Africa</td>
+    <td>Better than <code>slowfast</code> at duikers, chimps, and gorillas and other larger species</td>
+    <td>Image-based <code>TimeDistributedEfficientNet</code></td>
+  </tr>
+  <tr>
+      <td><code>slowfast</code></td>
+      <td>Central and West Africa</td>
+      <td>Better than <code>time_distributed</code> at blank detection and small species detection</td>
+      <td>Video-native <code>SlowFast</code></td>
+    </tr>
+  <tr>
+    <td><code>european</code></td>
+    <td>Western Europe</td>
+    <td>Trained on non-jungle ecologies</td>
+    <td>Finetuned <code>time_distributed</code>model</td>
+  </tr>
+</table>
+
+<p>All models support training, fine-tuning, and inference. For fine-tuning, we recommend using the <code>time_distributed</code> model as the starting point.</p>
+<h2 id="species-classes"></h2>
+
+<h2 id="what-species-can-zamba-detect">What species can <code>zamba</code> detect?<a class="headerlink" href="#what-species-can-zamba-detect" title="Permanent link">&para;</a></h2>
+<p><code>time_distributed</code> and <code>slowfast</code> are both trained to identify 32 common species from Central and West Africa. The output labels in these models are:</p>
+<ul>
+<li><code>aardvark</code></li>
+<li><code>antelope_duiker</code></li>
+<li><code>badger</code></li>
+<li><code>bat</code></li>
+<li><code>bird</code></li>
+<li><code>blank</code></li>
+<li><code>cattle</code></li>
+<li><code>cheetah</code></li>
+<li><code>chimpanzee_bonobo</code></li>
+<li><code>civet_genet</code></li>
+<li><code>elephant</code></li>
+<li><code>equid</code></li>
+<li><code>forest_buffalo</code></li>
+<li><code>fox</code></li>
+<li><code>giraffe</code></li>
+<li><code>gorilla</code></li>
+<li><code>hare_rabbit</code></li>
+<li><code>hippopotamus</code></li>
+<li><code>hog</code></li>
+<li><code>human</code></li>
+<li><code>hyena</code></li>
+<li><code>large_flightless_bird</code></li>
+<li><code>leopard</code></li>
+<li><code>lion</code></li>
+<li><code>mongoose</code></li>
+<li><code>monkey_prosimian</code></li>
+<li><code>pangolin</code></li>
+<li><code>porcupine</code></li>
+<li><code>reptile</code></li>
+<li><code>rodent</code></li>
+<li><code>small_cat</code></li>
+<li><code>wild_dog_jackal</code></li>
+</ul>
+<p><code>european</code> is trained to identify 11 common species in Western Europe. The possible class labels are:</p>
+<ul>
+<li><code>bird</code></li>
+<li><code>blank</code></li>
+<li><code>domestic_cat</code></li>
+<li><code>european_badger</code></li>
+<li><code>european_beaver</code></li>
+<li><code>european_hare</code></li>
+<li><code>european_roe_deer</code></li>
+<li><code>north_american_raccoon</code></li>
+<li><code>red_fox</code></li>
+<li><code>unidentified</code></li>
+<li><code>weasel</code></li>
+<li><code>wild_boar</code></li>
+</ul>
+<p><a id='time-distributed'></a></p>
+<h2 id="time_distributed-model"><code>time_distributed</code> model<a class="headerlink" href="#time_distributed-model" title="Permanent link">&para;</a></h2>
+<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
+<p>The <code>time_distributed</code> model was built by re-training a well-known image classification architecture called <a href="https://arxiv.org/abs/1905.11946">EfficientNetV2</a> (Tan, M., &amp; Le, Q., 2019) to identify the species in our camera trap videos. EfficientNetV2 models are convolutional <a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=995s">neural networks</a> designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. The model is wrapped in a <a href="https://docs.fast.ai/layers.html#TimeDistributed"><code>TimeDistributed</code> layer</a> which enables a single prediction per video.</p>
+<p><a id='time-distributed-training-data'></a></p>
+<h3 id="training-data">Training data<a class="headerlink" href="#training-data" title="Permanent link">&para;</a></h3>
+<p><code>time_distributed</code> was trained using data collected and annotated by partners at <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for Evolutionary Anthropology</a> and <a href="https://www.chimpandsee.org/">Chimp&amp;See</a>.</p>
+<p>The data included camera trap videos from:</p>
+<table>
+  <tr>
+    <th>Country</th>
+    <th>Location</th>
+  </tr>
+  <tr>
+    <td rowspan=2>Cameroon</td>
+    <td>Campo Ma'an National Park</td>
+  </tr>
+  <tr>
+    <td>Korup National Park</td>
+  </tr>
+  <tr>
+    <td>Central African Republic</td>
+    <td>Dzanga-Sangha Protected Area</td>
+  </tr>
+  <tr>
+    <td rowspan=3>Côte d'Ivoire</td>
+    <td>Comoé National Park</td>
+  </tr>
+  <tr>
+    <td>Guiroutou</td>
+  </tr>
+  <tr>
+    <td>Taï National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Democratic Republic of the Congo</td>
+    <td>Bili-Uele Protect Area</td>
+  </tr>
+  <tr>
+    <td>Salonga National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Gabon</td>
+    <td>Loango National Park</td>
+  </tr>
+  <tr>
+    <td>Lopé National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Guinea</td>
+    <td>Bakoun Classified Forest</td>
+  </tr>
+  <tr>
+    <td>Moyen-Bafing National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=3>Liberia</td>
+    <td>East Nimba Nature Reserve</td>
+  </tr>
+  <tr>
+    <td>Grebo-Krahn National Park</td>
+  </tr>
+  <tr>
+    <td>Sapo National Park</td>
+  </tr>
+  <tr>
+    <td>Mozambique</td>
+    <td>Gorongosa National Park</td>
+  </tr>
+  <tr>
+    <td>Nigeria</td>
+    <td>Gashaka-Gumti National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Republic of the Congo</td>
+    <td>Conkouati-Douli National Park</td>
+  </tr>
+  <tr>
+    <td>Nouabale-Ndoki National Park</td>
+  </tr>
+  <tr>
+    <td>Senegal</td>
+    <td>Kayan</td>
+  </tr>
+  <tr>
+    <td rowspan=2>Tanzania</td>
+    <td>Grumeti Game Reserve</td>
+  </tr>
+  <tr>
+    <td>Ugalla River National Park</td>
+  </tr>
+  <tr>
+    <td rowspan=3>Uganda</td>
+    <td>Budongo Forest Reserve</td>
+  </tr>
+  <tr>
+    <td>Bwindi Forest National Park</td>
+  </tr>
+  <tr>
+    <td>Ngogo and Kibale National Park</td>
+  </tr>
+</table>
+
+<p>The most recent release of trained models took around 2-3 days to train on a single GPU machine on approximately 14,000 1-minute long videos for the African species, and around 13,000 videos for the European species. These models will be updated in the future, and you can always check the <a href="../../changelog">changelog</a> to see if there have been updates.</p>
+<h3 id="default-configuration">Default configuration<a class="headerlink" href="#default-configuration" title="Permanent link">&para;</a></h3>
+<p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml">Github</a>.</p>
+<p>By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>time_distributed</code> is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.</p>
+<p>The default video loading configuration for <code>time_distributed</code> is:
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
+  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
+  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
+  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
+  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
+    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
+    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
+    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+</code></pre></div></p>
+<p>You can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The only requirement for the <code>time_distributed</code> model is that the video loader must return 16 frames.</p>
+<p><a id='slowfast'></a></p>
+<h2 id="slowfast-model"><code>slowfast</code> model<a class="headerlink" href="#slowfast-model" title="Permanent link">&para;</a></h2>
+<h3 id="architecture_1">Architecture<a class="headerlink" href="#architecture_1" title="Permanent link">&para;</a></h3>
+<p>The <code>slowfast</code> model was built by re-training a video classification backbone called <a href="https://arxiv.org/abs/1812.03982">SlowFast</a> (Feichtenhofer, C., Fan, H., Malik, J., &amp; He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operates at a high frame rate to capture motion over time.</p>
+<div style="text-align:center;">
+<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-slowfast-diagram.png" alt="Architecture showing the two pathways of the slowfast model" style="width:400px;"/>
+<br/><br/>
+<i>Source:</i> Feichtenhofer, C., Fan, H., Malik, J., & He, K. (2019). Slowfast networks for video recognition. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 6202-6211).
+</div>
+
+<p>Unlike <code>time_distributed</code>, <code>slowfast</code> is video native. This means it takes into account the relationship between frames in a video, rather than running independently on each frame.</p>
+<h3 id="training-data_1">Training data<a class="headerlink" href="#training-data_1" title="Permanent link">&para;</a></h3>
+<p>The <code>slowfast</code> model was trained using the same data as the <a href="#time-distributed-training-data"><code>time_distributed</code> model</a>.</p>
+<h3 id="default-configuration_1">Default configuration<a class="headerlink" href="#default-configuration_1" title="Permanent link">&para;</a></h3>
+<p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/slowfast/config.yaml">Github</a>.</p>
+<p>By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>slowfast</code> is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.</p>
+<p>The full default video loading configuration is:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
+  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
+  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
+  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
+  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
+  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">32</span>
+  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
+    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
+    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
+    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">32</span>
+</code></pre></div>
+<p>You can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The two requirements for the <code>slowfast</code> model are that:</p>
+<ul>
+<li>the video loader must return 32 frames</li>
+<li>videos inputted into the model must be at least 200 x 200 pixels</li>
+</ul>
+<p><a id='european'></a></p>
+<h2 id="european-model"><code>european</code> model<a class="headerlink" href="#european-model" title="Permanent link">&para;</a></h2>
+<h3 id="architecture_2">Architecture<a class="headerlink" href="#architecture_2" title="Permanent link">&para;</a></h3>
+<p>The <code>european</code> model starts from the trained <code>time_distributed</code> model, and then replaces and trains the final output layer to predict European species.</p>
+<h3 id="training-data_2">Training data<a class="headerlink" href="#training-data_2" title="Permanent link">&para;</a></h3>
+<p>The <code>european</code> model is finetuned with data collected and annotated by partners at <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for Evolutionary Anthropology</a>. The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.</p>
+<h3 id="default-configuration_2">Default configuration<a class="headerlink" href="#default-configuration_2" title="Permanent link">&para;</a></h3>
+<p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/european/config.yaml">Github</a>.</p>
+<p>The <code>european</code> model uses the same frame selection as the <code>time_distributed</code> model. By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>european</code> is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.</p>
+<p>The full default video loading configuration is:
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
+  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
+  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
+  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
+  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
+    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
+    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
+    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+</code></pre></div></p>
+<p>As with all models, you can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The only requirement for the <code>european</code> model is that the video loader must return 16 frames.</p>
+<p><a id='megadetectorlite'></a></p>
+<h2 id="megadetectorlite">MegadetectorLite<a class="headerlink" href="#megadetectorlite" title="Permanent link">&para;</a></h2>
+<p>Frame selection for video models is critical as it would be infeasible to train neural networks on all the frames in a video. For all the species detection models that ship with <code>zamba</code>, the default frame selection method is an efficient object detection model called MegadetectorLite that determines the likelihood that each frame contains an animal. Then, only the frames with the highest probability of detection are passed to the model.</p>
+<p>MegadetectorLite combines two open-source models:</p>
+<ul>
+<li><a href="https://github.com/microsoft/CameraTraps/blob/master/megadetector.md">Megadetector</a> is a pretrained image model designed to detect animals, people, and vehicles in camera trap videos.</li>
+<li><a href="https://github.com/Megvii-BaseDetection/YOLOX">YOLOX</a> is a high-performance, lightweight object detection model that is much less computationally intensive than Megadetector.</li>
+</ul>
+<p>While highly accurate, Megadetector is too computationally intensive to run on every frame. MegadetectorLite was created by training a YOLOX model using the predictions of the Megadetector as ground truth - this method is called <a href="https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764">student-teacher training</a>.</p>
+<p>MegadetectorLite can be imported into Python code and used directly since it has convenient methods for <code>detect_image</code> and <code>detect_video</code>. See <a href="../../api-reference/models-megadetector_lite_yolox">the API documentation for more details</a>.</p>
+<h2 id="user-contributed-models">User contributed models<a class="headerlink" href="#user-contributed-models" title="Permanent link">&para;</a></h2>
+<p>We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a> for others to be able to use!</p>
+<p>To use one of these models, download the weights file and the configuration file from the Model Zoo Wiki. You'll need to create a <a href="../../yaml-config/">configuration yaml</a> to use that at least contains the same <code>video_loader_config</code> from the configuration yaml you downloaded. Then you can run the model with:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --checkpoint downloaded_weights.ckpt --config predict_config.yaml
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../extra-options/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Guide to common optional parameters" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Guide to common optional parameters
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../densepose/" class="md-footer__link md-footer__link--next" aria-label="Next: DensePose" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              DensePose
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

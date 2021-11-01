@@ -14,7 +14,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/">
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
     
     
       
@@ -22,7 +22,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.5143246d.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.a57b2b03.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.3f5d1f46.min.css">
@@ -39,6 +39,8 @@
       
     
     
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
       <link rel="stylesheet" href="stylesheets/extra.css">
     
@@ -69,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-zambas-documentation" class="md-skip">
+        <a href="#zamba" class="md-skip">
           Skip to content
         </a>
       
@@ -233,6 +235,8 @@
       </a>
       
         
+
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -247,29 +251,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installing-zamba" class="md-nav__link">
+    Installing zamba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
-    Getting Started
+    Getting started
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#user-tutorials" class="md-nav__link">
-    User Tutorials
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#available-models" class="md-nav__link">
-    Available Models
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#advanced-options" class="md-nav__link">
-    Advanced Options
+  <a href="#example-usage" class="md-nav__link">
+    Example usage
   </a>
   
 </li>
@@ -277,13 +274,6 @@
         <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     Contributing
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changelog" class="md-nav__link">
-    Changelog
   </a>
   
 </li>
@@ -304,10 +294,12 @@
   
   
     
-    <li class="md-nav__item md-nav__item--nested">
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" data-md-state="indeterminate" type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
       
       
@@ -319,14 +311,14 @@
       
       
         <label class="md-nav__link" for="__nav_2">
-          Getting Started
+          Getting started
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
-          Getting Started
+          Getting started
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -337,7 +329,7 @@
   
     <li class="md-nav__item">
       <a href="install/" class="md-nav__link">
-        Installing Zamba
+        Installing zamba
       </a>
     </li>
   
@@ -372,13 +364,17 @@
   
   
     
-    <li class="md-nav__item md-nav__item--nested">
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" data-md-state="indeterminate" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
       
+        
+          
         
           
         
@@ -407,7 +403,7 @@
   
     <li class="md-nav__item">
       <a href="predict-tutorial/" class="md-nav__link">
-        Classifying Unlabeled Videos
+        Classifying unlabeled videos
       </a>
     </li>
   
@@ -421,7 +417,7 @@
   
     <li class="md-nav__item">
       <a href="train-tutorial/" class="md-nav__link">
-        Training a Model on Labeled Videos
+        Training a model on labeled videos
       </a>
     </li>
   
@@ -442,6 +438,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extra-options/" class="md-nav__link">
+        Guide to common optional parameters
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -455,10 +465,65 @@
   
   
   
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Available Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Available Models" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Available Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="models/" class="md-nav__link">
-        Available Models
+      <a href="models/species-detection/" class="md-nav__link">
+        Species detection
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="models/densepose/" class="md-nav__link">
+        DensePose
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -471,15 +536,15 @@
   
   
     
-    <li class="md-nav__item md-nav__item--nested">
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" data-md-state="indeterminate" type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
       
-        
-          
         
           
         
@@ -506,7 +571,7 @@
   
     <li class="md-nav__item">
       <a href="configurations/" class="md-nav__link">
-        All Optional Arguments
+        All configuration options
       </a>
     </li>
   
@@ -527,18 +592,51 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="extra-options/" class="md-nav__link">
-        Guide to Common Optional Parameters
-      </a>
+        </ul>
+      </nav>
     </li>
   
 
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="contribute/">Contribute to zamba</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Contribute to zamba" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Contribute to zamba
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
             
           
         </ul>
@@ -554,26 +652,13 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="contribute/" class="md-nav__link">
-        Contribute to <code>zamba</code>
-      </a>
-    </li>
-  
-
     
       
-      
-      
-
-  
-  
-  
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" data-md-state="indeterminate" type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
       
@@ -600,8 +685,551 @@
   
   
     <li class="md-nav__item">
-      <a href="v2_updates/" class="md-nav__link">
-        Version 2
+      <a href="changelog/" class="md-nav__link">
+        `zamba` changelog
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_1" type="checkbox" id="__nav_8_1" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_1">
+          zamba.data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.data" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.data
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/data-metadata/" class="md-nav__link">
+        zamba.data.metadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/data-video/" class="md-nav__link">
+        zamba.data.video
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          zamba.models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/models-config/" class="md-nav__link">
+        zamba.models.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_2">
+          zamba.models.densepose
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.models.densepose" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.models.densepose
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/densepose_config/" class="md-nav__link">
+        zamba.models.densepose.config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/densepose_manager/" class="md-nav__link">
+        zamba.models.densepose.densepose_manager
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/models-efficientnet_models/" class="md-nav__link">
+        zamba.models.efficientnet_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/models-megadetector_lite_yolox/" class="md-nav__link">
+        zamba.models.megadetector_lite_yolox
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/models-model_manager/" class="md-nav__link">
+        zamba.models.model_manager
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/models-slowfast_models/" class="md-nav__link">
+        zamba.models.slowfast_models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/models-utils/" class="md-nav__link">
+        zamba.models.utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/models-yolox_models/" class="md-nav__link">
+        zamba.models.yolox_models
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3">
+          zamba.pytorch
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/pytorch-dataloaders/" class="md-nav__link">
+        zamba.pytorch.dataloaders
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/pytorch-finetuning/" class="md-nav__link">
+        zamba.pytorch.finetuning
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/pytorch-layers/" class="md-nav__link">
+        zamba.pytorch.layers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/pytorch-transforms/" class="md-nav__link">
+        zamba.pytorch.transforms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/pytorch-utils/" class="md-nav__link">
+        zamba.pytorch.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
+          zamba.pytorch_lightning
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_4">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.pytorch_lightning
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/pytorch_lightning-utils/" class="md-nav__link">
+        zamba.pytorch_lightning.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/exceptions/" class="md-nav__link">
+        zamba.exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/metrics/" class="md-nav__link">
+        zamba.metrics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api-reference/settings/" class="md-nav__link">
+        zamba.settings
       </a>
     </li>
   
@@ -626,6 +1254,8 @@
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
+
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -640,29 +1270,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installing-zamba" class="md-nav__link">
+    Installing zamba
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
-    Getting Started
+    Getting started
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#user-tutorials" class="md-nav__link">
-    User Tutorials
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#available-models" class="md-nav__link">
-    Available Models
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#advanced-options" class="md-nav__link">
-    Advanced Options
+  <a href="#example-usage" class="md-nav__link">
+    Example usage
   </a>
   
 </li>
@@ -670,13 +1293,6 @@
         <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     Contributing
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changelog" class="md-nav__link">
-    Changelog
   </a>
   
 </li>
@@ -698,42 +1314,89 @@
                   </a>
                 
                 
-                <h1 id="welcome-to-zambas-documentation">Welcome to zamba's documentation!<a class="headerlink" href="#welcome-to-zambas-documentation" title="Permanent link">&para;</a></h1>
-<div class="embed-responsive embed-responsive-16by9" width=500>
-    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" frameborder="0" allowfullscreen=""></iframe>
-</div>
+                <h1 id="zamba">Zamba<a class="headerlink" href="#zamba" title="Permanent link">&para;</a></h1>
+<p><a href="https://zamba.drivendata.org/docs/"><img alt="Docs Status" src="https://img.shields.io/badge/docs-stable-informational" /></a>
+<a href="https://github.com/drivendataorg/zamba/actions?query=workflow%3Atests+branch%3Amaster"><img alt="tests" src="https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master" /></a>
+<a href="https://codecov.io/gh/drivendataorg/zamba"><img alt="codecov" src="https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg" /></a></p>
+<!-- [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/) -->
 
-<p><em>Zamba means "forest" in the Lingala language.</em></p>
-<p>Zamba is a tool built in Python to automatically identify the species seen
-in camera trap videos from sites in Africa and Europe. Using the combined
-input of various deep learning models, the tool makes predictions for 42
-common species in these videos (as well as blank, or, "no species present").
-Zamba can be accessed as both a command-line tool and a Python package.</p>
-<p>Zamba ships with three model options. <code>time_distributed</code> and <code>slowfast</code> are
-trained on 32 common species from central and west Africa. <code>european</code> is trained
-on 11 common species from western Europe. <code>time_distributed</code> and <code>european</code> are image-based models while <code>slowfast</code> is a video-based model.</p>
-<h3 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h3>
+<div class="embed-responsive embed-responsive-16by9" width=500> 
+    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" 
+frameborder="0" allowfullscreen=""></iframe></div>
+
+<blockquote>
+<p><em>Zamba</em> means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.</p>
+</blockquote>
+<p><strong><code>zamba</code> is a tool built in Python that uses machine learning and computer vision to automatically detect and classify animals in camera trap videos.</strong> You can use <code>zamba</code> to:</p>
 <ul>
-<li><a href="install/">Installing Zamba</a></li>
-<li><a href="quickstart/">Quickstart</a></li>
+<li>Identify which species appear in each video</li>
+<li>Filter out blank videos</li>
+<li>Create your own custom models that identify your species in your habitats</li>
+<li>And more! 🙈 🙉 🙊</li>
 </ul>
-<h3 id="user-tutorials">User Tutorials<a class="headerlink" href="#user-tutorials" title="Permanent link">&para;</a></h3>
+<p>The official models in <code>zamba</code> can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species common to Europe. Users can also finetune models using their own labeled videos to then make predictions for new species and/or new ecologies.</p>
+<p><code>zamba</code> can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, <a href="https://www.zambacloud.com/">Zamba Cloud</a>.</p>
+<p>We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a> for others to be able to use!</p>
+<h2 id="installing-zamba">Installing <code>zamba</code><a class="headerlink" href="#installing-zamba" title="Permanent link">&para;</a></h2>
+<p>First, make sure you have the prerequisites installed:</p>
 <ul>
-<li><a href="predict-tutorial/">Classifying Unlabeled Videos</a></li>
-<li><a href="train-tutorial/">Training a Model on Labeled Videos</a></li>
-<li><a href="debugging/">Debugging</a></li>
+<li>Python 3.7 or 3.8</li>
+<li>FFmpeg &gt; 4.3</li>
 </ul>
-<h3 id="available-models"><a href="models/">Available Models</a><a class="headerlink" href="#available-models" title="Permanent link">&para;</a></h3>
-<h3 id="advanced-options">Advanced Options<a class="headerlink" href="#advanced-options" title="Permanent link">&para;</a></h3>
+<p>Then run:
+<div class="highlight"><pre><span></span><code><span class="go">pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz</span>
+</code></pre></div></p>
+<p>See the <a href="install/">Installation</a> page of the documentation for details.</p>
+<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<p>Once you have <code>zamba</code> installed, some good starting points are:</p>
 <ul>
-<li><a href="configurations/">All Optional Arguments</a></li>
-<li><a href="yaml-config/">Using YAML Configuration Files</a></li>
+<li>The <a href="quickstart/">Quickstart</a> page for basic examples of usage</li>
+<li>The user tutorial for either <a href="predict-tutorial/">classifying videos</a> or <a href="train-tutorial/">training a model</a> depending on what you want to do with <code>zamba</code></li>
 </ul>
-<h3 id="contributing"><a href="contribute/">Contributing</a><a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h3>
-<h3 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h3>
-<ul>
-<li><a href="v2_updates/">Version 2</a></li>
-</ul>
+<h2 id="example-usage">Example usage<a class="headerlink" href="#example-usage" title="Permanent link">&para;</a></h2>
+<p>Once <code>zamba</code> is installed, you can see the basic command options with:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba --help
+<span class="go">Usage: zamba [OPTIONS] COMMAND [ARGS]...</span>
+
+<span class="go">  Zamba is a tool built in Python to automatically identify the species seen</span>
+<span class="go">  in camera trap videos from sites in Africa and Europe. Visit</span>
+<span class="go">  https://zamba.drivendata.org/docs for more in-depth documentation.</span>
+
+<span class="go">Options:</span>
+<span class="go">  --version             Show zamba version and exit.</span>
+<span class="go">  --install-completion  Install completion for the current shell.</span>
+<span class="go">  --show-completion     Show completion for the current shell, to copy it or</span>
+<span class="go">                        customize the installation.</span>
+<span class="go">  --help                Show this message and exit.</span>
+
+<span class="go">Commands:</span>
+<span class="go">  densepose  Run densepose algorithm on videos.</span>
+<span class="go">  predict    Identify species in a video.</span>
+<span class="go">  train      Train a model on your labeled data.</span>
+</code></pre></div></p>
+<p><code>zamba</code> can be used "out of the box" to generate predictions or train a model using your own videos. <code>zamba</code> supports the same video formats as FFmpeg, <a href="https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features">which are listed here</a>. Any videos that fail a set of FFmpeg checks will be skipped during inference or training.</p>
+<h3 id="classifying-unlabeled-videos">Classifying unlabeled videos<a class="headerlink" href="#classifying-unlabeled-videos" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba predict --data-dir path/to/videos
+</code></pre></div>
+<p>By default, predictions will be saved to <code>zamba_predictions.csv</code>. Run <code>zamba predict --help</code> to list all possible options to pass to <code>predict</code>.</p>
+<p>See the <a href="quickstart/">Quickstart</a> page or the user tutorial on <a href="predict-tutorial/">classifying videos</a> for more details.</p>
+<h3 id="training-a-model">Training a model<a class="headerlink" href="#training-a-model" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir path/to/videos --labels path_to_labels.csv --save_dir my_trained_model
+</code></pre></div>
+<p>The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run <code>zamba train --help</code> to list all possible options to pass to <code>train</code>.</p>
+<p>You can use your trained model on new videos by editing the <code>train_configuration.yaml</code> that is generated by <code>zamba</code>. Add a <code>predict_config</code> section to the yaml that points to the checkpoint file that is generated:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">...</span>
+<span class="c1"># generated train_config and video_loader_config</span>
+<span class="nn">...</span>
+
+<span class="nt">predict_config</span><span class="p">:</span>
+  <span class="nt">checkpoint</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">PATH_TO_YOUR_CHECKPOINT_FILE</span>
+</code></pre></div>
+<p>Now you can pass this configuration to the command line. See the <a href="quickstart/">Quickstart</a> page or the user tutorial on <a href="train-tutorial/">training a model</a> for more details.</p>
+<p>You can then share your model with others by adding it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a>.</p>
+<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h2>
+<p>We would love your contributions of code fixes, new models, additional training data, docs revisions, and anything else you can bring to the project!</p>
+<p>See the docs page on <a href="contribute/">contributing to <code>zamba</code></a> for details.</p>
                 
               
               
@@ -754,13 +1417,13 @@ on 11 common species from western Europe. <code>time_distributed</code> and <cod
       
       
         
-        <a href="install/" class="md-footer__link md-footer__link--next" aria-label="Next: Installing Zamba" rel="next">
+        <a href="install/" class="md-footer__link md-footer__link--next" aria-label="Next: Installing zamba" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Installing Zamba
+              Installing zamba
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -791,10 +1454,10 @@ on 11 common species from western Europe. <code>time_distributed</code> and <cod
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.indexes", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.8397ff9e.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.f89c2efe.min.js"></script>
+      <script src="assets/javascripts/bundle.b1047164.min.js"></script>
       
     
   </body>
