@@ -26,13 +26,10 @@ from zamba.models.config import (
     PredictConfig,
     RegionEnum,
 )
+from zamba.models.registry import available_models
 from zamba.models.utils import download_weights
 from zamba.pytorch.finetuning import BackboneFinetuning
-from zamba.pytorch_lightning.utils import (
-    available_models,
-    ZambaDataModule,
-    ZambaVideoClassificationLightningModule,
-)
+from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
 
 
 def instantiate_model(

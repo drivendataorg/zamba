@@ -1,6 +1,6 @@
 from pathlib import Path
 import torch
-from zamba.models.yolox_models.yolox_base import YoloXBase
+from zamba.object_detection.yolox.yolox_base import YoloXBase
 
 
 class YoloXNano(YoloXBase):

@@ -19,7 +19,7 @@ import pandas as pd
 from pydantic import BaseModel, root_validator, validator
 
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.megadetector_lite_yolox import (
+from zamba.object_detection.yolox.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
