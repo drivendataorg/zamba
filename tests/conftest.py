@@ -13,13 +13,11 @@ import torch
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import PredictConfig, TrainConfig
-from zamba.models.megadetector_lite_yolox import MegadetectorLiteYoloX
 from zamba.models.model_manager import MODEL_MAPPING, train_model
+from zamba.models.registry import register_model
+from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
 from zamba.pytorch.transforms import zamba_image_model_transforms
-from zamba.pytorch_lightning.utils import (
-    register_model,
-    ZambaVideoClassificationLightningModule,
-)
+from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModule
 
 
 ASSETS_DIR = Path(__file__).parent / "assets"

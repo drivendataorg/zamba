@@ -3,11 +3,9 @@ from typing import Optional, Tuple, Union
 from pytorchvideo.models.head import ResNetBasicHead
 import torch
 
+from zamba.models.registry import register_model
 from zamba.pytorch.utils import build_multilayer_perceptron
-from zamba.pytorch_lightning.utils import (
-    register_model,
-    ZambaVideoClassificationLightningModule,
-)
+from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModule
 
 
 @register_model

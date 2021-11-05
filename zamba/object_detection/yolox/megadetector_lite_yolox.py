@@ -11,9 +11,9 @@ import torch
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
 
-from zamba.models.yolox_models import YoloXNano
+from zamba.object_detection import YoloXNano
 
-LOCAL_MD_LITE_MODEL = Path(__file__).parent / "yolox_models" / "assets" / "yolox_nano_20210901.pth"
+LOCAL_MD_LITE_MODEL = Path(__file__).parent / "assets" / "yolox_nano_20210901.pth"
 
 
 class FillModeEnum(str, Enum):

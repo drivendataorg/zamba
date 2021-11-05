@@ -3,8 +3,8 @@ from PIL import Image
 import pytest
 import torch
 
-from zamba.models.yolox_models import YoloXNano
-from zamba.models.megadetector_lite_yolox import (
+from zamba.object_detection import YoloXNano
+from zamba.object_detection.yolox.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
