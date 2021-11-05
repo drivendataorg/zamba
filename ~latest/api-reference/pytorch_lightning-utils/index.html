@@ -670,6 +670,8 @@
         
           
         
+          
+        
       
       
         <label class="md-nav__link" for="__nav_8">
@@ -764,10 +766,6 @@
       
       
       
-        
-          
-        
-          
         
           
         
@@ -896,20 +894,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-megadetector_lite_yolox/" class="md-nav__link">
-        zamba.models.megadetector_lite_yolox
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../models-model_manager/" class="md-nav__link">
         zamba.models.model_manager
       </a>
@@ -946,20 +930,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../models-yolox_models/" class="md-nav__link">
-        zamba.models.yolox_models
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -983,23 +953,74 @@
         
           
         
-          
-        
-          
-        
-          
-        
-          
-        
       
       
         <label class="md-nav__link" for="__nav_8_3">
+          zamba.object_detection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.object_detection" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.object_detection
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../object_detection-yolox/" class="md-nav__link">
+        zamba.object_detection.yolox
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
           zamba.pytorch
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_3">
+        <label class="md-nav__title" for="__nav_8_4">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch
         </label>
@@ -1093,7 +1114,7 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_5" type="checkbox" id="__nav_8_5" checked>
       
       
       
@@ -1102,13 +1123,13 @@
         
       
       
-        <label class="md-nav__link" for="__nav_8_4">
+        <label class="md-nav__link" for="__nav_8_5">
           zamba.pytorch_lightning
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_4">
+        <label class="md-nav__title" for="__nav_8_5">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch_lightning
         </label>
@@ -1157,13 +1178,6 @@
         <li class="md-nav__item">
   <a href="#zamba.pytorch_lightning.utils-classes" class="md-nav__link">
     Classes
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#zamba.pytorch_lightning.utils-functions" class="md-nav__link">
-    Functions
   </a>
   
 </li>
@@ -1266,13 +1280,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#zamba.pytorch_lightning.utils-functions" class="md-nav__link">
-    Functions
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1317,24 +1324,6 @@
 
 
 <a href="#zamba.pytorch_lightning.utils.DEFAULT_TOP_K" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="zamba.pytorch_lightning.utils.available_models" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">available_models</span></code>
-
-
-<a href="#zamba.pytorch_lightning.utils.available_models" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents ">
 
@@ -4261,7 +4250,7 @@ accessed from this module using the given name</p></td>
 
 
 <h5 id="zamba.pytorch_lightning.utils.ZambaVideoClassificationLightningModule.add_to_queue" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fb1982c3640</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">add_to_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fa12e5be5e0</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -4287,7 +4276,7 @@ sharing, we cast the data to numpy.</p>
   <tbody>
       <tr>
         <td><code>queue</code></td>
-        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7fb1982c3640&gt;&gt;</code></td>
+        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7fa12e5be5e0&gt;&gt;</code></td>
         <td><p>the instance of the queue to append the data.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -5933,7 +5922,7 @@ their serialized pickled form changes.</p>
 
 
 <h5 id="zamba.pytorch_lightning.utils.ZambaVideoClassificationLightningModule.get_from_queue" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_from_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fb1982c3640</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">get_from_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">BaseContext</span><span class="o">.</span><span class="n">SimpleQueue</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">DefaultContext</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fa12e5be5e0</span><span class="o">&gt;&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -5959,7 +5948,7 @@ we cast back the data to <code>torch.Tensor</code>.</p>
   <tbody>
       <tr>
         <td><code>queue</code></td>
-        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7fb1982c3640&gt;&gt;</code></td>
+        <td><code>&lt;bound method BaseContext.SimpleQueue of &lt;multiprocessing.context.DefaultContext object at 0x7fa12e5be5e0&gt;&gt;</code></td>
         <td><p>the instance of the queue from where to get the data.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -15168,41 +15157,6 @@ See :meth:<code>torch.optim.Optimizer.zero_grad</code> for details.</p></td>
 
   </div>
 
-
-<h2 id="zamba.pytorch_lightning.utils-functions">Functions<a href="#zamba.pytorch_lightning.utils-functions" class="headerlink" title="Permanent link">&para;</a></h2>
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="zamba.pytorch_lightning.utils.register_model" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">register_model</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span></code>
-
-
-<a href="#zamba.pytorch_lightning.utils.register_model" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Used to decorate subclasses of ZambaVideoClassificationLightningModule so that they are
-included in available_models.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>zamba/pytorch_lightning/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">register_model</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Used to decorate subclasses of ZambaVideoClassificationLightningModule so that they are</span>
-<span class="sd">    included in available_models.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ZambaVideoClassificationLightningModule</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-            <span class="s2">&quot;Cannot register object that is not a subclass of &quot;</span>
-            <span class="s2">&quot;ZambaVideoClassificationLightningModule.&quot;</span>
-        <span class="p">)</span>
-    <span class="n">available_models</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
-    <span class="k">return</span> <span class="bp">cls</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
 
 
 

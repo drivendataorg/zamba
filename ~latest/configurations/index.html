@@ -726,6 +726,8 @@
         
           
         
+          
+        
       
       
         <label class="md-nav__link" for="__nav_8">
@@ -820,10 +822,6 @@
       
       
       
-        
-          
-        
-          
         
           
         
@@ -952,20 +950,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/models-megadetector_lite_yolox/" class="md-nav__link">
-        zamba.models.megadetector_lite_yolox
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../api-reference/models-model_manager/" class="md-nav__link">
         zamba.models.model_manager
       </a>
@@ -1002,20 +986,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api-reference/models-yolox_models/" class="md-nav__link">
-        zamba.models.yolox_models
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -1039,23 +1009,74 @@
         
           
         
-          
-        
-          
-        
-          
-        
-          
-        
       
       
         <label class="md-nav__link" for="__nav_8_3">
+          zamba.object_detection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.object_detection" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.object_detection
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/object_detection-yolox/" class="md-nav__link">
+        zamba.object_detection.yolox
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
           zamba.pytorch
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_3">
+        <label class="md-nav__title" for="__nav_8_4">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch
         </label>
@@ -1147,7 +1168,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_5" type="checkbox" id="__nav_8_5" >
       
       
       
@@ -1156,13 +1177,13 @@
         
       
       
-        <label class="md-nav__link" for="__nav_8_4">
+        <label class="md-nav__link" for="__nav_8_5">
           zamba.pytorch_lightning
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_4">
+        <label class="md-nav__title" for="__nav_8_5">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch_lightning
         </label>
@@ -1377,7 +1398,7 @@
 <h4 id="scene_threshold-float-optional"><code>scene_threshold (float, optional)</code><a class="headerlink" href="#scene_threshold-float-optional" title="Permanent link">&para;</a></h4>
 <p>Only load frames that correspond to <a href="http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect">scene changes</a>, which are detected when <code>scene_threshold</code> percent of pixels are different. This can be useful for selecting frames efficiently if in general you have large animals and stable backgrounds. Defaults to <code>None</code></p>
 <h4 id="megadetector_lite_config-megadetectorliteyoloxconfig-optional"><code>megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)</code><a class="headerlink" href="#megadetector_lite_config-megadetectorliteyoloxconfig-optional" title="Permanent link">&para;</a></h4>
-<p>The <code>megadetector_lite_config</code> is used to specify any parameters that should be passed to the <a href="../models/species-detection/#megadetectorlite">MegadetectorLite model</a> for frame selection. For all possible options, see the <a href="../api-reference/models-megadetector_lite_yolox/#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>. If <code>megadetector_lite_config</code> is <code>None</code> (the default), the MegadetectorLite model will not be used to select frames.</p>
+<p>The <code>megadetector_lite_config</code> is used to specify any parameters that should be passed to the <a href="../models/species-detection/#megadetectorlite">MegadetectorLite model</a> for frame selection. For all possible options, see the <a href="api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>. If <code>megadetector_lite_config</code> is <code>None</code> (the default), the MegadetectorLite model will not be used to select frames.</p>
 <h4 id="frame_selection_height-int-optional-frame_selection_width-int-optional"><code>frame_selection_height (int, optional), frame_selection_width (int, optional)</code><a class="headerlink" href="#frame_selection_height-int-optional-frame_selection_width-int-optional" title="Permanent link">&para;</a></h4>
 <p>Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. Using full size videos (setting to <code>None</code>) is recommended for MegadetectorLite, especially if your species of interest are smaller. Defaults to <code>None</code></p>
 <h4 id="total_frames-int-optional"><code>total_frames (int, optional)</code><a class="headerlink" href="#total_frames-int-optional" title="Permanent link">&para;</a></h4>

@@ -91,11 +91,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://zamba.drivendata.org/docs/~latest/api-reference/models-megadetector_lite_yolox/</loc>
-         <lastmod>2021-11-05</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://zamba.drivendata.org/docs/~latest/api-reference/models-model_manager/</loc>
          <lastmod>2021-11-05</lastmod>
          <changefreq>daily</changefreq>
@@ -111,7 +106,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://zamba.drivendata.org/docs/~latest/api-reference/models-yolox_models/</loc>
+         <loc>https://zamba.drivendata.org/docs/~latest/api-reference/object_detection-yolox/</loc>
          <lastmod>2021-11-05</lastmod>
          <changefreq>daily</changefreq>
     </url>

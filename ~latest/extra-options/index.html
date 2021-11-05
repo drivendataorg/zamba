@@ -733,6 +733,8 @@
         
           
         
+          
+        
       
       
         <label class="md-nav__link" for="__nav_8">
@@ -827,10 +829,6 @@
       
       
       
-        
-          
-        
-          
         
           
         
@@ -959,20 +957,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/models-megadetector_lite_yolox/" class="md-nav__link">
-        zamba.models.megadetector_lite_yolox
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../api-reference/models-model_manager/" class="md-nav__link">
         zamba.models.model_manager
       </a>
@@ -1009,20 +993,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api-reference/models-yolox_models/" class="md-nav__link">
-        zamba.models.yolox_models
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -1046,23 +1016,74 @@
         
           
         
-          
-        
-          
-        
-          
-        
-          
-        
       
       
         <label class="md-nav__link" for="__nav_8_3">
+          zamba.object_detection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.object_detection" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.object_detection
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/object_detection-yolox/" class="md-nav__link">
+        zamba.object_detection.yolox
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
           zamba.pytorch
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_3">
+        <label class="md-nav__title" for="__nav_8_4">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch
         </label>
@@ -1154,7 +1175,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_5" type="checkbox" id="__nav_8_5" >
       
       
       
@@ -1163,13 +1184,13 @@
         
       
       
-        <label class="md-nav__link" for="__nav_8_4">
+        <label class="md-nav__link" for="__nav_8_5">
           zamba.pytorch_lightning
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_4">
+        <label class="md-nav__title" for="__nav_8_5">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch_lightning
         </label>
@@ -1444,7 +1465,7 @@
 <li><code>model_input_height</code> and <code>model_input_width</code> resize images <em>after</em> frame selection. These specify the image size that is passed to the actual model for classification.</li>
 </ul>
 <p>You can specify both of the above at once, just one, or neither. The example code feeds full-size images to MegadetectorLite, and then resizes images before running them through the neural network.</p>
-<p>To see all of the options that can be passed to the MegadetectorLite, see the <a href="../api-reference/models-megadetector_lite_yolox/#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>.</p>
+<p>To see all of the options that can be passed to the MegadetectorLite, see the <a href="api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>.</p>
 <h2 id="speed-up-training">Speed up training<a class="headerlink" href="#speed-up-training" title="Permanent link">&para;</a></h2>
 <p>Training will run faster if you increase <code>num_workers</code> and/or increase <code>batch_size</code>. <code>num_workers</code> is the number of subprocesses to use for data loading. The minimum is 0, meaning the data will be loaded in the main process, and the maximum is one less than the number of CPUs in your system. By default <code>num_workers</code> is set to 3 and <code>batch_size</code> is set to 2. Increasing either of these will use more GPU memory, and could raise an error if the memory required is more than your machine has available.</p>
 <p>You may need to try a few configuration of <code>num_workers</code>, <code>batch_size</code> and the image sizes above to settle on a configuration that works on your particular hardware.</p>
