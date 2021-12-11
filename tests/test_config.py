@@ -203,8 +203,16 @@ def test_labels_with_invalid_split(labels_absolute_path):
 
 
 def test_labels_no_splits(labels_no_splits, tmp_path):
-    config = TrainConfig(data_dir=TEST_VIDEOS_DIR, labels=labels_no_splits, save_dir=tmp_path)
-    assert set(config.labels.split.unique()) == set(("holdout", "train", "val"))
+    labels_three_videos = pd.read_csv(labels_no_splits).head(3)
+    # test with fewer videos and ensure we still get one of each
+    config = TrainConfig(
+        data_dir=TEST_VIDEOS_DIR,
+        labels=labels_three_videos,
+        save_dir=tmp_path,
+        split_proportions=dict(train=3, val=1, holdout=1)
+        )
+
+    assert set(pd.read_csv(tmp_path / "splits.csv").split.unique()) == set(["train", "val", "holdout"])
 
 
 def test_labels_split_proportions(labels_no_splits, tmp_path):
