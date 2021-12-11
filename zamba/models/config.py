@@ -7,6 +7,7 @@ from typing import Dict, Optional, Union
 import appdirs
 import ffmpeg
 from loguru import logger
+import numpy as np
 import pandas as pd
 from pydantic import BaseModel
 from pydantic import DirectoryPath, FilePath, validator, root_validator
@@ -495,19 +496,28 @@ class TrainConfig(ZambaBaseModel):
                     labels["site"], proportions=values["split_proportions"]
                 )
             else:
-                logger.info(
-                    "No 'site' column found so videos will be randomly allocated to splits."
-                )
                 # otherwise randomly allocate
-                random.seed(SPLIT_SEED)
-                labels["split"] = random.choices(
-                    list(values["split_proportions"].keys()),
-                    weights=list(values["split_proportions"].values()),
-                    k=len(labels),
+                logger.info(
+                    "No 'site' column found so videos will be randomly allocated using split proportions."
                 )
 
+                expected_labels = [k for k, v in values["split_proportions"].items() if v > 0]
+                labels["split"] = ""
+                seed = SPLIT_SEED
+
+                while len(np.setdiff1d(expected_labels, labels.split.unique())):
+
+                    random.seed(seed)
+                    labels["split"] = random.choices(
+                        list(values["split_proportions"].keys()),
+                        weights=list(values["split_proportions"].values()),
+                        k=len(labels),
+                    )
+
+                    seed += 1
+
                 logger.info(
-                    f"Writing out split information to {values['save_dir'] / 'splits.csv'}."
+                    f"Writing out split information to {values['save_dir'] / 'splits.csv'}. Used random seed {seed}."
                 )
 
                 # create the directory to save if we need to.
