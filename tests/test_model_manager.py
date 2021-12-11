@@ -17,6 +17,20 @@ def test_model_manager(dummy_trainer):
     assert not (dummy_trainer.model.model[3].weight == 0).all()
 
 
+def test_no_early_stopping(
+    labels_absolute_path, tmp_path, dummy_checkpoint, dummy_video_loader_config
+):
+    config = DummyTrainConfig(
+        labels=labels_absolute_path,
+        data_dir=TEST_VIDEOS_DIR,
+        checkpoint=dummy_checkpoint,
+        early_stopping_config=None,
+        save_dir=tmp_path / "my_model",
+        num_workers=1,
+    )
+    train_model(train_config=config, video_loader_config=dummy_video_loader_config)
+
+
 def test_save_checkpoint(dummy_trained_model_checkpoint):
     checkpoint = torch.load(dummy_trained_model_checkpoint)
 
@@ -76,14 +90,9 @@ def test_save_metrics_less_than_two_classes(
         train_config=DummyTrainConfig(
             labels=labels,
             data_dir=TEST_VIDEOS_DIR,
-            model_name="dummy",
             checkpoint=dummy_checkpoint,
-            max_epochs=1,
-            batch_size=1,
-            auto_lr_find=False,
             num_workers=2,
             save_dir=tmp_path / "my_model",
-            skip_load_validation=True,
         ),
         video_loader_config=dummy_video_loader_config,
     )
@@ -136,14 +145,9 @@ def test_train_save_dir_overwrite(
     config = DummyTrainConfig(
         labels=labels_absolute_path,
         data_dir=TEST_VIDEOS_DIR,
-        model_name="dummy",
         checkpoint=dummy_checkpoint,
         save_dir=tmp_path / "my_model",
-        skip_load_validation=True,
         overwrite=True,
-        max_epochs=1,
-        batch_size=1,
-        auto_lr_find=False,
         num_workers=1,
     )
 

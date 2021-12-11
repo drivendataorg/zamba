@@ -71,6 +71,11 @@ MODEL_MAPPING["DummyZambaVideoClassificationLightningModule"] = {
 class DummyTrainConfig(TrainConfig):
     # let model name be "dummy" without causing errors
     model_name: str
+    batch_size = 1
+    max_epochs = 1
+    model_name = "dummy"
+    skip_load_validation = True
+    auto_lr_find = False
 
 
 @pytest.fixture(scope="session")
