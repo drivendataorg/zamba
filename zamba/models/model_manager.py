@@ -245,8 +245,12 @@ def train_model(
     model_checkpoint = ModelCheckpoint(
         dirpath=logging_and_save_dir,
         filename=train_config.model_name,
-        monitor=train_config.early_stopping_config.monitor,
-        mode=train_config.early_stopping_config.mode,
+        monitor=train_config.early_stopping_config.monitor
+        if train_config.early_stopping_config is not None
+        else None,
+        mode=train_config.early_stopping_config.mode
+        if train_config.early_stopping_config is not None
+        else "min",
     )
 
     callbacks = [model_checkpoint]
