@@ -501,11 +501,11 @@ class TrainConfig(ZambaBaseModel):
                     "No 'site' column found so videos will be randomly allocated using split proportions."
                 )
 
-                expected_labels = [k for k, v in values["split_proportions"].items() if v > 0]
+                expected_splits = [k for k, v in values["split_proportions"].items() if v > 0]
                 labels["split"] = ""
                 seed = SPLIT_SEED
 
-                while len(np.setdiff1d(expected_labels, labels.split.unique())):
+                while len(np.setdiff1d(expected_splits, labels.split.unique())):
 
                     random.seed(seed)
                     labels["split"] = random.choices(
