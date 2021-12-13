@@ -83,7 +83,6 @@ All models support training, fine-tuning, and inference. For fine-tuning, we rec
 * `european_roe_deer`
 * `north_american_raccoon`
 * `red_fox`
-* `unidentified`
 * `weasel`
 * `wild_boar`
 
