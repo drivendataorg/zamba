@@ -495,22 +495,44 @@ class TrainConfig(ZambaBaseModel):
                     labels["site"], proportions=values["split_proportions"]
                 )
             else:
-                logger.info(
-                    "No 'site' column found so videos will be randomly allocated to splits."
-                )
                 # otherwise randomly allocate
-                random.seed(SPLIT_SEED)
-                labels["split"] = random.choices(
-                    list(values["split_proportions"].keys()),
-                    weights=list(values["split_proportions"].values()),
-                    k=len(labels),
+                logger.info(
+                    "No 'site' column found so videos for each species will be randomly allocated across splits using provided split proportions."
                 )
 
+                expected_splits = [k for k, v in values["split_proportions"].items() if v > 0]
+                random.seed(SPLIT_SEED)
+
+                # check we have at least as many videos per species as we have splits
+                # labels are OHE at this point
+                num_videos_per_species = labels.filter(regex="species_").sum().to_dict()
+                too_few = {
+                    k.split("species_", 1)[1]: v
+                    for k, v in num_videos_per_species.items()
+                    if v < len(expected_splits)
+                }
+
+                if len(too_few) > 0:
+                    raise ValueError(
+                        f"Not all species have enough videos to allocate into the following splits: {', '.join(expected_splits)}. A minimumm of {len(expected_splits)} videos per label is required. Found the following counts: {too_few}. Either remove these labels or add more videos."
+                    )
+
+                for c in labels.filter(regex="species_").columns:
+                    species_df = labels[labels[c] > 0]
+
+                    # within each species, seed splits by putting one video in each set and then allocate videos based on split proportions
+                    labels.loc[species_df.index, "split"] = expected_splits + random.choices(
+                        list(values["split_proportions"].keys()),
+                        weights=list(values["split_proportions"].values()),
+                        k=len(species_df) - len(expected_splits),
+                    )
+
+                logger.info(f"{labels.split.value_counts()}")
                 logger.info(
                     f"Writing out split information to {values['save_dir'] / 'splits.csv'}."
                 )
 
-                # create the directory to save if we need to.
+                # create the directory to save if we need to
                 values["save_dir"].mkdir(parents=True, exist_ok=True)
 
                 labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(
