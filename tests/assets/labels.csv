@@ -1,5 +1,5 @@
 filepath,label,split
-data/raw/savanna/Grumeti_Tanzania/K38_check3/09190048_Hyena.AVI,gorilla,train
+data/raw/savanna/Grumeti_Tanzania/K38_check3/09190048_Hyena.AVI,antelope_duiker,train
 data/raw/savanna/Grumeti_Tanzania/G41_check2/09100029_Eland.MP4,antelope_duiker,train
 data/raw/savanna/Gorongosa_Mozambique/2017 Videos/F13_Cam027/Baboon/07120049.AVI,elephant,train
 data/raw/goualougo_2013/chimp_MPI_FID_2013/MPI_FID_31_Abel/06-May-2013/FID_31_Abel_2013-5-6_0027.AVI,gorilla,train
@@ -15,6 +15,6 @@ data/raw/chimpandsee/Kay_H12/Kay_vid2_0803042_1459433_20130528/PICT0265.AVI,gori
 data/raw/chimpandsee/Kor_C5/Kor_vid6_0485466_0567428_20141120/EK000019.AVI,gorilla,val
 data/raw/chimpandsee/Trip_5/card 1.2_location/PICT0074.ASF,gorilla,val
 data/raw/chimpandsee/Sap_D1/Sap_vid24_0524356_0589414_20110915/PICT0021.ASF,gorilla,holdout
-data/raw/chimpandsee/Bwi_A3/bwi_vid7_806110_9885227_20120911/PICT0146.AVI,gorilla,holdout
+data/raw/chimpandsee/Bwi_A3/bwi_vid7_806110_9885227_20120911/PICT0146.AVI,elephant,holdout
 data/raw/chimpandsee/Gas_D4/Gas_Vid20_0786029_0808836_20130725/EK000018.AVI,elephant,holdout
 data/raw/salonga/MISSION_3/Team_Pedro/Trans_322__Cam_1_488454_9765353_Date_24-11-2017/01110103.AVI,antelope_duiker,holdout
