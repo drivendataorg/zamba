@@ -498,29 +498,40 @@ class TrainConfig(ZambaBaseModel):
             else:
                 # otherwise randomly allocate
                 logger.info(
-                    "No 'site' column found so videos will be randomly allocated using split proportions."
+                    "No 'site' column found so videos for each species will be randomly allocated across splits using provided split proportions."
                 )
 
                 expected_splits = [k for k, v in values["split_proportions"].items() if v > 0]
-                labels["split"] = ""
-                seed = SPLIT_SEED
 
-                while len(np.setdiff1d(expected_splits, labels.split.unique())):
-
-                    random.seed(seed)
-                    labels["split"] = random.choices(
-                        list(values["split_proportions"].keys()),
-                        weights=list(values["split_proportions"].values()),
-                        k=len(labels),
+                # check we have at least as many videos as we have splits
+                if len(expected_splits) > len(labels):
+                    raise ValueError(
+                        f"Not enough videos to allocate into {', '.join(expected_splits)} splits. Only {len(labels)} video(s) found."
                     )
 
-                    seed += 1
+                # seed splits by putting one video in each
+                labels["split"] = np.nan
+                labels.iloc[: len(expected_splits), -1] = expected_splits
 
+                random.seed(SPLIT_SEED)
+
+                # labels are OHE at this point
+                for c in labels.filter(regex="species").columns:
+                    # within each species, allocate videos based on split proportions
+                    species_df = labels[(labels[c] > 0) & labels.split.isnull()]
+
+                    labels.loc[species_df.index, "split"] = random.choices(
+                        list(values["split_proportions"].keys()),
+                        weights=list(values["split_proportions"].values()),
+                        k=len(species_df),
+                    )
+
+                logger.info(f"{labels.split.value_counts()}")
                 logger.info(
-                    f"Writing out split information to {values['save_dir'] / 'splits.csv'}. Used random seed {seed}."
+                    f"Writing out split information to {values['save_dir'] / 'splits.csv'}."
                 )
 
-                # create the directory to save if we need to.
+                # create the directory to save if we need to
                 values["save_dir"].mkdir(parents=True, exist_ok=True)
 
                 labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(
