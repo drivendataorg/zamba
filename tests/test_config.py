@@ -203,18 +203,31 @@ def test_labels_with_invalid_split(labels_absolute_path):
 
 
 def test_labels_no_splits(labels_no_splits, tmp_path):
-    labels_three_videos = pd.read_csv(labels_no_splits).head(3)
-    # test with fewer videos and ensure we still get one of each
+    # ensure species are allocated to both sets
+    labels_four_videos = pd.read_csv(labels_no_splits).head(4)
+    labels_four_videos["label"] = ["gorilla"] * 2 + ["elephant"] * 2
     _ = TrainConfig(
         data_dir=TEST_VIDEOS_DIR,
-        labels=labels_three_videos,
+        labels=labels_four_videos,
         save_dir=tmp_path,
-        split_proportions=dict(train=3, val=1, holdout=1),
+        split_proportions=dict(train=1, val=1, holdout=0),
     )
 
-    assert set(pd.read_csv(tmp_path / "splits.csv").split.unique()) == set(
-        ["train", "val", "holdout"]
-    )
+    assert (
+        pd.read_csv(tmp_path / "splits.csv").split.values == ["train", "val", "train", "val"]
+    ).all()
+
+    # remove the first row which puts antelope_duiker at 2 instead of 3
+    labels_with_too_few_videos = pd.read_csv(labels_no_splits).iloc[1:, :]
+    with pytest.raises(ValueError) as error:
+        TrainConfig(
+            data_dir=TEST_VIDEOS_DIR,
+            labels=labels_with_too_few_videos,
+            save_dir=tmp_path,
+        )
+    assert (
+        "Not all species have enough videos to allocate into the following splits: train, val, holdout. A minimumm of 3 videos per label is required. Found the following counts: {'antelope_duiker': 2}. Either remove these labels or add more videos."
+    ) == error.value.errors()[0]["msg"]
 
 
 def test_labels_split_proportions(labels_no_splits, tmp_path):

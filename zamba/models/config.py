@@ -7,7 +7,6 @@ from typing import Dict, Optional, Union
 import appdirs
 import ffmpeg
 from loguru import logger
-import numpy as np
 import pandas as pd
 from pydantic import BaseModel
 from pydantic import DirectoryPath, FilePath, validator, root_validator
@@ -502,28 +501,30 @@ class TrainConfig(ZambaBaseModel):
                 )
 
                 expected_splits = [k for k, v in values["split_proportions"].items() if v > 0]
-
-                # check we have at least as many videos as we have splits
-                if len(expected_splits) > len(labels):
-                    raise ValueError(
-                        f"Not enough videos to allocate into {', '.join(expected_splits)} splits. Only {len(labels)} video(s) found."
-                    )
-
-                # seed splits by putting one video in each
-                labels["split"] = np.nan
-                labels.iloc[: len(expected_splits), -1] = expected_splits
-
                 random.seed(SPLIT_SEED)
 
+                # check we have at least as many videos per species as we have splits
                 # labels are OHE at this point
-                for c in labels.filter(regex="species").columns:
-                    # within each species, allocate videos based on split proportions
-                    species_df = labels[(labels[c] > 0) & labels.split.isnull()]
+                num_videos_per_species = labels.filter(regex="species_").sum().to_dict()
+                too_few = {
+                    k.split("species_", 1)[1]: v
+                    for k, v in num_videos_per_species.items()
+                    if v < len(expected_splits)
+                }
 
-                    labels.loc[species_df.index, "split"] = random.choices(
+                if len(too_few) > 0:
+                    raise ValueError(
+                        f"Not all species have enough videos to allocate into the following splits: {', '.join(expected_splits)}. A minimumm of {len(expected_splits)} videos per label is required. Found the following counts: {too_few}. Either remove these labels or add more videos."
+                    )
+
+                for c in labels.filter(regex="species_").columns:
+                    species_df = labels[labels[c] > 0]
+
+                    # within each species, seed splits by putting one video in each set and then allocate videos based on split proportions
+                    labels.loc[species_df.index, "split"] = expected_splits + random.choices(
                         list(values["split_proportions"].keys()),
                         weights=list(values["split_proportions"].values()),
-                        k=len(species_df),
+                        k=len(species_df) - len(expected_splits),
                     )
 
                 logger.info(f"{labels.split.value_counts()}")
