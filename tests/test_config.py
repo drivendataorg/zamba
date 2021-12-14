@@ -224,7 +224,7 @@ def test_labels_split_proportions(labels_no_splits, tmp_path):
         split_proportions={"a": 3, "b": 1},
         save_dir=tmp_path,
     )
-    assert config.labels.split.value_counts().to_dict() == {"a": 14, "b": 5}
+    assert config.labels.split.value_counts().to_dict() == {"a": 13, "b": 6}
 
 
 def test_from_scratch(labels_absolute_path):
