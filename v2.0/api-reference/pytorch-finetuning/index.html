@@ -10,11 +10,10 @@
       
       
       
-      
         <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/api-reference/pytorch-finetuning/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
     
     
       
@@ -22,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.f7951f6f.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -35,9 +34,8 @@
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
-    
     
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
@@ -46,9 +44,9 @@
     
       <link rel="stylesheet" href="../../stylesheets/custom_mkdocstrings.css">
     
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
-
 
     
     
@@ -63,7 +61,6 @@
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
   
     
-    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -79,6 +76,13 @@
     <div data-md-component="announce">
       
     </div>
+    
+      <div data-md-component="outdated" hidden>
+        <aside class="md-banner md-banner--warning">
+          
+        </aside>
+      </div>
+    
     
       
 
@@ -115,8 +119,7 @@
       <label class="md-header__button md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
       </label>
-      
-<div class="md-search" data-md-component="search" role="dialog">
+      <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
@@ -148,8 +151,7 @@
     
     
       <div class="md-header__source">
-        
-<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -194,8 +196,7 @@
   </label>
   
     <div class="md-nav__source">
-      
-<a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -670,6 +671,8 @@
         
           
         
+          
+        
       
       
         <label class="md-nav__link" for="__nav_8">
@@ -764,10 +767,6 @@
       
       
       
-        
-          
-        
-          
         
           
         
@@ -896,20 +895,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../models-megadetector_lite_yolox/" class="md-nav__link">
-        zamba.models.megadetector_lite_yolox
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../models-model_manager/" class="md-nav__link">
         zamba.models.model_manager
       </a>
@@ -946,14 +931,51 @@
 
             
           
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+      
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3">
+          zamba.object_detection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="zamba.object_detection" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          zamba.object_detection
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
             
               
   
   
   
     <li class="md-nav__item">
-      <a href="../models-yolox_models/" class="md-nav__link">
-        zamba.models.yolox_models
+      <a href="../object_detection-yolox/" class="md-nav__link">
+        zamba.object_detection.yolox
       </a>
     </li>
   
@@ -978,7 +1000,7 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" checked>
       
       
       
@@ -995,13 +1017,13 @@
         
       
       
-        <label class="md-nav__link" for="__nav_8_3">
+        <label class="md-nav__link" for="__nav_8_4">
           zamba.pytorch
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_3">
+        <label class="md-nav__title" for="__nav_8_4">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch
         </label>
@@ -1046,7 +1068,6 @@
       </a>
       
         
-
 
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
@@ -1142,7 +1163,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_5" type="checkbox" id="__nav_8_5" >
       
       
       
@@ -1151,13 +1172,13 @@
         
       
       
-        <label class="md-nav__link" for="__nav_8_4">
+        <label class="md-nav__link" for="__nav_8_5">
           zamba.pytorch_lightning
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="zamba.pytorch_lightning" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_4">
+        <label class="md-nav__title" for="__nav_8_5">
           <span class="md-nav__icon md-icon"></span>
           zamba.pytorch_lightning
         </label>
@@ -1245,7 +1266,6 @@
                   <div class="md-sidebar__inner">
                     
 
-
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -1285,12 +1305,12 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/api-reference/pytorch-finetuning.md" title="Edit this page" class="md-content__button md-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
-                  </a>
-                
-                
-                <h1 id="zambapytorchfinetuning">zamba.pytorch.finetuning<a class="headerlink" href="#zambapytorchfinetuning" title="Permanent link">&para;</a></h1>
+<a href="https://github.com/drivendataorg/zamba/edit/master/docs/api-reference/pytorch-finetuning.md" title="Edit this page" class="md-content__button md-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+</a>
+
+
+<h1 id="zambapytorchfinetuning">zamba.pytorch.finetuning<a class="headerlink" href="#zambapytorchfinetuning" title="Permanent link">&para;</a></h1>
 
 
   <div class="doc doc-object doc-module">
@@ -1416,6 +1436,33 @@ current_learning_rate /  initial_denom_lr.</p></td>
 
 
 
+<h4 id="zamba.pytorch.finetuning.BackboneFinetuning-attributes">Attributes<a href="#zamba.pytorch.finetuning.BackboneFinetuning-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.pytorch.finetuning.BackboneFinetuning.state_key" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">state_key</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+<a href="#zamba.pytorch.finetuning.BackboneFinetuning.state_key" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>Identifier for the state of the callback.</p>
+<p>Used to store and retrieve a callback's state from the checkpoint dictionary by
+<code>checkpoint["callbacks"][state_key]</code>. Implementations of a callback need to provide a unique state key if 1)
+the callback has state and 2) it is desired to maintain the state of multiple instances of that callback.</p>
+    </div>
+
+  </div>
+
 
 
 
@@ -1470,8 +1517,7 @@ current_learning_rate /  initial_denom_lr.</p></td>
 
     <div class="doc doc-contents ">
 
-      <p>This function is used to exclude any parameter which already exists in
-this optimizer</p>
+      <p>This function is used to exclude any parameter which already exists in this optimizer.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1517,9 +1563,7 @@ this optimizer</p>
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">filter_on_optimizer</span><span class="p">(</span><span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This function is used to exclude any parameter which already exists in</span>
-<span class="sd">    this optimizer</span>
+    <span class="sd">&quot;&quot;&quot;This function is used to exclude any parameter which already exists in this optimizer.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        optimizer: Optimizer used for parameter exclusion</span>
@@ -1538,7 +1582,7 @@ this optimizer</p>
 
     <span class="k">if</span> <span class="n">removed_params</span><span class="p">:</span>
         <span class="n">rank_zero_warn</span><span class="p">(</span>
-            <span class="s2">&quot;The provided params to be freezed already exist within another group of this optimizer.&quot;</span>
+            <span class="s2">&quot;The provided params to be frozen already exist within another group of this optimizer.&quot;</span>
             <span class="s2">&quot; Those parameters will be skipped.</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;HINT: Did you init your optimizer in `configure_optimizer` as such:</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span><span class="si">}</span><span class="s2">(filter(lambda p: p.requires_grad, self.parameters()), ...) &quot;</span><span class="p">,</span>
@@ -1652,7 +1696,7 @@ this optimizer</p>
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.finetune_function" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">finetune_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">opt_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">finetune_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">opt_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -1666,7 +1710,9 @@ this optimizer</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">finetune_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">opt_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">finetune_function</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">epoch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">opt_idx</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the epoch begins.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">unfreeze_backbone_at_epoch</span><span class="p">:</span>
         <span class="n">current_lr</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;lr&quot;</span><span class="p">]</span>
@@ -1685,8 +1731,8 @@ this optimizer</p>
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Current lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">current_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Backbone lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">initial_backbone_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Current lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">current_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rounding</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Backbone lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">initial_backbone_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rounding</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">epoch</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">unfreeze_backbone_at_epoch</span><span class="p">:</span>
@@ -1701,8 +1747,8 @@ this optimizer</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous_backbone_lr</span> <span class="o">=</span> <span class="n">next_current_backbone_lr</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Current lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">current_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Backbone lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">next_current_backbone_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">round</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Current lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">current_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rounding</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Backbone lr: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">next_current_backbone_lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rounding</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -1727,8 +1773,8 @@ this optimizer</p>
 
     <div class="doc doc-contents ">
 
-      <p>This function is used to flatten a module or an iterable of modules into a list of its leaf modules (modules
-with no children) and parent modules that have parameters directly themselves.</p>
+      <p>This function is used to flatten a module or an iterable of modules into a list of its leaf modules
+(modules with no children) and parent modules that have parameters directly themselves.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1768,9 +1814,8 @@ with no children) and parent modules that have parameters directly themselves.</
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">flatten_modules</span><span class="p">(</span><span class="n">modules</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Module</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This function is used to flatten a module or an iterable of modules into a list of its leaf modules (modules</span>
-<span class="sd">    with no children) and parent modules that have parameters directly themselves.</span>
+    <span class="sd">&quot;&quot;&quot;This function is used to flatten a module or an iterable of modules into a list of its leaf modules</span>
+<span class="sd">    (modules with no children) and parent modules that have parameters directly themselves.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        modules: A given module or an iterable of modules</span>
@@ -1814,7 +1859,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Freezes the parameters of the provided modules</p>
+      <p>Freezes the parameters of the provided modules.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1860,8 +1905,7 @@ with no children) and parent modules that have parameters directly themselves.</
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="n">modules</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]]],</span> <span class="n">train_bn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Freezes the parameters of the provided modules</span>
+    <span class="sd">&quot;&quot;&quot;Freezes the parameters of the provided modules.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        modules: A given module or an iterable of modules</span>
@@ -1898,7 +1942,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Override to add your freeze logic</p>
+      <p>Override to add your freeze logic.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
@@ -1927,7 +1971,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Unfreezes the parameters of the provided modules</p>
+      <p>Unfreezes the parameters of the provided modules.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1952,8 +1996,7 @@ with no children) and parent modules that have parameters directly themselves.</
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">make_trainable</span><span class="p">(</span><span class="n">modules</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Unfreezes the parameters of the provided modules</span>
+    <span class="sd">&quot;&quot;&quot;Unfreezes the parameters of the provided modules.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        modules: A given module or an iterable of modules</span>
@@ -2066,7 +2109,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_before_accelerator_backend_setup" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -2076,11 +2119,11 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Called before accelerator is being setup</p>
+      <p>Called before accelerator is being setup.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">freeze_before_training</span><span class="p">(</span><span class="n">pl_module</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -2167,12 +2210,12 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Called after <code>optimizer.step()</code> and before <code>optimizer.zero_grad()</code>.</p>
+      <p>Called before <code>optimizer.zero_grad()</code>.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_before_zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called after ``optimizer.step()`` and before ``optimizer.zero_grad()``.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Called before ``optimizer.zero_grad()``.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
 </code></pre></div>
         </details>
@@ -2197,12 +2240,12 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Called before configure sharded model</p>
+      <p>Called before configure sharded model.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_configure_sharded_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called before configure sharded model&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Called before configure sharded model.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2275,6 +2318,36 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 
+<h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_exception" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">on_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a href="#zamba.pytorch.finetuning.BackboneFinetuning.on_exception" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>Called when any trainer execution is interrupted by an exception.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Called when any trainer execution is interrupted by an exception.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_fit_end" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">on_fit_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
@@ -2286,12 +2359,12 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Called when fit ends</p>
+      <p>Called when fit ends.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_fit_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when fit ends&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Called when fit ends.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
 </code></pre></div>
         </details>
@@ -2306,7 +2379,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_fit_start" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_fit_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">on_fit_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -2319,7 +2392,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_fit_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_fit_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Raises:</span>
 <span class="sd">        MisconfigurationException:</span>
@@ -2411,12 +2484,19 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Called when the training is interrupted by <code>KeyboardInterrupt</code>.</p>
+      <p>.. deprecated:: v1.5
+    This callback hook was deprecated in v1.5 in favor of <code>on_exception</code> and will be removed in v1.7.</p>
+<p>Called when any trainer execution is interrupted by KeyboardInterrupt.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_keyboard_interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when the training is interrupted by ``KeyboardInterrupt``.&quot;&quot;&quot;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.5</span>
+<span class="sd">        This callback hook was deprecated in v1.5 in favor of `on_exception` and will be removed in v1.7.</span>
+
+<span class="sd">    Called when any trainer execution is interrupted by KeyboardInterrupt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span>
 </code></pre></div>
         </details>
@@ -2808,7 +2888,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_save_checkpoint" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">on_save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -2861,7 +2941,7 @@ with no children) and parent modules that have parameters directly themselves.</
   </thead>
   <tbody>
     <tr>
-      <td><code>Dict[int, Any]</code></td>
+      <td><code>Dict[str, Any]</code></td>
       <td><p>The callback state.</p></td>
     </tr>
   </tbody>
@@ -2870,7 +2950,7 @@ with no children) and parent modules that have parameters directly themselves.</
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_save_checkpoint</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;internal_optimizer_metadata&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_optimizer_metadata</span><span class="p">,</span>
         <span class="s2">&quot;previous_backbone_lr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_backbone_lr</span><span class="p">,</span>
@@ -3078,7 +3158,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_train_batch_end" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_train_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">on_train_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -3099,7 +3179,7 @@ with no children) and parent modules that have parameters directly themselves.</
     <span class="n">outputs</span><span class="p">:</span> <span class="n">STEP_OUTPUT</span><span class="p">,</span>
     <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the train batch ends.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
@@ -3116,7 +3196,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_train_batch_start" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_train_batch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">on_train_batch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -3131,7 +3211,12 @@ with no children) and parent modules that have parameters directly themselves.</
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_train_batch_start</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span>
+    <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span>
+    <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the train batch begins.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
@@ -3178,7 +3263,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_train_epoch_end" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_train_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">on_train_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -3197,9 +3282,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_train_epoch_end</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_train_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the train epoch ends.</span>
 
 <span class="sd">    To access all batch outputs at the end of the epoch, either:</span>
@@ -3221,7 +3304,7 @@ with no children) and parent modules that have parameters directly themselves.</
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_train_epoch_start" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -3235,9 +3318,12 @@ with no children) and parent modules that have parameters directly themselves.</
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the epoch begins.&quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">opt_idx</span><span class="p">,</span> <span class="n">optimizer</span> <span class="ow">in</span> <span class="n">trainer</span><span class="o">.</span><span class="n">fit_loop</span><span class="o">.</span><span class="n">epoch_loop</span><span class="o">.</span><span class="n">batch_loop</span><span class="o">.</span><span class="n">get_active_optimizers</span><span class="p">():</span>
+    <span class="c1"># import is here to avoid circular imports</span>
+    <span class="kn">from</span> <span class="nn">pytorch_lightning.loops.utilities</span> <span class="kn">import</span> <span class="n">_get_active_optimizers</span>
+
+    <span class="k">for</span> <span class="n">opt_idx</span><span class="p">,</span> <span class="n">optimizer</span> <span class="ow">in</span> <span class="n">_get_active_optimizers</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">optimizers</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">optimizer_frequencies</span><span class="p">):</span>
         <span class="n">num_param_groups</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">finetune_function</span><span class="p">(</span><span class="n">pl_module</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">current_epoch</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">opt_idx</span><span class="p">)</span>
         <span class="n">current_param_groups</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span>
@@ -3485,12 +3571,12 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Called when fit, validate, test, predict, or tune begins</p>
+      <p>Called when fit, validate, test, predict, or tune begins.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when fit, validate, test, predict, or tune begins&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Called when fit, validate, test, predict, or tune begins.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
 </code></pre></div>
         </details>
@@ -3515,12 +3601,12 @@ with no children) and parent modules that have parameters directly themselves.</
 
     <div class="doc doc-contents ">
 
-      <p>Called when fit, validate, test, predict, or tune ends</p>
+      <p>Called when fit, validate, test, predict, or tune ends.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when fit, validate, test, predict, or tune ends&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Called when fit, validate, test, predict, or tune ends.&quot;&quot;&quot;</span>
     <span class="k">pass</span>
 </code></pre></div>
         </details>
@@ -3582,7 +3668,7 @@ Their parameters will be added to an optimizer as a new param group.</p></td>
         <td><code>initial_denom_lr</code></td>
         <td><code>float</code></td>
         <td><p>If no lr is provided, the learning from the first param group will be used
-and divided by initial_denom_lr.</p></td>
+and divided by <code>initial_denom_lr</code>.</p></td>
         <td><code>10.0</code></td>
       </tr>
       <tr>
@@ -3591,21 +3677,6 @@ and divided by initial_denom_lr.</p></td>
         <td><p>Whether to train the BatchNormalization layers.</p></td>
         <td><code>True</code></td>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>None</code></td>
-      <td><p>None</p></td>
-    </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -3618,26 +3689,17 @@ and divided by initial_denom_lr.</p></td>
     <span class="n">initial_denom_lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
     <span class="n">train_bn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Unfreezes a module and adds its parameters to an optimizer.</span>
+    <span class="sd">&quot;&quot;&quot;Unfreezes a module and adds its parameters to an optimizer.</span>
 
 <span class="sd">    Args:</span>
-
 <span class="sd">        modules: A module or iterable of modules to unfreeze.</span>
 <span class="sd">            Their parameters will be added to an optimizer as a new param group.</span>
-
 <span class="sd">        optimizer: The provided optimizer will receive new parameters and will add them to</span>
 <span class="sd">            `add_param_group`</span>
-
 <span class="sd">        lr: Learning rate for the new param group.</span>
-
 <span class="sd">        initial_denom_lr: If no lr is provided, the learning from the first param group will be used</span>
-<span class="sd">            and divided by initial_denom_lr.</span>
-
+<span class="sd">            and divided by `initial_denom_lr`.</span>
 <span class="sd">        train_bn: Whether to train the BatchNormalization layers.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">BaseFinetuning</span><span class="o">.</span><span class="n">make_trainable</span><span class="p">(</span><span class="n">modules</span><span class="p">)</span>
     <span class="n">params_lr</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;lr&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">lr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
@@ -3729,11 +3791,6 @@ rate multiplier.</p>
     </div>
 
   </div>
-                
-              
-              
-                
-
 
               
             </article>
@@ -3742,8 +3799,7 @@ rate multiplier.</p>
         
       </main>
       
-        
-<footer class="md-footer">
+        <footer class="md-footer">
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
@@ -3782,16 +3838,15 @@ rate multiplier.</p>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
-      <div class="md-footer-copyright">
-        
-        
-          Made with
-          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-            Material for MkDocs
-          </a>
-        
-        
-      </div>
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
       
     </div>
   </div>
@@ -3801,10 +3856,10 @@ rate multiplier.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      <script src="../../assets/javascripts/bundle.649a939e.min.js"></script>
       
     
   </body>
