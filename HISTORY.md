@@ -1,6 +1,15 @@
 # `zamba` changelog
 
-## v2 (2021-10-22)
+## v2.0.1 (2021-12-15)
+
+Releasing to pick up #167 and #169.
+
+ - PR [#169](https://github.com/drivendataorg/zamba/pull/169) fixes error in splitting data into train/test/val when only a few videos.
+ - PR [#167](https://github.com/drivendataorg/zamba/pull/167) refactors yolox into an `object_detection` module
+
+Other documentation fixes also included.
+
+## v2.0.0 (2021-10-22)
 
 ### Previous model: Machine learning competition
 
