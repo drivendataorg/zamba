@@ -120,7 +120,7 @@ jobs:
           .venv-whl/$PYTHON_BIN -m pip install --upgrade pip
           .venv-whl/$PYTHON_BIN -m pip install dist/zamba-*.whl
           .venv-whl/$PYTHON_BIN -m zamba --help
-          .venv-whl/$PYTHON_BIN python -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          .venv-whl/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
       - name: Install source; test CLI + models with assets
         run: |
@@ -129,7 +129,7 @@ jobs:
           .venv-sdist/$PYTHON_BIN -m pip install --upgrade pip
           .venv-sdist/$PYTHON_BIN -m pip install dist/zamba-*.tar.gz
           .venv-sdist/$PYTHON_BIN -m zamba --help
-          .venv-whl/$PYTHON_BIN python -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          .venv-sdist/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
   notify:
     name: Notify failed build
