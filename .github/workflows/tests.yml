@@ -113,21 +113,23 @@ jobs:
         run: |
           make dist
 
-      - name: Install wheel and test CLI
+      - name: Install wheel; test CLI + models with assets
         run: |
           python -m venv .venv-whl
           PYTHON_BIN=bin/python
           .venv-whl/$PYTHON_BIN -m pip install --upgrade pip
           .venv-whl/$PYTHON_BIN -m pip install dist/zamba-*.whl
           .venv-whl/$PYTHON_BIN -m zamba --help
+          .venv-whl/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
-      - name: Install source and test CLI
+      - name: Install source; test CLI + models with assets
         run: |
           python -m venv .venv-sdist
           PYTHON_BIN=bin/python
           .venv-sdist/$PYTHON_BIN -m pip install --upgrade pip
           .venv-sdist/$PYTHON_BIN -m pip install dist/zamba-*.tar.gz
           .venv-sdist/$PYTHON_BIN -m zamba --help
+          .venv-sdist/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
   notify:
     name: Notify failed build

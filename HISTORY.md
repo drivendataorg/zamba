@@ -1,5 +1,12 @@
 # `zamba` changelog
 
+## v2.0.2 (2021-12-21)
+
+Releasing to pick up #172.
+
+ - PR [#172](https://github.com/drivendataorg/zamba/pull/172) fixes bug where video loading that uses the YoloX model (all of the built in models) resulted in videos not being able to load.
+
+
 ## v2.0.1 (2021-12-15)
 
 Releasing to pick up #167 and #169.
