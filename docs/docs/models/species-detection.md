@@ -98,7 +98,7 @@ The `time_distributed` model was built by re-training a well-known image classif
 
 ### Training data
 
-`time_distributed` was trained using data collected and annotated by partners at [The Max Planck Institute for Evolutionary Anthropology](https://www.eva.mpg.de/index.html) and [Chimp&See](https://www.chimpandsee.org/).
+`time_distributed` was trained using data collected and annotated by trained ecologists from Cameroon, Central African Republic, Democratic Republic of the Congo, Gabon, Guinea, Liberia, Mozambique, Nigeria, Republic of the Congo, Senegal, Tanzania, and Uganda, as well as citizen scientists on the [Chimp&See](https://www.chimpandsee.org/) platform.
 
 The data included camera trap videos from:
 
@@ -279,7 +279,7 @@ The `european` model starts from the trained `time_distributed` model, and then 
 
 ### Training data
 
-The `european` model is finetuned with data collected and annotated by partners at [The Max Planck Institute for Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
+The `european` model is finetuned with data collected and annotated by partners at the [German Centre for Integrative Biodiversity Research (iDiv) Halle-Jena-Leipzig](https://www.idiv.de/en/index.html) and [The Max Planck Institute for Evolutionary Anthropology](https://www.eva.mpg.de/index.html). The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.
 
 ### Default configuration
 
