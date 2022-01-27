@@ -85,7 +85,7 @@ docs-setup:
 	| sed 's|https://zamba.drivendata.org/docs/stable/||g' \
 	> docs/docs/index.md
 
-	sed 's|https://zamba.drivendata.org/docs/stable/|../|g' HISTORY.md > docs/docs/changelog.md
+	sed 's|https://zamba.drivendata.org/docs/stable/|../|g' HISTORY.md > docs/docs/changelog/index.md
 
 ## Build the static version of the docs
 docs: docs-setup
