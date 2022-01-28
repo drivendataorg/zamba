@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/pytorch-transforms/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1349,6 +1349,15 @@ ConvertTCHWtoCTHW            (<span title="torch.nn.modules.module.Module">Modul
 
       <p>Convert tensor from (T, C, H, W) to (C, T, H, W)</p>
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ConvertTCHWtoCTHW</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert tensor from (T, C, H, W) to (C, T, H, W)&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1756,9 +1765,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    torch.Tensor: module buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>torch.Tensor</code></td>
+      <td><p>module buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for buf in model.buffers():
 &gt;&gt;&gt;     print(type(buf), buf.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -1812,9 +1834,22 @@ are direct members of this module.</p></td>
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over immediate children modules.</p>
-<p>!!! yields
-    Module: a child module</p>
 
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a child module</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;Module&#39;</span><span class="p">]:</span>
@@ -2910,9 +2945,22 @@ in :attr:<code>state_dict</code> match the keys returned by this module's
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over all modules in the network.</p>
-<p>!!! yields
-    Module: a module in the network</p>
-<p>!!! note
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a module in the network</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -3008,9 +3056,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, torch.Tensor): Tuple containing the name and buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, torch.Tensor)</code></td>
+      <td><p>Tuple containing the name and buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, buf in self.named_buffers():
 &gt;&gt;&gt;    if name in [&#39;running_var&#39;]:
 &gt;&gt;&gt;        print(buf.size())
@@ -3068,9 +3129,22 @@ are direct members of this module.</p></td>
 
       <p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
-<p>!!! yields
-    (string, Module): Tuple containing a name and child module</p>
-<p>Example::</p>
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple containing a name and child module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, module in model.named_children():
 &gt;&gt;&gt;     if name in [&#39;conv4&#39;, &#39;conv5&#39;]:
 &gt;&gt;&gt;         print(module)
@@ -3153,9 +3227,22 @@ both the name of the module as well as the module itself.</p>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Module): Tuple of name and module</p>
-<p>!!! note
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple of name and module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -3269,9 +3356,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Parameter): Tuple containing the name and parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Parameter)</code></td>
+      <td><p>Tuple containing the name and parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, param in self.named_parameters():
 &gt;&gt;&gt;    if name in [&#39;bias&#39;]:
 &gt;&gt;&gt;        print(param.size())
@@ -3350,9 +3450,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    Parameter: module parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Parameter</code></td>
+      <td><p>module parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for param in model.parameters():
 &gt;&gt;&gt;     print(type(param), param.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -4871,6 +4984,15 @@ ConvertTHWCtoCTHW            (<span title="torch.nn.modules.module.Module">Modul
 
       <p>Convert tensor from (0:T, 1:H, 2:W, 3:C) to (3:C, 0:T, 1:H, 2:W)</p>
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ConvertTHWCtoCTHW</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert tensor from (0:T, 1:H, 2:W, 3:C) to (3:C, 0:T, 1:H, 2:W)&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -5278,9 +5400,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    torch.Tensor: module buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>torch.Tensor</code></td>
+      <td><p>module buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for buf in model.buffers():
 &gt;&gt;&gt;     print(type(buf), buf.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -5334,9 +5469,22 @@ are direct members of this module.</p></td>
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over immediate children modules.</p>
-<p>!!! yields
-    Module: a child module</p>
 
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a child module</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;Module&#39;</span><span class="p">]:</span>
@@ -6432,9 +6580,22 @@ in :attr:<code>state_dict</code> match the keys returned by this module's
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over all modules in the network.</p>
-<p>!!! yields
-    Module: a module in the network</p>
-<p>!!! note
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a module in the network</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -6530,9 +6691,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, torch.Tensor): Tuple containing the name and buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, torch.Tensor)</code></td>
+      <td><p>Tuple containing the name and buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, buf in self.named_buffers():
 &gt;&gt;&gt;    if name in [&#39;running_var&#39;]:
 &gt;&gt;&gt;        print(buf.size())
@@ -6590,9 +6764,22 @@ are direct members of this module.</p></td>
 
       <p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
-<p>!!! yields
-    (string, Module): Tuple containing a name and child module</p>
-<p>Example::</p>
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple containing a name and child module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, module in model.named_children():
 &gt;&gt;&gt;     if name in [&#39;conv4&#39;, &#39;conv5&#39;]:
 &gt;&gt;&gt;         print(module)
@@ -6675,9 +6862,22 @@ both the name of the module as well as the module itself.</p>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Module): Tuple of name and module</p>
-<p>!!! note
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple of name and module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -6791,9 +6991,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Parameter): Tuple containing the name and parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Parameter)</code></td>
+      <td><p>Tuple containing the name and parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, param in self.named_parameters():
 &gt;&gt;&gt;    if name in [&#39;bias&#39;]:
 &gt;&gt;&gt;        print(param.size())
@@ -6872,9 +7085,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    Parameter: module parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Parameter</code></td>
+      <td><p>module parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for param in model.parameters():
 &gt;&gt;&gt;     print(type(param), param.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -8393,6 +8619,15 @@ ConvertTHWCtoTCHW            (<span title="torch.nn.modules.module.Module">Modul
 
       <p>Convert tensor from (T, H, W, C) to (T, C, H, W)</p>
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ConvertTHWCtoTCHW</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert tensor from (T, H, W, C) to (T, C, H, W)&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -8800,9 +9035,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    torch.Tensor: module buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>torch.Tensor</code></td>
+      <td><p>module buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for buf in model.buffers():
 &gt;&gt;&gt;     print(type(buf), buf.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -8856,9 +9104,22 @@ are direct members of this module.</p></td>
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over immediate children modules.</p>
-<p>!!! yields
-    Module: a child module</p>
 
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a child module</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;Module&#39;</span><span class="p">]:</span>
@@ -9954,9 +10215,22 @@ in :attr:<code>state_dict</code> match the keys returned by this module's
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over all modules in the network.</p>
-<p>!!! yields
-    Module: a module in the network</p>
-<p>!!! note
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a module in the network</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -10052,9 +10326,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, torch.Tensor): Tuple containing the name and buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, torch.Tensor)</code></td>
+      <td><p>Tuple containing the name and buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, buf in self.named_buffers():
 &gt;&gt;&gt;    if name in [&#39;running_var&#39;]:
 &gt;&gt;&gt;        print(buf.size())
@@ -10112,9 +10399,22 @@ are direct members of this module.</p></td>
 
       <p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
-<p>!!! yields
-    (string, Module): Tuple containing a name and child module</p>
-<p>Example::</p>
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple containing a name and child module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, module in model.named_children():
 &gt;&gt;&gt;     if name in [&#39;conv4&#39;, &#39;conv5&#39;]:
 &gt;&gt;&gt;         print(module)
@@ -10197,9 +10497,22 @@ both the name of the module as well as the module itself.</p>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Module): Tuple of name and module</p>
-<p>!!! note
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple of name and module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -10313,9 +10626,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Parameter): Tuple containing the name and parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Parameter)</code></td>
+      <td><p>Tuple containing the name and parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, param in self.named_parameters():
 &gt;&gt;&gt;    if name in [&#39;bias&#39;]:
 &gt;&gt;&gt;        print(param.size())
@@ -10394,9 +10720,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    Parameter: module parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Parameter</code></td>
+      <td><p>module parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for param in model.parameters():
 &gt;&gt;&gt;     print(type(param), param.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -11915,6 +12254,27 @@ PackSlowFastPathways            (<span title="torch.nn.modules.module.Module">Mo
 
       <p>Creates the slow and fast pathway inputs for the slowfast model.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PackSlowFastPathways</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates the slow and fast pathway inputs for the slowfast model.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="n">fast_pathway</span> <span class="o">=</span> <span class="n">frames</span>
+        <span class="c1"># Perform temporal sampling from the fast pathway.</span>
+        <span class="n">slow_pathway</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">index_select</span><span class="p">(</span>
+            <span class="n">frames</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">frames</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">frames</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">frame_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">slow_pathway</span><span class="p">,</span> <span class="n">fast_pathway</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">frame_list</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -12307,9 +12667,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    torch.Tensor: module buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>torch.Tensor</code></td>
+      <td><p>module buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for buf in model.buffers():
 &gt;&gt;&gt;     print(type(buf), buf.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -12363,9 +12736,22 @@ are direct members of this module.</p></td>
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over immediate children modules.</p>
-<p>!!! yields
-    Module: a child module</p>
 
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a child module</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;Module&#39;</span><span class="p">]:</span>
@@ -13469,9 +13855,22 @@ in :attr:<code>state_dict</code> match the keys returned by this module's
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over all modules in the network.</p>
-<p>!!! yields
-    Module: a module in the network</p>
-<p>!!! note
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a module in the network</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -13567,9 +13966,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, torch.Tensor): Tuple containing the name and buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, torch.Tensor)</code></td>
+      <td><p>Tuple containing the name and buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, buf in self.named_buffers():
 &gt;&gt;&gt;    if name in [&#39;running_var&#39;]:
 &gt;&gt;&gt;        print(buf.size())
@@ -13627,9 +14039,22 @@ are direct members of this module.</p></td>
 
       <p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
-<p>!!! yields
-    (string, Module): Tuple containing a name and child module</p>
-<p>Example::</p>
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple containing a name and child module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, module in model.named_children():
 &gt;&gt;&gt;     if name in [&#39;conv4&#39;, &#39;conv5&#39;]:
 &gt;&gt;&gt;         print(module)
@@ -13712,9 +14137,22 @@ both the name of the module as well as the module itself.</p>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Module): Tuple of name and module</p>
-<p>!!! note
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple of name and module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -13828,9 +14266,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Parameter): Tuple containing the name and parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Parameter)</code></td>
+      <td><p>Tuple containing the name and parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, param in self.named_parameters():
 &gt;&gt;&gt;    if name in [&#39;bias&#39;]:
 &gt;&gt;&gt;        print(param.size())
@@ -13909,9 +14360,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    Parameter: module parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Parameter</code></td>
+      <td><p>module parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for param in model.parameters():
 &gt;&gt;&gt;     print(type(param), param.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -15448,6 +15912,49 @@ input tensor. If int, pad that dimension to at least that size. If None, do not 
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PadDimensions</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pads a tensor to ensure a fixed output dimension for a give axis.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        dimension_sizes: A tuple of int or None the same length as the number of dimensions in the</span>
+<span class="sd">            input tensor. If int, pad that dimension to at least that size. If None, do not pad.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimension_sizes</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension_sizes</span> <span class="o">=</span> <span class="n">dimension_sizes</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">compute_left_and_right_pad</span><span class="p">(</span><span class="n">original_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">padded_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Computes left and right pad size.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            original_size (list, int): The original tensor size</span>
+<span class="sd">            padded_size (list, int): The desired tensor size</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           Tuple[int]: Pad size for right and left. For odd padding size, the right = left + 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">original_size</span> <span class="o">&gt;=</span> <span class="n">padded_size</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">pad</span> <span class="o">=</span> <span class="n">padded_size</span> <span class="o">-</span> <span class="n">original_size</span>
+        <span class="n">quotient</span><span class="p">,</span> <span class="n">remainder</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">quotient</span><span class="p">,</span> <span class="n">quotient</span> <span class="o">+</span> <span class="n">remainder</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">padding</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">padded_size</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_left_and_right_pad</span><span class="p">(</span><span class="n">original_size</span><span class="p">,</span> <span class="n">padded_size</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">original_size</span><span class="p">,</span> <span class="n">padded_size</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vid</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension_sizes</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">vid</span><span class="p">,</span> <span class="n">padding</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -15840,9 +16347,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    torch.Tensor: module buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>torch.Tensor</code></td>
+      <td><p>module buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for buf in model.buffers():
 &gt;&gt;&gt;     print(type(buf), buf.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -15896,9 +16416,22 @@ are direct members of this module.</p></td>
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over immediate children modules.</p>
-<p>!!! yields
-    Module: a child module</p>
 
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a child module</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;Module&#39;</span><span class="p">]:</span>
@@ -17085,9 +17618,22 @@ in :attr:<code>state_dict</code> match the keys returned by this module's
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over all modules in the network.</p>
-<p>!!! yields
-    Module: a module in the network</p>
-<p>!!! note
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a module in the network</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -17183,9 +17729,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, torch.Tensor): Tuple containing the name and buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, torch.Tensor)</code></td>
+      <td><p>Tuple containing the name and buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, buf in self.named_buffers():
 &gt;&gt;&gt;    if name in [&#39;running_var&#39;]:
 &gt;&gt;&gt;        print(buf.size())
@@ -17243,9 +17802,22 @@ are direct members of this module.</p></td>
 
       <p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
-<p>!!! yields
-    (string, Module): Tuple containing a name and child module</p>
-<p>Example::</p>
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple containing a name and child module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, module in model.named_children():
 &gt;&gt;&gt;     if name in [&#39;conv4&#39;, &#39;conv5&#39;]:
 &gt;&gt;&gt;         print(module)
@@ -17328,9 +17900,22 @@ both the name of the module as well as the module itself.</p>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Module): Tuple of name and module</p>
-<p>!!! note
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple of name and module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -17444,9 +18029,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Parameter): Tuple containing the name and parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Parameter)</code></td>
+      <td><p>Tuple containing the name and parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, param in self.named_parameters():
 &gt;&gt;&gt;    if name in [&#39;bias&#39;]:
 &gt;&gt;&gt;        print(param.size())
@@ -17525,9 +18123,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    Parameter: module parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Parameter</code></td>
+      <td><p>module parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for param in model.parameters():
 &gt;&gt;&gt;     print(type(param), param.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -19045,6 +19656,13 @@ Uint8ToFloat            (<span title="torch.nn.modules.module.Module">Module</sp
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Uint8ToFloat</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tensor</span> <span class="o">/</span> <span class="mf">255.0</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -19452,9 +20070,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    torch.Tensor: module buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>torch.Tensor</code></td>
+      <td><p>module buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for buf in model.buffers():
 &gt;&gt;&gt;     print(type(buf), buf.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -19508,9 +20139,22 @@ are direct members of this module.</p></td>
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over immediate children modules.</p>
-<p>!!! yields
-    Module: a child module</p>
 
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a child module</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;Module&#39;</span><span class="p">]:</span>
@@ -20606,9 +21250,22 @@ in :attr:<code>state_dict</code> match the keys returned by this module's
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over all modules in the network.</p>
-<p>!!! yields
-    Module: a module in the network</p>
-<p>!!! note
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a module in the network</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -20704,9 +21361,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, torch.Tensor): Tuple containing the name and buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, torch.Tensor)</code></td>
+      <td><p>Tuple containing the name and buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, buf in self.named_buffers():
 &gt;&gt;&gt;    if name in [&#39;running_var&#39;]:
 &gt;&gt;&gt;        print(buf.size())
@@ -20764,9 +21434,22 @@ are direct members of this module.</p></td>
 
       <p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
-<p>!!! yields
-    (string, Module): Tuple containing a name and child module</p>
-<p>Example::</p>
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple containing a name and child module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, module in model.named_children():
 &gt;&gt;&gt;     if name in [&#39;conv4&#39;, &#39;conv5&#39;]:
 &gt;&gt;&gt;         print(module)
@@ -20849,9 +21532,22 @@ both the name of the module as well as the module itself.</p>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Module): Tuple of name and module</p>
-<p>!!! note
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple of name and module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -20965,9 +21661,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Parameter): Tuple containing the name and parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Parameter)</code></td>
+      <td><p>Tuple containing the name and parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, param in self.named_parameters():
 &gt;&gt;&gt;    if name in [&#39;bias&#39;]:
 &gt;&gt;&gt;        print(param.size())
@@ -21046,9 +21755,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    Parameter: module parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Parameter</code></td>
+      <td><p>module parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for param in model.parameters():
 &gt;&gt;&gt;     print(type(param), param.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -22566,6 +23288,13 @@ VideotoImg            (<span title="torch.nn.modules.module.Module">Module</span
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">VideotoImg</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -22973,9 +23702,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    torch.Tensor: module buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>torch.Tensor</code></td>
+      <td><p>module buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for buf in model.buffers():
 &gt;&gt;&gt;     print(type(buf), buf.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -23029,9 +23771,22 @@ are direct members of this module.</p></td>
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over immediate children modules.</p>
-<p>!!! yields
-    Module: a child module</p>
 
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a child module</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/transforms.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s1">&#39;Module&#39;</span><span class="p">]:</span>
@@ -24127,9 +24882,22 @@ in :attr:<code>state_dict</code> match the keys returned by this module's
     <div class="doc doc-contents ">
 
       <p>Returns an iterator over all modules in the network.</p>
-<p>!!! yields
-    Module: a module in the network</p>
-<p>!!! note
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Module</code></td>
+      <td><p>a module in the network</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -24225,9 +24993,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, torch.Tensor): Tuple containing the name and buffer</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, torch.Tensor)</code></td>
+      <td><p>Tuple containing the name and buffer</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, buf in self.named_buffers():
 &gt;&gt;&gt;    if name in [&#39;running_var&#39;]:
 &gt;&gt;&gt;        print(buf.size())
@@ -24285,9 +25066,22 @@ are direct members of this module.</p></td>
 
       <p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
-<p>!!! yields
-    (string, Module): Tuple containing a name and child module</p>
-<p>Example::</p>
+
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple containing a name and child module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, module in model.named_children():
 &gt;&gt;&gt;     if name in [&#39;conv4&#39;, &#39;conv5&#39;]:
 &gt;&gt;&gt;         print(module)
@@ -24370,9 +25164,22 @@ both the name of the module as well as the module itself.</p>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Module): Tuple of name and module</p>
-<p>!!! note
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Module)</code></td>
+      <td><p>Tuple of name and module</p></td>
+    </tr>
+  </tbody>
+</table>      <p>!!! note
     Duplicate modules are returned only once. In the following
     example, <code>l</code> will be returned only once.</p>
 <p>Example::</p>
@@ -24486,9 +25293,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    (string, Parameter): Tuple containing the name and parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(string, Parameter)</code></td>
+      <td><p>Tuple containing the name and parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for name, param in self.named_parameters():
 &gt;&gt;&gt;    if name in [&#39;bias&#39;]:
 &gt;&gt;&gt;        print(param.size())
@@ -24567,9 +25387,22 @@ are direct members of this module.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
-</table>      <p>!!! yields
-    Parameter: module parameter</p>
-<p>Example::</p>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Parameter</code></td>
+      <td><p>module parameter</p></td>
+    </tr>
+  </tbody>
+</table>      <p>Example::</p>
 <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; for param in model.parameters():
 &gt;&gt;&gt;     print(type(param), param.size())
 &lt;class &#39;torch.Tensor&#39;&gt; (20L,)
@@ -26218,10 +27051,10 @@ See :meth:<code>torch.optim.Optimizer.zero_grad</code> for details.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>

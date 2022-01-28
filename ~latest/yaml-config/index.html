@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/yaml-config/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1352,33 +1352,33 @@
 <h1 id="using-yaml-configuration-files">Using YAML configuration files<a class="headerlink" href="#using-yaml-configuration-files" title="Permanent link">&para;</a></h1>
 <p>In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file instead of passing arguments directly. YAML files (<code>.yml</code> or <code>.yaml</code>) are commonly used to serialize data in an easily readable way.</p>
 <p>The basic structure of a YAML model configuration is:</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">$ cat basic_config.yaml</span>
-<span class="l l-Scalar l-Scalar-Plain">video_loader_config</span><span class="p p-Indicator">:</span>
-  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
-  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
-  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
-  <span class="c1"># other video loading parameters</span>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">$ cat basic_config.yaml</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">video_loader_config</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span><span class="w"></span>
+<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># other video loading parameters</span><span class="w"></span>
 
-<span class="nt">train_config</span><span class="p">:</span>
-  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-  <span class="nt">data_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
-  <span class="nt">labels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_labels.csv</span>
-  <span class="c1"># other training parameters, eg. batch_size</span>
+<span class="nt">train_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span><span class="w"></span>
+<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_vids/</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_labels.csv</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># other training parameters, eg. batch_size</span><span class="w"></span>
 
-<span class="nt">predict_config</span><span class="p">:</span>
-  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-  <span class="nt">data_directoty</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
-  <span class="c1"># other training parameters, eg. batch_size</span>
+<span class="nt">predict_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span><span class="w"></span>
+<span class="w">  </span><span class="nt">data_directoty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_vids/</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># other training parameters, eg. batch_size</span><span class="w"></span>
 </code></pre></div>
 <p>For example, the configuration below will predict labels for the videos in <code>example_vids</code> using the <code>time_distributed</code> model. When videos are loaded, each will be resized to 240x426 pixels and 16 frames will be selected:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
-  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
-  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span><span class="w"></span>
+<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
 
-<span class="nt">predict_config</span><span class="p">:</span>
-  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-  <span class="nt">data_directoty</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
+<span class="nt">predict_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span><span class="w"></span>
+<span class="w">  </span><span class="nt">data_directoty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_vids/</span><span class="w"></span>
 </code></pre></div>
 <h2 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h2>
 <p>Either <code>predict_config</code> or <code>train_config</code> is required, based on whether you will be running inference or training a model. See <a href="../configurations/">All Configuration Options</a> for a full list of what can be specified under each class. To run inference, <code>data_dir</code>and/or <code>filepaths</code> must be specified. To train a model, <code>labels</code> must be specified.</p>
@@ -1409,38 +1409,38 @@
 <h2 id="default-configurations">Default configurations<a class="headerlink" href="#default-configurations" title="Permanent link">&para;</a></h2>
 <p>In the command line, the default configuration for each model is passed in using a specified YAML file that ships with <code>zamba</code>. You can see the default configuration YAML files on <a href="https://github.com/drivendataorg/zamba/tree/master/zamba/models/official_models">Github</a> in the <code>config.yaml</code> file within each model's folder.</p>
 <p>For example, the default configuration for the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code> model</a> is:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">train_config</span><span class="p">:</span>
-  <span class="nt">scheduler_config</span><span class="p">:</span>
-    <span class="nt">scheduler</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">MultiStepLR</span>
-    <span class="nt">scheduler_params</span><span class="p">:</span>
-      <span class="nt">gamma</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.5</span>
-      <span class="nt">milestones</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
-      <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-  <span class="nt">backbone_finetune_config</span><span class="p">:</span>
-    <span class="nt">backbone_initial_ratio_lr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.01</span>
-    <span class="nt">multiplier</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-    <span class="nt">pre_train_bn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-    <span class="nt">train_bn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
-    <span class="nt">unfreeze_backbone_at_epoch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
-    <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-  <span class="nt">early_stopping_config</span><span class="p">:</span>
-    <span class="nt">patience</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
-<span class="nt">video_loader_config</span><span class="p">:</span>
-  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
-  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
-  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
-  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
-  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
-    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
-    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
-    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
-<span class="nt">predict_config</span><span class="p">:</span>
-  <span class="nt">model_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-<span class="nt">public_checkpoint</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt</span>
+<div class="highlight"><pre><span></span><code><span class="nt">train_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">scheduler_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">scheduler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiStepLR</span><span class="w"></span>
+<span class="w">    </span><span class="nt">scheduler_params</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">gamma</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w"></span>
+<span class="w">      </span><span class="nt">milestones</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<span class="w">      </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span><span class="w"></span>
+<span class="w">  </span><span class="nt">backbone_finetune_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">backbone_initial_ratio_lr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span><span class="w"></span>
+<span class="w">    </span><span class="nt">multiplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pre_train_bn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">train_bn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">unfreeze_backbone_at_epoch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<span class="w">    </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">early_stopping_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">patience</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+<span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span><span class="w"></span>
+<span class="w">  </span><span class="nt">crop_bottom_pixels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"></span>
+<span class="w">  </span><span class="nt">fps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
+<span class="w">  </span><span class="nt">ensure_total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">megadetector_lite_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span><span class="w"></span>
+<span class="w">    </span><span class="nt">fill_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score_sorted</span><span class="w"></span>
+<span class="w">    </span><span class="nt">n_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
+<span class="nt">predict_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span><span class="w"></span>
+<span class="nt">public_checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt</span><span class="w"></span>
 </code></pre></div>
 <h2 id="templates">Templates<a class="headerlink" href="#templates" title="Permanent link">&para;</a></h2>
 <p>To make modifying the existing defaults easier, we've set up the official models as templates in the <a href="https://github.com/drivendataorg/zamba/tree/master/templates"><code>templates</code> folder</a>. Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some <a href="../train-tutorial/">training</a>. Happy modeling!</p>
@@ -1509,10 +1509,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>

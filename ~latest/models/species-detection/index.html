@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/models/species-detection/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1466,7 +1466,7 @@
 <p>The <code>time_distributed</code> model was built by re-training a well-known image classification architecture called <a href="https://arxiv.org/abs/1905.11946">EfficientNetV2</a> (Tan, M., &amp; Le, Q., 2019) to identify the species in our camera trap videos. EfficientNetV2 models are convolutional <a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=995s">neural networks</a> designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. The model is wrapped in a <a href="https://docs.fast.ai/layers.html#TimeDistributed"><code>TimeDistributed</code> layer</a> which enables a single prediction per video.</p>
 <p><a id='time-distributed-training-data'></a></p>
 <h3 id="training-data">Training data<a class="headerlink" href="#training-data" title="Permanent link">&para;</a></h3>
-<p><code>time_distributed</code> was trained using data collected and annotated by partners at <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for Evolutionary Anthropology</a> and <a href="https://www.chimpandsee.org/">Chimp&amp;See</a>.</p>
+<p><code>time_distributed</code> was trained using data collected and annotated by trained ecologists from Cameroon, Central African Republic, Democratic Republic of the Congo, Gabon, Guinea, Liberia, Mozambique, Nigeria, Republic of the Congo, Senegal, Tanzania, and Uganda, as well as citizen scientists on the <a href="https://www.chimpandsee.org/">Chimp&amp;See</a> platform.</p>
 <p>The data included camera trap videos from:</p>
 <table>
   <tr>
@@ -1568,17 +1568,17 @@
 <p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml">Github</a>.</p>
 <p>By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>time_distributed</code> is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.</p>
 <p>The default video loading configuration for <code>time_distributed</code> is:
-<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
-  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
-  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
-  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
-  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
-    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
-    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
-    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span><span class="w"></span>
+<span class="w">  </span><span class="nt">crop_bottom_pixels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"></span>
+<span class="w">  </span><span class="nt">fps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
+<span class="w">  </span><span class="nt">ensure_total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">megadetector_lite_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span><span class="w"></span>
+<span class="w">    </span><span class="nt">fill_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score_sorted</span><span class="w"></span>
+<span class="w">    </span><span class="nt">n_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
 </code></pre></div></p>
 <p>You can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The only requirement for the <code>time_distributed</code> model is that the video loader must return 16 frames.</p>
 <p><a id='slowfast'></a></p>
@@ -1598,17 +1598,17 @@
 <p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/slowfast/config.yaml">Github</a>.</p>
 <p>By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>slowfast</code> is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.</p>
 <p>The full default video loading configuration is:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
-  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
-  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
-  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">32</span>
-  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
-    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
-    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
-    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">32</span>
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span><span class="w"></span>
+<span class="w">  </span><span class="nt">crop_bottom_pixels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"></span>
+<span class="w">  </span><span class="nt">fps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w"></span>
+<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32</span><span class="w"></span>
+<span class="w">  </span><span class="nt">ensure_total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">megadetector_lite_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span><span class="w"></span>
+<span class="w">    </span><span class="nt">fill_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score_sorted</span><span class="w"></span>
+<span class="w">    </span><span class="nt">n_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32</span><span class="w"></span>
 </code></pre></div>
 <p>You can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The two requirements for the <code>slowfast</code> model are that:</p>
 <ul>
@@ -1620,22 +1620,22 @@
 <h3 id="architecture_2">Architecture<a class="headerlink" href="#architecture_2" title="Permanent link">&para;</a></h3>
 <p>The <code>european</code> model starts from the trained <code>time_distributed</code> model, and then replaces and trains the final output layer to predict European species.</p>
 <h3 id="training-data_2">Training data<a class="headerlink" href="#training-data_2" title="Permanent link">&para;</a></h3>
-<p>The <code>european</code> model is finetuned with data collected and annotated by partners at <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for Evolutionary Anthropology</a>. The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.</p>
+<p>The <code>european</code> model is finetuned with data collected and annotated by partners at the <a href="https://www.idiv.de/en/index.html">German Centre for Integrative Biodiversity Research (iDiv) Halle-Jena-Leipzig</a> and <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for Evolutionary Anthropology</a>. The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.</p>
 <h3 id="default-configuration_2">Default configuration<a class="headerlink" href="#default-configuration_2" title="Permanent link">&para;</a></h3>
 <p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/european/config.yaml">Github</a>.</p>
 <p>The <code>european</code> model uses the same frame selection as the <code>time_distributed</code> model. By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>european</code> is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.</p>
 <p>The full default video loading configuration is:
-<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-  <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">240</span>
-  <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">426</span>
-  <span class="nt">crop_bottom_pixels</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-  <span class="nt">fps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
-  <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
-  <span class="nt">ensure_total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-  <span class="nt">megadetector_lite_config</span><span class="p">:</span>
-    <span class="nt">confidence</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.25</span>
-    <span class="nt">fill_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
-    <span class="nt">n_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span><span class="w"></span>
+<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span><span class="w"></span>
+<span class="w">  </span><span class="nt">crop_bottom_pixels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"></span>
+<span class="w">  </span><span class="nt">fps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
+<span class="w">  </span><span class="nt">ensure_total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">megadetector_lite_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span><span class="w"></span>
+<span class="w">    </span><span class="nt">fill_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score_sorted</span><span class="w"></span>
+<span class="w">    </span><span class="nt">n_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"></span>
 </code></pre></div></p>
 <p>As with all models, you can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The only requirement for the <code>european</code> model is that the video loader must return 16 frames.</p>
 <p><a id='megadetectorlite'></a></p>
@@ -1718,10 +1718,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>

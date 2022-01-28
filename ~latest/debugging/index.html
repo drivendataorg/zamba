@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/debugging/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1342,12 +1342,12 @@
 <p>Resize video frames to be smaller before they are passed to the model. The default for all three models is 240x426 pixels. <code>model_input_height</code> and <code>model_input_width</code> cannot be passed directly to the command line, so if you are using the CLI these must be specified in a <a href="../yaml-config/">YAML file</a>.</p>
 <p>If you are using MegadetectorLite to select frames (which is the default for the official models we ship with), you can also decrease the size of the frame used at this stage by setting <a href="configurations/#frame_selection_height-int-optional-frame_selection_width-int-optional"><code>frame_selection_height</code> and <code>frame_selection_width</code></a>.</p>
 <div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">YAML file</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-    <span class="nt">frame_selection_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">400</span>  <span class="c1"># if using megadetectorlite</span>
-    <span class="nt">frame_selection_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">600</span>  <span class="c1"># if using megadetectorlite</span>
-    <span class="nt">model_input_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
-    <span class="nt">model_input_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
-    <span class="nt">total_frames</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span> <span class="c1"># total_frames is always required</span>
+<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">frame_selection_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">400</span><span class="w">  </span><span class="c1"># if using megadetectorlite</span><span class="w"></span>
+<span class="w">    </span><span class="nt">frame_selection_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span><span class="w">  </span><span class="c1"># if using megadetectorlite</span><span class="w"></span>
+<span class="w">    </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
+<span class="w">    </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
+<span class="w">    </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span><span class="w"> </span><span class="c1"># total_frames is always required</span><span class="w"></span>
 </code></pre></div>
 </div>
 <input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Python</label><div class="tabbed-content">
@@ -1444,10 +1444,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>

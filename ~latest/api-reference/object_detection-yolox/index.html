@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/object_detection-yolox/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1409,6 +1409,25 @@ time to the frames over the threshold</p></td>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">FillModeEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enum for frame filtering fill modes</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        repeat: Randomly resample qualifying frames to get to n_frames</span>
+<span class="sd">        score_sorted: Take up to n_frames in sort order (even if some have zero probability)</span>
+<span class="sd">        weighted_euclidean: Sample the remaining frames weighted by their euclidean distance in</span>
+<span class="sd">            time to the frames over the threshold</span>
+<span class="sd">        weighted_prob: Sample the remaining frames weighted by their predicted probability</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">repeat</span> <span class="o">=</span> <span class="s2">&quot;repeat&quot;</span>
+    <span class="n">score_sorted</span> <span class="o">=</span> <span class="s2">&quot;score_sorted&quot;</span>
+    <span class="n">weighted_euclidean</span> <span class="o">=</span> <span class="s2">&quot;weighted_euclidean&quot;</span>
+    <span class="n">weighted_prob</span> <span class="o">=</span> <span class="s2">&quot;weighted_prob&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1519,6 +1538,212 @@ MegadetectorLiteYoloX        </code>
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MegadetectorLiteYoloX</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">=</span> <span class="n">LOCAL_MD_LITE_MODEL</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">MegadetectorLiteYoloXConfig</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;MegadetectorLite based on YOLOX.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (pathlike): Path to trained YoloX model checkpoint (.pth extension)</span>
+<span class="sd">            config (MegadetectorLiteYoloXConfig): YoloX configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">MegadetectorLiteYoloXConfig</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">MegadetectorLiteYoloXConfig</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">num_classes</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">][</span><span class="s2">&quot;head.cls_preds.0.weight&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">yolox</span> <span class="o">=</span> <span class="n">YoloXNano</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="n">num_classes</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">yolox</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yolox</span> <span class="o">=</span> <span class="n">yolox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="n">num_classes</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">scale_and_pad_array</span><span class="p">(</span>
+        <span class="n">image_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">output_width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">output_height</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">ImageOps</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+                <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image_array</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">output_width</span><span class="p">,</span> <span class="n">output_height</span><span class="p">),</span>
+                <span class="n">method</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">centering</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Process an image for the model, including scaling/padding the image, transposing from</span>
+<span class="sd">        (height, width, channel) to (channel, height, width) and casting to float.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scale_and_pad_array</span><span class="p">(</span>
+                <span class="n">frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_height</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">detect_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pbar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span> <span class="k">if</span> <span class="n">pbar</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+
+        <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">frames</span><span class="p">):</span>
+            <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detect_image</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">detections</span>
+
+    <span class="k">def</span> <span class="nf">detect_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Runs object detection on an image.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img_arr (np.ndarray): An image array with dimensions (height, width, channels).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: An array of bounding box detections with dimensions (object, 4) where</span>
+<span class="sd">                object is the number of objects detected and the other 4 dimension are</span>
+<span class="sd">                (x1, y1, x2, y1).</span>
+
+<span class="sd">            np.ndarray: An array of object detection confidence scores of length (object) where</span>
+<span class="sd">                object is the number of objects detected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">(</span><span class="n">img_arr</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span>
+            <span class="n">outputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">nms_threshold</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">detections</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">,</span> <span class="s2">&quot;score1&quot;</span><span class="p">,</span> <span class="s2">&quot;score2&quot;</span><span class="p">,</span> <span class="s2">&quot;class_num&quot;</span><span class="p">],</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">score</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">score1</span> <span class="o">*</span> <span class="n">row</span><span class="o">.</span><span class="n">score2</span><span class="p">)</span>
+
+            <span class="c1"># Transform bounding box to be in terms of the original image dimensions</span>
+            <span class="n">original_height</span><span class="p">,</span> <span class="n">original_width</span> <span class="o">=</span> <span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_width</span> <span class="o">/</span> <span class="n">original_width</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_height</span> <span class="o">/</span> <span class="n">original_height</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">ratio</span>
+
+            <span class="c1"># Express bounding boxes in terms of proportions of original image dimensions</span>
+            <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">original_width</span>
+            <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">original_height</span>
+
+            <span class="k">return</span> <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">detections</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="k">def</span> <span class="nf">filter_frames</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">detections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Filter video frames using megadetector lite.</span>
+
+<span class="sd">        Which frames are returned depends on the fill_mode and how many frames are above the</span>
+<span class="sd">        confidence threshold. If more than n_frames are above the threshold, the top n_frames are</span>
+<span class="sd">        returned. Otherwise add to those over threshold based on fill_mode. If none of these</span>
+<span class="sd">        conditions are met, returns all frames above the threshold.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frames (np.ndarray): Array of video frames to filter with dimensions (frames, height,</span>
+<span class="sd">                width, channels)</span>
+<span class="sd">            detections (list of tuples): List of detection results for each frame. Each element is</span>
+<span class="sd">                a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection</span>
+<span class="sd">                 probabilities, both as float</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: An array of video frames of length n_frames or shorter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">frame_scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">detections</span><span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+            <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>  <span class="c1"># reduce to one score per frame</span>
+
+        <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">frame_scores</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">frame_scores</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">confidence</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># no minimum n_frames provided, just select all the frames with scores &gt; threshold</span>
+            <span class="k">pass</span>
+
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span><span class="p">:</span>
+            <span class="c1"># num. frames with scores &gt; threshold is greater than the requested number of frames</span>
+            <span class="n">selected_indices</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">frame_scores</span><span class="p">[</span><span class="n">selected_indices</span><span class="p">]</span>
+                <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">iloc</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span><span class="p">]</span>
+                <span class="o">.</span><span class="n">index</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span><span class="p">:</span>
+            <span class="c1"># num. frames with scores &gt; threshold is less than the requested number of frames</span>
+            <span class="c1"># repeat frames that are above threshold to get to n_frames</span>
+            <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;repeat&quot;</span><span class="p">:</span>
+                <span class="n">repeated_indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                    <span class="n">selected_indices</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">),</span>
+                    <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">selected_indices</span><span class="p">,</span> <span class="n">repeated_indices</span><span class="p">))</span>
+
+            <span class="c1"># take frames in sorted order up to n_frames, even if score is zero</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;score_sorted&quot;</span><span class="p">:</span>
+                <span class="n">selected_indices</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">frame_scores</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+                <span class="p">)</span>
+
+            <span class="c1"># sample up to n_frames, prefer points closer to frames with detection</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;weighted_euclidean&quot;</span><span class="p">:</span>
+                <span class="n">sample_from</span> <span class="o">=</span> <span class="n">frame_scores</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">frame_scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span>
+                <span class="c1"># take one over euclidean distance to all points with detection</span>
+                <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">selected_indices</span> <span class="o">-</span> <span class="n">sample</span><span class="p">)</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">sample_from</span><span class="p">]</span>
+                <span class="c1"># normalize weights</span>
+                <span class="n">weights</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+                <span class="n">sampled</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                    <span class="n">sample_from</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">),</span>
+                    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">selected_indices</span><span class="p">,</span> <span class="n">sampled</span><span class="p">))</span>
+
+            <span class="c1"># sample up to n_frames, weight by predicted probability - only if some frames have nonzero prob</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;weighted_prob&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">sample_from</span> <span class="o">=</span> <span class="n">frame_scores</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">frame_scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span>
+                <span class="n">weights</span> <span class="o">=</span> <span class="n">frame_scores</span><span class="p">[</span><span class="n">sample_from</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">frame_scores</span><span class="p">[</span><span class="n">sample_from</span><span class="p">])</span>
+                <span class="n">sampled</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                    <span class="n">sample_from</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">),</span>
+                    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">selected_indices</span><span class="p">,</span> <span class="n">sampled</span><span class="p">))</span>
+
+        <span class="c1"># sort the selected images back into their original order</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">sort_by_time</span><span class="p">:</span>
+            <span class="n">selected_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">frames</span><span class="p">[</span><span class="n">selected_indices</span><span class="p">]</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2045,6 +2270,43 @@ True.</p></td>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MegadetectorLiteYoloXConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configuration for a MegadetectorLiteYoloX frame selection model</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        confidence (float): Only consider object detections with this confidence or greater</span>
+<span class="sd">        nms_threshold (float): Non-maximum suppression is a method for filtering many bounding</span>
+<span class="sd">            boxes around the same object to a single bounding box. This is a constant that</span>
+<span class="sd">            determines how much to suppress similar bounding boxes.</span>
+<span class="sd">        image_width (int): Scale image to this width before sending to object detection model.</span>
+<span class="sd">        image_height (int): Scale image to this height before sending to object detection model.</span>
+<span class="sd">        device (str): Where to run the object detection model, &quot;cpu&quot; or &quot;cuda&quot;.</span>
+<span class="sd">        n_frames (int, optional): Max number of frames to return. If None returns all frames above</span>
+<span class="sd">            the threshold. Defaults to None.</span>
+<span class="sd">        fill_mode (str, optional): Mode for upsampling if the number of frames above the threshold</span>
+<span class="sd">            is less than n_frames. Defaults to &quot;repeat&quot;.</span>
+<span class="sd">        sort_by_time (bool, optional): Whether to sort the selected frames by time (original order)</span>
+<span class="sd">            before returning. If False, returns frames sorted by score (descending). Defaults to</span>
+<span class="sd">            True.</span>
+<span class="sd">        seed (int, optional): Random state for random number generator. Defaults to 55.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">nms_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span>
+    <span class="n">image_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">416</span>
+    <span class="n">image_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">416</span>
+    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+    <span class="n">n_frames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fill_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FillModeEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">FillModeEnum</span><span class="o">.</span><span class="n">score_sorted</span>
+    <span class="n">sort_by_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">55</span>
+
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2260,6 +2522,12 @@ Config        </code>
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -2333,6 +2601,107 @@ YoloXBase            (<span title="yolox.exp.yolox_base.Exp">Exp</span>)
 
       <p>Modified from https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/exp/yolox_base.py</p>
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/object_detection/yolox/yolox_base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">YoloXBase</span><span class="p">(</span><span class="n">Exp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Modified from https://github.com/Megvii-BaseDetection/YOLOX/blob/main/yolox/exp/yolox_base.py&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_data_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">is_distributed</span><span class="p">,</span> <span class="n">no_aug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cache_img</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">yolox.data</span> <span class="kn">import</span> <span class="p">(</span>
+            <span class="n">COCODataset</span><span class="p">,</span>
+            <span class="n">TrainTransform</span><span class="p">,</span>
+            <span class="n">YoloBatchSampler</span><span class="p">,</span>
+            <span class="n">DataLoader</span><span class="p">,</span>
+            <span class="n">InfiniteSampler</span><span class="p">,</span>
+            <span class="n">MosaicDetection</span><span class="p">,</span>
+            <span class="n">worker_init_reset_seed</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">yolox.utils</span> <span class="kn">import</span> <span class="p">(</span>
+            <span class="n">wait_for_the_master</span><span class="p">,</span>
+            <span class="n">get_local_rank</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">local_rank</span> <span class="o">=</span> <span class="n">get_local_rank</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="n">wait_for_the_master</span><span class="p">(</span><span class="n">local_rank</span><span class="p">):</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">COCODataset</span><span class="p">(</span>
+                <span class="n">data_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+                <span class="n">json_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_ann</span><span class="p">,</span>
+                <span class="n">img_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_size</span><span class="p">,</span>
+                <span class="n">preproc</span><span class="o">=</span><span class="n">TrainTransform</span><span class="p">(</span><span class="n">max_labels</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span>
+                <span class="n">cache</span><span class="o">=</span><span class="n">cache_img</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">MosaicDetection</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="p">,</span>
+            <span class="n">mosaic</span><span class="o">=</span><span class="ow">not</span> <span class="n">no_aug</span><span class="p">,</span>
+            <span class="n">img_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_size</span><span class="p">,</span>
+            <span class="n">preproc</span><span class="o">=</span><span class="n">TrainTransform</span><span class="p">(</span><span class="n">max_labels</span><span class="o">=</span><span class="mi">120</span><span class="p">),</span>
+            <span class="n">degrees</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">degrees</span><span class="p">,</span>
+            <span class="n">translate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">translate</span><span class="p">,</span>
+            <span class="n">mosaic_scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mosaic_scale</span><span class="p">,</span>
+            <span class="n">mixup_scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mixup_scale</span><span class="p">,</span>
+            <span class="n">shear</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shear</span><span class="p">,</span>
+            <span class="n">perspective</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">perspective</span><span class="p">,</span>
+            <span class="n">enable_mixup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">enable_mixup</span><span class="p">,</span>
+            <span class="n">mosaic_prob</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mosaic_prob</span><span class="p">,</span>
+            <span class="n">mixup_prob</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mixup_prob</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+
+        <span class="k">if</span> <span class="n">is_distributed</span><span class="p">:</span>
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span> <span class="o">//</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+
+        <span class="n">sampler</span> <span class="o">=</span> <span class="n">InfiniteSampler</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">batch_sampler</span> <span class="o">=</span> <span class="n">YoloBatchSampler</span><span class="p">(</span>
+            <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">drop_last</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">mosaic</span><span class="o">=</span><span class="ow">not</span> <span class="n">no_aug</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">dataloader_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;num_workers&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_num_workers</span><span class="p">,</span> <span class="s2">&quot;pin_memory&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">&quot;batch_sampler&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_sampler</span>
+
+        <span class="c1"># Make sure each process has different random seed, especially for &#39;fork&#39; method.</span>
+        <span class="c1"># Check https://github.com/pytorch/pytorch/issues/63311 for more details.</span>
+        <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">&quot;worker_init_fn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">worker_init_reset_seed</span>
+
+        <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">train_loader</span>
+
+    <span class="k">def</span> <span class="nf">get_eval_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">is_distributed</span><span class="p">,</span> <span class="n">testdev</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legacy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">yolox.data</span> <span class="kn">import</span> <span class="n">COCODataset</span><span class="p">,</span> <span class="n">ValTransform</span>
+
+        <span class="n">valdataset</span> <span class="o">=</span> <span class="n">COCODataset</span><span class="p">(</span>
+            <span class="n">data_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+            <span class="n">json_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">val_ann</span><span class="p">,</span>
+            <span class="n">img_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_size</span><span class="p">,</span>
+            <span class="n">preproc</span><span class="o">=</span><span class="n">ValTransform</span><span class="p">(</span><span class="n">legacy</span><span class="o">=</span><span class="n">legacy</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">is_distributed</span><span class="p">:</span>
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span> <span class="o">//</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistributedSampler</span><span class="p">(</span><span class="n">valdataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">SequentialSampler</span><span class="p">(</span><span class="n">valdataset</span><span class="p">)</span>
+
+        <span class="n">dataloader_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;num_workers&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_num_workers</span><span class="p">,</span>
+            <span class="s2">&quot;pin_memory&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;sampler&quot;</span><span class="p">:</span> <span class="n">sampler</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">dataloader_kwargs</span><span class="p">[</span><span class="s2">&quot;batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="n">val_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">valdataset</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">val_loader</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2955,6 +3324,45 @@ YoloXNano            (<a title="zamba.object_detection.yolox.yolox_base.YoloXBas
 
       <p>Copied from https://github.com/Megvii-BaseDetection/YOLOX/blob/main/exps/default/nano.py</p>
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/object_detection/yolox/yolox_nano.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">YoloXNano</span><span class="p">(</span><span class="n">YoloXBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copied from https://github.com/Megvii-BaseDetection/YOLOX/blob/main/exps/default/nano.py&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="mf">0.33</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">0.25</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">416</span><span class="p">,</span> <span class="mi">416</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mosaic_scale</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">416</span><span class="p">,</span> <span class="mi">416</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mosaic_prob</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enable_mixup</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="n">num_classes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exp_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span>
+
+    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sublinear</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">init_yolo</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">M</span><span class="o">.</span><span class="n">modules</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">):</span>
+                    <span class="n">m</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-3</span>
+                    <span class="n">m</span><span class="o">.</span><span class="n">momentum</span> <span class="o">=</span> <span class="mf">0.03</span>
+
+        <span class="k">if</span> <span class="s2">&quot;model&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">yolox.models</span> <span class="kn">import</span> <span class="n">YOLOX</span><span class="p">,</span> <span class="n">YOLOPAFPN</span><span class="p">,</span> <span class="n">YOLOXHead</span>
+
+            <span class="n">in_channels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">1024</span><span class="p">]</span>
+            <span class="c1"># NANO model use depthwise = True, which is main difference.</span>
+            <span class="n">backbone</span> <span class="o">=</span> <span class="n">YOLOPAFPN</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">depthwise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">YOLOXHead</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">depthwise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">YOLOX</span><span class="p">(</span><span class="n">backbone</span><span class="p">,</span> <span class="n">head</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">init_yolo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">initialize_biases</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3567,10 +3975,10 @@ YoloXNano            (<a title="zamba.object_detection.yolox.yolox_base.YoloXBas
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>
