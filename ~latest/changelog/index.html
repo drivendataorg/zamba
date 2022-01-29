@@ -603,13 +603,17 @@
       
         
           
+            
+          
         
       
       
-        <label class="md-nav__link" for="__nav_7">
-          Changelog
-          <span class="md-nav__icon md-icon"></span>
-        </label>
+        
+        
+        <div class="md-nav__link md-nav__link--index md-nav__link--active">
+          <a href="./">Changelog</a>
+          
+        </div>
       
       <nav class="md-nav" aria-label="Changelog" data-md-level="1">
         <label class="md-nav__title" for="__nav_7">
@@ -618,73 +622,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-              
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          `zamba` changelog
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        `zamba` changelog
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#v202-2021-12-21" class="md-nav__link">
-    v2.0.2 (2021-12-21)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#v201-2021-12-15" class="md-nav__link">
-    v2.0.1 (2021-12-15)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#v200-2021-10-22" class="md-nav__link">
-    v2.0.0 (2021-10-22)
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
             
           
         </ul>
@@ -1316,7 +1253,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/drivendataorg/zamba/edit/master/docs/changelog.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/drivendataorg/zamba/edit/master/docs/changelog/index.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
@@ -1337,12 +1274,10 @@
 <h2 id="v200-2021-10-22">v2.0.0 (2021-10-22)<a class="headerlink" href="#v200-2021-10-22" title="Permanent link">&para;</a></h2>
 <h3 id="previous-model-machine-learning-competition">Previous model: Machine learning competition<a class="headerlink" href="#previous-model-machine-learning-competition" title="Permanent link">&para;</a></h3>
 <p>The algorithms used by <code>zamba</code> v1 were based on the winning solution from the
-<a href="https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/">Pri-matrix Factorization</a> machine learning
-competition, hosted by <a href="https://www.drivendata.org/">DrivenData</a>. Data for the competition was provided by the <a href="https://www.chimpandsee.org/#/">Chimp&amp;See project</a> and manually labeled by volunteers. The competition had over 300 participants and over 450 submissions throughout the three month challenge. The v1 algorithm was adapted from the winning competition submission, with some aspects changed during development to improve performance.</p>
-<p>The core algorithm in <code>zamba</code> v1 was a <a href="https://en.wikipedia.org/wiki/Ensemble_learning#Stacking">stacked ensemble</a> which consisted of a first layer of models that were then combined into a final prediction in a second layer. The first level of the stack consisted of 5 <code>keras</code> deep
-learning models, whose individual predictions were combined in the second level
+<a href="https://www.drivendata.org/competitions/49/deep-learning-camera-trap-animals/">Pri-matrix Factorization</a> machine learning competition, hosted by <a href="https://www.drivendata.org/">DrivenData</a>. Data for the competition was provided by the <a href="https://www.chimpandsee.org/#/">Chimp&amp;See project</a> and manually labeled by volunteers. The competition had over 300 participants and over 450 submissions throughout the three month challenge. The v1 algorithm was adapted from the winning competition submission, with some aspects changed during development to improve performance.</p>
+<p>The core algorithm in <code>zamba</code> v1 was a <a href="https://en.wikipedia.org/wiki/Ensemble_learning#Stacking">stacked ensemble</a> which consisted of a first layer of models that were then combined into a final prediction in a second layer. The first level of the stack consisted of 5 <code>keras</code> deep learning models, whose individual predictions were combined in the second level
 of the stack to form the final prediction.</p>
-<p>In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful <a href="../models/species-detection/">single-model options</a>: <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.</p>
+<p>In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful <a href="models/species-detection.md">single-model options</a>: <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.</p>
 <h3 id="new-geographies-and-species">New geographies and species<a class="headerlink" href="#new-geographies-and-species" title="Permanent link">&para;</a></h3>
 <p><code>zamba</code> v2 incorporates data from Western Europe (Germany). The new data is packaged in the pretrained <code>european</code> model, which can predict 11 common European species not present in <code>zamba</code> v1.</p>
 <p><code>zamba</code> v2 also incorporates new training data from 15 countries in central and west Africa, and adds 12 additional species to the pretrained African models.</p>
