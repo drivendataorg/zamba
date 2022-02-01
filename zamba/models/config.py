@@ -514,7 +514,7 @@ class TrainConfig(ZambaBaseModel):
 
                 if len(too_few) > 0:
                     raise ValueError(
-                        f"Not all species have enough videos to allocate into the following splits: {', '.join(expected_splits)}. A minimumm of {len(expected_splits)} videos per label is required. Found the following counts: {too_few}. Either remove these labels or add more videos."
+                        f"Not all species have enough videos to allocate into the following splits: {', '.join(expected_splits)}. A minimum of {len(expected_splits)} videos per label is required. Found the following counts: {too_few}. Either remove these labels or add more videos."
                     )
 
                 for c in labels.filter(regex="species_").columns:

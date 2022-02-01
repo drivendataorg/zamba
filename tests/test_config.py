@@ -226,7 +226,7 @@ def test_labels_no_splits(labels_no_splits, tmp_path):
             save_dir=tmp_path,
         )
     assert (
-        "Not all species have enough videos to allocate into the following splits: train, val, holdout. A minimumm of 3 videos per label is required. Found the following counts: {'antelope_duiker': 2}. Either remove these labels or add more videos."
+        "Not all species have enough videos to allocate into the following splits: train, val, holdout. A minimum of 3 videos per label is required. Found the following counts: {'antelope_duiker': 2}. Either remove these labels or add more videos."
     ) == error.value.errors()[0]["msg"]
 
 
