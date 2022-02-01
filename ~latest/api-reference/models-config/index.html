@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/models-config/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.6e60f8b8.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -4406,7 +4406,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">too_few</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Not all species have enough videos to allocate into the following splits: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2">. A minimumm of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos per label is required. Found the following counts: </span><span class="si">{</span><span class="n">too_few</span><span class="si">}</span><span class="s2">. Either remove these labels or add more videos.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Not all species have enough videos to allocate into the following splits: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2">. A minimum of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos per label is required. Found the following counts: </span><span class="si">{</span><span class="n">too_few</span><span class="si">}</span><span class="s2">. Either remove these labels or add more videos.&quot;</span>
                     <span class="p">)</span>
 
                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -4984,7 +4984,7 @@ Config        </code>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">too_few</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Not all species have enough videos to allocate into the following splits: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2">. A minimumm of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos per label is required. Found the following counts: </span><span class="si">{</span><span class="n">too_few</span><span class="si">}</span><span class="s2">. Either remove these labels or add more videos.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Not all species have enough videos to allocate into the following splits: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2">. A minimum of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos per label is required. Found the following counts: </span><span class="si">{</span><span class="n">too_few</span><span class="si">}</span><span class="s2">. Either remove these labels or add more videos.&quot;</span>
                 <span class="p">)</span>
 
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
