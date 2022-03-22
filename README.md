@@ -110,4 +110,4 @@ You can then share your model with others by adding it to the [Model Zoo Wiki](h
 
 We would love your contributions of code fixes, new models, additional training data, docs revisions, and anything else you can bring to the project!
 
-See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/stable/contribute/index.md) for details.
+See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/stable/contribute/) for details.
