@@ -20,6 +20,11 @@ $ cd zamba
 $ pip install -r requirements-dev.txt
 ```
 
+If your contribution is to the [DensePose](../models/densepose.md) model, you will need to install the additional dependencies with:
+```console
+$ pip install -e .[densepose]
+```
+
 ## Running the `zamba` test suite
 
 The included [`Makefile`](https://github.com/drivendataorg/zamba/blob/master/Makefile) contains code that uses pytest to run all tests in `zamba/tests`.
@@ -28,6 +33,11 @@ The command is (from the project root):
 
 ```console
 $ make tests
+```
+
+For [DensePose](../models/densepose.md) related tests, the command is:
+```console
+$ make densepose-tests
 ```
 
 ## Submit additional training videos
