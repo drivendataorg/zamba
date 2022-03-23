@@ -334,7 +334,7 @@ test_cases = [
 
 
 def get_video_metadata():
-    test_video_paths = [path for path in TEST_VIDEOS_DIR.rglob("*") if path.is_file()]
+    test_video_paths = sorted([path for path in TEST_VIDEOS_DIR.rglob("*") if path.is_file()])
     video_metadata = []
     for video_path in test_video_paths:
         frames, height, width, channels = load_video_frames(video_path).shape
