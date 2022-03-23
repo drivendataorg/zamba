@@ -22,9 +22,9 @@ def chimp_image_path():
 
 
 @pytest.mark.skipif(
-    not bool(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", False)),
+    not bool(int(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", 0))),
     reason="""Skip the densepose specific tests unless environment variable \
-ZAMBA_RUN_DENSEPOSE_TESTS is set to True.""",
+ZAMBA_RUN_DENSEPOSE_TESTS is set to 1.""",
 )
 @pytest.mark.parametrize("model", ("animals", "chimps"))
 def test_image(model, chimp_image_path, tmp_path):
@@ -66,9 +66,9 @@ def test_image(model, chimp_image_path, tmp_path):
 
 
 @pytest.mark.skipif(
-    not bool(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", False)),
+    not bool(int(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", 0))),
     reason="""Skip the densepose specific tests unless environment variable \
-ZAMBA_RUN_DENSEPOSE_TESTS is set to True.""",
+ZAMBA_RUN_DENSEPOSE_TESTS is set to 1.""",
 )
 @pytest.mark.parametrize("model", ("animals", "chimps"))
 def test_video(model, chimp_video_path, tmp_path):
@@ -112,9 +112,9 @@ def test_video(model, chimp_video_path, tmp_path):
 
 
 @pytest.mark.skipif(
-    not bool(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", False)),
+    not bool(int(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", 0))),
     reason="""Skip the densepose specific tests unless environment variable \
-ZAMBA_RUN_DENSEPOSE_TESTS is set to True.""",
+ZAMBA_RUN_DENSEPOSE_TESTS is set to 1.""",
 )
 @pytest.mark.parametrize("model", ("animals", "chimps"))
 def test_denseposeconfig(model, tmp_path):
