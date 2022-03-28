@@ -66,7 +66,7 @@ tests:
 
 ## Run the tests that are just for densepose
 densepose-tests:
-	pytest tests/test_densepose.py tests/test_cli.py::test_densepose_cli_options -vv
+	ZAMBA_RUN_DENSEPOSE_TESTS=1 pytest tests/test_densepose.py tests/test_cli.py::test_densepose_cli_options -vv
 
 ## Set up python interpreter environment
 create_environment:
