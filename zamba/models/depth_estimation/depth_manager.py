@@ -42,8 +42,8 @@ def download_from_s3(
 
 
 class DepthDataset(torch.utils.data.Dataset):
-    def __init__(self, df, img_dir, window_size):
-        self.df = df  # one column for filepath of the image
+    def __init__(self, filepaths, img_dir, window_size):
+        self.filepaths = filepaths
         self.img_dir = img_dir
         self.window_size = window_size
         self.order = [f"image_{i}" for i in range(1, window_size + 1)]
@@ -51,11 +51,11 @@ class DepthDataset(torch.utils.data.Dataset):
         self.order.extend([f"image{i}" for i in range(1, window_size + 1)])
 
     def __len__(self):
-        return len(self.df)
+        return len(self.filepaths)
 
     def __getitem__(self, index):
         # returns a tuple of the image, the image filename stem, and the time into the video
-        target_image_path = self.df.iloc[index][0]
+        target_image_path = self.filepaths[index]
 
         img = imread(target_image_path)
         inputs = {"image": img}
@@ -97,7 +97,7 @@ class DepthDataset(torch.utils.data.Dataset):
 class DepthEstimationManager:
     def __init__(
         self,
-        tta: int,
+        tta: Optional[int] = 2,
         img_dir: Optional[Path] = Path("data/benjamin_distance_detections/"),
         model_s3_path: Optional[Path] = S3Path(
             "s3://drivendata-client-zamba/depth_estimation_winner_weights/second_place/tf_efficientnetv2_l_in21k_2_5_pl4/model_best.pt"
@@ -105,10 +105,9 @@ class DepthEstimationManager:
         model_cache_dir: Path = Path(".zamba_cache"),
         batch_size: Optional[int] = 256,  # likely will want to change this
         window_size: Optional[int] = 2,
-        use_log: Optional[bool] = True
-        # all args that we will get from config, written out individually
+        use_log: Optional[bool] = False,
     ):
-        # maybe validate that 1<= tta <= 2
+        # TODO validate that 1<= tta <= 2
 
         # import model weights
         model_weights_path = model_cache_dir / str(model_s3_path).replace("s3://", "")
@@ -130,7 +129,7 @@ class DepthEstimationManager:
         self.tta = tta
         self.use_log = use_log
 
-    def predict(self, df):
+    def predict(self, filepaths):
         # predict from dataframe with one row per target image and one column with filepath
         torch.backends.cudnn.benchmark = True
 
@@ -138,7 +137,7 @@ class DepthEstimationManager:
         model = torch.jit.load(self.model_weights, map_location=self.device).eval()
 
         # load dataset
-        test_dataset = DepthDataset(df, img_dir=self.img_dir, window_size=self.window_size)
+        test_dataset = DepthDataset(filepaths, img_dir=self.img_dir, window_size=self.window_size)
         test_loader = torch.utils.data.DataLoader(
             test_dataset,
             batch_size=self.batch_size,
