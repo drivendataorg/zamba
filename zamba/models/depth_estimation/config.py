@@ -69,8 +69,9 @@ class DepthEstimationConfig(ZambaBaseModel):
         logger.info("Generating depth predictions")
         predictions = dm.predict(self.filepaths)
 
-        predictions.to_csv(save_path, index=False)
-        logger.info(f"Depth predictions saved to {save_path}")
+        if not save_path.exists():
+            predictions.to_csv(save_path, index=False)
+            logger.info(f"Depth predictions saved to {save_path}")
 
     @root_validator(pre=False, skip_on_failure=True)
     def get_filepaths(cls, values):
@@ -83,7 +84,18 @@ class DepthEstimationConfig(ZambaBaseModel):
 
         return values
 
-    # @root_validator(skip_on_failure=True)
-    # def validate_files(cls, values):
-    #     # check for duplicates
-    #     if len(self.filepaths)
+    @root_validator(skip_on_failure=True)
+    def validate_files(cls, values):
+        # check for duplicates
+        if len(values["filepaths"]) != len(set(values["filepaths"])):
+            logger.warning(
+                f"Found {len(values['filepaths']) - len(set(values['filepaths']))} duplicate filepath(s). Dropping duplicates."
+            )
+            values["filepaths"] = list(set(values["filepaths"]))
+
+        files_df = pd.DataFrame({"filepath": values["filepaths"]})
+        values["filepaths"] = check_files_exist_and_load(
+            df=files_df, data_dir=values["img_dir"], skip_load_validation=True
+        )
+
+        return values
