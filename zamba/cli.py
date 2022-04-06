@@ -511,7 +511,9 @@ def densepose(
 @app.command()
 def depth(
     filepaths: Path = typer.Option(
-        None, exists=True, help="Path to csv containing `filepath` column with videos."
+        None,
+        exists=True,
+        help="Path to csv containing `filepath` column with videos. Paths should be relative to the image directory",
     ),
     img_dir: Path = typer.Option(None, exists=True, help="Path to folder containing all images."),
     save_to: Path = typer.Option(

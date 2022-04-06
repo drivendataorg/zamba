@@ -140,7 +140,7 @@ class DepthEstimationManager:
         self.use_log = use_log
 
     def predict(self, filepaths):
-        """Generate predictions for a list of filepaths, each representing one target frame"""
+        """Generate predictions for a list of filepaths, each representing one target frame. Filepaths should be given relative to the img_dir"""
         torch.backends.cudnn.benchmark = True
 
         # load model
