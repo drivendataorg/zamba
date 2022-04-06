@@ -13,34 +13,28 @@ from zamba.models.config import (
 )
 from zamba.models.depth_estimation.depth_manager import DepthEstimationManager
 
-# Union[
-#     Path, List[Union[Path, str]]
-# ]  # either a path to a df with one column for filepath or a list of filepaths
-
 
 class DepthEstimationConfig(ZambaBaseModel):
-    """_summary_
+    """Configuration for running depth estimation on images.
 
     Args:
-        ZambaBaseModel (_type_): _description_
-        save_to: # Directory for where to save the output files; defaults to os.getcwd(). If a path will save to that path, if a directory will save to depth_predictions.csv in that directory. Defaults to os.getcwd() directory.
-
-        cache_dir: # Path for downloading and saving model weights. Defaults to env var `MODEL_CACHE_DIR` or the OS app cache dir. <-- TODO update
-
-        batch_size # 256 in winning code, may want to change this
-
-    Raises:
-        ValueError: _description_
-
-    Returns:
-        _type_: _description_
+        filepaths (Path or List[Path]): Either a path to a CSV file with a list of filepaths to
+            process, or a list of filepaths to process
+        img_dir (Path): Where to find the files listed in filepaths, as well as the other images
+            before and after each frame to create stacked image arrays
+        save_to (Path, optional): Either a path or a directory to save the predicted depths. If a
+            directory is provided, predictions will be saved to depth_predictions.csv in that
+            directory. Defaults to os.getcwd()
+        cache_dir (Path, optional): Path for downloading and saving model weights. Defaults to
+            .zamba_cache
+        batch_size (int, optional): Batch size for running the depth model. Defaults to 64
     """
 
     filepaths: Union[Path, List[Union[Path, str]]]
-    img_dir: Optional[Path]
+    img_dir: Path
     save_to: Optional[Path] = None
-    cache_dir: Optional[Path] = Path(".zamba_cache")
-    batch_size: Optional[int] = 64
+    cache_dir: Path = Path(".zamba_cache")
+    batch_size: int = 64
 
     _validate_cache_dir = validator("cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir
@@ -54,19 +48,15 @@ class DepthEstimationConfig(ZambaBaseModel):
             save_path = self.save_to
         else:
             save_path = self.save_to / "depth_predictions.csv"
+
         if save_path.exists():
             logger.warning(f"Predictions will NOT be saved out because {save_path} already exists")
-        else:
-            logger.info(f"Predictions will be saved to {save_path}")
 
-        logger.info("Instantiating depth manager")
         dm = DepthEstimationManager(
             img_dir=self.img_dir,
             model_cache_dir=self.cache_dir,
             batch_size=self.batch_size,
         )
-
-        logger.info("Generating depth predictions")
         predictions = dm.predict(self.filepaths)
 
         if not save_path.exists():
@@ -96,6 +86,6 @@ class DepthEstimationConfig(ZambaBaseModel):
         files_df = pd.DataFrame({"filepath": values["filepaths"]})
         values["filepaths"] = check_files_exist_and_load(
             df=files_df, data_dir=values["img_dir"], skip_load_validation=True
-        )
+        ).filepath.values.tolist()
 
         return values

@@ -1,9 +1,7 @@
-import json
 import os
 
 from cloudpathlib import S3Path, S3Client
 import cv2
-import dotenv
 from loguru import logger
 import numpy as np
 import pandas as pd
@@ -13,9 +11,6 @@ import torch.utils
 import torch.utils.data
 import tqdm
 from typing import Optional, Union
-
-# dotenv_path = Path(__file__).parents[3].resolve() / ".env"
-# dotenv.load_dotenv(dotenv_path)
 
 
 def imread(path):
@@ -54,7 +49,9 @@ class DepthDataset(torch.utils.data.Dataset):
         return len(self.filepaths)
 
     def __getitem__(self, index):
-        # returns a tuple of the image, the image filename stem, and the time into the video
+        """Given the index of the target image, returns a tuple of the stacked image array, the image
+        filename stem, and the time into the video for the target image.
+        """
         target_image_path = self.filepaths[index]
 
         img = imread(target_image_path)
@@ -82,7 +79,6 @@ class DepthDataset(torch.utils.data.Dataset):
                 new_path = target_image_path.with_name(new_name)
                 if new_path.is_file():
                     inputs[f"image{i}"] = imread(new_path)
-
                 # pad images if past end
                 else:
                     inputs[f"image{i}"] = np.zeros_like(img)
@@ -97,18 +93,32 @@ class DepthDataset(torch.utils.data.Dataset):
 class DepthEstimationManager:
     def __init__(
         self,
-        tta: Optional[int] = 2,
-        img_dir: Optional[Path] = Path("data/benjamin_distance_detections/"),
-        model_s3_path: Optional[Path] = S3Path(
+        img_dir: Path,
+        model_s3_path: Path = S3Path(
             "s3://drivendata-client-zamba/depth_estimation_winner_weights/second_place/tf_efficientnetv2_l_in21k_2_5_pl4/model_best.pt"
         ),
         model_cache_dir: Path = Path(".zamba_cache"),
-        batch_size: Optional[int] = 256,  # likely will want to change this
-        window_size: Optional[int] = 2,
-        use_log: Optional[bool] = False,
+        batch_size: int = 64,
+        window_size: int = 2,
+        tta: int = 2,
+        use_log: bool = False,
     ):
-        # TODO validate that 1<= tta <= 2
+        """Create a depth estimation manager object
 
+        Args:
+            img_dir (Path): Where to find the files listed in filepaths, as well as the other images
+                before and after each frame to create stacked image arrays
+            model_s3_path (Path, optional): Where to download the depth estimation model weights from.
+                Defaults to S3Path( "s3://drivendata-client-zamba/depth_estimation_winner_weights/second_place/tf_efficientnetv2_l_in21k_2_5_pl4/model_best.pt" ).
+            model_cache_dir (Path, optional): Path for downloading and saving model weights. Defaults
+                to Path(".zamba_cache").
+            batch_size (int, optional): Batch size for running the depth model. Defaults to 64.
+            window_size (int, optional): _description_. Defaults to 2.
+            tta (int, optional): How many images to stack before and after the target frame. If set
+                to two, each stacked image array will have five images total. Defaults to 2.
+            use_log (bool, optional): Whether to take the exponential of the predictions (see
+                torch.special.expm1). Defaults to False.
+        """
         # import model weights
         model_weights_path = model_cache_dir / str(model_s3_path).replace("s3://", "")
         if not model_weights_path.exists():
@@ -130,7 +140,7 @@ class DepthEstimationManager:
         self.use_log = use_log
 
     def predict(self, filepaths):
-        # predict from dataframe with one row per target image and one column with filepath
+        """Generate predictions for a list of filepaths, each representing one target frame"""
         torch.backends.cudnn.benchmark = True
 
         # load model
