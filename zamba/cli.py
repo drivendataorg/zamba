@@ -16,6 +16,7 @@ from zamba.models.config import (
 )
 from zamba import MODELS_DIRECTORY
 from zamba.models.densepose import DensePoseConfig, DensePoseOutputEnum
+from zamba.models.depth_estimation import DepthEstimationConfig
 from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
 from zamba.version import __version__
@@ -505,6 +506,68 @@ def densepose(
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
             densepose_config.run_model()
+
+
+@app.command()
+def depth(
+    filepaths: Path = typer.Option(
+        None, exists=True, help="Path to csv containing `filepath` column with videos."
+    ),
+    img_dir: Path = typer.Option(None, exists=True, help="Path to folder containing all images."),
+    save_to: Path = typer.Option(
+        None,
+        help="An optional directory or path for saving the output. Defaults to the current working directory",
+    ),
+    cache_dir: Path = typer.Option(
+        None, exists=False, help="Path to directory for model weights."
+    ),
+    batch_size: int = typer.Option(None, help="Batch size to use for inference."),
+    yes: bool = typer.Option(
+        False,
+        "--yes",
+        "-y",
+        help="Skip confirmation of configuration and proceed right to prediction.",
+    ),
+):
+    """
+    Run depth estimation algorithm on images.
+    """
+    predict_dict = {"filepaths": filepaths, "img_dir": img_dir}
+
+    # override if any command line arguments are passed
+    if save_to is not None:
+        predict_dict["save_to"] = save_to
+    if cache_dir is not None:
+        predict_dict["cache_dir"] = cache_dir
+    if batch_size is not None:
+        predict_dict["batch_size"] = batch_size
+
+    try:
+        depth_config = DepthEstimationConfig(**predict_dict)
+    except ValidationError as ex:
+        logger.error("Invalid configuration.")
+        raise typer.Exit(ex)
+
+    msg = f"""The following configuration will be used for inference:
+
+    Filepath csv: {filepaths}
+    Data directory: {depth_config.img_dir}
+    Cache directory: {depth_config.cache_dir}
+    Batch size: {depth_config.batch_size}
+    """
+
+    if yes:
+        typer.echo(f"{msg}\n\nSkipping confirmation and proceeding to prediction.")
+    else:
+        yes = typer.confirm(
+            f"{msg}\n\nIs this correct?",
+            abort=False,
+            default=True,
+        )
+
+    if yes:
+        # kick off prediction
+        depth_config.run_model()
 
 
 if __name__ == "__main__":

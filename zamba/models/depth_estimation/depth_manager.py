@@ -52,7 +52,7 @@ class DepthDataset(torch.utils.data.Dataset):
         """Given the index of the target image, returns a tuple of the stacked image array, the image
         filename stem, and the time into the video for the target image.
         """
-        target_image_path = self.filepaths[index]
+        target_image_path = Path(self.filepaths[index])
 
         img = imread(target_image_path)
         inputs = {"image": img}
