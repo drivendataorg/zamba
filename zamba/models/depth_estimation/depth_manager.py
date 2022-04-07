@@ -10,7 +10,7 @@ import torch
 import torch.utils
 import torch.utils.data
 import tqdm
-from typing import Optional, Union
+from typing import Union
 
 
 def imread(path):
