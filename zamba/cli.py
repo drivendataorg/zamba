@@ -515,7 +515,7 @@ def depth(
         exists=True,
         help="Path to csv containing `filepath` column with videos. Paths should be relative to the image directory",
     ),
-    img_dir: Path = typer.Option(None, exists=True, help="Path to folder containing all images."),
+    img_dir: Path = typer.Option(None, exists=True, help="Path to folder containing all images"),
     save_to: Path = typer.Option(
         None,
         help="An optional directory or path for saving the output. Defaults to the current working directory",
@@ -532,11 +532,14 @@ def depth(
     ),
 ):
     """
-    Run depth estimation algorithm on images.
+    Run depth estimation algorithm on images. Must provide either a list of full filepaths, or relative
+    filepaths and an image directory.
     """
-    predict_dict = {"filepaths": filepaths, "img_dir": img_dir}
+    predict_dict = {"filepaths": filepaths}
 
     # override if any command line arguments are passed
+    if img_dir is not None:
+        predict_dict["img_dir"] = img_dir
     if save_to is not None:
         predict_dict["save_to"] = save_to
     if cache_dir is not None:

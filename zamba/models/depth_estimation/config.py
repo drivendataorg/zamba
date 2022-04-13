@@ -15,13 +15,16 @@ from zamba.models.depth_estimation.depth_manager import DepthEstimationManager
 
 
 class DepthEstimationConfig(ZambaBaseModel):
-    """Configuration for running depth estimation on images.
+    """Configuration for running depth estimation on images. At a minimum, must provide either
+    a list of full filepaths, or a list of relative filepaths along with the img_dir
 
     Args:
         filepaths (Path or List[Path]): Either a path to a CSV file with a list of filepaths to
             process, or a list of filepaths to process
-        img_dir (Path): Where to find the files listed in filepaths, as well as the other images
-            before and after each frame to create stacked image arrays
+        img_dir (Path, Optional): Where to find the files listed in filepaths, as well as the other
+            images before and after each frame to create stacked image arrays. If no img_dir is
+            provided, it will be set to the parent of the first filepath and the depth module will
+            assume that all filepaths are full paths, rather than relative to the img_dir.
         save_to (Path, optional): Either a path or a directory to save the predicted depths. If a
             directory is provided, predictions will be saved to depth_predictions.csv in that
             directory. Defaults to os.getcwd()
@@ -31,7 +34,7 @@ class DepthEstimationConfig(ZambaBaseModel):
     """
 
     filepaths: Union[Path, List[Union[Path, str]]]
-    img_dir: Path
+    img_dir: Optional[Path]
     save_to: Optional[Path] = None
     cache_dir: Path = Path(".zamba_cache")
     batch_size: int = 64
@@ -76,6 +79,10 @@ class DepthEstimationConfig(ZambaBaseModel):
 
     @root_validator(skip_on_failure=True)
     def validate_files(cls, values):
+        # set image directory if only full filepaths are provided
+        if values["img_dir"] is None:
+            values["img_dir"] = Path(values["filepaths"][0]).parent
+
         # check for duplicates
         if len(values["filepaths"]) != len(set(values["filepaths"])):
             logger.warning(
