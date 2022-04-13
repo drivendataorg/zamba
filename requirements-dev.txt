@@ -1,4 +1,4 @@
--e .[tests,densepose]
+-e .[tests]
 
 -r requirements-dev/docs.txt
 -r requirements-dev/lint.txt
