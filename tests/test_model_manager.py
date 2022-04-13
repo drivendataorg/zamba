@@ -164,7 +164,7 @@ def test_train_save_dir_overwrite(
         "train_configuration.yaml",
         "test_metrics.json",
         "val_metrics.json",
-        "epoch=0-step=10.ckpt",
+        "epoch=0-step=11.ckpt",
     ]:
         assert (config.save_dir / f).exists()
 
