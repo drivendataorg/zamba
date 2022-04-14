@@ -37,9 +37,8 @@ def download_from_s3(
 
 
 class DepthDataset(torch.utils.data.Dataset):
-    def __init__(self, filepaths, img_dir, window_size):
+    def __init__(self, filepaths, window_size):
         self.filepaths = filepaths
-        self.img_dir = img_dir
         self.window_size = window_size
         self.order = [f"image_{i}" for i in range(1, window_size + 1)]
         self.order.append("image")
@@ -147,7 +146,7 @@ class DepthEstimationManager:
         model = torch.jit.load(self.model_weights, map_location=self.device).eval()
 
         # load dataset
-        test_dataset = DepthDataset(filepaths, img_dir=self.img_dir, window_size=self.window_size)
+        test_dataset = DepthDataset(filepaths, window_size=self.window_size)
         test_loader = torch.utils.data.DataLoader(
             test_dataset,
             batch_size=self.batch_size,

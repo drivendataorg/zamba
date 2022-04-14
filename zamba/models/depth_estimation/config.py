@@ -79,10 +79,6 @@ class DepthEstimationConfig(ZambaBaseModel):
 
     @root_validator(skip_on_failure=True)
     def validate_files(cls, values):
-        # set image directory if only full filepaths are provided
-        if values["img_dir"] is None:
-            values["img_dir"] = Path(values["filepaths"][0]).parent
-
         # check for duplicates
         if len(values["filepaths"]) != len(set(values["filepaths"])):
             logger.warning(
@@ -92,7 +88,7 @@ class DepthEstimationConfig(ZambaBaseModel):
 
         files_df = pd.DataFrame({"filepath": values["filepaths"]})
         values["filepaths"] = check_files_exist_and_load(
-            df=files_df, data_dir=values["img_dir"], skip_load_validation=True
+            df=files_df, skip_load_validation=True, data_dir=None
         ).filepath.values.tolist()
 
         return values
