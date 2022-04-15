@@ -131,6 +131,8 @@ class DepthEstimationManager:
         # automatically use CPU if no cuda available
         if not torch.cuda.is_available():
             self.device = "cpu"
+        else:
+            self.device = "gpu"
 
         self.img_dir = img_dir
         self.batch_size = batch_size
