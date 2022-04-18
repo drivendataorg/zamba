@@ -86,7 +86,7 @@ class DepthDataset(torch.utils.data.Dataset):
         img = np.concatenate([inputs[i] for i in self.order], axis=-1)
         img = normalize(img)
 
-        return img, stem, time
+        return img, target_image_path, time
 
 
 class DepthEstimationManager:
@@ -141,7 +141,8 @@ class DepthEstimationManager:
         self.use_log = use_log
 
     def predict(self, filepaths):
-        """Generate predictions for a list of filepaths, each representing one target frame. Filepaths should be given relative to the img_dir"""
+        """Generate predictions for a list of filepaths, each representing one target frame. 
+        Filepaths should be given relative to the img_dir."""
         torch.backends.cudnn.benchmark = True
 
         # load model
@@ -164,7 +165,7 @@ class DepthEstimationManager:
         with torch.no_grad():
             with tqdm.tqdm(test_loader) as pbar:
                 distance: torch.Tensor = torch.zeros(self.batch_size, device=self.device)
-                for image, filepath_stem, time in pbar:
+                for image, filepath, time in pbar:
                     bs = image.size(0)
                     image = image.to(self.device, non_blocking=True)
 
@@ -185,12 +186,12 @@ class DepthEstimationManager:
 
                     time = time.numpy()
 
-                    for d, vid, t in zip(distance.cpu().numpy(), filepath_stem, time):
+                    for d, vid, t in zip(distance.cpu().numpy(), filepath, time):
                         predictions.append((vid, t, d))
 
         predictions = pd.DataFrame(
             predictions,
-            columns=["filepath_stem", "time", "distance"],
+            columns=["filepath", "time", "distance"],
         )
 
         return predictions
