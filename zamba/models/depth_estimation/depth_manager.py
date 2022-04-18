@@ -86,7 +86,7 @@ class DepthDataset(torch.utils.data.Dataset):
         img = np.concatenate([inputs[i] for i in self.order], axis=-1)
         img = normalize(img)
 
-        return img, target_image_path, time
+        return img, str(target_image_path), time
 
 
 class DepthEstimationManager:
