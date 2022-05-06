@@ -1,5 +1,11 @@
 # `zamba` changelog
 
+## v2.0.3 (2022-05-06)
+
+Releasing to pick up #179.
+
+ - PR [#179](https://github.com/drivendataorg/zamba/pull/179) removes the DensePose extra from the default dev requirements and tests. Docs are updated to clarify how to install and run tests for DensePose.
+
 ## v2.0.2 (2021-12-21)
 
 Releasing to pick up #172.
