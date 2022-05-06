@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/api-reference/pytorch-finetuning/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
     
     
       
@@ -21,19 +21,20 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e411adfe.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
         
       
     
     
     
       
+        
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
@@ -91,11 +92,11 @@
     <a href="../.." title="Zamba" class="md-header__button md-logo" aria-label="Zamba" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -117,7 +118,7 @@
     
     
       <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
@@ -125,13 +126,13 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
         <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
       
@@ -151,10 +152,10 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/drivendataorg/zamba" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -189,17 +190,17 @@
     <a href="../.." title="Zamba" class="md-nav__button md-logo" aria-label="Zamba" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
 
     </a>
     Zamba
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/drivendataorg/zamba/" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/drivendataorg/zamba" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -601,13 +602,17 @@
       
         
           
+            
+          
         
       
       
-        <label class="md-nav__link" for="__nav_7">
-          Changelog
-          <span class="md-nav__icon md-icon"></span>
-        </label>
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../changelog/">Changelog</a>
+          
+        </div>
       
       <nav class="md-nav" aria-label="Changelog" data-md-level="1">
         <label class="md-nav__title" for="__nav_7">
@@ -616,18 +621,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../changelog/" class="md-nav__link">
-        `zamba` changelog
-      </a>
-    </li>
-  
-
             
           
         </ul>
@@ -1304,9 +1297,10 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/drivendataorg/zamba/edit/master/docs/api-reference/pytorch-finetuning.md" title="Edit this page" class="md-content__button md-icon">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
-</a>
+  <a href="https://github.com/drivendataorg/zamba/edit/master/docs/api-reference/pytorch-finetuning.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
 
 
 <h1 id="zambapytorchfinetuning">zamba.pytorch.finetuning<a class="headerlink" href="#zambapytorchfinetuning" title="Permanent link">&para;</a></h1>
@@ -1427,6 +1421,66 @@ current_learning_rate /  initial_denom_lr.</p></td>
 &gt;&gt;&gt; trainer = Trainer(callbacks=[backbone_finetuning])
 </code></pre></div>
 
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BackboneFinetuning</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">finetuning</span><span class="o">.</span><span class="n">BackboneFinetuning</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Derived from PTL&#39;s built-in ``BackboneFinetuning``, but during the backbone freeze phase,</span>
+<span class="sd">    choose whether to freeze batch norm layers, even if ``train_bn`` is True (i.e., even if we train them</span>
+<span class="sd">    during the backbone unfreeze phase).</span>
+
+<span class="sd">    Finetune a backbone model based on a learning rate user-defined scheduling.</span>
+<span class="sd">    When the backbone learning rate reaches the current model learning rate</span>
+<span class="sd">    and ``should_align`` is set to True, it will align with it for the rest of the training.</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">        unfreeze_backbone_at_epoch: Epoch at which the backbone will be unfreezed.</span>
+
+<span class="sd">        lambda_func: Scheduling function for increasing backbone learning rate.</span>
+
+<span class="sd">        backbone_initial_ratio_lr:</span>
+<span class="sd">            Used to scale down the backbone learning rate compared to rest of model</span>
+
+<span class="sd">        backbone_initial_lr: Optional, Inital learning rate for the backbone.</span>
+<span class="sd">            By default, we will use current_learning /  backbone_initial_ratio_lr</span>
+
+<span class="sd">        should_align: Wheter to align with current learning rate when backbone learning</span>
+<span class="sd">            reaches it.</span>
+
+<span class="sd">        initial_denom_lr: When unfreezing the backbone, the intial learning rate will</span>
+<span class="sd">            current_learning_rate /  initial_denom_lr.</span>
+
+<span class="sd">        train_bn: Wheter to make Batch Normalization trainable.</span>
+
+<span class="sd">        verbose: Display current learning rate for model and backbone</span>
+
+<span class="sd">        round: Precision for displaying learning rate</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; from pytorch_lightning import Trainer</span>
+<span class="sd">        &gt;&gt;&gt; from pytorch_lightning.callbacks import BackboneFinetuning</span>
+<span class="sd">        &gt;&gt;&gt; multiplicative = lambda epoch: 1.5</span>
+<span class="sd">        &gt;&gt;&gt; backbone_finetuning = BackboneFinetuning(200, multiplicative)</span>
+<span class="sd">        &gt;&gt;&gt; trainer = Trainer(callbacks=[backbone_finetuning])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pre_train_bn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">multiplier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;lambda_func&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">multiplier_factory</span><span class="p">(</span><span class="n">multiplier</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># choose whether to train batch norm layers prior to finetuning phase</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_train_bn</span> <span class="o">=</span> <span class="n">pre_train_bn</span>
+
+    <span class="k">def</span> <span class="nf">freeze_before_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="n">pl_module</span><span class="o">.</span><span class="n">backbone</span><span class="p">,</span> <span class="n">train_bn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_train_bn</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1585,7 +1639,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
             <span class="s2">&quot; Those parameters will be skipped.</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;HINT: Did you init your optimizer in `configure_optimizer` as such:</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span><span class="si">}</span><span class="s2">(filter(lambda p: p.requires_grad, self.parameters()), ...) &quot;</span><span class="p">,</span>
-            <span class="ne">UserWarning</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">out_params</span>
 </code></pre></div>
@@ -1833,7 +1886,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="k">else</span><span class="p">:</span>
         <span class="n">_modules</span> <span class="o">=</span> <span class="n">modules</span><span class="o">.</span><span class="n">modules</span><span class="p">()</span>
 
-    <span class="c1"># Capture all leaf modules as well as parent modules that have parameters directly themsleves</span>
+    <span class="c1"># Capture all leaf modules as well as parent modules that have parameters directly themselves</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">_modules</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">children</span><span class="p">())</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">_parameters</span><span class="p">]</span>
 </code></pre></div>
         </details>
@@ -1959,6 +2012,55 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
 
 
+<h5 id="zamba.pytorch.finetuning.BackboneFinetuning.load_state_dict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a href="#zamba.pytorch.finetuning.BackboneFinetuning.load_state_dict" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>Called when loading a checkpoint, implement to reload callback state given callback's <code>state_dict</code>.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>state_dict</code></td>
+        <td><code>Dict[str, Any]</code></td>
+        <td><p>the callback state returned by <code>state_dict</code>.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">previous_backbone_lr</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;previous_backbone_lr&quot;</span><span class="p">]</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.make_trainable" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">make_trainable</span><span class="p">(</span><span class="n">modules</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
@@ -2034,7 +2136,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_after_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called after ``loss.backward()`` and before optimizers are stepped.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2058,13 +2159,21 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when the training batch ends.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8. Use
+    <code>on_train_batch_end</code> instead.</p>
+<p>Called when the training batch ends.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when the training batch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use</span>
+<span class="sd">        ``on_train_batch_end`` instead.</span>
+
+<span class="sd">    Called when the training batch ends.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2088,13 +2197,21 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when the training batch begins.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8. Use
+    <code>on_train_batch_start</code> instead.</p>
+<p>Called when the training batch begins.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_batch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when the training batch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use</span>
+<span class="sd">        ``on_train_batch_start`` instead.</span>
+
+<span class="sd">    Called when the training batch begins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2108,7 +2225,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_before_accelerator_backend_setup" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -2118,12 +2235,19 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called before accelerator is being setup.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8. Use <code>setup()</code> instead.</p>
+<p>Called before accelerator is being setup.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">freeze_before_training</span><span class="p">(</span><span class="n">pl_module</span><span class="p">)</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_before_accelerator_backend_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use ``setup()`` instead.</span>
+
+<span class="sd">    Called before accelerator is being setup.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2153,7 +2277,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_before_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called before ``loss.backward()``.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2185,7 +2308,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">opt_idx</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called before ``optimizer.step()``.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2215,7 +2337,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_before_zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">:</span> <span class="n">Optimizer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called before ``optimizer.zero_grad()``.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2239,12 +2360,19 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called before configure sharded model.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8. Use <code>setup()</code> instead.</p>
+<p>Called before configure sharded model.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_configure_sharded_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called before configure sharded model.&quot;&quot;&quot;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use `setup()` instead.</span>
+
+<span class="sd">    Called before configure sharded model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2268,13 +2396,21 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when either of train/val/test epoch ends.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8. Use
+    <code>on_&lt;train/validation/test&gt;_epoch_end</code> instead.</p>
+<p>Called when either of train/val/test epoch ends.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when either of train/val/test epoch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use</span>
+<span class="sd">        ``on_&lt;train/validation/test&gt;_epoch_end`` instead.</span>
+
+<span class="sd">    Called when either of train/val/test epoch ends.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2298,13 +2434,21 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when either of train/val/test epoch begins.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8. Use
+    <code>on_&lt;train/validation/test&gt;_epoch_start</code> instead.</p>
+<p>Called when either of train/val/test epoch begins.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when either of train/val/test epoch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use</span>
+<span class="sd">        ``on_&lt;train/validation/test&gt;_epoch_start`` instead.</span>
+
+<span class="sd">    Called when either of train/val/test epoch begins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2334,7 +2478,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">exception</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when any trainer execution is interrupted by an exception.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2364,7 +2507,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_fit_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when fit ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2423,13 +2565,19 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when the trainer initialization ends, model has not yet been set.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8.</p>
+<p>Called when the trainer initialization ends, model has not yet been set.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_init_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when the trainer initialization ends, model has not yet been set.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8.</span>
+
+<span class="sd">    Called when the trainer initialization ends, model has not yet been set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2453,13 +2601,19 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when the trainer initialization begins, model has not yet been set.</p>
+      <p>.. deprecated:: v1.6
+    This callback hook was deprecated in v1.6 and will be removed in v1.8.</p>
+<p>Called when the trainer initialization begins, model has not yet been set.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_init_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when the trainer initialization begins, model has not yet been set.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8.</span>
+
+<span class="sd">    Called when the trainer initialization begins, model has not yet been set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2496,7 +2650,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
 <span class="sd">    Called when any trainer execution is interrupted by KeyboardInterrupt.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2510,7 +2663,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_load_checkpoint" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">callback_state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">on_load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">callback_state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -2547,7 +2700,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
       </tr>
       <tr>
         <td><code>callback_state</code></td>
-        <td><code>Dict[int, List[Dict[str, Any]]]</code></td>
+        <td><code>Dict[str, Any]</code></td>
         <td><p>the callback state returned by <code>on_save_checkpoint</code>.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -2556,14 +2709,36 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     The <code>on_load_checkpoint</code> won't be called with an undefined state.
     If your <code>on_load_checkpoint</code> hook behavior doesn't rely on a state,
     you will still need to override <code>on_save_checkpoint</code> to return a <code>dummy state</code>.</p>
+<p>.. deprecated:: v1.6
+    This callback hook will change its signature and behavior in v1.8.
+    If you wish to load the state of the callback, use <code>Callback.load_state_dict</code> instead.
+    In v1.8 <code>Callback.on_load_checkpoint(checkpoint)</code> will receive the entire loaded
+    checkpoint dictionary instead of only the callback state from the checkpoint.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_load_checkpoint</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">callback_state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">callback_state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">previous_backbone_lr</span> <span class="o">=</span> <span class="n">callback_state</span><span class="p">[</span><span class="s2">&quot;previous_backbone_lr&quot;</span><span class="p">]</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_load_checkpoint</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">,</span> <span class="n">callback_state</span><span class="p">[</span><span class="s2">&quot;internal_optimizer_metadata&quot;</span><span class="p">])</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Called when loading a model checkpoint, use to reload state.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        trainer: the current :class:`~pytorch_lightning.trainer.Trainer` instance.</span>
+<span class="sd">        pl_module: the current :class:`~pytorch_lightning.core.lightning.LightningModule` instance.</span>
+<span class="sd">        callback_state: the callback state returned by ``on_save_checkpoint``.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The ``on_load_checkpoint`` won&#39;t be called with an undefined state.</span>
+<span class="sd">        If your ``on_load_checkpoint`` hook behavior doesn&#39;t rely on a state,</span>
+<span class="sd">        you will still need to override ``on_save_checkpoint`` to return a ``dummy state``.</span>
+
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        This callback hook will change its signature and behavior in v1.8.</span>
+<span class="sd">        If you wish to load the state of the callback, use ``Callback.load_state_dict`` instead.</span>
+<span class="sd">        In v1.8 ``Callback.on_load_checkpoint(checkpoint)`` will receive the entire loaded</span>
+<span class="sd">        checkpoint dictionary instead of only the callback state from the checkpoint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2601,7 +2776,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the predict batch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2633,7 +2807,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the predict batch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2663,7 +2836,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_predict_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when predict ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2693,7 +2865,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_predict_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the predict epoch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2723,7 +2894,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_predict_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the predict epoch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2753,7 +2923,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_predict_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the predict begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2777,13 +2946,21 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when the pretrain routine ends.</p>
+      <p>.. deprecated:: v1.6</p>
+<div class="highlight"><pre><span></span><code>This callback hook was deprecated in v1.6 and will be removed in v1.8. Use ``on_fit_start`` instead.
+</code></pre></div>
+<p>Called when the pretrain routine ends.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_pretrain_routine_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when the pretrain routine ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use ``on_fit_start`` instead.</span>
+
+<span class="sd">    Called when the pretrain routine ends.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2807,13 +2984,21 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when the pretrain routine begins.</p>
+      <p>.. deprecated:: v1.6</p>
+<div class="highlight"><pre><span></span><code>This callback hook was deprecated in v1.6 and will be removed in v1.8. Use ``on_fit_start`` instead.
+</code></pre></div>
+<p>Called when the pretrain routine begins.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_pretrain_routine_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when the pretrain routine begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. deprecated:: v1.6</span>
+
+<span class="sd">        This callback hook was deprecated in v1.6 and will be removed in v1.8. Use ``on_fit_start`` instead.</span>
+
+<span class="sd">    Called when the pretrain routine begins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2843,7 +3028,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_sanity_check_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the validation sanity check ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2873,7 +3057,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_sanity_check_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the validation sanity check starts.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -2887,7 +3070,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_save_checkpoint" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">on_save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -2897,7 +3080,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
     <div class="doc doc-contents ">
 
-      <p>Called when saving a model checkpoint, use to persist state.</p>
+      <p>Called when saving a checkpoint to give you a chance to store anything else you might want to save.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2940,20 +3123,36 @@ the callback has state and 2) it is desired to maintain the state of multiple in
   </thead>
   <tbody>
     <tr>
-      <td><code>Dict[str, Any]</code></td>
-      <td><p>The callback state.</p></td>
+      <td><code>Optional[dict]</code></td>
+      <td><p>None or the callback state. Support for returning callback state will be removed in v1.8.</p></td>
     </tr>
   </tbody>
-</table>
+</table>      <p>.. deprecated:: v1.6
+    Returning a value from this method was deprecated in v1.6 and will be removed in v1.8.
+    Implement <code>Callback.state_dict</code> instead to return state.
+    In v1.8 <code>Callback.on_save_checkpoint</code> can only return None.</p>
+
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_save_checkpoint</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;internal_optimizer_metadata&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_optimizer_metadata</span><span class="p">,</span>
-        <span class="s2">&quot;previous_backbone_lr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_backbone_lr</span><span class="p">,</span>
-    <span class="p">}</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Called when saving a checkpoint to give you a chance to store anything else you might want to save.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        trainer: the current :class:`~pytorch_lightning.trainer.Trainer` instance.</span>
+<span class="sd">        pl_module: the current :class:`~pytorch_lightning.core.lightning.LightningModule` instance.</span>
+<span class="sd">        checkpoint: the checkpoint dictionary that will be saved.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None or the callback state. Support for returning callback state will be removed in v1.8.</span>
+
+<span class="sd">    .. deprecated:: v1.6</span>
+<span class="sd">        Returning a value from this method was deprecated in v1.6 and will be removed in v1.8.</span>
+<span class="sd">        Implement ``Callback.state_dict`` instead to return state.</span>
+<span class="sd">        In v1.8 ``Callback.on_save_checkpoint`` can only return None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2991,7 +3190,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the test batch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3023,7 +3221,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the test batch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3053,7 +3250,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_test_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the test ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3083,7 +3279,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_test_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the test epoch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3113,7 +3308,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_test_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the test epoch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3143,7 +3337,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_test_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the test begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3157,7 +3350,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_train_batch_end" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_train_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">on_train_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -3178,10 +3371,9 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="n">outputs</span><span class="p">:</span> <span class="n">STEP_OUTPUT</span><span class="p">,</span>
     <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">unused</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the train batch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3195,7 +3387,7 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 
 
 <h5 id="zamba.pytorch.finetuning.BackboneFinetuning.on_train_batch_start" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">on_train_batch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<code class="highlight language-python"><span class="n">on_train_batch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">unused</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
@@ -3215,10 +3407,9 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span>
     <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">unused</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">unused</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the train batch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3248,7 +3439,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_train_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the train ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3289,7 +3479,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
 <span class="sd">    1. Implement `training_epoch_end` in the `LightningModule` and access outputs via the module OR</span>
 <span class="sd">    2. Cache data across train batch hooks inside the callback implementation to post-process in this hook.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3356,7 +3545,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_train_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the train begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3394,7 +3582,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the validation batch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3426,7 +3613,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
     <span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the validation batch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3456,7 +3642,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_validation_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the validation loop ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3486,7 +3671,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the val epoch ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3516,7 +3700,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_validation_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the val epoch begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3546,7 +3729,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">on_validation_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when the validation loop begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3575,8 +3757,54 @@ the callback has state and 2) it is desired to maintain the state of multiple in
         <details class="quote">
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Called when fit, validate, test, predict, or tune begins.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">freeze_before_training</span><span class="p">(</span><span class="n">pl_module</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h5 id="zamba.pytorch.finetuning.BackboneFinetuning.state_dict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a href="#zamba.pytorch.finetuning.BackboneFinetuning.state_dict" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>Called when saving a checkpoint, implement to generate callback's <code>state_dict</code>.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Dict[str, Any]</code></td>
+      <td><p>A dictionary containing callback state.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;internal_optimizer_metadata&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_optimizer_metadata</span><span class="p">,</span>
+        <span class="s2">&quot;previous_backbone_lr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_backbone_lr</span><span class="p">,</span>
+    <span class="p">}</span>
 </code></pre></div>
         </details>
     </div>
@@ -3606,7 +3834,6 @@ the callback has state and 2) it is desired to maintain the state of multiple in
           <summary>Source code in <code>zamba/pytorch/finetuning.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trainer</span><span class="p">:</span> <span class="s2">&quot;pl.Trainer&quot;</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Called when fit, validate, test, predict, or tune ends.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
 </code></pre></div>
         </details>
     </div>
@@ -3805,7 +4032,7 @@ rate multiplier.</p>
         
         <a href="../pytorch-dataloaders/" class="md-footer__link md-footer__link--prev" aria-label="Previous: zamba.pytorch.dataloaders" rel="prev">
           <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
           <div class="md-footer__title">
             <div class="md-ellipsis">
@@ -3829,7 +4056,7 @@ rate multiplier.</p>
             </div>
           </div>
           <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
           </div>
         </a>
       
@@ -3855,10 +4082,10 @@ rate multiplier.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      <script src="../../assets/javascripts/bundle.ed9748b7.min.js"></script>
       
     
   </body>
