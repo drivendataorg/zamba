@@ -49,6 +49,7 @@ jobs:
           # Not strictly necessary, but it may prevent rate limit
           # errors especially on GitHub-hosted macos machines.
           token: ${{ secrets.GITHUB_TOKEN }}
+          version: "4.4"
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
