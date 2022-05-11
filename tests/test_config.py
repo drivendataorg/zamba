@@ -102,6 +102,29 @@ def test_label_column(tmp_path, labels_absolute_path):
     assert "must contain `filepath` and `label` columns" in error.value.errors()[0]["msg"]
 
 
+def test_extra_column(tmp_path, labels_absolute_path):
+    # add extra column that has species_ prefix
+    df = pd.read_csv(labels_absolute_path)
+    df["species_VE"] = "duiker"
+    df.to_csv(
+        tmp_path / "extra_species_col.csv",
+        index=False,
+    )
+    # this column is not one hot encoded
+    config = TrainConfig(labels=tmp_path / "extra_species_col.csv")
+    assert list(config.labels.columns) == [
+        "filepath",
+        "split",
+        "species_antelope_duiker",
+        "species_elephant",
+        "species_gorilla",
+    ]
+
+    # extra columns are excluded in predict config
+    config = PredictConfig(filepaths=tmp_path / "extra_species_col.csv")
+    assert config.filepaths.columns == ["filepath"]
+
+
 def test_one_video_does_not_exist(tmp_path, labels_absolute_path, caplog):
     files_df = pd.read_csv(labels_absolute_path)
     # add a fake file
