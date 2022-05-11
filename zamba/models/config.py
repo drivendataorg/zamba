@@ -423,6 +423,10 @@ class TrainConfig(ZambaBaseModel):
         if not set(["label", "filepath"]).issubset(labels.columns):
             raise ValueError(f"{values['labels']} must contain `filepath` and `label` columns.")
 
+        # subset to required and optional
+        cols_to_keep = [c for c in labels.columns if c in ["filepath", "label", "site", "split"]]
+        labels = labels[cols_to_keep]
+
         # validate split column has no partial nulls or invalid values
         if "split" in labels.columns:
 
@@ -723,6 +727,8 @@ class PredictConfig(ZambaBaseModel):
 
         if "filepath" not in files_df.columns:
             raise ValueError(f"{values['filepaths']} must contain a `filepath` column.")
+        else:
+            files_df = files_df[["filepath"]]
 
         # can only contain one row per filepath
         num_duplicates = len(files_df) - files_df.filepath.nunique()
