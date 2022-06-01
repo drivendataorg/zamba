@@ -451,7 +451,7 @@ class TrainConfig(ZambaBaseModel):
 
             elif values["split_proportions"] is not None:
                 logger.warning(
-                    "Labels contains split column yet split_proprtions are also provided. Split column in labels takes precendece."
+                    "Labels contains split column yet split_proportions are also provided. Split column in labels takes precedence."
                 )
                 # set to None for clarity in final configuration.yaml
                 values["split_proportions"] = None
