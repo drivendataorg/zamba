@@ -268,8 +268,7 @@ def train_model(
         logger=tensorboard_logger,
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
-        accelerator="ddp" if data_module.multiprocessing_context is not None else None,
-        plugins=DDPPlugin(find_unused_parameters=False)
+        strategy=DDPPlugin(find_unused_parameters=False)
         if data_module.multiprocessing_context is not None
         else None,
     )
