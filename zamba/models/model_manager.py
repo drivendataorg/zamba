@@ -12,6 +12,7 @@ import pandas as pd
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.strategies import DDPStrategy
 import torch
 
 from zamba import MODELS_DIRECTORY
@@ -267,7 +268,9 @@ def train_model(
         logger=tensorboard_logger,
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
-        strategy="ddp" if data_module.multiprocessing_context is not None else None,
+        strategy=DDPStrategy(find_unused_parameters=False)
+        if data_module.multiprocessing_context is not None
+        else None,
     )
 
     if video_loader_config.cache_dir is None:
