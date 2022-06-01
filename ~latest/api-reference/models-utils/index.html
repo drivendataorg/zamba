@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/models-utils/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.14">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.3de6f41f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.1c3799f8.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
@@ -951,8 +951,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#zamba.models.utils-attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#zamba.models.utils-classes" class="md-nav__link">
     Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.utils-functions" class="md-nav__link">
+    Functions
   </a>
   
 </li>
@@ -1265,8 +1279,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#zamba.models.utils-attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#zamba.models.utils-classes" class="md-nav__link">
     Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.utils-functions" class="md-nav__link">
+    Functions
   </a>
   
 </li>
@@ -1292,13 +1320,13 @@
 <h1 id="zambamodelsutils">zamba.models.utils<a class="headerlink" href="#zambamodelsutils" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
-
-
-    <div class="doc doc-contents first">
+<div class="doc doc-object doc-module">
 
 
 
+  <div class="doc doc-contents first">
+
+  
 
   <div class="doc doc-children">
 
@@ -1306,53 +1334,58 @@
 
 
 
+<h2 id="zamba.models.utils-attributes">Attributes<a href="#zamba.models.utils-attributes" class="headerlink" title="Permanent link">&para;</a></h2>
 
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="zamba.models.utils.S3_BUCKET" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">S3_BUCKET</span></code>
-
+<code class="highlight language-python"><span class="n">S3_BUCKET</span> <span class="o">=</span> <span class="s1">&#39;s3://drivendata-public-assets&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
 
 <a href="#zamba.models.utils.S3_BUCKET" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 <h2 id="zamba.models.utils-classes">Classes<a href="#zamba.models.utils-classes" class="headerlink" title="Permanent link">&para;</a></h2>
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="zamba.models.utils.RegionEnum" class="doc doc-heading">
-        <code>
-RegionEnum            (<span title="str">str</span>, <span title="enum.Enum">Enum</span>)
-        </code>
-
+        <code>RegionEnum</code>
 
 
 <a href="#zamba.models.utils.RegionEnum" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
-      <p>An enumeration.</p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
+
+
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RegionEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RegionEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
     <span class="n">us</span> <span class="o">=</span> <span class="s2">&quot;us&quot;</span>
     <span class="n">eu</span> <span class="o">=</span> <span class="s2">&quot;eu&quot;</span>
     <span class="n">asia</span> <span class="o">=</span> <span class="s2">&quot;asia&quot;</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1360,61 +1393,64 @@ RegionEnum            (<span title="str">str</span>, <span title="enum.Enum">Enu
 
 
 
+<h4 id="zamba.models.utils.RegionEnum-attributes">Attributes<a href="#zamba.models.utils.RegionEnum-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
 
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.utils.RegionEnum.asia" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">asia</span></code>
-
+<code class="highlight language-python"><span class="n">asia</span> <span class="o">=</span> <span class="s1">&#39;asia&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
 
 <a href="#zamba.models.utils.RegionEnum.asia" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.utils.RegionEnum.eu" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">eu</span></code>
-
+<code class="highlight language-python"><span class="n">eu</span> <span class="o">=</span> <span class="s1">&#39;eu&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
 
 <a href="#zamba.models.utils.RegionEnum.eu" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.utils.RegionEnum.us" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">us</span></code>
-
+<code class="highlight language-python"><span class="n">us</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
 
 <a href="#zamba.models.utils.RegionEnum.us" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
-
+</div>
 
 
 
@@ -1422,29 +1458,41 @@ RegionEnum            (<span title="str">str</span>, <span title="enum.Enum">Enu
 
   </div>
 
-    </div>
-
   </div>
 
+</div>
+<h2 id="zamba.models.utils-functions">Functions<a href="#zamba.models.utils-functions" class="headerlink" title="Permanent link">&para;</a></h2>
 
-
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.models.utils.download_weights" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">download_weights</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">weight_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">RegionEnum</span><span class="o">.</span><span class="n">us</span><span class="p">:</span> <span class="s1">&#39;us&#39;</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span></code>
-
+<code class="highlight language-python"><span class="n">download_weights</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">weight_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">Path</span></code>
 
 <a href="#zamba.models.utils.download_weights" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/models/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">download_weights</span><span class="p">(</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">download_weights</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">destination_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">weight_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">),</span>
@@ -1460,30 +1508,34 @@ RegionEnum            (<span title="str">str</span>, <span title="enum.Enum">Enu
         <span class="n">client</span><span class="o">=</span><span class="n">S3Client</span><span class="p">(</span><span class="n">local_cache_dir</span><span class="o">=</span><span class="n">destination_dir</span><span class="p">,</span> <span class="n">no_sign_request</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">s3p</span><span class="o">.</span><span class="n">fspath</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.models.utils.get_model_checkpoint_filename" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_model_checkpoint_filename</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span></code>
 
-
 <a href="#zamba.models.utils.get_model_checkpoint_filename" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/models/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_checkpoint_filename</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_checkpoint_filename</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
         <span class="n">model_name</span> <span class="o">=</span> <span class="n">model_name</span><span class="o">.</span><span class="n">value</span>
 
@@ -1491,22 +1543,19 @@ RegionEnum            (<span title="str">str</span>, <span title="enum.Enum">Enu
     <span class="k">with</span> <span class="n">config_file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">config_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;public_checkpoint&quot;</span><span class="p">])</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
               
             </article>
@@ -1575,7 +1624,7 @@ RegionEnum            (<span title="str">str</span>, <span title="enum.Enum">Enu
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2e1ee47.min.js"></script>
+      <script src="../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
       
     
   </body>

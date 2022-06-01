@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/data-video/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.14">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.3de6f41f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.1c3799f8.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
@@ -1306,13 +1306,13 @@
 <h1 id="zambadatavideo">zamba.data.video<a class="headerlink" href="#zambadatavideo" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
-
-
-    <div class="doc doc-contents first">
+<div class="doc doc-object doc-module">
 
 
 
+  <div class="doc doc-contents first">
+
+  
 
   <div class="doc doc-children">
 
@@ -1320,170 +1320,418 @@
 
 
 
+
 <h2 id="zamba.data.video-classes">Classes<a href="#zamba.data.video-classes" class="headerlink" title="Permanent link">&para;</a></h2>
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="zamba.data.video.VideoLoaderConfig" class="doc doc-heading">
-        <code>
-VideoLoaderConfig            (<span title="pydantic.main.BaseModel">BaseModel</span>)
-        </code>
+        <code>VideoLoaderConfig</code>
 
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+  
       <p>Configuration for load_video_frames.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>crop_bottom_pixels</code></td>
-        <td><code>int</code></td>
-        <td><p>Number of pixels to crop from the bottom of the video
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>crop_bottom_pixels</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Number of pixels to crop from the bottom of the video
 (prior to resizing to <code>video_height</code>).</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>i_frames</code></td>
-        <td><code>bool</code></td>
-        <td><p>Only load the I-Frames. See
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>i_frames</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Only load the I-Frames. See
 https://en.wikipedia.org/wiki/Video_compression_picture_types#Intra-coded_(I)<em>frames/slices</em>(key_frames)</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>scene_threshold</code></td>
-        <td><code>float</code></td>
-        <td><p>Only load frames that correspond to scene changes.
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scene_threshold</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>Only load frames that correspond to scene changes.
 See http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>megadetector_lite_config</code></td>
-        <td><code>MegadetectorLiteYoloXConfig</code></td>
-        <td><p>Configuration of
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>megadetector_lite_config</code></td>
+          <td>
+                <code><span title="zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig">MegadetectorLiteYoloXConfig</span></code>
+          </td>
+          <td><p>Configuration of
 MegadetectorLiteYoloX frame selection model.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>frame_selection_height</code></td>
-        <td><code>int</code></td>
-        <td><p>Resize the video to this height in pixels, prior to
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>frame_selection_height</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Resize the video to this height in pixels, prior to
 frame selection. If None, the full size video will be used for frame selection. Using full
 size images (setting to None) is recommended for MegadetectorLite, especially if your
 species of interest are smaller.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>frame_selection_width</code></td>
-        <td><code>int</code></td>
-        <td><p>Resize the video to this width in pixels, prior to
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>frame_selection_width</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Resize the video to this width in pixels, prior to
 frame selection.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>total_frames</code></td>
-        <td><code>int</code></td>
-        <td><p>Number of frames that should ultimately be returned.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>ensure_total_frames</code></td>
-        <td><code>bool</code></td>
-        <td><p>Selecting the number of frames by resampling may result in one
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>total_frames</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Number of frames that should ultimately be returned.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>ensure_total_frames</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Selecting the number of frames by resampling may result in one
 more or fewer frames due to rounding. If True, ensure the requested number of frames
 is returned by either clipping or duplicating the final frame. Raises an error if no
 frames have been selected. Otherwise, return the array unchanged.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>fps</code></td>
-        <td><code>float</code></td>
-        <td><p>Resample the video evenly from the entire duration to a specific
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>fps</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>Resample the video evenly from the entire duration to a specific
 number of frames per second.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>early_bias</code></td>
-        <td><code>bool</code></td>
-        <td><p>Resamples to 24 fps and selects 16 frames biased toward the
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>early_bias</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Resamples to 24 fps and selects 16 frames biased toward the
 front (strategy used by competition winner).</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>frame_indices</code></td>
-        <td><code>list(int)</code></td>
-        <td><p>Select specific frame numbers. Note: frame selection
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>frame_indices</code></td>
+          <td>
+                <code>list(int)</code>
+          </td>
+          <td><p>Select specific frame numbers. Note: frame selection
 is done after any resampling.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>evenly_sample_total_frames</code></td>
-        <td><code>bool</code></td>
-        <td><p>Reach the total number of frames specified by
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>evenly_sample_total_frames</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Reach the total number of frames specified by
 evenly sampling from the duration of the video. Defaults to False.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>pix_fmt</code></td>
-        <td><code>str</code></td>
-        <td><p>ffmpeg pixel format, defaults to 'rgb24' for RGB channels; can be
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>pix_fmt</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>ffmpeg pixel format, defaults to 'rgb24' for RGB channels; can be
 changed to 'bgr24' for BGR.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model_input_height</code></td>
-        <td><code>int</code></td>
-        <td><p>After frame selection, resize the video to this height
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>model_input_height</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>After frame selection, resize the video to this height
 in pixels.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model_input_width</code></td>
-        <td><code>int</code></td>
-        <td><p>After frame selection, resize the video to this width in
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>model_input_width</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>After frame selection, resize the video to this width in
 pixels.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>cache_dir</code></td>
-        <td><code>Path</code></td>
-        <td><p>Cache directory where preprocessed videos will be saved
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>cache_dir</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>Cache directory where preprocessed videos will be saved
 upon first load. Alternatively, can be set with VIDEO_CACHE_DIR environment variable.
 Defaults to None, which means videos will not be cached. Provided there is enough space
 on your machine, it is highly encouraged to cache videos for training as this will
 speed up all subsequent epochs. If you are predicting on the same videos with the
 same video loader configuration, this will save time on future runs.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>cleanup_cache</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to delete the cache dir after training or predicting ends.
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>cleanup_cache</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to delete the cache dir after training or predicting ends.
 Defaults to False.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
         <details class="quote">
           <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">VideoLoaderConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">VideoLoaderConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Configuration for load_video_frames.</span>
 
@@ -1663,10 +1911,10 @@ Defaults to False.</p></td>
                 <span class="n">values</span><span class="p">[</span><span class="s2">&quot;total_frames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;megadetector_lite_config&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">n_frames</span>
 
         <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1674,415 +1922,422 @@ Defaults to False.</p></td>
 
 
 
+<h4 id="zamba.data.video.VideoLoaderConfig-attributes">Attributes<a href="#zamba.data.video.VideoLoaderConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
 
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.cache_dir" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cache_dir</span><span class="p">:</span> <span class="n">Path</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.cleanup_cache" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cleanup_cache</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">cleanup_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.cleanup_cache" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.crop_bottom_pixels" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">crop_bottom_pixels</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">crop_bottom_pixels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.crop_bottom_pixels" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.early_bias" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">early_bias</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">early_bias</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.early_bias" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.ensure_total_frames" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ensure_total_frames</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">ensure_total_frames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.ensure_total_frames" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.evenly_sample_total_frames" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">evenly_sample_total_frames</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">evenly_sample_total_frames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.evenly_sample_total_frames" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.fps" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">fps</span><span class="p">:</span> <span class="nb">float</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">fps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.fps" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.frame_indices" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">frame_indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">frame_indices</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.frame_indices" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.frame_selection_height" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">frame_selection_height</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">frame_selection_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.frame_selection_height" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.frame_selection_width" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">frame_selection_width</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">frame_selection_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.frame_selection_width" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.i_frames" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">i_frames</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">i_frames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.i_frames" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.megadetector_lite_config" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">megadetector_lite_config</span><span class="p">:</span> <span class="n">MegadetectorLiteYoloXConfig</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">megadetector_lite_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MegadetectorLiteYoloXConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.megadetector_lite_config" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.model_input_height" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">model_input_height</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">model_input_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.model_input_height" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.model_input_width" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">model_input_width</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">model_input_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.model_input_width" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.pix_fmt" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">pix_fmt</span><span class="p">:</span> <span class="nb">str</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">pix_fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;rgb24&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.pix_fmt" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.scene_threshold" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">scene_threshold</span><span class="p">:</span> <span class="nb">float</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">scene_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.scene_threshold" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.total_frames" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">total_frames</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">total_frames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoLoaderConfig.total_frames" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
+<h4 id="zamba.data.video.VideoLoaderConfig-classes">Classes<a href="#zamba.data.video.VideoLoaderConfig-classes" class="headerlink" title="Permanent link">&para;</a></h4>
 
-
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.Config" class="doc doc-heading">
-        <code>
-Config        </code>
-
+        <code>Config</code>
 
 
 <a href="#zamba.data.video.VideoLoaderConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
+
+  <div class="doc doc-contents ">
+
 
 
         <details class="quote">
           <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">212</span>
+<span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
+  
 
-    </div>
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="zamba.data.video.VideoLoaderConfig.Config-attributes">Attributes<a href="#zamba.data.video.VideoLoaderConfig.Config-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.data.video.VideoLoaderConfig.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+<a href="#zamba.data.video.VideoLoaderConfig.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
 
   </div>
 
+  </div>
 
+</div>
+<h4 id="zamba.data.video.VideoLoaderConfig-functions">Functions<a href="#zamba.data.video.VideoLoaderConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
-<h4 id="zamba.data.video.VideoLoaderConfig-methods">Methods<a href="#zamba.data.video.VideoLoaderConfig-methods" class="headerlink" title="Permanent link">&para;</a></h4>
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.check_early_bias_compatibility" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_early_bias_compatibility</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.check_early_bias_compatibility" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_early_bias_compatibility</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;early_bias&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;i_frames&quot;</span><span class="p">]</span>
@@ -2095,33 +2350,42 @@ Config        </code>
             <span class="sa">f</span><span class="s2">&quot;early_bias cannot be used with i_frames, scene_threshold, total_frames, evenly_sample_total_frames, or fps. Values provided are </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.check_evenly_sample_total_frames_compatibility" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_evenly_sample_total_frames_compatibility</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.check_evenly_sample_total_frames_compatibility" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_evenly_sample_total_frames_compatibility</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;evenly_sample_total_frames&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;total_frames&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -2137,33 +2401,35 @@ Config        </code>
             <span class="sa">f</span><span class="s2">&quot;evenly_sample_total_frames cannot be used with scene_threshold, i_frames, fps, or early_bias. Values provided are </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.check_fps_compatibility" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_fps_compatibility</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.check_fps_compatibility" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_fps_compatibility</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;fps&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;evenly_sample_total_frames&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;i_frames&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;scene_threshold&quot;</span><span class="p">]</span>
@@ -2172,33 +2438,39 @@ Config        </code>
             <span class="sa">f</span><span class="s2">&quot;fps cannot be used with evenly_sample_total_frames, i_frames, or scene_threshold. Values provided are </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.check_frame_indices_compatibility" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_frame_indices_compatibility</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.check_frame_indices_compatibility" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_frame_indices_compatibility</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;frame_indices&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;total_frames&quot;</span><span class="p">]</span>
@@ -2211,33 +2483,37 @@ Config        </code>
             <span class="sa">f</span><span class="s2">&quot;frame_indices cannot be used with total_frames, scene_threshold, i_frames, early_bias, or evenly_sample_total_frames. Values provided are </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.check_height_and_width" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_height_and_width</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.check_height_and_width" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_height_and_width</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;frame_selection_height&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;frame_selection_width&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -2248,66 +2524,68 @@ Config        </code>
             <span class="sa">f</span><span class="s2">&quot;Must provide both model_input_height and model_input_width or neither. Values provided are </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.check_i_frame_compatibility" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_i_frame_compatibility</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.check_i_frame_compatibility" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_i_frame_compatibility</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;scene_threshold&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;i_frames&quot;</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;i_frames cannot be used with scene_threshold. Values provided are </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.check_megadetector_lite_compatibility" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_megadetector_lite_compatibility</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.check_megadetector_lite_compatibility" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_megadetector_lite_compatibility</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;megadetector_lite_config&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;early_bias&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;evenly_sample_total_frames&quot;</span><span class="p">]</span>
@@ -2316,33 +2594,38 @@ Config        </code>
             <span class="sa">f</span><span class="s2">&quot;megadetector_lite_config cannot be used with early_bias or evenly_sample_total_frames. Values provided are </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.validate_total_frames" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_total_frames</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.validate_total_frames" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_total_frames</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;megadetector_lite_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># set n frames for megadetector_lite_config if only specified by total_frames</span>
@@ -2354,35 +2637,42 @@ Config        </code>
             <span class="n">values</span><span class="p">[</span><span class="s2">&quot;total_frames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;megadetector_lite_config&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">n_frames</span>
 
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoLoaderConfig.validate_video_cache_dir" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_video_cache_dir</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.data.video.VideoLoaderConfig.validate_video_cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Set up cache directory for preprocessed videos. Config argument takes precedence
 over environment variable.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;cache_dir&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;cache_dir&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_video_cache_dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set up cache directory for preprocessed videos. Config argument takes precedence</span>
 <span class="sd">    over environment variable.</span>
@@ -2395,46 +2685,56 @@ over environment variable.</p>
         <span class="n">cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">cache_dir</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
+</div>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="zamba.data.video.VideoMetadata" class="doc doc-heading">
-        <code>
-VideoMetadata            (<span title="pydantic.main.BaseModel">BaseModel</span>)
-        </code>
+        <code>VideoMetadata</code>
 
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
 
 <a href="#zamba.data.video.VideoMetadata" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
 
 
         <details class="quote">
           <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">VideoMetadata</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">VideoMetadata</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">n_frames</span><span class="p">:</span> <span class="nb">int</span>
@@ -2451,10 +2751,10 @@ VideoMetadata            (<span title="pydantic.main.BaseModel">BaseModel</span>
             <span class="n">duration_s</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]),</span>
             <span class="n">fps</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="s2">&quot;r_frame_rate&quot;</span><span class="p">])),</span>  <span class="c1"># reported, not average</span>
         <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2462,481 +2762,133 @@ VideoMetadata            (<span title="pydantic.main.BaseModel">BaseModel</span>
 
 
 
+<h4 id="zamba.data.video.VideoMetadata-attributes">Attributes<a href="#zamba.data.video.VideoMetadata-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
 
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoMetadata.duration_s" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">duration_s</span><span class="p">:</span> <span class="nb">float</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoMetadata.duration_s" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoMetadata.fps" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">fps</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoMetadata.fps" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoMetadata.height" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">height</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoMetadata.height" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoMetadata.n_frames" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">n_frames</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoMetadata.n_frames" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.data.video.VideoMetadata.width" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">width</span><span class="p">:</span> <span class="nb">int</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoMetadata.width" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-<h4 id="zamba.data.video.VideoMetadata-classes">Classes<a href="#zamba.data.video.VideoMetadata-classes" class="headerlink" title="Permanent link">&para;</a></h4>
+<h4 id="zamba.data.video.VideoMetadata-functions">Functions<a href="#zamba.data.video.VideoMetadata-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
-  <div class="doc doc-object doc-class">
-
-
-
-<h5 id="zamba.data.video.VideoMetadata.Config" class="doc doc-heading">
-        <code>
-Config        </code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
-  </span>
-
-<a href="#zamba.data.video.VideoMetadata.Config" class="headerlink" title="Permanent link">&para;</a></h5>
-
-    <div class="doc doc-contents ">
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-<h6 id="zamba.data.video.VideoMetadata.Config-classes">Classes<a href="#zamba.data.video.VideoMetadata.Config-classes" class="headerlink" title="Permanent link">&para;</a></h6>
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h7 id="zamba.data.video.VideoMetadata.Config.getter_dict" class="doc doc-heading">
-        <code>
-getter_dict            (<span title="pydantic.utils.Representation">Representation</span>)
-        </code>
-
-
-
-<a href="#zamba.data.video.VideoMetadata.Config.getter_dict" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-      <p>Hack to make object's smell just enough like dicts for validate_model.</p>
-<p>We can't inherit from Mapping[str, Any] because it upsets cython so we have to implement all methods ourselves.</p>
-
-
-
-    </div>
-
-  </div>
-
-
-
-<h6 id="zamba.data.video.VideoMetadata.Config-methods">Methods<a href="#zamba.data.video.VideoMetadata.Config-methods" class="headerlink" title="Permanent link">&para;</a></h6>
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h7 id="zamba.data.video.VideoMetadata.Config.get_field_info" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_field_info</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">unicode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#zamba.data.video.VideoMetadata.Config.get_field_info" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-      <p>Get properties of FieldInfo from the <code>fields</code> property of the config class.</p>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h7 id="zamba.data.video.VideoMetadata.Config.json_dumps" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">json_dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skipkeys</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ensure_ascii</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">check_circular</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">allow_nan</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sort_keys</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></code>
-
-
-<a href="#zamba.data.video.VideoMetadata.Config.json_dumps" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-      <p>Serialize <code>obj</code> to a JSON formatted <code>str</code>.</p>
-<p>If <code>skipkeys</code> is true then <code>dict</code> keys that are not basic types
-(<code>str</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>None</code>) will be skipped
-instead of raising a <code>TypeError</code>.</p>
-<p>If <code>ensure_ascii</code> is false, then the return value can contain non-ASCII
-characters if they appear in strings contained in <code>obj</code>. Otherwise, all
-such characters are escaped in JSON strings.</p>
-<p>If <code>check_circular</code> is false, then the circular reference check
-for container types will be skipped and a circular reference will
-result in an <code>OverflowError</code> (or worse).</p>
-<p>If <code>allow_nan</code> is false, then it will be a <code>ValueError</code> to
-serialize out of range <code>float</code> values (<code>nan</code>, <code>inf</code>, <code>-inf</code>) in
-strict compliance of the JSON specification, instead of using the
-JavaScript equivalents (<code>NaN</code>, <code>Infinity</code>, <code>-Infinity</code>).</p>
-<p>If <code>indent</code> is a non-negative integer, then JSON array elements and
-object members will be pretty-printed with that indent level. An indent
-level of 0 will only insert newlines. <code>None</code> is the most compact
-representation.</p>
-<p>If specified, <code>separators</code> should be an <code>(item_separator, key_separator)</code>
-tuple.  The default is <code>(', ', ': ')</code> if <em>indent</em> is <code>None</code> and
-<code>(',', ': ')</code> otherwise.  To get the most compact JSON representation,
-you should specify <code>(',', ':')</code> to eliminate whitespace.</p>
-<p><code>default(obj)</code> is a function that should return a serializable version
-of obj or raise TypeError. The default simply raises TypeError.</p>
-<p>If <em>sort_keys</em> is true (default: <code>False</code>), then the output of
-dictionaries will be sorted by key.</p>
-<p>To use a custom <code>JSONEncoder</code> subclass (e.g. one that overrides the
-<code>.default()</code> method to serialize additional types), specify it with
-the <code>cls</code> kwarg; otherwise <code>JSONEncoder</code> is used.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_circular</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Serialize ``obj`` to a JSON formatted ``str``.</span>
-
-<span class="sd">    If ``skipkeys`` is true then ``dict`` keys that are not basic types</span>
-<span class="sd">    (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped</span>
-<span class="sd">    instead of raising a ``TypeError``.</span>
-
-<span class="sd">    If ``ensure_ascii`` is false, then the return value can contain non-ASCII</span>
-<span class="sd">    characters if they appear in strings contained in ``obj``. Otherwise, all</span>
-<span class="sd">    such characters are escaped in JSON strings.</span>
-
-<span class="sd">    If ``check_circular`` is false, then the circular reference check</span>
-<span class="sd">    for container types will be skipped and a circular reference will</span>
-<span class="sd">    result in an ``OverflowError`` (or worse).</span>
-
-<span class="sd">    If ``allow_nan`` is false, then it will be a ``ValueError`` to</span>
-<span class="sd">    serialize out of range ``float`` values (``nan``, ``inf``, ``-inf``) in</span>
-<span class="sd">    strict compliance of the JSON specification, instead of using the</span>
-<span class="sd">    JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).</span>
-
-<span class="sd">    If ``indent`` is a non-negative integer, then JSON array elements and</span>
-<span class="sd">    object members will be pretty-printed with that indent level. An indent</span>
-<span class="sd">    level of 0 will only insert newlines. ``None`` is the most compact</span>
-<span class="sd">    representation.</span>
-
-<span class="sd">    If specified, ``separators`` should be an ``(item_separator, key_separator)``</span>
-<span class="sd">    tuple.  The default is ``(&#39;, &#39;, &#39;: &#39;)`` if *indent* is ``None`` and</span>
-<span class="sd">    ``(&#39;,&#39;, &#39;: &#39;)`` otherwise.  To get the most compact JSON representation,</span>
-<span class="sd">    you should specify ``(&#39;,&#39;, &#39;:&#39;)`` to eliminate whitespace.</span>
-
-<span class="sd">    ``default(obj)`` is a function that should return a serializable version</span>
-<span class="sd">    of obj or raise TypeError. The default simply raises TypeError.</span>
-
-<span class="sd">    If *sort_keys* is true (default: ``False``), then the output of</span>
-<span class="sd">    dictionaries will be sorted by key.</span>
-
-<span class="sd">    To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the</span>
-<span class="sd">    ``.default()`` method to serialize additional types), specify it with</span>
-<span class="sd">    the ``cls`` kwarg; otherwise ``JSONEncoder`` is used.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># cached encoder</span>
-    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">skipkeys</span> <span class="ow">and</span> <span class="n">ensure_ascii</span> <span class="ow">and</span>
-        <span class="n">check_circular</span> <span class="ow">and</span> <span class="n">allow_nan</span> <span class="ow">and</span>
-        <span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">indent</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">separators</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span>
-        <span class="n">default</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sort_keys</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kw</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_default_encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="n">JSONEncoder</span>
-    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-        <span class="n">skipkeys</span><span class="o">=</span><span class="n">skipkeys</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="n">ensure_ascii</span><span class="p">,</span>
-        <span class="n">check_circular</span><span class="o">=</span><span class="n">check_circular</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="n">allow_nan</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span>
-        <span class="n">separators</span><span class="o">=</span><span class="n">separators</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="n">sort_keys</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h7 id="zamba.data.video.VideoMetadata.Config.json_loads" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">json_loads</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">object_hook</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parse_float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parse_int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parse_constant</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">object_pairs_hook</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></code>
-
-
-<a href="#zamba.data.video.VideoMetadata.Config.json_loads" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-      <p>Deserialize <code>s</code> (a <code>str</code>, <code>bytes</code> or <code>bytearray</code> instance
-containing a JSON document) to a Python object.</p>
-<p><code>object_hook</code> is an optional function that will be called with the
-result of any object literal decode (a <code>dict</code>). The return value of
-<code>object_hook</code> will be used instead of the <code>dict</code>. This feature
-can be used to implement custom decoders (e.g. JSON-RPC class hinting).</p>
-<p><code>object_pairs_hook</code> is an optional function that will be called with the
-result of any object literal decoded with an ordered list of pairs.  The
-return value of <code>object_pairs_hook</code> will be used instead of the <code>dict</code>.
-This feature can be used to implement custom decoders.  If <code>object_hook</code>
-is also defined, the <code>object_pairs_hook</code> takes priority.</p>
-<p><code>parse_float</code>, if specified, will be called with the string
-of every JSON float to be decoded. By default this is equivalent to
-float(num_str). This can be used to use another datatype or parser
-for JSON floats (e.g. decimal.Decimal).</p>
-<p><code>parse_int</code>, if specified, will be called with the string
-of every JSON int to be decoded. By default this is equivalent to
-int(num_str). This can be used to use another datatype or parser
-for JSON integers (e.g. float).</p>
-<p><code>parse_constant</code>, if specified, will be called with one of the
-following strings: -Infinity, Infinity, NaN.
-This can be used to raise an exception if invalid JSON numbers
-are encountered.</p>
-<p>To use a custom <code>JSONDecoder</code> subclass, specify it with the <code>cls</code>
-kwarg; otherwise <code>JSONDecoder</code> is used.</p>
-<p>The <code>encoding</code> argument is ignored and deprecated since Python 3.1.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">loads</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">parse_int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance</span>
-<span class="sd">    containing a JSON document) to a Python object.</span>
-
-<span class="sd">    ``object_hook`` is an optional function that will be called with the</span>
-<span class="sd">    result of any object literal decode (a ``dict``). The return value of</span>
-<span class="sd">    ``object_hook`` will be used instead of the ``dict``. This feature</span>
-<span class="sd">    can be used to implement custom decoders (e.g. JSON-RPC class hinting).</span>
-
-<span class="sd">    ``object_pairs_hook`` is an optional function that will be called with the</span>
-<span class="sd">    result of any object literal decoded with an ordered list of pairs.  The</span>
-<span class="sd">    return value of ``object_pairs_hook`` will be used instead of the ``dict``.</span>
-<span class="sd">    This feature can be used to implement custom decoders.  If ``object_hook``</span>
-<span class="sd">    is also defined, the ``object_pairs_hook`` takes priority.</span>
-
-<span class="sd">    ``parse_float``, if specified, will be called with the string</span>
-<span class="sd">    of every JSON float to be decoded. By default this is equivalent to</span>
-<span class="sd">    float(num_str). This can be used to use another datatype or parser</span>
-<span class="sd">    for JSON floats (e.g. decimal.Decimal).</span>
-
-<span class="sd">    ``parse_int``, if specified, will be called with the string</span>
-<span class="sd">    of every JSON int to be decoded. By default this is equivalent to</span>
-<span class="sd">    int(num_str). This can be used to use another datatype or parser</span>
-<span class="sd">    for JSON integers (e.g. float).</span>
-
-<span class="sd">    ``parse_constant``, if specified, will be called with one of the</span>
-<span class="sd">    following strings: -Infinity, Infinity, NaN.</span>
-<span class="sd">    This can be used to raise an exception if invalid JSON numbers</span>
-<span class="sd">    are encountered.</span>
-
-<span class="sd">    To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``</span>
-<span class="sd">    kwarg; otherwise ``JSONDecoder`` is used.</span>
-
-<span class="sd">    The ``encoding`` argument is ignored and deprecated since Python 3.1.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\ufeff</span><span class="s1">&#39;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Unexpected UTF-8 BOM (decode using utf-8-sig)&quot;</span><span class="p">,</span>
-                                  <span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;the JSON object must be str, bytes or bytearray, &#39;</span>
-                            <span class="sa">f</span><span class="s1">&#39;not </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">detect_encoding</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="s1">&#39;surrogatepass&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="s2">&quot;encoding&quot;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">warnings</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;&#39;encoding&#39; is ignored and deprecated. It will be removed in Python 3.9&quot;</span><span class="p">,</span>
-            <span class="ne">DeprecationWarning</span><span class="p">,</span>
-            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
-        <span class="p">)</span>
-        <span class="k">del</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">object_hook</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span>
-            <span class="n">parse_int</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parse_float</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span>
-            <span class="n">parse_constant</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">object_pairs_hook</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kw</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_default_decoder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="n">JSONDecoder</span>
-    <span class="k">if</span> <span class="n">object_hook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;object_hook&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_hook</span>
-    <span class="k">if</span> <span class="n">object_pairs_hook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;object_pairs_hook&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_pairs_hook</span>
-    <span class="k">if</span> <span class="n">parse_float</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;parse_float&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_float</span>
-    <span class="k">if</span> <span class="n">parse_int</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;parse_int&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_int</span>
-    <span class="k">if</span> <span class="n">parse_constant</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;parse_constant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_constant</span>
-    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h7 id="zamba.data.video.VideoMetadata.Config.prepare_field" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">prepare_field</span><span class="p">(</span><span class="n">field</span><span class="p">:</span> <span class="n">ModelField</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#zamba.data.video.VideoMetadata.Config.prepare_field" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-      <p>Optional hook to check or modify fields during model creation.</p>
-
-    </div>
-
-  </div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.VideoMetadata.from_video" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">from_video</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">PathLike</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+<code class="highlight language-python"><span class="n">from_video</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
 <a href="#zamba.data.video.VideoMetadata.from_video" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_video</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">):</span>
     <span class="n">stream</span> <span class="o">=</span> <span class="n">get_video_stream</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
@@ -2946,42 +2898,100 @@ kwarg; otherwise <code>JSONDecoder</code> is used.</p>
         <span class="n">duration_s</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]),</span>
         <span class="n">fps</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">Fraction</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="s2">&quot;r_frame_rate&quot;</span><span class="p">])),</span>  <span class="c1"># reported, not average</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
+</div>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="zamba.data.video.npy_cache" class="doc doc-heading">
-        <code>
-npy_cache        </code>
-
+        <code>npy_cache</code>
 
 
 <a href="#zamba.data.video.npy_cache" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
+
+  <div class="doc doc-contents ">
+
 
 
         <details class="quote">
           <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">npy_cache</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">npy_cache</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span> <span class="o">=</span> <span class="n">cache_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span> <span class="o">=</span> <span class="n">cleanup</span>
@@ -3044,10 +3054,10 @@ npy_cache        </code>
                     <span class="s2">&quot;system temp directory. If you really want to delete, do so manually using:</span><span class="se">\n</span><span class="s2"> &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;rm -r </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -3055,93 +3065,162 @@ npy_cache        </code>
 
 
 
+<h4 id="zamba.data.video.npy_cache-attributes">Attributes<a href="#zamba.data.video.npy_cache-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
+
+<div class="doc doc-object doc-attribute">
 
 
 
+<h5 id="zamba.data.video.npy_cache.cache_path" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cache_path</span> <span class="o">=</span> <span class="n">cache_path</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
 
-  <div class="doc doc-object doc-method">
+<a href="#zamba.data.video.npy_cache.cache_path" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.data.video.npy_cache.cleanup" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cleanup</span> <span class="o">=</span> <span class="n">cleanup</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.data.video.npy_cache.cleanup" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<h4 id="zamba.data.video.npy_cache-functions">Functions<a href="#zamba.data.video.npy_cache-functions" class="headerlink" title="Permanent link">&para;</a></h4>
+
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.data.video.npy_cache.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#zamba.data.video.npy_cache.__init__" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cache_path</span> <span class="o">=</span> <span class="n">cache_path</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span> <span class="o">=</span> <span class="n">cleanup</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
-
-
+</div>
 <h2 id="zamba.data.video-functions">Functions<a href="#zamba.data.video-functions" class="headerlink" title="Permanent link">&para;</a></h2>
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.video.ensure_frame_number" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ensure_frame_number</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">total_frames</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span></code>
 
-
 <a href="#zamba.data.video.ensure_frame_number" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Ensures the array contains the requested number of frames either by clipping frames from
 the end or dulpicating the last frame.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>arr</code></td>
-        <td><code>np.ndarray</code></td>
-        <td><p>Array of video frames with shape (frames, height, width, channel).</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>total_frames</code></td>
-        <td><code>int</code></td>
-        <td><p>Desired number of frames in output array.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ensure_frame_number</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">total_frames</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>arr</code></td>
+          <td>
+                <code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>
+          </td>
+          <td><p>Array of video frames with shape (frames, height, width, channel).</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>total_frames</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Desired number of frames in output array.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ensure_frame_number</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">total_frames</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ensures the array contains the requested number of frames either by clipping frames from</span>
 <span class="sd">    the end or dulpicating the last frame.</span>
 
@@ -3170,30 +3249,54 @@ the end or dulpicating the last frame.</p>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
             <span class="p">[</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">total_frames</span> <span class="o">-</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
         <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.video.ffprobe" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ffprobe</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">PathLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span></code>
-
+<code class="highlight language-python"><span class="n">ffprobe</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span></code>
 
 <a href="#zamba.data.video.ffprobe" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ffprobe</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ffprobe</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">flatten_json</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">j</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
@@ -3221,133 +3324,251 @@ the end or dulpicating the last frame.</p>
     <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">b</span><span class="p">},</span> <span class="n">flatten_json</span><span class="p">(</span><span class="n">output</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.video.get_frame_time_estimates" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_frame_time_estimates</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">PathLike</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">get_frame_time_estimates</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)</span></code>
 
 <a href="#zamba.data.video.get_frame_time_estimates" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_frame_time_estimates</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_frame_time_estimates</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">):</span>
     <span class="n">probe</span> <span class="o">=</span> <span class="n">ffmpeg</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">show_entries</span><span class="o">=</span><span class="s2">&quot;frame=best_effort_timestamp_time&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;best_effort_timestamp_time&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">probe</span><span class="p">[</span><span class="s2">&quot;frames&quot;</span><span class="p">]]</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.video.get_video_stream" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_video_stream</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">cloudpathlib</span><span class="o">.</span><span class="n">s3</span><span class="o">.</span><span class="n">s3path</span><span class="o">.</span><span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span></code>
-
+<code class="highlight language-python"><span class="n">get_video_stream</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span></code>
 
 <a href="#zamba.data.video.get_video_stream" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_video_stream</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_video_stream</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">probe</span> <span class="o">=</span> <span class="n">ffmpeg</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
     <span class="k">except</span> <span class="n">ffmpeg</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ZambaFfmpegException</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">stream</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">probe</span><span class="p">[</span><span class="s2">&quot;streams&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">stream</span><span class="p">[</span><span class="s2">&quot;codec_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;video&quot;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.video.load_video_frames" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">load_video_frames</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">PathLike</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">zamba</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">video</span><span class="o">.</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">load_video_frames</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 <a href="#zamba.data.video.load_video_frames" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Loads frames from videos using fast ffmpeg commands.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>filepath</code></td>
-        <td><code>os.PathLike</code></td>
-        <td><p>Path to the video.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>filepath</code></td>
+          <td>
+                <code>os.<span title="os.PathLike">PathLike</span></code>
+          </td>
+          <td><p>Path to the video.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>config</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="zamba.data.video.VideoLoaderConfig" href="#zamba.data.video.VideoLoaderConfig">VideoLoaderConfig</a></code>
+          </td>
+          <td><p>Configuration for video loading.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>**kwargs</code></td>
+          <td>
+          </td>
+          <td><p>Optionally, arguments for VideoLoaderConfig can be passed in directly.</p></td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>config</code></td>
-        <td><code>VideoLoaderConfig</code></td>
-        <td><p>Configuration for video loading.</p></td>
-        <td><code>None</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>**kwargs</code></td>
-        <td></td>
-        <td><p>Optionally, arguments for VideoLoaderConfig can be passed in directly.</p></td>
-        <td><code>{}</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>np.ndarray</code></td>
-      <td><p>An array of video frames with dimensions (time x height x width x channels).</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_video_frames</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+          </td>
+          <td><p>np.ndarray: An array of video frames with dimensions (time x height x width x channels).</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_video_frames</span><span class="p">(</span>
     <span class="n">filepath</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -3452,30 +3673,48 @@ the end or dulpicating the last frame.</p>
         <span class="n">arr</span> <span class="o">=</span> <span class="n">ensure_frame_number</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">total_frames</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">total_frames</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">arr</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.video.num_frames" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">num_frames</span><span class="p">(</span><span class="n">stream_or_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">cloudpathlib</span><span class="o">.</span><span class="n">s3</span><span class="o">.</span><span class="n">s3path</span><span class="o">.</span><span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
-
+<code class="highlight language-python"><span class="n">num_frames</span><span class="p">(</span><span class="n">stream_or_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
 
 <a href="#zamba.data.video.num_frames" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/video.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">num_frames</span><span class="p">(</span><span class="n">stream_or_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/video.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">num_frames</span><span class="p">(</span><span class="n">stream_or_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">S3Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream_or_path</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">stream</span> <span class="o">=</span> <span class="n">get_video_stream</span><span class="p">(</span><span class="n">stream_or_path</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -3497,22 +3736,19 @@ the end or dulpicating the last frame.</p>
         <span class="n">duration</span> <span class="o">-=</span> <span class="nb">float</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">floor</span><span class="p">(</span><span class="n">duration</span> <span class="o">*</span> <span class="n">frame_rate</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
               
             </article>
@@ -3581,7 +3817,7 @@ the end or dulpicating the last frame.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2e1ee47.min.js"></script>
+      <script src="../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
       
     
   </body>
