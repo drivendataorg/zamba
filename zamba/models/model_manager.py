@@ -269,9 +269,6 @@ def train_model(
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
         strategy="ddp" if data_module.multiprocessing_context is not None else None,
-        plugins=DDPPlugin(find_unused_parameters=False)
-        if data_module.multiprocessing_context is not None
-        else None,
     )
 
     if video_loader_config.cache_dir is None:
