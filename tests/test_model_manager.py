@@ -179,15 +179,16 @@ def test_download_weights(model_name, weight_region, tmp_path):
     else:
         region_bucket = "drivendata-public-assets"
 
-    fspath = download_weights(
+    ckpt_path = download_weights(
         filename=public_weights,
         weight_region=weight_region,
         destination_dir=tmp_path,
     )
-    # ensure weights exist
-    assert Path(fspath).exists()
+    # ensure download happened
+    assert Path(ckpt_path).exists()
+
     # ensure path is correct
-    assert Path(fspath) == tmp_path / region_bucket / "zamba_official_models" / public_weights
+    assert Path(ckpt_path) == tmp_path / public_weights
 
     # invalid filename
     with pytest.raises(ClientError):
