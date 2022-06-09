@@ -34,7 +34,7 @@ def download_weights(
     )
 
     s3p.download_to(destination_dir)
-    return Path(destination_dir / s3p.name)
+    return str(Path(destination_dir / s3p.name))
 
 
 def get_model_checkpoint_filename(model_name):
