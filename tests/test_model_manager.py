@@ -174,11 +174,6 @@ def test_train_save_dir_overwrite(
 def test_download_weights(model_name, weight_region, tmp_path):
     public_weights = get_model_checkpoint_filename(model_name)
 
-    if weight_region != "us":
-        region_bucket = f"drivendata-public-assets-{weight_region}"
-    else:
-        region_bucket = "drivendata-public-assets"
-
     ckpt_path = download_weights(
         filename=public_weights,
         weight_region=weight_region,
