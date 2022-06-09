@@ -32,7 +32,9 @@ def download_weights(
         f"{region_bucket}/zamba_official_models/{filename}",
         client=S3Client(local_cache_dir=destination_dir, no_sign_request=True),
     )
-    return s3p.fspath
+
+    s3p.download_to(destination_dir)
+    return Path(destination_dir / s3p.name)
 
 
 def get_model_checkpoint_filename(model_name):
