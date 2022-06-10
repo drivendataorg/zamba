@@ -172,6 +172,11 @@ def validate_model_name_and_checkpoint(cls, values):
             # get public weights file from official models config
             values["checkpoint"] = get_model_checkpoint_filename(model_name)
 
+            # if cached version exists, use that
+            cached_path = Path(values["model_cache_dir"]) / values["checkpoint"]
+            if cached_path.exists():
+                values["checkpoint"] = cached_path
+
     return values
 
 

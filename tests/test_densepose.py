@@ -106,7 +106,7 @@ def test_video(model, chimp_video_path, tmp_path):
         )
 
         # output to disk
-        assert anatomy_info.shape == (8, 46)
+        assert anatomy_info.shape == (10, 46)
         assert (anatomy_info > 0).any().any()
         assert (tmp_path / f"anatomized_{model}.csv").stat().st_size > 0
 
