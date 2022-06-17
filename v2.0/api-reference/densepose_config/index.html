@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/api-reference/densepose_config/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
     
     
       
@@ -21,11 +21,12 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.e411adfe.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
         
+      
       
     
     
@@ -876,8 +877,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#zamba.models.densepose.config-attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#zamba.models.densepose.config-classes" class="md-nav__link">
     Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.densepose.config-functions" class="md-nav__link">
+    Functions
   </a>
   
 </li>
@@ -1267,8 +1282,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#zamba.models.densepose.config-attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#zamba.models.densepose.config-classes" class="md-nav__link">
     Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zamba.models.densepose.config-functions" class="md-nav__link">
+    Functions
   </a>
   
 </li>
@@ -1294,13 +1323,13 @@
 <h1 id="zambamodelsdenseposeconfig">zamba.models.densepose.config<a class="headerlink" href="#zambamodelsdenseposeconfig" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
-
-
-    <div class="doc doc-contents first">
+<div class="doc doc-object doc-module">
 
 
 
+  <div class="doc doc-contents first">
+
+  
 
   <div class="doc doc-children">
 
@@ -1308,104 +1337,279 @@
 
 
 
+<h2 id="zamba.models.densepose.config-attributes">Attributes<a href="#zamba.models.densepose.config-attributes" class="headerlink" title="Permanent link">&para;</a></h2>
 <h2 id="zamba.models.densepose.config-classes">Classes<a href="#zamba.models.densepose.config-classes" class="headerlink" title="Permanent link">&para;</a></h2>
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="zamba.models.densepose.config.DensePoseConfig" class="doc doc-heading">
-        <code>
-DensePoseConfig            (<a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="../models-config/#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a>)
-        </code>
+        <code>DensePoseConfig</code>
 
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="../models-config/#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+
+  
       <p>Configuration for running dense pose on videos.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>video_loader_config</code></td>
-        <td><code>VideoLoaderConfig</code></td>
-        <td><p>Configuration for loading videos</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>output_type</code></td>
-        <td><code>str</code></td>
-        <td><p>one of DensePoseOutputEnum (currently "segmentation" or "chimp_anatomy").</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>render_output</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to save a version of the video with the output overlaid on top.
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>video_loader_config</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="zamba.data.video.VideoLoaderConfig" href="../data-video/#zamba.data.video.VideoLoaderConfig">VideoLoaderConfig</a></code>
+          </td>
+          <td><p>Configuration for loading videos</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>output_type</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>one of DensePoseOutputEnum (currently "segmentation" or "chimp_anatomy").</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>render_output</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to save a version of the video with the output overlaid on top.
 Defaults to False.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>embeddings_in_json</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to save the embeddings matrices in the json of the
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>embeddings_in_json</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to save the embeddings matrices in the json of the
 DensePose result. Setting to True can result in large json files. Defaults to False.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>data_dir</code></td>
-        <td><code>Path</code></td>
-        <td><p>Where to find the files listed in filepaths (or where to look if
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>data_dir</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>Where to find the files listed in filepaths (or where to look if
 filepaths is not provided).</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>filepaths</code></td>
-        <td><code>Path</code></td>
-        <td><p>Path to a CSV file with a list of filepaths to process.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>save_dir</code></td>
-        <td><code>Path</code></td>
-        <td><p>Directory for where to save the output files;
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>filepaths</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>Path to a CSV file with a list of filepaths to process.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>save_dir</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>Directory for where to save the output files;
 defaults to os.getcwd().</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>cache_dir</code></td>
-        <td><code>Path</code></td>
-        <td><p>Path for downloading and saving model weights. Defaults
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>cache_dir</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>Path for downloading and saving model weights. Defaults
 to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>weight_download_region</code></td>
-        <td><code>RegionEnum</code></td>
-        <td><p>region where to download weights; should
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>weight_download_region</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="zamba.models.utils.RegionEnum" href="../models-utils/#zamba.models.utils.RegionEnum">RegionEnum</a></code>
+          </td>
+          <td><p>region where to download weights; should
 be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
         <details class="quote">
           <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DensePoseConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DensePoseConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration for running dense pose on videos.</span>
 
 <span class="sd">    Args:</span>
@@ -1544,10 +1748,10 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
             <span class="n">skip_load_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1555,327 +1759,230 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 
 
 
+<h4 id="zamba.models.densepose.config.DensePoseConfig-attributes">Attributes<a href="#zamba.models.densepose.config.DensePoseConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
 
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.cache_dir" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cache_dir</span><span class="p">:</span> <span class="n">Path</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.data_dir" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">Path</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.data_dir" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.embeddings_in_json" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">embeddings_in_json</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">embeddings_in_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.embeddings_in_json" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.filepaths" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">filepaths</span><span class="p">:</span> <span class="n">Path</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.filepaths" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.output_type" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">output_type</span><span class="p">:</span> <span class="n">DensePoseOutputEnum</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.output_type" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.render_output" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">render_output</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">render_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.render_output" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.save_dir" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">save_dir</span><span class="p">:</span> <span class="n">Path</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">save_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.save_dir" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.video_loader_config" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">video_loader_config</span><span class="p">:</span> <span class="n">VideoLoaderConfig</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.video_loader_config" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.weight_download_region" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+<code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.weight_download_region" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
+<h4 id="zamba.models.densepose.config.DensePoseConfig-functions">Functions<a href="#zamba.models.densepose.config.DensePoseConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h5 id="zamba.models.densepose.config.DensePoseConfig.Config" class="doc doc-heading">
-        <code>
-Config        </code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
-  </span>
-
-<a href="#zamba.models.densepose.config.DensePoseConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
-    <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
-</code></pre></div>
-        </details>
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h7 id="zamba.models.densepose.config.DensePoseConfig.Config.extra" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extra</span></code>
-
-
-<a href="#zamba.models.densepose.config.DensePoseConfig.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h7 id="zamba.models.densepose.config.DensePoseConfig.Config.use_enum_values" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">use_enum_values</span></code>
-
-
-<a href="#zamba.models.densepose.config.DensePoseConfig.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h7 id="zamba.models.densepose.config.DensePoseConfig.Config.validate_assignment" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">validate_assignment</span></code>
-
-
-<a href="#zamba.models.densepose.config.DensePoseConfig.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-<h4 id="zamba.models.densepose.config.DensePoseConfig-methods">Methods<a href="#zamba.models.densepose.config.DensePoseConfig-methods" class="headerlink" title="Permanent link">&para;</a></h4>
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.get_filepaths" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_filepaths</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.models.densepose.config.DensePoseConfig.get_filepaths" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>If no file list is passed, get all files in data directory. Warn if there
 are unsupported suffixes. Filepaths is set to a dataframe, where column <code>filepath</code>
 contains files with valid suffixes.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_filepaths</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;If no file list is passed, get all files in data directory. Warn if there</span>
 <span class="sd">    are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`</span>
@@ -1906,31 +2013,73 @@ contains files with valid suffixes.</p>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos in </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;data_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.run_model" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">run_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">run_model</span><span class="p">()</span></code>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.run_model" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Use this configuration to execute DensePose via the DensePoseManager</p>
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">run_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Use this configuration to execute DensePose via the DensePoseManager&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="p">,</span> <span class="n">DensePoseOutputEnum</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">=</span> <span class="n">DensePoseOutputEnum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="p">)</span>
@@ -1975,33 +2124,52 @@ contains files with valid suffixes.</p>
                 <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
                 <span class="n">fps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
             <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseConfig.validate_files" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_files</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
 <a href="#zamba.models.densepose.config.DensePoseConfig.validate_files" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_files</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="c1"># if globbing from data directory, already have valid dataframe</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -2027,50 +2195,48 @@ contains files with valid suffixes.</p>
         <span class="n">skip_load_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
+</div>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="zamba.models.densepose.config.DensePoseOutputEnum" class="doc doc-heading">
-        <code>
-DensePoseOutputEnum            (<span title="enum.Enum">Enum</span>)
-        </code>
-
+        <code>DensePoseOutputEnum</code>
 
 
 <a href="#zamba.models.densepose.config.DensePoseOutputEnum" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
-      <p>An enumeration.</p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DensePoseOutputEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DensePoseOutputEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">segmentation</span> <span class="o">=</span> <span class="s2">&quot;segmentation&quot;</span>
     <span class="n">chimp_anatomy</span> <span class="o">=</span> <span class="s2">&quot;chimp_anatomy&quot;</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2078,43 +2244,45 @@ DensePoseOutputEnum            (<span title="enum.Enum">Enum</span>)
 
 
 
+<h4 id="zamba.models.densepose.config.DensePoseOutputEnum-attributes">Attributes<a href="#zamba.models.densepose.config.DensePoseOutputEnum-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
 
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseOutputEnum.chimp_anatomy" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">chimp_anatomy</span></code>
-
+<code class="highlight language-python"><span class="n">chimp_anatomy</span> <span class="o">=</span> <span class="s1">&#39;chimp_anatomy&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
 
 <a href="#zamba.models.densepose.config.DensePoseOutputEnum.chimp_anatomy" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h5 id="zamba.models.densepose.config.DensePoseOutputEnum.segmentation" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">segmentation</span></code>
-
+<code class="highlight language-python"><span class="n">segmentation</span> <span class="o">=</span> <span class="s1">&#39;segmentation&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
 
 <a href="#zamba.models.densepose.config.DensePoseOutputEnum.segmentation" class="headerlink" title="Permanent link">&para;</a></h5>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
-
+</div>
 
 
 
@@ -2122,24 +2290,22 @@ DensePoseOutputEnum            (<span title="enum.Enum">Enum</span>)
 
   </div>
 
-    </div>
-
   </div>
 
-
-
-
+</div>
+<h2 id="zamba.models.densepose.config-functions">Functions<a href="#zamba.models.densepose.config-functions" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
               
             </article>
+            
           </div>
         </div>
         
@@ -2147,7 +2313,8 @@ DensePoseOutputEnum            (<span title="enum.Enum">Enum</span>)
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../models-config/" class="md-footer__link md-footer__link--prev" aria-label="Previous: zamba.models.config" rel="prev">
@@ -2202,10 +2369,10 @@ DensePoseOutputEnum            (<span title="enum.Enum">Enum</span>)
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.ed9748b7.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a877e258.min.js"></script>
       
     
   </body>

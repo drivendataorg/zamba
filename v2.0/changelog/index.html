@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/changelog/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
     
     
       
@@ -21,11 +21,12 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.e411adfe.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
+      
       
     
     
@@ -1222,6 +1223,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#v204-2022-06-17" class="md-nav__link">
+    v2.0.4 (2022-06-17)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v203-2022-05-06" class="md-nav__link">
     v2.0.3 (2022-05-06)
   </a>
@@ -1268,6 +1276,13 @@
 
 
 <h1 id="zamba-changelog"><code>zamba</code> changelog<a class="headerlink" href="#zamba-changelog" title="Permanent link">&para;</a></h1>
+<h2 id="v204-2022-06-17">v2.0.4 (2022-06-17)<a class="headerlink" href="#v204-2022-06-17" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Pins <code>thop</code> to an earlier version (<a href="https://github.com/drivendataorg/zamba/pull/191">PR #191</a>)</li>
+<li>Fixes caching so a previously downloaded checkpoint file actually gets used (<a href="https://github.com/drivendataorg/zamba/pull/190">PR #190</a>)</li>
+<li>Removes a lightning deprecation warning for DDP and sets a ceiling on <code>protobuf</code> for tensorboard (<a href="https://github.com/drivendataorg/zamba/pull/187">PR #187</a>)</li>
+<li>Ignores extra columns in the user-provided labels or filepaths csv (<a href="https://github.com/drivendataorg/zamba/pull/186">PR #186</a>)</li>
+</ul>
 <h2 id="v203-2022-05-06">v2.0.3 (2022-05-06)<a class="headerlink" href="#v203-2022-05-06" title="Permanent link">&para;</a></h2>
 <p>Releasing to pick up #179.</p>
 <ul>
@@ -1300,6 +1315,7 @@ of the stack to form the final prediction.</p>
 
               
             </article>
+            
           </div>
         </div>
         
@@ -1307,7 +1323,8 @@ of the stack to form the final prediction.</p>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../contribute/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Help make `zamba` better" rel="prev">
@@ -1362,10 +1379,10 @@ of the stack to form the final prediction.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.ed9748b7.min.js"></script>
+      <script src="../assets/javascripts/bundle.a877e258.min.js"></script>
       
     
   </body>

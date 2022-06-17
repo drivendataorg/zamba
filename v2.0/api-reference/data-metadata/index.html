@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/v2.0/api-reference/data-metadata/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
     
     
       
@@ -21,11 +21,12 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.e411adfe.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
         
+      
       
     
     
@@ -1292,13 +1293,13 @@
 <h1 id="zambadatametadata">zamba.data.metadata<a class="headerlink" href="#zambadatametadata" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
-
-
-    <div class="doc doc-contents first">
+<div class="doc doc-object doc-module">
 
 
 
+  <div class="doc doc-contents first">
+
+  
 
   <div class="doc doc-children">
 
@@ -1307,79 +1308,156 @@
 
 
 
+
 <h2 id="zamba.data.metadata-functions">Functions<a href="#zamba.data.metadata-functions" class="headerlink" title="Permanent link">&para;</a></h2>
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.metadata.create_site_specific_splits" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_site_specific_splits</span><span class="p">(</span><span class="n">site</span><span class="p">:</span> <span class="n">Series</span><span class="p">,</span> <span class="n">proportions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">random_state</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">mtrand</span><span class="o">.</span><span class="n">RandomState</span><span class="p">]</span> <span class="o">=</span> <span class="mi">989</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">create_site_specific_splits</span><span class="p">(</span><span class="n">site</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">proportions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">random_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">mtrand</span><span class="o">.</span><span class="n">RandomState</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">989</span><span class="p">)</span></code>
 
 <a href="#zamba.data.metadata.create_site_specific_splits" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Splits sites into distinct groups whose sizes roughly matching the given proportions. Null
 sites are randomly assigned to groups using the provided proportions.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>site</code></td>
-        <td><code>pd.Series</code></td>
-        <td><p>A series of sites, one element per observation,</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>proportions</code></td>
-        <td><code>dict</code></td>
-        <td><p>A dict whose keys are the resulting groups and whose values are the
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>site</code></td>
+          <td>
+                <code><span title="pandas">pd</span>.<span title="pandas.Series">Series</span></code>
+          </td>
+          <td><p>A series of sites, one element per observation,</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>proportions</code></td>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>A dict whose keys are the resulting groups and whose values are the
 rough proportion of data in each group.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>seed</code></td>
-        <td><code>int</code></td>
-        <td><p>Seed for random split of null sites.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Examples:</strong></p>
-    <p>Split data into groups where each site is in one and only one group with roughly 50-25-25
-train-val-holdout proportions.</p>
-    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">create_site_specific_splits</span><span class="p">(</span><span class="n">site</span><span class="p">,</span> <span class="n">proportions</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;holdout&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
-</code></pre></div>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>seed</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Seed for random split of null sites.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>pd.Series</code></td>
-      <td><p>A series containing the resulting split, one element per observation.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/metadata.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_site_specific_splits</span><span class="p">(</span>
+<details class="example">
+  <summary>Example</summary>
+  <p>Split data into groups where each site is in one and only one group with roughly 50-25-25
+train-val-holdout proportions.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>create_site_specific_splits(site, proportions={"train": 2, "val": 1, "holdout": 1})</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+          </td>
+          <td><p>pd.Series: A series containing the resulting split, one element per observation.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/metadata.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create_site_specific_splits</span><span class="p">(</span>
     <span class="n">site</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
     <span class="n">proportions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">random_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">mtrand</span><span class="o">.</span><span class="n">RandomState</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">989</span><span class="p">,</span>
@@ -1435,30 +1513,40 @@ train-val-holdout proportions.</p>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">site</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">assignments</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.metadata.one_hot_to_labels" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">one_hot_to_labels</span><span class="p">(</span><span class="n">one_hot</span><span class="p">:</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">column_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;species_&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span></code>
-
+<code class="highlight language-python"><span class="n">one_hot_to_labels</span><span class="p">(</span><span class="n">one_hot</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;species_&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></code>
 
 <a href="#zamba.data.metadata.one_hot_to_labels" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/metadata.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">one_hot_to_labels</span><span class="p">(</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/metadata.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">one_hot_to_labels</span><span class="p">(</span>
     <span class="n">one_hot</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column_prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;species_&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">column_prefix</span><span class="p">:</span>
@@ -1472,31 +1560,42 @@ train-val-holdout proportions.</p>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">one_hot</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="zamba.data.metadata.roundrobin" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">roundrobin</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">)</span></code>
 
-
 <a href="#zamba.data.metadata.roundrobin" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>roundrobin('ABC', 'D', 'EF') --&gt; A D E B F C</p>
 
-        <details class="quote">
-          <summary>Source code in <code>zamba/data/metadata.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">roundrobin</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>zamba/data/metadata.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">roundrobin</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
     <span class="s2">&quot;roundrobin(&#39;ABC&#39;, &#39;D&#39;, &#39;EF&#39;) --&gt; A D E B F C&quot;</span>
     <span class="c1"># From https://docs.python.org/3/library/itertools.html#recipes</span>
     <span class="c1"># Recipe credited to George Sakkis</span>
@@ -1510,25 +1609,23 @@ train-val-holdout proportions.</p>
             <span class="c1"># Remove the iterator we just exhausted from the cycle.</span>
             <span class="n">num_active</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="n">nexts</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">nexts</span><span class="p">,</span> <span class="n">num_active</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
               
             </article>
+            
           </div>
         </div>
         
@@ -1536,7 +1633,8 @@ train-val-holdout proportions.</p>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../../changelog/" class="md-footer__link md-footer__link--prev" aria-label="Previous: `zamba` changelog" rel="prev">
@@ -1591,10 +1689,10 @@ train-val-holdout proportions.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.ed9748b7.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a877e258.min.js"></script>
       
     
   </body>
