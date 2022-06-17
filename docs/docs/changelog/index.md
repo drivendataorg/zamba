@@ -1,5 +1,18 @@
 # `zamba` changelog
 
+## v2.0.4 (2022-06-17)
+
+ - Pins `thop` to an earlier version ([PR #191](https://github.com/drivendataorg/zamba/pull/191))
+ - Fixes caching so a previously downloaded checkpoint file actually gets used ([PR #190](https://github.com/drivendataorg/zamba/pull/190))
+ - Removes a lightning deprecation warning for DDP and sets a ceiling on `protobuf` for tensorboard ([PR #187](https://github.com/drivendataorg/zamba/pull/187))
+ - Ignores extra columns in the user-provided labels or filepaths csv ([PR #186](https://github.com/drivendataorg/zamba/pull/186))
+
+## v2.0.3 (2022-05-06)
+
+Releasing to pick up #179.
+
+ - PR [#179](https://github.com/drivendataorg/zamba/pull/179) removes the DensePose extra from the default dev requirements and tests. Docs are updated to clarify how to install and run tests for DensePose.
+
 ## v2.0.2 (2021-12-21)
 
 Releasing to pick up #172.
