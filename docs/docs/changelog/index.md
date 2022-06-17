@@ -4,7 +4,7 @@
 
  - Pins `thop` to an earlier version ([PR #191](https://github.com/drivendataorg/zamba/pull/191))
  - Fixes caching so a previously downloaded checkpoint file actually gets used ([PR #190](https://github.com/drivendataorg/zamba/pull/190), [PR #194](https://github.com/drivendataorg/zamba/pull/194))
- - Removes a lightning deprecation warning for DDP and sets a ceiling on `protobuf` for tensorboard ([PR #187](https://github.com/drivendataorg/zamba/pull/187))
+ - Removes a lightning deprecation warning for DDP ([PR #187](https://github.com/drivendataorg/zamba/pull/187))
  - Ignores extra columns in the user-provided labels or filepaths csv ([PR #186](https://github.com/drivendataorg/zamba/pull/186))
 
 ## v2.0.3 (2022-05-06)
