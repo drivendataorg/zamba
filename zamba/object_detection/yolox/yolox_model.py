@@ -130,7 +130,6 @@ class YoloXModel:
         if self.args.tsize is not None:
             self.exp.test_size = (self.args.tsize, self.args.tsize)
 
-
     @classmethod
     def load(
         cls,

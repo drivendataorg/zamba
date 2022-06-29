@@ -14,7 +14,10 @@ from yolox.utils.boxes import postprocess
 from zamba.object_detection import YoloXModel
 
 LOCAL_MD_LITE_MODEL = Path(__file__).parent / "assets" / "yolox_tiny_640_20220528.pth"
-LOCAL_MD_LITE_MODEL_KWARGS = Path(__file__).parent / "assets" / "yolox_tiny_640_20220528_model_kwargs.json"
+LOCAL_MD_LITE_MODEL_KWARGS = (
+    Path(__file__).parent / "assets" / "yolox_tiny_640_20220528_model_kwargs.json"
+)
+
 
 class FillModeEnum(str, Enum):
     """Enum for frame filtering fill modes
@@ -111,7 +114,6 @@ class MegadetectorLiteYoloX:
         #     cudnn.benchmark = True
         #     model = DDP(model, device_ids=[rank])
 
-
     @staticmethod
     def scale_and_pad_array(
         image_array: np.ndarray, output_width: int, output_height: int
@@ -138,7 +140,7 @@ class MegadetectorLiteYoloX:
         )
 
     def _preprocess_video(self, video: np.ndarray) -> np.ndarray:
-        """Process a video for the model, including scaling/padding the frames in the video,  
+        """Process a video for the model, including scaling/padding the frames in the video,
         transposing from (height, width, channel) to (channel, height, width) and casting to float.
         """
         resized_frames = []
@@ -158,7 +160,7 @@ class MegadetectorLiteYoloX:
             list: A list containing detections and score for each frame. Each tuple contains two arrays:
                 the first is an array of bounding box detections with dimensions (object, 4) where
                 object is the number of objects detected and the other 4 dimension are
-                (x1, y1, x2, y1). The second is an array of object detection confidence scores of 
+                (x1, y1, x2, y1). The second is an array of object detection confidence scores of
                 length (object) where object is the number of objects detected.
         """
 
@@ -174,8 +176,10 @@ class MegadetectorLiteYoloX:
 
         detections = []
         for o in pbar(outputs):
-            detections.append(self._process_frame_output(
-                o, original_height=video_arr.shape[1], original_width=video_arr.shape[2])
+            detections.append(
+                self._process_frame_output(
+                    o, original_height=video_arr.shape[1], original_width=video_arr.shape[2]
+                )
             )
         return detections
 
