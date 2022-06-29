@@ -204,8 +204,7 @@ class MegadetectorLiteYoloX:
             outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
         )
 
-        # TODO: maybe needs output[0]?
-        return self._process_frame_output(output, img_arr.shape[0], img_arr.shape[1])
+        return self._process_frame_output(output[0], img_arr.shape[0], img_arr.shape[1])
 
     def _process_frame_output(self, output, original_height, original_width):
         if output is None:

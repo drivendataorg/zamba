@@ -21,7 +21,6 @@ class YoloXArgs(BaseModel):
     eval: https://github.com/Megvii-BaseDetection/YOLOX/blob/68408b4083f818f50aacc29881e6f97cd19fcef2/tools/eval.py#L29-L111
     """
 
-    name: str  # model name to start from (e.g., yolox-s, yolox-nano, yolox-tiny)
     experiment_name: str = None
     dist_backend: str = "nccl"
     dist_url: str = None
@@ -154,10 +153,7 @@ class YoloXModel:
 
         return cls(
             YoloXExp(**exp_dict),
-            YoloXArgs(
-                name=model_kwargs["backbone"],
-                **args_dict,
-            ),
+            YoloXArgs(**args_dict),
             *args,
             **kwargs,
         )
