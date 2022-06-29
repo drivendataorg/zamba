@@ -1,4 +1,3 @@
-from datetime import datetime
 from pathlib import Path
 import os
 from typing import Any, Optional, Tuple
@@ -9,9 +8,7 @@ from pydantic import BaseModel
 import torch.backends.cudnn as cudnn
 from tqdm import tqdm
 
-import yolox
 from yolox.exp import Exp
-import yolox.exp as yolox_exp
 import yolox.utils as utils
 
 
@@ -154,6 +151,7 @@ class YoloXModel:
         return cls(
             YoloXExp(**exp_dict),
             YoloXArgs(**args_dict),
+            image_size=model_kwargs["image_size"],
             *args,
             **kwargs,
         )

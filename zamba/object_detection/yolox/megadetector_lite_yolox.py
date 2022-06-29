@@ -92,8 +92,6 @@ class MegadetectorLiteYoloX:
         yolox = YoloXModel.load(
             checkpoint=path,
             model_kwargs_path=kwargs,
-            # TODO: use kwargs; set this at config?
-            image_size=640,
         )
 
         ckpt = torch.load(yolox.args.ckpt, map_location=config.device)
