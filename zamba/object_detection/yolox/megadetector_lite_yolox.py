@@ -11,10 +11,10 @@ import torch
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
 
-from zamba.object_detection import YoloXNano
+from zamba.object_detection import YoloXModel
 
-LOCAL_MD_LITE_MODEL = Path(__file__).parent / "assets" / "yolox_nano_20210901.pth"
-
+LOCAL_MD_LITE_MODEL = Path(__file__).parent / "assets" / "yolox_tiny_640_20220528.pth"
+LOCAL_MD_LITE_MODEL_KWARGS = Path(__file__).parent / "assets" / "yolox_tiny_640_20220528_model_kwargs.json"
 
 class FillModeEnum(str, Enum):
     """Enum for frame filtering fill modes
@@ -72,6 +72,7 @@ class MegadetectorLiteYoloX:
     def __init__(
         self,
         path: os.PathLike = LOCAL_MD_LITE_MODEL,
+        kwargs: os.PathLike = LOCAL_MD_LITE_MODEL_KWARGS,
         config: Optional[Union[MegadetectorLiteYoloXConfig, dict]] = None,
     ):
         """MegadetectorLite based on YOLOX.
@@ -85,18 +86,31 @@ class MegadetectorLiteYoloX:
         elif isinstance(config, dict):
             config = MegadetectorLiteYoloXConfig.parse_obj(config)
 
-        checkpoint = torch.load(path, map_location=config.device)
-        num_classes = checkpoint["model"]["head.cls_preds.0.weight"].shape[0]
+        yolox = YoloXModel.load(
+            checkpoint=path,
+            model_kwargs_path=kwargs,
+            # TODO: use kwargs
+            image_size=640,
+        )
 
-        yolox = YoloXNano(num_classes=num_classes)
-        model = yolox.get_model()
-        model.load_state_dict(checkpoint["model"])
+        ckpt = torch.load(yolox.args.ckpt, map_location=config.device)
+        model = yolox.exp.get_model()
+        model.load_state_dict(ckpt["model"])
         model = model.eval().to(config.device)
 
         self.model = model
         self.yolox = yolox
         self.config = config
-        self.num_classes = num_classes
+        self.num_classes = yolox.exp.num_classes
+
+        # TODO: how important is multi gpu and distributed inference?
+        # is_distributed = num_gpu > 1
+        # if is_distributed:
+        #     # set environment variables for distributed inference
+        #     utils.configure_nccl()
+        #     cudnn.benchmark = True
+        #     model = DDP(model, device_ids=[rank])
+
 
     @staticmethod
     def scale_and_pad_array(

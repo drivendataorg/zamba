@@ -1,4 +1,3 @@
-from zamba.object_detection.yolox.yolox_base import YoloXBase
-from zamba.object_detection.yolox.yolox_nano import YoloXNano
+from zamba.object_detection.yolox.yolox_model import YoloXModel
 
-__all__ = ["YoloXBase", "YoloXNano"]
+__all__ = ["YoloXModel"]
