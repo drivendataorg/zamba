@@ -126,6 +126,10 @@ class YoloXModel:
         if image_size is not None:
             self.exp.input_size = (image_size, image_size)
 
+        # TODO: do we need this?
+        if self.args.tsize is not None:
+            self.exp.test_size = (self.args.tsize, self.args.tsize)
+
 
     @classmethod
     def load(
@@ -148,10 +152,6 @@ class YoloXModel:
                     args_dict[k] = model_kwargs[k]
                 else:
                     exp_dict[k] = model_kwargs[k]
-
-        # TODO: do we need this?
-        if args_dict["tsize"] is not None:
-            exp_dict["test_size"] = (args_dict["tsize"], args["tsize"])
 
         return cls(
             YoloXExp(**exp_dict),

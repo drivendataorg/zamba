@@ -56,8 +56,8 @@ class MegadetectorLiteYoloXConfig(BaseModel):
 
     confidence: float = 0.25
     nms_threshold: float = 0.45
-    image_width: int = 416
-    image_height: int = 416
+    image_width: int = 640
+    image_height: int = 640
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
     n_frames: Optional[int] = None
     fill_mode: Optional[FillModeEnum] = FillModeEnum.score_sorted
@@ -89,7 +89,7 @@ class MegadetectorLiteYoloX:
         yolox = YoloXModel.load(
             checkpoint=path,
             model_kwargs_path=kwargs,
-            # TODO: use kwargs
+            # TODO: use kwargs; set this at config?
             image_size=640,
         )
 
@@ -137,12 +137,46 @@ class MegadetectorLiteYoloX:
             dtype=np.float32,
         )
 
-    def detect_video(self, frames: np.ndarray, pbar: bool = False):
+    def _preprocess_video(self, video: np.ndarray) -> np.ndarray:
+        """Process a video for the model, including scaling/padding the frames in the video,  
+        transposing from (height, width, channel) to (channel, height, width) and casting to float.
+        """
+        resized_frames = []
+        for frame_idx in range(video.shape[0]):
+            frame = video[frame_idx]
+            resized_frames.append(self._preprocess(frame))
+
+        return np.ascontiguousarray(resized_frames)
+
+    def detect_video(self, video_arr: np.ndarray, pbar: bool = False):
+        """Runs object detection on an video.
+
+        Args:
+            video_arr (np.ndarray): An video array with dimensions (frames, height, width, channels).
+
+        Returns:
+            list: A list containing detections and score for each frame. Each tuple contains two arrays:
+                the first is an array of bounding box detections with dimensions (object, 4) where
+                object is the number of objects detected and the other 4 dimension are
+                (x1, y1, x2, y1). The second is an array of object detection confidence scores of 
+                length (object) where object is the number of objects detected.
+        """
+
         pbar = tqdm if pbar else lambda x: x
 
+        outputs = self.model(
+            torch.from_numpy(self._preprocess_video(video_arr)).to(self.config.device)
+        )
+
+        outputs = postprocess(
+            outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
+        )
+
         detections = []
-        for frame in pbar(frames):
-            detections.append(self.detect_image(frame))
+        for o in pbar(outputs):
+            detections.append(self._process_frame_output(
+                o, original_height=video_arr.shape[1], original_width=video_arr.shape[2])
+            )
         return detections
 
     def detect_image(self, img_arr: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
@@ -159,24 +193,26 @@ class MegadetectorLiteYoloX:
             np.ndarray: An array of object detection confidence scores of length (object) where
                 object is the number of objects detected.
         """
-        with torch.no_grad():
-            outputs = self.model(
-                torch.from_numpy(self._preprocess(img_arr)).unsqueeze(0).to(self.config.device)
-            )
-
+        outputs = self.model(
+            torch.from_numpy(self._preprocess(img_arr)).unsqueeze(0).to(self.config.device)
+        )
         output = postprocess(
             outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
-        )[0]
+        )
+
+        # TODO: maybe needs output[0]?
+        return self._process_frame_output(output, img_arr.shape[0], img_arr.shape[1])
+
+    def _process_frame_output(self, output, original_height, original_width):
         if output is None:
             return np.array([]), np.array([])
         else:
             detections = pd.DataFrame(
-                output.cpu().numpy(),
+                output.cpu().detach().numpy(),
                 columns=["x1", "y1", "x2", "y2", "score1", "score2", "class_num"],
             ).assign(score=lambda row: row.score1 * row.score2)
 
             # Transform bounding box to be in terms of the original image dimensions
-            original_height, original_width = img_arr.shape[:2]
             ratio = min(
                 self.config.image_width / original_width,
                 self.config.image_height / original_height,
