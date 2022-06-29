@@ -1,9 +1,11 @@
+import json
+
 import numpy as np
 from PIL import Image
 import pytest
 import torch
 
-from zamba.object_detection import YoloXNano
+from zamba.object_detection import YoloXModel, YoloXExp, YoloXArgs
 from zamba.object_detection.yolox.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
@@ -19,14 +21,25 @@ def dog():
 
 @pytest.fixture
 def dummy_yolox_path(tmp_path):
-    yolox = YoloXNano(num_classes=1)
-    checkpoint = {"model": yolox.get_model().state_dict()}
+    yolox = YoloXModel(exp=YoloXExp(num_classes=1), args=YoloXArgs())
+    checkpoint = {"model": yolox.exp.get_model().state_dict()}
     torch.save(checkpoint, tmp_path / "dummy_yolox.pth")
     return tmp_path / "dummy_yolox.pth"
 
 
-def test_load_megadetector(dummy_yolox_path):
-    MegadetectorLiteYoloX(dummy_yolox_path, MegadetectorLiteYoloXConfig())
+@pytest.fixture
+def dummy_yolox_model_kwargs(tmp_path):
+    kwargs = dict(num_classes=1, image_size=640, backbone="yolox-tiny")
+    json_path = tmp_path / "dummy_yolox_kwargs.json"
+    with json_path.open("w+") as f:
+        json.dump(kwargs, f)
+    return json_path
+
+
+def test_load_megadetector(dummy_yolox_path, dummy_yolox_model_kwargs):
+    MegadetectorLiteYoloX(
+        dummy_yolox_path, dummy_yolox_model_kwargs, MegadetectorLiteYoloXConfig()
+    )
 
 
 def test_scale_and_pad_array():
@@ -51,7 +64,7 @@ def test_detect_image(mdlite, dog):
     boxes, scores = mdlite.detect_image(np.array(dog))
 
     assert len(scores) == 1
-    assert np.allclose([0.09690314, 0.04301501, 0.9931333, 1.0082883], boxes[0])
+    assert np.allclose([0.65678996, 0.21596366, 0.71104807, 0.277931], boxes[0])
 
 
 def test_detect_video(mdlite, dog):
