@@ -8,8 +8,11 @@ import pandas as pd
 from PIL import Image, ImageOps
 from pydantic import BaseModel
 import torch
+import torch.backends.cudnn as cudnn
+from torch.nn.parallel import DistributedDataParallel as DDP
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
+import yolox.utils as utils
 
 from zamba.object_detection import YoloXModel
 
@@ -94,23 +97,36 @@ class MegadetectorLiteYoloX:
             model_kwargs_path=kwargs,
         )
 
-        ckpt = torch.load(yolox.args.ckpt, map_location=config.device)
+        rank = utils.get_local_rank()
+        if config.device == "cuda":
+            torch.cuda.set_device(rank)
+            loc = "cuda:{}".format(rank)
+        else:
+            loc = config.device
+
+        ckpt = torch.load(yolox.args.ckpt, map_location=loc)
         model = yolox.exp.get_model()
         model.load_state_dict(ckpt["model"])
-        model = model.eval().to(config.device)
+        model = model.eval()
+
+        # if config.device == "cuda":
+        #     model = model.cuda(rank)
+        # else:
+        #     model.to(config.device)
+
+        model.to(loc)
 
         self.model = model
         self.yolox = yolox
         self.config = config
         self.num_classes = yolox.exp.num_classes
 
-        # TODO: how important is multi gpu and distributed inference?
-        # is_distributed = num_gpu > 1
-        # if is_distributed:
-        #     # set environment variables for distributed inference
-        #     utils.configure_nccl()
-        #     cudnn.benchmark = True
-        #     model = DDP(model, device_ids=[rank])
+        is_distributed = yolox.num_gpu > 1
+        if is_distributed:
+            # set environment variables for distributed inference
+            utils.configure_nccl()
+            cudnn.benchmark = True
+            model = DDP(model, device_ids=[rank])
 
     @staticmethod
     def scale_and_pad_array(
