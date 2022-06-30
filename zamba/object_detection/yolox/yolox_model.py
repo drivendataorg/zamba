@@ -83,9 +83,9 @@ class YoloXExp(BaseModel):
     nmsthre: float = 0.65
 
 
-# TODO: is this too much hardcoding?
 class TinyExp(Exp):
-    # default tiny exp
+    # default tiny exp copied from:
+    # https://github.com/Megvii-BaseDetection/YOLOX/blob/main/exps/default/yolox_tiny.py
     def __init__(self):
         super(TinyExp, self).__init__()
         self.depth = 0.33
@@ -122,7 +122,6 @@ class YoloXModel:
         if image_size is not None:
             self.exp.input_size = (image_size, image_size)
 
-        # TODO: do we need this?
         if self.args.tsize is not None:
             self.exp.test_size = (self.args.tsize, self.args.tsize)
 
