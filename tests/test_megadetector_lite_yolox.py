@@ -63,8 +63,8 @@ def test_detect_image(mdlite, dog):
     mdlite = MegadetectorLiteYoloX()
     boxes, scores = mdlite.detect_image(np.array(dog))
 
-    assert len(scores) == 1
-    assert np.allclose([0.65678996, 0.21596366, 0.71104807, 0.277931], boxes[0])
+    assert len(scores) == 3
+    assert np.allclose([0.8227735, 0.31902173, 0.87956315, 0.39615473], boxes[0])
 
 
 def test_detect_video(mdlite, dog):
