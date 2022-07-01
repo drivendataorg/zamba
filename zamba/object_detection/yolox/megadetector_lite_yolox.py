@@ -162,7 +162,7 @@ class MegadetectorLiteYoloX:
             frame = video[frame_idx]
             resized_frames.append(self._preprocess(frame))
 
-        return np.ascontiguousarray(resized_frames)
+        return np.array(resized_frames)
 
     def detect_video(self, video_arr: np.ndarray, pbar: bool = False):
         """Runs object detection on an video.
