@@ -138,7 +138,7 @@ class MegadetectorLiteYoloX:
         ).transpose(2, 0, 1)
 
     def _preprocess_video(self, video: np.ndarray) -> np.ndarray:
-        """Process a video for the model, including scaling/padding the frames in the video,
+        """Process a video for the model, including resizing the frames in the video,
         transposing from (height, width, channel) to (channel, height, width) and casting to float.
         """
         resized_frames = []

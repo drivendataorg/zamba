@@ -19,7 +19,6 @@ class YoloXArgs(BaseModel):
     dist_url: str = None
     batch_size: int = 64
     devices: int = None
-    # exp_file: str = None  # NOT CURRENTLY SUPPORTED
     resume: bool = False
     ckpt: Path = None
     start_epoch: int = None
@@ -31,7 +30,7 @@ class YoloXArgs(BaseModel):
     logger: str = "tensorboard"
     conf: float = None
     nms: float = None
-    tsize: int = None  # TODO: use this for test size
+    tsize: int = None
     seed: int = None
     fuse: bool = False
     trt: bool = False
@@ -63,7 +62,7 @@ class YoloXExp(BaseModel):
     max_epoch: int = 300
     warmup_lr: float = 0.0
     min_lr_ratio: float = 0.05
-    basic_lr_per_img: float = 0.01 / 64.0  # TODO: can we use batch size dynamically? 64 is default
+    basic_lr_per_img: float = 0.01 / 64.0
     scheduler: str = "yoloxwarmcos"
     no_aug_epochs: int = 15
     ema: bool = True
