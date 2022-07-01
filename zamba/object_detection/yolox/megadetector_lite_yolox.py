@@ -117,7 +117,6 @@ class MegadetectorLiteYoloX:
     def scale_and_pad_array(
         image_array: np.ndarray, output_width: int, output_height: int
     ) -> np.ndarray:
-        # note: this is not used for current model
         return np.array(
             ImageOps.pad(
                 Image.fromarray(image_array),
@@ -129,13 +128,16 @@ class MegadetectorLiteYoloX:
         )
 
     def _preprocess(self, frame: np.ndarray) -> np.ndarray:
-        """Process an image for the model by resizing the image, transposing from
+        """Process an image for the model, including scaling/padding the image, transposing from
         (height, width, channel) to (channel, height, width) and casting to float.
         """
-        return np.asarray(
-            Image.fromarray(frame).resize((self.config.image_width, self.config.image_height)),
+        arr = np.ascontiguousarray(
+            self.scale_and_pad_array(
+                frame, self.config.image_width, self.config.image_height
+            ),
             dtype=np.float32,
-        ).transpose(2, 0, 1)
+        )
+        return np.moveaxis(arr, 2, 0)
 
     def _preprocess_video(self, video: np.ndarray) -> np.ndarray:
         """Process a video for the model, including resizing the frames in the video,
