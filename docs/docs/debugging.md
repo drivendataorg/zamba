@@ -78,8 +78,8 @@ Reduce the number of workers (subprocesses) used for data loading. By default `n
 
 ## Logging
 
-To check that videos are getting loaded and cached as expected, set your environment variabe `LOG_LEVEL` to `debug`. The default log level is `info`. For example:
+To check that videos are getting loaded and cached as expected, set your environment variabe `LOG_LEVEL` to `DEBUG`. The default log level is `INFO`. For example:
 
 ```console
-$ LOG_LEVEL=debug zamba predict --data-dir example_vids/
+$ LOG_LEVEL=DEBUG zamba predict --data-dir example_vids/
 ```
