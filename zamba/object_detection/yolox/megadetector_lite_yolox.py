@@ -8,8 +8,6 @@ import pandas as pd
 from PIL import Image, ImageOps
 from pydantic import BaseModel
 import torch
-import torch.backends.cudnn as cudnn
-from torch.nn.parallel import DistributedDataParallel as DDP
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
 import yolox.utils as utils

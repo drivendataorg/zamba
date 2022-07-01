@@ -1,12 +1,8 @@
 from pathlib import Path
 import os
-from typing import Any, Optional, Tuple
 import yaml
 
-from loguru import logger
 from pydantic import BaseModel
-import torch.backends.cudnn as cudnn
-from tqdm import tqdm
 
 from yolox.exp import Exp
 import yolox.utils as utils
