@@ -106,12 +106,6 @@ class MegadetectorLiteYoloX:
         model = yolox.exp.get_model()
         model.load_state_dict(ckpt["model"])
         model = model.eval()
-
-        # if config.device == "cuda":
-        #     model = model.cuda(rank)
-        # else:
-        #     model.to(config.device)
-
         model.to(loc)
 
         self.model = model
