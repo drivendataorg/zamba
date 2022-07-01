@@ -132,9 +132,7 @@ class MegadetectorLiteYoloX:
         (height, width, channel) to (channel, height, width) and casting to float.
         """
         arr = np.ascontiguousarray(
-            self.scale_and_pad_array(
-                frame, self.config.image_width, self.config.image_height
-            ),
+            self.scale_and_pad_array(frame, self.config.image_width, self.config.image_height),
             dtype=np.float32,
         )
         return np.moveaxis(arr, 2, 0)
