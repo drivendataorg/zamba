@@ -114,7 +114,6 @@ class MegadetectorLiteYoloX:
         # else:
         #     model.to(config.device)
 
-        print(loc)
         model.to(loc)
 
         self.model = model
@@ -141,12 +140,10 @@ class MegadetectorLiteYoloX:
         """Process an image for the model by resizing the image, transposing from
         (height, width, channel) to (channel, height, width) and casting to float.
         """
-        return np.array(
-            Image.from_array(frame)
-            .resize(self.config.image_width, self.config.image_height)
-            .transpose(2, 0, 1),
+        return np.asarray(
+            Image.fromarray(frame).resize((self.config.image_width, self.config.image_height)),
             dtype=np.float32,
-        )
+        ).transpose(2, 0, 1)
 
     def _preprocess_video(self, video: np.ndarray) -> np.ndarray:
         """Process a video for the model, including scaling/padding the frames in the video,
