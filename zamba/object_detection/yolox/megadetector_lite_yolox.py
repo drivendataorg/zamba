@@ -10,7 +10,6 @@ from pydantic import BaseModel
 import torch
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
-import yolox.utils as utils
 
 from zamba.object_detection import YoloXModel
 
@@ -95,18 +94,10 @@ class MegadetectorLiteYoloX:
             model_kwargs_path=kwargs,
         )
 
-        rank = utils.get_local_rank()
-        if config.device == "cuda":
-            torch.cuda.set_device(rank)
-            loc = "cuda:{}".format(rank)
-        else:
-            loc = config.device
-
-        ckpt = torch.load(yolox.args.ckpt, map_location=loc)
+        ckpt = torch.load(yolox.args.ckpt, map_location=config.device)
         model = yolox.exp.get_model()
         model.load_state_dict(ckpt["model"])
-        model = model.eval()
-        model.to(loc)
+        model = model.eval().to(config.device)
 
         self.model = model
         self.yolox = yolox
