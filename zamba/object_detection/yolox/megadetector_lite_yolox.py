@@ -114,6 +114,7 @@ class MegadetectorLiteYoloX:
         # else:
         #     model.to(config.device)
 
+        print(loc)
         model.to(loc)
 
         self.model = model
@@ -121,17 +122,11 @@ class MegadetectorLiteYoloX:
         self.config = config
         self.num_classes = yolox.exp.num_classes
 
-        is_distributed = yolox.num_gpu > 1
-        if is_distributed:
-            # set environment variables for distributed inference
-            utils.configure_nccl()
-            cudnn.benchmark = True
-            model = DDP(model, device_ids=[rank])
-
     @staticmethod
     def scale_and_pad_array(
         image_array: np.ndarray, output_width: int, output_height: int
     ) -> np.ndarray:
+        # note: this is not used for current model
         return np.array(
             ImageOps.pad(
                 Image.fromarray(image_array),
@@ -143,13 +138,13 @@ class MegadetectorLiteYoloX:
         )
 
     def _preprocess(self, frame: np.ndarray) -> np.ndarray:
-        """Process an image for the model, including scaling/padding the image, transposing from
+        """Process an image for the model by resizing the image, transposing from
         (height, width, channel) to (channel, height, width) and casting to float.
         """
-        return np.ascontiguousarray(
-            self.scale_and_pad_array(
-                frame, self.config.image_width, self.config.image_height
-            ).transpose(2, 0, 1),
+        return np.array(
+            Image.from_array(frame)
+            .resize(self.config.image_width, self.config.image_height)
+            .transpose(2, 0, 1),
             dtype=np.float32,
         )
 
