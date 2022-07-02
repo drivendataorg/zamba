@@ -129,8 +129,8 @@ class MegadetectorLiteYoloX:
         return np.moveaxis(arr, 2, 0)
 
     def _preprocess_video(self, video: np.ndarray) -> np.ndarray:
-        """Process a video for the model, including resizing the frames in the video,
-        transposing from (height, width, channel) to (channel, height, width) and casting to float.
+        """Process a video for the model, including resizing the frames in the video, transposing
+        from (batch, height, width, channel) to (batch, channel, height, width) and casting to float.
         """
         resized_frames = []
         for frame_idx in range(video.shape[0]):
@@ -155,17 +155,27 @@ class MegadetectorLiteYoloX:
 
         pbar = tqdm if pbar else lambda x: x
 
-        with torch.no_grad():
-            outputs = self.model(
-                torch.from_numpy(self._preprocess_video(video_arr)).to(self.config.device)
-            )
+        # iterate over batches of 64
+        batch_size = 64
 
-            outputs = postprocess(
-                outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
-            )
+        video_outputs = []
+        with torch.no_grad():
+
+            for i in range(0, len(video_arr), batch_size):
+                a = video_arr[i:i+batch_size]
+
+                outputs = self.model(
+                    torch.from_numpy(self._preprocess_video(a)).to(self.config.device)
+                )
+
+                outputs = postprocess(
+                    outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
+                )
+
+                video_outputs.extend(outputs)
 
         detections = []
-        for o in pbar(outputs):
+        for o in pbar(video_outputs):
             detections.append(
                 self._process_frame_output(
                     o, original_height=video_arr.shape[1], original_width=video_arr.shape[2]
