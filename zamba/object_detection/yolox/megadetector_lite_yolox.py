@@ -162,7 +162,7 @@ class MegadetectorLiteYoloX:
         with torch.no_grad():
 
             for i in range(0, len(video_arr), batch_size):
-                a = video_arr[i:i+batch_size]
+                a = video_arr[i : i + batch_size]
 
                 outputs = self.model(
                     torch.from_numpy(self._preprocess_video(a)).to(self.config.device)
