@@ -155,13 +155,14 @@ class MegadetectorLiteYoloX:
 
         pbar = tqdm if pbar else lambda x: x
 
-        outputs = self.model(
-            torch.from_numpy(self._preprocess_video(video_arr)).to(self.config.device)
-        )
+        with torch.no_grad():
+            outputs = self.model(
+                torch.from_numpy(self._preprocess_video(video_arr)).to(self.config.device)
+            )
 
-        outputs = postprocess(
-            outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
-        )
+            outputs = postprocess(
+                outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
+            )
 
         detections = []
         for o in pbar(outputs):
@@ -170,6 +171,7 @@ class MegadetectorLiteYoloX:
                     o, original_height=video_arr.shape[1], original_width=video_arr.shape[2]
                 )
             )
+
         return detections
 
     def detect_image(self, img_arr: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
@@ -186,12 +188,13 @@ class MegadetectorLiteYoloX:
             np.ndarray: An array of object detection confidence scores of length (object) where
                 object is the number of objects detected.
         """
-        outputs = self.model(
-            torch.from_numpy(self._preprocess(img_arr)).unsqueeze(0).to(self.config.device)
-        )
-        output = postprocess(
-            outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
-        )
+        with torch.no_grad():
+            outputs = self.model(
+                torch.from_numpy(self._preprocess(img_arr)).unsqueeze(0).to(self.config.device)
+            )
+            output = postprocess(
+                outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
+            )
 
         return self._process_frame_output(output[0], img_arr.shape[0], img_arr.shape[1])
 
@@ -200,7 +203,7 @@ class MegadetectorLiteYoloX:
             return np.array([]), np.array([])
         else:
             detections = pd.DataFrame(
-                output.cpu().detach().numpy(),
+                output.cpu().numpy(),
                 columns=["x1", "y1", "x2", "y2", "score1", "score2", "class_num"],
             ).assign(score=lambda row: row.score1 * row.score2)
 
