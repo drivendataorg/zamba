@@ -448,7 +448,7 @@ def test_megadetector_lite_yolox_dog(tmp_path):
             "-vcodec",
             "libx264",
             "-crf",
-            "25",
+            "23",
             "-pix_fmt",
             "yuv420p",
             str(tmp_path / "dog.mp4"),
