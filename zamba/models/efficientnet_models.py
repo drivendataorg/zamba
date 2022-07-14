@@ -35,7 +35,6 @@ class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
                 efficientnet.get_submodule("blocks.5"),
                 efficientnet.conv_head,
                 efficientnet.bn2,
-                efficientnet.act2,
                 efficientnet.global_pool,
             ]
         )

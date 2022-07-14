@@ -155,8 +155,8 @@ class MegadetectorLiteYoloX:
 
         pbar = tqdm if pbar else lambda x: x
 
-        # iterate over batches of 64
-        batch_size = 64
+        # iterate over batches of 24
+        batch_size = 24
 
         video_outputs = []
         with torch.no_grad():
