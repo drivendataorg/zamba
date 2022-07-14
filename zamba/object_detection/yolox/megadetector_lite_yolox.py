@@ -134,12 +134,13 @@ class MegadetectorLiteYoloX:
         """Process a video for the model, including resizing the frames in the video, transposing
         from (batch, height, width, channel) to (batch, channel, height, width) and casting to float.
         """
-        resized_frames = []
+        resized_video = np.zeros(
+            (video.shape[0], video.shape[3], self.config.image_height, self.config.image_width),
+            dtype=np.float32,
+        )
         for frame_idx in range(video.shape[0]):
-            frame = video[frame_idx]
-            resized_frames.append(self._preprocess(frame))
-
-        return np.array(resized_frames)
+            resized_video[frame_idx] = self._preprocess(video[frame_idx])
+        return resized_video
 
     def detect_video(self, video_arr: np.ndarray, pbar: bool = False):
         """Runs object detection on an video.
