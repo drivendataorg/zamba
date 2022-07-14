@@ -46,8 +46,7 @@ nav:
           - zamba.models.slowfast_models: "api-reference/models-slowfast_models.md"
           - zamba.models.utils: "api-reference/models-utils.md"
       - zamba.object_detection:
-          - zamba.object_detection.yolox:
-            - zamba.object_detection.yolox.megadetector_lite_yolox: "api-reference/megadetector-lite-yolox.md"
+          - zamba.object_detection.yolox.megadetector_lite_yolox: "api-reference/object-detection-megadetector_lite_yolox.md"
       - zamba.pytorch:
           - zamba.pytorch.dataloaders: "api-reference/pytorch-dataloaders.md"
           - zamba.pytorch.finetuning: "api-reference/pytorch-finetuning.md"

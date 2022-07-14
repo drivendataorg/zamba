@@ -153,7 +153,7 @@ If you are using the [MegadetectorLite](models/species-detection.md#megadetector
 
 You can specify both of the above at once, just one, or neither. The example code feeds full-size images to MegadetectorLite, and then resizes images before running them through the neural network.
 
-To see all of the options that can be passed to the MegadetectorLite, see the [`MegadetectorLiteYoloXConfig` class](api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig).
+To see all of the options that can be passed to the MegadetectorLite, see the [`MegadetectorLiteYoloXConfig` class](../api-reference/object-detection-megadetector_lite_yolox/#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig).
 
 ## Speed up training
 

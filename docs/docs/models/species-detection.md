@@ -317,7 +317,7 @@ MegadetectorLite combines two open-source models:
 
 While highly accurate, Megadetector is too computationally intensive to run on every frame. MegadetectorLite was created by training a YOLOX model using the predictions of the Megadetector as ground truth - this method is called [student-teacher training](https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764).
 
-MegadetectorLite can be imported into Python code and used directly since it has convenient methods for `detect_image` and `detect_video`. See [the API documentation for more details](../../api-reference/models-megadetector_lite_yolox).
+MegadetectorLite can be imported into Python code and used directly since it has convenient methods for `detect_image` and `detect_video`. See [the API documentation for more details](../../api-reference/object-detection-megadetector_lite_yolox/#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloX).
 
 
 ## User contributed models
