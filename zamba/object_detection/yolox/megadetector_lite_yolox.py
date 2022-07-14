@@ -47,6 +47,7 @@ class MegadetectorLiteYoloXConfig(BaseModel):
         image_width (int): Scale image to this width before sending to object detection model.
         image_height (int): Scale image to this height before sending to object detection model.
         device (str): Where to run the object detection model, "cpu" or "cuda".
+        frame_batch_size (int): Number of frames to predict on at once.
         n_frames (int, optional): Max number of frames to return. If None returns all frames above
             the threshold. Defaults to None.
         fill_mode (str, optional): Mode for upsampling if the number of frames above the threshold
@@ -62,6 +63,7 @@ class MegadetectorLiteYoloXConfig(BaseModel):
     image_width: int = 640
     image_height: int = 640
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
+    frame_batch_size: int = 24
     n_frames: Optional[int] = None
     fill_mode: Optional[FillModeEnum] = FillModeEnum.score_sorted
     sort_by_time: bool = True
@@ -144,6 +146,7 @@ class MegadetectorLiteYoloX:
 
         Args:
             video_arr (np.ndarray): An video array with dimensions (frames, height, width, channels).
+            pbar (int): Whether to show progress bar. Defaults to False.
 
         Returns:
             list: A list containing detections and score for each frame. Each tuple contains two arrays:
@@ -155,8 +158,8 @@ class MegadetectorLiteYoloX:
 
         pbar = tqdm if pbar else lambda x: x
 
-        # iterate over batches of 24
-        batch_size = 24
+        # batch of frames
+        batch_size = self.config.frame_batch_size
 
         video_outputs = []
         with torch.no_grad():
