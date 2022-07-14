@@ -1,4 +1,3 @@
 include zamba/models/official_models/*/config.yaml
-include zamba/object_detection/yolox/assets/yolox_tiny_640_20220528_model_kwargs.json
-include zamba/object_detection/yolox/assets/yolox_tiny_640_20220528.pth
+include zamba/object_detection/yolox/assets/*
 include zamba/models/densepose/assets/*
