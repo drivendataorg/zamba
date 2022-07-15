@@ -1,4 +1,4 @@
-git_hash: 2e561015e28cd0a1390717ac01fd420b3d1ff6f5
+git_hash: 0967bf1ea1d7a8a3a84f37a991df2ff3fea237e8
 model_class: TimeDistributedEfficientNet
 species:
 - aardvark
@@ -33,9 +33,9 @@ species:
 - rodent
 - small_cat
 - wild_dog_jackal
-starting_learning_rate: 0.001584893192461114
+starting_learning_rate: 0.001
 train_config:
-  auto_lr_find: true
+  auto_lr_find: false
   backbone_finetune_config:
     backbone_initial_ratio_lr: 0.01
     multiplier: 1
@@ -45,7 +45,7 @@ train_config:
     verbose: true
   batch_size: 1
   checkpoint: null
-  data_dir: /home/ubuntu/zamba-algorithms
+  data_dir: /home/ubuntu/pjmf-zamba
   dry_run: false
   early_stopping_config:
     mode: max
@@ -57,10 +57,10 @@ train_config:
   max_epochs: null
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: time_distributed
-  num_workers: 5
+  num_workers: 1
   overwrite: false
   predict_all_zamba_species: true
-  save_dir: experiments/td_small_set_full_size_mdlite
+  save_dir: /home/ubuntu/pjmf-zamba
   scheduler_config:
     scheduler: MultiStepLR
     scheduler_params:
@@ -71,7 +71,7 @@ train_config:
   skip_load_validation: true
   split_proportions: null
   weight_download_region: us
-training_start_time: '2021-09-29T23:50:09.687298'
+training_start_time: '2022-07-10T20:45:32.618594'
 video_loader_config:
   cache_dir: /tmp/zamba_cache
   cleanup_cache: false
@@ -88,8 +88,8 @@ video_loader_config:
     confidence: 0.25
     device: cuda
     fill_mode: score_sorted
-    image_height: 416
-    image_width: 416
+    image_height: 640
+    image_width: 640
     n_frames: 16
     nms_threshold: 0.45
     seed: 55

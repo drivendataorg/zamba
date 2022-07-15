@@ -73,6 +73,9 @@ def publish_model(model_name, trained_model_dir):
     # configs are expected to be in the same folder as model checkpoint
     trained_model_dir = AnyPath(private_checkpoint).parent
 
+    # make model directory
+    (MODELS_DIRECTORY / model_name).mkdir(exist_ok=True, parents=True)
+
     # copy over files from model directory
     logger.info(
         f"Copying over yaml and json files from {trained_model_dir} to {MODELS_DIRECTORY / model_name}."
