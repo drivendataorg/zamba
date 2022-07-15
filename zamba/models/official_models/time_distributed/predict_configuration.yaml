@@ -1,19 +1,19 @@
-inference_start_time: '2021-09-30T10:55:29.100719'
+inference_start_time: '2022-07-11T19:04:08.231520'
 model_class: TimeDistributedEfficientNet
 predict_config:
   batch_size: 1
-  checkpoint: experiments/td_small_set_full_size_mdlite/version_1/time_distributed.ckpt
-  data_dir: /home/ubuntu/zamba-algorithms
+  checkpoint: version_1/time_distributed.ckpt
+  data_dir: /home/ubuntu/pjmf-zamba
   dry_run: false
   gpus: 1
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: null
-  num_workers: 5
+  num_workers: 1
   output_class_names: false
   overwrite: false
   proba_threshold: null
   save: true
-  save_dir: experiments/td_small_set_full_size_mdlite/version_1
+  save_dir: version_1
   skip_load_validation: true
   weight_download_region: us
 species:
@@ -65,8 +65,8 @@ video_loader_config:
     confidence: 0.25
     device: cuda
     fill_mode: score_sorted
-    image_height: 416
-    image_width: 416
+    image_height: 640
+    image_width: 640
     n_frames: 16
     nms_threshold: 0.45
     seed: 55

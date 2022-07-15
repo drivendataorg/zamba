@@ -1,6 +1,4 @@
 lr: 0.001
-model_class: TimeDistributedEfficientNet
-num_frames: 16
 scheduler: MultiStepLR
 scheduler_params:
   gamma: 0.5
@@ -40,3 +38,5 @@ species:
 - rodent
 - small_cat
 - wild_dog_jackal
+model_class: TimeDistributedEfficientNet
+num_frames: 16
