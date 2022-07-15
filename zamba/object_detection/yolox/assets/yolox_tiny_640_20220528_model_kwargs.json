@@ -1,0 +1,5 @@
+{
+    "num_classes": 1,
+    "backbone": "yolox-tiny",
+    "image_size": 640
+}

@@ -11,9 +11,12 @@ import torch
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
 
-from zamba.object_detection import YoloXNano
+from zamba.object_detection import YoloXModel
 
-LOCAL_MD_LITE_MODEL = Path(__file__).parent / "assets" / "yolox_nano_20210901.pth"
+LOCAL_MD_LITE_MODEL = Path(__file__).parent / "assets" / "yolox_tiny_640_20220528.pth"
+LOCAL_MD_LITE_MODEL_KWARGS = (
+    Path(__file__).parent / "assets" / "yolox_tiny_640_20220528_model_kwargs.json"
+)
 
 
 class FillModeEnum(str, Enum):
@@ -44,6 +47,7 @@ class MegadetectorLiteYoloXConfig(BaseModel):
         image_width (int): Scale image to this width before sending to object detection model.
         image_height (int): Scale image to this height before sending to object detection model.
         device (str): Where to run the object detection model, "cpu" or "cuda".
+        frame_batch_size (int): Number of frames to predict on at once.
         n_frames (int, optional): Max number of frames to return. If None returns all frames above
             the threshold. Defaults to None.
         fill_mode (str, optional): Mode for upsampling if the number of frames above the threshold
@@ -56,9 +60,10 @@ class MegadetectorLiteYoloXConfig(BaseModel):
 
     confidence: float = 0.25
     nms_threshold: float = 0.45
-    image_width: int = 416
-    image_height: int = 416
+    image_width: int = 640
+    image_height: int = 640
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
+    frame_batch_size: int = 24
     n_frames: Optional[int] = None
     fill_mode: Optional[FillModeEnum] = FillModeEnum.score_sorted
     sort_by_time: bool = True
@@ -72,6 +77,7 @@ class MegadetectorLiteYoloX:
     def __init__(
         self,
         path: os.PathLike = LOCAL_MD_LITE_MODEL,
+        kwargs: os.PathLike = LOCAL_MD_LITE_MODEL_KWARGS,
         config: Optional[Union[MegadetectorLiteYoloXConfig, dict]] = None,
     ):
         """MegadetectorLite based on YOLOX.
@@ -85,18 +91,20 @@ class MegadetectorLiteYoloX:
         elif isinstance(config, dict):
             config = MegadetectorLiteYoloXConfig.parse_obj(config)
 
-        checkpoint = torch.load(path, map_location=config.device)
-        num_classes = checkpoint["model"]["head.cls_preds.0.weight"].shape[0]
+        yolox = YoloXModel.load(
+            checkpoint=path,
+            model_kwargs_path=kwargs,
+        )
 
-        yolox = YoloXNano(num_classes=num_classes)
-        model = yolox.get_model()
-        model.load_state_dict(checkpoint["model"])
+        ckpt = torch.load(yolox.args.ckpt, map_location=config.device)
+        model = yolox.exp.get_model()
+        model.load_state_dict(ckpt["model"])
         model = model.eval().to(config.device)
 
         self.model = model
         self.yolox = yolox
         self.config = config
-        self.num_classes = num_classes
+        self.num_classes = yolox.exp.num_classes
 
     @staticmethod
     def scale_and_pad_array(
@@ -116,19 +124,65 @@ class MegadetectorLiteYoloX:
         """Process an image for the model, including scaling/padding the image, transposing from
         (height, width, channel) to (channel, height, width) and casting to float.
         """
-        return np.ascontiguousarray(
-            self.scale_and_pad_array(
-                frame, self.config.image_width, self.config.image_height
-            ).transpose(2, 0, 1),
+        arr = np.ascontiguousarray(
+            self.scale_and_pad_array(frame, self.config.image_width, self.config.image_height),
             dtype=np.float32,
         )
+        return np.moveaxis(arr, 2, 0)
 
-    def detect_video(self, frames: np.ndarray, pbar: bool = False):
+    def _preprocess_video(self, video: np.ndarray) -> np.ndarray:
+        """Process a video for the model, including resizing the frames in the video, transposing
+        from (batch, height, width, channel) to (batch, channel, height, width) and casting to float.
+        """
+        resized_video = np.zeros(
+            (video.shape[0], video.shape[3], self.config.image_height, self.config.image_width),
+            dtype=np.float32,
+        )
+        for frame_idx in range(video.shape[0]):
+            resized_video[frame_idx] = self._preprocess(video[frame_idx])
+        return resized_video
+
+    def detect_video(self, video_arr: np.ndarray, pbar: bool = False):
+        """Runs object detection on an video.
+
+        Args:
+            video_arr (np.ndarray): An video array with dimensions (frames, height, width, channels).
+            pbar (int): Whether to show progress bar. Defaults to False.
+
+        Returns:
+            list: A list containing detections and score for each frame. Each tuple contains two arrays:
+                the first is an array of bounding box detections with dimensions (object, 4) where
+                object is the number of objects detected and the other 4 dimension are
+                (x1, y1, x2, y1). The second is an array of object detection confidence scores of
+                length (object) where object is the number of objects detected.
+        """
+
         pbar = tqdm if pbar else lambda x: x
 
+        # batch of frames
+        batch_size = self.config.frame_batch_size
+
+        video_outputs = []
+        with torch.no_grad():
+            for i in range(0, len(video_arr), batch_size):
+                a = video_arr[i : i + batch_size]
+
+                outputs = self.model(
+                    torch.from_numpy(self._preprocess_video(a)).to(self.config.device)
+                )
+                outputs = postprocess(
+                    outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
+                )
+                video_outputs.extend(outputs)
+
         detections = []
-        for frame in pbar(frames):
-            detections.append(self.detect_image(frame))
+        for o in pbar(video_outputs):
+            detections.append(
+                self._process_frame_output(
+                    o, original_height=video_arr.shape[1], original_width=video_arr.shape[2]
+                )
+            )
+
         return detections
 
     def detect_image(self, img_arr: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
@@ -149,10 +203,13 @@ class MegadetectorLiteYoloX:
             outputs = self.model(
                 torch.from_numpy(self._preprocess(img_arr)).unsqueeze(0).to(self.config.device)
             )
+            output = postprocess(
+                outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
+            )
 
-        output = postprocess(
-            outputs, self.num_classes, self.config.confidence, self.config.nms_threshold
-        )[0]
+        return self._process_frame_output(output[0], img_arr.shape[0], img_arr.shape[1])
+
+    def _process_frame_output(self, output, original_height, original_width):
         if output is None:
             return np.array([]), np.array([])
         else:
@@ -162,7 +219,6 @@ class MegadetectorLiteYoloX:
             ).assign(score=lambda row: row.score1 * row.score2)
 
             # Transform bounding box to be in terms of the original image dimensions
-            original_height, original_width = img_arr.shape[:2]
             ratio = min(
                 self.config.image_width / original_width,
                 self.config.image_height / original_height,

@@ -466,7 +466,7 @@ def load_video_frames(
 
     if config.megadetector_lite_config is not None:
         mdlite = MegadetectorLiteYoloX(config=config.megadetector_lite_config)
-        detection_probs = mdlite.detect_video(frames=arr)
+        detection_probs = mdlite.detect_video(video_arr=arr)
 
         arr = mdlite.filter_frames(arr, detection_probs)
 
