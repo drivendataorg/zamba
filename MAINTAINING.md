@@ -1,10 +1,14 @@
-## Adding a new model
+## Adding a new model (for maintainers)
+
+_Note: These instructions are for adding or updating an [official model](https://github.com/drivendataorg/zamba/tree/master/zamba/models/official_models). User-trained models should instead be shared via the [Community Model Zoo](https://github.com/drivendataorg/zamba/wiki) wiki page._
 
 TLDR; update the the `WEIGHT_LOOKUP` mapping and then run `make publish_models`.
 
 #### Weight lookup mapping
 
-The weight lookup mapping in `zamba/models/config.py` connectss each model to the private s3 directory where model training results live. For example,
+The weight lookup mapping in `zamba/models/config.py` connects each model to the private s3 directory where model training results live. These directories are only used as the source of what to publish. All user-facing model weights come from the public buckets, and official configs are within the zamba package.
+
+For example,
 ```
 WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/version_1/",
