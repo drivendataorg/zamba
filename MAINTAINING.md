@@ -2,7 +2,7 @@
 
 TLDR; to add a new model, update the directory in the `WEIGHT_LOOKUP` mapping and then run `make publish_models`.
 
-### Weight lookup mapping
+#### Weight lookup mapping
 
 The weight lookup mapping in `zamba/models/config.py` connectss each model to the private s3 directory where model training results live. For example,
 ```
@@ -78,6 +78,6 @@ Preparing DensePose model: chimps
 2022-07-15 11:48:21.387 | INFO     | __main__:<module>:157 - Skipping since model exists on main public S3 bucket.
 ```
 
-Lastly,
+Lastly:
 - [ ] Submit a PR with the changed or additional files
 - [ ] Celebrate that a new model is available! :tada:
