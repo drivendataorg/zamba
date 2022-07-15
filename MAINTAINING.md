@@ -6,7 +6,7 @@ TLDR; update the the `WEIGHT_LOOKUP` mapping and then run `make publish_models`.
 
 #### Weight lookup mapping
 
-The weight lookup mapping in `zamba/models/config.py` connects each model to the private s3 directory where model training results live. These directories are only used as the source of what to publish. All user-facing model weights come from the public buckets, and official configs are within the zamba package.
+The weight lookup mapping in `zamba/models/config.py` connects each model to the private s3 directory where model training results live. These directories are only used as the source of what to publish. All user-facing model weights come from the public buckets, and official configs are contained within the zamba package.
 
 For example,
 ```
