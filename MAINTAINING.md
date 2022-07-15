@@ -1,6 +1,10 @@
 ## Adding a new model
 
-The weight lookup directory contains the path to the private s3 directory where model training results live. For example,
+TLDR; to add a new model, update the directory in the `WEIGHT_LOOKUP` mapping and then run `make publish_models`.
+
+### Weight lookup mapping
+
+The weight lookup mapping in `zamba/models/config.py` connectss each model to the private s3 directory where model training results live. For example,
 ```
 WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/experiments/td_small_set_full_size_mdlite/version_1/",
@@ -9,7 +13,7 @@ WEIGHT_LOOKUP = {
 }
 ```
 
-The s3 directory should contain the following files at the root level (extras will be ignored):
+The s3 directory for a given model should contain the following files at the root level (extras will be ignored):
 - `{model}.ckpt`
 - `config.yaml`
 - `train_configuration.yaml`
@@ -17,7 +21,7 @@ The s3 directory should contain the following files at the root level (extras wi
 - `hparams.yaml`
 - `val_metrics.json`
 
-#### Instructions
+### Instructions
 
 To update an existing model:
 - [ ] Update the s3 path of the directory for that model in the [`WEIGHT_LOOKUP` dictionary](https://github.com/drivendataorg/zamba/blob/master/zamba/models/config.py)
@@ -28,7 +32,7 @@ Or, to add a new model:
 Then (for both cases):
 - [ ] Run `make publish_models`
 
-This will copy the relevant files over to model folder within the official models directory, and modify them to keep only the relevant portions for th package. Model weights will be copied to the relevant public buckets, and the location of the public checkpoints will be added to the official configs.
+This will copy the relevant files over to model folder within the official models directory, and modify them to keep only the relevant portions for the package. Model weights will be copied to the relevant public buckets, and the location of the public checkpoints will be added to the official configs.
 
 Example logs:
 ```
