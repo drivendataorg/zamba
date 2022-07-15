@@ -1,6 +1,6 @@
 ## Adding a new model
 
-TLDR; to add a new model, update the directory in the `WEIGHT_LOOKUP` mapping and then run `make publish_models`.
+TLDR; update the the `WEIGHT_LOOKUP` mapping and then run `make publish_models`.
 
 #### Weight lookup mapping
 
