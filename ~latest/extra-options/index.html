@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/extra-options/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.8">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.9">
     
     
       
@@ -1029,8 +1029,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/object_detection-yolox/" class="md-nav__link">
-        zamba.object_detection.yolox
+      <a href="../api-reference/object-detection-megadetector_lite_yolox/" class="md-nav__link">
+        zamba.object_detection.yolox.megadetector_lite_yolox
       </a>
     </li>
   
@@ -1458,7 +1458,7 @@
 <li><code>model_input_height</code> and <code>model_input_width</code> resize images <em>after</em> frame selection. These specify the image size that is passed to the actual model for classification.</li>
 </ul>
 <p>You can specify both of the above at once, just one, or neither. The example code feeds full-size images to MegadetectorLite, and then resizes images before running them through the neural network.</p>
-<p>To see all of the options that can be passed to the MegadetectorLite, see the <a href="api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>.</p>
+<p>To see all of the options that can be passed to the MegadetectorLite, see the <a href="../api-reference/object-detection-megadetector_lite_yolox/#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>.</p>
 <h2 id="speed-up-training">Speed up training<a class="headerlink" href="#speed-up-training" title="Permanent link">&para;</a></h2>
 <p>Training will run faster if you increase <code>num_workers</code> and/or increase <code>batch_size</code>. <code>num_workers</code> is the number of subprocesses to use for data loading. The minimum is 0, meaning the data will be loaded in the main process, and the maximum is one less than the number of CPUs in your system. By default <code>num_workers</code> is set to 3 and <code>batch_size</code> is set to 2. Increasing either of these will use more GPU memory, and could raise an error if the memory required is more than your machine has available.</p>
 <p>You may need to try a few configuration of <code>num_workers</code>, <code>batch_size</code> and the image sizes above to settle on a configuration that works on your particular hardware.</p>
@@ -1552,7 +1552,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.0238f547.min.js"></script>
+      <script src="../assets/javascripts/bundle.6c7ad80a.min.js"></script>
       
     
   </body>

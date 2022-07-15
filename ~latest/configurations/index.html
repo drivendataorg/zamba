@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/configurations/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.8">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.9">
     
     
       
@@ -1022,8 +1022,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/object_detection-yolox/" class="md-nav__link">
-        zamba.object_detection.yolox
+      <a href="../api-reference/object-detection-megadetector_lite_yolox/" class="md-nav__link">
+        zamba.object_detection.yolox.megadetector_lite_yolox
       </a>
     </li>
   
@@ -1391,7 +1391,7 @@
 <h4 id="scene_threshold-float-optional"><code>scene_threshold (float, optional)</code><a class="headerlink" href="#scene_threshold-float-optional" title="Permanent link">&para;</a></h4>
 <p>Only load frames that correspond to <a href="http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect">scene changes</a>, which are detected when <code>scene_threshold</code> percent of pixels are different. This can be useful for selecting frames efficiently if in general you have large animals and stable backgrounds. Defaults to <code>None</code></p>
 <h4 id="megadetector_lite_config-megadetectorliteyoloxconfig-optional"><code>megadetector_lite_config (MegadetectorLiteYoloXConfig, optional)</code><a class="headerlink" href="#megadetector_lite_config-megadetectorliteyoloxconfig-optional" title="Permanent link">&para;</a></h4>
-<p>The <code>megadetector_lite_config</code> is used to specify any parameters that should be passed to the <a href="../models/species-detection/#megadetectorlite">MegadetectorLite model</a> for frame selection. For all possible options, see the <a href="api-reference/models-megadetector_lite_yolox.md#zamba.models.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>. If <code>megadetector_lite_config</code> is <code>None</code> (the default), the MegadetectorLite model will not be used to select frames.</p>
+<p>The <code>megadetector_lite_config</code> is used to specify any parameters that should be passed to the <a href="../models/species-detection/#megadetectorlite">MegadetectorLite model</a> for frame selection. For all possible options, see the <a href="../api-reference/object-detection-megadetector_lite_yolox/#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig"><code>MegadetectorLiteYoloXConfig</code> class</a>. If <code>megadetector_lite_config</code> is <code>None</code> (the default), the MegadetectorLite model will not be used to select frames.</p>
 <h4 id="frame_selection_height-int-optional-frame_selection_width-int-optional"><code>frame_selection_height (int, optional), frame_selection_width (int, optional)</code><a class="headerlink" href="#frame_selection_height-int-optional-frame_selection_width-int-optional" title="Permanent link">&para;</a></h4>
 <p>Resize the video to this height and width in pixels, prior to frame selection. If None, the full size video will be used for frame selection. Using full size videos (setting to <code>None</code>) is recommended for MegadetectorLite, especially if your species of interest are smaller. Defaults to <code>None</code></p>
 <h4 id="total_frames-int-optional"><code>total_frames (int, optional)</code><a class="headerlink" href="#total_frames-int-optional" title="Permanent link">&para;</a></h4>
@@ -1626,7 +1626,7 @@ no <code>save_dir</code> is specified and <code>save</code> is True, outputs wil
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.0238f547.min.js"></script>
+      <script src="../assets/javascripts/bundle.6c7ad80a.min.js"></script>
       
     
   </body>
