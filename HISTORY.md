@@ -1,5 +1,10 @@
 # `zamba` changelog
 
+## v2.1.0 (2022-07-15)
+
+- Retrains the time distributed species classification model using the updated MegadetectorLite frame selection ([PR #199](https://github.com/drivendataorg/zamba/pull/199))
+- Replaces the MegadetectorLite frame selection model with an improved model trained on significantly more data ([PR #195](https://github.com/drivendataorg/zamba/pull/195))
+
 ## v2.0.4 (2022-06-17)
 
  - Pins `thop` to an earlier version ([PR #191](https://github.com/drivendataorg/zamba/pull/191))
