@@ -491,6 +491,12 @@ class TrainConfig(ZambaBaseModel):
             .max()
         )
 
+        species_cols = labels.filter(regex="species_").columns
+        # binary case
+        if len(species_cols) == 2:
+            logger.warning(f"Binary case detected so only one species column will be kept. Output will be the binary case of {species_cols[0]}.")
+            labels = labels.drop(species_cols[1], axis=1)
+
         # if no "split" column, set up train, val, and holdout split
         if "split" not in labels.columns:
             logger.info(
