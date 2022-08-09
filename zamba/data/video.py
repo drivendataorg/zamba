@@ -335,7 +335,9 @@ def get_cached_array_path(config, vid_path, cache_dir):
     returns: Path object to the cached data
     """
     if isinstance(config, VideoLoaderConfig):
-        config = dict(config)
+        # NOTE: config.dict() and dict(config) are equal, but their string representations are not
+        # so we should use config.dict() everywhere
+        config = config.dict()
 
     # don't include `cleanup_cache` or `cache_dir` in the hashed config
     # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order

@@ -57,27 +57,47 @@ def test_get_cached_array_path():
     vid_path_path = Path(vid_path_s3.key)
 
     expected = Path(
-        "data/cache/4c54037cf092a26598988b31c84d7999d187a123/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
+        "data/cache/2d1fee2b1e1f78d06aa08bdea88e7661f927bd81/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
     )
 
-    # pass the path as a string
+    # pass the vid_path as a string
     path = get_cached_array_path(config, vid_path_str, config.cache_dir)
     assert path == expected
 
-    # pass the path as S3Path
+    # pass the vid_path as S3Path
     path = get_cached_array_path(config, vid_path_s3, config.cache_dir)
     assert path == expected
 
-    # pass the path as a Path
+    # pass the vid_path as a Path
     path = get_cached_array_path(config, vid_path_path, config.cache_dir)
     assert path == expected
 
+    # pass the cache_dir as a Path
+    path = get_cached_array_path(config, vid_path_path, Path(config.cache_dir))
+    assert path == expected
+
+    # pass the cache_dir as S3Path
+    cache_dir = S3Path("s3://drivendata-client-zamba") / config.cache_dir
+    path = get_cached_array_path(config, vid_path_path, cache_dir)
+    expected3 = S3Path(
+        "s3://drivendata-client-zamba/data/cache/2d1fee2b1e1f78d06aa08bdea88e7661f927bd81/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
+    )
+    assert path == expected3
+
     # pass the config as a dictionary
-    config_dict = dict(config)
+    config_dict = config.dict()
     path = get_cached_array_path(config_dict, vid_path_str, config.cache_dir)
     assert path == expected
 
+    # pass the config as a dictionary, but use dict(config) rather than config.dict()
+    config_dict = dict(config)
+    path = get_cached_array_path(config_dict, vid_path_str, config.cache_dir)
+    # This fails because the string representation of the dictionary is different.
+    # But we don't need/want to test that it fails.
+    # assert path == expected
+
     # changing config.cache_dir and/or config.cleanup_cache should not affect the key
+    config_dict = config.dict()
     config_dict["cache_dir"] = "something/else"
     config_dict["cleanup_cache"] = "not even bool"
     path = get_cached_array_path(config_dict, vid_path_path, config.cache_dir)
@@ -87,6 +107,6 @@ def test_get_cached_array_path():
     config_dict["total_frames"] = 8
     path = get_cached_array_path(config_dict, vid_path_path, config.cache_dir)
     expected2 = Path(
-        "data/cache/947ddec6d01cd16dd36afa9f5a24030b2d494463/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
+        "data/cache/9becb6d6dfe6b9970afe05af06ef49af4881bd73/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
     )
     assert path == expected2
