@@ -343,14 +343,11 @@ def get_cached_array_path(config, vid_path, cache_dir):
     # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order
     keys = config.keys() - {"cleanup_cache", "cache_dir"}
     hashed_part = {k: config[k] for k in sorted(keys)}
+    print(hashed_part)
 
     # hash config for inclusion in filename
     hash_str = hashlib.sha1(str(hashed_part).encode("utf-8")).hexdigest()
-    logger.opt(lazy=True).debug(
-        "Generated hash {hash_str} from {hashed_part}",
-        hash_str=lambda: hash_str,
-        config=lambda: str(config),
-    )
+    logger.opt(lazy=True).debug(f"Generated hash {hash_str} from {hashed_part}")
 
     # strip leading "/" in absolute path
     vid_path = AnyPath(str(vid_path).lstrip("/"))
@@ -379,6 +376,7 @@ class npy_cache:
             except Exception:
                 config = kwargs
 
+            # get the path for the cached data
             npy_path = get_cached_array_path(config, vid_path, self.cache_path)
 
             # make parent directories since we're using absolute paths
