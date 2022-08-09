@@ -325,6 +325,42 @@ class VideoLoaderConfig(BaseModel):
         return values
 
 
+def get_cached_array_path(config, vid_path, cache_dir):
+    """Get the path to where the cached array would be, if it exists.
+
+    config: dictionary or VideoLoaderConfig
+    vid_path: string path to the video, or Path, or S3Path
+    cache_dir: string directory name, or Path, or S3Path
+
+    returns: Path object to the cached data
+    """
+    if isinstance(config, VideoLoaderConfig):
+        config = dict(config)
+
+    # don't include `cleanup_cache` or `cache_dir` in the hashed config
+    # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order
+    keys = config.keys() - {"cleanup_cache", "cache_dir"}
+    hashed_part = {k: config[k] for k in sorted(keys)}
+
+    # hash config for inclusion in filename
+    hash_str = hashlib.sha1(str(hashed_part).encode("utf-8")).hexdigest()
+    logger.opt(lazy=True).debug(
+        "Generated hash {hash_str} from {hashed_part}",
+        hash_str=lambda: hash_str,
+        config=lambda: str(config),
+    )
+
+    # strip leading "/" in absolute path
+    vid_path = AnyPath(str(vid_path).lstrip("/"))
+
+    # if the video is in S3, drop the prefix and bucket name
+    if isinstance(vid_path, S3Path):
+        vid_path = AnyPath(vid_path.key)
+
+    npy_path = AnyPath(cache_dir) / hash_str / vid_path.with_suffix(".npy")
+    return npy_path
+
+
 class npy_cache:
     def __init__(self, cache_path: Optional[Path] = None, cleanup: bool = False):
         self.cache_path = cache_path
@@ -341,24 +377,8 @@ class npy_cache:
             except Exception:
                 config = kwargs
 
-            # don't include cleanup in the hashed config
-            config.pop("cleanup_cache")
+            npy_path = get_cached_array_path(config, vid_path, self.cache_path)
 
-            # hash config for inclusion in filename
-            hash_str = hashlib.sha1(str(config).encode("utf-8")).hexdigest()
-            logger.opt(lazy=True).debug(
-                "Generated hash {hash_str} from {config}",
-                hash_str=lambda: hash_str,
-                config=lambda: str(config),
-            )
-
-            # strip leading "/" in absolute path
-            vid_path = AnyPath(str(vid_path).lstrip("/"))
-
-            if isinstance(vid_path, S3Path):
-                vid_path = AnyPath(vid_path.key)
-
-            npy_path = self.cache_path / hash_str / vid_path.with_suffix(".npy")
             # make parent directories since we're using absolute paths
             npy_path.parent.mkdir(parents=True, exist_ok=True)
 
