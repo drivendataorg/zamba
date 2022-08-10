@@ -339,6 +339,15 @@ def get_cached_array_path(config, vid_path, cache_dir):
         # so we should use config.dict() everywhere
         config = config.dict()
 
+    # NOTE: npy_cache uses the cache_dir it saved when it was created, not the cache_dir
+    # in `config`, which might cause unexpected behavior. So let's warn if the cache_dir
+    # we get as a parameter doesn't match
+    other_dir = config["cache_dir"]
+    if cache_dir != other_dir:
+        logger.warning(
+            f"The cache_dir parameter, {cache_dir}, does not match the cache_dir in config, {other_dir}."
+        )
+
     # don't include `cleanup_cache` or `cache_dir` in the hashed config
     # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order
     keys = config.keys() - {"cleanup_cache", "cache_dir"}
