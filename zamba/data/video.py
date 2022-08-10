@@ -325,33 +325,22 @@ class VideoLoaderConfig(BaseModel):
         return values
 
 
-def get_cached_array_path(config, vid_path, cache_dir):
+def get_cached_array_path(config, vid_path):
     """Get the path to where the cached array would be, if it exists.
 
-    config: dictionary or VideoLoaderConfig
-    vid_path: string path to the video, or Path, or S3Path
-    cache_dir: string directory name, or Path, or S3Path
+    config: VideoLoaderConfig
+    vid_path: string path to the video, or Path
 
     returns: Path object to the cached data
     """
-    if isinstance(config, VideoLoaderConfig):
-        # NOTE: config.dict() and dict(config) are equal, but their string representations are not
-        # so we should use config.dict() everywhere
-        config = config.dict()
-
-    # NOTE: npy_cache uses the cache_dir it saved when it was created, not the cache_dir
-    # in `config`, which might cause unexpected behavior. So let's warn if the cache_dir
-    # we get as a parameter doesn't match
-    other_dir = config["cache_dir"]
-    if cache_dir != other_dir:
-        logger.warning(
-            f"The cache_dir parameter, {cache_dir}, does not match the cache_dir in config, {other_dir}."
-        )
+    # TODO: make this a type hint
+    assert isinstance(config, VideoLoaderConfig)
 
     # don't include `cleanup_cache` or `cache_dir` in the hashed config
     # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order
-    keys = config.keys() - {"cleanup_cache", "cache_dir"}
-    hashed_part = {k: config[k] for k in sorted(keys)}
+    config_dict = config.dict()
+    keys = config_dict.keys() - {"cleanup_cache", "cache_dir"}
+    hashed_part = {k: config_dict[k] for k in sorted(keys)}
 
     # hash config for inclusion in filename
     hash_str = hashlib.sha1(str(hashed_part).encode("utf-8")).hexdigest()
@@ -364,11 +353,18 @@ def get_cached_array_path(config, vid_path, cache_dir):
     if isinstance(vid_path, S3Path):
         vid_path = AnyPath(vid_path.key)
 
+    cache_dir = config_dict["cache_dir"]
     npy_path = AnyPath(cache_dir) / hash_str / vid_path.with_suffix(".npy")
     return npy_path
 
 
 class npy_cache:
+    # TODO: Instead of calling npy_cache to store the wrapped function,
+    # why not pass the wrapped function to __init__?
+
+    # TODO: cache_path and cleanup_cache are part of the config that will be
+    # passed later when _wrapped is called, so why are we storing them?
+
     def __init__(self, cache_path: Optional[Path] = None, cleanup: bool = False):
         self.cache_path = cache_path
         self.cleanup = cleanup
@@ -380,12 +376,15 @@ class npy_cache:
             except Exception:
                 vid_path = args[0]
             try:
-                config = kwargs["config"].dict()
+                config = kwargs["config"]
             except Exception:
-                config = kwargs
+                config = VideoLoaderConfig(**kwargs)
+
+            # TODO: what should we do if this assert fails?
+            assert config.cache_dir == self.cache_path
 
             # get the path for the cached data
-            npy_path = get_cached_array_path(config, vid_path, self.cache_path)
+            npy_path = get_cached_array_path(config, vid_path)
 
             # make parent directories since we're using absolute paths
             npy_path.parent.mkdir(parents=True, exist_ok=True)

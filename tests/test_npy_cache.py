@@ -1,8 +1,6 @@
 from pathlib import Path
 import yaml
 
-from cloudpathlib import S3Path
-
 from zamba.data.video import (
     VideoLoaderConfig,
     npy_cache,
@@ -52,53 +50,49 @@ def test_get_cached_array_path():
     )(load_video_frames)
     assert isinstance(cached_load_video_frames, type(load_video_frames))
 
-    vid_path_str = "s3://drivendata-client-zamba/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.AVI"
-    vid_path_s3 = S3Path(vid_path_str)
-    vid_path_path = Path(vid_path_s3.key)
+    vid_path_str = "data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.AVI"
+    vid_path_path = Path(vid_path_str)
 
     expected = Path(
         "data/cache/2d1fee2b1e1f78d06aa08bdea88e7661f927bd81/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
     )
 
-    # test video path as string, S3Path, and Path
-    for video_path in [vid_path_str, vid_path_s3, vid_path_path]:
-        path = get_cached_array_path(config, video_path, config.cache_dir)
+    # test video path as string or Path
+    for video_path in [vid_path_str, vid_path_path]:
+        path = get_cached_array_path(config, video_path)
         assert path == expected
 
     # pass the cache_dir as a Path
-    path = get_cached_array_path(config, vid_path_path, Path(config.cache_dir))
-    assert isinstance(path, Path)
+    config_dict = yaml.safe_load(config_yaml)
+    config_dict["cache_dir"] = Path(config_dict["cache_dir"])
+    config = VideoLoaderConfig(**config_dict)
+    path = get_cached_array_path(config, vid_path_path)
     assert path == expected
 
-    # pass the cache_dir as S3Path
-    cache_dir = S3Path("s3://drivendata-client-zamba") / config.cache_dir
-    path = get_cached_array_path(config, vid_path_path, cache_dir)
-    expected_s3 = S3Path(
-        "s3://drivendata-client-zamba/data/cache/2d1fee2b1e1f78d06aa08bdea88e7661f927bd81/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
-    )
-    assert isinstance(path, S3Path)
-    assert path == expected_s3
-
-    # pass the config as a dictionary
-    config_dict = config.dict()
-    path = get_cached_array_path(config_dict, vid_path_str, config.cache_dir)
+    # changing config.cleanup_cache should not affect the key
+    config_dict = yaml.safe_load(config_yaml)
+    config_dict["cleanup_cache"] = True
+    config = VideoLoaderConfig(**config_dict)
+    path = get_cached_array_path(config, vid_path_path)
     assert path == expected
 
-    # NOTE: if you use dict(config) and config.dict(), you get two dictionaries
-    # that are equal, but their string representations are not, so their digests
-    # are different. We should use config.dict() everywhere.
-
-    # changing config.cache_dir and/or config.cleanup_cache should not affect the key
-    config_dict = config.dict()
+    # changing config.config_dir should change the path but not the hash
+    config_dict = yaml.safe_load(config_yaml)
     config_dict["cache_dir"] = "something/else"
-    config_dict["cleanup_cache"] = "not even bool"
-    path = get_cached_array_path(config_dict, vid_path_path, config.cache_dir)
-    assert path == expected
+    config = VideoLoaderConfig(**config_dict)
+    path = get_cached_array_path(config, vid_path_path)
+    expected_different_path = Path(
+        "something/else/2d1fee2b1e1f78d06aa08bdea88e7661f927bd81/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
+    )
+    assert path == expected_different_path
 
-    # changing anything else should
+    # changing anything else should change the key but not the path
+    config_dict = yaml.safe_load(config_yaml)
     config_dict["total_frames"] = 8
-    path = get_cached_array_path(config_dict, vid_path_path, config.cache_dir)
-    expected_different = Path(
+
+    config = VideoLoaderConfig(**config_dict)
+    path = get_cached_array_path(config, vid_path_path)
+    expected_different_hash = Path(
         "data/cache/9becb6d6dfe6b9970afe05af06ef49af4881bd73/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
     )
-    assert path == expected_different
+    assert path == expected_different_hash
