@@ -343,7 +343,6 @@ def get_cached_array_path(config, vid_path, cache_dir):
     # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order
     keys = config.keys() - {"cleanup_cache", "cache_dir"}
     hashed_part = {k: config[k] for k in sorted(keys)}
-    print(hashed_part)
 
     # hash config for inclusion in filename
     hash_str = hashlib.sha1(str(hashed_part).encode("utf-8")).hexdigest()
