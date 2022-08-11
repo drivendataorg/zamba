@@ -337,12 +337,13 @@ def get_cached_array_path(config, vid_path):
     assert isinstance(config, VideoLoaderConfig)
 
     # don't include `cleanup_cache` or `cache_dir` in the hashed config
-    # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order
+    # NOTE: sorting the keys avoids a cache miss if we see the same config in a different order;
+    # might not be necessary with a VideoLoaderConfig
     config_dict = config.dict()
     keys = config_dict.keys() - {"cleanup_cache", "cache_dir"}
     hashed_part = {k: config_dict[k] for k in sorted(keys)}
 
-    # hash config for inclusion in filename
+    # hash config for inclusion in path
     hash_str = hashlib.sha1(str(hashed_part).encode("utf-8")).hexdigest()
     logger.opt(lazy=True).debug(f"Generated hash {hash_str} from {hashed_part}")
 
@@ -353,7 +354,7 @@ def get_cached_array_path(config, vid_path):
     if isinstance(vid_path, S3Path):
         vid_path = AnyPath(vid_path.key)
 
-    cache_dir = config_dict["cache_dir"]
+    cache_dir = config.cache_dir
     npy_path = AnyPath(cache_dir) / hash_str / vid_path.with_suffix(".npy")
     return npy_path
 

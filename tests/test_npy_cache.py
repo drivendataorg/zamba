@@ -51,14 +51,14 @@ def test_get_cached_array_path():
     assert isinstance(cached_load_video_frames, type(load_video_frames))
 
     vid_path_str = "data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.AVI"
-    vid_path_path = Path(vid_path_str)
+    vid_path = Path(vid_path_str)
 
-    expected = Path(
-        "data/cache/2d1fee2b1e1f78d06aa08bdea88e7661f927bd81/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
-    )
+    expected_cache_path = vid_path.with_suffix(".npy")
+    expected_hash = "2d1fee2b1e1f78d06aa08bdea88e7661f927bd81"
+    expected = config.cache_dir / expected_hash / expected_cache_path
 
     # test video path as string or Path
-    for video_path in [vid_path_str, vid_path_path]:
+    for video_path in [vid_path_str, vid_path]:
         path = get_cached_array_path(config, video_path)
         assert path == expected
 
@@ -66,24 +66,22 @@ def test_get_cached_array_path():
     config_dict = yaml.safe_load(config_yaml)
     config_dict["cache_dir"] = Path(config_dict["cache_dir"])
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path_path)
+    path = get_cached_array_path(config, vid_path)
     assert path == expected
 
     # changing config.cleanup_cache should not affect the key
     config_dict = yaml.safe_load(config_yaml)
     config_dict["cleanup_cache"] = True
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path_path)
+    path = get_cached_array_path(config, vid_path)
     assert path == expected
 
     # changing config.config_dir should change the path but not the hash
     config_dict = yaml.safe_load(config_yaml)
     config_dict["cache_dir"] = "something/else"
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path_path)
-    expected_different_path = Path(
-        "something/else/2d1fee2b1e1f78d06aa08bdea88e7661f927bd81/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
-    )
+    path = get_cached_array_path(config, vid_path)
+    expected_different_path = config.cache_dir / expected_hash / expected_cache_path
     assert path == expected_different_path
 
     # changing anything else should change the key but not the path
@@ -91,8 +89,7 @@ def test_get_cached_array_path():
     config_dict["total_frames"] = 8
 
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path_path)
-    expected_different_hash = Path(
-        "data/cache/9becb6d6dfe6b9970afe05af06ef49af4881bd73/data/raw/noemie/Taï_cam197_683044_652175_20161223/01090065.npy"
-    )
+    path = get_cached_array_path(config, vid_path)
+    different_hash = "9becb6d6dfe6b9970afe05af06ef49af4881bd73"
+    expected_different_hash = config.cache_dir / different_hash / expected_cache_path
     assert path == expected_different_hash
