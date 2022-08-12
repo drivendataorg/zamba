@@ -89,6 +89,7 @@ docs-setup:
 
 ## Build the static version of the docs
 docs: docs-setup
+	$(PYTHON_INTERPRETER) -m pip install -r requirements-dev/docs.txt
 	cd docs && mkdocs build
 
 ## Serve documentation to livereload while you work on them

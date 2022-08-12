@@ -2,3 +2,6 @@ mike
 mkdocs>=1.2.2
 mkdocs-material>=7.3.4
 mkdocstrings[python]>=0.19.0
+
+# to make the docs, we need a normal installation of zamba, not an editable one
+.

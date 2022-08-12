@@ -1,4 +1,5 @@
 -e .[tests]
-
--r requirements-dev/docs.txt
 -r requirements-dev/lint.txt
+
+# for development, DON'T install the docs requirements
+# -r requirements-dev/docs.txt
