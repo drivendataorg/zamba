@@ -23,9 +23,9 @@ endif
 ## Install Python Dependencies
 requirements:
 ifeq (${CPU_OR_GPU}, gpu)
-	conda install cudatoolkit=11.0.3 cudnn=8.0 -c conda-forge
+	conda install -y cudatoolkit=11.0.3 cudnn=8.0 -c conda-forge
 endif
-	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel torch
+	$(PYTHON_INTERPRETER) -m pip install -U pip torch
 	$(PYTHON_INTERPRETER) -m pip install -r requirements-dev.txt
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
