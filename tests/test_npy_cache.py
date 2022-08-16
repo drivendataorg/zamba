@@ -59,28 +59,28 @@ def test_get_cached_array_path():
 
     # test video path as string or Path
     for video_path in [vid_path_str, vid_path]:
-        path = get_cached_array_path(config, video_path)
+        path = get_cached_array_path(video_path, config)
         assert path == expected
 
     # pass the cache_dir as a Path
     config_dict = yaml.safe_load(config_yaml)
     config_dict["cache_dir"] = Path(config_dict["cache_dir"])
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path)
+    path = get_cached_array_path(vid_path, config)
     assert path == expected
 
     # changing config.cleanup_cache should not affect the key
     config_dict = yaml.safe_load(config_yaml)
     config_dict["cleanup_cache"] = True
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path)
+    path = get_cached_array_path(vid_path, config)
     assert path == expected
 
     # changing config.config_dir should change the path but not the hash
     config_dict = yaml.safe_load(config_yaml)
     config_dict["cache_dir"] = "something/else"
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path)
+    path = get_cached_array_path(vid_path, config)
     expected_different_path = config.cache_dir / expected_hash / expected_cache_path
     assert path == expected_different_path
 
@@ -89,7 +89,7 @@ def test_get_cached_array_path():
     config_dict["total_frames"] = 8
 
     config = VideoLoaderConfig(**config_dict)
-    path = get_cached_array_path(config, vid_path)
+    path = get_cached_array_path(vid_path, config)
     different_hash = "9becb6d6dfe6b9970afe05af06ef49af4881bd73"
     expected_different_hash = config.cache_dir / different_hash / expected_cache_path
     assert path == expected_different_hash

@@ -325,15 +325,14 @@ class VideoLoaderConfig(BaseModel):
         return values
 
 
-def get_cached_array_path(config, vid_path):
+def get_cached_array_path(vid_path, config):
     """Get the path to where the cached array would be, if it exists.
 
-    config: VideoLoaderConfig
     vid_path: string path to the video, or Path
+    config: VideoLoaderConfig
 
     returns: Path object to the cached data
     """
-    # TODO: make this a type hint
     assert isinstance(config, VideoLoaderConfig)
 
     # don't include `cleanup_cache` or `cache_dir` in the hashed config
@@ -360,12 +359,6 @@ def get_cached_array_path(config, vid_path):
 
 
 class npy_cache:
-    # TODO: Instead of calling npy_cache to store the wrapped function,
-    # why not pass the wrapped function to __init__?
-
-    # TODO: cache_path and cleanup_cache are part of the config that will be
-    # passed later when _wrapped is called, so why are we storing them?
-
     def __init__(self, cache_path: Optional[Path] = None, cleanup: bool = False):
         self.cache_path = cache_path
         self.cleanup = cleanup
@@ -381,11 +374,11 @@ class npy_cache:
             except Exception:
                 config = VideoLoaderConfig(**kwargs)
 
-            # TODO: what should we do if this assert fails?
+            # NOTE: what should we do if this assert fails?
             assert config.cache_dir == self.cache_path
 
             # get the path for the cached data
-            npy_path = get_cached_array_path(config, vid_path)
+            npy_path = get_cached_array_path(vid_path, config)
 
             # make parent directories since we're using absolute paths
             npy_path.parent.mkdir(parents=True, exist_ok=True)
