@@ -1,3 +1,4 @@
 include zamba/models/official_models/*/config.yaml
+include zamba/models/official_models/*/hparams.yaml
 include zamba/object_detection/yolox/assets/*
 include zamba/models/densepose/assets/*
