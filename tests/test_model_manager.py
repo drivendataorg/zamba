@@ -116,7 +116,17 @@ def test_save_metrics_less_than_two_classes(
             }
         )
 
-    assert metrics.keys() == metric_names
+    removed_in_binary_case = {
+        "species/test_precision/B",
+        "species/test_recall/B",
+        "species/test_accuracy/B",
+        "species/test_f1/B",
+        "species/val_precision/B",
+        "species/val_recall/B",
+        "species/val_accuracy/B",
+        "species/val_f1/B",
+    }
+    assert metrics.keys() == metric_names - removed_in_binary_case
 
 
 def test_save_configuration(dummy_trainer):
