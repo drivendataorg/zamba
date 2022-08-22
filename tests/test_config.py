@@ -236,9 +236,8 @@ def test_labels_no_splits(labels_no_splits, tmp_path):
         split_proportions=dict(train=1, val=1, holdout=0),
     )
 
-    assert (
-        pd.read_csv(tmp_path / "splits.csv").split.values == ["train", "val", "train", "val"]
-    ).all()
+    split = pd.read_csv(tmp_path / "splits.csv")["split"].values
+    assert (split == ["train", "val", "train", "val"]).all()
 
     # remove the first row which puts antelope_duiker at 2 instead of 3
     labels_with_too_few_videos = pd.read_csv(labels_no_splits).iloc[1:, :]
