@@ -108,6 +108,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
+        # if we don't hold back setuptools, the densepose tests should fail
         run: |
           python -m pip install --upgrade pip setuptools wheel
 
