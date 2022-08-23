@@ -486,13 +486,12 @@ class TrainConfig(ZambaBaseModel):
         Replaces values['labels'] with modified DataFrame.
 
         Args:
-            values: dictionary containing labels and other config info
+            values: dictionary containing 'labels' and other config info
         """
         logger.info("Preprocessing labels into one hot encoded labels with one row per video.")
         labels = values["labels"]
 
         # one hot encode collapse to one row per video
-        # TODO: replace this with a call to one_hot_encode?
         labels = (
             pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
             .groupby("filepath")
@@ -501,7 +500,7 @@ class TrainConfig(ZambaBaseModel):
 
         # if no "split" column, set up train, val, and holdout split
         if "split" not in labels.columns:
-            make_random_split(labels, values)
+            make_split(labels, values)
 
         # if there are only two species columns and every video belongs to one of them,
         # drop the second species column so the problem is treated as a binary classification
@@ -519,7 +518,7 @@ class TrainConfig(ZambaBaseModel):
         return values
 
 
-def make_random_split(labels, values):
+def make_split(labels, values):
     """Add a split column to `labels`.
 
     Args:
@@ -570,14 +569,15 @@ def make_random_split(labels, values):
             )
 
         logger.info(f"{labels.split.value_counts()}")
-        logger.info(f"Writing out split information to {values['save_dir'] / 'splits.csv'}.")
 
-        # create the directory to save if we need to
-        values["save_dir"].mkdir(parents=True, exist_ok=True)
+    # write splits.csv
+    filename = values["save_dir"] / "splits.csv"
+    logger.info(f"Writing out split information to {filename}.")
 
-        labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(
-            values["save_dir"] / "splits.csv", index=False
-        )
+    # create the directory to save if we need to
+    values["save_dir"].mkdir(parents=True, exist_ok=True)
+
+    labels.reset_index()[["filepath", "split"]].drop_duplicates().to_csv(filename, index=False)
 
 
 class PredictConfig(ZambaBaseModel):
