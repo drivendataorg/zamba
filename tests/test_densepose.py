@@ -62,7 +62,7 @@ def test_image(model, chimp_image_path, tmp_path):
         # output to disk
 
         # this test fails now, did this behavior change?
-        #assert anatomy_info.shape == (2, 44)
+        # assert anatomy_info.shape == (2, 44)
         assert anatomy_info.shape == (1, 44)
         assert (anatomy_info > 0).any().any()
         assert (tmp_path / f"anatomized_{model}.csv").stat().st_size > 0
