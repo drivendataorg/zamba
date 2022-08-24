@@ -104,7 +104,7 @@ def check_files_exist_and_load(
     logger.info(
         f"Checking all {len(files_df):,} filepaths exist. Can take up to a minute for every couple thousand files."
     )
-    exists = files_df['filepath'].path.exists()
+    exists = files_df["filepath"].path.exists()
     invalid_files = files_df[~exists]
 
     # if no files exist
