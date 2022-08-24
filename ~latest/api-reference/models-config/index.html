@@ -3023,7 +3023,7 @@ default cache directory. Defaults to None.</p></td>
 <span class="sd">            default cache directory. Defaults to None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModelEnum</span><span class="o">.</span><span class="n">time_distributed</span>
@@ -3224,7 +3224,7 @@ default cache directory. Defaults to None.</p></td>
 
 
 <h5 id="zamba.models.config.PredictConfig.data_dir" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span></code>
+<code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4637,7 +4637,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">labels</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">FilePath</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
-    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">scheduler_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SchedulerConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModelEnum</span><span class="o">.</span><span class="n">time_distributed</span>
@@ -4892,7 +4892,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
 
 <h5 id="zamba.models.config.TrainConfig.data_dir" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span></code>
+<code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5977,8 +5977,7 @@ can be loaded.</p></td>
 <span class="sd">    Returns:</span>
 <span class="sd">        pd.DataFrame: DataFrame with valid and loadable videos.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># update filepath column to prepend data_dir if filepath column is not an absolute path</span>
-    <span class="n">data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="c1"># update filepath column to prepend data_dir</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">path</span>
 
     <span class="c1"># we can have multiple rows per file with labels so limit just to one row per file for these checks</span>
@@ -5988,7 +5987,8 @@ can be loaded.</p></td>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Checking all </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files_df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> filepaths exist. Can take up to a minute for every couple thousand files.&quot;</span>
     <span class="p">)</span>
-    <span class="n">invalid_files</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[</span><span class="o">~</span><span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()]</span>
+    <span class="n">exists</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="n">invalid_files</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[</span><span class="o">~</span><span class="n">exists</span><span class="p">]</span>
 
     <span class="c1"># if no files exist</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">invalid_files</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">files_df</span><span class="p">):</span>
