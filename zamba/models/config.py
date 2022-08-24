@@ -94,7 +94,6 @@ def check_files_exist_and_load(
         pd.DataFrame: DataFrame with valid and loadable videos.
     """
     # update filepath column to prepend data_dir
-    # NOTE: A previous version of this resolved all paths to absolute, but that breaks caching.
     df["filepath"] = str(data_dir) / df.filepath.path
 
     # we can have multiple rows per file with labels so limit just to one row per file for these checks
@@ -356,7 +355,7 @@ class TrainConfig(ZambaBaseModel):
     """
 
     labels: Union[FilePath, pd.DataFrame]
-    data_dir: Optional[DirectoryPath] = ""
+    data_dir: DirectoryPath = ""
     checkpoint: Optional[FilePath] = None
     scheduler_config: Optional[Union[str, SchedulerConfig]] = "default"
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
