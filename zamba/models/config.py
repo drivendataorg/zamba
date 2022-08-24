@@ -93,8 +93,7 @@ def check_files_exist_and_load(
     Returns:
         pd.DataFrame: DataFrame with valid and loadable videos.
     """
-    # update filepath column to prepend data_dir if filepath column is not an absolute path
-    data_dir = Path(data_dir).resolve()
+    # update filepath column to prepend data_dir
     df["filepath"] = str(data_dir) / df.filepath.path
 
     # we can have multiple rows per file with labels so limit just to one row per file for these checks
@@ -104,7 +103,8 @@ def check_files_exist_and_load(
     logger.info(
         f"Checking all {len(files_df):,} filepaths exist. Can take up to a minute for every couple thousand files."
     )
-    invalid_files = files_df[~files_df.filepath.path.exists()]
+    exists = files_df["filepath"].path.exists()
+    invalid_files = files_df[~exists]
 
     # if no files exist
     if len(invalid_files) == len(files_df):
@@ -355,7 +355,7 @@ class TrainConfig(ZambaBaseModel):
     """
 
     labels: Union[FilePath, pd.DataFrame]
-    data_dir: DirectoryPath = Path.cwd()
+    data_dir: DirectoryPath = ""
     checkpoint: Optional[FilePath] = None
     scheduler_config: Optional[Union[str, SchedulerConfig]] = "default"
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
@@ -631,7 +631,7 @@ class PredictConfig(ZambaBaseModel):
             default cache directory. Defaults to None.
     """
 
-    data_dir: DirectoryPath = Path.cwd()
+    data_dir: DirectoryPath = ""
     filepaths: Optional[FilePath] = None
     checkpoint: Optional[FilePath] = None
     model_name: Optional[ModelEnum] = ModelEnum.time_distributed
