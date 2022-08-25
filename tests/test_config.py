@@ -29,24 +29,24 @@ def test_train_data_dir_only():
 
 def test_train_data_dir_and_labels(tmp_path, labels_relative_path, labels_absolute_path):
     # correct data dir
-    config = TrainConfig(data_dir=TEST_VIDEOS_DIR, labels=labels_relative_path)
+    config = TrainConfig(data_dir=TEST_VIDEOS_DIR, labels=labels_relative_path, save_dir=tmp_path / "my_model")
     assert config.data_dir is not None
     assert config.labels is not None
 
     # data dir ignored if absolute path provided in filepath
-    config = TrainConfig(data_dir=tmp_path, labels=labels_absolute_path)
+    config = TrainConfig(data_dir=tmp_path, labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.data_dir is not None
     assert config.labels is not None
     assert not config.labels.filepath.str.startswith(str(tmp_path)).any()
 
     # incorrect data dir with relative filepaths
     with pytest.raises(ValidationError) as error:
-        TrainConfig(data_dir=ASSETS_DIR, labels=labels_relative_path)
+        TrainConfig(data_dir=ASSETS_DIR, labels=labels_relative_path, save_dir=tmp_path / "my_model")
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
-def test_train_labels_only(labels_absolute_path):
-    config = TrainConfig(labels=labels_absolute_path)
+def test_train_labels_only(labels_absolute_path, tmp_path):
+    config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.labels is not None
 
 
@@ -89,7 +89,7 @@ def test_filepath_column(tmp_path, labels_absolute_path):
 
     # train: labels
     with pytest.raises(ValidationError) as error:
-        TrainConfig(labels=tmp_path / "bad_filepath_column.csv")
+        TrainConfig(labels=tmp_path / "bad_filepath_column.csv", save_dir=tmp_path / "my_model")
     assert "must contain `filepath` and `label` columns" in error.value.errors()[0]["msg"]
 
 
@@ -98,7 +98,7 @@ def test_label_column(tmp_path, labels_absolute_path):
         tmp_path / "bad_label_column.csv"
     )
     with pytest.raises(ValidationError) as error:
-        TrainConfig(labels=tmp_path / "bad_label_column.csv")
+        TrainConfig(labels=tmp_path / "bad_label_column.csv", save_dir=tmp_path / "my_model")
     assert "must contain `filepath` and `label` columns" in error.value.errors()[0]["msg"]
 
 
@@ -111,7 +111,7 @@ def test_extra_column(tmp_path, labels_absolute_path):
         index=False,
     )
     # this column is not one hot encoded
-    config = TrainConfig(labels=tmp_path / "extra_species_col.csv")
+    config = TrainConfig(labels=tmp_path / "extra_species_col.csv", save_dir=tmp_path / "my_model")
     assert list(config.labels.columns) == [
         "filepath",
         "split",
@@ -138,7 +138,7 @@ def test_one_video_does_not_exist(tmp_path, labels_absolute_path, caplog):
     # one fewer file than in original list since bad file is skipped
     assert len(config.filepaths) == (len(files_df) - 1)
 
-    config = TrainConfig(labels=tmp_path / "labels_with_fake_video.csv")
+    config = TrainConfig(labels=tmp_path / "labels_with_fake_video.csv", save_dir=tmp_path / "my_model")
     assert "Skipping 1 file(s) that could not be found" in caplog.text
     assert len(config.labels) == (len(files_df) - 1)
 
@@ -159,7 +159,7 @@ def test_videos_cannot_be_loaded(tmp_path, labels_absolute_path, caplog):
     assert "Skipping 2 file(s) that could not be loaded with ffmpeg" in caplog.text
     assert len(config.filepaths) == (len(files_df) - 2)
 
-    config = TrainConfig(labels=tmp_path / "labels_with_non_loadable_videos.csv")
+    config = TrainConfig(labels=tmp_path / "labels_with_non_loadable_videos.csv", save_dir=tmp_path / "my_model")
     assert "Skipping 2 file(s) that could not be loaded with ffmpeg" in caplog.text
     assert len(config.labels) == (len(files_df) - 2)
 
@@ -183,43 +183,43 @@ def test_early_stopping_mode():
     assert "Provided mode max is incorrect for val_loss monitor." == error.value.errors()[0]["msg"]
 
 
-def test_labels_with_all_null_species(labels_absolute_path):
+def test_labels_with_all_null_species(labels_absolute_path, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
     labels["label"] = np.nan
     with pytest.raises(ValueError) as error:
-        TrainConfig(labels=labels)
+        TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
     assert "Species cannot be null for all videos." == error.value.errors()[0]["msg"]
 
 
-def test_labels_with_partially_null_species(labels_absolute_path, caplog):
+def test_labels_with_partially_null_species(labels_absolute_path, caplog, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
     labels.loc[0, "label"] = np.nan
-    TrainConfig(labels=labels)
+    TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
     assert "Found 1 filepath(s) with no label. Will skip." in caplog.text
 
 
-def test_labels_with_all_null_split(labels_absolute_path, caplog):
+def test_labels_with_all_null_split(labels_absolute_path, caplog, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
     labels["split"] = np.nan
-    TrainConfig(labels=labels)
+    TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
     assert "Split column is entirely null. Will generate splits automatically" in caplog.text
 
 
-def test_labels_with_partially_null_split(labels_absolute_path):
+def test_labels_with_partially_null_split(labels_absolute_path, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
     labels.loc[0, "split"] = np.nan
     with pytest.raises(ValueError) as error:
-        TrainConfig(labels=labels)
+        TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
     assert (
         "Found 1 row(s) with null `split`. Fill in these rows with either `train`, `val`, or `holdout`"
     ) in error.value.errors()[0]["msg"]
 
 
-def test_labels_with_invalid_split(labels_absolute_path):
+def test_labels_with_invalid_split(labels_absolute_path, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
     labels.loc[0, "split"] = "test"
     with pytest.raises(ValueError) as error:
-        TrainConfig(labels=labels)
+        TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
     assert (
         "Found the following invalid values for `split`: {'test'}. `split` can only contain `train`, `val`, or `holdout.`"
     ) == error.value.errors()[0]["msg"]
@@ -262,14 +262,14 @@ def test_labels_split_proportions(labels_no_splits, tmp_path):
     assert config.labels.split.value_counts().to_dict() == {"a": 13, "b": 6}
 
 
-def test_from_scratch(labels_absolute_path):
-    config = TrainConfig(labels=labels_absolute_path, from_scratch=True, checkpoint=None)
+def test_from_scratch(labels_absolute_path, tmp_path):
+    config = TrainConfig(labels=labels_absolute_path, from_scratch=True, checkpoint=None, save_dir=tmp_path / "my_model")
     assert config.model_name == "time_distributed"
     assert config.from_scratch
     assert config.checkpoint is None
 
     with pytest.raises(ValueError) as error:
-        TrainConfig(labels=labels_absolute_path, from_scratch=True, model_name=None)
+        TrainConfig(labels=labels_absolute_path, from_scratch=True, model_name=None, save_dir=tmp_path / "my_model")
     assert "If from_scratch=True, model_name cannot be None." == error.value.errors()[0]["msg"]
 
 
@@ -297,11 +297,11 @@ def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplo
 
 
 def test_model_cache_dir(labels_absolute_path, tmp_path):
-    config = TrainConfig(labels=labels_absolute_path)
+    config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.model_cache_dir == Path(appdirs.user_cache_dir()) / "zamba"
 
     os.environ["MODEL_CACHE_DIR"] = str(tmp_path)
-    config = TrainConfig(labels=labels_absolute_path)
+    config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.model_cache_dir == tmp_path
 
     config = PredictConfig(filepaths=labels_absolute_path, model_cache_dir=tmp_path / "my_cache")
@@ -365,23 +365,23 @@ def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkp
     assert config.save_dir == save_dir
 
 
-def test_validate_scheduler(labels_absolute_path):
+def test_validate_scheduler(labels_absolute_path, tmp_path):
     # None gets transformed into SchedulerConfig
     config = TrainConfig(
-        labels=labels_absolute_path, scheduler_config=None, skip_load_validation=True
+        labels=labels_absolute_path, scheduler_config=None, skip_load_validation=True, save_dir=tmp_path / "my_model"
     )
     assert config.scheduler_config == SchedulerConfig(scheduler=None, scheduler_params=None)
 
     # default is valid
     config = TrainConfig(
-        labels=labels_absolute_path, scheduler_config="default", skip_load_validation=True
+        labels=labels_absolute_path, scheduler_config="default", skip_load_validation=True, save_dir=tmp_path / "my_model"
     )
     assert config.scheduler_config == "default"
 
     # other strings are not
     with pytest.raises(ValueError) as error:
         TrainConfig(
-            labels=labels_absolute_path, scheduler_config="StepLR", skip_load_validation=True
+            labels=labels_absolute_path, scheduler_config="StepLR", skip_load_validation=True, save_dir=tmp_path / "my_model"
         )
     assert (
         "Scheduler can either be 'default', None, or a SchedulerConfig."
@@ -393,27 +393,28 @@ def test_validate_scheduler(labels_absolute_path):
         labels=labels_absolute_path,
         scheduler_config=SchedulerConfig(scheduler="StepLR", scheduler_params={"gamma": 0.2}),
         skip_load_validation=True,
+        save_dir=tmp_path / "my_model"
     )
     assert config.scheduler_config == SchedulerConfig(
         scheduler="StepLR", scheduler_params={"gamma": 0.2}
     )
 
 
-def test_dry_run_and_skip_load_validation(labels_absolute_path, caplog):
+def test_dry_run_and_skip_load_validation(labels_absolute_path, caplog, tmp_path):
     # check dry_run is True sets skip_load_validation to True
-    config = TrainConfig(labels=labels_absolute_path, dry_run=True, skip_load_validation=False)
+    config = TrainConfig(labels=labels_absolute_path, dry_run=True, skip_load_validation=False, save_dir=tmp_path / "my_model")
     assert config.skip_load_validation
     assert "Turning off video loading check since dry_run=True." in caplog.text
 
     # if dry run is False, skip_load_validation is unchanged
-    config = TrainConfig(labels=labels_absolute_path, dry_run=False, skip_load_validation=False)
+    config = TrainConfig(labels=labels_absolute_path, dry_run=False, skip_load_validation=False, save_dir=tmp_path / "my_model")
     assert not config.skip_load_validation
 
 
-def test_default_video_loader_config(labels_absolute_path):
+def test_default_video_loader_config(labels_absolute_path, tmp_path):
     # if no video loader is specified, use default for model
     config = ModelConfig(
-        train_config=TrainConfig(labels=labels_absolute_path, skip_load_validation=True),
+        train_config=TrainConfig(labels=labels_absolute_path, skip_load_validation=True, save_dir=tmp_path / "my_model"),
         video_loader_config=None,
     )
     assert config.video_loader_config is not None
@@ -425,11 +426,12 @@ def test_default_video_loader_config(labels_absolute_path):
     assert config.video_loader_config is not None
 
 
-def test_checkpoint_sets_model_to_default(labels_absolute_path, dummy_trained_model_checkpoint):
+def test_checkpoint_sets_model_to_default(labels_absolute_path, dummy_trained_model_checkpoint, tmp_path):
     config = TrainConfig(
         labels=labels_absolute_path,
         checkpoint=dummy_trained_model_checkpoint,
         skip_load_validation=True,
+        save_dir=tmp_path / "my_model"
     )
     assert config.model_name == "dummy_model"
 
