@@ -55,11 +55,11 @@ dist: clean ## builds source and wheel package
 	python setup.py bdist_wheel
 	ls -l dist
 
-## Lint using flake8
+## Format using black
 format:
 	black zamba tests
 
-## Lint using flake8
+## Lint using flake8 + black
 lint:
 	flake8 zamba tests
 	black --check zamba tests
