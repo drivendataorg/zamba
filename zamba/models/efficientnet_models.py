@@ -12,7 +12,9 @@ from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModul
 
 @register_model
 class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
-    _default_model_name = "time_distributed"  # used to look up default configuration for checkpoints
+    _default_model_name = (
+        "time_distributed"  # used to look up default configuration for checkpoints
+    )
 
     def __init__(
         self, num_frames=16, finetune_from: Optional[Union[os.PathLike, str]] = None, **kwargs

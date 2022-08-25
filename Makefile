@@ -56,6 +56,10 @@ dist: clean ## builds source and wheel package
 	ls -l dist
 
 ## Lint using flake8
+format:
+	black zamba tests
+
+## Lint using flake8
 lint:
 	flake8 zamba tests
 	black --check zamba tests

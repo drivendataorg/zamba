@@ -21,6 +21,7 @@ class SlowFast(ZambaVideoClassificationLightningModule):
         head (torch.nn.Module): The trainable head.
         _backbone_output_dim (int): Dimensionality of the backbone output (and head input).
     """
+
     _default_model_name = "slowfast"  # used to look up default configuration for checkpoints
 
     def __init__(
