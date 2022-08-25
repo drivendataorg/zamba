@@ -44,6 +44,7 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '__pycache__' -exec rm -fr {} +
 
 clean-test: ## remove test and coverage artifacts
+	find . -name ".DS_Store" -type f -delete  # breaks tests on MacOS
 	rm -fr .tox/
 	rm -f .coverage
 	rm -f coverage.xml
@@ -65,7 +66,7 @@ lint:
 	black --check zamba tests
 
 ## Generate assets and run tests
-tests:
+tests: clean-test
 	pytest tests -vv
 
 ## Run the tests that are just for densepose
