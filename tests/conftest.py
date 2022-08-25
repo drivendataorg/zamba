@@ -29,6 +29,7 @@ random.seed(56745)
 @register_model
 class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLightningModule):
     """A dummy model whose linear weights start out as all zeros."""
+    _default_model_name = "dummy_model"  # used to look up default configuration for checkpoints
 
     def __init__(
         self,

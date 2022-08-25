@@ -425,10 +425,17 @@ def test_default_video_loader_config(labels_absolute_path):
     assert config.video_loader_config is not None
 
 
-def test_checkpoint_sets_model_to_none(labels_absolute_path, dummy_trained_model_checkpoint):
+def test_checkpoint_sets_model_to_default(labels_absolute_path, dummy_trained_model_checkpoint):
     config = TrainConfig(
         labels=labels_absolute_path,
         checkpoint=dummy_trained_model_checkpoint,
         skip_load_validation=True,
     )
-    assert config.model_name is None
+    assert config.model_name == "dummy_model"
+
+    config = PredictConfig(
+        filepaths=labels_absolute_path,
+        checkpoint=dummy_trained_model_checkpoint,
+        skip_load_validation=True,
+    )
+    assert config.model_name == "dummy_model"
