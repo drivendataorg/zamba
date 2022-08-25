@@ -1,9 +1,11 @@
 from enum import Enum
+from functools import lru_cache
 import os
 from pathlib import Path
 from typing import Union
 
 from cloudpathlib import S3Client, S3Path
+import torch
 import yaml
 
 from zamba import MODELS_DIRECTORY
@@ -45,3 +47,8 @@ def get_model_checkpoint_filename(model_name):
     with config_file.open() as f:
         config_dict = yaml.safe_load(f)
     return Path(config_dict["public_checkpoint"])
+
+
+@lru_cache()
+def get_checkpoint_hparams(checkpoint):
+    return torch.load(checkpoint, map_location=torch.device("cpu"))["hyper_parameters"]

@@ -27,7 +27,7 @@ from zamba.models.config import (
     RegionEnum,
 )
 from zamba.models.registry import available_models
-from zamba.models.utils import download_weights
+from zamba.models.utils import download_weights, get_checkpoint_hparams
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
 
@@ -87,7 +87,7 @@ def instantiate_model(
                 destination_dir=model_cache_dir,
             )
 
-        hparams = torch.load(checkpoint, map_location=torch.device("cpu"))["hyper_parameters"]
+        hparams = get_checkpoint_hparams(checkpoint)
 
     model_class = available_models[hparams["model_class"]]
 
