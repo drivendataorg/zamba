@@ -22,6 +22,8 @@ class SlowFast(ZambaVideoClassificationLightningModule):
         _backbone_output_dim (int): Dimensionality of the backbone output (and head input).
     """
 
+    _default_model_name = "slowfast"  # used to look up default configuration for checkpoints
+
     def __init__(
         self,
         backbone_mode: str = "train",

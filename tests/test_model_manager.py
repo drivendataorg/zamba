@@ -169,12 +169,11 @@ def test_train_save_dir_overwrite(
 
     assert not any([f.name.startswith("version_") for f in config.save_dir.iterdir()])
 
-    # when training from checkpoint, model_name is None so get PTL default ckpt name
     for f in [
         "train_configuration.yaml",
         "test_metrics.json",
         "val_metrics.json",
-        "epoch=0-step=11.ckpt",
+        "dummy_model.ckpt",
     ]:
         assert (config.save_dir / f).exists()
 

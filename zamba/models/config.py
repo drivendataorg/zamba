@@ -18,7 +18,8 @@ from zamba import MODELS_DIRECTORY
 from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.utils import RegionEnum, get_model_checkpoint_filename
+from zamba.models.registry import available_models
+from zamba.models.utils import RegionEnum, get_checkpoint_hparams, get_model_checkpoint_filename
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
@@ -164,8 +165,9 @@ def validate_model_name_and_checkpoint(cls, values):
     # checkpoint supercedes model
     elif checkpoint is not None and model_name is not None:
         logger.info(f"Using checkpoint file: {checkpoint}.")
-        # set model name to None so proper model class is retrieved from ckpt up upon instantiation
-        values["model_name"] = None
+        # get model name from checkpoint so it can be used for the video loader config
+        hparams = get_checkpoint_hparams(checkpoint)
+        values["model_name"] = available_models[hparams["model_class"]]._default_model_name
 
     elif checkpoint is None and model_name is not None:
         if not values.get("from_scratch"):

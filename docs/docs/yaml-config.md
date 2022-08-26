@@ -20,7 +20,7 @@ train_config:
 
 predict_config:
   model_name: time_distributed
-  data_directoty: example_vids/
+  data_dir: example_vids/
   # other training parameters, eg. batch_size
 ```
 
@@ -34,7 +34,7 @@ video_loader_config:
 
 predict_config:
   model_name: time_distributed
-  data_directoty: example_vids/
+  data_dir: example_vids/
 ```
 
 ## Required arguments
