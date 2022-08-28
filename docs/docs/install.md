@@ -72,9 +72,23 @@ $ pip install -U https://github.com/drivendataorg/zamba/releases/latest/download
 
 ### Linux
 
-`zamba` has been tested on [Ubuntu](https://www.ubuntu.com/) versions 16 and 17.
+`zamba`'s test suite runs regularly on the latest versions of [Ubuntu](https://www.ubuntu.com/).
 
-**Note: `zamba` does not currently work on Windows because one of our dependencies fails to build.**
+### Windows
+
+Note: Windows is not officially supported, but can be made to work. We recommend [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) as a way to run the linux version of the tools on your Windows machine, which is supported.
+
+If you want to use Windows natively, we recommend using the [git bash console](https://gitforwindows.org/) to run commands, and we recommend [Anaconda](https://docs.anaconda.com/anaconda/install/) (or [miniconda](https://docs.conda.io/en/latest/miniconda.html#) or [mamba](https://mamba.readthedocs.io/en/latest/installation.html)) as the easiest way to manage a number of requried dependencies.
+
+Within the git bash console, you should [create an empty conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-environments) and then install a supported version of Python (e.g., `conda install python=3.8`).
+
+Next, you should install some of the required dependencies for building zamba (particularly those for yolox):
+
+```console
+$ conda install cmake ffmpeg=4 ninja protobuf onnx=1.8.1 -c conda-forge
+```
+
+Once this is done, you can use the [pip command to install zamba](#2-install-zamba). As long as you use this conda environment with all the prerequisites, zamba should work.
 
 ## Using GPU(s)
 
