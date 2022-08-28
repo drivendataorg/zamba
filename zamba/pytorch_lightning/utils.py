@@ -40,7 +40,9 @@ class ZambaDataModule(LightningDataModule):
         prefetch_factor: int = 2,
         train_metadata: Optional[pd.DataFrame] = None,
         predict_metadata: Optional[pd.DataFrame] = None,
-        multiprocessing_context: Optional[str] = "forkserver" if platform.uname().system != "Windows" else "spawn",
+        multiprocessing_context: Optional[str] = (
+            "forkserver" if platform.uname().system != "Windows" else "spawn"
+        ),
         *args,
         **kwargs,
     ):
