@@ -277,9 +277,13 @@ def train_model(
     else:
         logger.info(f"Videos will be cached to {video_loader_config.cache_dir}.")
 
-    if train_config.auto_lr_find:
+    if train_config.lr == "auto":
         logger.info("Finding best learning rate.")
         trainer.tune(model, data_module)
+
+    else:
+        logger.info(f"Setting learning rate to {train_config.lr}.")
+        model.hparams.lr = train_config.lr
 
     try:
         git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
