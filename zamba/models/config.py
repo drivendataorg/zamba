@@ -7,9 +7,11 @@ from typing import Dict, Optional, Union
 import appdirs
 import ffmpeg
 from loguru import logger
+import numpy as np
 import pandas as pd
 from pydantic import BaseModel
 from pydantic import DirectoryPath, FilePath, validator, root_validator
+from pqdm.threads import pqdm
 import torch
 from tqdm import tqdm
 import yaml
@@ -100,11 +102,23 @@ def check_files_exist_and_load(
     # we can have multiple rows per file with labels so limit just to one row per file for these checks
     files_df = df[["filepath"]].drop_duplicates()
 
-    # check data exists
-    logger.info(
-        f"Checking all {len(files_df):,} filepaths exist. Can take up to a minute for every couple thousand files."
-    )
-    exists = files_df["filepath"].path.exists()
+    # check for missing files
+    logger.info(f"Checking all {len(files_df):,} filepaths exist. Trying fast file checking...")
+
+    # try to check files in parallel
+    paths = files_df["filepath"].apply(Path)
+    exists = pqdm(paths, Path.exists, n_jobs=16)
+    exists = np.array(exists)
+
+    # if fast checking fails, fall back to slow checking
+    # if an I/O error is in `exists`, the array has dtype `object`
+    if exists.dtype != bool:
+        logger.info(
+            "Fast file checking failed. Running slower check, which can take 30 seconds per thousand files."
+        )
+        exists = files_df["filepath"].path.exists()
+
+    # select the missing files
     invalid_files = files_df[~exists]
 
     # if no files exist
