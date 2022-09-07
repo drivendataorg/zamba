@@ -263,7 +263,7 @@ def train_model(
     trainer = pl.Trainer(
         gpus=train_config.gpus,
         max_epochs=train_config.max_epochs,
-        auto_lr_find=train_config.auto_lr_find,
+        auto_lr_find=(train_config.lr == "auto"),
         logger=tensorboard_logger,
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
