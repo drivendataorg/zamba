@@ -280,9 +280,9 @@ def train_model(
     if train_config.lr == "auto":
         logger.info("Finding best learning rate.")
         trainer.tune(model, data_module)
-
     else:
         logger.info(f"Setting learning rate to {train_config.lr}.")
+        model.lr = train_config.lr
         model.hparams.lr = train_config.lr
 
     try:
