@@ -1,4 +1,5 @@
 from typing import Optional
+from torch.nn import Module
 import pytorch_lightning as pl
 
 
@@ -72,3 +73,13 @@ class BackboneFinetuning(pl.callbacks.finetuning.BackboneFinetuning):
 
     def freeze_before_training(self, pl_module: "pl.LightningModule"):
         self.freeze(pl_module.backbone, train_bn=self.pre_train_bn)
+
+    def on_fit_start(self, trainer, pl_module):
+        """
+        Raises:
+            MisconfigurationException:
+                If LightningModule has no nn.Module `backbone` attribute.
+        """
+        if hasattr(pl_module, "backbone") and isinstance(pl_module.backbone, Module):
+            return
+        raise MisconfigurationException("The LightningModule should have a nn.Module `backbone` attribute")
