@@ -13,7 +13,7 @@ predict_config:
   overwrite: false
   proba_threshold: null
   save: true
-  save_dir: version_8
+  save_dir: version_0
   skip_load_validation: false
   weight_download_region: us
 species:
