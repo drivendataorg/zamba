@@ -3,7 +3,7 @@ scheduler: MultiStepLR
 scheduler_params:
   gamma: 0.5
   milestones:
-  - 3/home/ubuntu/pjmf-zamba/data/results/zamba_classification_retraining/td_small_set_new_frame_selection
+  - 3
   verbose: true
 species:
 - aardvark

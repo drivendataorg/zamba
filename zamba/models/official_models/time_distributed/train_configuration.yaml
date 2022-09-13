@@ -50,7 +50,7 @@ train_config:
   early_stopping_config:
     mode: max
     monitor: val_macro_f1
-    patience: 10
+    patience: 5
     verbose: true
   from_scratch: true
   gpus: 1
@@ -66,7 +66,7 @@ train_config:
     scheduler_params:
       gamma: 0.5
       milestones:
-      - 3/home/ubuntu/pjmf-zamba/data/results/zamba_classification_retraining/td_small_set_new_frame_selection
+      - 3
       verbose: true
   skip_load_validation: true
   split_proportions: null

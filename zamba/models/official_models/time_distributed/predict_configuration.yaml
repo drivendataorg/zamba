@@ -2,7 +2,7 @@ inference_start_time: '2022-09-08T22:11:19.578412'
 model_class: TimeDistributedEfficientNet
 predict_config:
   batch_size: 3
-  checkpoint: version_8/time_distributed.ckpt
+  checkpoint: version_0/time_distributed.ckpt
   data_dir: ''
   dry_run: false
   gpus: 1

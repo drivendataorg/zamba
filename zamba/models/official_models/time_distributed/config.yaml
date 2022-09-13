@@ -9,7 +9,7 @@ train_config:
   early_stopping_config:
     mode: max
     monitor: val_macro_f1
-    patience: 10
+    patience: 5
     verbose: true
   model_name: time_distributed
   scheduler_config:
@@ -17,7 +17,7 @@ train_config:
     scheduler_params:
       gamma: 0.5
       milestones:
-      - 3/home/ubuntu/pjmf-zamba/data/results/zamba_classification_retraining/td_small_set_new_frame_selection
+      - 3
       verbose: true
 video_loader_config:
   crop_bottom_pixels: 50
@@ -46,4 +46,4 @@ video_loader_config:
   total_frames: 16
 predict_config:
   model_name: time_distributed
-public_checkpoint: time_distributed_f1d7fe21d2.ckpt
+public_checkpoint: time_distributed_845b088aa1.ckpt
