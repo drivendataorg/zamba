@@ -32,6 +32,7 @@ video_loader_config:
   megadetector_lite_config:
     confidence: 0.25
     fill_mode: score_sorted
+    frame_batch_size: 24
     image_height: 640
     image_width: 640
     n_frames: 16
@@ -45,4 +46,4 @@ video_loader_config:
   total_frames: 16
 predict_config:
   model_name: time_distributed
-public_checkpoint: time_distributed_f5072dafff.ckpt
+public_checkpoint: time_distributed_845b088aa1.ckpt

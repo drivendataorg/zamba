@@ -183,7 +183,7 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
         pd.read_csv(save_dir / "zamba_predictions.csv", index_col="filepath")
         .idxmax(axis=1)
         .values[0]
-        == "monkey_prosimian"
+        == "blank"
     )
 
 

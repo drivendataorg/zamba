@@ -1,20 +1,20 @@
-inference_start_time: '2022-07-11T19:04:08.231520'
+inference_start_time: '2022-09-08T22:11:19.578412'
 model_class: TimeDistributedEfficientNet
 predict_config:
-  batch_size: 1
-  checkpoint: version_1/time_distributed.ckpt
-  data_dir: /home/ubuntu/pjmf-zamba
+  batch_size: 3
+  checkpoint: version_0/time_distributed.ckpt
+  data_dir: ''
   dry_run: false
   gpus: 1
   model_cache_dir: /home/ubuntu/.cache/zamba
-  model_name: null
-  num_workers: 1
+  model_name: time_distributed
+  num_workers: 2
   output_class_names: false
   overwrite: false
   proba_threshold: null
   save: true
-  save_dir: version_1
-  skip_load_validation: true
+  save_dir: version_0
+  skip_load_validation: false
   weight_download_region: us
 species:
 - aardvark
@@ -50,7 +50,7 @@ species:
 - small_cat
 - wild_dog_jackal
 video_loader_config:
-  cache_dir: /tmp/zamba_cache
+  cache_dir: data/zamba-cache
   cleanup_cache: false
   crop_bottom_pixels: 50
   early_bias: false
@@ -65,6 +65,7 @@ video_loader_config:
     confidence: 0.25
     device: cuda
     fill_mode: score_sorted
+    frame_batch_size: 24
     image_height: 640
     image_width: 640
     n_frames: 16

@@ -1,4 +1,4 @@
-git_hash: 0967bf1ea1d7a8a3a84f37a991df2ff3fea237e8
+git_hash: 3e8bbdd821af094a2183fa78fdc74f78834f71fb
 model_class: TimeDistributedEfficientNet
 species:
 - aardvark
@@ -43,9 +43,9 @@ train_config:
     train_bn: false
     unfreeze_backbone_at_epoch: 3
     verbose: true
-  batch_size: 1
+  batch_size: 3
   checkpoint: null
-  data_dir: /home/ubuntu/pjmf-zamba
+  data_dir: ''
   dry_run: false
   early_stopping_config:
     mode: max
@@ -57,7 +57,7 @@ train_config:
   max_epochs: null
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: time_distributed
-  num_workers: 1
+  num_workers: 2
   overwrite: false
   predict_all_zamba_species: true
   save_dir: /home/ubuntu/pjmf-zamba
@@ -71,9 +71,9 @@ train_config:
   skip_load_validation: true
   split_proportions: null
   weight_download_region: us
-training_start_time: '2022-07-10T20:45:32.618594'
+training_start_time: '2022-08-28T14:35:02.087643'
 video_loader_config:
-  cache_dir: /tmp/zamba_cache
+  cache_dir: data/zamba-cache
   cleanup_cache: false
   crop_bottom_pixels: 50
   early_bias: false
@@ -88,6 +88,7 @@ video_loader_config:
     confidence: 0.25
     device: cuda
     fill_mode: score_sorted
+    frame_batch_size: 24
     image_height: 640
     image_width: 640
     n_frames: 16
