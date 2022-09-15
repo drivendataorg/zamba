@@ -169,7 +169,7 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
 
 @pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
 def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
-    # note: subset only applies to the non-binary case so blank_nonblank is not tested
+    # note: there are no additional species to add for the blank_nonblank model so it is not tested
     config = TrainConfig(
         labels=labels_absolute_path,
         model_name=model,
