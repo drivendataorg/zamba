@@ -178,7 +178,7 @@ def test_train_save_dir_overwrite(
         assert (config.save_dir / f).exists()
 
 
-@pytest.mark.parametrize("model_name", ["time_distributed", "slowfast", "european"])
+@pytest.mark.parametrize("model_name", ["time_distributed", "slowfast", "european", "blank_nonblank"])
 @pytest.mark.parametrize("weight_region", ["us", "asia", "eu"])
 def test_download_weights(model_name, weight_region, tmp_path):
     public_weights = get_model_checkpoint_filename(model_name)
