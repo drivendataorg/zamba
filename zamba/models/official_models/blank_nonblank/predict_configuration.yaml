@@ -1,0 +1,48 @@
+inference_start_time: '2022-09-09T17:46:19.644476'
+model_class: TimeDistributedEfficientNet
+predict_config:
+  batch_size: 2
+  checkpoint: version_0/time_distributed.ckpt
+  data_dir: ''
+  dry_run: false
+  gpus: 1
+  model_cache_dir: /home/ubuntu/.cache/zamba
+  model_name: time_distributed
+  num_workers: 2
+  output_class_names: false
+  overwrite: true
+  proba_threshold: null
+  save: true
+  save_dir: version_0
+  skip_load_validation: true
+  weight_download_region: us
+species:
+- blank
+video_loader_config:
+  cache_dir: data/zamba-cache
+  cleanup_cache: false
+  crop_bottom_pixels: 50
+  early_bias: false
+  ensure_total_frames: true
+  evenly_sample_total_frames: false
+  fps: 4.0
+  frame_indices: null
+  frame_selection_height: null
+  frame_selection_width: null
+  i_frames: false
+  megadetector_lite_config:
+    confidence: 0.25
+    device: cuda
+    fill_mode: score_sorted
+    frame_batch_size: 24
+    image_height: 640
+    image_width: 640
+    n_frames: 16
+    nms_threshold: 0.45
+    seed: 55
+    sort_by_time: true
+  model_input_height: 240
+  model_input_width: 426
+  pix_fmt: rgb24
+  scene_threshold: null
+  total_frames: 16
