@@ -9,7 +9,7 @@ train_config:
   early_stopping_config:
     mode: max
     monitor: val_macro_f1
-    patience: 10
+    patience: 5
     verbose: true
   model_name: blank_nonblank
   scheduler_config:
@@ -46,4 +46,4 @@ video_loader_config:
   total_frames: 16
 predict_config:
   model_name: blank_nonblank
-public_checkpoint: blank_nonblank_150c3c9e3a.ckpt
+public_checkpoint: blank_nonblank_48f9e5a8fc.ckpt

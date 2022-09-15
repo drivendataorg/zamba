@@ -19,7 +19,7 @@ train_config:
   early_stopping_config:
     mode: max
     monitor: val_macro_f1
-    patience: 10
+    patience: 5
     verbose: true
   from_scratch: true
   gpus: 1
