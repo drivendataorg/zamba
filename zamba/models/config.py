@@ -521,15 +521,19 @@ class TrainConfig(ZambaBaseModel):
             make_split(labels, values)
 
         # if there are only two species columns and every video belongs to one of them,
-        # drop the second species column so the problem is treated as a binary classification
+        # keep only blank label if it exists to allow resuming of blank_nonblank model
+        # otherwise drop the second species column so the problem is treated as a binary classification
         species_cols = labels.filter(regex="species_").columns
         sums = labels[species_cols].sum(axis=1)
 
         if len(species_cols) == 2 and (sums == 1).all():
+            col_to_keep = "species_blank" if "species_blank" in species_cols else species_cols[0]
+            col_to_drop = [c for c in species_cols if c != col_to_keep]
+
             logger.warning(
-                f"Binary case detected so only one species column will be kept. Output will be the binary case of {species_cols[0]}."
+                f"Binary case detected so only one species column will be kept. Output will be the binary case of {col_to_keep}."
             )
-            labels = labels.drop(columns=species_cols[1])
+            labels = labels.drop(columns=col_to_drop)
 
         # filepath becomes column instead of index
         values["labels"] = labels.reset_index()
