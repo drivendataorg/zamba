@@ -167,8 +167,9 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
     assert model.species == ["kangaroo"]
 
 
-@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european", "blank_nonblank"])
+@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
 def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
+    # note: subset only applies to the non-binary case so blank_nonblank is not tested
     config = TrainConfig(
         labels=labels_absolute_path,
         model_name=model,
