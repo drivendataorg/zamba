@@ -14,7 +14,7 @@ predict_config:
   proba_threshold: null
   save: true
   save_dir: version_0
-  skip_load_validation: false
+  skip_load_validation: true
   weight_download_region: us
 species:
 - aardvark
