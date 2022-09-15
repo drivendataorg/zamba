@@ -32,6 +32,7 @@ WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_0/",
     "european": "s3://drivendata-client-zamba/data/results/zamba_v2_classification/european_td_dev_base/version_0/",
     "slowfast": "s3://drivendata-client-zamba/data/results/zamba_v2_classification/experiments/slowfast_small_set_full_size_mdlite/version_2/",
+    "blank_non_blank": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set_bnb/version_3/",
 }
 
 MODEL_MAPPING = {
@@ -49,6 +50,7 @@ class ModelEnum(str, Enum):
     time_distributed = "time_distributed"
     slowfast = "slowfast"
     european = "european"
+    blank_nonblank = "blank_nonblank"
 
 
 class MonitorEnum(str, Enum):

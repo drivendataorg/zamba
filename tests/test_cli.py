@@ -71,7 +71,7 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
         assert "Config file: None" in result.output
 
         # check all models options are valid
-        for model in ["time_distributed", "slowfast", "european"]:
+        for model in ["time_distributed", "slowfast", "european", "blank_nonblank"]:
             result = runner.invoke(app, command + ["--model", model])
             assert result.exit_code == 0
 
