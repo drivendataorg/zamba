@@ -365,8 +365,9 @@ class TrainConfig(ZambaBaseModel):
             starting with ImageNet weights for image-based models (time_distributed,
             european, and blank_nonblank) and Kinetics weights for video-based models
             (slowfast). Defaults to False.
-        predict_all_zamba_species (bool): Output all zamba species rather than
-            only the species in the labels file.
+        predict_all_zamba_species (bool): Output all zamba species rather than only
+            the species in the labels file. Defaults to True. If set to False, will
+            replace the model head for finetuning.
         model_cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and the MODEL_CACHE_DIR environment variable is
             not set, uses your default cache directory. Defaults to None.
