@@ -89,22 +89,9 @@ def instantiate_model(
         hparams = get_checkpoint_hparams(checkpoint)
 
     model_class = available_models[hparams["model_class"]]
-
     logger.info(f"Instantiating model: {model_class.__name__}")
 
-    if labels is None:
-        # predict; load from checkpoint uses associated hparams
-        logger.info("Loading from checkpoint.")
-        return model_class.load_from_checkpoint(checkpoint_path=checkpoint)
-
-    # get species from labels file
-    species = labels.filter(regex=r"^species_").columns.tolist()
-    species = [s.split("species_", 1)[1] for s in species]
-
-    # check if species in label file are a subset of pretrained model species
-    is_subset = set(species).issubset(set(hparams["species"]))
-
-    # train from scratch
+    ## train from scratch
     if from_scratch:
         logger.info("Training from scratch.")
 
@@ -114,49 +101,105 @@ def instantiate_model(
 
         hparams.update({"species": species})
         model = model_class(**hparams)
+        log_schedulers(model)
+        return model
 
-    # replace the head
-    elif not predict_all_zamba_species or not is_subset:
+    ## predicting
+    if labels is None:
+        # predict; load from checkpoint uses associated hparams
+        logger.info("Loading from checkpoint.")
+        return model_class.load_from_checkpoint(checkpoint_path=checkpoint)
 
-        if not predict_all_zamba_species:
+    ## determine if finetuning or resuming training
+
+    # get species from labels file
+    species = labels.filter(regex=r"^species_").columns.tolist()
+    species = [s.split("species_", 1)[1] for s in species]
+
+    # check if species in label file are a subset of pretrained model species
+    is_subset = set(species).issubset(set(hparams["species"]))
+
+    if is_subset:
+        if predict_all_zamba_species:
+            return resume_training(
+                scheduler_config=scheduler_config,
+                hparams=hparams,
+                species=species,
+                model_class=model_class,
+                checkpoint=checkpoint,
+                labels=labels,
+            )
+
+        else:
             logger.info(
                 "Limiting only to species in labels file. Replacing model head and finetuning."
             )
-        else:
-            logger.info(
-                "Provided species do not fully overlap with Zamba species. Replacing model head and finetuning."
+            return replace_head(
+                scheduler_config=scheduler_config,
+                hparams=hparams,
+                species=species,
+                model_class=model_class,
+                checkpoint=checkpoint,
             )
 
-        # update in case we want to finetune with different scheduler
-        if scheduler_config != "default":
-            hparams.update(scheduler_config.dict())
-
-        hparams.update({"species": species})
-        model = model_class(finetune_from=checkpoint, **hparams)
-
-    # resume training; add additional species columns to labels file if needed
-    elif is_subset:
+    # without a subset, you will always get a new head
+    # the config validation prohibits setting predict_all_zamba_species to True without a subset
+    else:
         logger.info(
-            "Provided species fully overlap with Zamba species. Resuming training from latest checkpoint."
+            "Provided species do not fully overlap with Zamba species. Replacing model head and finetuning."
         )
-        # update in case we want to resume with different scheduler
-        if scheduler_config != "default":
-            hparams.update(scheduler_config.dict())
+        return replace_head(
+            scheduler_config=scheduler_config,
+            hparams=hparams,
+            species=species,
+            model_class=model_class,
+            checkpoint=checkpoint,
+        )
 
-        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
 
-        # add in remaining columns for species that are not present
-        for c in set(hparams["species"]).difference(set(species)):
-            # labels are still OHE at this point
-            labels[f"species_{c}"] = 0
+def replace_head(scheduler_config, hparams, species, model_class, checkpoint):
+    # update in case we want to finetune with different scheduler
+    if scheduler_config != "default":
+        hparams.update(scheduler_config.dict())
 
-        # sort columns so columns on dataloader are the same as columns on model
-        labels.sort_index(axis=1, inplace=True)
+    hparams.update({"species": species})
+    model = model_class(finetune_from=checkpoint, **hparams)
+    log_schedulers(model)
+    return model
 
+
+def resume_training(
+    scheduler_config,
+    hparams,
+    species,
+    model_class,
+    checkpoint,
+    labels,
+):
+    # resume training; add additional species columns to labels file if needed
+    logger.info(
+        "Provided species fully overlap with Zamba species. Resuming training from latest checkpoint."
+    )
+    # update in case we want to resume with different scheduler
+    if scheduler_config != "default":
+        hparams.update(scheduler_config.dict())
+
+    model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
+
+    # add in remaining columns for species that are not present
+    for c in set(hparams["species"]).difference(set(species)):
+        # labels are still OHE at this point
+        labels[f"species_{c}"] = 0
+
+    # sort columns so columns on dataloader are the same as columns on model
+    labels.sort_index(axis=1, inplace=True)
+    log_schedulers(model)
+    return model
+
+
+def log_schedulers(model):
     logger.info(f"Using learning rate scheduler: {model.hparams['scheduler']}")
     logger.info(f"Using scheduler params: {model.hparams['scheduler_params']}")
-
-    return model
 
 
 def validate_species(model: ZambaVideoClassificationLightningModule, data_module: ZambaDataModule):
