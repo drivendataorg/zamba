@@ -442,24 +442,33 @@ class TrainConfig(ZambaBaseModel):
         """
         if values["predict_all_zamba_species"]:
 
-            provided_species = values["labels"].label.unique()
-            model_species = get_checkpoint_hparams(values["checkpoint"])["species"]
+            labels_df = (
+                pd.read_csv(values["labels"])
+                if not isinstance(values["labels"], pd.DataFrame)
+                else values["labels"]
+            )
+
+            provided_species = labels_df["label"].unique()
+
+            hparams_file = MODELS_DIRECTORY / f"{values['model_name']}/hparams.yaml"
+            with hparams_file.open() as f:
+                model_species = yaml.safe_load(f)["species"]
+
             is_subset = set(provided_species).issubset(model_species)
 
             if not is_subset:
                 raise ValueError(
-                    f"""
-                Conflicting information between `predict_all_zamba_species=True` and the
-                species provided in labels file.
+                "Conflicting information between `predict_all_zamba_species=True` and the "
+                "species provided in labels file. "
 
-                If you want your model to predict all the zamba species, make sure your
-                labels are a subset. The species in the labels file that are not 
-                in the model species are {np.setdiff1d(provided_species, model_species)}.
+                "If you want your model to predict all the zamba species, make sure your "
+                "labels are a subset. The species in the labels file that are not "
+                f"in the model species are {np.setdiff1d(provided_species, model_species)}. "
 
-                If you want your model to only predict the species in your labels file,
-                set `predict_all_zamba_species` to False.
-                """
+                "If you want your model to only predict the species in your labels file, "
+                "set `predict_all_zamba_species` to False."
                 )
+        return values
 
     @root_validator(skip_on_failure=True)
     def validate_filepaths_and_labels(cls, values):
