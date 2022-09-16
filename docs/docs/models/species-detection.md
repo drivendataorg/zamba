@@ -1,6 +1,6 @@
 # Available models
 
-The algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. There are three models that ship with the `zamba` package: `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
+The algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. There are four models that ship with the `zamba` package: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
 
 ## Model summary
 
@@ -10,26 +10,39 @@ The algorithms in `zamba` are designed to identify species of animals that appea
     <th>Geography</th>
     <th>Relative strengths</th>
     <th>Architecture</th>
+    <th>Number of videos trained on</th>
+  </tr>
+  <tr>
+    <td><code>blank_nonblank</code></td>
+    <td>Central Africa, West Africa, and Western Europe</td>
+    <td>Just blank detection, without species classification </td>
+    <td>Image-based <code>TimeDistributedEfficientNet</code></td>
+    <td>~263,000</td>
   </tr>
   <tr>
     <td><code>time_distributed</code></td>
     <td>Central and West Africa</td>
-    <td>Better than <code>slowfast</code> at duikers, chimps, and gorillas and other larger species</td>
+    <td>Recommended species classification model for jungle ecologies</td>
     <td>Image-based <code>TimeDistributedEfficientNet</code></td>
+    <td>~250,000</td>
   </tr>
   <tr>
       <td><code>slowfast</code></td>
       <td>Central and West Africa</td>
-      <td>Better than <code>time_distributed</code> at blank detection and small species detection</td>
+      <td>Potentially better than <code>time_distributed</code> at small species detection</td>
       <td>Video-native <code>SlowFast</code></td>
+    <td>~15,000</td>
     </tr>
   <tr>
     <td><code>european</code></td>
     <td>Western Europe</td>
     <td>Trained on non-jungle ecologies</td>
     <td>Finetuned <code>time_distributed</code>model</td>
+    <td>~13,000</td>
   </tr>
 </table>
+
+The models trained on the largest datasets took a couple weeks to train on a single GPU machine. Some models will be updated in the future, and you can always check the [changelog](../../changelog) to see if there have been updates.
 
 All models support training, fine-tuning, and inference. For fine-tuning, we recommend using the `time_distributed` model as the starting point.
 
@@ -37,7 +50,12 @@ All models support training, fine-tuning, and inference. For fine-tuning, we rec
 
 ## What species can `zamba` detect?
 
-`time_distributed` and `slowfast` are both trained to identify 32 common species from Central and West Africa. The output labels in these models are:
+The `blank_nonblank` model is trained to do blank detection without the species classification. The output labels from this model are:
+
+* `blank`
+* `nonblank`
+
+The `time_distributed` and `slowfast` models are both trained to identify 32 common species from Central and West Africa. The output labels in these models are:
 
 * `aardvark`
 * `antelope_duiker`
@@ -72,7 +90,7 @@ All models support training, fine-tuning, and inference. For fine-tuning, we rec
 * `small_cat`
 * `wild_dog_jackal`
 
-`european` is trained to identify 11 common species in Western Europe. The possible class labels are:
+The `european` model is trained to identify 11 common species in Western Europe. The possible class labels are:
 
 * `bird`
 * `blank`
@@ -196,8 +214,6 @@ The data included camera trap videos from:
     <td>Ngogo and Kibale National Park</td>
   </tr>
 </table>
-
-The most recent release of trained models took around 2-3 days to train on a single GPU machine on approximately 14,000 1-minute long videos for the African species, and around 13,000 videos for the European species. These models will be updated in the future, and you can always check the [changelog](../../changelog) to see if there have been updates.
 
 ### Default configuration
 
