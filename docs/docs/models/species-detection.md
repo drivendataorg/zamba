@@ -104,6 +104,25 @@ The `european` model is trained to identify 11 common species in Western Europe.
 * `weasel`
 * `wild_boar`
 
+<a id='blank-nonblank'></a>
+
+## `blank_nonblank` model
+
+### Architecture
+
+The `blank_nonblank` uses the same [architecture](#time-distributed) as `time_distributed` model, but there is only one output class as this is a binary classification problem.
+
+### Default configuration
+
+The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/blank_nonblank/config.yaml).
+
+The `blank_nonblank` model uses the same [default configuration](#time-distributed-config) as the `time_distributed` model. For the frame selection, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then the classification model is run on only the 16 frames with the highest predicted probability of detection.
+
+### Training data
+
+The `blank_nonblank` model was trained on all the data used for the the [`time_distributed`](#time-distributed-training-data) and [`european`](#european-training-data) models.
+
+
 <a id='time-distributed'></a>
 
 ## `time_distributed` model
@@ -116,7 +135,7 @@ The `time_distributed` model was built by re-training a well-known image classif
 
 ### Training data
 
-`time_distributed` was trained using data collected and annotated by trained ecologists from Cameroon, Central African Republic, Democratic Republic of the Congo, Gabon, Guinea, Liberia, Mozambique, Nigeria, Republic of the Congo, Senegal, Tanzania, and Uganda, as well as citizen scientists on the [Chimp&See](https://www.chimpandsee.org/) platform.
+The `time_distributed` model was trained using data collected and annotated by trained ecologists from Cameroon, Central African Republic, Democratic Republic of the Congo, Gabon, Guinea, Liberia, Mozambique, Nigeria, Republic of the Congo, Senegal, Tanzania, and Uganda, as well as citizen scientists on the [Chimp&See](https://www.chimpandsee.org/) platform.
 
 The data included camera trap videos from:
 
@@ -215,6 +234,8 @@ The data included camera trap videos from:
   </tr>
 </table>
 
+<a id='time-distributed-config'></a>
+
 ### Default configuration
 
 The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml).
@@ -234,6 +255,9 @@ video_loader_config:
     confidence: 0.25
     fill_mode: score_sorted
     n_frames: 16
+    frame_batch_size: 24
+    image_height: 640
+    image_width: 640
 ```
 
 You can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The only requirement for the `time_distributed` model is that the video loader must return 16 frames.
@@ -256,7 +280,7 @@ Unlike `time_distributed`, `slowfast` is video native. This means it takes into 
 
 ### Training data
 
-The `slowfast` model was trained using the same data as the [`time_distributed` model](#time-distributed-training-data).
+The `slowfast` model was trained on a subset of the [data used](#time-distributed-training-data) for the `time_distributed` model.
 
 ### Default configuration
 
@@ -278,6 +302,8 @@ video_loader_config:
     confidence: 0.25
     fill_mode: score_sorted
     n_frames: 32
+    image_height: 416
+    image_width: 416
 ```
 
 You can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The two requirements for the `slowfast` model are that:
@@ -291,7 +317,9 @@ You can choose different frame selection methods and vary the size of the images
 
 ### Architecture
 
-The `european` model starts from the trained `time_distributed` model, and then replaces and trains the final output layer to predict European species.
+The `european` model starts from the a previous version of the `time_distributed` model, and then replaces and trains the final output layer to predict European species.
+
+<a id='european-training-data'></a>
 
 ### Training data
 
@@ -301,22 +329,7 @@ The `european` model is finetuned with data collected and annotated by partners 
 
 The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/european/config.yaml).
 
-The `european` model uses the same frame selection as the `time_distributed` model. By default, an efficient object detection model called [MegadetectorLite](#megadetectorlite) is run on all frames to determine which are the most likely to contain an animal. Then `european` is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.
-
-The full default video loading configuration is:
-```yaml
-video_loader_config:
-  model_input_height: 240
-  model_input_width: 426
-  crop_bottom_pixels: 50
-  fps: 4
-  total_frames: 16
-  ensure_total_frames: true
-  megadetector_lite_config:
-    confidence: 0.25
-    fill_mode: score_sorted
-    n_frames: 16
-```
+The `european` model uses the same [default configuration](#time-distributed-config) as the `time_distributed` model. 
 
 As with all models, you can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The only requirement for the `european` model is that the video loader must return 16 frames.
 
