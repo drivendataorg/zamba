@@ -510,6 +510,9 @@ class TrainConfig(ZambaBaseModel):
         logger.info("Preprocessing labels into one hot encoded labels with one row per video.")
         labels = values["labels"]
 
+        # lowercase to facilitate subset checking
+        labels["label"] = labels.label.str.lower()
+
         # one hot encode collapse to one row per video
         labels = (
             pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
