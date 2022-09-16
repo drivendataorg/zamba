@@ -81,7 +81,7 @@ eleph.mp4,elephant
 leopard.mp4,leopard
 ```
 
-There are three pretrained models that ship with `zamba`: `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models/species-detection.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
+There are four pretrained models that ship with `zamba`: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models/species-detection.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
 
 ```console
 $ zamba predict --data-dir example_vids/ --model slowfast
