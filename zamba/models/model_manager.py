@@ -108,7 +108,8 @@ def instantiate_model(
     if labels is None:
         # predict; load from checkpoint uses associated hparams
         logger.info("Loading from checkpoint.")
-        return model_class.load_from_checkpoint(checkpoint_path=checkpoint)
+        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint)
+        return model
 
     ## determine if finetuning or resuming training
 
