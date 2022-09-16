@@ -10,7 +10,7 @@ The algorithms in `zamba` are designed to identify species of animals that appea
     <th>Geography</th>
     <th>Relative strengths</th>
     <th>Architecture</th>
-    <th>Number of videos trained on</th>
+    <th>Number of training videos</th>
   </tr>
   <tr>
     <td><code>blank_nonblank</code></td>
