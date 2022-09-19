@@ -504,23 +504,25 @@ class TrainConfig(ZambaBaseModel):
         """If the model species are the desired output, the labels file must contain
         a subset of the model species.
         """
-        if "use_default_model_labels" in values.keys():
 
-            labels_df = (
-                pd.read_csv(values["labels"])
-                if not isinstance(values["labels"], pd.DataFrame)
-                else values["labels"]
-            )
+        labels_df = (
+            pd.read_csv(values["labels"])
+            if not isinstance(values["labels"], pd.DataFrame)
+            else values["labels"]
+        )
 
-            provided_species = labels_df.label.unique()
+        provided_species = labels_df.label.unique()
 
-            hparams_file = MODELS_DIRECTORY / f"{values['model_name']}/hparams.yaml"
-            with hparams_file.open() as f:
-                model_species = yaml.safe_load(f)["species"]
+        hparams_file = MODELS_DIRECTORY / f"{values['model_name']}/hparams.yaml"
+        with hparams_file.open() as f:
+            model_species = yaml.safe_load(f)["species"]
 
-            is_subset = set(provided_species).issubset(model_species)
+        is_subset = set(provided_species).issubset(model_species)
 
-            if not is_subset:
+        if not is_subset:
+
+            # if labels are not a subset, user cannot set use_default_model_labels to True
+            if values.get("use_default_model_labels"):
                 raise ValueError(
                     "Conflicting information between `use_default_model_labels=True` and the "
                     "species provided in labels file. "
@@ -530,6 +532,10 @@ class TrainConfig(ZambaBaseModel):
                     "If you want your model to only predict the species in your labels file, "
                     "set `use_default_model_labels` to False."
                 )
+
+            else:
+                values["use_default_model_labels"] = False
+
         return values
 
     @root_validator(skip_on_failure=True)
