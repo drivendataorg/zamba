@@ -106,7 +106,7 @@ def test_save_metrics_less_than_two_classes(
         f"{split}_accuracy",
     }
 
-    for c in labels.label.unique():
+    for c in labels.label.str.lower().unique():
         metric_names = metric_names.union(
             {
                 f"species/{split}_accuracy/{c}",
@@ -117,14 +117,14 @@ def test_save_metrics_less_than_two_classes(
         )
 
     removed_in_binary_case = {
-        "species/test_precision/B",
-        "species/test_recall/B",
-        "species/test_accuracy/B",
-        "species/test_f1/B",
-        "species/val_precision/B",
-        "species/val_recall/B",
-        "species/val_accuracy/B",
-        "species/val_f1/B",
+        "species/test_precision/b",
+        "species/test_recall/b",
+        "species/test_accuracy/b",
+        "species/test_f1/b",
+        "species/val_precision/b",
+        "species/val_recall/b",
+        "species/val_accuracy/b",
+        "species/val_f1/b",
     }
     assert metrics.keys() == metric_names - removed_in_binary_case
 
