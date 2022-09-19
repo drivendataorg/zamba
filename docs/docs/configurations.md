@@ -361,7 +361,7 @@ Whether to instantiate the model with base weights. This means starting from the
 
 #### `use_default_model_labels (bool, optional)`
 
-Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `use_default_model_labels` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`
+Whether the species outputted by the model should be the default model classes (e.g. all 32 species classes for the time_distributed model). If you want the model classes to only be the species in your labels file (e.g. just gorillas and elephants), set to `False`. If either `use_default_model_labels` is `False` or the labels contain species that are not in the model, the model head will be replaced for finetuning. Defaults to `True`
 
 #### `model_cache_dir (Path, optional)`
 
