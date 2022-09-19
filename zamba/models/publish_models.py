@@ -33,7 +33,7 @@ def get_model_only_params(full_configuration, subset="train_config"):
             "skip_load_validation",
             "from_scratch",
             "model_cache_dir",
-            "predict_all_zamba_species",
+            "use_default_model_labels",
         ]:
             config.pop(key)
 

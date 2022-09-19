@@ -277,7 +277,7 @@ class TrainConfig(ZambaBaseModel)
  overwrite: bool = False,
  skip_load_validation: bool = False,
  from_scratch: bool = False,
- predict_all_zamba_species: bool = True,
+ use_default_model_labels: bool = True,
  model_cache_dir: pathlib.Path = None) -> None
 
  ...
@@ -359,9 +359,9 @@ By default, before kicking off training `zamba` will iterate through all of the 
 
 Whether to instantiate the model with base weights. This means starting from the imagenet weights for image based models and the Kinetics weights for video models. Only used if labels is not None. Defaults to `False`
 
-#### `predict_all_zamba_species (bool, optional)`
+#### `use_default_model_labels (bool, optional)`
 
-Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `predict_all_zamba_species` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`
+Whether the species outputted by the model should be all zamba species. If you want the model classes to only be the species in your labels file, set to `False`. Only used if labels is not `None`. If either `use_default_model_labels` is `False` or the labels contain species that are not in the model, the model head will be replaced. Defaults to `True`
 
 #### `model_cache_dir (Path, optional)`
 

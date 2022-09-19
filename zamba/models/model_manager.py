@@ -39,16 +39,16 @@ def instantiate_model(
     labels: Optional[pd.DataFrame],
     from_scratch: bool = False,
     model_name: Optional[ModelEnum] = None,
-    predict_all_zamba_species: bool = True,
+    use_default_model_labels: bool = True,
 ) -> ZambaVideoClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
-    The model head is replaced if labels contain species that are not on the model or predict_all_zamba_species=False.
+    The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
 
     Supports model instantiation for the following cases:
     - train from scratch (from_scratch=True)
     - finetune with new species (from_scratch=False, labels contains different species than model)
-    - finetune with a subset of zamba species and output only the species in the labels file (predict_all_zamba_species=False)
-    - finetune with a subset of zamba species but output all zamba species (predict_all_zamba_species=True)
+    - finetune with a subset of zamba species and output only the species in the labels file (use_default_model_labels=False)
+    - finetune with a subset of zamba species but output all zamba species (use_default_model_labels=True)
     - predict using pretrained model (labels=None)
 
     Args:
@@ -64,7 +64,7 @@ def instantiate_model(
             Defaults to False. Only used if labels is not None.
         model_name (ModelEnum, optional): Model name used to look up default hparams used for that model.
             Only relevant if training from scratch.
-        predict_all_zamba_species(bool): Whether the species outputted by the model should be all zamba species.
+        use_default_model_labels(bool): Whether the species outputted by the model should be all zamba species.
             If you want the model classes to only be the species in your labels file, set to False.
             Defaults to True. Only used if labels is not None.
 
@@ -121,7 +121,7 @@ def instantiate_model(
     is_subset = set(species).issubset(set(hparams["species"]))
 
     if is_subset:
-        if predict_all_zamba_species:
+        if use_default_model_labels:
             return resume_training(
                 scheduler_config=scheduler_config,
                 hparams=hparams,
@@ -144,7 +144,7 @@ def instantiate_model(
             )
 
     # without a subset, you will always get a new head
-    # the config validation prohibits setting predict_all_zamba_species to True without a subset
+    # the config validation prohibits setting use_default_model_labels to True without a subset
     else:
         logger.info(
             "Provided species do not fully overlap with Zamba species. Replacing model head and finetuning."
@@ -253,7 +253,7 @@ def train_model(
         labels=train_config.labels,
         from_scratch=train_config.from_scratch,
         model_name=train_config.model_name,
-        predict_all_zamba_species=train_config.predict_all_zamba_species,
+        use_default_model_labels=train_config.use_default_model_labels,
     )
 
     data_module = ZambaDataModule(

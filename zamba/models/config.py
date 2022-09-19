@@ -365,7 +365,7 @@ class TrainConfig(ZambaBaseModel):
             starting with ImageNet weights for image-based models (time_distributed,
             european, and blank_nonblank) and Kinetics weights for video-based models
             (slowfast). Defaults to False.
-        predict_all_zamba_species (bool): Output the full set of default model labels rather
+        use_default_model_labels (bool): Output the full set of default model labels rather
             than just the species in the labels file. Only applies if the provided labels are
             a subset of the default model labels. Defaults to True. If set to False, will
             replace the model head for finetuning.
@@ -393,7 +393,7 @@ class TrainConfig(ZambaBaseModel):
     overwrite: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
-    predict_all_zamba_species: Optional[bool] = True
+    use_default_model_labels: Optional[bool] = True
     model_cache_dir: Optional[Path] = None
 
     class Config:
@@ -500,11 +500,11 @@ class TrainConfig(ZambaBaseModel):
         return values
 
     @root_validator(skip_on_failure=True, pre=True)
-    def validate_provided_species_and_predict_all_zamba_species(cls, values):
+    def validate_provided_species_and_use_default_model_labels(cls, values):
         """If the model species are the desired output, the labels file must contain
         a subset of the model species.
         """
-        if "predict_all_zamba_species" in values.keys():
+        if "use_default_model_labels" in values.keys():
 
             labels_df = (
                 pd.read_csv(values["labels"])
@@ -522,13 +522,13 @@ class TrainConfig(ZambaBaseModel):
 
             if not is_subset:
                 raise ValueError(
-                    "Conflicting information between `predict_all_zamba_species=True` and the "
+                    "Conflicting information between `use_default_model_labels=True` and the "
                     "species provided in labels file. "
                     "If you want your model to predict all the zamba species, make sure your "
                     "labels are a subset. The species in the labels file that are not "
                     f"in the model species are {np.setdiff1d(provided_species, model_species)}. "
                     "If you want your model to only predict the species in your labels file, "
-                    "set `predict_all_zamba_species` to False."
+                    "set `use_default_model_labels` to False."
                 )
         return values
 

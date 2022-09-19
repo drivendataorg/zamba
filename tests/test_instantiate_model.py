@@ -106,9 +106,9 @@ def test_head_not_replaced_for_species_subset(dummy_trained_model_checkpoint, tm
     assert model.model[-1].out_features == 3
 
 
-def test_not_predict_all_zamba_species(dummy_trained_model_checkpoint, tmp_path):
+def test_not_use_default_model_labels(dummy_trained_model_checkpoint, tmp_path):
     """Tests that training a model using labels that are a subset of the model species but
-    with predict_all_zamba_species=False replaces the model head."""
+    with use_default_model_labels=False replaces the model head."""
     original_model = DummyZambaVideoClassificationLightningModule.from_disk(
         dummy_trained_model_checkpoint
     )
@@ -119,7 +119,7 @@ def test_not_predict_all_zamba_species(dummy_trained_model_checkpoint, tmp_path)
         scheduler_config="default",
         labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
         model_cache_dir=tmp_path,
-        predict_all_zamba_species=False,
+        use_default_model_labels=False,
     )
 
     assert (model.head.weight != original_model.head.weight).all()
