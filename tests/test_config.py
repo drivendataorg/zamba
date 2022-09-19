@@ -223,11 +223,11 @@ def test_binary_labels_no_blank(labels_absolute_path, tmp_path):
 
 def test_binary_labels_with_blank(labels_absolute_path, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
-    labels["label"] = np.where(labels.label != "antelope_duiker", "blank", labels.label)
+    labels["label"] = np.where(labels.label != "antelope_duiker", "Blank", labels.label)
 
     labels_df = TrainConfig(labels=labels, save_dir=tmp_path / "my_model").labels
 
-    # blank is the kept column
+    # blank is the kept column (regardless of case)
     assert labels_df.filter(regex="species_").columns == ["species_blank"]
 
 
