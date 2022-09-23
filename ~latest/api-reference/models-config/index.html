@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/models-config/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.0">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.3">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.2e8b5541.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7a952b86.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1382,7 +1382,7 @@
 
 
 <h3 id="zamba.models.config.WEIGHT_LOOKUP" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">WEIGHT_LOOKUP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time_distributed&#39;</span><span class="p">:</span> <span class="s1">&#39;s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_0/&#39;</span><span class="p">,</span> <span class="s1">&#39;european&#39;</span><span class="p">:</span> <span class="s1">&#39;s3://drivendata-client-zamba/data/results/zamba_v2_classification/european_td_dev_base/version_0/&#39;</span><span class="p">,</span> <span class="s1">&#39;slowfast&#39;</span><span class="p">:</span> <span class="s1">&#39;s3://drivendata-client-zamba/data/results/zamba_v2_classification/experiments/slowfast_small_set_full_size_mdlite/version_2/&#39;</span><span class="p">}</span></code>
+<code class="highlight language-python"><span class="n">WEIGHT_LOOKUP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time_distributed&#39;</span><span class="p">:</span> <span class="s1">&#39;s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_0/&#39;</span><span class="p">,</span> <span class="s1">&#39;european&#39;</span><span class="p">:</span> <span class="s1">&#39;s3://drivendata-client-zamba/data/results/zamba_v2_classification/european_td_dev_base/version_0/&#39;</span><span class="p">,</span> <span class="s1">&#39;slowfast&#39;</span><span class="p">:</span> <span class="s1">&#39;s3://drivendata-client-zamba/data/results/zamba_v2_classification/experiments/slowfast_small_set_full_size_mdlite/version_2/&#39;</span><span class="p">,</span> <span class="s1">&#39;blank_nonblank&#39;</span><span class="p">:</span> <span class="s1">&#39;s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set_bnb/version_0/&#39;</span><span class="p">}</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -1498,9 +1498,7 @@ Defaults to True.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
 <span class="normal">213</span>
@@ -1521,7 +1519,9 @@ Defaults to True.</p></td>
 <span class="normal">228</span>
 <span class="normal">229</span>
 <span class="normal">230</span>
-<span class="normal">231</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BackboneFinetuneConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BackboneFinetuneConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration containing parameters to be used for backbone finetuning.</span>
 
 <span class="sd">    Args:</span>
@@ -1762,9 +1762,7 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
@@ -1792,7 +1790,9 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
-<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EarlyStoppingConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EarlyStoppingConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration containing parameters to be used for early stopping.</span>
 
 <span class="sd">    Args:</span>
@@ -1928,9 +1928,7 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">256</span>
 <span class="normal">257</span>
 <span class="normal">258</span>
 <span class="normal">259</span>
@@ -1938,7 +1936,9 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
-<span class="normal">264</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span>
 <span class="k">def</span> <span class="nf">validate_mode</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;val_macro_f1&quot;</span><span class="p">:</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;val_loss&quot;</span><span class="p">:</span> <span class="s2">&quot;min&quot;</span><span class="p">}[</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;monitor&quot;</span><span class="p">)]</span>
     <span class="n">user_mode</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span>
@@ -2033,17 +2033,7 @@ Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">797</span>
-<span class="normal">798</span>
-<span class="normal">799</span>
-<span class="normal">800</span>
-<span class="normal">801</span>
-<span class="normal">802</span>
-<span class="normal">803</span>
-<span class="normal">804</span>
-<span class="normal">805</span>
-<span class="normal">806</span>
-<span class="normal">807</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">807</span>
 <span class="normal">808</span>
 <span class="normal">809</span>
 <span class="normal">810</span>
@@ -2078,7 +2068,17 @@ Defaults to None.</p></td>
 <span class="normal">839</span>
 <span class="normal">840</span>
 <span class="normal">841</span>
-<span class="normal">842</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
+<span class="normal">842</span>
+<span class="normal">843</span>
+<span class="normal">844</span>
+<span class="normal">845</span>
+<span class="normal">846</span>
+<span class="normal">847</span>
+<span class="normal">848</span>
+<span class="normal">849</span>
+<span class="normal">850</span>
+<span class="normal">851</span>
+<span class="normal">852</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Contains all configs necessary to use a model for training or inference.</span>
 <span class="sd">    Must contain a train_config or a predict_config at a minimum.</span>
 
@@ -2212,8 +2212,8 @@ Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">815</span>
-<span class="normal">816</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">825</span>
+<span class="normal">826</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">json_loads</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span>
 </code></pre></div></td></tr></table></div>
         </details>
@@ -2272,24 +2272,24 @@ Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">825</span>
-<span class="normal">826</span>
-<span class="normal">827</span>
-<span class="normal">828</span>
-<span class="normal">829</span>
-<span class="normal">830</span>
-<span class="normal">831</span>
-<span class="normal">832</span>
-<span class="normal">833</span>
-<span class="normal">834</span>
-<span class="normal">835</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">835</span>
 <span class="normal">836</span>
 <span class="normal">837</span>
 <span class="normal">838</span>
 <span class="normal">839</span>
 <span class="normal">840</span>
 <span class="normal">841</span>
-<span class="normal">842</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">842</span>
+<span class="normal">843</span>
+<span class="normal">844</span>
+<span class="normal">845</span>
+<span class="normal">846</span>
+<span class="normal">847</span>
+<span class="normal">848</span>
+<span class="normal">849</span>
+<span class="normal">850</span>
+<span class="normal">851</span>
+<span class="normal">852</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_default_video_loader_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;video_loader_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">model_name</span> <span class="o">=</span> <span class="p">(</span>
@@ -2327,12 +2327,12 @@ Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">818</span>
-<span class="normal">819</span>
-<span class="normal">820</span>
-<span class="normal">821</span>
-<span class="normal">822</span>
-<span class="normal">823</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">828</span>
+<span class="normal">829</span>
+<span class="normal">830</span>
+<span class="normal">831</span>
+<span class="normal">832</span>
+<span class="normal">833</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">one_config_must_exist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;predict_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must provide either `train_config` or `predict_config`.&quot;</span><span class="p">)</span>
@@ -2373,17 +2373,19 @@ Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
-<span class="normal">47</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ModelEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Shorthand names of models supported by zamba.&quot;&quot;&quot;</span>
 
     <span class="n">time_distributed</span> <span class="o">=</span> <span class="s2">&quot;time_distributed&quot;</span>
     <span class="n">slowfast</span> <span class="o">=</span> <span class="s2">&quot;slowfast&quot;</span>
     <span class="n">european</span> <span class="o">=</span> <span class="s2">&quot;european&quot;</span>
+    <span class="n">blank_nonblank</span> <span class="o">=</span> <span class="s2">&quot;blank_nonblank&quot;</span>
 </code></pre></div></td></tr></table></div>
         </details>
 
@@ -2396,6 +2398,25 @@ Defaults to None.</p></td>
 
 
 <h4 id="zamba.models.config.ModelEnum-attributes">Attributes<a href="#zamba.models.config.ModelEnum-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="zamba.models.config.ModelEnum.blank_nonblank" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">blank_nonblank</span> <span class="o">=</span> <span class="s1">&#39;blank_nonblank&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ModelEnum.blank_nonblank" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
 
 <div class="doc doc-object doc-attribute">
 
@@ -2486,12 +2507,12 @@ improvement is observed.</p>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
-<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MonitorEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MonitorEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validation metric to monitor for early stopping. Training is stopped when no</span>
 <span class="sd">    improvement is observed.&quot;&quot;&quot;</span>
 
@@ -2616,8 +2637,8 @@ inference. Defaults to the working directory.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Name of the model to use for inference. Options
-are: time_distributed, slowfast, european. Defaults to time_distributed.</p></td>
+          <td><p>Name of the model to use for inference. Options are:
+time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</p></td>
           <td>
               <em>required</em>
           </td>
@@ -2781,17 +2802,7 @@ default cache directory. Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">599</span>
-<span class="normal">600</span>
-<span class="normal">601</span>
-<span class="normal">602</span>
-<span class="normal">603</span>
-<span class="normal">604</span>
-<span class="normal">605</span>
-<span class="normal">606</span>
-<span class="normal">607</span>
-<span class="normal">608</span>
-<span class="normal">609</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">609</span>
 <span class="normal">610</span>
 <span class="normal">611</span>
 <span class="normal">612</span>
@@ -2976,7 +2987,17 @@ default cache directory. Defaults to None.</p></td>
 <span class="normal">791</span>
 <span class="normal">792</span>
 <span class="normal">793</span>
-<span class="normal">794</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PredictConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
+<span class="normal">794</span>
+<span class="normal">795</span>
+<span class="normal">796</span>
+<span class="normal">797</span>
+<span class="normal">798</span>
+<span class="normal">799</span>
+<span class="normal">800</span>
+<span class="normal">801</span>
+<span class="normal">802</span>
+<span class="normal">803</span>
+<span class="normal">804</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PredictConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Configuration for using a model for inference.</span>
 
@@ -2987,8 +3008,8 @@ default cache directory. Defaults to None.</p></td>
 <span class="sd">            all files in data_dir. Defaults to None.</span>
 <span class="sd">        data_dir (DirectoryPath): Path to a directory containing videos for</span>
 <span class="sd">            inference. Defaults to the working directory.</span>
-<span class="sd">        model_name (str, optional): Name of the model to use for inference. Options</span>
-<span class="sd">            are: time_distributed, slowfast, european. Defaults to time_distributed.</span>
+<span class="sd">        model_name (str, optional): Name of the model to use for inference. Options are:</span>
+<span class="sd">            time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</span>
 <span class="sd">        checkpoint (FilePath, optional): Path to a custom checkpoint file (.ckpt)</span>
 <span class="sd">            generated by zamba that can be used to generate predictions. If None,</span>
 <span class="sd">            defaults to a pretrained model. Defaults to None.</span>
@@ -3509,17 +3530,7 @@ contains files with valid suffixes.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">735</span>
-<span class="normal">736</span>
-<span class="normal">737</span>
-<span class="normal">738</span>
-<span class="normal">739</span>
-<span class="normal">740</span>
-<span class="normal">741</span>
-<span class="normal">742</span>
-<span class="normal">743</span>
-<span class="normal">744</span>
-<span class="normal">745</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">745</span>
 <span class="normal">746</span>
 <span class="normal">747</span>
 <span class="normal">748</span>
@@ -3539,7 +3550,17 @@ contains files with valid suffixes.</p>
 <span class="normal">762</span>
 <span class="normal">763</span>
 <span class="normal">764</span>
-<span class="normal">765</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">765</span>
+<span class="normal">766</span>
+<span class="normal">767</span>
+<span class="normal">768</span>
+<span class="normal">769</span>
+<span class="normal">770</span>
+<span class="normal">771</span>
+<span class="normal">772</span>
+<span class="normal">773</span>
+<span class="normal">774</span>
+<span class="normal">775</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_filepaths</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;If no file list is passed, get all files in data directory. Warn if there</span>
 <span class="sd">    are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`</span>
@@ -3590,18 +3611,18 @@ contains files with valid suffixes.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">673</span>
-<span class="normal">674</span>
-<span class="normal">675</span>
-<span class="normal">676</span>
-<span class="normal">677</span>
-<span class="normal">678</span>
-<span class="normal">679</span>
-<span class="normal">680</span>
-<span class="normal">681</span>
-<span class="normal">682</span>
-<span class="normal">683</span>
-<span class="normal">684</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">683</span>
+<span class="normal">684</span>
+<span class="normal">685</span>
+<span class="normal">686</span>
+<span class="normal">687</span>
+<span class="normal">688</span>
+<span class="normal">689</span>
+<span class="normal">690</span>
+<span class="normal">691</span>
+<span class="normal">692</span>
+<span class="normal">693</span>
+<span class="normal">694</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_dry_run_and_save</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
         <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
@@ -3633,17 +3654,7 @@ contains files with valid suffixes.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">767</span>
-<span class="normal">768</span>
-<span class="normal">769</span>
-<span class="normal">770</span>
-<span class="normal">771</span>
-<span class="normal">772</span>
-<span class="normal">773</span>
-<span class="normal">774</span>
-<span class="normal">775</span>
-<span class="normal">776</span>
-<span class="normal">777</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">777</span>
 <span class="normal">778</span>
 <span class="normal">779</span>
 <span class="normal">780</span>
@@ -3660,7 +3671,17 @@ contains files with valid suffixes.</p>
 <span class="normal">791</span>
 <span class="normal">792</span>
 <span class="normal">793</span>
-<span class="normal">794</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">794</span>
+<span class="normal">795</span>
+<span class="normal">796</span>
+<span class="normal">797</span>
+<span class="normal">798</span>
+<span class="normal">799</span>
+<span class="normal">800</span>
+<span class="normal">801</span>
+<span class="normal">802</span>
+<span class="normal">803</span>
+<span class="normal">804</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_files</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="c1"># if globbing from data directory, already have valid dataframe</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -3708,19 +3729,19 @@ contains files with valid suffixes.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">721</span>
-<span class="normal">722</span>
-<span class="normal">723</span>
-<span class="normal">724</span>
-<span class="normal">725</span>
-<span class="normal">726</span>
-<span class="normal">727</span>
-<span class="normal">728</span>
-<span class="normal">729</span>
-<span class="normal">730</span>
-<span class="normal">731</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">731</span>
 <span class="normal">732</span>
-<span class="normal">733</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">733</span>
+<span class="normal">734</span>
+<span class="normal">735</span>
+<span class="normal">736</span>
+<span class="normal">737</span>
+<span class="normal">738</span>
+<span class="normal">739</span>
+<span class="normal">740</span>
+<span class="normal">741</span>
+<span class="normal">742</span>
+<span class="normal">743</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_proba_threshold</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">):</span>
@@ -3753,17 +3774,7 @@ contains files with valid suffixes.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">686</span>
-<span class="normal">687</span>
-<span class="normal">688</span>
-<span class="normal">689</span>
-<span class="normal">690</span>
-<span class="normal">691</span>
-<span class="normal">692</span>
-<span class="normal">693</span>
-<span class="normal">694</span>
-<span class="normal">695</span>
-<span class="normal">696</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">696</span>
 <span class="normal">697</span>
 <span class="normal">698</span>
 <span class="normal">699</span>
@@ -3782,7 +3793,17 @@ contains files with valid suffixes.</p>
 <span class="normal">712</span>
 <span class="normal">713</span>
 <span class="normal">714</span>
-<span class="normal">715</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">715</span>
+<span class="normal">716</span>
+<span class="normal">717</span>
+<span class="normal">718</span>
+<span class="normal">719</span>
+<span class="normal">720</span>
+<span class="normal">721</span>
+<span class="normal">722</span>
+<span class="normal">723</span>
+<span class="normal">724</span>
+<span class="normal">725</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_save_dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="n">save_dir</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span>
     <span class="n">save</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span>
@@ -3885,9 +3906,7 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
@@ -3912,7 +3931,9 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 <span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span>
-<span class="normal">294</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SchedulerConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SchedulerConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Configuration containing parameters for a custom pytorch learning rate scheduler.</span>
 <span class="sd">    See https://pytorch.org/docs/stable/optim.html for options.</span>
 
@@ -4007,9 +4028,7 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">284</span>
 <span class="normal">285</span>
 <span class="normal">286</span>
 <span class="normal">287</span>
@@ -4019,7 +4038,9 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 <span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span>
-<span class="normal">294</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_scheduler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">scheduler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
@@ -4105,8 +4126,8 @@ videos. Defaults to the working directory.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Name of the model to use for training. Options
-are: time_distributed, slowfast, european. Defaults to time_distributed.</p></td>
+          <td><p>Name of the model to use for training. Options are:
+time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</p></td>
           <td>
               <em>required</em>
           </td>
@@ -4291,9 +4312,9 @@ with model outputs. Defaults to False.</p></td>
                 <code>bool</code>
           </td>
           <td><p>Instantiate the model with base weights. This means
-starting with ImageNet weights for image-based models (time_distributed
-and european) and Kinetics weights for video-based models (slowfast).
-Defaults to False.</p></td>
+starting with ImageNet weights for image-based models (time_distributed,
+european, and blank_nonblank) and Kinetics weights for video-based models
+(slowfast). Defaults to False.</p></td>
           <td>
               <em>required</em>
           </td>
@@ -4303,8 +4324,9 @@ Defaults to False.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Output all zamba species rather than
-only the species in the labels file.</p></td>
+          <td><p>Output all zamba species rather than only
+the species in the labels file. Defaults to True. If set to False, will
+replace the model head for finetuning.</p></td>
           <td>
               <em>required</em>
           </td>
@@ -4327,9 +4349,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">299</span>
 <span class="normal">300</span>
 <span class="normal">301</span>
 <span class="normal">302</span>
@@ -4564,7 +4584,17 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <span class="normal">531</span>
 <span class="normal">532</span>
 <span class="normal">533</span>
-<span class="normal">534</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TrainConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TrainConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Configuration for training a model.</span>
 
@@ -4576,8 +4606,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <span class="sd">            and &#39;site&#39;. Labels must be specified to train a model.</span>
 <span class="sd">        data_dir (DirectoryPath): Path to a directory containing training</span>
 <span class="sd">            videos. Defaults to the working directory.</span>
-<span class="sd">        model_name (str, optional): Name of the model to use for training. Options</span>
-<span class="sd">            are: time_distributed, slowfast, european. Defaults to time_distributed.</span>
+<span class="sd">        model_name (str, optional): Name of the model to use for training. Options are:</span>
+<span class="sd">            time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</span>
 <span class="sd">        checkpoint (FilePath, optional): Path to a custom checkpoint file (.ckpt)</span>
 <span class="sd">            generated by zamba that can be used to resume training. If None, defaults</span>
 <span class="sd">            to a pretrained model. Defaults to None.</span>
@@ -4630,11 +4660,12 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <span class="sd">            videos can be loaded and skips files that cannot be loaded. Defaults</span>
 <span class="sd">            to False.</span>
 <span class="sd">        from_scratch (bool): Instantiate the model with base weights. This means</span>
-<span class="sd">            starting with ImageNet weights for image-based models (time_distributed</span>
-<span class="sd">            and european) and Kinetics weights for video-based models (slowfast).</span>
-<span class="sd">            Defaults to False.</span>
-<span class="sd">        predict_all_zamba_species (bool): Output all zamba species rather than</span>
-<span class="sd">            only the species in the labels file.</span>
+<span class="sd">            starting with ImageNet weights for image-based models (time_distributed,</span>
+<span class="sd">            european, and blank_nonblank) and Kinetics weights for video-based models</span>
+<span class="sd">            (slowfast). Defaults to False.</span>
+<span class="sd">        predict_all_zamba_species (bool): Output all zamba species rather than only</span>
+<span class="sd">            the species in the labels file. Defaults to True. If set to False, will</span>
+<span class="sd">            replace the model head for finetuning.</span>
 <span class="sd">        model_cache_dir (Path, optional): Cache directory where downloaded model weights</span>
 <span class="sd">            will be saved. If None and the MODEL_CACHE_DIR environment variable is</span>
 <span class="sd">            not set, uses your default cache directory. Defaults to None.</span>
@@ -4777,6 +4808,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels into one hot encoded labels with one row per video.&quot;</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
 
+        <span class="c1"># lowercase to facilitate subset checking</span>
+        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
         <span class="c1"># one hot encode collapse to one row per video</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;species&quot;</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">])</span>
@@ -4789,15 +4823,19 @@ not set, uses your default cache directory. Defaults to None.</p></td>
             <span class="n">make_split</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 
         <span class="c1"># if there are only two species columns and every video belongs to one of them,</span>
-        <span class="c1"># drop the second species column so the problem is treated as a binary classification</span>
+        <span class="c1"># keep only blank label if it exists to allow resuming of blank_nonblank model</span>
+        <span class="c1"># otherwise drop the second species column so the problem is treated as a binary classification</span>
         <span class="n">species_cols</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
         <span class="n">sums</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">species_cols</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_cols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sums</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">col_to_keep</span> <span class="o">=</span> <span class="s2">&quot;species_blank&quot;</span> <span class="k">if</span> <span class="s2">&quot;species_blank&quot;</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">else</span> <span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">col_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">col_to_keep</span><span class="p">]</span>
+
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">col_to_keep</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">species_cols</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">col_to_drop</span><span class="p">)</span>
 
         <span class="c1"># filepath becomes column instead of index</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
@@ -5232,8 +5270,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">395</span>
-<span class="normal">396</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">398</span>
+<span class="normal">399</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
         </details>
@@ -5318,10 +5356,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">498</span>
-<span class="normal">499</span>
-<span class="normal">500</span>
-<span class="normal">501</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">501</span>
 <span class="normal">502</span>
 <span class="normal">503</span>
 <span class="normal">504</span>
@@ -5354,7 +5389,17 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <span class="normal">531</span>
 <span class="normal">532</span>
 <span class="normal">533</span>
-<span class="normal">534</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">preprocess_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;One hot encode, add splits, and check for binary case.</span>
 
@@ -5365,6 +5410,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels into one hot encoded labels with one row per video.&quot;</span><span class="p">)</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+
+    <span class="c1"># lowercase to facilitate subset checking</span>
+    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="c1"># one hot encode collapse to one row per video</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
@@ -5378,15 +5426,19 @@ not set, uses your default cache directory. Defaults to None.</p></td>
         <span class="n">make_split</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 
     <span class="c1"># if there are only two species columns and every video belongs to one of them,</span>
-    <span class="c1"># drop the second species column so the problem is treated as a binary classification</span>
+    <span class="c1"># keep only blank label if it exists to allow resuming of blank_nonblank model</span>
+    <span class="c1"># otherwise drop the second species column so the problem is treated as a binary classification</span>
     <span class="n">species_cols</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
     <span class="n">sums</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">species_cols</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_cols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sums</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">col_to_keep</span> <span class="o">=</span> <span class="s2">&quot;species_blank&quot;</span> <span class="k">if</span> <span class="s2">&quot;species_blank&quot;</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">else</span> <span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">col_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">col_to_keep</span><span class="p">]</span>
+
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">col_to_keep</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">species_cols</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">col_to_drop</span><span class="p">)</span>
 
     <span class="c1"># filepath becomes column instead of index</span>
     <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
@@ -5411,12 +5463,12 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">431</span>
 <span class="normal">432</span>
-<span class="normal">433</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">turn_off_load_validation_if_dry_run</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">]:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Turning off video loading check since dry_run=True.&quot;</span><span class="p">)</span>
@@ -5442,10 +5494,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">438</span>
 <span class="normal">439</span>
 <span class="normal">440</span>
 <span class="normal">441</span>
@@ -5503,7 +5552,10 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <span class="normal">493</span>
 <span class="normal">494</span>
 <span class="normal">495</span>
-<span class="normal">496</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_filepaths_and_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validating labels csv.&quot;</span><span class="p">)</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
@@ -5585,16 +5637,16 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">407</span>
 <span class="normal">408</span>
 <span class="normal">409</span>
 <span class="normal">410</span>
 <span class="normal">411</span>
 <span class="normal">412</span>
-<span class="normal">413</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_from_scratch_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;from_scratch&quot;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -5624,14 +5676,14 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">422</span>
 <span class="normal">423</span>
 <span class="normal">424</span>
 <span class="normal">425</span>
-<span class="normal">426</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler_config&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler_config&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_scheduler_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scheduler_config</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">scheduler_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">SchedulerConfig</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -5674,13 +5726,13 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
-<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ZambaBaseModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ZambaBaseModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set defaults for all models that inherit from the pydantic base model.&quot;&quot;&quot;</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
@@ -5718,10 +5770,10 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
     <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
@@ -5895,9 +5947,7 @@ can be loaded.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
 <span class="normal"> 88</span>
@@ -5977,7 +6027,9 @@ can be loaded.</p></td>
 <span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
-<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_files_exist_and_load</span><span class="p">(</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_files_exist_and_load</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span><span class="p">,</span> <span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check whether files in file list exist and can be loaded with ffmpeg.</span>
@@ -6114,17 +6166,7 @@ can be loaded.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">537</span>
-<span class="normal">538</span>
-<span class="normal">539</span>
-<span class="normal">540</span>
-<span class="normal">541</span>
-<span class="normal">542</span>
-<span class="normal">543</span>
-<span class="normal">544</span>
-<span class="normal">545</span>
-<span class="normal">546</span>
-<span class="normal">547</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">547</span>
 <span class="normal">548</span>
 <span class="normal">549</span>
 <span class="normal">550</span>
@@ -6173,7 +6215,17 @@ can be loaded.</p></td>
 <span class="normal">593</span>
 <span class="normal">594</span>
 <span class="normal">595</span>
-<span class="normal">596</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_split</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_split</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add a split column to `labels`.</span>
 
 <span class="sd">    Args:</span>
@@ -6256,13 +6308,13 @@ available on the machine.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_gpus</span><span class="p">(</span><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_gpus</span><span class="p">(</span><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ensure the number of GPUs requested is equal to or less than the number of GPUs</span>
 <span class="sd">    available on the machine.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">gpus</span> <span class="o">&gt;</span> <span class="n">GPUS_AVAILABLE</span><span class="p">:</span>
@@ -6292,16 +6344,16 @@ config argument, environment variable, or user's default cache dir.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
 <span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
-<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_model_cache_dir</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_model_cache_dir</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;Set up cache directory for downloading model weight. Order of priority is:</span>
 <span class="sd">    config argument, environment variable, or user&#39;s default cache dir.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -6334,9 +6386,7 @@ looks up the corresponding public checkpoint file from the official configs.</p>
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span>
@@ -6362,7 +6412,9 @@ looks up the corresponding public checkpoint file from the official configs.</p>
 <span class="normal">193</span>
 <span class="normal">194</span>
 <span class="normal">195</span>
-<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_model_name_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validate_model_name_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Ensures a checkpoint file or model name is provided. If a model name is provided,</span>
 <span class="sd">    looks up the corresponding public checkpoint file from the official configs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -6477,10 +6529,10 @@ looks up the corresponding public checkpoint file from the official configs.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.48f2be22.min.js"></script>
+      <script src="../../assets/javascripts/bundle.37e9125f.min.js"></script>
       
     
   </body>

@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/extra-options/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.0">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.3">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.2e8b5541.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7a952b86.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1355,7 +1355,7 @@
 </div>
 <p>The options for <code>weight_download_region</code> are <code>us</code>, <code>eu</code>, and <code>asia</code>. Once a model's weights are downloaded, <code>zamba</code> will use the local version and will not need to perform this download again.</p>
 <h2 id="video-size">Video size<a class="headerlink" href="#video-size" title="Permanent link">&para;</a></h2>
-<p>When <code>zamba</code> loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to superior accuracy in prediction, but will use more memory and take longer to train and/or predict. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels.</p>
+<p>When <code>zamba</code> loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to superior accuracy in prediction, but will use more memory and take longer to train and/or predict. The default video loading configuration for all pretrained models resizes images to 240x426 pixels.</p>
 <p>Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. For example, to resize all images to 150x150 pixels instead of the default 240x426:</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">YAML file</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
@@ -1423,7 +1423,7 @@
 </div>
 </div>
 <h3 id="megadetectorlite">MegadetectorLite<a class="headerlink" href="#megadetectorlite" title="Permanent link">&para;</a></h3>
-<p>You can use a pretrained object detection model called <a href="../models/species-detection/#megadetectorlite">MegadetectorLite</a> to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter <code>megadetector_lite_config</code> is used to specify any arguments that should be passed to the MegadetectorLite model. If <code>megadetector_lite_config</code> is None, the MegadetectorLite model will not be used.</p>
+<p>You can use a pretrained object detection model called <a href="../models/species-detection/#megadetectorlite">MegadetectorLite</a> to select only the frames that are mostly likely to contain an animal. This is the default strategy for all pretrained models. The parameter <code>megadetector_lite_config</code> is used to specify any arguments that should be passed to the MegadetectorLite model. If <code>megadetector_lite_config</code> is None, the MegadetectorLite model will not be used.</p>
 <p>For example, to take the 16 frames with the highest probability of detection:</p>
 <div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">YAML file</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span><span class="w"></span>
@@ -1557,10 +1557,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.48f2be22.min.js"></script>
+      <script src="../assets/javascripts/bundle.37e9125f.min.js"></script>
       
     
   </body>

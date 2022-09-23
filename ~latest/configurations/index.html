@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/configurations/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.0">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.3">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.2e8b5541.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7a952b86.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1452,7 +1452,7 @@ competition winner. Defaults to <code>False</code></p>
 <h4 id="checkpoint-path-or-str-optional"><code>checkpoint (Path or str, optional)</code><a class="headerlink" href="#checkpoint-path-or-str-optional" title="Permanent link">&para;</a></h4>
 <p>Path to a model checkpoint to load and use for inference. If you train your own custom models, this is how you can pass those models to zamba when you want to predict on new videos. The default is <code>None</code>, which will load the pretrained checkpoint if the model specified by <code>model_name</code>.</p>
 <h4 id="model_name-time_distributedslowfasteuropean-optional"><code>model_name (time_distributed|slowfast|european, optional)</code><a class="headerlink" href="#model_name-time_distributedslowfasteuropean-optional" title="Permanent link">&para;</a></h4>
-<p>Name of the model to use for inference. The three model options that ship with <code>zamba</code> are <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. See the <a href="../models/species-detection/">Available Models</a> page for details. Defaults to <code>time_distributed</code></p>
+<p>Name of the model to use for inference. The model options that ship with <code>zamba</code> are <code>blank_nonblank</code>, <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. See the <a href="../models/species-detection/">Available Models</a> page for details. Defaults to <code>time_distributed</code></p>
 <h4 id="gpus-int-optional"><code>gpus (int, optional)</code><a class="headerlink" href="#gpus-int-optional" title="Permanent link">&para;</a></h4>
 <p>The number of GPUs to use during inference. By default, all of the available GPUs found on the machine will be used. An error will be raised if the number of GPUs specified is more than the number that are available on the machine.</p>
 <h4 id="num_workers-int-optional"><code>num_workers (int, optional)</code><a class="headerlink" href="#num_workers-int-optional" title="Permanent link">&para;</a></h4>
@@ -1525,7 +1525,7 @@ no <code>save_dir</code> is specified and <code>save</code> is True, outputs wil
 <h4 id="scheduler_config-zambamodelsconfigschedulerconfig-optional"><code>scheduler_config (zamba.models.config.SchedulerConfig, optional)</code><a class="headerlink" href="#scheduler_config-zambamodelsconfigschedulerconfig-optional" title="Permanent link">&para;</a></h4>
 <p>A <a href="https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate">PyTorch learning rate schedule</a> to adjust the learning rate based on the number of epochs. Scheduler can either be <code>default</code> (the default), <code>None</code>, or a <a href="https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py"><code>torch.optim.lr_scheduler</code></a>.</p>
 <h4 id="model_name-time_distributedslowfasteuropean-optional_1"><code>model_name (time_distributed|slowfast|european, optional)</code><a class="headerlink" href="#model_name-time_distributedslowfasteuropean-optional_1" title="Permanent link">&para;</a></h4>
-<p>Name of the model to use for inference. The three model options that ship with <code>zamba</code> are <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. See the <a href="../models/species-detection/">Available Models</a> page for details. Defaults to <code>time_distributed</code></p>
+<p>Name of the model to use for inference. The model options that ship with <code>zamba</code> are <code>blank_nonblank</code>, <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. See the <a href="../models/species-detection/">Available Models</a> page for details. Defaults to <code>time_distributed</code></p>
 <h4 id="dry_run-bool-optional_1"><code>dry_run (bool, optional)</code><a class="headerlink" href="#dry_run-bool-optional_1" title="Permanent link">&para;</a></h4>
 <p>Specifying <code>True</code> is useful for trying out model implementations more quickly by running only a single batch of train and validation. Defaults to <code>False</code></p>
 <h4 id="batch_size-int-optional_1"><code>batch_size (int, optional)</code><a class="headerlink" href="#batch_size-int-optional_1" title="Permanent link">&para;</a></h4>
@@ -1631,10 +1631,10 @@ no <code>save_dir</code> is specified and <code>save</code> is True, outputs wil
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.48f2be22.min.js"></script>
+      <script src="../assets/javascripts/bundle.37e9125f.min.js"></script>
       
     
   </body>
