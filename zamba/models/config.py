@@ -511,15 +511,13 @@ class TrainConfig(ZambaBaseModel):
             else values["labels"]
         )
 
-        provided_species = labels_df.label.unique()
+        provided_species = set(labels_df.label)
 
         hparams_file = MODELS_DIRECTORY / f"{values['model_name']}/hparams.yaml"
         with hparams_file.open() as f:
-            model_species = yaml.safe_load(f)["species"]
+            model_species = set(yaml.safe_load(f)["species"])
 
-        is_subset = set(provided_species).issubset(model_species)
-
-        if not is_subset:
+        if not provided_species.issubset(model_species):
 
             # if labels are not a subset, user cannot set use_default_model_labels to True
             if values.get("use_default_model_labels"):
@@ -528,7 +526,7 @@ class TrainConfig(ZambaBaseModel):
                     "species provided in labels file. "
                     "If you want your model to predict all the zamba species, make sure your "
                     "labels are a subset. The species in the labels file that are not "
-                    f"in the model species are {np.setdiff1d(provided_species, model_species)}. "
+                    f"in the model species are {provided_species - model_species}. "
                     "If you want your model to only predict the species in your labels file, "
                     "set `use_default_model_labels` to False."
                 )
