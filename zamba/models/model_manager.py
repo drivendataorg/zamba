@@ -71,6 +71,13 @@ def instantiate_model(
     model_class = available_models[hparams["model_class"]]
     logger.info(f"Instantiating model: {model_class.__name__}")
 
+    # predicting
+    if labels is None:
+        # predict; load from checkpoint uses associated hparams
+        logger.info("Loading from checkpoint.")
+        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint)
+        return model
+
     # get species from labels file
     species = labels.filter(regex=r"^species_").columns.tolist()
     species = [s.split("species_", 1)[1] for s in species]
@@ -86,13 +93,6 @@ def instantiate_model(
         hparams.update({"species": species})
         model = model_class(**hparams)
         log_schedulers(model)
-        return model
-
-    # predicting
-    if labels is None:
-        # predict; load from checkpoint uses associated hparams
-        logger.info("Loading from checkpoint.")
-        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint)
         return model
 
     # determine if finetuning or resuming training
