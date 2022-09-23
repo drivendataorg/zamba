@@ -517,7 +517,9 @@ class TrainConfig(ZambaBaseModel):
         )
 
         provided_species = set(labels_df.label)
-        model_species = set(get_model_hparams(values["model_name"])["species"])
+        # get model if specified otherwise use default to look up model species
+        model = values["model_name"] if values.get("model_name") else ModelEnum.time_distributed
+        model_species = set(get_model_hparams(model)["species"])
 
         if not provided_species.issubset(model_species):
 
