@@ -56,6 +56,8 @@ def get_model_hparams(model):
         return model.hparams
 
     else:
+        if isinstance(model, Enum):
+            model = model.value
         hparams_file = MODELS_DIRECTORY / model / "hparams.yaml"
         with hparams_file.open() as f:
             return yaml.safe_load(f)
