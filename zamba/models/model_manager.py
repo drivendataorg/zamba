@@ -26,20 +26,18 @@ from zamba.models.config import (
     RegionEnum,
 )
 from zamba.models.registry import available_models
-from zamba.models.utils import download_weights, get_checkpoint_hparams, get_model_hparams
+from zamba.models.utils import get_checkpoint_hparams, get_default_hparams
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
 
 
 def instantiate_model(
-    checkpoint: Union[os.PathLike, str],
-    weight_download_region: RegionEnum,
-    scheduler_config: Optional[SchedulerConfig],
-    model_cache_dir: Optional[os.PathLike],
-    labels: Optional[pd.DataFrame],
-    from_scratch: bool = False,
+    checkpoint: os.PathLike,
+    labels: Optional[pd.DataFrame] = None,
+    scheduler_config: Optional[SchedulerConfig] = None,
+    from_scratch: Optional[bool] = None,
     model_name: Optional[ModelEnum] = None,
-    use_default_model_labels: bool = True,
+    use_default_model_labels: Optional[bool] = None,
 ) -> ZambaVideoClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
     The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
@@ -52,39 +50,24 @@ def instantiate_model(
     - predict using pretrained model (labels=None)
 
     Args:
-        checkpoint (path or str): Either the path to a checkpoint on disk or the name of a
-            checkpoint file in the S3 bucket, i.e., one that is discoverable by `download_weights`.
-        weight_download_region (RegionEnum): Server region for downloading weights.
+        checkpoint (path): Path to a checkpoint on disk.
+        labels (pd.DataFrame, optional): Dataframe where filepath is the index and columns are one hot encoded species.
         scheduler_config (SchedulerConfig, optional): SchedulerConfig to use for training or finetuning.
             Only used if labels is not None.
-        model_cache_dir (path, optional): Directory in which to store pretrained model weights.
-        labels (pd.DataFrame, optional): Dataframe where filepath is the index and columns are one hot encoded species.
-        from_scratch (bool): Whether to instantiate the model with base weights. This means starting
+        from_scratch (bool, optional): Whether to instantiate the model with base weights. This means starting
             from the imagenet weights for image based models and the Kinetics weights for video models.
-            Defaults to False. Only used if labels is not None.
+           Only used if labels is not None.
         model_name (ModelEnum, optional): Model name used to look up default hparams used for that model.
             Only relevant if training from scratch.
-        use_default_model_labels(bool): Whether the species outputted by the model should be all zamba species.
-            If you want the model classes to only be the species in your labels file, set to False.
-            Defaults to True. Only used if labels is not None.
+        use_default_model_labels(bool, optional): Whether to output the full set of default model labels rather than
+            just the species in the labels file. Only used if labels is not None.
 
     Returns:
         ZambaVideoClassificationLightningModule: Instantiated model
     """
     if from_scratch:
-        # get hparams from official model
-        hparams = get_model_hparams(model_name)
-
+        hparams = get_default_hparams(model_name)
     else:
-        # download if checkpoint doesn't exist
-        if not checkpoint.exists():
-            logger.info(f"Downloading weights for model to {model_cache_dir}.")
-            checkpoint = download_weights(
-                filename=str(checkpoint),
-                weight_region=weight_download_region,
-                destination_dir=model_cache_dir,
-            )
-
         hparams = get_checkpoint_hparams(checkpoint)
 
     model_class = available_models[hparams["model_class"]]
@@ -248,10 +231,8 @@ def train_model(
     # set up model
     model = instantiate_model(
         checkpoint=train_config.checkpoint,
-        scheduler_config=train_config.scheduler_config,
-        weight_download_region=train_config.weight_download_region,
-        model_cache_dir=train_config.model_cache_dir,
         labels=train_config.labels,
+        scheduler_config=train_config.scheduler_config,
         from_scratch=train_config.from_scratch,
         model_name=train_config.model_name,
         use_default_model_labels=train_config.use_default_model_labels,
@@ -387,10 +368,6 @@ def predict_model(
     # set up model
     model = instantiate_model(
         checkpoint=predict_config.checkpoint,
-        weight_download_region=predict_config.weight_download_region,
-        model_cache_dir=predict_config.model_cache_dir,
-        scheduler_config=None,
-        labels=None,
     )
 
     data_module = ZambaDataModule(
