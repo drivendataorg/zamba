@@ -153,8 +153,13 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
 @pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
 def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
     # note: there are no additional species to add for the blank_nonblank model so it is not tested
+
+    labels = pd.read_csv(labels_absolute_path)
+    # pick species that is present in all models
+    labels["label"] = "bird"
+
     config = TrainConfig(
-        labels=labels_absolute_path,
+        labels=labels,
         model_name=model,
         skip_load_validation=True,
         save_dir=tmp_path / "my_model",
@@ -162,8 +167,8 @@ def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
     model = instantiate_model(
         checkpoint=config.checkpoint,
         scheduler_config=SchedulerConfig(scheduler="StepLR", scheduler_params=None),
-        # pick species that is present in all models
-        labels=pd.DataFrame([{"filepath": "bird.mp4", "species_bird": 1}]),
+        labels=config.labels,
+        use_default_model_labels=config.use_default_model_labels,
     )
     assert model.hparams["scheduler"] == "StepLR"
 
