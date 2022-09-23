@@ -73,7 +73,7 @@ def instantiate_model(
     """
     if from_scratch:
         # get hparams from official model
-        hparams = get_model_hparams(model)
+        hparams = get_model_hparams(model_name)
 
     else:
         # download if checkpoint doesn't exist
@@ -185,14 +185,16 @@ def resume_training(
         hparams.update(scheduler_config.dict())
 
     model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
+    model_species = hparams["species"]
 
     # add in remaining columns for species that are not present
-    for c in set(hparams["species"]).difference(set(species)):
+    for c in set(model_species).difference(set(species)):
         # labels are still OHE at this point
         labels[f"species_{c}"] = 0
 
-    # sort columns so columns on dataloader are the same as columns on model
-    labels.sort_index(axis=1, inplace=True)
+    # order the columns on dataloader so they are the same as the model
+    col_order = [f"species_{s}" for s in model_species]
+    labels = labels[col_order]
     log_schedulers(model)
     return model
 
