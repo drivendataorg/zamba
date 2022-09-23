@@ -1,0 +1,9 @@
+{
+  "val_loss": 0.3371,
+  "val_macro_f1": 0.8811,
+  "val_accuracy": 0.8823,
+  "species/val_accuracy/blank": 0.8823,
+  "species/val_f1/blank": 0.8691,
+  "species/val_precision/blank": 0.8336,
+  "species/val_recall/blank": 0.9079
+}

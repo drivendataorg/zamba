@@ -1,7 +1,7 @@
-inference_start_time: '2022-09-08T22:11:19.578412'
+inference_start_time: '2022-09-09T17:46:19.644476'
 model_class: TimeDistributedEfficientNet
 predict_config:
-  batch_size: 3
+  batch_size: 2
   checkpoint: version_0/time_distributed.ckpt
   data_dir: ''
   dry_run: false
@@ -10,45 +10,14 @@ predict_config:
   model_name: time_distributed
   num_workers: 2
   output_class_names: false
-  overwrite: false
+  overwrite: true
   proba_threshold: null
   save: true
   save_dir: version_0
   skip_load_validation: true
   weight_download_region: us
 species:
-- aardvark
-- antelope_duiker
-- badger
-- bat
-- bird
 - blank
-- cattle
-- cheetah
-- chimpanzee_bonobo
-- civet_genet
-- elephant
-- equid
-- forest_buffalo
-- fox
-- giraffe
-- gorilla
-- hare_rabbit
-- hippopotamus
-- hog
-- human
-- hyena
-- large_flightless_bird
-- leopard
-- lion
-- mongoose
-- monkey_prosimian
-- pangolin
-- porcupine
-- reptile
-- rodent
-- small_cat
-- wild_dog_jackal
 video_loader_config:
   cache_dir: data/zamba-cache
   cleanup_cache: false

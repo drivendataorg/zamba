@@ -36,7 +36,7 @@ The dry run will also catch any GPU memory errors. If you hit a GPU memory error
 
 #### Decreasing video size
 
-Resize video frames to be smaller before they are passed to the model. The default for all three models is 240x426 pixels. `model_input_height` and `model_input_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
+Resize video frames to be smaller before they are passed to the model. The default for all models is 240x426 pixels. `model_input_height` and `model_input_width` cannot be passed directly to the command line, so if you are using the CLI these must be specified in a [YAML file](yaml-config.md).
 
 If you are using MegadetectorLite to select frames (which is the default for the official models we ship with), you can also decrease the size of the frame used at this stage by setting [`frame_selection_height` and `frame_selection_width`](configurations/#frame_selection_height-int-optional-frame_selection_width-int-optional).
 

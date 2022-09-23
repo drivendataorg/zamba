@@ -25,7 +25,7 @@ To run `zamba predict` in the command line, you must specify `--data-dir` and/or
 * **`--data-dir PATH`:** Path to the folder containing your videos. If you don't also provide `filepaths`, Zamba will recursively search this folder for videos.
 * **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute on your system or relative to the data directory that your provide in `--data-dir`.
 
-All other flags are optional. To choose the model you want to use for prediction, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the three [pretrained models](models/species-detection.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to [`time_distributed`](models/species-detection.md#what-species-can-zamba-detect).
+All other flags are optional. To choose the model you want to use for prediction, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the [pretrained models](models/species-detection.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to [`time_distributed`](models/species-detection.md#what-species-can-zamba-detect).
 
 ## Basic usage: Python package
 

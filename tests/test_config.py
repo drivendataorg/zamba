@@ -208,6 +208,29 @@ def test_labels_with_partially_null_species(labels_absolute_path, caplog, tmp_pa
     assert "Found 1 filepath(s) with no label. Will skip." in caplog.text
 
 
+def test_binary_labels_no_blank(labels_absolute_path, tmp_path):
+    labels = pd.read_csv(labels_absolute_path)
+    labels["label"] = np.where(labels.label != "antelope_duiker", "something_else", labels.label)
+    assert labels.label.nunique() == 2
+
+    # get processed labels dataframe
+    labels_df = TrainConfig(labels=labels, save_dir=tmp_path / "my_model").labels
+
+    # only one label column because this is binary
+    # first column alphabetically is kept when blank is not present
+    assert labels_df.filter(regex="species_").columns == ["species_antelope_duiker"]
+
+
+def test_binary_labels_with_blank(labels_absolute_path, tmp_path):
+    labels = pd.read_csv(labels_absolute_path)
+    labels["label"] = np.where(labels.label != "antelope_duiker", "Blank", labels.label)
+
+    labels_df = TrainConfig(labels=labels, save_dir=tmp_path / "my_model").labels
+
+    # blank is the kept column (regardless of case)
+    assert labels_df.filter(regex="species_").columns == ["species_blank"]
+
+
 def test_labels_with_all_null_split(labels_absolute_path, caplog, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
     labels["split"] = np.nan

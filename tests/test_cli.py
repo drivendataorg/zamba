@@ -71,7 +71,7 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
         assert "Config file: None" in result.output
 
         # check all models options are valid
-        for model in ["time_distributed", "slowfast", "european"]:
+        for model in ["time_distributed", "slowfast", "european", "blank_nonblank"]:
             result = runner.invoke(app, command + ["--model", model])
             assert result.exit_code == 0
 
@@ -154,7 +154,8 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
     assert result.exit_code == 0
 
 
-def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
+@pytest.mark.parametrize("model", ["time_distributed", "blank_nonblank"])
+def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     data_dir = tmp_path / "videos"
     data_dir.mkdir()
     shutil.copy(TEST_VIDEOS_DIR / "data" / "raw" / "benjamin" / "04250002.MP4", data_dir)
@@ -172,6 +173,8 @@ def test_actual_prediction_on_single_video(tmp_path):  # noqa: F811
             "--yes",
             "--save-dir",
             str(save_dir),
+            "--model",
+            model,
         ],
     )
     assert result.exit_code == 0

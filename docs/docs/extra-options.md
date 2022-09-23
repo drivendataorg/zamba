@@ -31,7 +31,7 @@ The options for `weight_download_region` are `us`, `eu`, and `asia`. Once a mode
 
 ## Video size
 
-When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to superior accuracy in prediction, but will use more memory and take longer to train and/or predict. The default video loading configuration for all three pretrained models resizes images to 240x426 pixels.
+When `zamba` loads videos prior to either inference or training, it resizes all of the video frames before feeding them into a model. Higher resolution videos will lead to superior accuracy in prediction, but will use more memory and take longer to train and/or predict. The default video loading configuration for all pretrained models resizes images to 240x426 pixels.
 
 Say that you have a large number of videos, and you are more concerned with detecting blank v. non-blank videos than with identifying different species. In this case, you may not need a very high resolution and iterating through all of your videos with a high resolution would take a very long time. For example, to resize all images to 150x150 pixels instead of the default 240x426:
 
@@ -113,7 +113,7 @@ A simple option is to sample frames that are evenly distributed throughout a vid
 
 ### MegadetectorLite
 
-You can use a pretrained object detection model called [MegadetectorLite](models/species-detection.md#megadetectorlite) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all three pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the MegadetectorLite model. If `megadetector_lite_config` is None, the MegadetectorLite model will not be used.
+You can use a pretrained object detection model called [MegadetectorLite](models/species-detection.md#megadetectorlite) to select only the frames that are mostly likely to contain an animal. This is the default strategy for all pretrained models. The parameter `megadetector_lite_config` is used to specify any arguments that should be passed to the MegadetectorLite model. If `megadetector_lite_config` is None, the MegadetectorLite model will not be used.
 
 For example, to take the 16 frames with the highest probability of detection:
 

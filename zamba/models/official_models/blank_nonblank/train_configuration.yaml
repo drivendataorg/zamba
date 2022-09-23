@@ -1,54 +1,46 @@
-inference_start_time: '2022-09-08T22:11:19.578412'
+git_hash: 3e8bbdd821af094a2183fa78fdc74f78834f71fb
 model_class: TimeDistributedEfficientNet
-predict_config:
-  batch_size: 3
-  checkpoint: version_0/time_distributed.ckpt
+species:
+- blank
+starting_learning_rate: 0.001
+train_config:
+  auto_lr_find: false
+  backbone_finetune_config:
+    backbone_initial_ratio_lr: 0.01
+    multiplier: 1
+    pre_train_bn: true
+    train_bn: false
+    unfreeze_backbone_at_epoch: 3
+    verbose: true
+  batch_size: 4
+  checkpoint: null
   data_dir: ''
   dry_run: false
+  early_stopping_config:
+    mode: max
+    monitor: val_macro_f1
+    patience: 5
+    verbose: true
+  from_scratch: true
   gpus: 1
+  max_epochs: null
   model_cache_dir: /home/ubuntu/.cache/zamba
   model_name: time_distributed
   num_workers: 2
-  output_class_names: false
   overwrite: false
-  proba_threshold: null
-  save: true
-  save_dir: version_0
+  predict_all_zamba_species: true
+  save_dir: /home/ubuntu/pjmf-zamba
+  scheduler_config:
+    scheduler: MultiStepLR
+    scheduler_params:
+      gamma: 0.5
+      milestones:
+      - 3
+      verbose: true
   skip_load_validation: true
+  split_proportions: null
   weight_download_region: us
-species:
-- aardvark
-- antelope_duiker
-- badger
-- bat
-- bird
-- blank
-- cattle
-- cheetah
-- chimpanzee_bonobo
-- civet_genet
-- elephant
-- equid
-- forest_buffalo
-- fox
-- giraffe
-- gorilla
-- hare_rabbit
-- hippopotamus
-- hog
-- human
-- hyena
-- large_flightless_bird
-- leopard
-- lion
-- mongoose
-- monkey_prosimian
-- pangolin
-- porcupine
-- reptile
-- rodent
-- small_cat
-- wild_dog_jackal
+training_start_time: '2022-08-25T22:39:23.050198'
 video_loader_config:
   cache_dir: data/zamba-cache
   cleanup_cache: false

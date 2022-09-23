@@ -149,7 +149,7 @@ def test_head_replaced_for_new_species(dummy_trained_model_checkpoint, tmp_path)
     assert model.head.out_features == 1
 
 
-@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
+@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european", "blank_nonblank"])
 def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
     config = TrainConfig(
         labels=labels_absolute_path,
@@ -169,6 +169,7 @@ def test_finetune_new_labels(labels_absolute_path, model, tmp_path):
 
 @pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
 def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
+    # note: there are no additional species to add for the blank_nonblank model so it is not tested
     config = TrainConfig(
         labels=labels_absolute_path,
         model_name=model,

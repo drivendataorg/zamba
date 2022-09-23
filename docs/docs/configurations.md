@@ -188,7 +188,7 @@ Path to a model checkpoint to load and use for inference. If you train your own 
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
-Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/species-detection.md) page for details. Defaults to `time_distributed`
+Name of the model to use for inference. The model options that ship with `zamba` are `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/species-detection.md) page for details. Defaults to `time_distributed`
 
 #### `gpus (int, optional)`
 
@@ -301,7 +301,7 @@ A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#ho
 
 #### `model_name (time_distributed|slowfast|european, optional)`
 
-Name of the model to use for inference. The three model options that ship with `zamba` are `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/species-detection.md) page for details. Defaults to `time_distributed`
+Name of the model to use for inference. The model options that ship with `zamba` are `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/species-detection.md) page for details. Defaults to `time_distributed`
 
 #### `dry_run (bool, optional)`
 
