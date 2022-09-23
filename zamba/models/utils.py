@@ -10,6 +10,7 @@ import torch
 import yaml
 
 from zamba import MODELS_DIRECTORY
+from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModule
 
 S3_BUCKET = "s3://drivendata-public-assets"
 
@@ -48,6 +49,16 @@ def get_model_checkpoint_filename(model_name):
     with config_file.open() as f:
         config_dict = yaml.safe_load(f)
     return Path(config_dict["public_checkpoint"])
+
+
+def get_model_hparams(model):
+    if isinstance(model, ZambaVideoClassificationLightningModule):
+        return model.hparams
+
+    else:
+        hparams_file = MODELS_DIRECTORY / model / "hparams.yaml"
+        with hparams_file.open() as f:
+            return yaml.safe_load(f)
 
 
 def get_checkpoint_hparams(checkpoint):

@@ -21,7 +21,12 @@ from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.registry import available_models
-from zamba.models.utils import RegionEnum, get_checkpoint_hparams, get_model_checkpoint_filename
+from zamba.models.utils import (
+    RegionEnum,
+    get_checkpoint_hparams,
+    get_model_checkpoint_filename,
+    get_model_hparams,
+)
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
@@ -512,10 +517,7 @@ class TrainConfig(ZambaBaseModel):
         )
 
         provided_species = set(labels_df.label)
-
-        hparams_file = MODELS_DIRECTORY / f"{values['model_name']}/hparams.yaml"
-        with hparams_file.open() as f:
-            model_species = set(yaml.safe_load(f)["species"])
+        model_species = set(get_model_hparams(values["model_name"])["species"])
 
         if not provided_species.issubset(model_species):
 

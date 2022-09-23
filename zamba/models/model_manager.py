@@ -26,7 +26,7 @@ from zamba.models.config import (
     RegionEnum,
 )
 from zamba.models.registry import available_models
-from zamba.models.utils import download_weights, get_checkpoint_hparams
+from zamba.models.utils import download_weights, get_checkpoint_hparams, get_model_hparams
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
 
@@ -73,8 +73,7 @@ def instantiate_model(
     """
     if from_scratch:
         # get hparams from official model
-        with (MODELS_DIRECTORY / f"{model_name}/hparams.yaml").open() as f:
-            hparams = yaml.safe_load(f)
+        hparams = get_model_hparams(model)
 
     else:
         # download if checkpoint doesn't exist
