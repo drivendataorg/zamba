@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 import yaml
 
 import git
@@ -14,7 +14,6 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.plugins import DDPPlugin
 
-from zamba import MODELS_DIRECTORY
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
     ModelConfig,
@@ -23,7 +22,6 @@ from zamba.models.config import (
     SchedulerConfig,
     TrainConfig,
     PredictConfig,
-    RegionEnum,
 )
 from zamba.models.registry import available_models
 from zamba.models.utils import get_checkpoint_hparams, get_default_hparams
@@ -73,7 +71,11 @@ def instantiate_model(
     model_class = available_models[hparams["model_class"]]
     logger.info(f"Instantiating model: {model_class.__name__}")
 
-    ## train from scratch
+    # get species from labels file
+    species = labels.filter(regex=r"^species_").columns.tolist()
+    species = [s.split("species_", 1)[1] for s in species]
+
+    # train from scratch
     if from_scratch:
         logger.info("Training from scratch.")
 
@@ -86,18 +88,14 @@ def instantiate_model(
         log_schedulers(model)
         return model
 
-    ## predicting
+    # predicting
     if labels is None:
         # predict; load from checkpoint uses associated hparams
         logger.info("Loading from checkpoint.")
         model = model_class.load_from_checkpoint(checkpoint_path=checkpoint)
         return model
 
-    ## determine if finetuning or resuming training
-
-    # get species from labels file
-    species = labels.filter(regex=r"^species_").columns.tolist()
-    species = [s.split("species_", 1)[1] for s in species]
+    # determine if finetuning or resuming training
 
     # check if species in label file are a subset of pretrained model species
     is_subset = set(species).issubset(set(hparams["species"]))

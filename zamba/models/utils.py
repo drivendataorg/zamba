@@ -10,7 +10,6 @@ import torch
 import yaml
 
 from zamba import MODELS_DIRECTORY
-from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModule
 
 S3_BUCKET = "s3://drivendata-public-assets"
 
