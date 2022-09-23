@@ -507,3 +507,52 @@ def test_checkpoint_sets_model_to_default(
         skip_load_validation=True,
     )
     assert config.model_name == "dummy_model"
+
+
+def test_validate_provided_species_and_use_default_model_labels(labels_absolute_path, tmp_path):
+    # labels are subset of time distributed model
+    config = TrainConfig(
+        labels=labels_absolute_path,
+        model_name="time_distributed",
+        skip_load_validation=True,
+        save_dir=tmp_path / "my_model",
+    )
+    # because this is a subset, use_default_model_labels gets set to True
+    assert config.use_default_model_labels
+
+    # because this is a subset, I can choose to set it to False
+    config = TrainConfig(
+        labels=labels_absolute_path,
+        model_name="time_distributed",
+        skip_load_validation=True,
+        save_dir=tmp_path / "my_model",
+        use_default_model_labels=False,
+    )
+    assert config.use_default_model_labels is False
+
+    # create labels with a species that is not in the model
+    alien_labels = pd.read_csv(labels_absolute_path)
+    alien_labels["label"] = "alien"
+
+    config = TrainConfig(
+        labels=alien_labels,
+        model_name="time_distributed",
+        skip_load_validation=True,
+        save_dir=tmp_path / "my_model",
+    )
+    # by default this gets set to False
+    assert config.use_default_model_labels is False
+
+    # if I try to set this to True, it will error
+    with pytest.raises(ValueError) as error:
+        TrainConfig(
+            labels=alien_labels,
+            model_name="time_distributed",
+            skip_load_validation=True,
+            save_dir=tmp_path / "my_model",
+            use_default_model_labels=True,
+        )
+        assert (
+            "Conflicting information between `use_default_model_labels=True` and species provided."
+            in error
+        )
