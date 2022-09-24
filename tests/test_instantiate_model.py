@@ -120,8 +120,8 @@ def test_not_use_default_model_labels(dummy_trained_model_checkpoint):
 def test_head_replaced_for_new_species(labels_absolute_path, model, tmp_path):
     """Tests that training a model using labels that are a not subset of the model species
     finetunes the model and replaces the model head."""
-    labels = pd.read_csv(labels_absolute_path)
     # pick species that is not present in any models
+    labels = pd.read_csv(labels_absolute_path)
     labels["label"] = "kangaroo"
 
     config = TrainConfig(
@@ -142,10 +142,8 @@ def test_head_replaced_for_new_species(labels_absolute_path, model, tmp_path):
 
 @pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
 def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
-    # note: there are no additional species to add for the blank_nonblank model so it is not tested
-
-    labels = pd.read_csv(labels_absolute_path)
     # pick species that is present in all models
+    labels = pd.read_csv(labels_absolute_path)
     labels["label"] = "bird"
 
     config = TrainConfig(
