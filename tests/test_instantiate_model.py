@@ -4,6 +4,7 @@ import torch
 
 from zamba.models.config import SchedulerConfig, TrainConfig
 from zamba.models.model_manager import instantiate_model
+from zamba.models.utils import get_default_hparams
 
 from conftest import DummyZambaVideoClassificationLightningModule
 
@@ -116,17 +117,18 @@ def test_not_use_default_model_labels(dummy_trained_model_checkpoint):
     assert model.model[-1].out_features == 1
 
 
-@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european", "blank_nonblank"])
-def test_head_replaced_for_new_species(labels_absolute_path, model, tmp_path):
-    """Tests that training a model using labels that are a not subset of the model species
-    finetunes the model and replaces the model head."""
+@pytest.mark.parametrize(
+    "model_name", ["time_distributed", "slowfast", "european", "blank_nonblank"]
+)
+def test_head_replaced_for_new_species(labels_absolute_path, model_name, tmp_path):
+    """Check that output species reflect the new head."""
     # pick species that is not present in any models
     labels = pd.read_csv(labels_absolute_path)
     labels["label"] = "kangaroo"
 
     config = TrainConfig(
         labels=labels,
-        model_name=model,
+        model_name=model_name,
         skip_load_validation=True,
         save_dir=tmp_path / "my_model",
     )
@@ -140,15 +142,16 @@ def test_head_replaced_for_new_species(labels_absolute_path, model, tmp_path):
     assert model.hparams["species"] == model.species == ["kangaroo"]
 
 
-@pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
-def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
+@pytest.mark.parametrize("model_name", ["time_distributed", "slowfast", "european"])
+def test_resume_subset_labels(labels_absolute_path, model_name, tmp_path):
+    """Check that output species reflect the default model labels."""
     # pick species that is present in all models
     labels = pd.read_csv(labels_absolute_path)
     labels["label"] = "bird"
 
     config = TrainConfig(
         labels=labels,
-        model_name=model,
+        model_name=model_name,
         skip_load_validation=True,
         save_dir=tmp_path / "my_model",
     )
@@ -159,53 +162,4 @@ def test_resume_subset_labels(labels_absolute_path, model, tmp_path):
         use_default_model_labels=config.use_default_model_labels,
     )
     assert model.hparams["scheduler"] == "StepLR"
-
-    if config.model_name == "european":
-        assert model.species == [
-            "bird",
-            "blank",
-            "domestic_cat",
-            "european_badger",
-            "european_beaver",
-            "european_hare",
-            "european_roe_deer",
-            "north_american_raccoon",
-            "red_fox",
-            "weasel",
-            "wild_boar",
-        ]
-    else:
-        assert model.species == [
-            "aardvark",
-            "antelope_duiker",
-            "badger",
-            "bat",
-            "bird",
-            "blank",
-            "cattle",
-            "cheetah",
-            "chimpanzee_bonobo",
-            "civet_genet",
-            "elephant",
-            "equid",
-            "forest_buffalo",
-            "fox",
-            "giraffe",
-            "gorilla",
-            "hare_rabbit",
-            "hippopotamus",
-            "hog",
-            "human",
-            "hyena",
-            "large_flightless_bird",
-            "leopard",
-            "lion",
-            "mongoose",
-            "monkey_prosimian",
-            "pangolin",
-            "porcupine",
-            "reptile",
-            "rodent",
-            "small_cat",
-            "wild_dog_jackal",
-        ]
+    assert model.species == get_default_hparams(model_name)["species"]
