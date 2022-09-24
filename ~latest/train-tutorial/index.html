@@ -406,8 +406,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-behavior" class="md-nav__link">
-    Default behavior
+  <a href="#model-output-classes" class="md-nav__link">
+    Model output classes
   </a>
   
 </li>
@@ -415,6 +415,13 @@
         <li class="md-nav__item">
   <a href="#step-by-step-tutorial" class="md-nav__link">
     Step-by-step tutorial
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-that-get-written-out-during-training" class="md-nav__link">
+    Files that get written out during training
   </a>
   
 </li>
@@ -1299,8 +1306,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#default-behavior" class="md-nav__link">
-    Default behavior
+  <a href="#model-output-classes" class="md-nav__link">
+    Model output classes
   </a>
   
 </li>
@@ -1308,6 +1315,13 @@
         <li class="md-nav__item">
   <a href="#step-by-step-tutorial" class="md-nav__link">
     Step-by-step tutorial
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-that-get-written-out-during-training" class="md-nav__link">
+    Files that get written out during training
   </a>
   
 </li>
@@ -1346,17 +1360,7 @@
 </ul>
 <p>The process is the same for both cases.</p>
 <h2 id="basic-usage-command-line-interface">Basic usage: command line interface<a class="headerlink" href="#basic-usage-command-line-interface" title="Permanent link">&para;</a></h2>
-<p>Say that we want to finetune the <code>time_distributed</code> model based on the videos in <code>example_vids</code> and the labels in <code>example_labels.csv</code>.</p>
-<p>Minimum example for training in the command line:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir example_vids/ --labels example_labels.csv
-</code></pre></div>
-<h3 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h3>
-<p>To run <code>zamba train</code> in the command line, you must specify both <code>--data-directory</code> and <code>--labels</code>.</p>
-<ul>
-<li><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your labeled videos. <code>zamba</code> will generate predictions for videos in the top level directory and in any nested folders.</li>
-<li><strong><code>--labels PATH</code>:</strong> Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Filepaths should be either absolute paths or relative to <code>data-dir</code>. Optionally, there can also be columns for <code>split</code> (which can have one of the three values for each row: <code>train</code>, <code>val</code>, or <code>holdout</code>) and <code>site</code> (which can contain any string identifying the location of the camera). If your labels file does not have a column for <code>split</code>, you can alternately use the <code>split_proportions</code> argument.</li>
-</ul>
-<p>Here we start with a simple CSV that just has a <code>filepath</code> and a <code>label</code> column:</p>
+<p>By default, the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code></a> species classification model is used. Say that we want to finetune that model based on the videos in <code>example_vids</code> and the labels in <code>example_labels.csv</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat example_labels.csv
 
 <span class="go">filepath,label</span>
@@ -1365,9 +1369,20 @@
 <span class="go">eleph.MP4,elephant</span>
 <span class="go">leopard.MP4,leopard</span>
 </code></pre></div>
+<p>Training at the command line would look like:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --data-dir example_vids/ --labels example_labels.csv
+</code></pre></div>
+<h3 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h3>
+<p>To run <code>zamba train</code> in the command line, you must specify <code>labels</code>.</p>
+<ul>
+<li><strong><code>--labels PATH</code>:</strong> Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both <code>filepath</code> and <code>label</code>. Optionally, there can also be columns for <code>split</code> (which can have one of the three values for each row: <code>train</code>, <code>val</code>, or <code>holdout</code>) or <code>site</code> (which can contain any string identifying the location of the camera, used to allocate videos to splits if not already specified).</li>
+</ul>
+<p>If the video filepaths in the labels csv are not absolute, be sure to provide the <code>data-dir</code> to which the filepaths are relative.</p>
+<ul>
+<li><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your labeled videos.</li>
+</ul>
 <h2 id="basic-usage-python-package">Basic usage: Python package<a class="headerlink" href="#basic-usage-python-package" title="Permanent link">&para;</a></h2>
-<p>Say that we want to finetune the <code>time_distributed</code> model based on the videos in <code>example_vids</code> and the labels in <code>example_labels.csv</code>.</p>
-<p>Minimum example for training using the Python package:</p>
+<p>To do the same thing as above using the library code, this would look like:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.model_manager</span> <span class="kn">import</span> <span class="n">train_model</span>
 <span class="kn">from</span> <span class="nn">zamba.models.config</span> <span class="kn">import</span> <span class="n">TrainConfig</span>
 
@@ -1377,34 +1392,39 @@
 <span class="n">train_model</span><span class="p">(</span><span class="n">train_config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
 </code></pre></div>
 <p>The only two arguments that can be passed to <code>train_model</code> are <code>train_config</code> and (optionally) <code>video_loader_config</code>. The first step is to instantiate <a href="../configurations/#training-arguments"><code>TrainConfig</code></a>. Optionally, you can also specify video loading arguments by instantiating and passing in <a href="../configurations/#video-loading-arguments"><code>VideoLoaderConfig</code></a>.</p>
-<p>You'll want to go over the documentation to familiarize yourself with the options in both of these configurations since what you choose can have a large impact on the results of your model. We've tried to include in the documentation sane defaults and recommendations for how to set these parameters.</p>
-<h3 id="required-arguments_1">Required arguments<a class="headerlink" href="#required-arguments_1" title="Permanent link">&para;</a></h3>
-<p>To run the <code>train_model</code> function, you must specify both where your videos are and what the label for each video is when <code>TrainConfig</code> is instantiated.</p>
-<ul>
-<li>
-<p><strong><code>data_dir (DirectoryPath)</code>:</strong> Path to the folder containing your videos.</p>
-</li>
-<li>
-<p><strong><code>labels (FilePath or pd.DataFrame)</code>:</strong> Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for <code>filename</code> and <code>label</code>. If the <code>filename</code> column has absolute paths, <code>data_dir</code> is not required.</p>
-</li>
-</ul>
-<p>For detailed explanations of all possible configuration arguments, see <a href="../configurations/">All Configuration Options</a>.</p>
-<h2 id="default-behavior">Default behavior<a class="headerlink" href="#default-behavior" title="Permanent link">&para;</a></h2>
-<p>By default, the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code></a> model will be used as a starting point. You can specify where the outputs should be saved with <code>--save-dir</code>. If no save directory is specified, <code>zamba</code> will write out incremental <code>version_n</code> folders to your current working directory. For example, a model finetuned from the provided <code>time_distributed</code> model (the default) will be saved in <code>version_0</code>.</p>
-<p><code>version_0</code> contains:</p>
-<ul>
-<li><code>train_configuration.yaml</code>: The full model configuration used to generate the given model, including <code>video_loader_config</code> and <code>train_config</code>. To continue training using the same configuration, or to train another model using the same configuration, you can pass in <code>train_configurations.yaml</code> (see <a href="../yaml-config/">Specifying Model Configurations with a YAML File</a>) along with the <code>labels</code> filepath.</li>
-<li><code>hparams.yaml</code>: Model hyperparameters. These are included in the checkpoint file as well.</li>
-<li><code>time_distributed.ckpt</code>: Model checkpoint. You can continue training from this checkpoint by passing it to <code>zamba train</code> with the <code>--checkpoint</code> flag:
-    <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --checkpoint version_0/time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
-</code></pre></div></li>
-<li><code>events.out.tfevents.1632250686.ip-172-31-15-179.14229.0</code>: <a href="https://www.tensorflow.org/tensorboard/get_started">TensorBoard</a> logs. You can view these with tensorboard:
-    <div class="highlight"><pre><span></span><code><span class="gp">$ </span>tensorboard --logdir version_0/
-</code></pre></div></li>
-<li><code>val_metrics.json</code>: The model's performance on the validation subset</li>
-<li><code>test_metrics.json</code>: The model's performance on the test (holdout) subset</li>
-<li><code>splits.csv</code>: Which files were used for training, validation, and as a holdout set. If split is specified in the labels file passed to training, <code>splits.csv</code> will not be saved out.</li>
-</ul>
+<p>You'll want to go over the documentation to familiarize yourself with the options in both of these configurations since what you choose can have a large impact on the results of your model. We've tried to include in the documentation sane defaults and recommendations for how to set these parameters. For detailed explanations of all possible configuration arguments, see <a href="../configurations/">All Configuration Options</a>.</p>
+<h2 id="model-output-classes">Model output classes<a class="headerlink" href="#model-output-classes" title="Permanent link">&para;</a></h2>
+<p>The classes your trained model will predict are determined by which model you choose and whether the species in your labels are a subset of that model's <a href="../models/species-detection/#species-classes">default labels</a>. This table outlines the default behavior for a set of common scenarios.</p>
+<table>
+<thead>
+<tr>
+<th>Classes in labels csv</th>
+<th>Model</th>
+<th>What we infer</th>
+<th>Classes trained model predicts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cat, blank</td>
+<td><code>blank_nonblank</code></td>
+<td>binary model where one is "blank"</td>
+<td>blank</td>
+</tr>
+<tr>
+<td>zebra, grizzly, blank</td>
+<td><code>time_distributed</code></td>
+<td>multiclass but not a subset of the zamba labels</td>
+<td>zebra, grizzly, blank</td>
+</tr>
+<tr>
+<td>elephant, antelope_duiker, blank</td>
+<td><code>time_distributed</code></td>
+<td>multiclass and a subset of the zamba labels</td>
+<td>all African forest zamba species</td>
+</tr>
+</tbody>
+</table>
 <h2 id="step-by-step-tutorial">Step-by-step tutorial<a class="headerlink" href="#step-by-step-tutorial" title="Permanent link">&para;</a></h2>
 <h3 id="1-specify-the-path-to-your-videos">1. Specify the path to your videos<a class="headerlink" href="#1-specify-the-path-to-your-videos" title="Permanent link">&para;</a></h3>
 <p>Save all of your videos in a folder.</p>
@@ -1454,7 +1474,7 @@
 </div>
 <h4 id="labels-zamba-has-seen-before">Labels <code>zamba</code> has seen before<a class="headerlink" href="#labels-zamba-has-seen-before" title="Permanent link">&para;</a></h4>
 <p>Your labels may be included in the list of <a href="../models/species-detection/#species-classes"><code>zamba</code> class labels</a> that the provided models are trained to predict. If so, the relevant model that ships with <code>zamba</code> will essentially be used as a checkpoint, and model training will resume from that checkpoint.</p>
-<p>This means that the model you train will continue to output all of the Zamba class labels, not just the ones in your dataset.</p>
+<p>By default, the model you train will continue to output all of the Zamba class labels, not just the ones in your dataset. For different behavior, see <a href="../configurations/#use_default_model_labels-bool-optional"><code>use_default_model_labels</code></a>.</p>
 <h4 id="completely-new-labels">Completely new labels<a class="headerlink" href="#completely-new-labels" title="Permanent link">&para;</a></h4>
 <p>You can also train a model to predict completely new labels - the world is your oyster! (We'd love to see a model trained to predict oysters.) If this is the case, the model architecture will replace the final <a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=995s">neural network</a> layer with a new head that predicts <em>your</em> labels instead of those that ship with <code>zamba</code>.</p>
 <p>You can then make your model available to others by adding it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo on our wiki</a>.</p>
@@ -1480,6 +1500,22 @@
 <p>And there's so much more! You can also do things like specify your region for faster model download (<code>--weight-download-region</code>), start training from a saved model checkpoint (<code>--checkpoint</code>), or specify a different path where your model should be saved (<code>--save-dir</code>). To read about a few common considerations, see the <a href="../extra-options/">Guide to Common Optional Parameters</a> page.</p>
 <h3 id="5-test-your-configuration-with-a-dry-run">5. Test your configuration with a dry run<a class="headerlink" href="#5-test-your-configuration-with-a-dry-run" title="Permanent link">&para;</a></h3>
 <p>Before kicking off the full model training, we recommend testing your code with a "dry run". This will run one training and validation batch for one epoch to quickly detect any bugs. See the <a href="../debugging/">Debugging</a> page for details.</p>
+<h2 id="files-that-get-written-out-during-training">Files that get written out during training<a class="headerlink" href="#files-that-get-written-out-during-training" title="Permanent link">&para;</a></h2>
+<p>You can specify where the outputs should be saved with <code>--save-dir</code>. If no save directory is specified, <code>zamba</code> will write out incremental <code>version_n</code> folders to your current working directory. For example, a model finetuned from the provided <code>time_distributed</code> model (the default) will be saved in <code>version_0</code>.</p>
+<p><code>version_0</code> contains:</p>
+<ul>
+<li><code>train_configuration.yaml</code>: The full model configuration used to generate the given model, including <code>video_loader_config</code> and <code>train_config</code>. To continue training using the same configuration, or to train another model using the same configuration, you can pass in <code>train_configurations.yaml</code> (see <a href="../yaml-config/">Specifying Model Configurations with a YAML File</a>) along with the <code>labels</code> filepath.</li>
+<li><code>hparams.yaml</code>: Model hyperparameters. These are included in the checkpoint file as well.</li>
+<li><code>time_distributed.ckpt</code>: Model checkpoint. You can continue training from this checkpoint by passing it to <code>zamba train</code> with the <code>--checkpoint</code> flag:
+    <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba train --checkpoint version_0/time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
+</code></pre></div></li>
+<li><code>events.out.tfevents.1632250686.ip-172-31-15-179.14229.0</code>: <a href="https://www.tensorflow.org/tensorboard/get_started">TensorBoard</a> logs. You can view these with tensorboard:
+    <div class="highlight"><pre><span></span><code><span class="gp">$ </span>tensorboard --logdir version_0/
+</code></pre></div></li>
+<li><code>val_metrics.json</code>: The model's performance on the validation subset</li>
+<li><code>test_metrics.json</code>: The model's performance on the test (holdout) subset</li>
+<li><code>splits.csv</code>: Which files were used for training, validation, and as a holdout set. If split is specified in the labels file passed to training, <code>splits.csv</code> will not be saved out.</li>
+</ul>
 
 
 

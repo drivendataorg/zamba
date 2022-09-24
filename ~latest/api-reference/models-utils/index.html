@@ -1535,9 +1535,42 @@
 
       <details class="quote">
         <summary>Source code in <code>zamba/models/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
-<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_checkpoint_hparams</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_checkpoint_hparams</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">_cached_hparams</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.utils.get_default_hparams" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_default_hparams</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></code>
+
+<a href="#zamba.models.utils.get_default_hparams" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_default_hparams</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="n">hparams_file</span> <span class="o">=</span> <span class="n">MODELS_DIRECTORY</span> <span class="o">/</span> <span class="n">model</span> <span class="o">/</span> <span class="s2">&quot;hparams.yaml&quot;</span>
+    <span class="k">with</span> <span class="n">hparams_file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
