@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 import yaml
 
 import git
@@ -14,7 +14,6 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.plugins import DDPPlugin
 
-from zamba import MODELS_DIRECTORY
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
     ModelConfig,
@@ -23,86 +22,65 @@ from zamba.models.config import (
     SchedulerConfig,
     TrainConfig,
     PredictConfig,
-    RegionEnum,
 )
 from zamba.models.registry import available_models
-from zamba.models.utils import download_weights, get_checkpoint_hparams
+from zamba.models.utils import get_checkpoint_hparams, get_default_hparams
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
 
 
 def instantiate_model(
-    checkpoint: Union[os.PathLike, str],
-    weight_download_region: RegionEnum,
-    scheduler_config: Optional[SchedulerConfig],
-    model_cache_dir: Optional[os.PathLike],
-    labels: Optional[pd.DataFrame],
-    from_scratch: bool = False,
+    checkpoint: os.PathLike,
+    labels: Optional[pd.DataFrame] = None,
+    scheduler_config: Optional[SchedulerConfig] = None,
+    from_scratch: Optional[bool] = None,
     model_name: Optional[ModelEnum] = None,
-    predict_all_zamba_species: bool = True,
+    use_default_model_labels: Optional[bool] = None,
 ) -> ZambaVideoClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
-    The model head is replaced if labels contain species that are not on the model or predict_all_zamba_species=False.
+    The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
 
     Supports model instantiation for the following cases:
     - train from scratch (from_scratch=True)
     - finetune with new species (from_scratch=False, labels contains different species than model)
-    - finetune with a subset of zamba species and output only the species in the labels file (predict_all_zamba_species=False)
-    - finetune with a subset of zamba species but output all zamba species (predict_all_zamba_species=True)
+    - finetune with a subset of zamba species and output only the species in the labels file (use_default_model_labels=False)
+    - finetune with a subset of zamba species but output all zamba species (use_default_model_labels=True)
     - predict using pretrained model (labels=None)
 
     Args:
-        checkpoint (path or str): Either the path to a checkpoint on disk or the name of a
-            checkpoint file in the S3 bucket, i.e., one that is discoverable by `download_weights`.
-        weight_download_region (RegionEnum): Server region for downloading weights.
+        checkpoint (path): Path to a checkpoint on disk.
+        labels (pd.DataFrame, optional): Dataframe where filepath is the index and columns are one hot encoded species.
         scheduler_config (SchedulerConfig, optional): SchedulerConfig to use for training or finetuning.
             Only used if labels is not None.
-        model_cache_dir (path, optional): Directory in which to store pretrained model weights.
-        labels (pd.DataFrame, optional): Dataframe where filepath is the index and columns are one hot encoded species.
-        from_scratch (bool): Whether to instantiate the model with base weights. This means starting
+        from_scratch (bool, optional): Whether to instantiate the model with base weights. This means starting
             from the imagenet weights for image based models and the Kinetics weights for video models.
-            Defaults to False. Only used if labels is not None.
+           Only used if labels is not None.
         model_name (ModelEnum, optional): Model name used to look up default hparams used for that model.
             Only relevant if training from scratch.
-        predict_all_zamba_species(bool): Whether the species outputted by the model should be all zamba species.
-            If you want the model classes to only be the species in your labels file, set to False.
-            Defaults to True. Only used if labels is not None.
+        use_default_model_labels(bool, optional): Whether to output the full set of default model labels rather than
+            just the species in the labels file. Only used if labels is not None.
 
     Returns:
         ZambaVideoClassificationLightningModule: Instantiated model
     """
     if from_scratch:
-        # get hparams from official model
-        with (MODELS_DIRECTORY / f"{model_name}/hparams.yaml").open() as f:
-            hparams = yaml.safe_load(f)
-
+        hparams = get_default_hparams(model_name)
     else:
-        # download if checkpoint doesn't exist
-        if not checkpoint.exists():
-            logger.info(f"Downloading weights for model to {model_cache_dir}.")
-            checkpoint = download_weights(
-                filename=str(checkpoint),
-                weight_region=weight_download_region,
-                destination_dir=model_cache_dir,
-            )
-
         hparams = get_checkpoint_hparams(checkpoint)
 
     model_class = available_models[hparams["model_class"]]
-
     logger.info(f"Instantiating model: {model_class.__name__}")
 
+    # predicting
     if labels is None:
         # predict; load from checkpoint uses associated hparams
         logger.info("Loading from checkpoint.")
-        return model_class.load_from_checkpoint(checkpoint_path=checkpoint)
+        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint)
+        return model
 
     # get species from labels file
     species = labels.filter(regex=r"^species_").columns.tolist()
     species = [s.split("species_", 1)[1] for s in species]
-
-    # check if species in label file are a subset of pretrained model species
-    is_subset = set(species).issubset(set(hparams["species"]))
 
     # train from scratch
     if from_scratch:
@@ -114,49 +92,97 @@ def instantiate_model(
 
         hparams.update({"species": species})
         model = model_class(**hparams)
+        log_schedulers(model)
+        return model
 
-    # replace the head
-    elif not predict_all_zamba_species or not is_subset:
+    # determine if finetuning or resuming training
 
-        if not predict_all_zamba_species:
+    # check if species in label file are a subset of pretrained model species
+    is_subset = set(species).issubset(set(hparams["species"]))
+
+    if is_subset:
+        if use_default_model_labels:
+            return resume_training(
+                scheduler_config=scheduler_config,
+                hparams=hparams,
+                species=species,
+                model_class=model_class,
+                checkpoint=checkpoint,
+                labels=labels,
+            )
+
+        else:
             logger.info(
                 "Limiting only to species in labels file. Replacing model head and finetuning."
             )
-        else:
-            logger.info(
-                "Provided species do not fully overlap with Zamba species. Replacing model head and finetuning."
+            return replace_head(
+                scheduler_config=scheduler_config,
+                hparams=hparams,
+                species=species,
+                model_class=model_class,
+                checkpoint=checkpoint,
             )
 
-        # update in case we want to finetune with different scheduler
-        if scheduler_config != "default":
-            hparams.update(scheduler_config.dict())
-
-        hparams.update({"species": species})
-        model = model_class(finetune_from=checkpoint, **hparams)
-
-    # resume training; add additional species columns to labels file if needed
-    elif is_subset:
+    # without a subset, you will always get a new head
+    # the config validation prohibits setting use_default_model_labels to True without a subset
+    else:
         logger.info(
-            "Provided species fully overlap with Zamba species. Resuming training from latest checkpoint."
+            "Provided species do not fully overlap with Zamba species. Replacing model head and finetuning."
         )
-        # update in case we want to resume with different scheduler
-        if scheduler_config != "default":
-            hparams.update(scheduler_config.dict())
+        return replace_head(
+            scheduler_config=scheduler_config,
+            hparams=hparams,
+            species=species,
+            model_class=model_class,
+            checkpoint=checkpoint,
+        )
 
-        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
 
-        # add in remaining columns for species that are not present
-        for c in set(hparams["species"]).difference(set(species)):
-            # labels are still OHE at this point
-            labels[f"species_{c}"] = 0
+def replace_head(scheduler_config, hparams, species, model_class, checkpoint):
+    # update in case we want to finetune with different scheduler
+    if scheduler_config != "default":
+        hparams.update(scheduler_config.dict())
 
-        # sort columns so columns on dataloader are the same as columns on model
-        labels.sort_index(axis=1, inplace=True)
+    hparams.update({"species": species})
+    model = model_class(finetune_from=checkpoint, **hparams)
+    log_schedulers(model)
+    return model
 
+
+def resume_training(
+    scheduler_config,
+    hparams,
+    species,
+    model_class,
+    checkpoint,
+    labels,
+):
+    # resume training; add additional species columns to labels file if needed
+    logger.info(
+        "Provided species fully overlap with Zamba species. Resuming training from latest checkpoint."
+    )
+    # update in case we want to resume with different scheduler
+    if scheduler_config != "default":
+        hparams.update(scheduler_config.dict())
+
+    model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
+    model_species = hparams["species"]
+
+    # add in remaining columns for species that are not present
+    for c in set(model_species).difference(set(species)):
+        # labels are still OHE at this point
+        labels[f"species_{c}"] = 0
+
+    # order the columns on dataloader so they are the same as the model
+    col_order = [f"species_{s}" for s in model_species]
+    labels = labels[col_order]
+    log_schedulers(model)
+    return model
+
+
+def log_schedulers(model):
     logger.info(f"Using learning rate scheduler: {model.hparams['scheduler']}")
     logger.info(f"Using scheduler params: {model.hparams['scheduler_params']}")
-
-    return model
 
 
 def validate_species(model: ZambaVideoClassificationLightningModule, data_module: ZambaDataModule):
@@ -203,13 +229,11 @@ def train_model(
     # set up model
     model = instantiate_model(
         checkpoint=train_config.checkpoint,
-        scheduler_config=train_config.scheduler_config,
-        weight_download_region=train_config.weight_download_region,
-        model_cache_dir=train_config.model_cache_dir,
         labels=train_config.labels,
+        scheduler_config=train_config.scheduler_config,
         from_scratch=train_config.from_scratch,
         model_name=train_config.model_name,
-        predict_all_zamba_species=train_config.predict_all_zamba_species,
+        use_default_model_labels=train_config.use_default_model_labels,
     )
 
     data_module = ZambaDataModule(
@@ -342,10 +366,6 @@ def predict_model(
     # set up model
     model = instantiate_model(
         checkpoint=predict_config.checkpoint,
-        weight_download_region=predict_config.weight_download_region,
-        model_cache_dir=predict_config.model_cache_dir,
-        scheduler_config=None,
-        labels=None,
     )
 
     data_module = ZambaDataModule(

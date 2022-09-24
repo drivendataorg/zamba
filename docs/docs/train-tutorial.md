@@ -16,22 +16,7 @@ The process is the same for both cases.
 
 ## Basic usage: command line interface
 
-Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`.
-
-Minimum example for training in the command line:
-
-```console
-$ zamba train --data-dir example_vids/ --labels example_labels.csv
-```
-
-### Required arguments
-
-To run `zamba train` in the command line, you must specify both `--data-directory` and `--labels`.
-
-* **`--data-dir PATH`:** Path to the folder containing your labeled videos. `zamba` will generate predictions for videos in the top level directory and in any nested folders.
-* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both filepath and label. Filepaths should be either absolute paths or relative to `data-dir`. Optionally, there can also be columns for `split` (which can have one of the three values for each row: `train`, `val`, or `holdout`) and `site` (which can contain any string identifying the location of the camera). If your labels file does not have a column for `split`, you can alternately use the `split_proportions` argument.
-
-Here we start with a simple CSV that just has a `filepath` and a `label` column:
+By default, the [`time_distributed`](models/species-detection.md#time-distributed) species classification model is used. Say that we want to finetune that model based on the videos in `example_vids` and the labels in `example_labels.csv`.
 
 ```console
 $ cat example_labels.csv
@@ -43,11 +28,26 @@ eleph.MP4,elephant
 leopard.MP4,leopard
 ```
 
+Training at the command line would look like:
+
+```console
+$ zamba train --data-dir example_vids/ --labels example_labels.csv
+```
+
+### Required arguments
+
+To run `zamba train` in the command line, you must specify `labels`.
+
+* **`--labels PATH`:** Path to a CSV containing the video labels to use as ground truth during training. There must be columns for both `filepath` and `label`. Optionally, there can also be columns for `split` (which can have one of the three values for each row: `train`, `val`, or `holdout`) or `site` (which can contain any string identifying the location of the camera, used to allocate videos to splits if not already specified).
+
+If the video filepaths in the labels csv are not absolute, be sure to provide the `data-dir` to which the filepaths are relative.
+
+* **`--data-dir PATH`:** Path to the folder containing your labeled videos.
+
+
 ## Basic usage: Python package
 
-Say that we want to finetune the `time_distributed` model based on the videos in `example_vids` and the labels in `example_labels.csv`.
-
-Minimum example for training using the Python package:
+To do the same thing as above using the library code, this would look like:
 
 ```python
 from zamba.models.model_manager import train_model
@@ -61,37 +61,17 @@ train_model(train_config=train_config)
 
 The only two arguments that can be passed to `train_model` are `train_config` and (optionally) `video_loader_config`. The first step is to instantiate [`TrainConfig`](configurations.md#training-arguments). Optionally, you can also specify video loading arguments by instantiating and passing in [`VideoLoaderConfig`](configurations.md#video-loading-arguments).
 
-You'll want to go over the documentation to familiarize yourself with the options in both of these configurations since what you choose can have a large impact on the results of your model. We've tried to include in the documentation sane defaults and recommendations for how to set these parameters.
+You'll want to go over the documentation to familiarize yourself with the options in both of these configurations since what you choose can have a large impact on the results of your model. We've tried to include in the documentation sane defaults and recommendations for how to set these parameters. For detailed explanations of all possible configuration arguments, see [All Configuration Options](configurations.md).
 
-### Required arguments
+## Model output classes
 
-To run the `train_model` function, you must specify both where your videos are and what the label for each video is when `TrainConfig` is instantiated.
+The classes your trained model will predict are determined by which model you choose and whether the species in your labels are a subset of that model's [default labels](models/species-detection.md#species-classes). This table outlines the default behavior for a set of common scenarios.
 
-* **`data_dir (DirectoryPath)`:** Path to the folder containing your videos.
-
-* **`labels (FilePath or pd.DataFrame)`:** Either the path to a CSV file with labels for training, or a dataframe of the training labels. There must be columns for `filename` and `label`. If the `filename` column has absolute paths, `data_dir` is not required.
-
-For detailed explanations of all possible configuration arguments, see [All Configuration Options](configurations.md).
-
-## Default behavior
-
-By default, the [`time_distributed`](models/species-detection.md#time-distributed) model will be used as a starting point. You can specify where the outputs should be saved with `--save-dir`. If no save directory is specified, `zamba` will write out incremental `version_n` folders to your current working directory. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `version_0`.
-
-`version_0` contains:
-
-* `train_configuration.yaml`: The full model configuration used to generate the given model, including `video_loader_config` and `train_config`. To continue training using the same configuration, or to train another model using the same configuration, you can pass in `train_configurations.yaml` (see [Specifying Model Configurations with a YAML File](yaml-config.md)) along with the `labels` filepath.
-* `hparams.yaml`: Model hyperparameters. These are included in the checkpoint file as well.
-* `time_distributed.ckpt`: Model checkpoint. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
-    ```console
-    $ zamba train --checkpoint version_0/time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
-    ```
-* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs. You can view these with tensorboard:
-    ```console
-    $ tensorboard --logdir version_0/
-    ```
-* `val_metrics.json`: The model's performance on the validation subset
-* `test_metrics.json`: The model's performance on the test (holdout) subset
-* `splits.csv`: Which files were used for training, validation, and as a holdout set. If split is specified in the labels file passed to training, `splits.csv` will not be saved out.
+| Classes in labels csv | Model | What we infer | Classes trained model predicts |
+| --- | --- | --- | --- |
+| cat, blank | `blank_nonblank` | binary model where one is "blank" |  blank |
+| zebra, grizzly, blank | `time_distributed` | multiclass but not a subset of the zamba labels  | zebra, grizzly, blank |
+| elephant, antelope_duiker, blank | `time_distributed` | multiclass and a subset of the zamba labels  | all African forest zamba species |
 
 ## Step-by-step tutorial
 
@@ -154,7 +134,7 @@ Add the path to your labels with `--labels`.  For example, if your videos are in
 
 Your labels may be included in the list of [`zamba` class labels](models/species-detection.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
 
-This means that the model you train will continue to output all of the Zamba class labels, not just the ones in your dataset.
+By default, the model you train will continue to output all of the Zamba class labels, not just the ones in your dataset. For different behavior, see [`use_default_model_labels`](configurations.md#use_default_model_labels-bool-optional).
 
 #### Completely new labels
 
@@ -191,3 +171,24 @@ And there's so much more! You can also do things like specify your region for fa
 ### 5. Test your configuration with a dry run
 
 Before kicking off the full model training, we recommend testing your code with a "dry run". This will run one training and validation batch for one epoch to quickly detect any bugs. See the [Debugging](debugging.md) page for details.
+
+## Files that get written out during training
+
+ You can specify where the outputs should be saved with `--save-dir`. If no save directory is specified, `zamba` will write out incremental `version_n` folders to your current working directory. For example, a model finetuned from the provided `time_distributed` model (the default) will be saved in `version_0`.
+
+`version_0` contains:
+
+* `train_configuration.yaml`: The full model configuration used to generate the given model, including `video_loader_config` and `train_config`. To continue training using the same configuration, or to train another model using the same configuration, you can pass in `train_configurations.yaml` (see [Specifying Model Configurations with a YAML File](yaml-config.md)) along with the `labels` filepath.
+* `hparams.yaml`: Model hyperparameters. These are included in the checkpoint file as well.
+* `time_distributed.ckpt`: Model checkpoint. You can continue training from this checkpoint by passing it to `zamba train` with the `--checkpoint` flag:
+    ```console
+    $ zamba train --checkpoint version_0/time_distributed.ckpt --data-dir example_vids/ --labels example_labels.csv
+    ```
+* `events.out.tfevents.1632250686.ip-172-31-15-179.14229.0`: [TensorBoard](https://www.tensorflow.org/tensorboard/get_started) logs. You can view these with tensorboard:
+    ```console
+    $ tensorboard --logdir version_0/
+    ```
+* `val_metrics.json`: The model's performance on the validation subset
+* `test_metrics.json`: The model's performance on the test (holdout) subset
+* `splits.csv`: Which files were used for training, validation, and as a holdout set. If split is specified in the labels file passed to training, `splits.csv` will not be saved out.
+

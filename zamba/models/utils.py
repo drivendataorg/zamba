@@ -50,6 +50,15 @@ def get_model_checkpoint_filename(model_name):
     return Path(config_dict["public_checkpoint"])
 
 
+def get_default_hparams(model):
+    if isinstance(model, Enum):
+        model = model.value
+
+    hparams_file = MODELS_DIRECTORY / model / "hparams.yaml"
+    with hparams_file.open() as f:
+        return yaml.safe_load(f)
+
+
 def get_checkpoint_hparams(checkpoint):
     return copy.deepcopy(_cached_hparams(checkpoint))
 

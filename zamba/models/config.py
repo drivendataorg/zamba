@@ -21,7 +21,13 @@ from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.registry import available_models
-from zamba.models.utils import RegionEnum, get_checkpoint_hparams, get_model_checkpoint_filename
+from zamba.models.utils import (
+    download_weights,
+    get_checkpoint_hparams,
+    get_default_hparams,
+    get_model_checkpoint_filename,
+    RegionEnum,
+)
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
@@ -170,6 +176,7 @@ def check_files_exist_and_load(
 def validate_model_name_and_checkpoint(cls, values):
     """Ensures a checkpoint file or model name is provided. If a model name is provided,
     looks up the corresponding public checkpoint file from the official configs.
+    Download the checkpoint if it does not yet exist.
     """
     checkpoint = values.get("checkpoint")
     model_name = values.get("model_name")
@@ -194,6 +201,15 @@ def validate_model_name_and_checkpoint(cls, values):
             cached_path = Path(values["model_cache_dir"]) / values["checkpoint"]
             if cached_path.exists():
                 values["checkpoint"] = cached_path
+
+            # download if checkpoint doesn't exist
+            if not values["checkpoint"].exists():
+                logger.info(f"Downloading weights for model to {values['model_cache_dir']}.")
+                values["checkpoint"] = download_weights(
+                    filename=str(values["checkpoint"]),
+                    weight_region=values["weight_download_region"],
+                    destination_dir=values["model_cache_dir"],
+                )
 
     return values
 
@@ -365,9 +381,11 @@ class TrainConfig(ZambaBaseModel):
             starting with ImageNet weights for image-based models (time_distributed,
             european, and blank_nonblank) and Kinetics weights for video-based models
             (slowfast). Defaults to False.
-        predict_all_zamba_species (bool): Output all zamba species rather than only
-            the species in the labels file. Defaults to True. If set to False, will
-            replace the model head for finetuning.
+        use_default_model_labels (bool, optional): By default, output the full set of
+            default model labels rather than just the species in the labels file. Only
+            applies if the provided labels are a subset of the default model labels.
+            If set to False, will replace the model head for finetuning and output only
+            the species in the provided labels file.
         model_cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and the MODEL_CACHE_DIR environment variable is
             not set, uses your default cache directory. Defaults to None.
@@ -392,7 +410,7 @@ class TrainConfig(ZambaBaseModel):
     overwrite: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
-    predict_all_zamba_species: bool = True
+    use_default_model_labels: Optional[bool] = None
     model_cache_dir: Optional[Path] = None
 
     class Config:
@@ -496,6 +514,42 @@ class TrainConfig(ZambaBaseModel):
             data_dir=values["data_dir"],
             skip_load_validation=values["skip_load_validation"],
         )
+        return values
+
+    @root_validator(skip_on_failure=True)
+    def validate_provided_species_and_use_default_model_labels(cls, values):
+        """If the model species are the desired output, the labels file must contain
+        a subset of the model species.
+        """
+        provided_species = set(values["labels"].label)
+
+        # hparams on checkpoint supersede base model
+        if values["checkpoint"] is not None:
+            model_species = set(get_checkpoint_hparams(values["checkpoint"])["species"])
+        else:
+            model_species = set(get_default_hparams(values["model_name"])["species"])
+
+        if not provided_species.issubset(model_species):
+
+            # if labels are not a subset, user cannot set use_default_model_labels to True
+            if values["use_default_model_labels"]:
+                raise ValueError(
+                    "Conflicting information between `use_default_model_labels=True` and the "
+                    "species provided in labels file. "
+                    "If you want your model to predict all the zamba species, make sure your "
+                    "labels are a subset. The species in the labels file that are not "
+                    f"in the model species are {provided_species - model_species}. "
+                    "If you want your model to only predict the species in your labels file, "
+                    "set `use_default_model_labels` to False."
+                )
+
+            else:
+                values["use_default_model_labels"] = False
+
+        # if labels are a subset, default to True if no value provided
+        elif values["use_default_model_labels"] is None:
+            values["use_default_model_labels"] = True
+
         return values
 
     @root_validator(skip_on_failure=True)
