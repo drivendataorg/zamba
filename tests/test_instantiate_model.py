@@ -122,7 +122,6 @@ def test_head_replaced_for_new_species(
 ):
     """Tests that training a model using labels that are a not subset of the model species
     finetunes the model and replaces the model head."""
-
     original_model = DummyZambaVideoClassificationLightningModule.from_disk(
         dummy_trained_model_checkpoint
     )
