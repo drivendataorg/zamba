@@ -528,7 +528,7 @@ def test_validate_provided_species_and_use_default_model_labels(labels_absolute_
         save_dir=tmp_path / "my_model",
         use_default_model_labels=False,
     )
-    assert config.use_default_model_labels == False
+    assert config.use_default_model_labels is False
 
     # create labels with a species that is not in the model
     alien_labels = pd.read_csv(labels_absolute_path)
@@ -541,7 +541,7 @@ def test_validate_provided_species_and_use_default_model_labels(labels_absolute_
         save_dir=tmp_path / "my_model",
     )
     # by default this gets set to False
-    assert config.use_default_model_labels == False
+    assert config.use_default_model_labels is False
 
     # if I try to set this to True, it will error
     with pytest.raises(ValueError) as error:
