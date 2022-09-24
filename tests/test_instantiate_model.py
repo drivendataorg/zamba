@@ -117,22 +117,16 @@ def test_not_use_default_model_labels(dummy_trained_model_checkpoint):
 
 
 @pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european", "blank_nonblank"])
-def test_head_replaced_for_new_species(
-    labels_absolute_path, dummy_trained_model_checkpoint, model, tmp_path
-):
+def test_head_replaced_for_new_species(labels_absolute_path, model, tmp_path):
     """Tests that training a model using labels that are a not subset of the model species
     finetunes the model and replaces the model head."""
-    original_model = DummyZambaVideoClassificationLightningModule.from_disk(
-        dummy_trained_model_checkpoint
-    )
-
     labels = pd.read_csv(labels_absolute_path)
     # pick species that is not present in any models
     labels["label"] = "kangaroo"
 
     config = TrainConfig(
         labels=labels,
-        checkpoint=dummy_trained_model_checkpoint,
+        model_name=model,
         skip_load_validation=True,
         save_dir=tmp_path / "my_model",
     )
@@ -143,10 +137,7 @@ def test_head_replaced_for_new_species(
         use_default_model_labels=config.use_default_model_labels,
     )
 
-    assert (model.head.weight != original_model.head.weight).all()
     assert model.hparams["species"] == model.species == ["kangaroo"]
-    assert model.species == ["kangaroo"]
-    assert model.head.out_features == 1
 
 
 @pytest.mark.parametrize("model", ["time_distributed", "slowfast", "european"])
