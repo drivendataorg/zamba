@@ -9,7 +9,7 @@ train_config:
   early_stopping_config:
     mode: max
     monitor: val_macro_f1
-    patience: 5
+    patience: 4
     verbose: true
   model_name: time_distributed
   scheduler_config:
@@ -46,4 +46,4 @@ video_loader_config:
   total_frames: 16
 predict_config:
   model_name: time_distributed
-public_checkpoint: time_distributed_845b088aa1.ckpt
+public_checkpoint: time_distributed_1d483fc723.ckpt
