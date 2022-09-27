@@ -567,6 +567,16 @@ class TrainConfig(ZambaBaseModel):
         # lowercase to facilitate subset checking
         labels["label"] = labels.label.str.lower()
 
+        # TODO: fix replicated code
+        if values["checkpoint"] is not None:
+            model_species = set(get_checkpoint_hparams(values["checkpoint"])["species"])
+        else:
+            model_species = set(get_default_hparams(values["model_name"])["species"])
+
+        labels["label"] = pd.Categorical(
+            labels.label, categories=model_species if values["use_default_model_labels"] else None
+        )
+
         # one hot encode collapse to one row per video
         labels = (
             pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
