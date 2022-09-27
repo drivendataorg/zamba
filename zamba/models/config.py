@@ -24,7 +24,6 @@ from zamba.models.registry import available_models
 from zamba.models.utils import (
     download_weights,
     get_checkpoint_hparams,
-    get_default_hparams,
     get_model_checkpoint_filename,
     get_model_species,
     RegionEnum,
