@@ -633,7 +633,7 @@ def make_split(labels, values):
         too_few = {
             k.split("species_", 1)[1]: v
             for k, v in num_videos_per_species.items()
-            if v < len(expected_splits)
+            if 0 < v < len(expected_splits)
         }
 
         if len(too_few) > 0:
@@ -644,12 +644,14 @@ def make_split(labels, values):
         for c in labels.filter(regex="species_").columns:
             species_df = labels[labels[c] > 0]
 
-            # within each species, seed splits by putting one video in each set and then allocate videos based on split proportions
-            labels.loc[species_df.index, "split"] = expected_splits + random.choices(
-                list(values["split_proportions"].keys()),
-                weights=list(values["split_proportions"].values()),
-                k=len(species_df) - len(expected_splits),
-            )
+            if len(species_df):
+
+                # within each species, seed splits by putting one video in each set and then allocate videos based on split proportions
+                labels.loc[species_df.index, "split"] = expected_splits + random.choices(
+                    list(values["split_proportions"].keys()),
+                    weights=list(values["split_proportions"].values()),
+                    k=len(species_df) - len(expected_splits),
+                )
 
         logger.info(f"{labels.split.value_counts()}")
 
