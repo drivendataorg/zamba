@@ -24,8 +24,8 @@ from zamba.models.registry import available_models
 from zamba.models.utils import (
     download_weights,
     get_checkpoint_hparams,
-    get_default_hparams,
     get_model_checkpoint_filename,
+    get_model_species,
     RegionEnum,
 )
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
@@ -522,12 +522,9 @@ class TrainConfig(ZambaBaseModel):
         a subset of the model species.
         """
         provided_species = set(values["labels"].label)
-
-        # hparams on checkpoint supersede base model
-        if values["checkpoint"] is not None:
-            model_species = set(get_checkpoint_hparams(values["checkpoint"])["species"])
-        else:
-            model_species = set(get_default_hparams(values["model_name"])["species"])
+        model_species = set(
+            get_model_species(checkpoint=values["checkpoint"], model_name=values["model_name"])
+        )
 
         if not provided_species.issubset(model_species):
 
@@ -567,6 +564,12 @@ class TrainConfig(ZambaBaseModel):
         # lowercase to facilitate subset checking
         labels["label"] = labels.label.str.lower()
 
+        model_species = get_model_species(
+            checkpoint=values["checkpoint"], model_name=values["model_name"]
+        )
+        labels["label"] = pd.Categorical(
+            labels.label, categories=model_species if values["use_default_model_labels"] else None
+        )
         # one hot encode collapse to one row per video
         labels = (
             pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
@@ -630,7 +633,7 @@ def make_split(labels, values):
         too_few = {
             k.split("species_", 1)[1]: v
             for k, v in num_videos_per_species.items()
-            if v < len(expected_splits)
+            if 0 < v < len(expected_splits)
         }
 
         if len(too_few) > 0:
@@ -641,12 +644,14 @@ def make_split(labels, values):
         for c in labels.filter(regex="species_").columns:
             species_df = labels[labels[c] > 0]
 
-            # within each species, seed splits by putting one video in each set and then allocate videos based on split proportions
-            labels.loc[species_df.index, "split"] = expected_splits + random.choices(
-                list(values["split_proportions"].keys()),
-                weights=list(values["split_proportions"].values()),
-                k=len(species_df) - len(expected_splits),
-            )
+            if len(species_df):
+
+                # within each species, seed splits by putting one video in each set and then allocate videos based on split proportions
+                labels.loc[species_df.index, "split"] = expected_splits + random.choices(
+                    list(values["split_proportions"].keys()),
+                    weights=list(values["split_proportions"].values()),
+                    k=len(species_df) - len(expected_splits),
+                )
 
         logger.info(f"{labels.split.value_counts()}")
 

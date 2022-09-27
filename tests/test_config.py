@@ -117,7 +117,11 @@ def test_extra_column(tmp_path, labels_absolute_path):
         index=False,
     )
     # this column is not one hot encoded
-    config = TrainConfig(labels=tmp_path / "extra_species_col.csv", save_dir=tmp_path / "my_model")
+    config = TrainConfig(
+        labels=tmp_path / "extra_species_col.csv",
+        save_dir=tmp_path / "my_model",
+        use_default_model_labels=False,
+    )
     assert list(config.labels.columns) == [
         "filepath",
         "split",

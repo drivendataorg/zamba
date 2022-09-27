@@ -4,7 +4,7 @@ import torch
 
 from zamba.models.config import SchedulerConfig, TrainConfig
 from zamba.models.model_manager import instantiate_model
-from zamba.models.utils import get_default_hparams
+from zamba.models.utils import get_model_species
 
 from conftest import DummyZambaVideoClassificationLightningModule
 
@@ -162,4 +162,4 @@ def test_resume_subset_labels(labels_absolute_path, model_name, tmp_path):
         use_default_model_labels=config.use_default_model_labels,
     )
     assert model.hparams["scheduler"] == "StepLR"
-    assert model.species == get_default_hparams(model_name)["species"]
+    assert model.species == get_model_species(checkpoint=None, model_name=model_name)

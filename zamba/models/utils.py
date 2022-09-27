@@ -66,3 +66,12 @@ def get_checkpoint_hparams(checkpoint):
 @lru_cache()
 def _cached_hparams(checkpoint):
     return torch.load(checkpoint, map_location=torch.device("cpu"))["hyper_parameters"]
+
+
+def get_model_species(checkpoint, model_name):
+    # hparams on checkpoint supersede base model
+    if checkpoint is not None:
+        model_species = get_checkpoint_hparams(checkpoint)["species"]
+    else:
+        model_species = get_default_hparams(model_name)["species"]
+    return model_species
