@@ -26,6 +26,7 @@ from zamba.models.utils import (
     get_checkpoint_hparams,
     get_default_hparams,
     get_model_checkpoint_filename,
+    get_model_species,
     RegionEnum,
 )
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
@@ -522,12 +523,9 @@ class TrainConfig(ZambaBaseModel):
         a subset of the model species.
         """
         provided_species = set(values["labels"].label)
-
-        # hparams on checkpoint supersede base model
-        if values["checkpoint"] is not None:
-            model_species = set(get_checkpoint_hparams(values["checkpoint"])["species"])
-        else:
-            model_species = set(get_default_hparams(values["model_name"])["species"])
+        model_species = set(
+            get_model_species(checkpoint=values["checkpoint"], model_name=values["model_name"])
+        )
 
         if not provided_species.issubset(model_species):
 
@@ -567,16 +565,12 @@ class TrainConfig(ZambaBaseModel):
         # lowercase to facilitate subset checking
         labels["label"] = labels.label.str.lower()
 
-        # TODO: fix replicated code
-        if values["checkpoint"] is not None:
-            model_species = set(get_checkpoint_hparams(values["checkpoint"])["species"])
-        else:
-            model_species = set(get_default_hparams(values["model_name"])["species"])
-
+        model_species = get_model_species(
+            checkpoint=values["checkpoint"], model_name=values["model_name"]
+        )
         labels["label"] = pd.Categorical(
             labels.label, categories=model_species if values["use_default_model_labels"] else None
         )
-
         # one hot encode collapse to one row per video
         labels = (
             pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
