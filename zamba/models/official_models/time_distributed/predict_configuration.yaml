@@ -1,8 +1,8 @@
-inference_start_time: '2022-09-08T22:11:19.578412'
+inference_start_time: '2022-09-26T16:57:18.856926'
 model_class: TimeDistributedEfficientNet
 predict_config:
   batch_size: 3
-  checkpoint: version_0/time_distributed.ckpt
+  checkpoint: data/results/zamba_classification_retraining/td_full_set/version_1/time_distributed.ckpt
   data_dir: ''
   dry_run: false
   gpus: 1
@@ -10,10 +10,10 @@ predict_config:
   model_name: time_distributed
   num_workers: 2
   output_class_names: false
-  overwrite: false
+  overwrite: true
   proba_threshold: null
   save: true
-  save_dir: version_0
+  save_dir: data/results/zamba_classification_retraining/td_full_set/version_1
   skip_load_validation: true
   weight_download_region: us
 species:

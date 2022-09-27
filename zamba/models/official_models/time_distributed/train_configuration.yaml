@@ -1,4 +1,4 @@
-git_hash: 3e8bbdd821af094a2183fa78fdc74f78834f71fb
+git_hash: b939a93807cbf3f407b42656f9a943b6192f250b
 model_class: TimeDistributedEfficientNet
 species:
 - aardvark
@@ -33,9 +33,9 @@ species:
 - rodent
 - small_cat
 - wild_dog_jackal
-starting_learning_rate: 0.001
+starting_learning_rate: 0.0010964781961431851
 train_config:
-  auto_lr_find: false
+  auto_lr_find: true
   backbone_finetune_config:
     backbone_initial_ratio_lr: 0.01
     multiplier: 1
@@ -50,7 +50,7 @@ train_config:
   early_stopping_config:
     mode: max
     monitor: val_macro_f1
-    patience: 5
+    patience: 4
     verbose: true
   from_scratch: true
   gpus: 1
@@ -71,7 +71,7 @@ train_config:
   skip_load_validation: true
   split_proportions: null
   weight_download_region: us
-training_start_time: '2022-08-28T14:35:02.087643'
+training_start_time: '2022-09-15T19:48:49.775436'
 video_loader_config:
   cache_dir: data/zamba-cache
   cleanup_cache: false
