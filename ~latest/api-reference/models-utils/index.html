@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/api-reference/models-utils/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.3">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.3">
     
     
       
@@ -1606,6 +1606,39 @@
     <span class="k">with</span> <span class="n">config_file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">config_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;public_checkpoint&quot;</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="zamba.models.utils.get_model_species" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_model_species</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></code>
+
+<a href="#zamba.models.utils.get_model_species" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_model_species</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="c1"># hparams on checkpoint supersede base model</span>
+    <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model_species</span> <span class="o">=</span> <span class="n">get_checkpoint_hparams</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_species</span> <span class="o">=</span> <span class="n">get_default_hparams</span><span class="p">(</span><span class="n">model_name</span><span class="p">)[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">model_species</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
