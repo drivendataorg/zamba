@@ -21,7 +21,7 @@ from zamba.models.utils import RegionEnum
 from zamba.version import __version__
 
 
-app = typer.Typer()
+app = typer.Typer(pretty_exceptions_show_locals=False)
 
 
 @app.command()
