@@ -1,5 +1,10 @@
 # `zamba` changelog
 
+## v2.2.1 (2022-09-27)
+
+* Turn off showing local variables in Typer's exception and error handling ([PR #237](https://github.com/drivendataorg/zamba/pull/237))
+* Fixes bug where the column order was incorrect for training models when the provided labels are a subset of the model's default labels ([PR #236](https://github.com/drivendataorg/zamba/pull/236))
+
 ## v2.2.0 (2022-09-26)
 
 ### Model releases and new features
