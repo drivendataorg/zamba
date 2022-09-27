@@ -1,5 +1,24 @@
 # `zamba` changelog
 
+## v2.2.0 (2022-09-26)
+
+### Model releases and new features
+
+* The default `time_distributed` model (African species classification) has been retrained on over 250,000 videos. This 16x increase in training data significantly improves accuracy. This new version replaces the previous one. ([PR #226](https://github.com/drivendataorg/zamba/pull/226), [PR #232](https://github.com/drivendataorg/zamba/pull/232))
+* A new default model option is added: `blank_nonblank`. This model only does blank detection. This binary model can be trained and finetuned in the same way as the species classification models. This model was trained on both African and European data, totaling over 263,000 training videos. ([PR #228](https://github.com/drivendataorg/zamba/pull/228))
+* Detect if a user is training in a binary model and preprocess the labels accordingly ([PR #215](https://github.com/drivendataorg/zamba/pull/215))
+
+### Bug fixes and improvements
+
+* Add a validator to ensure that using a model’s default labels is only possible when the species in the provided labels file are a subset of those ([PR #229](https://github.com/drivendataorg/zamba/pull/229))
+* Refactor the logic in `instantiate_model` for clarity ([PR #229](https://github.com/drivendataorg/zamba/pull/229))
+* Use pqdm to check for missing files in parallel ([PR #224](https://github.com/drivendataorg/zamba/pull/224))
+* Set `model_name` based on the provided checkpoint so that user-trained models use the appropriate video loader config ([PR #221](https://github.com/drivendataorg/zamba/pull/221))
+* Leave `data_dir` as a relative path ([PR #219](https://github.com/drivendataorg/zamba/pull/219))
+* Ensure hparams yaml files get included in the source distribution ([PR #210](https://github.com/drivendataorg/zamba/pull/210))
+* Hold back setuptools so mkdocstrings works ([PR #207](https://github.com/drivendataorg/zamba/pull/207))
+* Factor out `get_cached_array_path` ([PR #202](https://github.com/drivendataorg/zamba/pull/202/files))
+
 ## v2.1.0 (2022-07-15)
 
 - Retrains the time distributed species classification model using the updated MegadetectorLite frame selection ([PR #199](https://github.com/drivendataorg/zamba/pull/199))
