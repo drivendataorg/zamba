@@ -73,6 +73,5 @@ def get_model_species(checkpoint, model_name):
     if checkpoint is not None:
         model_species = get_checkpoint_hparams(checkpoint)["species"]
     else:
-        # get default model name if not specified
         model_species = get_default_hparams(model_name)["species"]
     return model_species
