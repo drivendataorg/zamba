@@ -1223,6 +1223,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#v220-2022-09-26" class="md-nav__link">
+    v2.2.0 (2022-09-26)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v210-2022-07-15" class="md-nav__link">
     v2.1.0 (2022-07-15)
   </a>
@@ -1285,6 +1292,24 @@
 
 
 <h1 id="zamba-changelog"><code>zamba</code> changelog<a class="headerlink" href="#zamba-changelog" title="Permanent link">&para;</a></h1>
+<h2 id="v220-2022-09-26">v2.2.0 (2022-09-26)<a class="headerlink" href="#v220-2022-09-26" title="Permanent link">&para;</a></h2>
+<h3 id="model-releases-and-new-features">Model releases and new features<a class="headerlink" href="#model-releases-and-new-features" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The default <code>time_distributed</code> model (African species classification) has been retrained on over 250,000 videos. This 16x increase in training data significantly improves accuracy. This new version replaces the previous one. (<a href="https://github.com/drivendataorg/zamba/pull/226">PR #226</a>, <a href="https://github.com/drivendataorg/zamba/pull/232">PR #232</a>)</li>
+<li>A new default model option is added: <code>blank_nonblank</code>. This model only does blank detection. This binary model can be trained and finetuned in the same way as the species classification models. This model was trained on both African and European data, totaling over 263,000 training videos. (<a href="https://github.com/drivendataorg/zamba/pull/228">PR #228</a>)</li>
+<li>Detect if a user is training in a binary model and preprocess the labels accordingly (<a href="https://github.com/drivendataorg/zamba/pull/215">PR #215</a>)</li>
+</ul>
+<h3 id="bug-fixes-and-improvements">Bug fixes and improvements<a class="headerlink" href="#bug-fixes-and-improvements" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Add a validator to ensure that using a model’s default labels is only possible when the species in the provided labels file are a subset of those (<a href="https://github.com/drivendataorg/zamba/pull/229">PR #229</a>)</li>
+<li>Refactor the logic in <code>instantiate_model</code> for clarity (<a href="https://github.com/drivendataorg/zamba/pull/229">PR #229</a>)</li>
+<li>Use pqdm to check for missing files in parallel (<a href="https://github.com/drivendataorg/zamba/pull/224">PR #224</a>)</li>
+<li>Set <code>model_name</code> based on the provided checkpoint so that user-trained models use the appropriate video loader config (<a href="https://github.com/drivendataorg/zamba/pull/221">PR #221</a>)</li>
+<li>Leave <code>data_dir</code> as a relative path (<a href="https://github.com/drivendataorg/zamba/pull/219">PR #219</a>)</li>
+<li>Ensure hparams yaml files get included in the source distribution (<a href="https://github.com/drivendataorg/zamba/pull/210">PR #210</a>)</li>
+<li>Hold back setuptools so mkdocstrings works (<a href="https://github.com/drivendataorg/zamba/pull/207">PR #207</a>)</li>
+<li>Factor out <code>get_cached_array_path</code> (<a href="https://github.com/drivendataorg/zamba/pull/202/files">PR #202</a>)</li>
+</ul>
 <h2 id="v210-2022-07-15">v2.1.0 (2022-07-15)<a class="headerlink" href="#v210-2022-07-15" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Retrains the time distributed species classification model using the updated MegadetectorLite frame selection (<a href="https://github.com/drivendataorg/zamba/pull/199">PR #199</a>)</li>
