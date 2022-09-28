@@ -2,7 +2,7 @@
 
 ## African forest model
 
-The model was trained using 249,269 videos 14 countries in West, Central, and East Africa.
+The African species `time_distributed` model was trained using 249,269 videos 14 countries in West, Central, and East Africa.
 To evaluate the performance of the model, we held out 30,324 videos from 689 randomly-chosen transects.
 Importantly, all videos from each transect were either used for training or held out for evaluation.
 So the performance of the model on the holdout set should reflect its performance on videos from a transect
