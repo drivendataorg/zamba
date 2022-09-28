@@ -1,8 +1,9 @@
-# Time distributed model performance
+# Time-distributed model performance
 
 ## African forest model
 
-The African species `time_distributed` model was trained using almost **250,000 videos from 14 countries** in West, Central, and East Africa.
+The African species time-distributed model was trained using almost **250,000 videos from 14 countries** in West, Central, and East Africa.
+These videos include examples of 30 animal species, plus some unidentified animals and humans.
 To evaluate the performance of the model, we held out 30,324 videos from 101 randomly-chosen transects.
 
 
@@ -33,7 +34,7 @@ Above that, the percentage of lost videos increases steeply.
 
 ### Accuracy
 
-In addition to identifying blank videos, the model also computes a probability that each species appears in each video.
+In addition to identifying blank videos, the model also computes a probability that each of 30 animal species appears in each video (plus human and blank).
 We can use these probabilities to quantify the accuracy of the model for species classification.
 Specifically, we computed:
 
@@ -62,7 +63,8 @@ a particular species. To evaluate the performance of the model for retrieval, we
 
 * Precision, which is the fraction of videos the model labels with a particular species that actually contain that species.
 
-The following figure shows recall and precision for the species in the holdout set.
+The following figure shows recall and precision for the species in the holdout set, 
+excluding 11 species where there are too few examples in the holdout set to compute meaningful estimates of these metrics.
 
 <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_precision_recall_by_species.png" alt="" style="width:800px;"/>
 
@@ -156,9 +158,8 @@ These proportions are roughly consistent with the proportions in the complete se
   </tbody>
 </table>
 
-The training and holdout sets contain examples of 30 animal species, plus some videos showing humans and
+The following figure shows the number of videos containing each of 30 animal species, plus some videos showing humans and
 a substantial number of blank videos.
-The following figure shows the number of videos containing each species.
 
 <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_number_videos_by_species.png" alt="" style="width:800px;"/>
 
