@@ -1434,11 +1434,7 @@
 <h2 id="species-classes"></h2>
 
 <h2 id="what-species-can-zamba-detect">What species can <code>zamba</code> detect?<a class="headerlink" href="#what-species-can-zamba-detect" title="Permanent link">&para;</a></h2>
-<p>The <code>blank_nonblank</code> model is trained to do blank detection without the species classification. The output labels from this model are:</p>
-<ul>
-<li><code>blank</code></li>
-<li><code>nonblank</code></li>
-</ul>
+<p>The <code>blank_nonblank</code> model is trained to do blank detection, without the species classification. It only outputs the probability that the video is <code>blank</code>, meaning that it does not contain an animal.</p>
 <p>The <code>time_distributed</code> and <code>slowfast</code> models are both trained to identify 32 common species from Central and West Africa. The output labels in these models are:</p>
 <ul>
 <li><code>aardvark</code></li>
