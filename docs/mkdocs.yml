@@ -24,8 +24,8 @@ nav:
       - Guide to common optional parameters: "extra-options.md"
   - "Available Models":
       - Species detection: "models/species-detection.md"
-      - Species detection performance: "models/td-full-metrics.md"
       - DensePose: "models/densepose.md"
+      - African species performance: "models/td-full-metrics.md"
   - "Advanced Options":
       - All configuration options: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
