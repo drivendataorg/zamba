@@ -1,5 +1,6 @@
 # Time-distributed model performance
 
+
 ## African forest model
 
 The African species time-distributed model was trained using almost **250,000 videos from 14 countries** in West, Central, and East Africa.
@@ -165,5 +166,6 @@ a substantial number of blank videos.
 
 One of the challenges of this kind of classification is that some species are 
 much more common than others. For species that appear in a small number of videos, we expect
-the model to be less accurate, because it has fewer examples to learn from.
-Also, for these species it is hard to assess performance precisely, because there are few examples in the holdout set.
+the model to be less accurate because it has fewer examples to learn from.
+Also, for these species it is hard to assess performance precisely because there are few examples in the holdout set.
+
