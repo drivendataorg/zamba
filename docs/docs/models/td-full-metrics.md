@@ -1,4 +1,4 @@
-# Time dependent model performance
+# Time distributed model performance
 
 ## African forest model
 
