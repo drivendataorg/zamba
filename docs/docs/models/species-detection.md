@@ -50,10 +50,7 @@ All models support training, fine-tuning, and inference. For fine-tuning, we rec
 
 ## What species can `zamba` detect?
 
-The `blank_nonblank` model is trained to do blank detection without the species classification. The output labels from this model are:
-
-* `blank`
-* `nonblank`
+The `blank_nonblank` model is trained to do blank detection, without the species classification. It only outputs the probability that the video is `blank`, meaning that it does not contain an animal.
 
 The `time_distributed` and `slowfast` models are both trained to identify 32 common species from Central and West Africa. The output labels in these models are:
 
