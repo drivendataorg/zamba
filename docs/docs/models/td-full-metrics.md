@@ -86,7 +86,7 @@ The training and holdout sets contain examples of 30 animal species, plus some v
 a substantial number of blank videos.
 The following figure shows the number of videos containing each species.
 
-<img src="../../../docs/media/td_full_set_number_videos_by_species.png" alt="" style="width:800px;"/>
+<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_number_videos_by_species.png" alt="" style="width:800px;"/>
 
 One of the challenges of this kind of classification is "class imbalance"; that is, some species are 
 much more common than others. For some species, there are only a few examples in the holdout set.
@@ -124,7 +124,7 @@ a particular species. To evaluate the performance of the model for retrieval, we
 
 The following figure shows recall and precision for the species in the holdout set.
 
-<img src="../../../docs/media/td_full_set_precision_recall_by_species.png" alt="" style="width:800px;"/>
+<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_precision_recall_by_species.png" alt="" style="width:800px;"/>
 
 It's clear that we are able to retrieve some species more efficiently than others. For example, elephants are relatively
 easy to find. Of the videos that contain elephants, 84% are correctly classified; and of the videos that the model
@@ -149,7 +149,7 @@ For each threshold, we compute the fraction of blank videos correctly discarded 
 videos incorrectly discarded.
 The following figure shows the results.
 
-<img src="../../../docs/media/td_full_set_recall_recall_curve.png" alt="" style="width:600px;"/>
+<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_recall_recall_curve.png" alt="" style="width:600px;"/>
 
 The markers indicate three levels of tolerance for losing non-blank videos. For example, if it's acceptable to
 lose 5% of non-blank videos, we can choose a threshold that removes 63% of the blank videos.
