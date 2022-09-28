@@ -101,7 +101,7 @@ that are classified correctly. Specifically, we computed:
 
 * Top-3 accuracy, which is the fraction of videos where one of the three species the model considered most likely was correct.
 
-Over all videos in the holdout set, the Top-1 accuracy is 82%; the Top-3 accuracy is 94%.
+Over all videos in the holdout set, the **top-1 accuracy is 82%; the top-3 accuracy is 94%**.
 As an example, if you chose a video at random from the holdout set, and the species with the highest probability is elephant,
 the probability is 82% that the video contains an elephant, according to the human-generated labels.
 If the three most likely species were elephant, hippopotamus, and cattle, the probability is 94% that the video
