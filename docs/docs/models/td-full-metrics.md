@@ -149,7 +149,7 @@ For each threshold, we compute the fraction of blank videos correctly discarded 
 videos incorrectly discarded.
 The following figure shows the results.
 
-<img src="../../../docs/media/td_full_set_recall_recall_curve.png" alt="" style="width:800px;"/>
+<img src="../../../docs/media/td_full_set_recall_recall_curve.png" alt="" style="width:600px;"/>
 
 The markers indicate three levels of tolerance for losing non-blank videos. For example, if it's acceptable to
 lose 5% of non-blank videos, we can choose a threshold that removes 63% of the blank videos.
