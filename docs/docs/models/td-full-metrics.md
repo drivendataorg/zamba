@@ -1,6 +1,6 @@
 # Time dependent model performance
 
-## Species model
+## African forest model
 
 The model was trained using 249,269 videos 14 countries in West, Central, and East Africa.
 To evaluate the performance of the model, we held out 30,324 videos from 689 randomly-chosen transects.
