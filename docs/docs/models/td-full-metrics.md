@@ -2,116 +2,56 @@
 
 ## African forest model
 
-The African species `time_distributed` model was trained using 249,269 videos 14 countries in West, Central, and East Africa.
+The African species `time_distributed` model was trained using about **250,000 videos from 14 countries** in West, Central, and East Africa.
 To evaluate the performance of the model, we held out 30,324 videos from 689 randomly-chosen transects.
-Importantly, all videos from each transect were either used for training or held out for evaluation.
-So the performance of the model on the holdout set should reflect its performance on videos from a transect
-the model has never seen.
-
-### Description of the holdout set
-
-All 14 countries are represented in the holdout set; the following table shows the number of videos from
-each country.
-These proportions are roughly consistent with the proportions in the training set.
-
-<table>
-  <thead>
-    <tr>
-      <th>Country</th>
-      <th>Number of videos</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Ivory Coast</th>
-      <td>10987</td>
-    </tr>
-    <tr>
-      <th>Guinea</th>
-      <td>4300</td>
-    </tr>
-    <tr>
-      <th>DR Congo</th>
-      <td>2750</td>
-    </tr>
-    <tr>
-      <th>Uganda</th>
-      <td>2497</td>
-    </tr>
-    <tr>
-      <th>Tanzania</th>
-      <td>1794</td>
-    </tr>
-    <tr>
-      <th>Mozambique</th>
-      <td>1168</td>
-    </tr>
-    <tr>
-      <th>Senegal</th>
-      <td>1131</td>
-    </tr>
-    <tr>
-      <th>Gabon</th>
-      <td>1116</td>
-    </tr>
-    <tr>
-      <th>Cameroon</th>
-      <td>1114</td>
-    </tr>
-    <tr>
-      <th>Liberia</th>
-      <td>1065</td>
-    </tr>
-    <tr>
-      <th>Central African Republic</th>
-      <td>997</td>
-    </tr>
-    <tr>
-      <th>Nigeria</th>
-      <td>889</td>
-    </tr>
-    <tr>
-      <th>Congo Republic</th>
-      <td>678</td>
-    </tr>
-    <tr>
-      <th>Equatorial Guinea</th>
-      <td>38</td>
-    </tr>
-  </tbody>
-</table>
 
 
-The training and holdout sets contain examples of 30 animal species, plus some videos showing humans and
-a substantial number of blank videos.
-The following figure shows the number of videos containing each species.
+### Removing blank videos
 
-<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_number_videos_by_species.png" alt="" style="width:800px;"/>
+One use of this model is to identify blank videos so they can be discarded or ignored.
+In this dataset, 42% of the videos are blank, so removing them can save substantial amounts of
+viewing time and storage space.
 
-One of the challenges of this kind of classification is "class imbalance"; that is, some species are 
-much more common than others. For some species, there are only a few examples in the holdout set.
-For these species, we will not be able to assess the performance of the model precisely.
+The model assigns a probability that each video is blank, so one strategy is to remove videos 
+if their probability exceeds a given threshold.
+Of course, the model is not perfect, so there is a chance we will wrongly remove a video that actually
+contains an animal.
+
+To assess this tradeoff, we can use the holdout set to simulate this strategy with a range of thresholds.
+For each threshold, we compute the fraction of blank videos correctly discarded and the fraction of non-blank
+videos incorrectly discarded.
+The following figure shows the results.
+
+<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_recall_recall_curve.png" alt="" style="width:600px;"/>
+
+The markers indicate three levels of tolerance for losing non-blank videos. For example, if it's acceptable to
+lose 5% of non-blank videos, we can choose a threshold that removes 63% of the blank videos.
+If we can tolerate a loss of 10%, we can remove 80% of the blanks.
+And if we can tolerate a loss of 15%, we can remove 90% of the blanks.
+Above that, the percentage of lost videos increases steeply.
+
 
 ### Accuracy
 
-One of the ways we'll evaluate the model is classification accuracy, which is the percentage of videos
-that are classified correctly. Specifically, we computed:
+In addition to identifying blank videos, the model also computes a probability that each species appears in each video.
+We can use these probabilities to quantify the accuracy of the model for species classification.
+Specifically, we computed:
 
-* Top-1 accuracy, which is the fraction of videos where the species the model gave the highest probability was correct.
+* Top-1 accuracy, which is the fraction of videos where the species with the highest predicted probability is, in fact, present.
 
-* Top-3 accuracy, which is the fraction of videos where one of the three species the model considered most likely was correct.
+* Top-3 accuracy, which is the fraction of videos where one of the three species the model considered most likely is present.
 
 Over all videos in the holdout set, the **top-1 accuracy is 82%; the top-3 accuracy is 94%**.
-As an example, if you chose a video at random from the holdout set, and the species with the highest probability is elephant,
-the probability is 82% that the video contains an elephant, according to the human-generated labels.
+As an example, if you choose a video at random and the species with the highest predicted probability is elephant, the probability is 82% that the video contains an elephant, according to the human-generated labels.
 If the three most likely species were elephant, hippopotamus, and cattle, the probability is 94% that the video
 contains at least one of those species.
 
-These results depend in part on the number of species represented in a particular dataset. For example, in the small
-number of videos from Equatorial Guinea, only three species appear. For these videos, the Top-1 accuracy is 97%, much
+These results depend in part on the species represented in a particular dataset. For example, in the small
+number of videos from Equatorial Guinea, only three species appear. For these videos, the top-1 accuracy is 97%, much
 higher than the overall accuracy.
 In the videos from Ivory Coast, 21 species are represented, so the problem is harder. For these
-videos, Top-1 accuracy is 80%, a little lower than the overall accuracy.
+videos, top-1 accuracy is 80%, a little lower than the overall accuracy.
+
 
 ### Recall and precision by species
 
@@ -134,29 +74,95 @@ small number of non-elephant videos.
 
 Not surprisingly, smaller animals are harder to find. For example, the recall for rodent videos is only 22%.
 However, it is still possible to search for rodents by selecting videos that assign a relatively high probability
-to "rodent", even if it assigns a higher probability to another species or blank.
+to "rodent", even if it assigns a higher probability to another species or "blank".
 
 
-### Removing blank videos
+### Description of the holdout set
 
-One use of this model is to identify blank videos so they can be discarded or ignored.
-The model assigns a probability that each video is blank; if this probability exceeds a given threshold,
-we could remove the video from consideration.
-Of course, the model is not perfect, so there is a chance we will wrongly remove a video that is actually non-blank.
+The videos in the holdout set are a random sample from the complete set of labeled videos, but they are
+selected on a transect-by-transect basis; that is, videos from each transect are assigned entirely to the
+training set or entirely to the holdout set.
+So the performance of the model on the holdout set should reflect its performance on videos from a transect
+the model has never seen.
 
-To assess this tradeoff, we can use the holdout set to simulate this strategy with a range of thresholds.
-For each threshold, we compute the fraction of blank videos correctly discarded and the fraction of non-blank
-videos incorrectly discarded.
-The following figure shows the results.
+All 14 countries are represented in the holdout set; the following table shows the number of videos from
+each country.
+These proportions are roughly consistent with the proportions in the complete set.
 
-<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_recall_recall_curve.png" alt="" style="width:600px;"/>
+<table>
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th>Number of videos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Ivory Coast</th>
+      <td>10,987</td>
+    </tr>
+    <tr>
+      <th>Guinea</th>
+      <td>4,300</td>
+    </tr>
+    <tr>
+      <th>DR Congo</th>
+      <td>2,750</td>
+    </tr>
+    <tr>
+      <th>Uganda</th>
+      <td>2,497</td>
+    </tr>
+    <tr>
+      <th>Tanzania</th>
+      <td>1,794</td>
+    </tr>
+    <tr>
+      <th>Mozambique</th>
+      <td>1,168</td>
+    </tr>
+    <tr>
+      <th>Senegal</th>
+      <td>1,131</td>
+    </tr>
+    <tr>
+      <th>Gabon</th>
+      <td>1,116</td>
+    </tr>
+    <tr>
+      <th>Cameroon</th>
+      <td>1,114</td>
+    </tr>
+    <tr>
+      <th>Liberia</th>
+      <td>1,065</td>
+    </tr>
+    <tr>
+      <th>Central African Republic</th>
+      <td>997</td>
+    </tr>
+    <tr>
+      <th>Nigeria</th>
+      <td>889</td>
+    </tr>
+    <tr>
+      <th>Congo Republic</th>
+      <td>678</td>
+    </tr>
+    <tr>
+      <th>Equatorial Guinea</th>
+      <td>38</td>
+    </tr>
+  </tbody>
+</table>
 
-The markers indicate three levels of tolerance for losing non-blank videos. For example, if it's acceptable to
-lose 5% of non-blank videos, we can choose a threshold that removes 63% of the blank videos.
-If we can tolerate a loss of 10%, we can remove 80% of the blanks.
-And if we can tolerate a loss of 15%, we can remove 90% of the blanks.
-Above that, the percentage of lost videos increases steeply.
+The training and holdout sets contain examples of 30 animal species, plus some videos showing humans and
+a substantial number of blank videos.
+The following figure shows the number of videos containing each species.
 
+<img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_number_videos_by_species.png" alt="" style="width:800px;"/>
 
-
-
+One of the challenges of this kind of classification is that some species are 
+much more common than others. For species that appear in a small number of videos, we expect
+the model to be less accurate, because it has fewer examples to learn from.
+Also, for these species it is hard to assess performance precisely, because there are few examples in the holdout set.
