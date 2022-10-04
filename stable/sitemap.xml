@@ -2,162 +2,167 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/configurations/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/debugging/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/extra-options/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/install/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/predict-tutorial/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/quickstart/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/train-tutorial/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/yaml-config/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/data-metadata/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/data-video/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/densepose_config/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/densepose_manager/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/exceptions/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/metrics/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/models-config/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/models-efficientnet_models/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/models-model_manager/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/models-slowfast_models/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/models-utils/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/object-detection-megadetector_lite_yolox/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/pytorch-dataloaders/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/pytorch-finetuning/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/pytorch-layers/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/pytorch-transforms/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/pytorch-utils/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/pytorch_lightning-utils/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/api-reference/settings/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/changelog/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/contribute/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/models/densepose/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://zamba.drivendata.org/docs/v2.2/models/species-detection/</loc>
-         <lastmod>2022-09-27</lastmod>
+         <lastmod>2022-10-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://zamba.drivendata.org/docs/v2.2/models/td-full-metrics/</loc>
+         <lastmod>2022-10-04</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
