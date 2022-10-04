@@ -1,5 +1,9 @@
 # `zamba` changelog
 
+## v2.2.2 (2022-10-04)
+
+* Adds a page to the docs summarizing the performance of the African species classification model on a holdout set ([PR #235](https://github.com/drivendataorg/zamba/pull/235))
+
 ## v2.2.1 (2022-09-27)
 
 * Turn off showing local variables in Typer's exception and error handling ([PR #237](https://github.com/drivendataorg/zamba/pull/237))
