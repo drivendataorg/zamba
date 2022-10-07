@@ -333,27 +333,27 @@ class MegadetectorLiteYoloX:
             orig_height = frames.shape[1]
             orig_width = frames.shape[2]
             cropped_frames = np.zeros(
-                (len(selected_indices), orig_height, orig_width, frames.shape[3]), dtype=int
+                (len(selected_indices), orig_height, orig_width, frames.shape[3]), dtype=np.uint8
             )
 
-            for idx in selected_indices:
+            for i, orig_idx in enumerate(selected_indices):
 
                 # if there is a detection
-                if len(detections[idx][0]) > 0:
+                if len(detections[orig_idx][0]) > 0:
                     # keep only first detection for that frame
-                    x1, y1, x2, y2 = detections[idx][0][0]
+                    x1, y1, x2, y2 = detections[orig_idx][0][0]
                     x1 *= orig_width
                     x2 *= orig_width
                     y1 *= orig_height
                     y2 *= orig_height
                     # crop to bbox
-                    cropped_frames[idx, int(y1) : int(y2), int(x1) : int(x2), :] = frames[
-                        idx, int(y1) : int(y2), int(x1) : int(x2), :
+                    cropped_frames[i, int(y1) : int(y2), int(x1) : int(x2), :] = frames[
+                        orig_idx, int(y1) : int(y2), int(x1) : int(x2), :
                     ]
 
                 # otherwise just keep entire frame
                 else:
-                    cropped_frames[idx] = frames[idx]
+                    cropped_frames[i] = frames[orig_idx]
 
             return cropped_frames
 
