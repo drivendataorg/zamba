@@ -52,9 +52,11 @@ class MegadetectorLiteYoloXConfig(BaseModel):
             the threshold. Defaults to None.
         fill_mode (str, optional): Mode for upsampling if the number of frames above the threshold
             is less than n_frames. Defaults to "repeat".
-        sort_by_time (bool, optional): Whether to sort the selected frames by time (original order)
+        sort_by_time (bool): Whether to sort the selected frames by time (original order)
             before returning. If False, returns frames sorted by score (descending). Defaults to
             True.
+        crop_to_bbox(bool): Whether to crop the frame to the first bounding box detection. Defaults
+            to False.
         seed (int, optional): Random state for random number generator. Defaults to 55.
     """
 
@@ -67,6 +69,7 @@ class MegadetectorLiteYoloXConfig(BaseModel):
     n_frames: Optional[int] = None
     fill_mode: Optional[FillModeEnum] = FillModeEnum.score_sorted
     sort_by_time: bool = True
+    crop_to_bbox: bool = False
     seed: Optional[int] = 55
 
     class Config:
@@ -325,4 +328,34 @@ class MegadetectorLiteYoloX:
         if self.config.sort_by_time:
             selected_indices = sorted(selected_indices)
 
-        return frames[selected_indices]
+        if self.config.crop_to_bbox:
+            # allocate memory
+            orig_height = frames.shape[1]
+            orig_width = frames.shape[2]
+            cropped_frames = np.zeros(
+                (len(selected_indices), orig_height, orig_width, frames.shape[3]), dtype=int
+            )
+
+            for idx in selected_indices:
+
+                # if there is a detection
+                if len(detections[idx][0]) > 0:
+                    # keep only first detection for that frame
+                    x1, y1, x2, y2 = detections[idx][0][0]
+                    x1 *= orig_width
+                    x2 *= orig_width
+                    y1 *= orig_height
+                    y2 *= orig_height
+                    # crop to bbox
+                    cropped_frames[idx, int(y1) : int(y2), int(x1) : int(x2), :] = frames[
+                        idx, int(y1) : int(y2), int(x1) : int(x2), :
+                    ]
+
+                # otherwise just keep entire frame
+                else:
+                    cropped_frames[idx] = frames[idx]
+
+            return cropped_frames
+
+        else:
+            return frames[selected_indices]
