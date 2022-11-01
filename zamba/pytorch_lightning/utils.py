@@ -200,7 +200,11 @@ class ZambaVideoClassificationLightningModule(LightningModule):
     def compute_and_log_metrics(
         self, y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray, subset: str
     ):
-        self.log(f"{subset}_macro_f1", f1_score(y_true, y_pred, average="macro", zero_division=0))
+        self.log(
+            f"{subset}_macro_f1",
+            f1_score(y_true, y_pred, average="macro", zero_division=0),
+            sync_dist=True,
+        )
 
         # if only two classes, skip top_k accuracy since not enough classes
         if self.num_classes > 2:
@@ -216,9 +220,10 @@ class ZambaVideoClassificationLightningModule(LightningModule):
                             labels=np.arange(y_proba.shape[1]),
                             k=k,
                         ),
+                        sync_dist=True,
                     )
         else:
-            self.log(f"{subset}_accuracy", accuracy_score(y_true, y_pred))
+            self.log(f"{subset}_accuracy", accuracy_score(y_true, y_pred), sync_dist=True)
 
         for metric_name, label, metric in compute_species_specific_metrics(
             y_true, y_pred, self.species

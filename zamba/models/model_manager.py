@@ -323,13 +323,17 @@ def train_model(
     if not train_config.dry_run:
         if trainer.datamodule.test_dataloader() is not None:
             logger.info("Calculating metrics on holdout set.")
-            test_metrics = trainer.test(dataloaders=trainer.datamodule.test_dataloader())[0]
+            test_metrics = trainer.test(
+                dataloaders=trainer.datamodule.test_dataloader(), ckpt_path="best"
+            )[0]
             with (Path(logging_and_save_dir) / "test_metrics.json").open("w") as fp:
                 json.dump(test_metrics, fp, indent=2)
 
         if trainer.datamodule.val_dataloader() is not None:
             logger.info("Calculating metrics on validation set.")
-            val_metrics = trainer.validate(dataloaders=trainer.datamodule.val_dataloader())[0]
+            val_metrics = trainer.validate(
+                dataloaders=trainer.datamodule.val_dataloader(), ckpt_path="best"
+            )[0]
             with (Path(logging_and_save_dir) / "val_metrics.json").open("w") as fp:
                 json.dump(val_metrics, fp, indent=2)
 
