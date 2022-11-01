@@ -1,5 +1,9 @@
 # `zamba` changelog
 
+## v2.2.3 (2022-11-01)
+
+* Fixes Lightning deprecation of DDPPlugin ([PR #244](https://github.com/drivendataorg/zamba/pull/244))
+
 ## v2.2.2 (2022-10-04)
 
 * Adds a page to the docs summarizing the performance of the African species classification model on a holdout set ([PR #235](https://github.com/drivendataorg/zamba/pull/235))
