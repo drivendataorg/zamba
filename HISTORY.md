@@ -1,5 +1,9 @@
 # `zamba` changelog
 
+## v2.2.4 (2022-11-10)
+
+* Do not cache videos if the `VIDEO_CACHE_DIR` environment variable is an empty string or zero ([PR #245](https://github.com/drivendataorg/zamba/pull/245))
+
 ## v2.2.3 (2022-11-01)
 
 * Fixes Lightning deprecation of DDPPlugin ([PR #244](https://github.com/drivendataorg/zamba/pull/244))
