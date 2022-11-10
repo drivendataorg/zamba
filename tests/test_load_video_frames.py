@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import pytest
 import shutil
 import subprocess
@@ -583,3 +584,14 @@ def test_caching(tmp_path, caplog, train_metadata):
     ).__getitem__(index=0)[0]
 
     assert np.array_equal(no_config, config_with_nones)
+
+
+def test_validate_video_cache_dir():
+    with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": "example_cache_dir"}):
+        config = VideoLoaderConfig()
+        assert config.cache_dir == Path("example_cache_dir")
+
+    for cache in ["", 0]:
+        with mock.patch.dict(os.environ, {"VIDEO_CACHE_DIR": str(cache)}):
+            config = VideoLoaderConfig()
+            assert config.cache_dir is None
