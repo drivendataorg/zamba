@@ -220,6 +220,9 @@ class VideoLoaderConfig(BaseModel):
         if cache_dir is None:
             cache_dir = os.getenv("VIDEO_CACHE_DIR", None)
 
+            if cache_dir in ["", "0"]:
+                cache_dir = None
+
         if cache_dir is not None:
             cache_dir = Path(cache_dir)
             cache_dir.mkdir(parents=True, exist_ok=True)
