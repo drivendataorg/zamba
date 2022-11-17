@@ -3,8 +3,8 @@ import os
 from loguru import logger
 import pandas as pd
 from pathlib import Path
-from pydantic.class_validators import root_validator, validator
-from typing import Optional, Union, List
+from pydantic import DirectoryPath, FilePath, validator, root_validator
+from typing import Optional
 
 from zamba.models.config import (
     ZambaBaseModel,
@@ -22,46 +22,32 @@ class DepthEstimationConfig(ZambaBaseModel):
     a list of full filepaths, or a list of relative filepaths along with the data_dir
 
     Args:
-        filepaths (FilePath): Path to a CSV containing videos for inference, with one row per
+        filepaths (FilePath, optional): Path to a CSV containing videos for inference, with one row per
             video in the data_dir. There must be a column called 'filepath' (absolute or
             relative to the data_dir). If None, uses all files in data_dir. Defaults to None.
         data_dir (DirectoryPath): Path to a directory containing videos for inference.
             Defaults to the working directory.
-        save_to (Path, optional): Either a path or a directory to save the predicted depths. If a
-            directory is provided, predictions will be saved to depth_predictions.csv in that
-            directory. Defaults to os.getcwd()
+        save_to (Path or DirectoryPath, optional): Either a filename or a directory in which to
+            save the output csv. If a directory is provided, predictions will be saved to
+            depth_predictions.csv in that directory. Defaults to the working directory.
+        overwrite (bool): If True, overwrite output csv path if it exists. Defaults to False.
+        batch_size (int): Batch size to use for inference. Defaults to 64. Note: a batch is a set
+            of frames, not videos, for the depth model.
         model_cache_dir (Path, optional): Path for downloading and saving model weights.
             Defaults to env var `MODEL_CACHE_DIR` or the OS app cache dir.
         weight_download_region (str): s3 region to download pretrained weights from. Options are
             "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".
-        batch_size (int): Batch size to use for inference. Defaults to 64. Note: a batch is a set
-            of frames, not videos, for the depth model.
     """
 
-    filepaths: Union[Path, List[Union[Path, str]]]
-    data_dir: Optional[Path]
+    filepaths: Optional[FilePath] = None
+    data_dir: DirectoryPath = ""
     save_to: Optional[Path] = None
+    overwrite: bool = False
+    batch_size: int = 64
     model_cache_dir: Optional[Path] = None
     weight_download_region: RegionEnum = RegionEnum("us")
-    batch_size: int = 64
-
-    _validate_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
-        validate_model_cache_dir
-    )
 
     def run_model(self):
-        # get path to save predictions
-        if self.save_to is None:
-            save_path = Path(os.getcwd()) / "depth_predictions.csv"
-        elif self.save_to.suffix:
-            save_path = self.save_to
-        else:
-            save_path = self.save_to / "depth_predictions.csv"
-
-        # TODO; should this error and not warn
-        if save_path.exists():
-            logger.warning(f"Predictions will NOT be saved out because {save_path} already exists")
-
         dm = DepthEstimationManager(
             model_cache_dir=self.model_cache_dir,
             batch_size=self.batch_size,
@@ -70,13 +56,33 @@ class DepthEstimationConfig(ZambaBaseModel):
 
         predictions = dm.predict(self.filepaths)
 
-        if not save_path.exists():
-            predictions.to_csv(save_path, index=False)
-            logger.info(f"Depth predictions saved to {save_path}")
+        if not self.save_to.exists():
+            predictions.to_csv(self.save_to, index=False)
+            logger.info(f"Depth predictions saved to {self.save_to}")
 
     _get_filepaths = root_validator(allow_reuse=True, pre=False, skip_on_failure=True)(
         get_filepaths
     )
+
+    _validate_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
+        validate_model_cache_dir
+    )
+
+    @validator("save_to", always=True)
+    def validate_save_dir(cls, save_to):
+        if save_to is None:
+            save_path = Path(os.getcwd()) / "depth_predictions.csv"
+        elif save_to.suffix:
+            save_path = save_to
+        else:
+            save_path = save_to / "depth_predictions.csv"
+
+        if save_path.exists():
+            raise ValueError(
+                f"{save_path} already exists. If you would like to overwrite, set overwrite=True."
+            )
+
+        return save_path
 
     @root_validator(skip_on_failure=True)
     def validate_files(cls, values):
