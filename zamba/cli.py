@@ -509,7 +509,7 @@ def densepose(
 
 
 @app.command()
-def distance(
+def depth(
     filepaths: Path = typer.Option(
         None, exists=True, help="Path to csv containing `filepath` column with videos."
     ),
