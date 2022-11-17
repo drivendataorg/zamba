@@ -12,6 +12,7 @@ from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
     ZambaBaseModel,
     check_files_exist_and_load,
+    get_filepaths,
     validate_model_cache_dir,
 )
 from zamba.models.densepose.densepose_manager import MODELS, DensePoseManager
@@ -105,37 +106,9 @@ class DensePoseConfig(ZambaBaseModel):
                     fps=self.video_loader_config.fps,
                 )
 
-    @root_validator(pre=False, skip_on_failure=True)
-    def get_filepaths(cls, values):
-        """If no file list is passed, get all files in data directory. Warn if there
-        are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`
-        contains files with valid suffixes.
-        """
-        if values["filepaths"] is None:
-            logger.info(f"Getting files in {values['data_dir']}.")
-            files = []
-            new_suffixes = []
-
-            # iterate over all files in data directory
-            for f in values["data_dir"].rglob("*"):
-                if f.is_file():
-                    # keep just files with supported suffixes
-                    if f.suffix.lower() in VIDEO_SUFFIXES:
-                        files.append(f.resolve())
-                    else:
-                        new_suffixes.append(f.suffix.lower())
-
-            if len(new_suffixes) > 0:
-                logger.warning(
-                    f"Ignoring {len(new_suffixes)} file(s) with suffixes {set(new_suffixes)}. To include, specify all video suffixes with a VIDEO_SUFFIXES environment variable."
-                )
-
-            if len(files) == 0:
-                raise ValueError(f"No video files found in {values['data_dir']}.")
-
-            logger.info(f"Found {len(files)} videos in {values['data_dir']}.")
-            values["filepaths"] = pd.DataFrame(files, columns=["filepath"])
-        return values
+    _get_filepaths = root_validator(allow_reuse=True, pre=False, skip_on_failure=True)(
+        get_filepaths
+    )
 
     @root_validator(skip_on_failure=True)
     def validate_files(cls, values):
