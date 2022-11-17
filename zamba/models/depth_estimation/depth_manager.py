@@ -52,7 +52,7 @@ class DepthDataset(torch.utils.data.Dataset):
                 logger.warning(f"Video {video_filepath} could not be loaded. Skipping.")
                 continue
 
-            # add video to cached dict with length (number of seconds since fps=1)
+            # add video entry to cached dict with length (number of seconds since fps=1)
             cached_frames[video_filepath] = dict(video_length=len(arr))
 
             # get detections in each frame
@@ -125,9 +125,6 @@ class DepthDataset(torch.utils.data.Dataset):
                 f"frame_{frame_idx}"
             ]
             n += self.channels
-
-        # TODO: original order was -1, -2, 0, 1, 2; TBD if we want to maintain that bug
-        # TODO: mask out other detection from the same frame?
 
         # normalize and convert to tensor
         input = normalize(input)
