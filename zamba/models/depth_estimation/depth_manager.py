@@ -157,14 +157,11 @@ class DepthEstimationManager:
             batch_size (int, optional): Batch size to use for inference. Defaults to 64.
                 Note: a batch is a set of frames, not videos, for the depth model.
             tta (int, optional): Number of flips to apply for test time augmentation.
-            use_log (bool, optional): Whether to take the exponential of the predictions
-                (see torch.special.expm1). Defaults to False.
             num_workers (int): Number of subprocesses to use for data loading. The maximum value is
                 the number of CPUs in the system. Defaults to 8.
         """
         self.batch_size = batch_size
         self.tta = tta
-        self.use_log = use_log
         self.num_workers = num_workers
         self.gpus = gpus
 
@@ -221,9 +218,6 @@ class DepthEstimationManager:
                         distance[:bs] += logits
 
                     distance /= self.tta
-
-                    if self.use_log:
-                        distance.expm1_()
 
                     time = time.numpy()
 
