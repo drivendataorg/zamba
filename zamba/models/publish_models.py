@@ -39,7 +39,7 @@ def get_model_only_params(full_configuration, subset="train_config"):
         ]:
             try:
                 config.pop(key)
-            except:
+            except:  # noqa: E722
                 continue
 
     elif subset == "video_loader_config":

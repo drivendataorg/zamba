@@ -47,7 +47,7 @@ class DepthDataset(torch.utils.data.Dataset):
             logger.debug(f"Loading video: {video_filepath}")
             try:
                 arr = load_video_frames(video_filepath, fps=1)
-            except:
+            except:  # noqa: E722
                 logger.warning(f"Video {video_filepath} could not be loaded. Skipping.")
                 continue
 
@@ -78,7 +78,7 @@ class DepthDataset(torch.utils.data.Dataset):
                                     # PIL expects size to be (w, h)
                                     Image.fromarray(arr[i]).resize((self.width, self.height))
                                 )
-                            except:
+                            except:  # noqa: E722
                                 selected_frame = np.zeros((self.height, self.width, self.channels))
 
                             cached_frames[video_filepath][f"frame_{i}"] = selected_frame
