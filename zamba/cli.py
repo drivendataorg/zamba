@@ -534,6 +534,10 @@ def depth(
         None,
         help="Number of subprocesses to use for data loading.",
     ),
+    gpus: int = typer.Option(
+        None,
+        help="Number of GPUs to use for inference. If not specifiied, will use all GPUs found on machine.",
+    ),
     yes: bool = typer.Option(
         False,
         "--yes",
@@ -559,6 +563,8 @@ def depth(
         predict_dict["weight_download_region"] = weight_download_region
     if num_workers is not None:
         predict_dict["num_workers"] = num_workers
+    if gpus is not None:
+        predict_dict["gpus"] = num_workers
 
     try:
         depth_config = DepthEstimationConfig(**predict_dict)
@@ -576,6 +582,7 @@ def depth(
     Model cache: {depth_config.model_cache_dir}
     Weight download region: {depth_config.weight_download_region}
     Number of workers: {depth_config.num_workers}
+    GPUs: {depth_config.gpus}
     """
 
     if yes:

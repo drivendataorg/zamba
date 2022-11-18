@@ -139,6 +139,7 @@ class DepthEstimationManager:
     def __init__(
         self,
         model_cache_dir: Path,
+        gpus: int,
         weight_download_region: RegionEnum = RegionEnum("us"),
         batch_size: int = 64,
         tta: int = 2,
@@ -149,6 +150,7 @@ class DepthEstimationManager:
 
         Args:
             model_cache_dir (Path): Path for downloading and saving model weights.
+            gpus (int): Number of GPUs to use for inference.
             weight_download_region (str): s3 region to download pretrained weights from.
                 Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
                 Defaults to "us".
@@ -164,6 +166,7 @@ class DepthEstimationManager:
         self.tta = tta
         self.use_log = use_log
         self.num_workers = num_workers
+        self.gpus = gpus
 
         model = MODELS["depth"]
 
@@ -174,11 +177,10 @@ class DepthEstimationManager:
                 model["weights"], model_cache_dir, weight_download_region
             )
 
-        # automatically use CPU if no cuda available
-        if not torch.cuda.is_available():
-            self.device = "cpu"
-        else:
+        if self.gpus > 0:
             self.device = "cuda"
+        else:
+            self.device = "cpu"
 
     def predict(self, filepaths):
         """Generate predictions for a list of video filepaths."""

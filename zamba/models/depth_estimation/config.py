@@ -10,6 +10,7 @@ from zamba.models.config import (
     ZambaBaseModel,
     check_files_exist_and_load,
     get_filepaths,
+    GPUS_AVAILABLE,
     validate_model_cache_dir,
 )
 from zamba.models.depth_estimation.depth_manager import DepthEstimationManager
@@ -37,6 +38,8 @@ class DepthEstimationConfig(ZambaBaseModel):
             "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".
         num_workers (int): Number of subprocesses to use for data loading. The maximum value is
            the number of CPUs in the system. Defaults to 8.
+        gpus (int): Number of GPUs to use for inference. Defaults to all of the available GPUs
+            found on the machine.
     """
 
     filepaths: Optional[Union[FilePath, pd.DataFrame]] = None
@@ -47,6 +50,7 @@ class DepthEstimationConfig(ZambaBaseModel):
     model_cache_dir: Optional[Path] = None
     weight_download_region: RegionEnum = RegionEnum("us")
     num_workers: int = 8
+    gpus: int = GPUS_AVAILABLE
 
     class Config:
         # support pandas dataframe
@@ -58,6 +62,7 @@ class DepthEstimationConfig(ZambaBaseModel):
             batch_size=self.batch_size,
             weight_download_region=self.weight_download_region,
             num_workers=self.num_workers,
+            gpus=self.gpus,
         )
 
         predictions = dm.predict(self.filepaths)
