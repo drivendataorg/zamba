@@ -109,10 +109,10 @@ class DepthEstimationConfig(ZambaBaseModel):
             raise ValueError(f"{values['filepaths']} must contain a `filepath` column.")
 
         # can only contain one row per filepath
-        num_duplicates = len(files_df) - files_df.filepath.nunique()
-        if num_duplicates > 0:
+        duplicated = files_df.filepath.duplicated()
+        if duplicated.sum() > 0:
             logger.warning(
-                f"Found {num_duplicates} duplicate row(s) in filepaths csv. Dropping duplicates."
+                f"Found {duplicated.sum()} duplicate row(s) in filepaths csv. Dropping duplicates."
             )
             files_df = files_df[["filepath"]].drop_duplicates()
 
