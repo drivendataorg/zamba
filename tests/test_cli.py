@@ -190,6 +190,40 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     )
 
 
+def test_depth_cli_options(mocker, tmp_path):
+    mocker.patch("zamba.models.depth_estimation.config.DepthEstimationConfig.run_model", pred_mock)
+
+    result = runner.invoke(
+        app,
+        [
+            "depth",
+            "--help",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert "Run depth estimation algorithm" in result.output
+
+    result = runner.invoke(
+        app,
+        [
+            "depth",
+            "--data-dir",
+            str(TEST_VIDEOS_DIR),
+            "--save-to",
+            str(tmp_path),
+            "--batch-size",
+            12,
+            "--weight-download-region",
+            "asia",
+            "--yes",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert "The following configuration will be used" in result.output
+
+
 @pytest.mark.skipif(
     not bool(int(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", 0))),
     reason="""Skip the densepose specific tests unless environment variable \

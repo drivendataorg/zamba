@@ -537,7 +537,7 @@ def depth(
         help="Skip confirmation of configuration and proceed right to prediction.",
     ),
 ):
-    """Estimate distance of detected animals for every second in the video."""
+    """Run depth estimation algorithm on frames in which animals are detected."""
     predict_dict = dict()
 
     # override if any command line arguments are passed
