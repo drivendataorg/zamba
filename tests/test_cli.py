@@ -190,7 +190,7 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     )
 
 
-def test_depth_cli_options(mocker, tmp_path):
+def test_depth_cli_options(mocker, tmp_path):  # noqa: F811
     mocker.patch("zamba.models.depth_estimation.config.DepthEstimationConfig.run_model", pred_mock)
 
     result = runner.invoke(
