@@ -30,11 +30,13 @@ def normalize(img):
 class DepthDataset(torch.utils.data.Dataset):
     def __init__(self, filepaths):
 
+        # these are hardcoded because they depend on the trained model weights used for inference
         self.height = 270
         self.width = 480
         self.channels = 3
         self.window_size = 2
         self.num_frames = self.window_size * 2 + 1
+        self.fps = 1
 
         mdlite = MegadetectorLiteYoloX()
         cached_frames = dict()
@@ -46,7 +48,7 @@ class DepthDataset(torch.utils.data.Dataset):
             # get video array at 1 fps, use full size for detecting objects
             logger.debug(f"Loading video: {video_filepath}")
             try:
-                arr = load_video_frames(video_filepath, fps=1)
+                arr = load_video_frames(video_filepath, fps=self.fps)
             except:  # noqa: E722
                 logger.warning(f"Video {video_filepath} could not be loaded. Skipping.")
                 continue
@@ -105,8 +107,8 @@ class DepthDataset(torch.utils.data.Dataset):
         return len(self.detection_indices)
 
     def __getitem__(self, index):
-        """Given the index of the target image, returns a tuple of the stacked image array, the image
-        filename stem, and the time into the video for the target image.
+        """Given a detection index, returns a tuple containing the tensor of stacked frames,
+        video filename, and time into the video for the target frame.
         """
 
         # get detection info

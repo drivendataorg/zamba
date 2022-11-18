@@ -1,8 +1,8 @@
 import os
+from pathlib import Path
 
 from loguru import logger
 import pandas as pd
-from pathlib import Path
 from pydantic import DirectoryPath, FilePath, validator, root_validator
 from typing import Optional, Union
 
@@ -17,8 +17,7 @@ from zamba.models.utils import RegionEnum
 
 
 class DepthEstimationConfig(ZambaBaseModel):
-    """Configuration for running depth estimation on images. At a minimum, must provide either
-    a list of full filepaths, or a list of relative filepaths along with the data_dir
+    """Configuration for running depth estimation on videos.
 
     Args:
         filepaths (FilePath, optional): Path to a CSV containing videos for inference, with one row per
@@ -58,10 +57,8 @@ class DepthEstimationConfig(ZambaBaseModel):
         )
 
         predictions = dm.predict(self.filepaths)
-
-        if not self.save_to.exists():
-            predictions.to_csv(self.save_to, index=False)
-            logger.info(f"Depth predictions saved to {self.save_to}")
+        predictions.to_csv(self.save_to, index=False)
+        logger.info(f"Depth predictions saved to {self.save_to}")
 
     _get_filepaths = root_validator(allow_reuse=True, pre=False, skip_on_failure=True)(
         get_filepaths
