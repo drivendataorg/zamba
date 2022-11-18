@@ -71,8 +71,9 @@ class DepthEstimationConfig(ZambaBaseModel):
         validate_model_cache_dir
     )
 
-    @validator("save_to", always=True)
-    def validate_save_dir(cls, save_to):
+    @root_validator(skip_on_failure=True)
+    def validate_save_to(cls, values):
+        save_to = values["save_to"]
         if save_to is None:
             save_path = Path(os.getcwd()) / "depth_predictions.csv"
         elif save_to.suffix:
@@ -80,12 +81,13 @@ class DepthEstimationConfig(ZambaBaseModel):
         else:
             save_path = save_to / "depth_predictions.csv"
 
-        if save_path.exists():
+        if save_path.exists() and not values["overwrite"]:
             raise ValueError(
                 f"{save_path} already exists. If you would like to overwrite, set overwrite=True."
             )
 
-        return save_path
+        values["save_to"] = save_path
+        return values
 
     @root_validator(skip_on_failure=True)
     def validate_files(cls, values):

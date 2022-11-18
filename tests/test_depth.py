@@ -59,8 +59,9 @@ def test_save_dir_and_overwrite(tmp_path, two_video_filepaths):
         DepthEstimationConfig(filepaths=two_video_filepaths, save_to=preds_path)
 
     # this works if overwrite is passed
-    config = DepthEstimationConfig(filepaths=two_video_filepaths, save_to=tmp_path, overwrite=True)
-
+    config = DepthEstimationConfig(
+        filepaths=two_video_filepaths, save_to=preds_path, overwrite=True
+    )
     assert config.overwrite
 
 

@@ -538,11 +538,9 @@ def depth(
     ),
 ):
     """Run depth estimation algorithm on frames in which animals are detected."""
-    predict_dict = dict()
+    predict_dict = dict(filepaths=filepaths)
 
     # override if any command line arguments are passed
-    if filepaths is not None:
-        predict_dict["filepaths"] = filepaths
     if data_dir is not None:
         predict_dict["data_dir"] = data_dir
     if save_to is not None:
@@ -564,7 +562,7 @@ def depth(
 
     msg = f"""The following configuration will be used for inference:
 
-    Filepath csv: {depth_config.filepaths}
+    Filepath csv: {predict_dict["filepaths"]}
     Data directory: {depth_config.data_dir}
     Save to: {depth_config.save_to}
     Overwrite: {depth_config.overwrite}
