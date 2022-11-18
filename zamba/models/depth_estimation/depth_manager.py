@@ -79,7 +79,7 @@ class DepthDataset(torch.utils.data.Dataset):
                                     Image.fromarray(arr[i]).resize((self.width, self.height))
                                 )
                             except:
-                                selected_frame = np.zeros((self.height, self.width))
+                                selected_frame = np.zeros((self.height, self.width, self.channels))
 
                             cached_frames[video_filepath][f"frame_{i}"] = selected_frame
 
