@@ -79,3 +79,4 @@ def test_invalid_video_is_skipped(tmp_path):
     # ensure outputs get written out and but is empty since video could not be loaded
     preds = pd.read_csv(tmp_path / "preds.csv")
     assert len(preds) == 0
+    assert (preds.columns == ["filepath", "time", "distance"]).all()

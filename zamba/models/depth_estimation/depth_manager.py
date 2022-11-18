@@ -241,4 +241,7 @@ class DepthEstimationManager:
         # merge in predictions
         if len(predictions) > 0:
             output = output.merge(predictions, on=["filepath", "time"], how="outer")
+        else:
+            # create empty distance column
+            output["distance"] = np.nan
         return output

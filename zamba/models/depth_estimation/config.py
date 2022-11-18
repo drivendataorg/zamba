@@ -57,6 +57,7 @@ class DepthEstimationConfig(ZambaBaseModel):
         )
 
         predictions = dm.predict(self.filepaths)
+        self.save_to.parent.mkdir(parents=True, exist_ok=True)
         predictions.to_csv(self.save_to, index=False)
         logger.info(f"Depth predictions saved to {self.save_to}")
 
