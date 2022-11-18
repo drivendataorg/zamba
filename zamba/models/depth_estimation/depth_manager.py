@@ -175,8 +175,7 @@ class DepthEstimationManager:
             self.device = "cuda"
 
     def predict(self, filepaths):
-        """Generate predictions for a list of filepaths, each representing one target frame.
-        Filepaths should be given relative to the data_dir."""
+        """Generate predictions for a list of video filepaths."""
 
         # load model
         model = torch.jit.load(self.model_weights, map_location=self.device).eval()
