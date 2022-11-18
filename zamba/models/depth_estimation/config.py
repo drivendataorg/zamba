@@ -35,6 +35,8 @@ class DepthEstimationConfig(ZambaBaseModel):
             Defaults to env var `MODEL_CACHE_DIR` or the OS app cache dir.
         weight_download_region (str): s3 region to download pretrained weights from. Options are
             "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".
+        num_workers (int): Number of subprocesses to use for data loading. The maximum value is
+           the number of CPUs in the system. Defaults to 8.
     """
 
     filepaths: Optional[Union[FilePath, pd.DataFrame]] = None
@@ -44,6 +46,7 @@ class DepthEstimationConfig(ZambaBaseModel):
     batch_size: int = 64
     model_cache_dir: Optional[Path] = None
     weight_download_region: RegionEnum = RegionEnum("us")
+    num_workers: int = 8
 
     class Config:
         # support pandas dataframe
@@ -54,6 +57,7 @@ class DepthEstimationConfig(ZambaBaseModel):
             model_cache_dir=self.model_cache_dir,
             batch_size=self.batch_size,
             weight_download_region=self.weight_download_region,
+            num_workers=self.num_workers,
         )
 
         predictions = dm.predict(self.filepaths)

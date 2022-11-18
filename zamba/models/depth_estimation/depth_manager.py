@@ -143,6 +143,7 @@ class DepthEstimationManager:
         batch_size: int = 64,
         tta: int = 2,
         use_log: bool = False,
+        num_workers: int = 8,
     ):
         """Create a depth estimation manager object
 
@@ -156,10 +157,13 @@ class DepthEstimationManager:
             tta (int, optional): Number of flips to apply for test time augmentation.
             use_log (bool, optional): Whether to take the exponential of the predictions
                 (see torch.special.expm1). Defaults to False.
+            num_workers (int): Number of subprocesses to use for data loading. The maximum value is
+                the number of CPUs in the system. Defaults to 8.
         """
         self.batch_size = batch_size
         self.tta = tta
         self.use_log = use_log
+        self.num_workers = num_workers
 
         model = MODELS["depth"]
 
@@ -190,7 +194,7 @@ class DepthEstimationManager:
             shuffle=False,
             sampler=None,
             collate_fn=None,
-            num_workers=min(self.batch_size, 8),
+            num_workers=self.num_workers,
             pin_memory=False,
             persistent_workers=True,
         )
