@@ -4,7 +4,7 @@ from loguru import logger
 import pandas as pd
 from pathlib import Path
 from pydantic import DirectoryPath, FilePath, validator, root_validator
-from typing import Optional
+from typing import Optional, Union
 
 from zamba.models.config import (
     ZambaBaseModel,
@@ -14,7 +14,6 @@ from zamba.models.config import (
 )
 from zamba.models.depth_estimation.depth_manager import DepthEstimationManager
 from zamba.models.utils import RegionEnum
-from zamba.settings import VIDEO_SUFFIXES
 
 
 class DepthEstimationConfig(ZambaBaseModel):
@@ -39,13 +38,17 @@ class DepthEstimationConfig(ZambaBaseModel):
             "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".
     """
 
-    filepaths: Optional[FilePath] = None
+    filepaths: Optional[Union[FilePath, pd.DataFrame]] = None
     data_dir: DirectoryPath = ""
     save_to: Optional[Path] = None
     overwrite: bool = False
     batch_size: int = 64
     model_cache_dir: Optional[Path] = None
     weight_download_region: RegionEnum = RegionEnum("us")
+
+    class Config:
+        # support pandas dataframe
+        arbitrary_types_allowed = True
 
     def run_model(self):
         dm = DepthEstimationManager(

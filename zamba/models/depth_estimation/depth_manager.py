@@ -7,7 +7,6 @@ import torch
 import torch.utils
 import torch.utils.data
 from tqdm import tqdm
-from typing import Optional
 
 from zamba.data.video import load_video_frames
 from zamba.models.utils import RegionEnum, download_weights
@@ -137,7 +136,7 @@ class DepthDataset(torch.utils.data.Dataset):
 class DepthEstimationManager:
     def __init__(
         self,
-        model_cache_dir: Optional[Path] = None,
+        model_cache_dir: Path,
         weight_download_region: RegionEnum = RegionEnum("us"),
         batch_size: int = 64,
         tta: int = 2,
@@ -146,8 +145,7 @@ class DepthEstimationManager:
         """Create a depth estimation manager object
 
         Args:
-            model_cache_dir (Path, optional): Path for downloading and saving model weights.
-                Defaults to env var `MODEL_CACHE_DIR` or the OS app cache dir.
+            model_cache_dir (Path): Path for downloading and saving model weights.
             weight_download_region (str): s3 region to download pretrained weights from.
                 Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
                 Defaults to "us".
@@ -236,9 +234,10 @@ class DepthEstimationManager:
         lengths = [np.arange(test_dataset.cached_frames[v]["video_length"]) for v in videos]
 
         # create one row per frame for duration of video
-        df = pd.Series(index=videos, data=lengths).explode().to_frame().reset_index()
-        df.columns = ["filepath", "time"]
+        output = pd.Series(index=videos, data=lengths).explode().to_frame().reset_index()
+        output.columns = ["filepath", "time"]
 
         # merge in predictions
-        output = df.merge(predictions, on=["filepath", "time"], how="outer")
+        if len(predictions) > 0:
+            output = output.merge(predictions, on=["filepath", "time"], how="outer")
         return output

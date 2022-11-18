@@ -17,7 +17,6 @@ from zamba.models.config import (
 )
 from zamba.models.densepose.densepose_manager import MODELS, DensePoseManager
 from zamba.models.utils import RegionEnum
-from zamba.settings import VIDEO_SUFFIXES
 
 
 class DensePoseOutputEnum(Enum):
