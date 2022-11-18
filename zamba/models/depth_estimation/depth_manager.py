@@ -98,7 +98,7 @@ class DepthDataset(torch.utils.data.Dataset):
             del arr
 
         self.detection_dict = detection_dict
-        self.detection_indices = detection_dict.keys()
+        self.detection_indices = list(detection_dict.keys())
         self.cached_frames = cached_frames
 
     def __len__(self):
