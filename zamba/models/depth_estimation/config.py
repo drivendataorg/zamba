@@ -11,6 +11,7 @@ from zamba.models.config import (
     check_files_exist_and_load,
     get_filepaths,
     GPUS_AVAILABLE,
+    validate_gpus,
     validate_model_cache_dir,
 )
 from zamba.models.depth_estimation.depth_manager import DepthEstimationManager
@@ -77,6 +78,8 @@ class DepthEstimationConfig(ZambaBaseModel):
     _validate_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir
     )
+
+    _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
     @root_validator(skip_on_failure=True)
     def validate_save_to(cls, values):

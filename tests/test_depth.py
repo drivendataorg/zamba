@@ -27,7 +27,7 @@ def two_video_filepaths(tmp_path):
 
 
 def test_prediction(two_video_filepaths):
-    dem = DepthEstimationManager(model_cache_dir=Path(appdirs.user_cache_dir()) / "zamba")
+    dem = DepthEstimationManager(model_cache_dir=Path(appdirs.user_cache_dir()) / "zamba", gpus=0)
 
     filepaths = pd.read_csv(two_video_filepaths).filepath.values
     preds = dem.predict(filepaths)

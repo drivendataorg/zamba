@@ -131,7 +131,7 @@ class DepthDataset(torch.utils.data.Dataset):
         input = normalize(input)
         tensor = torch.from_numpy(input)
 
-        # keep track of video name and time
+        # keep track of video name and time as well
         return tensor, det_video, det_frame
 
 
@@ -143,7 +143,6 @@ class DepthEstimationManager:
         weight_download_region: RegionEnum = RegionEnum("us"),
         batch_size: int = 64,
         tta: int = 2,
-        use_log: bool = False,
         num_workers: int = 8,
     ):
         """Create a depth estimation manager object
