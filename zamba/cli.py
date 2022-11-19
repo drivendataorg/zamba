@@ -560,7 +560,7 @@ def depth(
     if num_workers is not None:
         predict_dict["num_workers"] = num_workers
     if gpus is not None:
-        predict_dict["gpus"] = num_workers
+        predict_dict["gpus"] = gpus
     if model_cache_dir is not None:
         predict_dict["model_cache_dir"] = model_cache_dir
     if weight_download_region is not None:
