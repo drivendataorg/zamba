@@ -115,7 +115,7 @@ class DepthEstimationConfig(ZambaBaseModel):
         duplicated = files_df.filepath.duplicated()
         if duplicated.sum() > 0:
             logger.warning(
-                f"Found {duplicated.sum()} duplicate row(s) in filepaths csv. Dropping duplicates."
+                f"Found {duplicated.sum():,} duplicate row(s) in filepaths csv. Dropping duplicates."
             )
             files_df = files_df[["filepath"]].drop_duplicates()
 
