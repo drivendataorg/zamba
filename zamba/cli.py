@@ -522,14 +522,6 @@ def depth(
         None, "--overwrite", "-o", help="Overwrite output csv if it exists."
     ),
     batch_size: int = typer.Option(None, help="Batch size to use for inference."),
-    model_cache_dir: Path = typer.Option(
-        None,
-        exists=False,
-        help="Path to directory for downloading model weights. Alternatively, specify with environment variable `MODEL_CACHE_DIR`. If not specified, user's cache directory is used.",
-    ),
-    weight_download_region: RegionEnum = typer.Option(
-        None, help="Server region for downloading weights."
-    ),
     num_workers: int = typer.Option(
         None,
         help="Number of subprocesses to use for data loading.",
@@ -537,6 +529,14 @@ def depth(
     gpus: int = typer.Option(
         None,
         help="Number of GPUs to use for inference. If not specifiied, will use all GPUs found on machine.",
+    ),
+    model_cache_dir: Path = typer.Option(
+        None,
+        exists=False,
+        help="Path to directory for downloading model weights. Alternatively, specify with environment variable `MODEL_CACHE_DIR`. If not specified, user's cache directory is used.",
+    ),
+    weight_download_region: RegionEnum = typer.Option(
+        None, help="Server region for downloading weights."
     ),
     yes: bool = typer.Option(
         False,
@@ -557,14 +557,14 @@ def depth(
         predict_dict["overwrite"] = overwrite
     if batch_size is not None:
         predict_dict["batch_size"] = batch_size
-    if model_cache_dir is not None:
-        predict_dict["model_cache_dir"] = model_cache_dir
-    if weight_download_region is not None:
-        predict_dict["weight_download_region"] = weight_download_region
     if num_workers is not None:
         predict_dict["num_workers"] = num_workers
     if gpus is not None:
         predict_dict["gpus"] = num_workers
+    if model_cache_dir is not None:
+        predict_dict["model_cache_dir"] = model_cache_dir
+    if weight_download_region is not None:
+        predict_dict["weight_download_region"] = weight_download_region
 
     try:
         depth_config = DepthEstimationConfig(**predict_dict)
@@ -579,10 +579,10 @@ def depth(
     Save to: {depth_config.save_to}
     Overwrite: {depth_config.overwrite}
     Batch size: {depth_config.batch_size}
-    Model cache: {depth_config.model_cache_dir}
-    Weight download region: {depth_config.weight_download_region}
     Number of workers: {depth_config.num_workers}
     GPUs: {depth_config.gpus}
+    Model cache: {depth_config.model_cache_dir}
+    Weight download region: {depth_config.weight_download_region}
     """
 
     if yes:
