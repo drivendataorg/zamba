@@ -109,6 +109,16 @@ Now you can pass this configuration to the command line. See the [Quickstart](qu
 
 You can then share your model with others by adding it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki).
 
+### Estimating distance
+
+```console
+$ zamba depth --data-dir path/to/videos
+```
+
+By default, predictions will be saved to `depth_predictions.csv`. Run `zamba depth --help` to list all possible options to pass to `depth`.
+
+See the [Quickstart](quickstart/) page or the user tutorial on [classifying videos](predict-tutorial/) for more details.
+
 
 ## Contributing
 

@@ -50,7 +50,7 @@ Once you have `zamba` installed, some good starting points are:
 
 Once `zamba` is installed, you can see the basic command options with:
 ```console
-❯ zamba --help
+$ zamba --help
 
  Usage: zamba [OPTIONS] COMMAND [ARGS]...
 
@@ -108,6 +108,16 @@ predict_config:
 Now you can pass this configuration to the command line. See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) for more details.
 
 You can then share your model with others by adding it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki).
+
+### Estimating distance
+
+```console
+$ zamba depth --data-dir path/to/videos
+```
+
+By default, predictions will be saved to `depth_predictions.csv`. Run `zamba depth --help` to list all possible options to pass to `depth`.
+
+See the [depth estimation page](https://zamba.drivendata.org/docs/stable/models/depth/) for more details.
 
 
 ## Contributing

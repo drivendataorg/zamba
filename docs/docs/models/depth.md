@@ -63,7 +63,7 @@ $ zamba depth --help
 
  Usage: zamba depth [OPTIONS]
 
- Run depth estimation algorithm on frames in which animals are detected.
+ Estimate animal distance at each second in the video.
 
 ╭─ Options ─────────────────────────────────────────────────────────────────────────────────╮
 │ --filepaths                       PATH          Path to csv containing `filepath` column  │
@@ -78,6 +78,13 @@ $ zamba depth --help
 │                                                 [default: None]                           │
 │ --overwrite               -o                    Overwrite output csv if it exists.        │
 │ --batch-size                      INTEGER       Batch size to use for inference.          │
+│                                                 [default: None]                           │
+│ --num-workers                     INTEGER       Number of subprocesses to use for data    │
+│                                                 loading.                                  │
+│                                                 [default: None]                           │
+│ --gpus                            INTEGER       Number of GPUs to use for inference. If   │
+│                                                 not specifiied, will use all GPUs found   │
+│                                                 on machine.                               │
 │                                                 [default: None]                           │
 │ --model-cache-dir                 PATH          Path to directory for downloading model   │
 │                                                 weights. Alternatively, specify with      │

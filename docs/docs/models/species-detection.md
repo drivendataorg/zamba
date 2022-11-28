@@ -1,6 +1,6 @@
-# Available models
+# Species detection
 
-The algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. The pretrained models that ship with the `zamba` package are: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
+The classification algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. The pretrained models that ship with the `zamba` package are: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
 
 ## Model summary
 
