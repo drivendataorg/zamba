@@ -24,12 +24,6 @@ MODELS = dict(
 )
 
 
-# def normalize(img):
-#     img = np.transpose(img, (2, 0, 1))
-#     img = img.astype("float32") / 255
-#     return img
-
-
 def depth_transforms(size):
     return transforms.Compose(
         [
@@ -100,7 +94,8 @@ class DepthDataset(torch.utils.data.Dataset):
                                     (self.height, self.width, self.channels), dtype=int
                                 )
 
-                            selected_frame = transform(torch.tensor(selected_frame))
+                            # put channels first, resize, divide by 255
+                            selected_frame = transform(torch.tensor(selected_frame)).numpy()
 
                             cached_frames[video_filepath][f"frame_{i}"] = selected_frame
 
