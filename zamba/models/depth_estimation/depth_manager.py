@@ -6,10 +6,13 @@ from pathlib import Path
 import torch
 import torch.utils
 import torch.utils.data
+from torchvision import transforms
+from torchvision.transforms import Resize
 from tqdm import tqdm
 
 from zamba.data.video import load_video_frames
 from zamba.models.utils import RegionEnum, download_weights
+from zamba.pytorch.transforms import ConvertHWCtoCHW, Uint8ToFloat
 from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
 
 
@@ -21,10 +24,23 @@ MODELS = dict(
 )
 
 
-def normalize(img):
-    img = np.transpose(img, (2, 0, 1))
-    img = img.astype("float32") / 255
-    return img
+# def normalize(img):
+#     img = np.transpose(img, (2, 0, 1))
+#     img = img.astype("float32") / 255
+#     return img
+
+
+def depth_transforms(size):
+    return transforms.Compose(
+        [
+            # put channels first
+            ConvertHWCtoCHW(),
+            # resize to desired height and width
+            Resize(size),
+            # divide by 255
+            Uint8ToFloat(),
+        ]
+    )
 
 
 class DepthDataset(torch.utils.data.Dataset):
@@ -41,6 +57,8 @@ class DepthDataset(torch.utils.data.Dataset):
         mdlite = MegadetectorLiteYoloX()
         cached_frames = dict()
         detection_dict = dict()
+
+        transform = depth_transforms(size=(self.height, self.width))
 
         logger.info(f"Running object detection on {len(filepaths)} videos.")
         for video_filepath in tqdm(filepaths):
@@ -76,12 +94,13 @@ class DepthDataset(torch.utils.data.Dataset):
                     for i in range(min_frame, max_frame + 1):
                         if f"frame_{i}" not in cached_frames[video_filepath].keys():
                             try:
-                                selected_frame = np.array(
-                                    # PIL expects size to be (w, h)
-                                    Image.fromarray(arr[i]).resize((self.width, self.height))
-                                )
+                                selected_frame = arr[i]
                             except:  # noqa: E722
-                                selected_frame = np.zeros((self.height, self.width, self.channels))
+                                selected_frame = np.zeros(
+                                    (self.height, self.width, self.channels), dtype=int
+                                )
+
+                            selected_frame = transform(torch.tensor(selected_frame))
 
                             cached_frames[video_filepath][f"frame_{i}"] = selected_frame
 
@@ -119,16 +138,15 @@ class DepthDataset(torch.utils.data.Dataset):
 
         # set up input array of frames within window of detection
         # frames are stacked channel-wise
-        input = np.zeros((self.height, self.width, self.channels * self.num_frames))
-        n = 0
-        for frame_idx in range(det_frame - self.window_size, det_frame + self.window_size + 1):
-            input[:, :, n : n + self.channels] = self.cached_frames[det_video][
-                f"frame_{frame_idx}"
+        input = np.concatenate(
+            [
+                self.cached_frames[det_video][f"frame_{frame_idx}"]
+                for frame_idx in range(
+                    det_frame - self.window_size, det_frame + self.window_size + 1
+                )
             ]
-            n += self.channels
+        )
 
-        # normalize and convert to tensor
-        input = normalize(input)
         tensor = torch.from_numpy(input)
 
         # keep track of video name and time as well
