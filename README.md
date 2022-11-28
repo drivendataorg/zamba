@@ -109,7 +109,7 @@ Now you can pass this configuration to the command line. See the [Quickstart](ht
 
 You can then share your model with others by adding it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki).
 
-### Estimating distance
+### Estimating distance between animals and the camera
 
 ```console
 $ zamba depth --data-dir path/to/videos
