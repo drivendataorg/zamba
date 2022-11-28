@@ -28,7 +28,7 @@ class ConvertTCHWtoCTHW(torch.nn.Module):
 
 
 class ConvertHWCtoCHW(torch.nn.Module):
-    """Convert tensor from (0:T, 1:H, 2:W, 3:C) to (3:C, 0:T, 1:H, 2:W)"""
+    """Convert tensor from (0:H, 1:W, 2:C) to (2:C, 0:H, 1:W)"""
 
     def forward(self, vid: torch.Tensor) -> torch.Tensor:
         return vid.permute(2, 0, 1)
