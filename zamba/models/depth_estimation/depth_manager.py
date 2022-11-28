@@ -45,6 +45,8 @@ class DepthDataset(torch.utils.data.Dataset):
         self.width = 480
         self.channels = 3
         self.window_size = 2
+        # first frames are swapped; this maintains the bug in the original code
+        self.order = [-1, -2, 0, 1, 2]
         self.num_frames = self.window_size * 2 + 1
         self.fps = 1
 
@@ -140,6 +142,10 @@ class DepthDataset(torch.utils.data.Dataset):
                     det_frame - self.window_size, det_frame + self.window_size + 1
                 )
             ]
+        )
+
+        input = np.concatenate(
+            [self.cached_frames[det_video][f"frame_{frame_idx}"] for frame_idx in self.order],
         )
 
         tensor = torch.from_numpy(input)
