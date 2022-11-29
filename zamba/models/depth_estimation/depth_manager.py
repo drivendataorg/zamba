@@ -1,4 +1,3 @@
-from PIL import Image
 from loguru import logger
 import numpy as np
 import pandas as pd
