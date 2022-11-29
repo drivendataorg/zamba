@@ -145,7 +145,7 @@ class DepthDataset(torch.utils.data.Dataset):
         )
 
         input = np.concatenate(
-            [self.cached_frames[det_video][f"frame_{frame_idx}"] for frame_idx in self.order],
+            [self.cached_frames[det_video][f"frame_{det_frame + i}"] for i in self.order],
         )
 
         tensor = torch.from_numpy(input)
