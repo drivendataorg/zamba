@@ -5,6 +5,7 @@ from pathlib import Path
 from pydantic import ValidationError
 import pytest
 
+from zamba.models.config import GPUS_AVAILABLE
 from zamba.models.depth_estimation import DepthEstimationManager, DepthEstimationConfig
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
@@ -26,7 +27,9 @@ def two_video_filepaths(tmp_path):
 
 
 def test_prediction(two_video_filepaths):
-    dem = DepthEstimationManager(model_cache_dir=Path(appdirs.user_cache_dir()) / "zamba", gpus=0)
+    dem = DepthEstimationManager(
+        model_cache_dir=Path(appdirs.user_cache_dir()) / "zamba", gpus=GPUS_AVAILABLE
+    )
 
     filepaths = pd.read_csv(two_video_filepaths).filepath.values
     preds = dem.predict(filepaths)
