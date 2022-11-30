@@ -11,8 +11,8 @@ from tqdm import tqdm
 
 from zamba.data.video import load_video_frames
 from zamba.models.utils import RegionEnum, download_weights
-from zamba.pytorch.transforms import ConvertHWCtoCHW, Uint8ToFloat
 from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
+from zamba.pytorch.transforms import ConvertHWCtoCHW, Uint8ToFloat
 
 
 MODELS = dict(
