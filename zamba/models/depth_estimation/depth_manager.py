@@ -233,7 +233,7 @@ class DepthEstimationManager:
                         predictions.append((vid, t, d))
 
         predictions = pd.DataFrame(predictions, columns=["filepath", "time", "distance"],).round(
-            {"distance": 4}
+            {"distance": 1}
         )  # round to useful number of decimal places
 
         logger.info("Processing output.")
