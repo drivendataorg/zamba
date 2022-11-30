@@ -135,15 +135,6 @@ class DepthDataset(torch.utils.data.Dataset):
         # set up input array of frames within window of detection
         # frames are stacked channel-wise
         input = np.concatenate(
-            [
-                self.cached_frames[det_video][f"frame_{frame_idx}"]
-                for frame_idx in range(
-                    det_frame - self.window_size, det_frame + self.window_size + 1
-                )
-            ]
-        )
-
-        input = np.concatenate(
             [self.cached_frames[det_video][f"frame_{det_frame + i}"] for i in self.order],
         )
 
