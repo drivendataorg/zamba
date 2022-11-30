@@ -27,8 +27,8 @@ For example, the first few rows of the `depth_predictions.csv` might look like t
 
 ```
 filepath,time,distance
-video_1.avi,0,7.3504286
-video_1.avi,0,7.3504286
+video_1.avi,0,7.4
+video_1.avi,0,7.4
 video_1.avi,1,
 video_1.avi,2,
 video_1.avi,3,
