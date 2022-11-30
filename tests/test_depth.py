@@ -1,4 +1,5 @@
 import appdirs
+import numpy as np
 import pandas as pd
 from pathlib import Path
 from pydantic import ValidationError
@@ -6,19 +7,17 @@ import pytest
 
 from zamba.models.depth_estimation import DepthEstimationManager, DepthEstimationConfig
 
-from conftest import TEST_VIDEOS_DIR
+from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
 
 
 @pytest.fixture
 def two_video_filepaths(tmp_path):
     output_path = tmp_path / "filepaths.csv"
 
-    # from labels csv
     filepaths = [
-        str(
-            TEST_VIDEOS_DIR
-            / "data/raw/goualougo_2013/gorillas_2013/MPI_FID_20_Duboscia/14-Jun-2013/FID_20_Duboscia_2013-6-14_0083.AVI"
-        ),
+        # video from depth estimation competition to verify actual preds
+        str(ASSETS_DIR / "depth_tests" / "aava.mp4"),
+        # test asset video with no detections
         str(TEST_VIDEOS_DIR / "data/raw/savanna/Grumeti_Tanzania/K38_check3/09190048_Hyena.AVI"),
     ]
 
@@ -32,12 +31,26 @@ def test_prediction(two_video_filepaths):
     filepaths = pd.read_csv(two_video_filepaths).filepath.values
     preds = dem.predict(filepaths)
 
-    assert preds.shape == (77, 3)
-    assert preds.distance.notnull().sum() == 2
+    assert preds.shape == (86, 3)
+    assert preds.distance.notnull().sum() == 41
     assert preds.filepath.nunique() == 2
 
-    # two detections for frame 0
-    assert preds.set_index(["filepath", "time"]).loc[filepaths[0], 0].shape[0] == 2
+    # predictions for reference video
+    ref_vid_preds = preds[preds.filepath == filepaths[0]].set_index("time")
+
+    # two animals found at time 30
+    assert len(ref_vid_preds.loc[30]) == 2
+
+    # confirm distance values
+    assert np.isclose(
+        ref_vid_preds.loc[[30, 40, 50]].distance.values,
+        [3.1301, 3.1301, 3.6037, 3.6037, 4.0815],
+    ).all()
+
+    # check nan rows exist for video with no detection
+    no_det_preds = preds[preds.filepath == filepaths[1]].set_index("time")
+    assert len(no_det_preds) == 15
+    assert no_det_preds.distance.isnull().all()
 
 
 def test_duplicate_filepaths_are_ignored(tmp_path, two_video_filepaths):
