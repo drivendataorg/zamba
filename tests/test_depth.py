@@ -34,9 +34,9 @@ def test_prediction(two_video_filepaths):
     filepaths = pd.read_csv(two_video_filepaths).filepath.values
     preds = dem.predict(filepaths)
 
-    # NB: we expect some small differences in number of detections across ffmpeg versions
-    assert len(preds) > 80
-    assert preds.distance.notnull().sum() > 40
+    # NB: we expect some small differences in number of detections across operating systems
+    assert len(preds) >= 80
+    assert preds.distance.notnull().sum() >= 40
     assert preds.filepath.nunique() == 2
 
     # predictions for reference video
