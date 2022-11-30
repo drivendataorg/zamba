@@ -95,10 +95,10 @@ class DepthDataset(torch.utils.data.Dataset):
                                     (self.height, self.width, self.channels), dtype=int
                                 )
 
-                            # put channels first, resize, divide by 255
-                            selected_frame = transform(torch.tensor(selected_frame)).numpy()
-
-                            cached_frames[video_filepath][f"frame_{i}"] = selected_frame
+                            # transform puts channels first, resizes, divides by 255
+                            cached_frames[video_filepath][f"frame_{i}"] = transform(
+                                torch.tensor(selected_frame)
+                            ).numpy()
 
                     # iterate over detections in frame to create universal detection ID
                     for i, (detection, score) in enumerate(zip(detections, scores)):
