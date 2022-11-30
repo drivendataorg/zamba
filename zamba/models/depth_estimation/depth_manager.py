@@ -135,7 +135,7 @@ class DepthDataset(torch.utils.data.Dataset):
         # set up input array of frames within window of detection
         # frames are stacked channel-wise
         input = np.concatenate(
-            [self.cached_frames[det_video][f"frame_{det_frame + i}"] for i in self.order],
+            [self.cached_frames[det_video][f"frame_{det_frame + i}"] for i in self.order]
         )
 
         tensor = torch.from_numpy(input)
@@ -232,10 +232,9 @@ class DepthEstimationManager:
                     for d, vid, t in zip(distance.cpu().numpy(), filepath, time):
                         predictions.append((vid, t, d))
 
-        predictions = pd.DataFrame(
-            predictions,
-            columns=["filepath", "time", "distance"],
-        )
+        predictions = pd.DataFrame(predictions, columns=["filepath", "time", "distance"],).round(
+            {"distance": 4}
+        )  # round to useful number of decimal places
 
         logger.info("Processing output.")
         # post process to add nans for frames where no animal was detected
