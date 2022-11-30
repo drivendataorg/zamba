@@ -202,7 +202,7 @@ def test_depth_cli_options(mocker, tmp_path):  # noqa: F811
     )
 
     assert result.exit_code == 0
-    assert "Run depth estimation algorithm" in result.output
+    assert "Estimate animal distance" in result.output
 
     result = runner.invoke(
         app,
