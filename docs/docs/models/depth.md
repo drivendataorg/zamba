@@ -56,7 +56,7 @@ Here's how to run the depth estimation model.
 
 ### Debugging
 
-Unlike in the species classification models, selected frames are stored in memory rather than cached to disk. If you run out of memory, try running on a smaller number of videos. If you hit a GPU memory error, try reducing the [number of workers](../../debugging/#reducing-num_workers) or the [batch size](../../debugging/#reducing-the-batch-size).
+Unlike in the species classification models, selected frames are stored in memory rather than cached to disk. If you run out of memory, try predicting on a smaller number of videos. If you hit a GPU memory error, try reducing the [number of workers](../../debugging/#reducing-num_workers) or the [batch size](../../debugging/#reducing-the-batch-size).
 
 ## Getting help
 
