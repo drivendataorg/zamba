@@ -6,7 +6,7 @@ Our depth estimation model is useful for predicting the distance an animal is fr
 
 The depth model comes from one of the winners of the [Deep Chimpact: Depth Estimation for Wildlife Conservation](https://www.drivendata.org/competitions/82/competition-wildlife-video-depth-estimation/) machine learning challenge hosted by DrivenData. The goal of this challenge was to use machine learning and advances in monocular (single-lens) depth estimation techniques to automatically estimate the distance between a camera trap and an animal contained in its video footage. The challenge drew on a unique labeled dataset from research teams from the Max Planck Institute for Evolutionary Anthropology (MPI-EVA) and the Wild Chimpanzee Foundation (WCF).
 
-The training data included bushbucks, chimpanzees, duikers, elephants, leopards, and monkeys from Taï National Park in Côte d'Ivoire and Moyen-Bafing National Park in the Republic of Guinea.
+The species in the training dataset included bushbucks, chimpanzees, duikers, elephants, leopards, and monkeys. Videos were from Taï National Park in Côte d'Ivoire and Moyen-Bafing National Park in the Republic of Guinea.
 
 The Zamba package supports running the depth estimation model on videos. Under the hood, it does the following:
 
