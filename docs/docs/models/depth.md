@@ -9,7 +9,7 @@ The depth model comes from one of the winners of the [Deep Chimpact: Depth Estim
 The Zamba package supports running the depth estimation model on videos. Under the hood, it does the following:
 
 - Resamples the video to one frame per second
-- Runs the [MegadetectorLite](models/species-detection.md#megadetectorlite) model on each frame to find frames with animals in them
+- Runs the [MegadetectorLite](../models/species-detection.md#megadetectorlite) model on each frame to find frames with animals in them
 - Estimates depth for each detected animal in the frame
 - Outputs a csv with predictions
 
@@ -53,6 +53,10 @@ Here's how to run the depth estimation model.
     depth_conf = DepthEstimationConfig(data_dir="PATH_TO_VIDEOS")
     depth_conf.run_model()
     ```
+
+### Debugging
+
+Unlike in the species classification models, selected frames are stored in memory rather than cached to disk. If you run out of memory, try running on a smaller number of videos. If you hit a GPU memory error, try reducing the [number of workers](../../debugging/#reducing-num_workers) or the [batch size](../../debugging/#reducing-the-batch-size).
 
 ## Getting help
 
