@@ -1,5 +1,11 @@
 # `zamba` changelog
 
+## v2.3.0 (2022-12-01)
+
+### Model release
+
+* Adds a depth estimation module for predicting the distance between animals and the camera ([PR #247](https://github.com/drivendataorg/zamba/pull/247)). This model comes from one of the winning solutions in the [Deep Chimpact: Depth Estimation for Wildlife Conservation](https://www.drivendata.org/competitions/82/competition-wildlife-video-depth-estimation/) machine learning challenge hosted by DrivenData.
+
 ## v2.2.4 (2022-11-10)
 
 * Do not cache videos if the `VIDEO_CACHE_DIR` environment variable is an empty string or zero ([PR #245](https://github.com/drivendataorg/zamba/pull/245))
