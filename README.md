@@ -14,6 +14,7 @@ https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-
 - Identify which species appear in each video
 - Filter out blank videos
 - Create your own custom models that identify your species in your habitats
+- Estimate the distance between animals in the frame and the camera
 - And more! 🙈 🙉 🙊
 
 The official models in `zamba` can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species common to Europe. Users can also finetune models using their own labeled videos to then make predictions for new species and/or new ecologies.
@@ -50,23 +51,26 @@ Once you have `zamba` installed, some good starting points are:
 Once `zamba` is installed, you can see the basic command options with:
 ```console
 $ zamba --help
-Usage: zamba [OPTIONS] COMMAND [ARGS]...
 
-  Zamba is a tool built in Python to automatically identify the species seen
-  in camera trap videos from sites in Africa and Europe. Visit
-  https://zamba.drivendata.org/docs for more in-depth documentation.
+ Usage: zamba [OPTIONS] COMMAND [ARGS]...
 
-Options:
-  --version             Show zamba version and exit.
-  --install-completion  Install completion for the current shell.
-  --show-completion     Show completion for the current shell, to copy it or
-                        customize the installation.
-  --help                Show this message and exit.
+ Zamba is a tool built in Python to automatically identify the species seen in camera trap
+ videos from sites in Africa and Europe. Visit https://zamba.drivendata.org/docs for more
+ in-depth documentation.
 
-Commands:
-  densepose  Run densepose algorithm on videos.
-  predict    Identify species in a video.
-  train      Train a model on your labeled data.
+╭─ Options ─────────────────────────────────────────────────────────────────────────────────╮
+│ --version                     Show zamba version and exit.                                │
+│ --install-completion          Install completion for the current shell.                   │
+│ --show-completion             Show completion for the current shell, to copy it or        │
+│                               customize the installation.                                 │
+│ --help                        Show this message and exit.                                 │
+╰───────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ────────────────────────────────────────────────────────────────────────────────╮
+│ densepose      Run densepose algorithm on videos.                                         │
+│ depth          Estimate animal distance at each second in the video.                      │
+│ predict        Identify species in a video.                                               │
+│ train          Train a model on your labeled data.                                        │
+╰───────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 `zamba` can be used "out of the box" to generate predictions or train a model using your own videos. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
@@ -104,6 +108,16 @@ predict_config:
 Now you can pass this configuration to the command line. See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/) for more details.
 
 You can then share your model with others by adding it to the [Model Zoo Wiki](https://github.com/drivendataorg/zamba/wiki).
+
+### Estimating distance between animals and the camera
+
+```console
+$ zamba depth --data-dir path/to/videos
+```
+
+By default, predictions will be saved to `depth_predictions.csv`. Run `zamba depth --help` to list all possible options to pass to `depth`.
+
+See the [depth estimation page](https://zamba.drivendata.org/docs/stable/models/depth/) for more details.
 
 
 ## Contributing

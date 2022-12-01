@@ -10,6 +10,7 @@ import yaml
 from zamba import MODELS_DIRECTORY
 from zamba.models.config import WEIGHT_LOOKUP, ModelEnum
 from zamba.models.densepose import MODELS as DENSEPOSE_MODELS
+from zamba.models.depth_estimation import MODELS as DEPTH_MODELS
 
 
 def get_model_only_params(full_configuration, subset="train_config"):
@@ -34,8 +35,12 @@ def get_model_only_params(full_configuration, subset="train_config"):
             "from_scratch",
             "model_cache_dir",
             "use_default_model_labels",
+            "predict_all_zamba_species",
         ]:
-            config.pop(key)
+            try:
+                config.pop(key)
+            except:  # noqa: E722
+                continue
 
     elif subset == "video_loader_config":
         config = full_configuration[subset]
@@ -147,6 +152,11 @@ if __name__ == "__main__":
         private_checkpoint = WEIGHT_LOOKUP[model_name]
         logger.info(f"\n============\nPreparing {model_name} model\n============")
         publish_model(model_name, private_checkpoint)
+
+    for name, model in DEPTH_MODELS.items():
+        logger.info(f"\n============\nPreparing {name} model\n============")
+        # upload to the zamba buckets, renaming to model["weights"]
+        upload_to_all_public_buckets(S3Path(model["private_weights_url"]), model["weights"])
 
     for name, model in DENSEPOSE_MODELS.items():
         logger.info(f"\n============\nPreparing DensePose model: {name}\n============")

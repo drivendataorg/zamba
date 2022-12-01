@@ -24,6 +24,7 @@ nav:
       - Guide to common optional parameters: "extra-options.md"
   - "Available Models":
       - Species detection: "models/species-detection.md"
+      - Depth estimation: "models/depth.md"
       - DensePose: "models/densepose.md"
       - African species performance: "models/td-full-metrics.md"
   - "Advanced Options":
@@ -39,6 +40,9 @@ nav:
           - zamba.data.video: "api-reference/data-video.md"
       - zamba.models:
           - zamba.models.config: "api-reference/models-config.md"
+          - zamba.model.depth_estimation:
+            - zamba.models.depth_estimation.config: "api-reference/depth_config.md"
+            - zamba.models.depth_estimation.depth_manager: "api-reference/depth_manager.md"
           - zamba.models.densepose:
             - zamba.models.densepose.config: "api-reference/densepose_config.md"
             - zamba.models.densepose.densepose_manager: "api-reference/densepose_manager.md"

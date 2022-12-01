@@ -214,6 +214,38 @@ def validate_model_name_and_checkpoint(cls, values):
     return values
 
 
+def get_filepaths(cls, values):
+    """If no file list is passed, get all files in data directory. Warn if there
+    are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`
+    contains files with valid suffixes.
+    """
+    if values["filepaths"] is None:
+        logger.info(f"Getting files in {values['data_dir']}.")
+        files = []
+        new_suffixes = []
+
+        # iterate over all files in data directory
+        for f in values["data_dir"].rglob("*"):
+            if f.is_file():
+                # keep just files with supported suffixes
+                if f.suffix.lower() in VIDEO_SUFFIXES:
+                    files.append(f.resolve())
+                else:
+                    new_suffixes.append(f.suffix.lower())
+
+        if len(new_suffixes) > 0:
+            logger.warning(
+                f"Ignoring {len(new_suffixes)} file(s) with suffixes {set(new_suffixes)}. To include, specify all video suffixes with a VIDEO_SUFFIXES environment variable."
+            )
+
+        if len(files) == 0:
+            raise ValueError(f"No video files found in {values['data_dir']}.")
+
+        logger.info(f"Found {len(files)} videos in {values['data_dir']}.")
+        values["filepaths"] = pd.DataFrame(files, columns=["filepath"])
+    return values
+
+
 class ZambaBaseModel(BaseModel):
     """Set defaults for all models that inherit from the pydantic base model."""
 
@@ -360,8 +392,8 @@ class TrainConfig(ZambaBaseModel):
             when the metric stops improving. Defaults to EarlyStoppingConfig(monitor='val_macro_f1',
             patience=5, verbose=True, mode='max').
         weight_download_region (str): s3 region to download pretrained weights from.
-            Options are "us" (United States), "eu" (European Union), or "asia"
-            (Asia Pacific). Defaults to "us".
+            Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
+            Defaults to "us".
         split_proportions (dict): Proportions used to divide data into training,
             validation, and holdout sets if a if a "split" column is not included in
             labels. Defaults to "train": 3, "val": 1, "holdout": 1.
@@ -704,8 +736,8 @@ class PredictConfig(ZambaBaseModel):
             score as a single prediction for each video. If False, return probabilty
             scores for each species. Defaults to False.
         weight_download_region (str): s3 region to download pretrained weights from.
-            Options are "us" (United States), "eu" (European Union), or "asia"
-            (Asia Pacific). Defaults to "us".
+            Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
+            Defaults to "us".
         skip_load_validation (bool): By default, zamba runs a check to verify that
             all videos can be loaded and skips files that cannot be loaded. This can
             be time intensive, depending on how many videos there are. If you are very
@@ -801,37 +833,9 @@ class PredictConfig(ZambaBaseModel):
                 )
         return values
 
-    @root_validator(pre=False, skip_on_failure=True)
-    def get_filepaths(cls, values):
-        """If no file list is passed, get all files in data directory. Warn if there
-        are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`
-        contains files with valid suffixes.
-        """
-        if values["filepaths"] is None:
-            logger.info(f"Getting files in {values['data_dir']}.")
-            files = []
-            new_suffixes = []
-
-            # iterate over all files in data directory
-            for f in values["data_dir"].rglob("*"):
-                if f.is_file():
-                    # keep just files with supported suffixes
-                    if f.suffix.lower() in VIDEO_SUFFIXES:
-                        files.append(f.resolve())
-                    else:
-                        new_suffixes.append(f.suffix.lower())
-
-            if len(new_suffixes) > 0:
-                logger.warning(
-                    f"Ignoring {len(new_suffixes)} file(s) with suffixes {set(new_suffixes)}. To include, specify all video suffixes with a VIDEO_SUFFIXES environment variable."
-                )
-
-            if len(files) == 0:
-                raise ValueError(f"No video files found in {values['data_dir']}.")
-
-            logger.info(f"Found {len(files)} videos in {values['data_dir']}.")
-            values["filepaths"] = pd.DataFrame(files, columns=["filepath"])
-        return values
+    _get_filepaths = root_validator(allow_reuse=True, pre=False, skip_on_failure=True)(
+        get_filepaths
+    )
 
     @root_validator(skip_on_failure=True)
     def validate_files(cls, values):
@@ -848,10 +852,10 @@ class PredictConfig(ZambaBaseModel):
             files_df = files_df[["filepath"]]
 
         # can only contain one row per filepath
-        num_duplicates = len(files_df) - files_df.filepath.nunique()
-        if num_duplicates > 0:
+        duplicated = files_df.filepath.duplicated()
+        if duplicated.sum() > 0:
             logger.warning(
-                f"Found {num_duplicates} duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video."
+                f"Found {duplicated.sum():,} duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video."
             )
             files_df = files_df[["filepath"]].drop_duplicates()
 

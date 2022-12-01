@@ -27,6 +27,13 @@ class ConvertTCHWtoCTHW(torch.nn.Module):
         return vid.permute(1, 0, 2, 3)
 
 
+class ConvertHWCtoCHW(torch.nn.Module):
+    """Convert tensor from (0:H, 1:W, 2:C) to (2:C, 0:H, 1:W)"""
+
+    def forward(self, vid: torch.Tensor) -> torch.Tensor:
+        return vid.permute(2, 0, 1)
+
+
 class Uint8ToFloat(torch.nn.Module):
     def forward(self, tensor: torch.Tensor) -> torch.Tensor:
         return tensor / 255.0
