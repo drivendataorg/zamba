@@ -30,8 +30,6 @@ def depth_transforms(size):
             ConvertHWCtoCHW(),
             # resize to desired height and width
             Resize(size),
-            # divide by 255
-            Uint8ToFloat(),
         ]
     )
 
@@ -95,10 +93,12 @@ class DepthDataset(torch.utils.data.Dataset):
                                     (self.height, self.width, self.channels), dtype=int
                                 )
 
-                            # transform puts channels first, resizes, divides by 255
+                            # transform puts channels first and resizes
                             cached_frames[video_filepath][f"frame_{i}"] = transform(
                                 torch.tensor(selected_frame)
                             ).numpy()
+
+                            del selected_frame
 
                     # iterate over detections in frame to create universal detection ID
                     for i, (detection, score) in enumerate(zip(detections, scores)):
@@ -113,6 +113,7 @@ class DepthDataset(torch.utils.data.Dataset):
                         )
 
             del arr
+            del detections_per_frame
 
         self.detection_dict = detection_dict
         self.detection_indices = list(detection_dict.keys())
@@ -138,7 +139,8 @@ class DepthDataset(torch.utils.data.Dataset):
             [self.cached_frames[det_video][f"frame_{det_frame + i}"] for i in self.order]
         )
 
-        tensor = torch.from_numpy(input)
+        # to tensor and normalize
+        tensor = torch.from_numpy(input) / 255.0
 
         # keep track of video name and time as well
         return tensor, det_video, det_frame
