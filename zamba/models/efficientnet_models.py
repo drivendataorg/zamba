@@ -19,7 +19,6 @@ class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
     def __init__(
         self, num_frames=16, finetune_from: Optional[Union[os.PathLike, str]] = None, **kwargs
     ):
-
         super().__init__(**kwargs)
 
         if finetune_from is None:

@@ -65,7 +65,6 @@ def assert_megadetector_total_or_none(original_video_metadata, video_shape, **kw
 
 
 def assert_no_frames_or_correct_shape(original_video_metadata, video_shape, **kwargs):
-
     return (video_shape["frames"] == 0) or (
         (video_shape["height"] == kwargs["frame_selection_height"])
         and (video_shape["width"] == kwargs["frame_selection_width"])

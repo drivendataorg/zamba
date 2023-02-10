@@ -390,7 +390,6 @@ def predict_model(
     }
 
     if predict_config.save is not False:
-
         config_path = predict_config.save_dir / "predict_configuration.yaml"
         logger.info(f"Writing out full configuration to {config_path}.")
         with config_path.open("w") as fp:
@@ -415,7 +414,6 @@ def predict_model(
         df = df.round(5)
 
     if predict_config.save is not False:
-
         preds_path = predict_config.save_dir / "zamba_predictions.csv"
         logger.info(f"Saving out predictions to {preds_path}.")
         with preds_path.open("w") as fp:

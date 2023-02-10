@@ -148,7 +148,6 @@ def check_files_exist_and_load(
 
     bad_load = []
     if not skip_load_validation:
-
         logger.info(
             "Checking that all videos can be loaded. If you're very confident all your videos can be loaded, you can skip this with `skip_load_validation`, but it's not recommended."
         )
@@ -503,7 +502,6 @@ class TrainConfig(ZambaBaseModel):
 
         # validate split column has no partial nulls or invalid values
         if "split" in labels.columns:
-
             # if split is entirely null, warn, drop column, and generate splits automatically
             if labels.split.isnull().all():
                 logger.warning(
@@ -559,7 +557,6 @@ class TrainConfig(ZambaBaseModel):
         )
 
         if not provided_species.issubset(model_species):
-
             # if labels are not a subset, user cannot set use_default_model_labels to True
             if values["use_default_model_labels"]:
                 raise ValueError(
@@ -677,7 +674,6 @@ def make_split(labels, values):
             species_df = labels[labels[c] > 0]
 
             if len(species_df):
-
                 # within each species, seed splits by putting one video in each set and then allocate videos based on split proportions
                 labels.loc[species_df.index, "split"] = expected_splits + random.choices(
                     list(values["split_proportions"].keys()),

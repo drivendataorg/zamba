@@ -36,7 +36,6 @@ def depth_transforms(size):
 
 class DepthDataset(torch.utils.data.Dataset):
     def __init__(self, filepaths):
-
         # these are hardcoded because they depend on the trained model weights used for inference
         self.height = 270
         self.width = 480
@@ -55,7 +54,6 @@ class DepthDataset(torch.utils.data.Dataset):
 
         logger.info(f"Running object detection on {len(filepaths)} videos.")
         for video_filepath in tqdm(filepaths):
-
             # get video array at 1 fps, use full size for detecting objects
             logger.debug(f"Loading video: {video_filepath}")
             try:
@@ -73,7 +71,6 @@ class DepthDataset(torch.utils.data.Dataset):
 
             # iterate over frames
             for frame_idx, (detections, scores) in enumerate(detections_per_frame):
-
                 # if anything is detected in the frame, save out relevant frames
                 if len(detections) > 0:
                     logger.debug(f"{len(detections)} detection(s) found at second {frame_idx}.")
@@ -234,7 +231,10 @@ class DepthEstimationManager:
                     for d, vid, t in zip(distance.cpu().numpy(), filepath, time):
                         predictions.append((vid, t, d))
 
-        predictions = pd.DataFrame(predictions, columns=["filepath", "time", "distance"],).round(
+        predictions = pd.DataFrame(
+            predictions,
+            columns=["filepath", "time", "distance"],
+        ).round(
             {"distance": 1}
         )  # round to useful number of decimal places
 
