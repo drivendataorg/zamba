@@ -64,7 +64,6 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
     mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
 
     for command in [minimum_valid_train, minimum_valid_predict]:
-
         # check default model is time distributed one
         result = runner.invoke(app, command)
         assert result.exit_code == 0
