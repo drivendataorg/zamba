@@ -83,8 +83,12 @@ exclude = '''
 )
 '''
 
+[tool.coverage.run]
+source = ["zamba"]
+
 [tool.coverage.report]
 include = ["zamba/**/*.py"]
+omit = ["zamba/**/__*.py"]
 
 [tool.mypy]
 ignore_missing_imports = true
