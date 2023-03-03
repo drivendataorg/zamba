@@ -2,5 +2,3 @@
 
 -r requirements-dev/docs.txt
 -r requirements-dev/lint.txt
-
-build

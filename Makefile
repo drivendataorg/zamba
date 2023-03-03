@@ -52,6 +52,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 dist: clean ## builds source and wheel package
+	pip install build
 	python -m build
 	ls -l dist
 
