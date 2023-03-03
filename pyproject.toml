@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "zamba"
 version = "2.3.0"
-author = [
+authors = [
   {name = "DrivenData", email = "info@drivendata.org"}
 ]
 description = "Zamba is a command line tool and Python package to identify animals in camera trap videos and train custom models for new species and habitats."
@@ -83,20 +83,13 @@ exclude = '''
 )
 '''
 
-# does this need to be in a list?
-# should we have "run" defined as well?
 [tool.coverage.report]
-include = "zamba/**/*.py"
+include = ["zamba/**/*.py"]
 
 [tool.mypy]
 ignore_missing_imports = true
 allow_redefinition = true
 
 [tool.pytest.ini_options]
-testpaths = "tests/"
+testpaths = ["tests/"]
 addopts = "--cov-append --cov=zamba --cov-report=term --cov-report=html --cov-report=xml"
-
-# anything to do here?
-# [options]
-# include_package_data = True
-# packages = find:
