@@ -36,7 +36,7 @@ dependencies = [
   "pydantic",
   "python-dotenv",
   "pytorch-lightning>=1.6.0",
-  "pytorchvideo @ git+https://github.com/facebookresearch/pytorchvideo",
+  "pytorchvideo",
   "scikit-learn",
   "tensorboard",
   "thop==0.0.31.post2005241907",
