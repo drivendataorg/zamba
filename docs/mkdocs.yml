@@ -78,6 +78,7 @@ plugins:
       default_handler: python
       handlers:
         python:
+          paths: [..]
           selection:
             filters: ["!^_(?!_init__)"]
             inherited_members: true
