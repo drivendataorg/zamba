@@ -66,10 +66,10 @@ densepose = [
 ]
 
 [project.urls]
-homepage = "https://github.com/drivendataorg/zamba"
-bug_tracker = "https://github.com/drivendataorg/zamba/issues"
-documentation = "https://zamba.drivendata.org/docs/stable/"
-changelog = "https://github.com/drivendataorg/zamba/blob/master/HISTORY.md"
+"Homepage" = "https://github.com/drivendataorg/zamba"
+"Documentation" = "https://zamba.drivendata.org/docs/stable/"
+"Bug Tracker" = "https://github.com/drivendataorg/zamba/issues"
+"Changelog" = "https://github.com/drivendataorg/zamba/blob/master/HISTORY.md"
 
 [tool.black]
 line-length = 99
