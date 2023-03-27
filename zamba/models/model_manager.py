@@ -13,6 +13,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.strategies import DDPStrategy
+from pytorch_lightning.tuner import Tuner
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
@@ -284,7 +285,6 @@ def train_model(
         accelerator=accelerator,
         devices=devices,
         max_epochs=train_config.max_epochs,
-        auto_lr_find=train_config.auto_lr_find,
         logger=tensorboard_logger,
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
@@ -300,7 +300,8 @@ def train_model(
 
     if train_config.auto_lr_find:
         logger.info("Finding best learning rate.")
-        trainer.tune(model, data_module)
+        tuner = Tuner(trainer)
+        tuner.lr_find(model=model, datamodule=data_module)
 
     try:
         git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
