@@ -16,7 +16,7 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
   "appdirs",
   "av",
@@ -25,7 +25,6 @@ dependencies = [
   "future",
   "fvcore",
   "gitpython",
-  "importlib_metadata ; python_version < '3.8'",
   "loguru",
   "numpy",
   "opencv-python-headless",
