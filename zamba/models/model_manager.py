@@ -289,7 +289,7 @@ def train_model(
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
         strategy=DDPStrategy(find_unused_parameters=False)
-        if (data_module.multiprocessing_context is not None) and (train_config.gpus > 0)
+        if (data_module.multiprocessing_context is not None) and (train_config.gpus > 1)
         else "auto",
     )
 
