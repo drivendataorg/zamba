@@ -24,7 +24,11 @@ from zamba.models.config import (
     PredictConfig,
 )
 from zamba.models.registry import available_models
-from zamba.models.utils import get_checkpoint_hparams, get_default_hparams
+from zamba.models.utils import (
+    configure_accelerator_and_devices_from_gpus,
+    get_checkpoint_hparams,
+    get_default_hparams,
+)
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
 
@@ -274,8 +278,11 @@ def train_model(
     if train_config.backbone_finetune_config is not None:
         callbacks.append(BackboneFinetuning(**train_config.backbone_finetune_config.dict()))
 
+    accelerator, devices = configure_accelerator_and_devices_from_gpus(train_config.gpus)
+
     trainer = pl.Trainer(
-        gpus=train_config.gpus,
+        accelerator=accelerator,
+        devices=devices,
         max_epochs=train_config.max_epochs,
         auto_lr_find=train_config.auto_lr_find,
         logger=tensorboard_logger,
@@ -283,7 +290,7 @@ def train_model(
         fast_dev_run=train_config.dry_run,
         strategy=DDPStrategy(find_unused_parameters=False)
         if data_module.multiprocessing_context is not None
-        else None,
+        else "auto",
     )
 
     if video_loader_config.cache_dir is None:
@@ -377,8 +384,13 @@ def predict_model(
     else:
         logger.info(f"Videos will be cached to {video_loader_config.cache_dir}.")
 
+    accelerator, devices = configure_accelerator_and_devices_from_gpus(predict_config.gpus)
+
     trainer = pl.Trainer(
-        gpus=predict_config.gpus, logger=False, fast_dev_run=predict_config.dry_run
+        accelerator=accelerator,
+        devices=devices,
+        logger=False,
+        fast_dev_run=predict_config.dry_run,
     )
 
     configuration = {

@@ -75,3 +75,14 @@ def get_model_species(checkpoint, model_name):
     else:
         model_species = get_default_hparams(model_name)["species"]
     return model_species
+
+
+def configure_accelerator_and_devices_from_gpus(gpus):
+    """Derive accelerator and number of devices for pl.Trainer from user-specified number of gpus."""
+    if gpus > 0:
+        accelerator = "gpu"
+        devices = gpus
+    else:
+        accelerator = "cpu"
+        devices = "auto"
+    return accelerator, devices
