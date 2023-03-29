@@ -1,5 +1,10 @@
 # `zamba` changelog
 
+## v2.3.1 (2023-03-29)
+
+* Code updates for PyTorch Lightning v2.0.0 ([PR #266](https://github.com/drivendataorg/zamba/pull/266))
+* Switch to pyproject.toml-based build and other requirement updates ([PR #262](https://github.com/drivendataorg/zamba/pull/262), [PR #254](https://github.com/drivendataorg/zamba/pull/254), [PR #255](https://github.com/drivendataorg/zamba/pull/255), [PR #260](https://github.com/drivendataorg/zamba/pull/260))
+
 ## v2.3.0 (2022-12-01)
 
 ### Model release
