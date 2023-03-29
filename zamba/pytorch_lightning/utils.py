@@ -152,6 +152,10 @@ class ZambaVideoClassificationLightningModule(LightningModule):
         self.save_hyperparameters("lr", "scheduler", "scheduler_params", "species")
         self.hparams["model_class"] = self.model_class
 
+        self.training_step_outputs = []
+        self.validation_step_outputs = []
+        self.test_step_outputs = []
+
     def forward(self, x):
         return self.model(x)
 
@@ -173,9 +177,10 @@ class ZambaVideoClassificationLightningModule(LightningModule):
         y_hat = self(x)
         loss = F.binary_cross_entropy_with_logits(y_hat, y)
         self.log("train_loss", loss.detach())
+        self.training_step_outputs.append(loss)
         return loss
 
-    def validation_step(self, batch, batch_idx):
+    def _val_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
         loss = F.binary_cross_entropy_with_logits(y_hat, y)
@@ -187,6 +192,16 @@ class ZambaVideoClassificationLightningModule(LightningModule):
             "y_pred": y_proba.round().astype(int),
             "y_proba": y_proba,
         }
+
+    def validation_step(self, batch, batch_idx):
+        output = self._val_step(batch, batch_idx)
+        self.validation_step_outputs.append(output)
+        return output
+
+    def test_step(self, batch, batch_idx):
+        output = self._val_step(batch, batch_idx)
+        self.test_step_outputs.append(output)
+        return output
 
     @staticmethod
     def aggregate_step_outputs(
@@ -229,7 +244,7 @@ class ZambaVideoClassificationLightningModule(LightningModule):
         ):
             self.log(f"species/{subset}_{metric_name}/{label}", metric)
 
-    def validation_epoch_end(self, outputs: List[Dict[str, np.ndarray]]):
+    def on_validation_epoch_end(self):
         """Aggregates validation_step outputs to compute and log the validation macro F1 and top K
         metrics.
 
@@ -237,15 +252,14 @@ class ZambaVideoClassificationLightningModule(LightningModule):
             outputs (List[dict]): list of output dictionaries from each validation step
                 containing y_pred and y_true.
         """
-        y_true, y_pred, y_proba = self.aggregate_step_outputs(outputs)
+        y_true, y_pred, y_proba = self.aggregate_step_outputs(self.validation_step_outputs)
         self.compute_and_log_metrics(y_true, y_pred, y_proba, subset="val")
+        self.validation_step_outputs.clear()  # free memory
 
-    def test_step(self, batch, batch_idx):
-        return self.validation_step(batch, batch_idx)
-
-    def test_epoch_end(self, outputs: List[Dict[str, np.ndarray]]):
-        y_true, y_pred, y_proba = self.aggregate_step_outputs(outputs)
+    def on_test_epoch_end(self):
+        y_true, y_pred, y_proba = self.aggregate_step_outputs(self.test_step_outputs)
         self.compute_and_log_metrics(y_true, y_pred, y_proba, subset="test")
+        self.test_step_outputs.clear()  # free memory
 
     def predict_step(self, batch, batch_idx, dataloader_idx: Optional[int] = None):
         x, y = batch

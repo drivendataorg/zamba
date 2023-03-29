@@ -29,7 +29,7 @@ Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
 
 First, make sure you have the prerequisites installed:
 
-* Python 3.7 or 3.8
+* Python 3.8 or 3.9
 * FFmpeg > 4.3
 
 Then run:

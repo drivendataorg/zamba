@@ -13,6 +13,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.strategies import DDPStrategy
+from pytorch_lightning.tuner import Tuner
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
@@ -24,7 +25,11 @@ from zamba.models.config import (
     PredictConfig,
 )
 from zamba.models.registry import available_models
-from zamba.models.utils import get_checkpoint_hparams, get_default_hparams
+from zamba.models.utils import (
+    configure_accelerator_and_devices_from_gpus,
+    get_checkpoint_hparams,
+    get_default_hparams,
+)
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
 
@@ -274,16 +279,18 @@ def train_model(
     if train_config.backbone_finetune_config is not None:
         callbacks.append(BackboneFinetuning(**train_config.backbone_finetune_config.dict()))
 
+    accelerator, devices = configure_accelerator_and_devices_from_gpus(train_config.gpus)
+
     trainer = pl.Trainer(
-        gpus=train_config.gpus,
+        accelerator=accelerator,
+        devices=devices,
         max_epochs=train_config.max_epochs,
-        auto_lr_find=train_config.auto_lr_find,
         logger=tensorboard_logger,
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
         strategy=DDPStrategy(find_unused_parameters=False)
-        if data_module.multiprocessing_context is not None
-        else None,
+        if (data_module.multiprocessing_context is not None) and (train_config.gpus > 1)
+        else "auto",
     )
 
     if video_loader_config.cache_dir is None:
@@ -293,7 +300,8 @@ def train_model(
 
     if train_config.auto_lr_find:
         logger.info("Finding best learning rate.")
-        trainer.tune(model, data_module)
+        tuner = Tuner(trainer)
+        tuner.lr_find(model=model, datamodule=data_module)
 
     try:
         git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
@@ -377,8 +385,13 @@ def predict_model(
     else:
         logger.info(f"Videos will be cached to {video_loader_config.cache_dir}.")
 
+    accelerator, devices = configure_accelerator_and_devices_from_gpus(predict_config.gpus)
+
     trainer = pl.Trainer(
-        gpus=predict_config.gpus, logger=False, fast_dev_run=predict_config.dry_run
+        accelerator=accelerator,
+        devices=devices,
+        logger=False,
+        fast_dev_run=predict_config.dry_run,
     )
 
     configuration = {

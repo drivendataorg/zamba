@@ -9,10 +9,10 @@ GPU configurations.
 
 Prerequisites:
 
- - Python 3.7 or 3.8
+ - Python 3.8 or 3.9
  - FFmpeg
 
-#### [Python](https://www.python.org/) 3.7 or 3.8
+#### [Python](https://www.python.org/) 3.8 or 3.9
 
 We recommend [Python installation using Anaconda](https://www.anaconda.com/download/) for all platforms. For more information about how to install Anaconda, here are some useful YouTube videos of installation:
 

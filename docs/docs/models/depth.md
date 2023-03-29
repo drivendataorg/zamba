@@ -23,7 +23,7 @@ The output of the depth estimation model is a csv with the following columns:
 - `time`: seconds from the start of the video
 - `distance`: distance between detected animal and the camera
 
-There will be multiple rows per timestamp if there are multiple animals detected in the frame. If there is no animal in the frame, the distance will be null.
+There will be multiple rows per timestamp if there are multiple animals detected in the frame. Due to current limitations of the algorithm, the distance for all animals in the frame will be the same. If there is no animal in the frame, the distance will be null.
 
 For example, the first few rows of the `depth_predictions.csv` might look like this:
 
