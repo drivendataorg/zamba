@@ -19,7 +19,7 @@
         <link rel="next" href="../object-detection-megadetector_lite_yolox/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.1">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.4">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.402914a4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.240905d7.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -1590,6 +1590,45 @@
 
 
 
+<h3 id="zamba.models.utils.configure_accelerator_and_devices_from_gpus" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">configure_accelerator_and_devices_from_gpus</span><span class="p">(</span><span class="n">gpus</span><span class="p">)</span></code>
+
+<a href="#zamba.models.utils.configure_accelerator_and_devices_from_gpus" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Derive accelerator and number of devices for pl.Trainer from user-specified number of gpus.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>zamba/models/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">configure_accelerator_and_devices_from_gpus</span><span class="p">(</span><span class="n">gpus</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Derive accelerator and number of devices for pl.Trainer from user-specified number of gpus.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gpus</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">accelerator</span> <span class="o">=</span> <span class="s2">&quot;gpu&quot;</span>
+        <span class="n">devices</span> <span class="o">=</span> <span class="n">gpus</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">accelerator</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+        <span class="n">devices</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+    <span class="k">return</span> <span class="n">accelerator</span><span class="p">,</span> <span class="n">devices</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h3 id="zamba.models.utils.download_weights" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">download_weights</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">weight_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">Path</span></code>
 
@@ -1812,7 +1851,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b78d2936.min.js"></script>
+      <script src="../../assets/javascripts/bundle.19047be9.min.js"></script>
       
     
   </body>
