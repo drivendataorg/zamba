@@ -29,7 +29,7 @@ dependencies = [
   "numpy",
   "opencv-python-headless",
   "openpyxl",
-  "pandas>1.2.0",
+  "pandas>=2.0.0",
   "pandas_path",
   "pqdm",
   "pydantic",
