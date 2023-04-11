@@ -138,8 +138,14 @@ def test_extra_column(tmp_path, labels_absolute_path):
 def test_one_video_does_not_exist(tmp_path, labels_absolute_path, caplog):
     files_df = pd.read_csv(labels_absolute_path)
     # add a fake file
-    files_df = files_df.append(
-        {"filepath": "fake_file.mp4", "label": "gorilla", "split": "train"}, ignore_index=True
+    files_df = pd.concat(
+        [
+            files_df,
+            pd.DataFrame(
+                {"filepath": "fake_file.mp4", "label": "gorilla", "split": "train"}, index=[0]
+            ),
+        ],
+        ignore_index=True,
     )
     files_df.to_csv(tmp_path / "labels_with_fake_video.csv")
 
@@ -161,8 +167,14 @@ def test_videos_cannot_be_loaded(tmp_path, labels_absolute_path, caplog):
     for i in np.arange(2):
         bad_file = tmp_path / f"bad_file_{i}.mp4"
         bad_file.touch()
-        files_df = files_df.append(
-            {"filepath": bad_file, "label": "gorilla", "split": "train"}, ignore_index=True
+        files_df = pd.concat(
+            [
+                files_df,
+                pd.DataFrame(
+                    {"filepath": bad_file, "label": "gorilla", "split": "train"}, index=[0]
+                ),
+            ],
+            ignore_index=True,
         )
 
     files_df.to_csv(tmp_path / "labels_with_non_loadable_videos.csv")
@@ -337,7 +349,9 @@ def test_predict_dry_run_and_save(labels_absolute_path, caplog, tmp_path):
 def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplog):
     filepaths = pd.read_csv(labels_absolute_path, usecols=["filepath"])
     # add duplicate filepath
-    filepaths.append(filepaths.loc[0]).to_csv(tmp_path / "filepaths_with_dupe.csv")
+    pd.concat([filepaths, filepaths.loc[[0]]], ignore_index=True).to_csv(
+        tmp_path / "filepaths_with_dupe.csv"
+    )
 
     PredictConfig(filepaths=tmp_path / "filepaths_with_dupe.csv")
     assert "Found 1 duplicate row(s) in filepaths csv. Dropping duplicates" in caplog.text
