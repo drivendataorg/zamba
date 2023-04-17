@@ -236,6 +236,12 @@ def test_binary_labels_no_blank(labels_absolute_path, tmp_path):
     # first column alphabetically is kept when blank is not present
     assert labels_df.filter(regex="species_").columns == ["species_antelope_duiker"]
 
+def test_labels_no_proportions(labels_absolute_path, tmp_path, caplog):
+    labels = pd.read_csv(labels_absolute_path)
+    labels.loc[0, "split"] = "train"
+    # If a user just provides a split column, they'll get the default split proportions.
+    TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
+    assert "Labels contains split column yet split_proportions are also provided. Split column in labels takes precedence." not in caplog.text
 
 def test_binary_labels_with_blank(labels_absolute_path, tmp_path):
     labels = pd.read_csv(labels_absolute_path)

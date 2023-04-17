@@ -436,13 +436,17 @@ class TrainConfig(ZambaBaseModel):
     max_epochs: Optional[int] = None
     early_stopping_config: Optional[EarlyStoppingConfig] = EarlyStoppingConfig()
     weight_download_region: RegionEnum = "us"
-    split_proportions: Optional[Dict[str, int]] = {"train": 3, "val": 1, "holdout": 1}
+    split_proportions: Optional[Dict[str, int]] = {"train": 9999, "val": 1, "holdout": 1}
     save_dir: Path = Path.cwd()
     overwrite: bool = False
     skip_load_validation: bool = False
     from_scratch: bool = False
     use_default_model_labels: Optional[bool] = None
     model_cache_dir: Optional[Path] = None
+    default: bool = False
+    if split_proportions["train"] == 9999:
+        default = True
+        split_proportions["train"] = 3
 
     class Config:
         arbitrary_types_allowed = True
@@ -522,11 +526,12 @@ class TrainConfig(ZambaBaseModel):
                 )
 
             elif values["split_proportions"] is not None:
-                logger.warning(
-                    "Labels contains split column yet split_proportions are also provided. Split column in labels takes precedence."
-                )
-                # set to None for clarity in final configuration.yaml
-                values["split_proportions"] = None
+                if values["default"] is False:
+                    logger.warning(
+                        "Labels contains split column yet split_proportions are also provided. Split column in labels takes precedence."
+                    )
+                    # set to None for clarity in final configuration.yaml
+                    values["split_proportions"] = None
 
         # error if labels are entirely null
         null_labels = labels.label.isnull()
