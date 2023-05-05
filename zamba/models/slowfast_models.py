@@ -32,6 +32,7 @@ class SlowFast(ZambaVideoClassificationLightningModule):
         head_dropout_rate: Optional[float] = None,
         head_hidden_layer_sizes: Optional[Tuple[int]] = None,
         finetune_from: Optional[Union[os.PathLike, str]] = None,
+        map_location: Optional[str] = None,
         **kwargs,
     ):
         """Initializes the SlowFast model.
@@ -49,13 +50,15 @@ class SlowFast(ZambaVideoClassificationLightningModule):
                 head multilayer perceptron.
             finetune_from (pathlike or str, optional): If not None, load an existing model from
                 the path and resume training from an existing model.
+            map_location (str, optional): Map location for loading the finetune_from checkpoint.
+                Options are "cpu" or "cuda".
         """
         super().__init__(**kwargs)
 
         if finetune_from is None:
             self.initialize_from_torchub()
         else:
-            model = self.load_from_checkpoint(finetune_from)
+            model = self.load_from_checkpoint(finetune_from, map_location=map_location)
             self._backbone_output_dim = model.head.proj.in_features
             self.backbone = model.backbone
             self.base = model.base

@@ -87,11 +87,12 @@ def instantiate_model(
     else:
         device = "cpu"
 
+    hparams.update({"map_location": device})
+
     # predicting
     if labels is None:
-        # predict; load from checkpoint uses associated hparams
         logger.info("Loading from checkpoint.")
-        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, map_location=device)
+        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
         return model
 
     # get species from labels file
