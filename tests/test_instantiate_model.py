@@ -99,7 +99,6 @@ def test_use_default_model_labels(dummy_trained_model_checkpoint):
 def test_not_use_default_model_labels(dummy_trained_model_checkpoint):
     """Tests that training a model using labels that are a subset of the model species but
     with use_default_model_labels=False replaces the model head."""
-
     original_model = DummyZambaVideoClassificationLightningModule.from_disk(
         dummy_trained_model_checkpoint
     ).to("cpu")
