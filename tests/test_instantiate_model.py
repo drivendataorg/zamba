@@ -103,8 +103,6 @@ def test_not_use_default_model_labels(dummy_trained_model_checkpoint):
         dummy_trained_model_checkpoint
     )
 
-    # instantiate_model returns model on GPU if checkpoint is from PTL >= 2.0, was
-    # trained on GPU, and default model labels are being used (not the case here)
     model = instantiate_model(
         checkpoint=dummy_trained_model_checkpoint,
         scheduler_config="default",

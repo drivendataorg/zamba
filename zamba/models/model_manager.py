@@ -14,7 +14,6 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.strategies import DDPStrategy
 from pytorch_lightning.tuner import Tuner
-import torch
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
