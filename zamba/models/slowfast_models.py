@@ -49,8 +49,6 @@ class SlowFast(ZambaVideoClassificationLightningModule):
                 head multilayer perceptron.
             finetune_from (pathlike or str, optional): If not None, load an existing model from
                 the path and resume training from an existing model.
-            map_location (str, optional): Map location for loading the finetune_from checkpoint.
-                Options are "cpu" or "cuda".
         """
         super().__init__(**kwargs)
 

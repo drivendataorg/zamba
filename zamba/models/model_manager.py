@@ -14,7 +14,6 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.strategies import DDPStrategy
 from pytorch_lightning.tuner import Tuner
-import torch
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
@@ -79,8 +78,9 @@ def instantiate_model(
 
     # predicting
     if labels is None:
+        # predict; load from checkpoint uses associated hparams
         logger.info("Loading from checkpoint.")
-        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
+        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint)
         return model
 
     # get species from labels file
@@ -110,10 +110,8 @@ def instantiate_model(
             return resume_training(
                 scheduler_config=scheduler_config,
                 hparams=hparams,
-                species=species,
                 model_class=model_class,
                 checkpoint=checkpoint,
-                labels=labels,
             )
 
         else:
@@ -157,10 +155,8 @@ def replace_head(scheduler_config, hparams, species, model_class, checkpoint):
 def resume_training(
     scheduler_config,
     hparams,
-    species,
     model_class,
     checkpoint,
-    labels,
 ):
     # resume training; add additional species columns to labels file if needed
     logger.info(
