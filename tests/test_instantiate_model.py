@@ -101,7 +101,7 @@ def test_not_use_default_model_labels(dummy_trained_model_checkpoint):
     with use_default_model_labels=False replaces the model head."""
     original_model = DummyZambaVideoClassificationLightningModule.from_disk(
         dummy_trained_model_checkpoint
-    ).to("cpu")
+    )
 
     # instantiate_model returns model on GPU if checkpoint is from PTL >= 2.0, was
     # trained on GPU, and default model labels are being used (not the case here)

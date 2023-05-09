@@ -28,9 +28,7 @@ class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
             efficientnet = timm.create_model("efficientnetv2_rw_m", pretrained=True)
             efficientnet.classifier = nn.Identity()
         else:
-            efficientnet = self.load_from_checkpoint(
-                finetune_from, map_location=self.device
-            ).base.module
+            efficientnet = self.from_disk(finetune_from).base.module
 
         # freeze base layers
         for param in efficientnet.parameters():

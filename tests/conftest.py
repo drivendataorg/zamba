@@ -45,7 +45,7 @@ class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLight
             backbone = torch.nn.Linear(num_frames, num_hidden)
             torch.nn.init.ones_(backbone.weight)
         else:
-            backbone = self.load_from_checkpoint(finetune_from, map_location=self.device).backbone
+            backbone = self.from_disk(finetune_from).backbone
 
         for param in backbone.parameters():
             param.requires_grad = False

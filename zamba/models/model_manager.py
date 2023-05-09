@@ -42,7 +42,6 @@ def instantiate_model(
     from_scratch: Optional[bool] = None,
     model_name: Optional[ModelEnum] = None,
     use_default_model_labels: Optional[bool] = None,
-    gpus: Optional[int] = None,
 ) -> ZambaVideoClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
     The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
@@ -66,8 +65,6 @@ def instantiate_model(
             Only relevant if training from scratch.
         use_default_model_labels (bool, optional): Whether to output the full set of default model labels rather than
             just the species in the labels file. Only used if labels is not None.
-        gpus (int, optional): Number of gpus to use. If 0 is passed, cpu will be used. If None, gpus will be used
-            if detected.
 
     Returns:
         ZambaVideoClassificationLightningModule: Instantiated model
@@ -80,19 +77,10 @@ def instantiate_model(
     model_class = available_models[hparams["model_class"]]
     logger.info(f"Instantiating model: {model_class.__name__}")
 
-    if gpus is None:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-    elif gpus > 0:
-        device = "cuda"
-    else:
-        device = "cpu"
-
-    hparams.update({"map_location": device})
-
     # predicting
     if labels is None:
         logger.info("Loading from checkpoint.")
-        model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
+        model = model_class.from_disk(path=checkpoint, **hparams)
         return model
 
     # get species from labels file
@@ -178,7 +166,7 @@ def resume_training(
     if scheduler_config != "default":
         hparams.update(scheduler_config.dict())
 
-    model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
+    model = model_class.from_disk(path=checkpoint, **hparams)
     log_schedulers(model)
     return model
 
@@ -237,7 +225,6 @@ def train_model(
         from_scratch=train_config.from_scratch,
         model_name=train_config.model_name,
         use_default_model_labels=train_config.use_default_model_labels,
-        gpus=train_config.gpus,
     )
 
     data_module = ZambaDataModule(
@@ -377,7 +364,6 @@ def predict_model(
     # set up model
     model = instantiate_model(
         checkpoint=predict_config.checkpoint,
-        gpus=predict_config.gpus,
     )
 
     data_module = ZambaDataModule(
