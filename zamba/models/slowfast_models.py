@@ -32,7 +32,6 @@ class SlowFast(ZambaVideoClassificationLightningModule):
         head_dropout_rate: Optional[float] = None,
         head_hidden_layer_sizes: Optional[Tuple[int]] = None,
         finetune_from: Optional[Union[os.PathLike, str]] = None,
-        map_location: Optional[str] = None,
         **kwargs,
     ):
         """Initializes the SlowFast model.
@@ -58,7 +57,7 @@ class SlowFast(ZambaVideoClassificationLightningModule):
         if finetune_from is None:
             self.initialize_from_torchub()
         else:
-            model = self.load_from_checkpoint(finetune_from, map_location=map_location)
+            model = self.load_from_checkpoint(finetune_from, map_location=self.device)
             self._backbone_output_dim = model.head.proj.in_features
             self.backbone = model.backbone
             self.base = model.base
