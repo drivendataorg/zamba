@@ -91,7 +91,6 @@ def instantiate_model(
 
     # predicting
     if labels is None:
-        # predict; load from checkpoint uses associated hparams
         logger.info("Loading from checkpoint.")
         model = model_class.load_from_checkpoint(checkpoint_path=checkpoint, **hparams)
         return model
