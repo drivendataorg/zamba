@@ -19,7 +19,7 @@
         <link rel="next" href="../models-efficientnet_models/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
     
     
       
@@ -2560,7 +2560,7 @@
 
 
 <h5 id="zamba.models.densepose.densepose_manager.DensePoseManager.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s1">&#39;chimps&#39;</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.zamba_cache&#39;</span><span class="p">),</span> <span class="n">download_region</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">))</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s1">&#39;chimps&#39;</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.zamba_cache&#39;</span><span class="p">),</span> <span class="n">download_region</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">))</span></code>
 
 <a href="#zamba.models.densepose.densepose_manager.DensePoseManager.__init__" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -2570,7 +2570,7 @@
       <p>Create a DensePoseManager object.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.__init__--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.__init__--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="model-">
+<details class="model-" open>
   <summary>dict, optional (default MODELS['chimps'])</summary>
   <p>A dictionary with the densepose model defintion like those defined in MODELS.</p>
 </details>
@@ -2721,11 +2721,11 @@
     bounding box that correspond to each part of the anatomy in an image.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_image--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_image--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="visualized_img_arr-">
+<details class="visualized_img_arr-" open>
   <summary>numpy array (unit8) BGR</summary>
   <p>The numpy array the image after the texture has been visualized (by calling DensePoseManager.visualize_image).</p>
 </details>
-<details class="outputs-">
+<details class="outputs-" open>
   <summary>outputs</summary>
   <p>The outputs from running DensePoseManager.predict*</p>
 </details>      <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_image--returns">Returns<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_image--returns" title="Permanent link">&para;</a></h6>
@@ -2865,11 +2865,11 @@
     bounding box that correspond to each part of the anatomy in a video.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_video--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_video--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="visualized_video_arr-">
+<details class="visualized_video_arr-" open>
   <summary>numpy array (unit8) BGR</summary>
   <p>The numpy array the video after the texture has been visualized (by calling DensePoseManager.visualize_video).</p>
 </details>
-<details class="outputs-">
+<details class="outputs-" open>
   <summary>outputs</summary>
   <p>The outputs from running DensePoseManager.predict*</p>
 </details>      <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_video--returns">Returns<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.anatomize_video--returns" title="Permanent link">&para;</a></h6>
@@ -3069,7 +3069,7 @@
       <p>Main call to DensePose for inference. Runs inference on an image array.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.predict--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.predict--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="image_arr-">
+<details class="image_arr-" open>
   <summary>numpy array</summary>
   <p>BGR image array</p>
 </details>      <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.predict--returns">Returns<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.predict--returns" title="Permanent link">&para;</a></h6>
@@ -3132,7 +3132,7 @@
       <p>Run inference to get the densepose results for an image.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.predict_image--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.predict_image--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="image-">
+<details class="image-" open>
   <summary>image</summary>
   <p>numpy array (unit8) of an image in BGR format or path to an image</p>
 </details>      <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.predict_image--returns">Returns<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.predict_image--returns" title="Permanent link">&para;</a></h6>
@@ -3195,15 +3195,15 @@
       <p>Run inference to get the densepose results for a video.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.predict_video--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.predict_video--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="video-">
+<details class="video-" open>
   <summary>video</summary>
   <p>numpy array (uint8) of a a video in BGR layout with time dimension first or path to a video</p>
 </details>
-<details class="video_loader_config-">
+<details class="video_loader_config-" open>
   <summary>VideoLoaderConfig, optional</summary>
   <p>A video loader config for loading videos (uses all defaults except pix_fmt="bgr24")</p>
 </details>
-<details class="pbar-">
+<details class="pbar-" open>
   <summary>bool, optional</summary>
   <p>Whether to display a progress bar, by default True</p>
 </details>      <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.predict_video--returns">Returns<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.predict_video--returns" title="Permanent link">&para;</a></h6>
@@ -3283,11 +3283,11 @@
     be written and read with json.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.serialize_image_output--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.serialize_image_output--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="instances-">
+<details class="instances-" open>
   <summary>Instance</summary>
   <p>The output from the densepose model</p>
 </details>
-<details class="filename-">
+<details class="filename-" open>
   <summary>(str, Path), optional</summary>
   <p>If not None, the filename to write the output to, by default None</p>
 </details>
@@ -3472,15 +3472,15 @@
       <p>Visualize the pose information.</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.visualize_image--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.visualize_image--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="image_arr-">
+<details class="image_arr-" open>
   <summary>numpy array (unit8) BGR</summary>
   <p>The numpy array representing the image.</p>
 </details>
-<details class="outputs-">
+<details class="outputs-" open>
   <summary>outputs</summary>
   <p>The outputs from running DensePoseManager.predict*</p>
 </details>
-<details class="output_path-">
+<details class="output_path-" open>
   <summary>str or Path, optional</summary>
   <p>If not None, write visualization to this path; by default None</p>
 </details>      <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.visualize_image--returns">Returns<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.visualize_image--returns" title="Permanent link">&para;</a></h6>
@@ -3561,28 +3561,28 @@
       <p>Visualize the pose information on a video</p>
 <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.visualize_video--parameters">Parameters<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.visualize_video--parameters" title="Permanent link">&para;</a></h6>
 
-<details class="video_arr-">
+<details class="video_arr-" open>
   <summary>numpy array (unit8) BGR, time first</summary>
   <p>The numpy array representing the video.</p>
 </details>
-<details class="outputs-">
+<details class="outputs-" open>
   <summary>outputs</summary>
   <p>The outputs from running DensePoseManager.predict*</p>
 </details>
-<details class="output_path-">
+<details class="output_path-" open>
   <summary>str or Path, optional</summary>
   <p>If not None, write visualization to this path (should be .mp4); by default None</p>
 </details>
-<details class="frame_size-">
+<details class="frame_size-" open>
   <summary>(innt, float), optional</summary>
   <p>If frame_size is float, scale up or down by that float value; if frame_size is an integer,
 set width to that size and scale height appropriately.</p>
 </details>
-<details class="fps-">
+<details class="fps-" open>
   <summary>int</summary>
   <p>frames per second for output video if writing; defaults to 30</p>
 </details>
-<details class="pbar-">
+<details class="pbar-" open>
   <summary>bool</summary>
   <p>display a progress bar</p>
 </details>      <h6 id="zamba.models.densepose.densepose_manager.DensePoseManager.visualize_video--returns">Returns<a class="headerlink" href="#zamba.models.densepose.densepose_manager.DensePoseManager.visualize_video--returns" title="Permanent link">&para;</a></h6>
@@ -3812,7 +3812,7 @@ set width to that size and scale height appropriately.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.fac441b0.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
       
     
   </body>

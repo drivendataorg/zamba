@@ -19,7 +19,7 @@
         <link rel="next" href="../models-model_manager/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
     
     
       
@@ -1506,14 +1506,20 @@
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span>
-<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@register_model</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@register_model</span>
 <span class="k">class</span> <span class="nc">TimeDistributedEfficientNet</span><span class="p">(</span><span class="n">ZambaVideoClassificationLightningModule</span><span class="p">):</span>
     <span class="n">_default_model_name</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;time_distributed&quot;</span>  <span class="c1"># used to look up default configuration for checkpoints</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">num_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">finetune_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+        <span class="n">finetune_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -1521,7 +1527,7 @@
             <span class="n">efficientnet</span> <span class="o">=</span> <span class="n">timm</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s2">&quot;efficientnetv2_rw_m&quot;</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">efficientnet</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Identity</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">efficientnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_from_checkpoint</span><span class="p">(</span><span class="n">finetune_from</span><span class="p">)</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">module</span>
+            <span class="n">efficientnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_disk</span><span class="p">(</span><span class="n">finetune_from</span><span class="p">)</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">module</span>
 
         <span class="c1"># freeze base layers</span>
         <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">efficientnet</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
@@ -1631,7 +1637,7 @@
 
 
 <h5 id="zamba.models.efficientnet_models.TimeDistributedEfficientNet.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">num_frames</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">finetune_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">num_frames</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">finetune_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span></code>
 
 <a href="#zamba.models.efficientnet_models.TimeDistributedEfficientNet.__init__" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -1676,8 +1682,14 @@
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
-<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">num_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">finetune_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">num_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">finetune_from</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -1685,7 +1697,7 @@
         <span class="n">efficientnet</span> <span class="o">=</span> <span class="n">timm</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s2">&quot;efficientnetv2_rw_m&quot;</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">efficientnet</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Identity</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">efficientnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_from_checkpoint</span><span class="p">(</span><span class="n">finetune_from</span><span class="p">)</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">module</span>
+        <span class="n">efficientnet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_disk</span><span class="p">(</span><span class="n">finetune_from</span><span class="p">)</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">module</span>
 
     <span class="c1"># freeze base layers</span>
     <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">efficientnet</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
@@ -1733,10 +1745,10 @@
 
       <details class="quote">
         <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/efficientnet_models.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -1802,7 +1814,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.fac441b0.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
       
     
   </body>
