@@ -17,7 +17,10 @@ class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
     )
 
     def __init__(
-        self, num_frames=16, finetune_from: Optional[Union[os.PathLike, str]] = None, **kwargs
+        self,
+        num_frames=16,
+        finetune_from: Optional[Union[os.PathLike, str]] = None,
+        **kwargs,
     ):
         super().__init__(**kwargs)
 
@@ -25,7 +28,7 @@ class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
             efficientnet = timm.create_model("efficientnetv2_rw_m", pretrained=True)
             efficientnet.classifier = nn.Identity()
         else:
-            efficientnet = self.load_from_checkpoint(finetune_from).base.module
+            efficientnet = self.from_disk(finetune_from).base.module
 
         # freeze base layers
         for param in efficientnet.parameters():

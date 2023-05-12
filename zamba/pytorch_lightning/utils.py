@@ -303,5 +303,6 @@ class ZambaVideoClassificationLightningModule(LightningModule):
         torch.save(checkpoint, path)
 
     @classmethod
-    def from_disk(cls, path: os.PathLike):
-        return cls.load_from_checkpoint(path)
+    def from_disk(cls, path: os.PathLike, **kwargs):
+        # note: we always load models onto CPU; moving to GPU is handled by `devices` in pl.Trainer
+        return cls.load_from_checkpoint(path, map_location="cpu", **kwargs)
