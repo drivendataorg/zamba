@@ -1,5 +1,9 @@
 # `zamba` changelog
 
+## v2.3.2 (2023-07-17)
+
+* Pin Pydantic to less than v2.0 ([PR #277](https://github.com/drivendataorg/zamba/pull/277))
+
 ## v2.3.1 (2023-05-12)
 
 * Code updates for PyTorch Lightning v2.0.0 ([PR #266](https://github.com/drivendataorg/zamba/pull/266), [PR #272](https://github.com/drivendataorg/zamba/pull/272))
