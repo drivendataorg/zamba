@@ -19,7 +19,7 @@
         <link rel="next" href="../pytorch-dataloaders/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1483,18 +1483,20 @@
 
 
 <h3 id="zamba.object_detection.yolox.megadetector_lite_yolox.FillModeEnum" class="doc doc-heading">
-        <code>FillModeEnum</code>
+          <code>FillModeEnum</code>
 
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.FillModeEnum" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
 
   
       <p>Enum for frame filtering fill modes</p>
+
+
 
   <p><strong>Attributes:</strong></p>
   <table>
@@ -1510,34 +1512,49 @@
           <td><code>repeat</code></td>
           <td>
           </td>
-          <td><p>Randomly resample qualifying frames to get to n_frames</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Randomly resample qualifying frames to get to n_frames</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>score_sorted</code></td>
           <td>
           </td>
-          <td><p>Take up to n_frames in sort order (even if some have zero probability)</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Take up to n_frames in sort order (even if some have zero probability)</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>weighted_euclidean</code></td>
           <td>
           </td>
-          <td><p>Sample the remaining frames weighted by their euclidean distance in
-time to the frames over the threshold</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Sample the remaining frames weighted by their euclidean distance in
+time to the frames over the threshold</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>weighted_prob</code></td>
           <td>
           </td>
-          <td><p>Sample the remaining frames weighted by their predicted probability</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Sample the remaining frames weighted by their predicted probability</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
@@ -1567,7 +1584,7 @@ time to the frames over the threshold</p></td>
     <span class="n">weighted_euclidean</span> <span class="o">=</span> <span class="s2">&quot;weighted_euclidean&quot;</span>
     <span class="n">weighted_prob</span> <span class="o">=</span> <span class="s2">&quot;weighted_prob&quot;</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1587,8 +1604,8 @@ time to the frames over the threshold</p></td>
 <code class="highlight language-python"><span class="n">repeat</span> <span class="o">=</span> <span class="s1">&#39;repeat&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.FillModeEnum.repeat" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1607,8 +1624,8 @@ time to the frames over the threshold</p></td>
 <code class="highlight language-python"><span class="n">score_sorted</span> <span class="o">=</span> <span class="s1">&#39;score_sorted&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.FillModeEnum.score_sorted" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1627,8 +1644,8 @@ time to the frames over the threshold</p></td>
 <code class="highlight language-python"><span class="n">weighted_euclidean</span> <span class="o">=</span> <span class="s1">&#39;weighted_euclidean&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.FillModeEnum.weighted_euclidean" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1647,8 +1664,8 @@ time to the frames over the threshold</p></td>
 <code class="highlight language-python"><span class="n">weighted_prob</span> <span class="o">=</span> <span class="s1">&#39;weighted_prob&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.FillModeEnum.weighted_prob" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1674,7 +1691,7 @@ time to the frames over the threshold</p></td>
 
 
 <h3 id="zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloX" class="doc doc-heading">
-        <code>MegadetectorLiteYoloX</code>
+          <code>MegadetectorLiteYoloX</code>
 
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloX" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -1683,10 +1700,9 @@ time to the frames over the threshold</p></td>
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
@@ -2192,7 +2208,7 @@ time to the frames over the threshold</p></td>
 
         <span class="k">return</span> <span class="n">frames</span><span class="p">[</span><span class="n">selected_indices</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2282,6 +2298,7 @@ time to the frames over the threshold</p></td>
 
 <h4 id="zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloX-functions">Functions<a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloX-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2295,6 +2312,8 @@ time to the frames over the threshold</p></td>
   <div class="doc doc-contents ">
   
       <p>MegadetectorLite based on YOLOX.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2312,9 +2331,13 @@ time to the frames over the threshold</p></td>
           <td>
                 <code>pathlike</code>
           </td>
-          <td><p>Path to trained YoloX model checkpoint (.pth extension)</p></td>
           <td>
-                <code>LOCAL_MD_LITE_MODEL</code>
+            <div class="doc-md-description">
+              <p>Path to trained YoloX model checkpoint (.pth extension)</p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="zamba.object_detection.yolox.megadetector_lite_yolox.LOCAL_MD_LITE_MODEL" href="#zamba.object_detection.yolox.megadetector_lite_yolox.LOCAL_MD_LITE_MODEL">LOCAL_MD_LITE_MODEL</a></code>
           </td>
         </tr>
         <tr>
@@ -2322,7 +2345,11 @@ time to the frames over the threshold</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig" href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig">MegadetectorLiteYoloXConfig</a></code>
           </td>
-          <td><p>YoloX configuration</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>YoloX configuration</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -2330,9 +2357,9 @@ time to the frames over the threshold</p></td>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
 <span class="normal"> 80</span>
@@ -2394,10 +2421,11 @@ time to the frames over the threshold</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="n">yolox</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">num_classes</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2412,6 +2440,8 @@ time to the frames over the threshold</p></td>
   <div class="doc doc-contents ">
   
       <p>Runs object detection on an image.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2429,13 +2459,19 @@ time to the frames over the threshold</p></td>
           <td>
                 <code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>
           </td>
-          <td><p>An image array with dimensions (height, width, channels).</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>An image array with dimensions (height, width, channels).</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
         </tr>
     </tbody>
   </table>
+
+
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -2450,23 +2486,31 @@ time to the frames over the threshold</p></td>
           <td>
                 <code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>
           </td>
-          <td><p>np.ndarray: An array of bounding box detections with dimensions (object, 4) where
+          <td>
+            <div class="doc-md-description">
+              <p>np.ndarray: An array of bounding box detections with dimensions (object, 4) where
 object is the number of objects detected and the other 4 dimension are
-(x1, y1, x2, y1).</p></td>
+(x1, y1, x2, y1).</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td>
                 <code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>
           </td>
-          <td><p>np.ndarray: An array of object detection confidence scores of length (object) where
-object is the number of objects detected.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>np.ndarray: An array of object detection confidence scores of length (object) where
+object is the number of objects detected.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
@@ -2512,10 +2556,11 @@ object is the number of objects detected.</p></td>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_frame_output</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2530,6 +2575,8 @@ object is the number of objects detected.</p></td>
   <div class="doc doc-contents ">
   
       <p>Runs object detection on an video.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2547,7 +2594,11 @@ object is the number of objects detected.</p></td>
           <td>
                 <code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>
           </td>
-          <td><p>An video array with dimensions (frames, height, width, channels).</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>An video array with dimensions (frames, height, width, channels).</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2557,13 +2608,19 @@ object is the number of objects detected.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Whether to show progress bar. Defaults to False.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to show progress bar. Defaults to False.</p>
+            </div>
+          </td>
           <td>
                 <code>False</code>
           </td>
         </tr>
     </tbody>
   </table>
+
+
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -2577,18 +2634,22 @@ object is the number of objects detected.</p></td>
         <tr>
 <td><code>list</code></td>          <td>
           </td>
-          <td><p>A list containing detections and score for each frame. Each tuple contains two arrays:
+          <td>
+            <div class="doc-md-description">
+              <p>A list containing detections and score for each frame. Each tuple contains two arrays:
 the first is an array of bounding box detections with dimensions (object, 4) where
 object is the number of objects detected and the other 4 dimension are
 (x1, y1, x2, y1). The second is an array of object detection confidence scores of
-length (object) where object is the number of objects detected.</p></td>
+length (object) where object is the number of objects detected.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
@@ -2672,10 +2733,11 @@ length (object) where object is the number of objects detected.</p></td>
 
     <span class="k">return</span> <span class="n">detections</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2695,6 +2757,8 @@ confidence threshold. If more than n_frames are above the threshold, the top n_f
 returned. Otherwise add to those over threshold based on fill_mode. If none of these
 conditions are met, returns all frames above the threshold.</p>
 
+
+
   <p><strong>Parameters:</strong></p>
   <table>
     <thead>
@@ -2711,8 +2775,12 @@ conditions are met, returns all frames above the threshold.</p>
           <td>
                 <code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>
           </td>
-          <td><p>Array of video frames to filter with dimensions (frames, height,
-width, channels)</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Array of video frames to filter with dimensions (frames, height,
+width, channels)</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2722,15 +2790,21 @@ width, channels)</p></td>
           <td>
                 <code>list of tuples</code>
           </td>
-          <td><p>List of detection results for each frame. Each element is
+          <td>
+            <div class="doc-md-description">
+              <p>List of detection results for each frame. Each element is
 a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
- probabilities, both as float</p></td>
+ probabilities, both as float</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
         </tr>
     </tbody>
   </table>
+
+
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -2745,14 +2819,18 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
           <td>
                 <code><span title="numpy">np</span>.<span title="numpy.ndarray">ndarray</span></code>
           </td>
-          <td><p>np.ndarray: An array of video frames of length n_frames or shorter</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>np.ndarray: An array of video frames of length n_frames or shorter</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">234</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">234</span>
 <span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span>
@@ -2942,10 +3020,11 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
 
     <span class="k">return</span> <span class="n">frames</span><span class="p">[</span><span class="n">selected_indices</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2963,9 +3042,9 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
@@ -2991,7 +3070,7 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
         <span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -3009,18 +3088,20 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
 
 
 <h3 id="zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig" class="doc doc-heading">
-        <code>MegadetectorLiteYoloXConfig</code>
+          <code>MegadetectorLiteYoloXConfig</code>
 
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
   
       <p>Configuration for a MegadetectorLiteYoloX frame selection model</p>
+
+
 
   <p><strong>Attributes:</strong></p>
   <table>
@@ -3037,84 +3118,123 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
           <td>
                 <code>float</code>
           </td>
-          <td><p>Only consider object detections with this confidence or greater</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Only consider object detections with this confidence or greater</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>nms_threshold</code></td>
           <td>
                 <code>float</code>
           </td>
-          <td><p>Non-maximum suppression is a method for filtering many bounding
+          <td>
+            <div class="doc-md-description">
+              <p>Non-maximum suppression is a method for filtering many bounding
 boxes around the same object to a single bounding box. This is a constant that
-determines how much to suppress similar bounding boxes.</p></td>
+determines how much to suppress similar bounding boxes.</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>image_width</code></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Scale image to this width before sending to object detection model.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale image to this width before sending to object detection model.</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>image_height</code></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Scale image to this height before sending to object detection model.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale image to this height before sending to object detection model.</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>device</code></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Where to run the object detection model, "cpu" or "cuda".</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Where to run the object detection model, "cpu" or "cuda".</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>frame_batch_size</code></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of frames to predict on at once.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of frames to predict on at once.</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>n_frames</code></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Max number of frames to return. If None returns all frames above
-the threshold. Defaults to None.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Max number of frames to return. If None returns all frames above
+the threshold. Defaults to None.</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>fill_mode</code></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Mode for upsampling if the number of frames above the threshold
-is less than n_frames. Defaults to "repeat".</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Mode for upsampling if the number of frames above the threshold
+is less than n_frames. Defaults to "repeat".</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>sort_by_time</code></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Whether to sort the selected frames by time (original order)
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to sort the selected frames by time (original order)
 before returning. If False, returns frames sorted by score (descending). Defaults to
-True.</p></td>
+True.</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td><code>seed</code></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Random state for random number generator. Defaults to 55.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Random state for random number generator. Defaults to 55.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
 <span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
@@ -3184,7 +3304,7 @@ True.</p></td>
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -3204,8 +3324,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.confidence" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3224,8 +3344,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.device" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3244,8 +3364,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">fill_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FillModeEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">FillModeEnum</span><span class="o">.</span><span class="n">score_sorted</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.fill_mode" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3264,8 +3384,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">frame_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.frame_batch_size" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3284,8 +3404,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">image_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">640</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.image_height" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3304,8 +3424,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">image_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">640</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.image_width" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3324,8 +3444,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">n_frames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.n_frames" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3344,8 +3464,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">nms_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.nms_threshold" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3364,8 +3484,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">55</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.seed" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3384,8 +3504,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">sort_by_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.sort_by_time" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3402,7 +3522,7 @@ True.</p></td>
 
 
 <h5 id="zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.Config" class="doc doc-heading">
-        <code>Config</code>
+          <code>Config</code>
 
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3411,14 +3531,13 @@ True.</p></td>
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">72</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/object_detection/yolox/megadetector_lite_yolox.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">72</span>
 <span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -3438,8 +3557,8 @@ True.</p></td>
 <code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloXConfig.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
@@ -3514,10 +3633,10 @@ True.</p></td>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

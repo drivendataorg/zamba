@@ -19,7 +19,7 @@
         <link rel="next" href="../depth_config/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1516,18 +1516,20 @@
 
 
 <h3 id="zamba.models.config.BackboneFinetuneConfig" class="doc doc-heading">
-        <code>BackboneFinetuneConfig</code>
+          <code>BackboneFinetuneConfig</code>
 
 
 <a href="#zamba.models.config.BackboneFinetuneConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Configuration containing parameters to be used for backbone finetuning.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1545,8 +1547,12 @@
           <td>
                 <code>int</code>
           </td>
-          <td><p>Epoch at which the backbone
-will be unfrozen. Defaults to 5.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Epoch at which the backbone
+will be unfrozen. Defaults to 5.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1556,8 +1562,12 @@ will be unfrozen. Defaults to 5.</p></td>
           <td>
                 <code>float</code>
           </td>
-          <td><p>Used to scale down the backbone
-learning rate compared to rest of model. Defaults to 0.01.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Used to scale down the backbone
+learning rate compared to rest of model. Defaults to 0.01.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1567,8 +1577,12 @@ learning rate compared to rest of model. Defaults to 0.01.</p></td>
           <td>
                 <code>int or float</code>
           </td>
-          <td><p>Multiply the learning rate by a constant
-value at the end of each epoch. Defaults to 1.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Multiply the learning rate by a constant
+value at the end of each epoch. Defaults to 1.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1578,9 +1592,13 @@ value at the end of each epoch. Defaults to 1.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Train batch normalization layers prior to
+          <td>
+            <div class="doc-md-description">
+              <p>Train batch normalization layers prior to
 finetuning. False is recommended for slowfast models and True is recommended
-for time distributed models. Defaults to False.</p></td>
+for time distributed models. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1590,7 +1608,11 @@ for time distributed models. Defaults to False.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Make batch normalization trainable. Defaults to False.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Make batch normalization trainable. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1600,8 +1622,12 @@ for time distributed models. Defaults to False.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Display current learning rate for model and backbone.
-Defaults to True.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Display current learning rate for model and backbone.
+Defaults to True.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1609,10 +1635,9 @@ Defaults to True.</p></td>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">257</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">257</span>
 <span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
@@ -1660,7 +1685,7 @@ Defaults to True.</p></td>
     <span class="n">train_bn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># don&#39;t train bn layers in unfrozen finetuning layers</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1680,8 +1705,8 @@ Defaults to True.</p></td>
 <code class="highlight language-python"><span class="n">backbone_initial_ratio_lr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.BackboneFinetuneConfig.backbone_initial_ratio_lr" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1700,8 +1725,8 @@ Defaults to True.</p></td>
 <code class="highlight language-python"><span class="n">multiplier</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.BackboneFinetuneConfig.multiplier" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1720,8 +1745,8 @@ Defaults to True.</p></td>
 <code class="highlight language-python"><span class="n">pre_train_bn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.BackboneFinetuneConfig.pre_train_bn" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1740,8 +1765,8 @@ Defaults to True.</p></td>
 <code class="highlight language-python"><span class="n">train_bn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.BackboneFinetuneConfig.train_bn" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1760,8 +1785,8 @@ Defaults to True.</p></td>
 <code class="highlight language-python"><span class="n">unfreeze_backbone_at_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.BackboneFinetuneConfig.unfreeze_backbone_at_epoch" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1780,8 +1805,8 @@ Defaults to True.</p></td>
 <code class="highlight language-python"><span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.BackboneFinetuneConfig.verbose" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1791,7 +1816,113 @@ Defaults to True.</p></td>
   </div>
 
 </div>
+<h4 id="zamba.models.config.BackboneFinetuneConfig-classes">Classes<a href="#zamba.models.config.BackboneFinetuneConfig-classes" class="headerlink" title="Permanent link">&para;</a></h4>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.BackboneFinetuneConfig.Config" class="doc doc-heading">
+          <code>Config</code>
+
+
+<a href="#zamba.models.config.BackboneFinetuneConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+    <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="zamba.models.config.BackboneFinetuneConfig.Config-attributes">Attributes<a href="#zamba.models.config.BackboneFinetuneConfig.Config-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 
 
 
@@ -1807,18 +1938,20 @@ Defaults to True.</p></td>
 
 
 <h3 id="zamba.models.config.EarlyStoppingConfig" class="doc doc-heading">
-        <code>EarlyStoppingConfig</code>
+          <code>EarlyStoppingConfig</code>
 
 
 <a href="#zamba.models.config.EarlyStoppingConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Configuration containing parameters to be used for early stopping.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1836,8 +1969,12 @@ Defaults to True.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Metric to be monitored. Options are "val_macro_f1" or
-"val_loss". Defaults to "val_macro_f1".</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Metric to be monitored. Options are "val_macro_f1" or
+"val_loss". Defaults to "val_macro_f1".</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1847,8 +1984,12 @@ Defaults to True.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of epochs with no improvement after which training
-will be stopped. Defaults to 5.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of epochs with no improvement after which training
+will be stopped. Defaults to 5.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1858,7 +1999,11 @@ will be stopped. Defaults to 5.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Verbosity mode. Defaults to True.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Verbosity mode. Defaults to True.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1868,10 +2013,14 @@ will be stopped. Defaults to 5.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Options are "min" or "max". In "min" mode, training
+          <td>
+            <div class="doc-md-description">
+              <p>Options are "min" or "max". In "min" mode, training
 will stop when the quantity monitored has stopped decreasing and in
 "max" mode it will stop when the quantity monitored has stopped increasing.
-If None, mode will be inferred from monitor. Defaults to None.</p></td>
+If None, mode will be inferred from monitor. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1879,10 +2028,9 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">283</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">283</span>
 <span class="normal">284</span>
 <span class="normal">285</span>
 <span class="normal">286</span>
@@ -1944,7 +2092,7 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1964,8 +2112,8 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.EarlyStoppingConfig.mode" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1984,8 +2132,8 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">monitor</span><span class="p">:</span> <span class="n">MonitorEnum</span> <span class="o">=</span> <span class="s1">&#39;val_macro_f1&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.EarlyStoppingConfig.monitor" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2004,8 +2152,8 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.EarlyStoppingConfig.patience" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2024,8 +2172,8 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.EarlyStoppingConfig.verbose" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2035,8 +2183,115 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
   </div>
 
 </div>
+<h4 id="zamba.models.config.EarlyStoppingConfig-classes">Classes<a href="#zamba.models.config.EarlyStoppingConfig-classes" class="headerlink" title="Permanent link">&para;</a></h4>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.EarlyStoppingConfig.Config" class="doc doc-heading">
+          <code>Config</code>
+
+
+<a href="#zamba.models.config.EarlyStoppingConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+    <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="zamba.models.config.EarlyStoppingConfig.Config-attributes">Attributes<a href="#zamba.models.config.EarlyStoppingConfig.Config-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 <h4 id="zamba.models.config.EarlyStoppingConfig-functions">Functions<a href="#zamba.models.config.EarlyStoppingConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2050,9 +2305,9 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">303</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">303</span>
 <span class="normal">304</span>
 <span class="normal">305</span>
 <span class="normal">306</span>
@@ -2074,7 +2329,7 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2092,19 +2347,21 @@ If None, mode will be inferred from monitor. Defaults to None.</p></td>
 
 
 <h3 id="zamba.models.config.ModelConfig" class="doc doc-heading">
-        <code>ModelConfig</code>
+          <code>ModelConfig</code>
 
 
 <a href="#zamba.models.config.ModelConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Contains all configs necessary to use a model for training or inference.
 Must contain a train_config or a predict_config at a minimum.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2122,9 +2379,13 @@ Must contain a train_config or a predict_config at a minimum.</p>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.data.video.VideoLoaderConfig" href="../data-video/#zamba.data.video.VideoLoaderConfig">VideoLoaderConfig</a></code>
           </td>
-          <td><p>An instantiated VideoLoaderConfig.
+          <td>
+            <div class="doc-md-description">
+              <p>An instantiated VideoLoaderConfig.
 If None, will use default video loader config for model specified in TrainConfig or
-PredictConfig.</p></td>
+PredictConfig.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2134,8 +2395,12 @@ PredictConfig.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.TrainConfig" href="#zamba.models.config.TrainConfig">TrainConfig</a></code>
           </td>
-          <td><p>An instantiated TrainConfig.
-Defaults to None.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>An instantiated TrainConfig.
+Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2145,8 +2410,12 @@ Defaults to None.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.PredictConfig" href="#zamba.models.config.PredictConfig">PredictConfig</a></code>
           </td>
-          <td><p>An instantiated PredictConfig.
-Defaults to None.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>An instantiated PredictConfig.
+Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2154,10 +2423,9 @@ Defaults to None.</p></td>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">866</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">866</span>
 <span class="normal">867</span>
 <span class="normal">868</span>
 <span class="normal">869</span>
@@ -2249,7 +2517,7 @@ Defaults to None.</p></td>
 
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2269,8 +2537,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">predict_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PredictConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelConfig.predict_config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2289,8 +2557,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">train_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TrainConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelConfig.train_config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2309,8 +2577,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelConfig.video_loader_config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2327,7 +2595,7 @@ Defaults to None.</p></td>
 
 
 <h5 id="zamba.models.config.ModelConfig.Config" class="doc doc-heading">
-        <code>Config</code>
+          <code>Config</code>
 
 
 <a href="#zamba.models.config.ModelConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2336,14 +2604,13 @@ Defaults to None.</p></td>
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">884</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">884</span>
 <span class="normal">885</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">json_loads</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2363,8 +2630,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">json_loads</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelConfig.Config.json_loads" class="headerlink" title="Permanent link">&para;</a></h7>
@@ -2386,6 +2653,7 @@ Defaults to None.</p></td>
 </div>
 <h4 id="zamba.models.config.ModelConfig-functions">Functions<a href="#zamba.models.config.ModelConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2398,9 +2666,9 @@ Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">894</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">894</span>
 <span class="normal">895</span>
 <span class="normal">896</span>
 <span class="normal">897</span>
@@ -2436,10 +2704,11 @@ Defaults to None.</p></td>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2453,9 +2722,9 @@ Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">887</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">887</span>
 <span class="normal">888</span>
 <span class="normal">889</span>
 <span class="normal">890</span>
@@ -2467,7 +2736,7 @@ Defaults to None.</p></td>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2485,23 +2754,22 @@ Defaults to None.</p></td>
 
 
 <h3 id="zamba.models.config.ModelEnum" class="doc doc-heading">
-        <code>ModelEnum</code>
+          <code>ModelEnum</code>
 
 
 <a href="#zamba.models.config.ModelEnum" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
 
   
       <p>Shorthand names of models supported by zamba.</p>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
 <span class="normal">56</span>
@@ -2515,7 +2783,7 @@ Defaults to None.</p></td>
     <span class="n">european</span> <span class="o">=</span> <span class="s2">&quot;european&quot;</span>
     <span class="n">blank_nonblank</span> <span class="o">=</span> <span class="s2">&quot;blank_nonblank&quot;</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2535,8 +2803,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">blank_nonblank</span> <span class="o">=</span> <span class="s1">&#39;blank_nonblank&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelEnum.blank_nonblank" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2555,8 +2823,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">european</span> <span class="o">=</span> <span class="s1">&#39;european&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelEnum.european" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2575,8 +2843,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">slowfast</span> <span class="o">=</span> <span class="s1">&#39;slowfast&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelEnum.slowfast" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2595,8 +2863,8 @@ Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">time_distributed</span> <span class="o">=</span> <span class="s1">&#39;time_distributed&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ModelEnum.time_distributed" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2622,24 +2890,23 @@ Defaults to None.</p></td>
 
 
 <h3 id="zamba.models.config.MonitorEnum" class="doc doc-heading">
-        <code>MonitorEnum</code>
+          <code>MonitorEnum</code>
 
 
 <a href="#zamba.models.config.MonitorEnum" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code>str</code>, <code><span title="enum.Enum">Enum</span></code></p>
 
   
       <p>Validation metric to monitor for early stopping. Training is stopped when no
 improvement is observed.</p>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span>
@@ -2651,7 +2918,7 @@ improvement is observed.</p>
     <span class="n">val_macro_f1</span> <span class="o">=</span> <span class="s2">&quot;val_macro_f1&quot;</span>
     <span class="n">val_loss</span> <span class="o">=</span> <span class="s2">&quot;val_loss&quot;</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2671,8 +2938,8 @@ improvement is observed.</p>
 <code class="highlight language-python"><span class="n">val_loss</span> <span class="o">=</span> <span class="s1">&#39;val_loss&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.MonitorEnum.val_loss" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2691,8 +2958,8 @@ improvement is observed.</p>
 <code class="highlight language-python"><span class="n">val_macro_f1</span> <span class="o">=</span> <span class="s1">&#39;val_macro_f1&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.MonitorEnum.val_macro_f1" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2718,18 +2985,20 @@ improvement is observed.</p>
 
 
 <h3 id="zamba.models.config.PredictConfig" class="doc doc-heading">
-        <code>PredictConfig</code>
+          <code>PredictConfig</code>
 
 
 <a href="#zamba.models.config.PredictConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Configuration for using a model for inference.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2747,10 +3016,14 @@ improvement is observed.</p>
           <td>
                 <code><span title="pydantic.FilePath">FilePath</span></code>
           </td>
-          <td><p>Path to a CSV containing videos for inference, with
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a CSV containing videos for inference, with
 one row per video in the data_dir. There must be a column called
 'filepath' (absolute or relative to the data_dir). If None, uses
-all files in data_dir. Defaults to None.</p></td>
+all files in data_dir. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2760,8 +3033,12 @@ all files in data_dir. Defaults to None.</p></td>
           <td>
                 <code><span title="pydantic.DirectoryPath">DirectoryPath</span></code>
           </td>
-          <td><p>Path to a directory containing videos for
-inference. Defaults to the working directory.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a directory containing videos for
+inference. Defaults to the working directory.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2771,8 +3048,12 @@ inference. Defaults to the working directory.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Name of the model to use for inference. Options are:
-time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Name of the model to use for inference. Options are:
+time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2782,9 +3063,13 @@ time_distributed, slowfast, european, blank_nonblank. Defaults to time_distribut
           <td>
                 <code><span title="pydantic.FilePath">FilePath</span></code>
           </td>
-          <td><p>Path to a custom checkpoint file (.ckpt)
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a custom checkpoint file (.ckpt)
 generated by zamba that can be used to generate predictions. If None,
-defaults to a pretrained model. Defaults to None.</p></td>
+defaults to a pretrained model. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2794,8 +3079,12 @@ defaults to a pretrained model. Defaults to None.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of GPUs to use for inference.
-Defaults to all of the available GPUs found on the machine.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of GPUs to use for inference.
+Defaults to all of the available GPUs found on the machine.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2805,9 +3094,13 @@ Defaults to all of the available GPUs found on the machine.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of subprocesses to use for data loading. 0 means
+          <td>
+            <div class="doc-md-description">
+              <p>Number of subprocesses to use for data loading. 0 means
 that the data will be loaded in the main process. The maximum value is
-the number of CPUs in the system. Defaults to 3.</p></td>
+the number of CPUs in the system. Defaults to 3.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2817,7 +3110,11 @@ the number of CPUs in the system. Defaults to 3.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Batch size to use for inference. Defaults to 2.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Batch size to use for inference. Defaults to 2.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2827,8 +3124,12 @@ the number of CPUs in the system. Defaults to 3.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Whether to save out predictions. If False, predictions are
-not saved. Defaults to True.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to save out predictions. If False, predictions are
+not saved. Defaults to True.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2838,9 +3139,13 @@ not saved. Defaults to True.</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>An optional directory in which to save the model
+          <td>
+            <div class="doc-md-description">
+              <p>An optional directory in which to save the model
  predictions and configuration yaml. If no save_dir is specified and save=True,
- outputs will be written to the current working directory. Defaults to None.</p></td>
+ outputs will be written to the current working directory. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2850,8 +3155,12 @@ not saved. Defaults to True.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>If True, overwrite outputs in save_dir if they exist.
-Defaults to False.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>If True, overwrite outputs in save_dir if they exist.
+Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2861,8 +3170,12 @@ Defaults to False.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Perform inference on a single batch for testing. Predictions
-will not be saved. Defaults to False.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Perform inference on a single batch for testing. Predictions
+will not be saved. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2872,10 +3185,14 @@ will not be saved. Defaults to False.</p></td>
           <td>
                 <code>float</code>
           </td>
-          <td><p>Probability threshold for classification.
+          <td>
+            <div class="doc-md-description">
+              <p>Probability threshold for classification.
 If specified, binary predictions are returned with 1 being greater than the
 threshold and 0 being less than or equal to the threshold. If None, return
-probability scores for each species. Defaults to None.</p></td>
+probability scores for each species. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2885,9 +3202,13 @@ probability scores for each species. Defaults to None.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Output the species with the highest probability
+          <td>
+            <div class="doc-md-description">
+              <p>Output the species with the highest probability
 score as a single prediction for each video. If False, return probabilty
-scores for each species. Defaults to False.</p></td>
+scores for each species. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2897,9 +3218,13 @@ scores for each species. Defaults to False.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>s3 region to download pretrained weights from.
+          <td>
+            <div class="doc-md-description">
+              <p>s3 region to download pretrained weights from.
 Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
-Defaults to "us".</p></td>
+Defaults to "us".</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2909,11 +3234,15 @@ Defaults to "us".</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>By default, zamba runs a check to verify that
+          <td>
+            <div class="doc-md-description">
+              <p>By default, zamba runs a check to verify that
 all videos can be loaded and skips files that cannot be loaded. This can
 be time intensive, depending on how many videos there are. If you are very
 confident all your videos can be loaded, you can set this to True and skip
-this check. Defaults to False.</p></td>
+this check. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2923,9 +3252,13 @@ this check. Defaults to False.</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Cache directory where downloaded model weights
+          <td>
+            <div class="doc-md-description">
+              <p>Cache directory where downloaded model weights
 will be saved. If None and no environment variable is set, will use your
-default cache directory. Defaults to None.</p></td>
+default cache directory. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2933,10 +3266,9 @@ default cache directory. Defaults to None.</p></td>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">696</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">696</span>
 <span class="normal">697</span>
 <span class="normal">698</span>
 <span class="normal">699</span>
@@ -3272,7 +3604,7 @@ default cache directory. Defaults to None.</p></td>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -3292,8 +3624,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.batch_size" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3312,8 +3644,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.checkpoint" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3332,8 +3664,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.data_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3352,8 +3684,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.dry_run" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3372,8 +3704,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.filepaths" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3392,8 +3724,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">GPUS_AVAILABLE</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.gpus" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3412,8 +3744,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.model_cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3432,8 +3764,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModelEnum</span><span class="o">.</span><span class="n">time_distributed</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.model_name" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3452,8 +3784,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.num_workers" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3472,8 +3804,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">output_class_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.output_class_names" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3492,8 +3824,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.overwrite" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3512,8 +3844,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">proba_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.proba_threshold" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3532,8 +3864,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">save</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.save" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3552,8 +3884,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">save_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.save_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3572,8 +3904,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.skip_load_validation" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3592,8 +3924,8 @@ default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.PredictConfig.weight_download_region" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3603,8 +3935,115 @@ default cache directory. Defaults to None.</p></td>
   </div>
 
 </div>
+<h4 id="zamba.models.config.PredictConfig-classes">Classes<a href="#zamba.models.config.PredictConfig-classes" class="headerlink" title="Permanent link">&para;</a></h4>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.PredictConfig.Config" class="doc doc-heading">
+          <code>Config</code>
+
+
+<a href="#zamba.models.config.PredictConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+    <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="zamba.models.config.PredictConfig.Config-attributes">Attributes<a href="#zamba.models.config.PredictConfig.Config-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 <h4 id="zamba.models.config.PredictConfig-functions">Functions<a href="#zamba.models.config.PredictConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3618,9 +4057,9 @@ default cache directory. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">770</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">770</span>
 <span class="normal">771</span>
 <span class="normal">772</span>
 <span class="normal">773</span>
@@ -3644,10 +4083,11 @@ default cache directory. Defaults to None.</p></td>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3661,9 +4101,9 @@ default cache directory. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">836</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">836</span>
 <span class="normal">837</span>
 <span class="normal">838</span>
 <span class="normal">839</span>
@@ -3719,10 +4159,11 @@ default cache directory. Defaults to None.</p></td>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3736,9 +4177,9 @@ default cache directory. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">818</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">818</span>
 <span class="normal">819</span>
 <span class="normal">820</span>
 <span class="normal">821</span>
@@ -3764,10 +4205,11 @@ default cache directory. Defaults to None.</p></td>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3781,9 +4223,9 @@ default cache directory. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">783</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">783</span>
 <span class="normal">784</span>
 <span class="normal">785</span>
 <span class="normal">786</span>
@@ -3843,7 +4285,7 @@ default cache directory. Defaults to None.</p></td>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -3861,19 +4303,21 @@ default cache directory. Defaults to None.</p></td>
 
 
 <h3 id="zamba.models.config.SchedulerConfig" class="doc doc-heading">
-        <code>SchedulerConfig</code>
+          <code>SchedulerConfig</code>
 
 
 <a href="#zamba.models.config.SchedulerConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Configuration containing parameters for a custom pytorch learning rate scheduler.
 See https://pytorch.org/docs/stable/optim.html for options.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -3891,8 +4335,12 @@ See https://pytorch.org/docs/stable/optim.html for options.</p>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Name of learning rate scheduler to use. See
-https://pytorch.org/docs/stable/optim.html for options.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Name of learning rate scheduler to use. See
+https://pytorch.org/docs/stable/optim.html for options.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -3902,9 +4350,13 @@ https://pytorch.org/docs/stable/optim.html for options.</p></td>
           <td>
                 <code>dict</code>
           </td>
-          <td><p>Parameters passed to learning rate
+          <td>
+            <div class="doc-md-description">
+              <p>Parameters passed to learning rate
 scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
-"verbose": True}). Defaults to None.</p></td>
+"verbose": True}). Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -3912,10 +4364,9 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">316</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">316</span>
 <span class="normal">317</span>
 <span class="normal">318</span>
 <span class="normal">319</span>
@@ -3971,7 +4422,7 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">scheduler</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -4010,8 +4461,8 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 <code class="highlight language-python"><span class="n">scheduler_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.SchedulerConfig.scheduler_params" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -4021,8 +4472,115 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
   </div>
 
 </div>
+<h4 id="zamba.models.config.SchedulerConfig-classes">Classes<a href="#zamba.models.config.SchedulerConfig-classes" class="headerlink" title="Permanent link">&para;</a></h4>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.config.SchedulerConfig.Config" class="doc doc-heading">
+          <code>Config</code>
+
+
+<a href="#zamba.models.config.SchedulerConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+    <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="zamba.models.config.SchedulerConfig.Config-attributes">Attributes<a href="#zamba.models.config.SchedulerConfig.Config-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 <h4 id="zamba.models.config.SchedulerConfig-functions">Functions<a href="#zamba.models.config.SchedulerConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
+
 
 <div class="doc doc-object doc-function">
 
@@ -4036,9 +4594,9 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">331</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span>
 <span class="normal">334</span>
@@ -4064,7 +4622,7 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">scheduler</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -4082,18 +4640,20 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 
 
 <h3 id="zamba.models.config.TrainConfig" class="doc doc-heading">
-        <code>TrainConfig</code>
+          <code>TrainConfig</code>
 
 
 <a href="#zamba.models.config.TrainConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Configuration for training a model.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -4111,11 +4671,15 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
           <td>
                 <code>FilePath or pandas DataFrame</code>
           </td>
-          <td><p>Path to a CSV or pandas DataFrame
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a CSV or pandas DataFrame
 containing labels for training, with one row per label. There must be
 columns called 'filepath' (absolute or relative to the data_dir) and
 'label', and optionally columns called 'split' ("train", "val", or "holdout")
-and 'site'. Labels must be specified to train a model.</p></td>
+and 'site'. Labels must be specified to train a model.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4125,8 +4689,12 @@ and 'site'. Labels must be specified to train a model.</p></td>
           <td>
                 <code><span title="pydantic.DirectoryPath">DirectoryPath</span></code>
           </td>
-          <td><p>Path to a directory containing training
-videos. Defaults to the working directory.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a directory containing training
+videos. Defaults to the working directory.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4136,8 +4704,12 @@ videos. Defaults to the working directory.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Name of the model to use for training. Options are:
-time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Name of the model to use for training. Options are:
+time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4147,9 +4719,13 @@ time_distributed, slowfast, european, blank_nonblank. Defaults to time_distribut
           <td>
                 <code><span title="pydantic.FilePath">FilePath</span></code>
           </td>
-          <td><p>Path to a custom checkpoint file (.ckpt)
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a custom checkpoint file (.ckpt)
 generated by zamba that can be used to resume training. If None, defaults
-to a pretrained model. Defaults to None.</p></td>
+to a pretrained model. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4157,12 +4733,16 @@ to a pretrained model. Defaults to None.</p></td>
         <tr>
           <td><code>scheduler_config</code></td>
           <td>
-                <code>SchedulerConfig or str</code>
+                <code><a class="autorefs autorefs-internal" title="zamba.models.config.SchedulerConfig" href="#zamba.models.config.SchedulerConfig">SchedulerConfig</a> or str</code>
           </td>
-          <td><p>Config for setting up
+          <td>
+            <div class="doc-md-description">
+              <p>Config for setting up
 the learning rate scheduler on the model. If "default", uses scheduler
 that was used for training. If None, will not use a scheduler.
-Defaults to "default".</p></td>
+Defaults to "default".</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4170,12 +4750,16 @@ Defaults to "default".</p></td>
         <tr>
           <td><code>dry_run</code></td>
           <td>
-                <code>bool or int, Optional</code>
+                <code>(bool or int, <span title="typing.Optional">Optional</span>)</code>
           </td>
-          <td><p>Run one training and validation batch
+          <td>
+            <div class="doc-md-description">
+              <p>Run one training and validation batch
 for one epoch to detect any bugs prior to training the full model.
 Disables tuners, checkpoint callbacks, loggers, and logger callbacks.
-Defaults to False.</p></td>
+Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4185,7 +4769,11 @@ Defaults to False.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Batch size to use for training. Defaults to 2.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Batch size to use for training. Defaults to 2.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4195,11 +4783,15 @@ Defaults to False.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Use a learning rate finder algorithm when calling
+          <td>
+            <div class="doc-md-description">
+              <p>Use a learning rate finder algorithm when calling
 trainer.tune() to try to find an optimal initial learning rate. Defaults to
 False. The learning rate finder is not guaranteed to find a good learning
 rate; depending on the dataset, it can select a learning rate that leads to
-poor model training. Use with caution.</p></td>
+poor model training. Use with caution.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4209,11 +4801,15 @@ poor model training. Use with caution.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.BackboneFinetuneConfig" href="#zamba.models.config.BackboneFinetuneConfig">BackboneFinetuneConfig</a></code>
           </td>
-          <td><p>Set parameters
+          <td>
+            <div class="doc-md-description">
+              <p>Set parameters
 to finetune a backbone model to align with the current learning rate.
 Defaults to a BackboneFinetuneConfig(unfreeze_backbone_at_epoch=5,
 backbone_initial_ratio_lr=0.01, multiplier=1, pre_train_bn=False,
-train_bn=False, verbose=True).</p></td>
+train_bn=False, verbose=True).</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4223,8 +4819,12 @@ train_bn=False, verbose=True).</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of GPUs to train on applied per node.
-Defaults to all of the available GPUs found on the machine.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of GPUs to train on applied per node.
+Defaults to all of the available GPUs found on the machine.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4234,9 +4834,13 @@ Defaults to all of the available GPUs found on the machine.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of subprocesses to use for data loading. 0 means
+          <td>
+            <div class="doc-md-description">
+              <p>Number of subprocesses to use for data loading. 0 means
 that the data will be loaded in the main process. The maximum value is
-the number of CPUs in the system. Defaults to 3.</p></td>
+the number of CPUs in the system. Defaults to 3.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4246,8 +4850,12 @@ the number of CPUs in the system. Defaults to 3.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Stop training once this number of epochs is
-reached. Disabled by default (None), which stops training at 1000 epochs.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Stop training once this number of epochs is
+reached. Disabled by default (None), which stops training at 1000 epochs.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4257,10 +4865,14 @@ reached. Disabled by default (None), which stops training at 1000 epochs.</p></t
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.EarlyStoppingConfig" href="#zamba.models.config.EarlyStoppingConfig">EarlyStoppingConfig</a></code>
           </td>
-          <td><p>Configuration for
+          <td>
+            <div class="doc-md-description">
+              <p>Configuration for
 early stopping, which monitors a metric during training and stops training
 when the metric stops improving. Defaults to EarlyStoppingConfig(monitor='val_macro_f1',
-patience=5, verbose=True, mode='max').</p></td>
+patience=5, verbose=True, mode='max').</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4270,9 +4882,13 @@ patience=5, verbose=True, mode='max').</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>s3 region to download pretrained weights from.
+          <td>
+            <div class="doc-md-description">
+              <p>s3 region to download pretrained weights from.
 Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
-Defaults to "us".</p></td>
+Defaults to "us".</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4282,9 +4898,13 @@ Defaults to "us".</p></td>
           <td>
                 <code>dict</code>
           </td>
-          <td><p>Proportions used to divide data into training,
+          <td>
+            <div class="doc-md-description">
+              <p>Proportions used to divide data into training,
 validation, and holdout sets if a if a "split" column is not included in
-labels. Defaults to "train": 3, "val": 1, "holdout": 1.</p></td>
+labels. Defaults to "train": 3, "val": 1, "holdout": 1.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4294,12 +4914,16 @@ labels. Defaults to "train": 3, "val": 1, "holdout": 1.</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Path to a directory where training files
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a directory where training files
 will be saved. Files include the best model checkpoint (<code>model_name</code>.ckpt),
 training configuration (configuration.yaml), Tensorboard logs
 (events.out.tfevents...), test metrics (test_metrics.json), validation
 metrics (val_metrics.json), and model hyperparameters (hparams.yml).
-If None, a folder is created in the working directory. Defaults to None.</p></td>
+If None, a folder is created in the working directory. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4309,9 +4933,13 @@ If None, a folder is created in the working directory. Defaults to None.</p></td
           <td>
                 <code>bool</code>
           </td>
-          <td><p>If True, will save outputs in <code>save_dir</code> overwriting if those
+          <td>
+            <div class="doc-md-description">
+              <p>If True, will save outputs in <code>save_dir</code> overwriting if those
 exist. If False, will create auto-incremented <code>version_n</code> folder in <code>save_dir</code>
-with model outputs. Defaults to False.</p></td>
+with model outputs. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4321,10 +4949,14 @@ with model outputs. Defaults to False.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Instantiate the model with base weights. This means
+          <td>
+            <div class="doc-md-description">
+              <p>Instantiate the model with base weights. This means
 starting with ImageNet weights for image-based models (time_distributed,
 european, and blank_nonblank) and Kinetics weights for video-based models
-(slowfast). Defaults to False.</p></td>
+(slowfast). Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4334,11 +4966,15 @@ european, and blank_nonblank) and Kinetics weights for video-based models
           <td>
                 <code>bool</code>
           </td>
-          <td><p>By default, output the full set of
+          <td>
+            <div class="doc-md-description">
+              <p>By default, output the full set of
 default model labels rather than just the species in the labels file. Only
 applies if the provided labels are a subset of the default model labels.
 If set to False, will replace the model head for finetuning and output only
-the species in the provided labels file.</p></td>
+the species in the provided labels file.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4348,9 +4984,13 @@ the species in the provided labels file.</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Cache directory where downloaded model weights
+          <td>
+            <div class="doc-md-description">
+              <p>Cache directory where downloaded model weights
 will be saved. If None and the MODEL_CACHE_DIR environment variable is
-not set, uses your default cache directory. Defaults to None.</p></td>
+not set, uses your default cache directory. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -4358,10 +4998,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
 <span class="normal">347</span>
 <span class="normal">348</span>
 <span class="normal">349</span>
@@ -4931,7 +5570,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -4951,8 +5590,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">auto_lr_find</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.auto_lr_find" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -4971,8 +5610,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">backbone_finetune_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BackboneFinetuneConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">BackboneFinetuneConfig</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.backbone_finetune_config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -4991,8 +5630,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.batch_size" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5011,8 +5650,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.checkpoint" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5031,8 +5670,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.data_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5051,8 +5690,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">dry_run</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.dry_run" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5071,8 +5710,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">early_stopping_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EarlyStoppingConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">EarlyStoppingConfig</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.early_stopping_config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5091,8 +5730,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.from_scratch" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5111,8 +5750,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">GPUS_AVAILABLE</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.gpus" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5150,8 +5789,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">max_epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.max_epochs" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5170,8 +5809,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.model_cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5190,8 +5829,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModelEnum</span><span class="o">.</span><span class="n">time_distributed</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.model_name" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5210,8 +5849,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.num_workers" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5230,8 +5869,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.overwrite" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5250,8 +5889,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">save_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.save_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5270,8 +5909,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">scheduler_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SchedulerConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.scheduler_config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5290,8 +5929,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.skip_load_validation" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5310,8 +5949,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">split_proportions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;train&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;holdout&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.split_proportions" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5330,8 +5969,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">use_default_model_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.use_default_model_labels" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5350,8 +5989,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.weight_download_region" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5368,7 +6007,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
 
 <h5 id="zamba.models.config.TrainConfig.Config" class="doc doc-heading">
-        <code>Config</code>
+          <code>Config</code>
 
 
 <a href="#zamba.models.config.TrainConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5377,14 +6016,13 @@ not set, uses your default cache directory. Defaults to None.</p></td>
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">447</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">447</span>
 <span class="normal">448</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -5404,8 +6042,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 <code class="highlight language-python"><span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.TrainConfig.Config.arbitrary_types_allowed" class="headerlink" title="Permanent link">&para;</a></h7>
@@ -5427,6 +6065,7 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 </div>
 <h4 id="zamba.models.config.TrainConfig-functions">Functions<a href="#zamba.models.config.TrainConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -5441,6 +6080,8 @@ not set, uses your default cache directory. Defaults to None.</p></td>
   
       <p>One hot encode, add splits, and check for binary case.</p>
 <p>Replaces values['labels'] with modified DataFrame.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -5457,7 +6098,11 @@ not set, uses your default cache directory. Defaults to None.</p></td>
           <td><code>values</code></td>
           <td>
           </td>
-          <td><p>dictionary containing 'labels' and other config info</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>dictionary containing 'labels' and other config info</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -5465,9 +6110,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">581</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">581</span>
 <span class="normal">582</span>
 <span class="normal">583</span>
 <span class="normal">584</span>
@@ -5567,10 +6212,11 @@ not set, uses your default cache directory. Defaults to None.</p></td>
     <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -5584,9 +6230,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">480</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">480</span>
 <span class="normal">481</span>
 <span class="normal">482</span>
 <span class="normal">483</span>
@@ -5598,10 +6244,11 @@ not set, uses your default cache directory. Defaults to None.</p></td>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -5615,9 +6262,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">487</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">487</span>
 <span class="normal">488</span>
 <span class="normal">489</span>
 <span class="normal">490</span>
@@ -5739,10 +6386,11 @@ not set, uses your default cache directory. Defaults to None.</p></td>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -5756,9 +6404,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">456</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">456</span>
 <span class="normal">457</span>
 <span class="normal">458</span>
 <span class="normal">459</span>
@@ -5778,10 +6426,11 @@ not set, uses your default cache directory. Defaults to None.</p></td>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -5798,9 +6447,9 @@ not set, uses your default cache directory. Defaults to None.</p></td>
       <p>If the model species are the desired output, the labels file must contain
 a subset of the model species.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">549</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">549</span>
 <span class="normal">550</span>
 <span class="normal">551</span>
 <span class="normal">552</span>
@@ -5862,10 +6511,11 @@ a subset of the model species.</p>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -5879,9 +6529,9 @@ a subset of the model species.</p>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">471</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">471</span>
 <span class="normal">472</span>
 <span class="normal">473</span>
 <span class="normal">474</span>
@@ -5897,7 +6547,7 @@ a subset of the model species.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">scheduler_config</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -5915,23 +6565,22 @@ a subset of the model species.</p>
 
 
 <h3 id="zamba.models.config.ZambaBaseModel" class="doc doc-heading">
-        <code>ZambaBaseModel</code>
+          <code>ZambaBaseModel</code>
 
 
 <a href="#zamba.models.config.ZambaBaseModel" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
   
       <p>Set defaults for all models that inherit from the pydantic base model.</p>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">248</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">248</span>
 <span class="normal">249</span>
 <span class="normal">250</span>
 <span class="normal">251</span>
@@ -5945,7 +6594,7 @@ a subset of the model species.</p>
         <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -5963,7 +6612,7 @@ a subset of the model species.</p>
 
 
 <h5 id="zamba.models.config.ZambaBaseModel.Config" class="doc doc-heading">
-        <code>Config</code>
+          <code>Config</code>
 
 
 <a href="#zamba.models.config.ZambaBaseModel.Config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -5972,10 +6621,9 @@ a subset of the model species.</p>
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
 <span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
@@ -5983,7 +6631,7 @@ a subset of the model species.</p>
     <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -6003,8 +6651,8 @@ a subset of the model species.</p>
 <code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ZambaBaseModel.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
@@ -6023,8 +6671,8 @@ a subset of the model species.</p>
 <code class="highlight language-python"><span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
@@ -6043,8 +6691,8 @@ a subset of the model species.</p>
 <code class="highlight language-python"><span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
@@ -6075,6 +6723,7 @@ a subset of the model species.</p>
 </div>
 <h2 id="zamba.models.config-functions">Functions<a href="#zamba.models.config-functions" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -6089,6 +6738,8 @@ a subset of the model species.</p>
   
       <p>Check whether files in file list exist and can be loaded with ffmpeg.
 Warn and skip files that don't exist or can't be loaded.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -6106,7 +6757,11 @@ Warn and skip files that don't exist or can't be loaded.</p>
           <td>
                 <code><span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span></code>
           </td>
-          <td><p>DataFrame with a "filepath" column</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>DataFrame with a "filepath" column</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -6116,8 +6771,12 @@ Warn and skip files that don't exist or can't be loaded.</p>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Data folder to prepend if filepath is not an
-absolute path.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Data folder to prepend if filepath is not an
+absolute path.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -6127,14 +6786,20 @@ absolute path.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Skip ffprobe check that verifies all videos
-can be loaded.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Skip ffprobe check that verifies all videos
+can be loaded.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
         </tr>
     </tbody>
   </table>
+
+
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -6148,14 +6813,18 @@ can be loaded.</p></td>
         <tr>
           <td>
           </td>
-          <td><p>pd.DataFrame: DataFrame with valid and loadable videos.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>pd.DataFrame: DataFrame with valid and loadable videos.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
 <span class="normal"> 92</span>
 <span class="normal"> 93</span>
 <span class="normal"> 94</span>
@@ -6319,10 +6988,11 @@ can be loaded.</p></td>
 
     <span class="k">return</span> <span class="n">df</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -6340,9 +7010,9 @@ can be loaded.</p></td>
 are unsupported suffixes. Filepaths is set to a dataframe, where column <code>filepath</code>
 contains files with valid suffixes.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
@@ -6402,10 +7072,11 @@ contains files with valid suffixes.</p>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -6420,6 +7091,8 @@ contains files with valid suffixes.</p>
   <div class="doc doc-contents ">
   
       <p>Add a split column to <code>labels</code>.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -6436,7 +7109,11 @@ contains files with valid suffixes.</p>
           <td><code>labels</code></td>
           <td>
           </td>
-          <td><p>DataFrame with one row per video</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>DataFrame with one row per video</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -6445,7 +7122,11 @@ contains files with valid suffixes.</p>
           <td><code>values</code></td>
           <td>
           </td>
-          <td><p>dictionary with config info</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>dictionary with config info</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -6453,9 +7134,9 @@ contains files with valid suffixes.</p>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">633</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">633</span>
 <span class="normal">634</span>
 <span class="normal">635</span>
 <span class="normal">636</span>
@@ -6577,10 +7258,11 @@ contains files with valid suffixes.</p>
 
     <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;split&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -6597,9 +7279,9 @@ contains files with valid suffixes.</p>
       <p>Ensure the number of GPUs requested is equal to or less than the number of GPUs
 available on the machine.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">70</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">70</span>
 <span class="normal">71</span>
 <span class="normal">72</span>
 <span class="normal">73</span>
@@ -6613,10 +7295,11 @@ available on the machine.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">gpus</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -6633,9 +7316,9 @@ available on the machine.</p>
       <p>Set up cache directory for downloading model weight. Order of priority is:
 config argument, environment variable, or user's default cache dir.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">79</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">79</span>
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span>
@@ -6655,10 +7338,11 @@ config argument, environment variable, or user's default cache dir.</p>
     <span class="n">model_cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model_cache_dir</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -6676,9 +7360,9 @@ config argument, environment variable, or user's default cache dir.</p>
 looks up the corresponding public checkpoint file from the official configs.
 Download the checkpoint if it does not yet exist.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">175</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">175</span>
 <span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
@@ -6756,7 +7440,7 @@ Download the checkpoint if it does not yet exist.</p>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -6805,10 +7489,10 @@ Download the checkpoint if it does not yet exist.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

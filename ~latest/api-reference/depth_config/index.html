@@ -19,7 +19,7 @@
         <link rel="next" href="../depth_manager/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1461,18 +1461,20 @@
 
 
 <h3 id="zamba.models.depth_estimation.config.DepthEstimationConfig" class="doc doc-heading">
-        <code>DepthEstimationConfig</code>
+          <code>DepthEstimationConfig</code>
 
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="../models-config/#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="../models-config/#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Configuration for running depth estimation on videos.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1490,9 +1492,13 @@
           <td>
                 <code><span title="pydantic.FilePath">FilePath</span></code>
           </td>
-          <td><p>Path to a CSV containing videos for inference, with one row per
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a CSV containing videos for inference, with one row per
 video in the data_dir. There must be a column called 'filepath' (absolute or
-relative to the data_dir). If None, uses all files in data_dir. Defaults to None.</p></td>
+relative to the data_dir). If None, uses all files in data_dir. Defaults to None.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1502,8 +1508,12 @@ relative to the data_dir). If None, uses all files in data_dir. Defaults to None
           <td>
                 <code><span title="pydantic.DirectoryPath">DirectoryPath</span></code>
           </td>
-          <td><p>Path to a directory containing videos for inference.
-Defaults to the working directory.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a directory containing videos for inference.
+Defaults to the working directory.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1511,11 +1521,15 @@ Defaults to the working directory.</p></td>
         <tr>
           <td><code>save_to</code></td>
           <td>
-                <code>Path or DirectoryPath</code>
+                <code><span title="pathlib.Path">Path</span> or <span title="pydantic.DirectoryPath">DirectoryPath</span></code>
           </td>
-          <td><p>Either a filename or a directory in which to
+          <td>
+            <div class="doc-md-description">
+              <p>Either a filename or a directory in which to
 save the output csv. If a directory is provided, predictions will be saved to
-depth_predictions.csv in that directory. Defaults to the working directory.</p></td>
+depth_predictions.csv in that directory. Defaults to the working directory.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1525,7 +1539,11 @@ depth_predictions.csv in that directory. Defaults to the working directory.</p><
           <td>
                 <code>bool</code>
           </td>
-          <td><p>If True, overwrite output csv path if it exists. Defaults to False.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>If True, overwrite output csv path if it exists. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1535,8 +1553,12 @@ depth_predictions.csv in that directory. Defaults to the working directory.</p><
           <td>
                 <code>int</code>
           </td>
-          <td><p>Batch size to use for inference. Defaults to 64. Note: a batch is a set
-of frames, not videos, for the depth model.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Batch size to use for inference. Defaults to 64. Note: a batch is a set
+of frames, not videos, for the depth model.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1546,8 +1568,12 @@ of frames, not videos, for the depth model.</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Path for downloading and saving model weights.
-Defaults to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path for downloading and saving model weights.
+Defaults to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1557,8 +1583,12 @@ Defaults to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p></t
           <td>
                 <code>str</code>
           </td>
-          <td><p>s3 region to download pretrained weights from. Options are
-"us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>s3 region to download pretrained weights from. Options are
+"us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1568,8 +1598,12 @@ Defaults to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p></t
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of subprocesses to use for data loading. The maximum value is
-the number of CPUs in the system. Defaults to 8.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of subprocesses to use for data loading. The maximum value is
+the number of CPUs in the system. Defaults to 8.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1579,8 +1613,12 @@ the number of CPUs in the system. Defaults to 8.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of GPUs to use for inference. Defaults to all of the available GPUs
-found on the machine.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of GPUs to use for inference. Defaults to all of the available GPUs
+found on the machine.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1588,10 +1626,9 @@ found on the machine.</p></td>
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
@@ -1807,7 +1844,7 @@ found on the machine.</p></td>
 
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1827,8 +1864,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.batch_size" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1847,8 +1884,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.data_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1867,8 +1904,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FilePath</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.filepaths" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1887,8 +1924,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">GPUS_AVAILABLE</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.gpus" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1907,8 +1944,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.model_cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1927,8 +1964,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.num_workers" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1947,8 +1984,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.overwrite" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1967,8 +2004,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">save_to</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.save_to" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1987,8 +2024,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.weight_download_region" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2005,7 +2042,7 @@ found on the machine.</p></td>
 
 
 <h5 id="zamba.models.depth_estimation.config.DepthEstimationConfig.Config" class="doc doc-heading">
-        <code>Config</code>
+          <code>Config</code>
 
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2014,16 +2051,15 @@ found on the machine.</p></td>
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="c1"># support pandas dataframe</span>
     <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2043,8 +2079,8 @@ found on the machine.</p></td>
 <code class="highlight language-python"><span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.depth_estimation.config.DepthEstimationConfig.Config.arbitrary_types_allowed" class="headerlink" title="Permanent link">&para;</a></h7>
@@ -2066,6 +2102,7 @@ found on the machine.</p></td>
 </div>
 <h4 id="zamba.models.depth_estimation.config.DepthEstimationConfig-functions">Functions<a href="#zamba.models.depth_estimation.config.DepthEstimationConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2078,9 +2115,9 @@ found on the machine.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
@@ -2106,10 +2143,11 @@ found on the machine.</p></td>
     <span class="n">predictions</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_to</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Depth predictions saved to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">save_to</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2123,9 +2161,9 @@ found on the machine.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
 <span class="normal">105</span>
@@ -2179,10 +2217,11 @@ found on the machine.</p></td>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2196,9 +2235,9 @@ found on the machine.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 84</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 84</span>
 <span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
@@ -2232,7 +2271,7 @@ found on the machine.</p></td>
     <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_path</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2290,10 +2329,10 @@ found on the machine.</p></td>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

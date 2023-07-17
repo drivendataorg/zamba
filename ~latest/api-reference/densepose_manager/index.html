@@ -19,7 +19,7 @@
         <link rel="next" href="../models-efficientnet_models/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1499,7 +1499,7 @@
 
 
 <h3 id="zamba.models.densepose.densepose_manager.DensePoseManager" class="doc doc-heading">
-        <code>DensePoseManager</code>
+          <code>DensePoseManager</code>
 
 
 <a href="#zamba.models.densepose.densepose_manager.DensePoseManager" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -1508,10 +1508,9 @@
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 75</span>
 <span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
@@ -2389,7 +2388,7 @@
 
         <span class="k">return</span> <span class="n">results</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2520,7 +2519,7 @@
 
 
 <h5 id="zamba.models.densepose.densepose_manager.DensePoseManager.vis_mesh_vertex_embeddings" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">vis_mesh_vertex_embeddings</span> <span class="o">=</span> <span class="p">{</span><span class="n">mesh_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_embedder</span><span class="p">(</span><span class="n">mesh_name</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">)</span> <span class="k">for</span> <span class="n">mesh_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_class_to_mesh_name</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_embedder</span><span class="o">.</span><span class="n">has_embeddings</span><span class="p">(</span><span class="n">mesh_name</span><span class="p">)}</span></code>
+<code class="highlight language-python"><span class="n">vis_mesh_vertex_embeddings</span> <span class="o">=</span> <span class="p">{</span><span class="n">mesh_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_embedder</span><span class="p">(</span><span class="n">mesh_name</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">)</span><span class="k">for</span> <span class="n">mesh_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_class_to_mesh_name</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_embedder</span><span class="o">.</span><span class="n">has_embeddings</span><span class="p">(</span><span class="n">mesh_name</span><span class="p">)}</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2539,7 +2538,7 @@
 
 
 <h5 id="zamba.models.densepose.densepose_manager.DensePoseManager.visualizer" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">visualizer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s1">&#39;viz_class&#39;</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">,</span> <span class="kc">None</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;viz_class_kwargs&#39;</span><span class="p">,</span> <span class="p">{}))</span></code>
+<code class="highlight language-python"><span class="n">visualizer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s1">&#39;viz_class&#39;</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">,</span> <span class="o">**</span><span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;viz_class_kwargs&#39;</span><span class="p">,</span> <span class="p">{}))</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2554,6 +2553,7 @@
 </div>
 
 <h4 id="zamba.models.densepose.densepose_manager.DensePoseManager-functions">Functions<a href="#zamba.models.densepose.densepose_manager.DensePoseManager-functions" class="headerlink" title="Permanent link">&para;</a></h4>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2574,9 +2574,9 @@
   <summary>dict, optional (default MODELS['chimps'])</summary>
   <p>A dictionary with the densepose model defintion like those defined in MODELS.</p>
 </details>
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
@@ -2700,10 +2700,11 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2732,9 +2733,9 @@
 <p>pandas.DataFrame
     DataFrame with percent of pixels of the bounding box that correspond to each anatomical part</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">347</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">347</span>
 <span class="normal">348</span>
 <span class="normal">349</span>
 <span class="normal">350</span>
@@ -2844,10 +2845,11 @@
 
     <span class="k">return</span> <span class="n">results</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2876,9 +2878,9 @@
 <p>numpy array (unit8) BGR
     DensePose outputs visualized on top of the image.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">484</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">484</span>
 <span class="normal">485</span>
 <span class="normal">486</span>
 <span class="normal">487</span>
@@ -2938,10 +2940,11 @@
 
     <span class="k">return</span> <span class="n">results</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2955,9 +2958,9 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">273</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">273</span>
 <span class="normal">274</span>
 <span class="normal">275</span>
 <span class="normal">276</span>
@@ -3049,10 +3052,11 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">frames</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3076,9 +3080,9 @@
 <p>Instances
     Detection instances with boxes, scores, and densepose estimates.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">183</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
 <span class="normal">186</span>
@@ -3112,10 +3116,11 @@
 
     <span class="k">return</span> <span class="n">instances</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3139,9 +3144,9 @@
 <p>tuple
     Returns the image array as passed or loaded and the the densepose Instances as results.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
@@ -3175,10 +3180,11 @@
 
     <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3210,9 +3216,9 @@
 <p>tuple
     Tuple of (video_array, list of densepose results per frame)</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">157</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">157</span>
 <span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
@@ -3262,10 +3268,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">predict_image</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Frames&quot;</span><span class="p">)</span>
     <span class="p">]</span>  <span class="c1"># just the predictions</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3291,9 +3298,9 @@
   <summary>(str, Path), optional</summary>
   <p>If not None, the filename to write the output to, by default None</p>
 </details>
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">217</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span>
@@ -3403,10 +3410,11 @@
 
     <span class="k">return</span> <span class="n">serialized</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3420,9 +3428,9 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
@@ -3452,10 +3460,11 @@
 
     <span class="k">return</span> <span class="n">serialized</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3487,9 +3496,9 @@
 <p>numpy array (unit8) BGR
     DensePose outputs visualized on top of the image.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">320</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">320</span>
 <span class="normal">321</span>
 <span class="normal">322</span>
 <span class="normal">323</span>
@@ -3541,10 +3550,11 @@
 
     <span class="k">return</span> <span class="n">image_vis</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -3589,9 +3599,9 @@ set width to that size and scale height appropriately.</p>
 <p>numpy array (unit8) BGR
     DensePose outputs visualized on top of the image.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">403</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/densepose_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">403</span>
 <span class="normal">404</span>
 <span class="normal">405</span>
 <span class="normal">406</span>
@@ -3751,7 +3761,7 @@ set width to that size and scale height appropriately.</p>
 
     <span class="k">return</span> <span class="n">out_frames</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -3809,10 +3819,10 @@ set width to that size and scale height appropriately.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>
