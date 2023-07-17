@@ -19,7 +19,7 @@
         <link rel="next" href="../data-video/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1427,6 +1427,7 @@
 
 <h2 id="zamba.data.metadata-functions">Functions<a href="#zamba.data.metadata-functions" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -1441,6 +1442,8 @@
   
       <p>Splits sites into distinct groups whose sizes roughly matching the given proportions. Null
 sites are randomly assigned to groups using the provided proportions.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1458,7 +1461,11 @@ sites are randomly assigned to groups using the provided proportions.</p>
           <td>
                 <code><span title="pandas">pd</span>.<span title="pandas.Series">Series</span></code>
           </td>
-          <td><p>A series of sites, one element per observation,</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>A series of sites, one element per observation,</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1468,8 +1475,12 @@ sites are randomly assigned to groups using the provided proportions.</p>
           <td>
                 <code>dict</code>
           </td>
-          <td><p>A dict whose keys are the resulting groups and whose values are the
-rough proportion of data in each group.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>A dict whose keys are the resulting groups and whose values are the
+rough proportion of data in each group.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1479,7 +1490,11 @@ rough proportion of data in each group.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Seed for random split of null sites.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Seed for random split of null sites.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1499,6 +1514,8 @@ train-val-holdout proportions.</p>
 </blockquote>
 </blockquote>
 </details>
+
+
   <p><strong>Returns:</strong></p>
   <table>
     <thead>
@@ -1511,14 +1528,18 @@ train-val-holdout proportions.</p>
         <tr>
           <td>
           </td>
-          <td><p>pd.Series: A series containing the resulting split, one element per observation.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>pd.Series: A series containing the resulting split, one element per observation.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/data/metadata.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/data/metadata.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
@@ -1630,10 +1651,11 @@ train-val-holdout proportions.</p>
 
     <span class="k">return</span> <span class="n">site</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">assignments</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1647,9 +1669,9 @@ train-val-holdout proportions.</p>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/data/metadata.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/data/metadata.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
 <span class="normal">85</span>
 <span class="normal">86</span>
 <span class="normal">87</span>
@@ -1677,10 +1699,11 @@ train-val-holdout proportions.</p>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">labels</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1696,9 +1719,9 @@ train-val-holdout proportions.</p>
   
       <p>roundrobin('ABC', 'D', 'EF') --&gt; A D E B F C</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/data/metadata.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/data/metadata.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
@@ -1726,7 +1749,7 @@ train-val-holdout proportions.</p>
             <span class="n">num_active</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="n">nexts</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">nexts</span><span class="p">,</span> <span class="n">num_active</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -1775,10 +1798,10 @@ train-val-holdout proportions.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

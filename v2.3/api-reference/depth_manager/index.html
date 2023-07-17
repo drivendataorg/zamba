@@ -19,7 +19,7 @@
         <link rel="next" href="../densepose_config/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1480,21 +1480,20 @@
 
 
 <h3 id="zamba.models.depth_estimation.depth_manager.DepthDataset" class="doc doc-heading">
-        <code>DepthDataset</code>
+          <code>DepthDataset</code>
 
 
 <a href="#zamba.models.depth_estimation.depth_manager.DepthDataset" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="torch.utils.data">torch</span>.<span title="torch.utils.data.utils">utils</span>.<span title="torch.utils.data">data</span>.<span title="torch.utils.data.Dataset">Dataset</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code>torch.<span title="torch.utils">utils</span>.<span title="torch.utils.data">data</span>.<span title="torch.utils.data.Dataset">Dataset</span></code></p>
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
 <span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
@@ -1708,7 +1707,7 @@
         <span class="c1"># keep track of video name and time as well</span>
         <span class="k">return</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">det_video</span><span class="p">,</span> <span class="n">det_frame</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1912,6 +1911,7 @@
 
 <h4 id="zamba.models.depth_estimation.depth_manager.DepthDataset-functions">Functions<a href="#zamba.models.depth_estimation.depth_manager.DepthDataset-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -1924,9 +1924,9 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
 <span class="normal"> 41</span>
@@ -2086,7 +2086,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">detection_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">detection_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cached_frames</span> <span class="o">=</span> <span class="n">cached_frames</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2104,7 +2104,7 @@
 
 
 <h3 id="zamba.models.depth_estimation.depth_manager.DepthEstimationManager" class="doc doc-heading">
-        <code>DepthEstimationManager</code>
+          <code>DepthEstimationManager</code>
 
 
 <a href="#zamba.models.depth_estimation.depth_manager.DepthEstimationManager" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -2113,10 +2113,9 @@
   <div class="doc doc-contents ">
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
@@ -2338,7 +2337,7 @@
             <span class="n">output</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2466,6 +2465,7 @@
 
 <h4 id="zamba.models.depth_estimation.depth_manager.DepthEstimationManager-functions">Functions<a href="#zamba.models.depth_estimation.depth_manager.DepthEstimationManager-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2479,6 +2479,8 @@
   <div class="doc doc-contents ">
   
       <p>Create a depth estimation manager object</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2496,7 +2498,11 @@
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Path for downloading and saving model weights.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path for downloading and saving model weights.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2506,7 +2512,11 @@
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of GPUs to use for inference.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of GPUs to use for inference.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2516,11 +2526,15 @@
           <td>
                 <code>str</code>
           </td>
-          <td><p>s3 region to download pretrained weights from.
-Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
-Defaults to "us".</p></td>
           <td>
-                <code>RegionEnum(&#39;us&#39;)</code>
+            <div class="doc-md-description">
+              <p>s3 region to download pretrained weights from.
+Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
+Defaults to "us".</p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="zamba.models.utils.RegionEnum" href="../models-utils/#zamba.models.utils.RegionEnum">RegionEnum</a>(&#39;us&#39;)</code>
           </td>
         </tr>
         <tr>
@@ -2528,8 +2542,12 @@ Defaults to "us".</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Batch size to use for inference. Defaults to 64.
-Note: a batch is a set of frames, not videos, for the depth model.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Batch size to use for inference. Defaults to 64.
+Note: a batch is a set of frames, not videos, for the depth model.</p>
+            </div>
+          </td>
           <td>
                 <code>64</code>
           </td>
@@ -2539,7 +2557,11 @@ Note: a batch is a set of frames, not videos, for the depth model.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of flips to apply for test time augmentation.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of flips to apply for test time augmentation.</p>
+            </div>
+          </td>
           <td>
                 <code>2</code>
           </td>
@@ -2549,8 +2571,12 @@ Note: a batch is a set of frames, not videos, for the depth model.</p></td>
           <td>
                 <code>int</code>
           </td>
-          <td><p>Number of subprocesses to use for data loading. The maximum value is
-the number of CPUs in the system. Defaults to 8.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Number of subprocesses to use for data loading. The maximum value is
+the number of CPUs in the system. Defaults to 8.</p>
+            </div>
+          </td>
           <td>
                 <code>8</code>
           </td>
@@ -2558,9 +2584,9 @@ the number of CPUs in the system. Defaults to 8.</p></td>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
@@ -2642,10 +2668,11 @@ the number of CPUs in the system. Defaults to 8.</p></td>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2661,9 +2688,9 @@ the number of CPUs in the system. Defaults to 8.</p></td>
   
       <p>Generate predictions for a list of video filepaths.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
@@ -2799,7 +2826,7 @@ the number of CPUs in the system. Defaults to 8.</p></td>
         <span class="n">output</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2813,6 +2840,7 @@ the number of CPUs in the system. Defaults to 8.</p></td>
 </div>
 <h2 id="zamba.models.depth_estimation.depth_manager-functions">Functions<a href="#zamba.models.depth_estimation.depth_manager-functions" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -2825,9 +2853,9 @@ the number of CPUs in the system. Defaults to 8.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/depth_estimation/depth_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
@@ -2845,7 +2873,7 @@ the number of CPUs in the system. Defaults to 8.</p></td>
         <span class="p">]</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2894,10 +2922,10 @@ the number of CPUs in the system. Defaults to 8.</p></td>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

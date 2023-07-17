@@ -19,7 +19,7 @@
         <link rel="next" href="../pytorch-transforms/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1431,15 +1431,15 @@
 
 
 <h3 id="zamba.pytorch.layers.TimeDistributed" class="doc doc-heading">
-        <code>TimeDistributed</code>
+          <code>TimeDistributed</code>
 
 
 <a href="#zamba.pytorch.layers.TimeDistributed" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code>torch.<span title="torch.nn">nn</span>.<span title="torch.nn.Module">Module</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code>torch.<span title="torch.nn">nn</span>.<span title="torch.nn.Module">Module</span></code></p>
 
   
       <p>Applies <code>module</code> over <code>tdim</code> identically for each step, use <code>low_mem</code> to compute one at a time.</p>
@@ -1454,10 +1454,9 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 <li>inherit from torch.nn.Module rather than fastai.Module</li>
 </ul>
 </details>
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
@@ -1553,7 +1552,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TimeDistributed(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="si">}</span><span class="s2">)&quot;</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1624,6 +1623,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 
 <h4 id="zamba.pytorch.layers.TimeDistributed-functions">Functions<a href="#zamba.pytorch.layers.TimeDistributed-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -1636,9 +1636,9 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
@@ -1648,10 +1648,11 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
     <span class="bp">self</span><span class="o">.</span><span class="n">tdim</span> <span class="o">=</span> <span class="n">tdim</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">module</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1667,9 +1668,9 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
   
       <p>unstack from batchsize outputs</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span>
@@ -1679,10 +1680,11 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">out_i</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="o">*</span><span class="n">out_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">for</span> <span class="n">out_i</span> <span class="ow">in</span> <span class="n">out</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="o">*</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1698,9 +1700,9 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
   
       <p>input x with shape:(bs,seq_len,channels,width,height)</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
@@ -1720,10 +1722,11 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
         <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span> <span class="o">*</span> <span class="n">seq_len</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_output</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1739,9 +1742,9 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
   
       <p>input x with shape:(bs,seq_len,channels,width,height)</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/layers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
@@ -1761,7 +1764,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
         <span class="k">return</span> <span class="n">_stack_tups</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">stack_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tdim</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tdim</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -1819,10 +1822,10 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

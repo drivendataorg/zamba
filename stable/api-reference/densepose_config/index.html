@@ -19,7 +19,7 @@
         <link rel="next" href="../densepose_manager/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1461,18 +1461,20 @@
 
 
 <h3 id="zamba.models.densepose.config.DensePoseConfig" class="doc doc-heading">
-        <code>DensePoseConfig</code>
+          <code>DensePoseConfig</code>
 
 
 <a href="#zamba.models.densepose.config.DensePoseConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="../models-config/#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="zamba.models.config.ZambaBaseModel" href="../models-config/#zamba.models.config.ZambaBaseModel">ZambaBaseModel</a></code></p>
 
   
       <p>Configuration for running dense pose on videos.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1490,7 +1492,11 @@
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.data.video.VideoLoaderConfig" href="../data-video/#zamba.data.video.VideoLoaderConfig">VideoLoaderConfig</a></code>
           </td>
-          <td><p>Configuration for loading videos</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Configuration for loading videos</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1500,7 +1506,11 @@
           <td>
                 <code>str</code>
           </td>
-          <td><p>one of DensePoseOutputEnum (currently "segmentation" or "chimp_anatomy").</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>one of DensePoseOutputEnum (currently "segmentation" or "chimp_anatomy").</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1510,8 +1520,12 @@
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Whether to save a version of the video with the output overlaid on top.
-Defaults to False.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to save a version of the video with the output overlaid on top.
+Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1521,8 +1535,12 @@ Defaults to False.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Whether to save the embeddings matrices in the json of the
-DensePose result. Setting to True can result in large json files. Defaults to False.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to save the embeddings matrices in the json of the
+DensePose result. Setting to True can result in large json files. Defaults to False.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1532,8 +1550,12 @@ DensePose result. Setting to True can result in large json files. Defaults to Fa
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Where to find the files listed in filepaths (or where to look if
-filepaths is not provided).</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Where to find the files listed in filepaths (or where to look if
+filepaths is not provided).</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1543,7 +1565,11 @@ filepaths is not provided).</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Path to a CSV file with a list of filepaths to process.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a CSV file with a list of filepaths to process.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1553,8 +1579,12 @@ filepaths is not provided).</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Directory for where to save the output files;
-defaults to os.getcwd().</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Directory for where to save the output files;
+defaults to os.getcwd().</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1564,8 +1594,12 @@ defaults to os.getcwd().</p></td>
           <td>
                 <code><span title="pathlib.Path">Path</span></code>
           </td>
-          <td><p>Path for downloading and saving model weights. Defaults
-to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path for downloading and saving model weights. Defaults
+to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1575,8 +1609,12 @@ to env var <code>MODEL_CACHE_DIR</code> or the OS app cache dir.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.utils.RegionEnum" href="../models-utils/#zamba.models.utils.RegionEnum">RegionEnum</a></code>
           </td>
-          <td><p>region where to download weights; should
-be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>region where to download weights; should
+be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1584,10 +1622,9 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 27</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 27</span>
 <span class="normal"> 28</span>
 <span class="normal"> 29</span>
 <span class="normal"> 30</span>
@@ -1809,7 +1846,7 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1829,8 +1866,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.cache_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1868,8 +1905,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">embeddings_in_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.embeddings_in_json" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1888,8 +1925,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.filepaths" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1927,8 +1964,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">render_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.render_output" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1947,8 +1984,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">save_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.save_dir" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1986,8 +2023,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseConfig.weight_download_region" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1997,8 +2034,115 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
   </div>
 
 </div>
+<h4 id="zamba.models.densepose.config.DensePoseConfig-classes">Classes<a href="#zamba.models.densepose.config.DensePoseConfig-classes" class="headerlink" title="Permanent link">&para;</a></h4>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h5 id="zamba.models.densepose.config.DensePoseConfig.Config" class="doc doc-heading">
+          <code>Config</code>
+
+
+<a href="#zamba.models.densepose.config.DensePoseConfig.Config" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+
+
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+    <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="zamba.models.densepose.config.DensePoseConfig.Config-attributes">Attributes<a href="#zamba.models.densepose.config.DensePoseConfig.Config-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.extra" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;forbid&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.extra" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.use_enum_values" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#zamba.models.config.ZambaBaseModel.Config.validate_assignment" class="headerlink" title="Permanent link">&para;</a></h7>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
 <h4 id="zamba.models.densepose.config.DensePoseConfig-functions">Functions<a href="#zamba.models.densepose.config.DensePoseConfig-functions" class="headerlink" title="Permanent link">&para;</a></h4>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2014,9 +2158,9 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
   
       <p>Use this configuration to execute DensePose via the DensePoseManager</p>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 62</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 62</span>
 <span class="normal"> 63</span>
 <span class="normal"> 64</span>
 <span class="normal"> 65</span>
@@ -2106,10 +2250,11 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
                 <span class="n">fps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
             <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2123,9 +2268,9 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
@@ -2177,7 +2322,7 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2195,27 +2340,26 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 
 
 <h3 id="zamba.models.densepose.config.DensePoseOutputEnum" class="doc doc-heading">
-        <code>DensePoseOutputEnum</code>
+          <code>DensePoseOutputEnum</code>
 
 
 <a href="#zamba.models.densepose.config.DensePoseOutputEnum" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="enum.Enum">Enum</span></code></p>
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/densepose/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DensePoseOutputEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">segmentation</span> <span class="o">=</span> <span class="s2">&quot;segmentation&quot;</span>
     <span class="n">chimp_anatomy</span> <span class="o">=</span> <span class="s2">&quot;chimp_anatomy&quot;</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -2235,8 +2379,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">chimp_anatomy</span> <span class="o">=</span> <span class="s1">&#39;chimp_anatomy&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseOutputEnum.chimp_anatomy" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2255,8 +2399,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
 <code class="highlight language-python"><span class="n">segmentation</span> <span class="o">=</span> <span class="s1">&#39;segmentation&#39;</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#zamba.models.densepose.config.DensePoseOutputEnum.segmentation" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2322,10 +2466,10 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p></
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

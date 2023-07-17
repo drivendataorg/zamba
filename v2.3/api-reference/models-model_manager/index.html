@@ -19,7 +19,7 @@
         <link rel="next" href="../models-slowfast_models/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1459,18 +1459,20 @@
 
 
 <h3 id="zamba.models.model_manager.ModelManager" class="doc doc-heading">
-        <code>ModelManager</code>
+          <code>ModelManager</code>
 
 
 <a href="#zamba.models.model_manager.ModelManager" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code>object</code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code>object</code></p>
 
   
       <p>Mediates loading, configuration, and logic of model calls.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1488,7 +1490,11 @@
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.ModelConfig" href="../models-config/#zamba.models.config.ModelConfig">ModelConfig</a></code>
           </td>
-          <td><p>Instantiated ModelConfig.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Instantiated ModelConfig.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1496,10 +1502,9 @@
     </tbody>
   </table>
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">433</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">433</span>
 <span class="normal">434</span>
 <span class="normal">435</span>
 <span class="normal">436</span>
@@ -1553,7 +1558,7 @@
             <span class="n">video_loader_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">video_loader_config</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1586,6 +1591,7 @@
 
 <h4 id="zamba.models.model_manager.ModelManager-functions">Functions<a href="#zamba.models.model_manager.ModelManager-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -1598,16 +1604,17 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">440</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">440</span>
 <span class="normal">441</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ModelConfig</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1625,9 +1632,9 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">443</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">443</span>
 <span class="normal">444</span>
 <span class="normal">445</span>
 <span class="normal">446</span>
@@ -1637,10 +1644,11 @@
         <span class="n">config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1654,9 +1662,9 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">455</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">455</span>
 <span class="normal">456</span>
 <span class="normal">457</span>
 <span class="normal">458</span>
@@ -1666,10 +1674,11 @@
         <span class="n">video_loader_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">video_loader_config</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1683,9 +1692,9 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">449</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">449</span>
 <span class="normal">450</span>
 <span class="normal">451</span>
 <span class="normal">452</span>
@@ -1695,7 +1704,7 @@
         <span class="n">video_loader_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">video_loader_config</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -1708,6 +1717,7 @@
 
 </div>
 <h2 id="zamba.models.model_manager-functions">Functions<a href="#zamba.models.model_manager-functions" class="headerlink" title="Permanent link">&para;</a></h2>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1730,6 +1740,8 @@ The model head is replaced if labels contain species that are not on the model o
 - finetune with a subset of zamba species but output all zamba species (use_default_model_labels=True)
 - predict using pretrained model (labels=None)</p>
 
+
+
   <p><strong>Parameters:</strong></p>
   <table>
     <thead>
@@ -1746,7 +1758,11 @@ The model head is replaced if labels contain species that are not on the model o
           <td>
                 <code>path</code>
           </td>
-          <td><p>Path to a checkpoint on disk.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a checkpoint on disk.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1756,7 +1772,11 @@ The model head is replaced if labels contain species that are not on the model o
           <td>
                 <code><span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span></code>
           </td>
-          <td><p>Dataframe where filepath is the index and columns are one hot encoded species.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Dataframe where filepath is the index and columns are one hot encoded species.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -1766,8 +1786,12 @@ The model head is replaced if labels contain species that are not on the model o
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.SchedulerConfig" href="../models-config/#zamba.models.config.SchedulerConfig">SchedulerConfig</a></code>
           </td>
-          <td><p>SchedulerConfig to use for training or finetuning.
-Only used if labels is not None.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>SchedulerConfig to use for training or finetuning.
+Only used if labels is not None.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -1777,9 +1801,13 @@ Only used if labels is not None.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Whether to instantiate the model with base weights. This means starting
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to instantiate the model with base weights. This means starting
 from the imagenet weights for image based models and the Kinetics weights for video models.
-Only used if labels is not None.</p></td>
+Only used if labels is not None.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -1789,8 +1817,12 @@ Only used if labels is not None.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.ModelEnum" href="../models-config/#zamba.models.config.ModelEnum">ModelEnum</a></code>
           </td>
-          <td><p>Model name used to look up default hparams used for that model.
-Only relevant if training from scratch.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Model name used to look up default hparams used for that model.
+Only relevant if training from scratch.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -1800,14 +1832,20 @@ Only relevant if training from scratch.</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Whether to output the full set of default model labels rather than
-just the species in the labels file. Only used if labels is not None.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to output the full set of default model labels rather than
+just the species in the labels file. Only used if labels is not None.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
         </tr>
     </tbody>
   </table>
+
+
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -1822,14 +1860,18 @@ just the species in the labels file. Only used if labels is not None.</p></td>
 <td><code>ZambaVideoClassificationLightningModule</code></td>          <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.pytorch_lightning.utils.ZambaVideoClassificationLightningModule" href="../pytorch_lightning-utils/#zamba.pytorch_lightning.utils.ZambaVideoClassificationLightningModule">ZambaVideoClassificationLightningModule</a></code>
           </td>
-          <td><p>Instantiated model</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Instantiated model</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
 <span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
@@ -2037,10 +2079,11 @@ just the species in the labels file. Only used if labels is not None.</p></td>
             <span class="n">checkpoint</span><span class="o">=</span><span class="n">checkpoint</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2054,18 +2097,19 @@ just the species in the labels file. Only used if labels is not None.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">log_schedulers</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using learning rate scheduler: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;scheduler&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using scheduler params: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;scheduler_params&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2080,6 +2124,8 @@ just the species in the labels file. Only used if labels is not None.</p></td>
   <div class="doc doc-contents ">
   
       <p>Predicts from a model and writes out predictions to a csv.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2097,7 +2143,11 @@ just the species in the labels file. Only used if labels is not None.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.PredictConfig" href="../models-config/#zamba.models.config.PredictConfig">PredictConfig</a></code>
           </td>
-          <td><p>Pydantic config for performing inference.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Pydantic config for performing inference.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2107,8 +2157,12 @@ just the species in the labels file. Only used if labels is not None.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.data.video.VideoLoaderConfig" href="../data-video/#zamba.data.video.VideoLoaderConfig">VideoLoaderConfig</a></code>
           </td>
-          <td><p>Pydantic config for preprocessing videos.
-If None, will use default for model specified in PredictConfig.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Pydantic config for preprocessing videos.
+If None, will use default for model specified in PredictConfig.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -2116,9 +2170,9 @@ If None, will use default for model specified in PredictConfig.</p></td>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
 <span class="normal">347</span>
 <span class="normal">348</span>
 <span class="normal">349</span>
@@ -2288,10 +2342,11 @@ If None, will use default for model specified in PredictConfig.</p></td>
 
     <span class="k">return</span> <span class="n">df</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2305,9 +2360,9 @@ If None, will use default for model specified in PredictConfig.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">143</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span>
@@ -2325,10 +2380,11 @@ If None, will use default for model specified in PredictConfig.</p></td>
     <span class="n">log_schedulers</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2342,9 +2398,9 @@ If None, will use default for model specified in PredictConfig.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
@@ -2378,10 +2434,11 @@ If None, will use default for model specified in PredictConfig.</p></td>
     <span class="n">log_schedulers</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2396,6 +2453,8 @@ If None, will use default for model specified in PredictConfig.</p></td>
   <div class="doc doc-contents ">
   
       <p>Trains a model.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2413,7 +2472,11 @@ If None, will use default for model specified in PredictConfig.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.models.config.TrainConfig" href="../models-config/#zamba.models.config.TrainConfig">TrainConfig</a></code>
           </td>
-          <td><p>Pydantic config for training.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Pydantic config for training.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2423,8 +2486,12 @@ If None, will use default for model specified in PredictConfig.</p></td>
           <td>
                 <code><a class="autorefs autorefs-internal" title="zamba.data.video.VideoLoaderConfig" href="../data-video/#zamba.data.video.VideoLoaderConfig">VideoLoaderConfig</a></code>
           </td>
-          <td><p>Pydantic config for preprocessing videos.
-If None, will use default for model specified in TrainConfig.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Pydantic config for preprocessing videos.
+If None, will use default for model specified in TrainConfig.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -2432,9 +2499,9 @@ If None, will use default for model specified in TrainConfig.</p></td>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
 <span class="normal">205</span>
@@ -2718,10 +2785,11 @@ If None, will use default for model specified in TrainConfig.</p></td>
 
     <span class="k">return</span> <span class="n">trainer</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
+
 
 <div class="doc doc-object doc-function">
 
@@ -2735,9 +2803,9 @@ If None, will use default for model specified in TrainConfig.</p></td>
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/models/model_manager.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
@@ -2781,7 +2849,7 @@ If None, will use default for model specified in TrainConfig.</p></td>
             <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Dataloader species and model species do not match.</span><span class="se">\n\n</span><span class="si">{</span><span class="n">conflict_msg</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2830,10 +2898,10 @@ If None, will use default for model specified in TrainConfig.</p></td>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>

@@ -19,7 +19,7 @@
         <link rel="next" href="../pytorch-finetuning/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -1445,21 +1445,20 @@
 
 
 <h3 id="zamba.pytorch.dataloaders.FfmpegZambaVideoDataset" class="doc doc-heading">
-        <code>FfmpegZambaVideoDataset</code>
+          <code>FfmpegZambaVideoDataset</code>
 
 
 <a href="#zamba.pytorch.dataloaders.FfmpegZambaVideoDataset" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="torchvision.datasets.vision.VisionDataset">VisionDataset</span></code></p>
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="torchvision.datasets.vision.VisionDataset">VisionDataset</span></code></p>
 
 
-
-        <details class="quote">
-          <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/dataloaders.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
+            <details class="quote">
+              <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/dataloaders.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
 <span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
@@ -1601,7 +1600,7 @@
 
         <span class="k">return</span> <span class="n">video</span><span class="p">,</span> <span class="n">target</span>
 </code></pre></div></td></tr></table></div>
-        </details>
+            </details>
 
   
 
@@ -1637,7 +1636,7 @@
 
 
 <h5 id="zamba.pytorch.dataloaders.FfmpegZambaVideoDataset.species" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">species</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;species_&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">annotations</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">species</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;species_&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">annotations</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -1729,6 +1728,7 @@
 
 <h4 id="zamba.pytorch.dataloaders.FfmpegZambaVideoDataset-functions">Functions<a href="#zamba.pytorch.dataloaders.FfmpegZambaVideoDataset-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
+
 <div class="doc doc-object doc-function">
 
 
@@ -1741,9 +1741,9 @@
 
   <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/dataloaders.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">77</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/dataloaders.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
 <span class="normal">80</span>
@@ -1785,7 +1785,7 @@
 
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -1798,6 +1798,7 @@
 
 </div>
 <h2 id="zamba.pytorch.dataloaders-functions">Functions<a href="#zamba.pytorch.dataloaders-functions" class="headerlink" title="Permanent link">&para;</a></h2>
+
 
 <div class="doc doc-object doc-function">
 
@@ -1812,6 +1813,8 @@
   <div class="doc doc-contents ">
   
       <p>Gets training and/or prediction datasets.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1829,7 +1832,9 @@
           <td>
                 <code>pathlike</code>
           </td>
-          <td><p>Path to a CSV or DataFrame with columns:
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a CSV or DataFrame with columns:
 - filepath: path to a video, relative to <code>video_dir</code>
 - label:, label of the species that appears in the video
 - split (optional): If provided, "train", "val", or "holdout" indicating which dataset
@@ -1837,7 +1842,9 @@ split the video will be included in. If not provided, and a "site" column exists
 generate a site-specific split. Otherwise, generate a random split using
 <code>split_proportions</code>.
 - site (optional): If no "split" column, generate a site-specific split using the values
-in this column.</p></td>
+in this column.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -1847,13 +1854,19 @@ in this column.</p></td>
           <td>
                 <code>pathlike</code>
           </td>
-          <td><p>Path to a CSV or DataFrame with a "filepath" column.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Path to a CSV or DataFrame with a "filepath" column.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
         </tr>
     </tbody>
   </table>
+
+
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -1868,20 +1881,28 @@ in this column.</p></td>
           <td>
                 <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="zamba.pytorch.dataloaders.FfmpegZambaVideoDataset" href="#zamba.pytorch.dataloaders.FfmpegZambaVideoDataset">FfmpegZambaVideoDataset</a>]</code>
           </td>
-          <td><p>A tuple of (train_dataset, val_dataset, test_dataset, predict_dataset) where each dataset</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>A tuple of (train_dataset, val_dataset, test_dataset, predict_dataset) where each dataset</p>
+            </div>
+          </td>
         </tr>
         <tr>
           <td>
                 <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="zamba.pytorch.dataloaders.FfmpegZambaVideoDataset" href="#zamba.pytorch.dataloaders.FfmpegZambaVideoDataset">FfmpegZambaVideoDataset</a>]</code>
           </td>
-          <td><p>can be None if not specified.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>can be None if not specified.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-      <details class="quote">
-        <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/dataloaders.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+          <details class="quote">
+            <summary>Source code in <code>/home/runner/work/zamba/zamba/zamba/pytorch/dataloaders.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -1995,7 +2016,7 @@ in this column.</p></td>
 
     <span class="k">return</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">predict_dataset</span>
 </code></pre></div></td></tr></table></div>
-      </details>
+          </details>
   </div>
 
 </div>
@@ -2044,10 +2065,10 @@ in this column.</p></td>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>
