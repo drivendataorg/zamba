@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -48,6 +49,8 @@ jobs:
       - if: matrix.os == 'ubuntu-latest'
         name: Maximize build space
         uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 10240  # for pip packages in /tmp
 
       - uses: actions/checkout@v2
 
@@ -66,6 +69,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -114,6 +118,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
