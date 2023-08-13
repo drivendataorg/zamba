@@ -45,8 +45,10 @@ jobs:
         python-version: [3.8, 3.9]
 
     steps:
-      - name: Maximize build space
+      - if: matrix.os == 'ubuntu-latest'
+        name: Maximize build space
         uses: easimon/maximize-build-space@master
+
       - uses: actions/checkout@v2
 
       - name: Setup FFmpeg
