@@ -51,7 +51,7 @@ jobs:
         name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 10240  # for pip packages in /tmp
+          root-reserve-mb: 15000  # for pip packages in /tmp
 
       - uses: actions/checkout@v2
 
