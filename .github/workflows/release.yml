@@ -11,12 +11,21 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 30000  # for pip packages in /tmp
+          remove-dotnet: true
+          remove-android: true
+
       - uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
+          cache: 'pip'
+          cache-dependency-path: pyproject.toml
 
       - name: Install dependencies
         run: |
