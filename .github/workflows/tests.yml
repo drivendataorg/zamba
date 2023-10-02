@@ -109,7 +109,7 @@ jobs:
         python-version: [3.8]
 
     steps:
-      name: Maximize build space
+      - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
           root-reserve-mb: 30000  # for pip packages in /tmp
