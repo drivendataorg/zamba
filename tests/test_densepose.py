@@ -60,7 +60,10 @@ def test_image(model, chimp_image_path, tmp_path):
         )
 
         # output to disk
-        assert anatomy_info.shape == (2, 44)
+        assert anatomy_info.shape in [
+            (2, 44),
+            (1, 44),
+        ]  # depends on number of chimps identified; varies by version
         assert (anatomy_info > 0).any().any()
         assert (tmp_path / f"anatomized_{model}.csv").stat().st_size > 0
 
@@ -106,7 +109,12 @@ def test_video(model, chimp_video_path, tmp_path):
         )
 
         # output to disk
-        assert anatomy_info.shape == (10, 46)
+        assert anatomy_info.shape[0] in [
+            8,
+            9,
+            10,
+        ]  # depends on number of chimps identified; varies by version
+        assert anatomy_info.shape[1] == 46
         assert (anatomy_info > 0).any().any()
         assert (tmp_path / f"anatomized_{model}.csv").stat().st_size > 0
 
