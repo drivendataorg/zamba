@@ -1799,7 +1799,6 @@ GPU configurations.</p>
 <p>We recommend <a href="https://www.anaconda.com/download/">Python installation using Anaconda</a> for all platforms. For more information about how to install Anaconda, here are some useful YouTube videos of installation:</p>
 <ul>
 <li><a href="https://www.anaconda.com/download/">Anaconda download link</a></li>
-<li><a href="https://www.youtube.com/watch?v=0OXBHvFeH_U">Windows install video</a></li>
 <li><a href="https://www.youtube.com/watch?v=nVlrpNf3EdM">macOS installation video</a></li>
 </ul>
 <h4 id="ffmpeg-version-4">FFmpeg version 4<a class="headerlink" href="#ffmpeg-version-4" title="Permanent link">&para;</a></h4>
@@ -1839,8 +1838,34 @@ GPU configurations.</p>
 <h3 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
 <p><code>zamba</code> has been tested on macOS High Sierra.</p>
 <h3 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h3>
-<p><code>zamba</code> has been tested on <a href="https://www.ubuntu.com/">Ubuntu</a> versions 16 and 17.</p>
+<p><code>zamba</code> has been tested on <a href="https://www.ubuntu.com/">Ubuntu</a> regularly since 16.04. Tests run every week against the <a href="https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources"><code>ubuntu-latest</code> Github runner environment</a>, so the version that Github uses is most likely to work. As of October 2023, that is 22.04.</p>
+<p>Note, for Linux, you may need to install additional system packages to get <code>zamba</code> to work. For example, on Ubuntu, you may need to install <code>build-essentials</code> to have compilers.</p>
+<p>FFMpeg 4, build-essentials, and some other packages that include more codecs to support additional videos and some other utilities can be installed with:</p>
+<div class="highlight"><pre><span></span><code>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>software-properties-common<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>add-apt-repository<span class="w"> </span>-y<span class="w"> </span>ppa:savoury1/ffmpeg4<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>build-essential<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ffmpeg<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>git<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libavcodec-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libavdevice-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libavfilter-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libavformat-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libavutil-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libsm6<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libswresample-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libswscale-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>libxext6<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>pkg-config<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>wget<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>x264<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>x265
+</code></pre></div>
+<h3 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h3>
 <p><strong>Note: <code>zamba</code> does not currently work on Windows because one of our dependencies fails to build.</strong></p>
+<p>You can try using <a href="https://www.docker.com/products/docker-desktop/">Docker</a> or <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a> to run <code>zamba</code> on a Linux OS like Ubuntu on top of your Windows machine.</p>
 <h2 id="using-gpus">Using GPU(s)<a class="headerlink" href="#using-gpus" title="Permanent link">&para;</a></h2>
 <p><code>zamba</code> is much faster on a machine with a graphics processing unit (GPU), but has also been developed and tested for machines without GPU(s).</p>
 <p>To use a GPU, you must be using an
