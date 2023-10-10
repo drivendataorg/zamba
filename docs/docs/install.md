@@ -17,7 +17,6 @@ Prerequisites:
 We recommend [Python installation using Anaconda](https://www.anaconda.com/download/) for all platforms. For more information about how to install Anaconda, here are some useful YouTube videos of installation:
 
  - [Anaconda download link](https://www.anaconda.com/download/)
- - [Windows install video](https://www.youtube.com/watch?v=0OXBHvFeH_U)
  - [macOS installation video](https://www.youtube.com/watch?v=nVlrpNf3EdM)
 
 
@@ -72,9 +71,41 @@ $ pip install -U https://github.com/drivendataorg/zamba/releases/latest/download
 
 ### Linux
 
-`zamba` has been tested on [Ubuntu](https://www.ubuntu.com/) versions 16 and 17.
+`zamba` has been tested on [Ubuntu](https://www.ubuntu.com/) regularly since 16.04. Tests run every week against the [`ubuntu-latest` Github runner environment](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources), so the version that Github uses is most likely to work. As of October 2023, that is 22.04.
+
+Note, for Linux, you may need to install additional system packages to get `zamba` to work. For example, on Ubuntu, you may need to install `build-essentials` to have compilers.
+
+FFMpeg 4, build-essentials, and some other packages that include more codecs to support additional videos and some other utilities can be installed with:
+
+```bash
+apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository -y ppa:savoury1/ffmpeg4 && \
+    apt-get update && \
+    apt-get -y install \
+    build-essential \
+    ffmpeg \
+    git \
+    libavcodec-dev \
+    libavdevice-dev \
+    libavfilter-dev \
+    libavformat-dev \
+    libavutil-dev \
+    libsm6 \
+    libswresample-dev \
+    libswscale-dev \
+    libxext6 \
+    pkg-config \
+    wget \
+    x264 \
+    x265
+```
+
+### Windows
 
 **Note: `zamba` does not currently work on Windows because one of our dependencies fails to build.**
+
+You can try using [Docker](https://www.docker.com/products/docker-desktop/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) to run `zamba` on a Linux OS like Ubuntu on top of your Windows machine.
 
 ## Using GPU(s)
 
