@@ -54,6 +54,8 @@ jobs:
           root-reserve-mb: 30000  # for pip packages in /tmp
           remove-dotnet: true
           remove-android: true
+          remove-haskell: true
+          remove-codeql: true
 
       - uses: actions/checkout@v2
 
