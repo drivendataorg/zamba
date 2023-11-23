@@ -603,7 +603,10 @@ class TrainConfig(ZambaBaseModel):
         labels = (
             pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
             .groupby("filepath")
-            .max()
+            # instead of collapsing multiple rows with the same video into one row, keep them as is
+            # .max()
+            .apply(lambda x: x)
+            .reset_index(drop=True)
         )
 
         # if no "split" column, set up train, val, and holdout split
