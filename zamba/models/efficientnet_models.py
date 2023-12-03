@@ -20,11 +20,18 @@ class TimeDistributedEfficientNet(ZambaVideoClassificationLightningModule):
         self,
         num_frames=16,
         finetune_from: Optional[Union[os.PathLike, str]] = None,
+        # add a parameter to check if it is loaded from a checkpoint
+        load_from_checkpoint: Optional[bool] = False,
         **kwargs,
     ):
         super().__init__(**kwargs)
+        # get the value of load_from_checkpoint
+        self.load_from_checkpoint = load_from_checkpoint
 
-        if finetune_from is None:
+        if self.load_from_checkpoint:
+            efficientnet = timm.create_model("efficientnetv2_rw_m", pretrained=False)
+            efficientnet.classifier = nn.Identity()
+        elif finetune_from is None:
             efficientnet = timm.create_model("efficientnetv2_rw_m", pretrained=True)
             efficientnet.classifier = nn.Identity()
         else:
