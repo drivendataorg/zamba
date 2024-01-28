@@ -76,9 +76,11 @@ class PadDimensions(torch.nn.Module):
     def forward(self, vid: torch.Tensor) -> torch.Tensor:
         padding = tuple(
             itertools.chain.from_iterable(
-                (0, 0)
-                if padded_size is None
-                else self.compute_left_and_right_pad(original_size, padded_size)
+                (
+                    (0, 0)
+                    if padded_size is None
+                    else self.compute_left_and_right_pad(original_size, padded_size)
+                )
                 for original_size, padded_size in zip(vid.shape, self.dimension_sizes)
             )
         )

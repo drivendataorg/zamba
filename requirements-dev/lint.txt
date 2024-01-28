@@ -1,2 +1,2 @@
-black
+black>=24.1.0
 flake8

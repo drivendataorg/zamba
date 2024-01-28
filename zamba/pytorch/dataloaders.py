@@ -121,12 +121,16 @@ class FfmpegZambaVideoDataset(VisionDataset):
             video = np.zeros(
                 (
                     self.video_loader_config.total_frames,
-                    self.video_loader_config.model_input_height
-                    if self.video_loader_config.model_input_height is not None
-                    else self.video_loader_config.frame_selection_height,
-                    self.video_loader_config.model_input_width
-                    if self.video_loader_config.model_input_width is not None
-                    else self.video_loader_config.frame_selection_width,
+                    (
+                        self.video_loader_config.model_input_height
+                        if self.video_loader_config.model_input_height is not None
+                        else self.video_loader_config.frame_selection_height
+                    ),
+                    (
+                        self.video_loader_config.model_input_width
+                        if self.video_loader_config.model_input_width is not None
+                        else self.video_loader_config.frame_selection_width
+                    ),
                     3,
                 ),
                 dtype="int",

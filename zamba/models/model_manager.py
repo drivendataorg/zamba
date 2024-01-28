@@ -258,12 +258,16 @@ def train_model(
     model_checkpoint = ModelCheckpoint(
         dirpath=logging_and_save_dir,
         filename=train_config.model_name,
-        monitor=train_config.early_stopping_config.monitor
-        if train_config.early_stopping_config is not None
-        else None,
-        mode=train_config.early_stopping_config.mode
-        if train_config.early_stopping_config is not None
-        else "min",
+        monitor=(
+            train_config.early_stopping_config.monitor
+            if train_config.early_stopping_config is not None
+            else None
+        ),
+        mode=(
+            train_config.early_stopping_config.mode
+            if train_config.early_stopping_config is not None
+            else "min"
+        ),
     )
 
     callbacks = [model_checkpoint]
@@ -283,9 +287,11 @@ def train_model(
         logger=tensorboard_logger,
         callbacks=callbacks,
         fast_dev_run=train_config.dry_run,
-        strategy=DDPStrategy(find_unused_parameters=False)
-        if (data_module.multiprocessing_context is not None) and (train_config.gpus > 1)
-        else "auto",
+        strategy=(
+            DDPStrategy(find_unused_parameters=False)
+            if (data_module.multiprocessing_context is not None) and (train_config.gpus > 1)
+            else "auto"
+        ),
     )
 
     if video_loader_config.cache_dir is None:
