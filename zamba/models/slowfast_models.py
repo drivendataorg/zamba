@@ -74,9 +74,9 @@ class SlowFast(ZambaVideoClassificationLightningModule):
             ),
             activation=None,
             pool=None,
-            dropout=None
-            if post_backbone_dropout is None
-            else torch.nn.Dropout(post_backbone_dropout),
+            dropout=(
+                None if post_backbone_dropout is None else torch.nn.Dropout(post_backbone_dropout)
+            ),
             output_pool=torch.nn.AdaptiveAvgPool3d(1),
         )
 

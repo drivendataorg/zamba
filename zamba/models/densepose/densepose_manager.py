@@ -253,12 +253,16 @@ class DensePoseManager:
                         "value": labels[i],
                         "mesh_name": self.vis_class_to_mesh_name[labels[i]],
                     },
-                    "embedding": pose_result.embedding[[i], ...].cpu().tolist()
-                    if write_embeddings
-                    else None,
-                    "segmentation": pose_result.coarse_segm[[i], ...].cpu().tolist()
-                    if write_embeddings
-                    else None,
+                    "embedding": (
+                        pose_result.embedding[[i], ...].cpu().tolist()
+                        if write_embeddings
+                        else None
+                    ),
+                    "segmentation": (
+                        pose_result.coarse_segm[[i], ...].cpu().tolist()
+                        if write_embeddings
+                        else None
+                    ),
                 }
                 for i in range(len(instances))
             ]
