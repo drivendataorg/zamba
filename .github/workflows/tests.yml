@@ -17,19 +17,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python and uv
+        uses: drivendataorg/setup-python-uv-action@v1
         with:
           python-version: 3.8
-          cache: 'pip'
-          cache-dependency-path: requirements-dev/lint.txt
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-dev/lint.txt
+          uv pip install -r requirements-dev.txt
 
       - name: Lint package
         run: |
@@ -57,7 +54,7 @@ jobs:
           remove-haskell: true
           remove-codeql: true
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup FFmpeg
         uses: Iamshankhadeep/setup-ffmpeg@v1.1
@@ -70,8 +67,8 @@ jobs:
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Set up Python and uv
+        uses: drivendataorg/setup-python-uv-action@v1
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
@@ -79,8 +76,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -e .[tests]
+          uv pip install -e .[tests]
 
       - name: Run tests
         run: |
@@ -128,19 +124,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: "4.4"
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Set up Python and uv
+        uses: drivendataorg/setup-python-uv-action@v1
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-          cache-dependency-path: pyproject.toml
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
 
       - name: Build package
         run: |
+          uv pip install build
           make dist
 
       - name: Install wheel; test CLI + models with assets
