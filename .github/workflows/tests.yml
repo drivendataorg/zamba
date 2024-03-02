@@ -48,7 +48,7 @@ jobs:
         name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 25000  # for pip packages in /tmp
+          root-reserve-mb: 30000  # for pip packages in /tmp
           remove-dotnet: true
           remove-android: true
           remove-haskell: true
