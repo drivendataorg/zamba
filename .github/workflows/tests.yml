@@ -71,8 +71,6 @@ jobs:
         uses: drivendataorg/setup-python-uv-action@v1
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-          cache-dependency-path: pyproject.toml
 
       - name: Install dependencies
         run: |
@@ -86,8 +84,7 @@ jobs:
         env:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
-          # torch is alread installed, so just add the densepose extra
-          uv pip install -e .[tests,densepose]
+          pip install -e .[densepose]
           make densepose-tests
 
       - name: Upload coverage to codecov
