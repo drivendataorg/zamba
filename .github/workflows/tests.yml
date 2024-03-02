@@ -48,7 +48,7 @@ jobs:
         name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 30000  # for pip packages in /tmp
+          root-reserve-mb: 32000  # for pip packages in /tmp
           remove-dotnet: true
           remove-android: true
           remove-haskell: true
@@ -84,7 +84,6 @@ jobs:
         env:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
-          which pip
           uv pip install pip
           pip install -e .[densepose]
           make densepose-tests
