@@ -84,6 +84,8 @@ jobs:
         env:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
+          which pip
+          uv pip install pip
           pip install -e .[densepose]
           make densepose-tests
 
