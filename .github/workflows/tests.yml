@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -r requirements-dev.txt
+          uv pip install -r requirements-dev/lint.txt
 
       - name: Lint package
         run: |
@@ -85,6 +85,7 @@ jobs:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
           uv pip install flit-core
+          # torch is alread installed, so just add the densepose extra
           uv pip install -e .[densepose] --no-build-isolation
           make densepose-tests
 
