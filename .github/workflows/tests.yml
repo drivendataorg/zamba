@@ -84,6 +84,7 @@ jobs:
         env:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
+          uv pip install flit-core
           uv pip install -e .[densepose] --no-build-isolation
           make densepose-tests
 
