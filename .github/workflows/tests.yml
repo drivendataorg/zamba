@@ -135,19 +135,21 @@ jobs:
 
       - name: Install wheel; test CLI + models with assets
         run: |
-          uv venv .venv-whl
-          PYTHON_BIN=.venv-whl/bin/python
-          uv pip install --python=$PYTHON_BIN zamba@$(find dist -name 'zamba*.whl') --force-reinstall
-          $PYTHON_BIN -m zamba --help
-          $PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          python -m venv .venv-whl
+          PYTHON_BIN=bin/python
+          .venv-whl/$PYTHON_BIN -m pip install --upgrade pip
+          .venv-whl/$PYTHON_BIN -m pip install dist/zamba-*.whl
+          .venv-whl/$PYTHON_BIN -m zamba --help
+          .venv-whl/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
       - name: Install source; test CLI + models with assets
         run: |
-          uv venv .venv-sdist
-          PYTHON_BIN=.venv-sdist/bin/python
-          uv pip install --python=$PYTHON_BIN zamba@$(find dist -name 'zamba*.tar.gz') --force-reinstall
-          $PYTHON_BIN -m zamba --help
-          $PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          python -m venv .venv-sdist
+          PYTHON_BIN=bin/python
+          .venv-sdist/$PYTHON_BIN -m pip install --upgrade pip
+          .venv-sdist/$PYTHON_BIN -m pip install dist/zamba-*.tar.gz
+          .venv-sdist/$PYTHON_BIN -m zamba --help
+          .venv-sdist/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
   notify:
     name: Notify failed build
