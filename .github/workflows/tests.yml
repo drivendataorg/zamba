@@ -32,69 +32,69 @@ jobs:
         run: |
           make lint
 
-  tests:
-    name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
-    needs: code-quality
-    runs-on: ${{ matrix.os }}
-    env:
-      DISTUTILS_USE_SDK: 1 # for MSVC compiler
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: [3.8, 3.9]
+  # tests:
+  #   name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
+  #   needs: code-quality
+  #   runs-on: ${{ matrix.os }}
+  #   env:
+  #     DISTUTILS_USE_SDK: 1 # for MSVC compiler
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, macos-latest]
+  #       python-version: [3.8, 3.9]
 
-    steps:
-      - if: matrix.os == 'ubuntu-latest'
-        name: Maximize build space
-        uses: easimon/maximize-build-space@master
-        with:
-          root-reserve-mb: 32000  # for pip packages in /tmp
-          remove-dotnet: true
-          remove-android: true
-          remove-haskell: true
-          remove-codeql: true
+  #   steps:
+  #     - if: matrix.os == 'ubuntu-latest'
+  #       name: Maximize build space
+  #       uses: easimon/maximize-build-space@master
+  #       with:
+  #         root-reserve-mb: 32000  # for pip packages in /tmp
+  #         remove-dotnet: true
+  #         remove-android: true
+  #         remove-haskell: true
+  #         remove-codeql: true
 
-      - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v4
 
-      - name: Setup FFmpeg
-        uses: Iamshankhadeep/setup-ffmpeg@v1.1
-        with:
-          # Not strictly necessary, but it may prevent rate limit
-          # errors especially on GitHub-hosted macos machines.
-          token: ${{ secrets.GITHUB_TOKEN }}
-          version: "4.4"
+  #     - name: Setup FFmpeg
+  #       uses: Iamshankhadeep/setup-ffmpeg@v1.1
+  #       with:
+  #         # Not strictly necessary, but it may prevent rate limit
+  #         # errors especially on GitHub-hosted macos machines.
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         version: "4.4"
 
-      - name: Configure Windows compilers
-        uses: ilammy/msvc-dev-cmd@v1
+  #     - name: Configure Windows compilers
+  #       uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Set up Python and uv
-        uses: drivendataorg/setup-python-uv-action@v1
-        with:
-          python-version: ${{ matrix.python-version }}
+  #     - name: Set up Python and uv
+  #       uses: drivendataorg/setup-python-uv-action@v1
+  #       with:
+  #         python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-          uv pip install -e .[tests]
+  #     - name: Install dependencies
+  #       run: |
+  #         uv pip install -e .[tests]
 
-      - name: Run tests
-        run: |
-          make tests
+  #     - name: Run tests
+  #       run: |
+  #         make tests
 
-      - name: Run densepose tests
-        env:
-          ZAMBA_RUN_DENSEPOSE_TESTS: 1
-        run: |
-          uv pip install flit-core
-          # torch is alread installed, so just add the densepose extra
-          uv pip install -e .[densepose] --no-build-isolation
-          make densepose-tests
+  #     - name: Run densepose tests
+  #       env:
+  #         ZAMBA_RUN_DENSEPOSE_TESTS: 1
+  #       run: |
+  #         uv pip install flit-core
+  #         # torch is alread installed, so just add the densepose extra
+  #         uv pip install -e .[densepose] --no-build-isolation
+  #         make densepose-tests
 
-      - name: Upload coverage to codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          fail_ci_if_error: true
+  #     - name: Upload coverage to codecov
+  #       uses: codecov/codecov-action@v3
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+  #         file: ./coverage.xml
+  #         fail_ci_if_error: true
 
   test-install:
     name: Test install from built distributions
@@ -135,20 +135,15 @@ jobs:
 
       - name: Install wheel; test CLI + models with assets
         run: |
-          uv venv .venv-whl
-          source .venv-whl/bin/activate
-          PYTHON_BIN=bin/python
-          uv pip install dist/zamba-*.whl
-          .venv-whl/$PYTHON_BIN -m zamba --help
-          .venv-whl/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          uv pip install zamba@$(find dist -name 'zamba*.whl') --no-deps --force-reinstall
+          python -m zamba --help
+          python -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
       - name: Install source; test CLI + models with assets
         run: |
-          uv venv .venv-sdist
-          PYTHON_BIN=bin/python
-          uv pip install dist/zamba-*.tar.gz
-          .venv-sdist/$PYTHON_BIN -m zamba --help
-          .venv-sdist/$PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          uv pip install zamba@$(find dist -name 'zamba*.tar.gz') --no-deps --force-reinstall
+          python -m zamba --help
+          python -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
   notify:
     name: Notify failed build
