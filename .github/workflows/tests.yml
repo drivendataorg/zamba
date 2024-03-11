@@ -84,8 +84,7 @@ jobs:
         env:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
-          uv pip install pip
-          pip install -e .[densepose]
+          uv pip install -e .[densepose] --no-build-isolation
           make densepose-tests
 
       - name: Upload coverage to codecov
