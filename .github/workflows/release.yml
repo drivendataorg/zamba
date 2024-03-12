@@ -18,20 +18,17 @@ jobs:
           remove-dotnet: true
           remove-android: true
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python and uv
+        uses: drivendataorg/setup-python-uv-action@v1
         with:
           python-version: 3.8
-          cache: 'pip'
-          cache-dependency-path: pyproject.toml
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-dev/docs.txt
-          pip install -e .
+          uv pip install -r requirements-dev/docs.txt
+          uv pip install -e .
 
       - name: Check that versions match
         id: version

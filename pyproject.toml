@@ -62,6 +62,7 @@ tests = [
 ]
 densepose = [
   "torch<2.1.0",  # densepose broken after 2.1.0; https://github.com/facebookresearch/detectron2/issues/5110
+  "detectron2 @ git+https://github.com/facebookresearch/detectron2.git",
   "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
 ]
 
