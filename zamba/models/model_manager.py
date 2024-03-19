@@ -79,7 +79,8 @@ def instantiate_model(
     # predicting
     if labels is None:
         logger.info("Loading from checkpoint.")
-        model = model_class.from_disk(path=checkpoint, **hparams)
+        # set load_from_checkpoint
+        model = model_class.from_disk(path=checkpoint, load_from_checkpoint=True, **hparams)
         return model
 
     # get species from labels file
