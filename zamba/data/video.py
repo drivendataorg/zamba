@@ -23,6 +23,7 @@ from zamba.object_detection.yolox.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
+from zamba.settings import IMAGE_SUFFIXES
 
 
 def ffprobe(path: os.PathLike) -> pd.Series:
@@ -414,12 +415,48 @@ class npy_cache:
                 )
 
 
+def load_and_repeat_image(path, target_size=(224, 224), repeat_count=4):
+    """
+    Loads an image, resizes it, and repeats it N times.
+
+    Args:
+        path: Path to the image file.
+        target_size: A tuple (w, h) representing the desired width and height of the resized image.
+        repeat_count: Number of times to repeat the image.
+
+    Returns:
+        A NumPy array of shape (N, h, w, 3) representing the repeated image.
+    """
+    image = cv2.imread(path)
+
+    # Resize the image in same way as video frames are in `load_video_frames`
+    image = cv2.resize(
+        image,
+        target_size,
+        # https://stackoverflow.com/a/51042104/1692709
+        interpolation=(
+            cv2.INTER_LINEAR
+            if image.shape[1] < target_size[0]  # compare image width with target width
+            else cv2.INTER_AREA
+        ),
+    )
+
+    image_array = np.expand_dims(image, axis=0)
+
+    # Repeat the image N times
+    repeated_image = np.repeat(image_array, repeat_count, axis=0)
+
+    return repeated_image
+
+
 def load_video_frames(
     filepath: os.PathLike,
     config: Optional[VideoLoaderConfig] = None,
     **kwargs,
 ):
     """Loads frames from videos using fast ffmpeg commands.
+
+    Supports images as well, but it is inefficient since we just replicate the frames.
 
     Args:
         filepath (os.PathLike): Path to the video.
@@ -434,6 +471,13 @@ def load_video_frames(
 
     if config is None:
         config = VideoLoaderConfig(**kwargs)
+
+    if Path(filepath).suffix.lower() in IMAGE_SUFFIXES:
+        return load_and_repeat_image(
+            filepath,
+            target_size=(config.model_input_width, config.model_input_height),
+            repeat_count=config.total_frames,
+        )
 
     video_stream = get_video_stream(filepath)
     w = int(video_stream["width"])
