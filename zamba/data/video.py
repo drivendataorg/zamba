@@ -427,7 +427,7 @@ def load_and_repeat_image(path, target_size=(224, 224), repeat_count=4):
     Returns:
         A NumPy array of shape (N, h, w, 3) representing the repeated image.
     """
-    image = cv2.imread(path)
+    image = cv2.imread(str(path))
 
     # Resize the image in same way as video frames are in `load_video_frames`
     image = cv2.resize(
