@@ -29,7 +29,7 @@ from zamba.models.utils import (
     RegionEnum,
 )
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
+from zamba.settings import IMAGE_SUFFIXES, PREDICT_ON_IMAGES, SPLIT_SEED, VIDEO_SUFFIXES
 
 
 GPUS_AVAILABLE = torch.cuda.device_count()
@@ -224,10 +224,12 @@ def get_filepaths(cls, values):
         new_suffixes = []
 
         # iterate over all files in data directory
-        for f in values["data_dir"].rglob("*"):
+        for f in Path(values["data_dir"]).rglob("*"):
             if f.is_file():
                 # keep just files with supported suffixes
                 if f.suffix.lower() in VIDEO_SUFFIXES:
+                    files.append(f.resolve())
+                elif PREDICT_ON_IMAGES and f.suffix.lower() in IMAGE_SUFFIXES:
                     files.append(f.resolve())
                 else:
                     new_suffixes.append(f.suffix.lower())

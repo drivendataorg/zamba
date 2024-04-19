@@ -158,3 +158,21 @@ And there's so much more! You can also do things like specify your region for fa
 ### 5. Test your configuration with a dry run
 
 Before kicking off a full run of inference, we recommend testing your code with a "dry run". This will run one batch of inference to quickly detect any bugs. See the [Debugging](debugging.md) page for details.
+
+
+## Predicting species from images
+
+Zamba does not currently provide comprehensive support for images by default, only videos. We do, however, have experimental support for making predictions on images using our existing models. This may be useful if you have a few images that you would like to classify or you want to compare the performance on a small set of images.
+
+To do this, you will need to set the environment variable `PREDICT_ON_IMAGES=True` (for example by prefacing the `zamba` command with it: `PREDICT_ON_IMAGES=True zamba predict --data-dir example_images/`). 
+
+By default, `zamba` will look for files with the following suffixes: `.jpg`, `.jpeg`, `.png`, and `.webp`. To use other image suffixes that are supported by OpenCV, set your `IMAGE_SUFFIXES` environment variable.
+
+The caveats are:
+
+ - The models may be less accurate since there is less information in a single image than in a video.
+ - This approach will be computationally inefficient as compared to a model that works natively on images.
+ - Blank / non-blank detection may be less effective since only the classification portion is executed, not the detection portion.
+ - This is not recommended for training or finetuning scenarios given the computational inefficiency.
+
+More comprehensive image support is planned for a future release.

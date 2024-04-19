@@ -9,3 +9,10 @@ else:
 
 # random seed to use for splitting data without site info into train / val / holdout sets
 SPLIT_SEED = os.environ.get("SPLIT_SEED", 4007)
+
+
+# experimental support for predicting on images
+IMAGE_SUFFIXES = [
+    ext.strip() for ext in os.environ.get("IMAGE_SUFFIXES", ".jpg,.jpeg,.png,.webp").split(",")
+]
+PREDICT_ON_IMAGES = os.environ.get("PREDICT_ON_IMAGES", "False").lower() == "true"
