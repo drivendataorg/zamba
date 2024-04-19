@@ -41,6 +41,7 @@ jobs:
 
       - name: Build package
         run: |
+          uv pip install build
           make dist
           cp dist/*.tar.gz zamba.tar.gz  # rename source package so URL can be consistent
 
