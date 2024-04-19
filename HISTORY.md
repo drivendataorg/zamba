@@ -1,5 +1,10 @@
 # `zamba` changelog
 
+## v2.4.0 (2024-04-19)
+
+* Adds experimental image support ([PR #314](https://github.com/drivendataorg/zamba/pull/314))
+* Clarifies installation instructions for Linux and Windows operating systems ([PR #299](https://github.com/drivendataorg/zamba/pull/299))
+
 ## v2.3.2 (2023-07-17)
 
 * Pin Pydantic to less than v2.0 ([PR #277](https://github.com/drivendataorg/zamba/pull/277))
