@@ -1,6 +1,9 @@
 # `zamba` changelog
 
 ## v2.4.0 (2024-04-19)
+ * Bug fixes for docs
+
+## v2.4.0 (2024-04-19)
 
 * Adds experimental image support ([PR #314](https://github.com/drivendataorg/zamba/pull/314))
 * Clarifies installation instructions for Linux and Windows operating systems ([PR #299](https://github.com/drivendataorg/zamba/pull/299))

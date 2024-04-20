@@ -92,8 +92,6 @@ plugins:
             heading_level: 2
             group_by_category: true
             show_category_heading: true
-      watch:
-        - ../zamba
 
 extra:
   version:
