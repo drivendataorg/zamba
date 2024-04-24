@@ -911,3 +911,81 @@ class ModelConfig(ZambaBaseModel):
             values["video_loader_config"] = VideoLoaderConfig(**config_dict["video_loader_config"])
 
         return values
+    
+    
+class CustomBase(BaseModel):
+    class Config:
+        hardware_dependent = []
+        
+    def dict_hardware_independent(self):
+        full_dict = self.dict()
+        
+        # remove hardware dependent fields on children
+        for field_name, field_type in self.__fields__.items():
+            field_value = getattr(self, field_name, None)
+            if isinstance(field_value, CustomBase):
+                full_dict[field_name] = field_value.dict_hardware_independent()
+
+        # remove hardware dependent fields on this model
+        for f in self.Config.hardware_dependent:
+            full_dict.pop(f)
+                
+        return full_dict
+        
+
+class SubModelC(CustomBase):
+    x: str
+
+    class Config:
+        hardware_dependent = ['x']
+        
+class SubModelA(CustomBase):
+    a: str
+    b: str
+    c: SubModelC
+
+    class Config:
+        hardware_dependent = ['a']
+
+#adding additional sub models
+class SubModelB(CustomBase):
+    d: str
+    e: str
+    f: SubModelA
+    g: SubModelC
+
+    class Config:
+        hardware_dependent = ['d', 'f']
+
+class SubModelD(CustomBase):
+    h: SubModelB
+    i: str
+    j: SubModelA
+
+    class Config:
+        hardware_dependent = ['h', 'i', 'j']
+
+class SubModelE(CustomBase):
+    k: str
+    l: str
+
+    class Config:
+        hardware_dependent = ['k', 'l']
+
+# created instances for c, a, and b to construct instances of parent model
+instance_c = SubModelC(x = 'x')
+instance_a = SubModelA(a="a", b="b", c=SubModelC)
+instance_b = SubModelB(d = 'd', e = 'e', f = instance_a, g = instance_c)
+
+# now make instance of parent model d
+instance_d = SubModelD(h = instance_b, i = 'i', j = instance_a)
+
+# can decide whether you want this one or not since not used in parent models
+instance_e = SubModelE(k = 'k', l = 'l')
+
+# now we just serialize the different models
+instance_a.dict_hardware_independent()
+instance_b.dict_hardware_independent()
+instance_c.dict_hardware_independent()
+instance_d.dict_hardware_independent()
+instance_e.dict_hardware_independent()

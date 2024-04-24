@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 from pydantic import ValidationError
 
+from zamba.pytorch.dataloaders import __getitem__
+
 from zamba.models.config import (
     EarlyStoppingConfig,
     ModelConfig,
@@ -574,3 +576,45 @@ def test_validate_provided_species_and_use_default_model_labels(labels_absolute_
             "Conflicting information between `use_default_model_labels=True` and species provided."
             in error
         )
+
+
+"""
+test case where splits get automatically assigned and then check that that csv gets written
+"""
+def test_split_files(labels_absolute_path, tmp_path):
+    #adding a test case where splits get automatically assigned
+
+    #arbitrary training
+    config = TrainConfig(
+        labels=labels_absolute_path,
+        model_name="time_distributed",
+        skip_load_validation=True,
+        save_dir=tmp_path / "my_model",
+    )
+    #make sure the split was automatically generated
+    split = pd.read_csv(tmp_path / "splits.csv")["split"].values
+    assert(split == ["train", "val", "train", "val"]).all
+
+    #checking if the csv gets written
+    assert os.path.exists(tmp_path/"splits.csv"), "File does not exist!"
+    
+    config.preprocess_labels(config,config.labels)
+
+"""
+Test case for bad videos
+To test this, have the video file path contain two videos, the first one being legit and the second being bad
+A corrupted mp4 is included in the tests labeled monkeys.mp4
+"""
+def test_bad_video():
+
+    #we have to call the __getitem__ function in dataloaders
+    # the first index will be of a good video, the second of a bad video
+    for index in range(2):
+        video =__getitem__(index)
+        all_zero = np.all(video == 0)
+
+        #the good video
+        if index == 0:
+            assert all_zero is False
+        else:
+            assert all_zero is True
