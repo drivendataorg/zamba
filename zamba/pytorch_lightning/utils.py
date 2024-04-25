@@ -67,7 +67,7 @@ class ZambaDataModule(LightningDataModule):
         )
         self.multiprocessing_context: BaseContext = (
             None
-            if (multiprocessing_context is None) or (num_workers == 0)
+            if (num_workers == 0) or (multiprocessing_context is None)
             else multiprocessing_context
         )
 
