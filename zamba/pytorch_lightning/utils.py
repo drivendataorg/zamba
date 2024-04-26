@@ -65,11 +65,8 @@ class ZambaDataModule(LightningDataModule):
             transform=transform,
             video_loader_config=video_loader_config,
         )
-        self.multiprocessing_context: BaseContext = (
-            None
-            if (num_workers == 0) or (multiprocessing_context is None)
-            else multiprocessing_context
-        )
+        self.multiprocessing_context: BaseContext = multiprocessing_context #Modified the multiprocessing context to not factor in num_workers decoupliing it
+
 
         super().__init__(*args, **kwargs)
 
