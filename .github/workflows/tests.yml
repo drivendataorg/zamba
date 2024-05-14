@@ -67,8 +67,10 @@ jobs:
 
       - if: matrix.os == 'macos-latest'
         name: Setup FFmpeg
-        run:
+        run: |
           brew install ffmpeg@4
+          echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
+          ffmpeg -version
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
