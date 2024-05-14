@@ -71,7 +71,10 @@ jobs:
           brew install ffmpeg@4
           echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
           source /Users/runner/.bash_profile
+          export LDFLAGS="-L/opt/homebrew/opt/ffmpeg@4/lib"
+          export CPPFLAGS="-I/opt/homebrew/opt/ffmpeg@4/include"
           ffmpeg -version
+          ffprobe -version
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
