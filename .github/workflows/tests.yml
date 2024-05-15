@@ -40,7 +40,7 @@ jobs:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: [3.8, 3.9]
 
     steps:
@@ -83,12 +83,12 @@ jobs:
           uv pip install -e .[tests]
 
       - if: matrix.os == 'ubuntu-latest'
-      name: Run tests
+        name: Run tests
         run: |
           make tests
 
       - if: matrix.os == 'macos-latest'
-      name: Run tests
+        name: Run tests
         run: |
           echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
           source /Users/runner/.bash_profile
