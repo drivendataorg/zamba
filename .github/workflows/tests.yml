@@ -82,7 +82,13 @@ jobs:
         run: |
           uv pip install -e .[tests]
 
-      - name: Run tests
+      - if: matrix.os == 'ubuntu-latest'
+      name: Run tests
+        run: |
+          make tests
+
+      - if: matrix.os == 'macos-latest'
+      name: Run tests
         run: |
           echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
           source /Users/runner/.bash_profile
