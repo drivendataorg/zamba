@@ -69,6 +69,7 @@ jobs:
         name: Setup FFmpeg
         run: |
           brew install ffmpeg@4
+          echo "/opt/homebrew/opt/ffmpeg@4/bin" >> $GITHUB_PATH
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
@@ -82,18 +83,8 @@ jobs:
         run: |
           uv pip install -e .[tests]
 
-      - if: matrix.os == 'ubuntu-latest'
-        name: Run tests
+      - name: Run tests
         run: |
-          make tests
-
-      - if: matrix.os == 'macos-latest'
-        name: Run tests
-        run: |
-          echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
-          source /Users/runner/.bash_profile
-          ffmpeg -version
-          ffprobe -version
           make tests
 
       - name: Run densepose tests
