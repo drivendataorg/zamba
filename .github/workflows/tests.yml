@@ -70,10 +70,6 @@ jobs:
         run: |
           brew install ffmpeg@4
           echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
-          source /Users/runner/.bash_profile
-          export LDFLAGS="-L/opt/homebrew/opt/ffmpeg@4/lib"
-          export CPPFLAGS="-I/opt/homebrew/opt/ffmpeg@4/include"
-          ffmpeg -version
           ffprobe -version
 
       - name: Configure Windows compilers
@@ -90,6 +86,9 @@ jobs:
 
       - name: Run tests
         run: |
+          source /Users/runner/.bash_profile
+          ffmpeg -version
+          ffprobe -version
           make tests
 
       - name: Run densepose tests
