@@ -40,7 +40,7 @@ jobs:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
-        os: [macos-latest-large]
+        os: [ubuntu-latest, macos-latest]
         python-version: [3.8, 3.9]
 
     steps:
@@ -65,13 +65,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: "4.4"
 
-      # - if: matrix.os == 'macos-latest'
-      #   name: Setup FFmpeg
-      #   run: |
-      #     brew install ffmpeg@4
-      #     echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
-      #     source /Users/runner/.bash_profile
-      #     ffprobe -version
+      - if: matrix.os == 'macos-latest'
+        name: Setup FFmpeg
+        run: |
+          brew install ffmpeg@4
+          echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
+          source /Users/runner/.bash_profile
+          ffprobe -version
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
