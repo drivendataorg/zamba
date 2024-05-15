@@ -69,8 +69,6 @@ jobs:
         name: Setup FFmpeg
         run: |
           brew install ffmpeg@4
-          echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
-          source /Users/runner/.bash_profile
           ffprobe -version
 
       - name: Configure Windows compilers
@@ -87,6 +85,8 @@ jobs:
 
       - name: Run tests
         run: |
+          echo 'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"' >> /Users/runner/.bash_profile
+          source /Users/runner/.bash_profile
           ffmpeg -version
           ffprobe -version
           make tests
