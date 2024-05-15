@@ -69,7 +69,6 @@ jobs:
         name: Setup FFmpeg
         run: |
           brew install ffmpeg@4
-          ffprobe -version
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
