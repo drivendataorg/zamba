@@ -458,7 +458,9 @@ def test_megadetector_lite_yolox_dog(tmp_path):
             "-y",
         ]
     )
-    frames = load_video_frames(tmp_path / "dog.mp4", megadetector_lite_config=MegadetectorLiteYoloXConfig())
+    frames = load_video_frames(
+        tmp_path / "dog.mp4", megadetector_lite_config=MegadetectorLiteYoloXConfig()
+    )
 
     # Check that we detected the correct number of frames
     assert len(frames) == len(object_frame_indices)
