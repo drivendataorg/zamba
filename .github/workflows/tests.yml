@@ -70,7 +70,6 @@ jobs:
         run: |
           brew install ffmpeg@4
           echo "/opt/homebrew/opt/ffmpeg@4/bin" >> $GITHUB_PATH
-          echo "MACOSX_DEPLOYMENT_TARGET=$(sw_vers -productVersion)" >> $GITHUB_ENV
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
@@ -84,9 +83,14 @@ jobs:
         run: |
           uv pip install -e .[tests]
 
-      # - name: Run tests
-      #   run: |
-      #     make tests
+      - name: Run tests
+        run: |
+          make tests
+
+      - if: matrix.os == 'macos-latest'
+        name: Specify MacOS version for densepose install
+        run: |
+          echo "MACOSX_DEPLOYMENT_TARGET=$(sw_vers -productVersion)" >> $GITHUB_ENV
 
       - name: Run densepose tests
         env:
