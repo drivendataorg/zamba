@@ -93,7 +93,7 @@ jobs:
         run: |
           uv pip install flit-core
           # torch is alread installed, so just add the densepose extra
-          export MACOSX_DEPLOYMENT_TARGET=${{ sw_vers -productVersion if runner.os == 'macos-latest' else None }}
+          export MACOSX_DEPLOYMENT_TARGET=${sw_vers -productVersion if runner.os == 'macos-latest' else None}
           uv pip install -e .[densepose] --no-build-isolation
           make densepose-tests
 
