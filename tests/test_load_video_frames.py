@@ -438,7 +438,7 @@ def test_megadetector_lite_yolox_dog(tmp_path):
         [
             "ffmpeg",
             "-r",
-            "32",
+            "30",
             "-f",
             "image2",
             "-s",
