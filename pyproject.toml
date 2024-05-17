@@ -21,7 +21,6 @@ dependencies = [
   "appdirs",
   "av",
   "cloudpathlib[s3]",
-  "botocore",
   "ffmpeg-python",
   "future",
   "fvcore",
