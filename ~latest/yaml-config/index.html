@@ -1926,7 +1926,7 @@
 <p>Only some of the possible parameters can be passed directly as arguments to the command line. Those not listed in <code>zamba predict --help</code> or <code>zamba train --help</code> must be passed in a YAML file (see the <a href="../quickstart/#getting-help">Quickstart guide</a> for details).</p>
 <h2 id="python-package">Python package<a class="headerlink" href="#python-package" title="Permanent link">&para;</a></h2>
 <p>The main API for zamba is the <a href="../api-reference/models-model_manager/#zamba.models.model_manager.ModelManager"><code>ModelManager</code> class</a> that can be accessed with:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.manager</span> <span class="kn">import</span> <span class="n">ModelManager</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">zamba.models.model_manager</span> <span class="kn">import</span> <span class="n">ModelManager</span>
 </code></pre></div>
 <p>The <code>ModelManager</code> class is used by <code>zamba</code>’s command line interface to handle preprocessing the filenames, loading the videos, training the model, performing inference, and saving predictions. Therefore any functionality available to the command line interface is accessible via the <code>ModelManager</code> class.</p>
 <p>To instantiate the <code>ModelManager</code> based on a configuration file saved at <code>test_config.yaml</code>:
