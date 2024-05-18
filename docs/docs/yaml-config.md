@@ -61,7 +61,7 @@ Only some of the possible parameters can be passed directly as arguments to the 
 The main API for zamba is the [`ModelManager` class](api-reference/models-model_manager.md#zamba.models.model_manager.ModelManager) that can be accessed with:
 
 ```python
-from zamba.models.manager import ModelManager
+from zamba.models.model_manager import ModelManager
 ```
 
 The `ModelManager` class is used by `zamba`’s command line interface to handle preprocessing the filenames, loading the videos, training the model, performing inference, and saving predictions. Therefore any functionality available to the command line interface is accessible via the `ModelManager` class.
