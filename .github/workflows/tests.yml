@@ -46,7 +46,7 @@ jobs:
     steps:
       - if: matrix.os == 'ubuntu-latest'
         name: Remove unused software
-        run:
+        run: |
           echo "Available storage before:"
           sudo df -h
           echo
@@ -123,7 +123,7 @@ jobs:
 
     steps:
       - name: Remove unused software
-        run:
+        run: |
           echo "Available storage before:"
           sudo df -h
           echo

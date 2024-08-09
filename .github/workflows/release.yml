@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Remove unused software
-        run:
+        run: |
           echo "Available storage before:"
           sudo df -h
           echo
