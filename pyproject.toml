@@ -16,7 +16,7 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
   "appdirs",
   "av",
@@ -38,7 +38,7 @@ dependencies = [
   "pytorchvideo",
   "scikit-learn",
   "tensorboard",
-  "thop==0.0.31.post2005241907",
+  "thop",
   "timm",
   "torch",
   "torchinfo",
