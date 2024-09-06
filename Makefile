@@ -6,7 +6,7 @@
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = zamba
-PYTHON_VERSION = 3.8
+PYTHON_VERSION = 3.11
 PYTHON_INTERPRETER = python
 
 ifeq (, $(shell which nvidia-smi))

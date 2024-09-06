@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python and uv
         uses: drivendataorg/setup-python-uv-action@v1
         with:
-          python-version: 3.8
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
