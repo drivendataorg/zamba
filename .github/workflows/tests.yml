@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: [3.11]
+        python-version: [3.11, 3.12]
 
     steps:
       - if: matrix.os == 'ubuntu-latest'
@@ -119,7 +119,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.11]
+        python-version: [3.11, 3.12]
 
     steps:
       - name: Remove unused software

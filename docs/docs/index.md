@@ -29,7 +29,7 @@ We encourage people to share their custom models trained with Zamba. If you trai
 
 First, make sure you have the prerequisites installed:
 
-* Python 3.11
+* Python 3.11 or 3.12
 * FFmpeg > 4.3
 
 Then run:
