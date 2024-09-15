@@ -428,7 +428,7 @@ class TrainConfig(ZambaBaseModel):
     data_dir: DirectoryPath = ""
     checkpoint: Optional[FilePath] = None
     scheduler_config: Optional[Union[str, SchedulerConfig]] = "default"
-    model_name: Optional[ModelEnum] = ModelEnum.time_distributed
+    model_name: Optional[ModelEnum] = ModelEnum.time_distributed.value
     dry_run: Union[bool, int] = False
     batch_size: int = 2
     auto_lr_find: bool = False
@@ -749,7 +749,7 @@ class PredictConfig(ZambaBaseModel):
     data_dir: DirectoryPath = ""
     filepaths: Optional[FilePath] = None
     checkpoint: Optional[FilePath] = None
-    model_name: Optional[ModelEnum] = ModelEnum.time_distributed
+    model_name: Optional[ModelEnum] = ModelEnum.time_distributed.value
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3
     batch_size: int = 2
