@@ -119,6 +119,30 @@ By default, predictions will be saved to `depth_predictions.csv`. Run `zamba dep
 
 See the [depth estimation page](https://zamba.drivendata.org/docs/stable/models/depth/) for more details.
 
+### Common Setup Issues and Troubleshooting:
+If you receive an error about FFmpeg not being found, ensure that it is installed correctly and added to your system's PATH. You can verify the installation by running:
+
+ffmpeg -version
+
+If ffmpeg is not found, install it via: 
+
+sudo apt-get install ffmpeg
+or 
+brew install ffmpeg
+
+Ensure you have Python 3.11 or greater (python --version) check.
+If you are using a different version, simply create a new virtual environment with the correct versions
+
+conda create -n zamba-env python=3.11
+conda activate zamba-env
+
+If your video files are not recognized by zamba, make sure they are in one of the supported formats by FFmpeg. You can convert videos to a supported format using FFmpeg:
+
+ffmpeg -i input_video.avi output_video.mp4
+
+If you're running into memory issues while processing large video datasets, try reducing the number of videos processed at once by using the --batch-size option:
+
+zamba predict --data-dir path/to/videos --batch-size 10
 
 ## Contributing
 
