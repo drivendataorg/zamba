@@ -1,8 +1,12 @@
 # `zamba` changelog
 
+## v.2.5.0 (2024-09-27)
+
+* Removed support for Python 3.8 and 3.9 plus other requirement updates ([PR #337](https://github.com/drivendataorg/zamba/pull/337), [PR #335](https://github.com/drivendataorg/zamba/pull/335)). New minimum python version is 3.11.
+
 ## v2.4.1 (2024-04-20)
 
- * Bug fixes for docs
+* Bug fixes for docs
 
 ## v2.4.0 (2024-04-19)
 

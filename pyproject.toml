@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "zamba"
-version = "2.4.1"
+version = "2.5.0"
 authors = [
   {name = "DrivenData", email = "info@drivendata.org"}
 ]
