@@ -205,7 +205,7 @@ class ZambaVideoClassificationLightningModule(LightningModule):
 
     @staticmethod
     def aggregate_step_outputs(
-        outputs: Dict[str, np.ndarray]
+        outputs: Dict[str, np.ndarray],
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         y_true = np.vstack([output["y_true"] for output in outputs])
         y_pred = np.vstack([output["y_pred"] for output in outputs])
