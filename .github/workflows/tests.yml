@@ -110,7 +110,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
-          fail_ci_if_error: true
+          fail_ci_if_error: ${{ (github.event_name == 'push' && true) || (github.event_name == 'pull_request' && true) || false }}
 
   test-install:
     name: Test install from built distributions
