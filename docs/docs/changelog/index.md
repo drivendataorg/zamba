@@ -1,5 +1,9 @@
 # `zamba` changelog
 
+## v.2.6.0 (2024-09-27)
+
+* Added support for training and classifying on images ([PR #349](https://github.com/drivendataorg/zamba/pull/349))
+
 ## v.2.5.0 (2024-09-27)
 
 * Removed support for Python 3.8 and 3.9 plus other requirement updates ([PR #337](https://github.com/drivendataorg/zamba/pull/337), [PR #335](https://github.com/drivendataorg/zamba/pull/335)). New minimum python version is 3.11.
