@@ -53,7 +53,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        uv pip install -r requirements-dev/lint.txt
+        uv pip install -e .[tests]
 
     - name: Load weights cache
       id: cache-weights
