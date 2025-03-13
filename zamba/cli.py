@@ -21,6 +21,7 @@ from zamba.models.densepose import DensePoseConfig, DensePoseOutputEnum
 from zamba.models.depth_estimation import DepthEstimationConfig
 from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
+from zamba.utils_cli import app as utils_app
 from zamba.version import __version__
 
 # make logger work with tqdm
@@ -30,6 +31,7 @@ logger.add(lambda msg: tqdm.write(msg, end=""), colorize=True)
 
 app = typer.Typer(pretty_exceptions_show_locals=False)
 app.add_typer(image_app, name="image", help="Tools for working with images instead of videos.")
+app.add_typer(utils_app, name="utils", help="Utilities")
 
 
 @app.command()

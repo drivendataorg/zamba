@@ -15,6 +15,9 @@ on:
     - cron: '0 0 * * 0'
   workflow_dispatch:
 
+env:
+  MODEL_CACHE_DIR: ${{ github.workspace }}/.zamba-weights
+
 jobs:
   code-quality:
     name: Code Quality
@@ -35,6 +38,23 @@ jobs:
       - name: Lint package
         run: |
           make lint
+
+  cache-model-weights:
+    name: Download or use cached model weights
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Load weights cache
+      id: cache-weights
+      uses: actions/cache@v4
+      with:
+        path: "${{ env.MODEL_CACHE_DIR }}"
+        key: weights
+
+    - name: Populate weights cache
+      run: zamba utils dl-weights
 
   tests:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})

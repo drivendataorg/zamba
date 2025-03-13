@@ -75,7 +75,7 @@ ZAMBA_RUN_DENSEPOSE_TESTS is set to 1.""",
 )
 @pytest.mark.parametrize("model", ("animals", "chimps"))
 def test_video(model, chimp_video_path, tmp_path):
-    dpm = DensePoseManager(model=MODELS[model], model_cache_dir=tmp_path / ".cache")
+    dpm = DensePoseManager(model=MODELS[model])
 
     # segmentation
     vid, preds = dpm.predict_video(

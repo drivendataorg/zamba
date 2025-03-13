@@ -1,6 +1,7 @@
 import json
 import logging
 from pathlib import Path
+from typing import Optional
 
 import cv2
 
@@ -37,6 +38,7 @@ from tqdm import tqdm
 
 from zamba.data.video import load_video_frames
 from zamba.models.utils import RegionEnum, download_weights
+from zamba.settings import get_model_cache_dir
 
 
 MODELS = dict(
@@ -76,7 +78,7 @@ class DensePoseManager:
     def __init__(
         self,
         model=MODELS["chimps"],
-        model_cache_dir: Path = Path(".zamba_cache"),
+        model_cache_dir: Optional[Path] = None,
         download_region=RegionEnum("us"),
     ):
         """Create a DensePoseManager object.
@@ -90,6 +92,8 @@ class DensePoseManager:
             raise ImportError(
                 "Densepose not installed. See: https://zamba.drivendata.org/docs/stable/models/densepose/#installation"
             )
+
+        model_cache_dir = model_cache_dir or get_model_cache_dir()
 
         # setup configuration for densepose
         self.cfg = get_cfg()

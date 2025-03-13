@@ -1,10 +1,8 @@
 from enum import Enum
-import os
 from pathlib import Path
 import random
 from typing import Dict, Optional, Union
 
-import appdirs
 import ffmpeg
 from loguru import logger
 import numpy as np
@@ -29,7 +27,7 @@ from zamba.models.utils import (
     RegionEnum,
 )
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, VIDEO_SUFFIXES
+from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, VIDEO_SUFFIXES, get_model_cache_dir
 
 
 GPUS_AVAILABLE = torch.cuda.device_count()
@@ -81,7 +79,7 @@ def validate_model_cache_dir(model_cache_dir: Optional[Path]):
     config argument, environment variable, or user's default cache dir.
     """
     if model_cache_dir is None:
-        model_cache_dir = os.getenv("MODEL_CACHE_DIR", Path(appdirs.user_cache_dir()) / "zamba")
+        model_cache_dir = get_model_cache_dir()
 
     model_cache_dir = Path(model_cache_dir)
     model_cache_dir.mkdir(parents=True, exist_ok=True)
