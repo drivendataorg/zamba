@@ -60,7 +60,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
-        key: weights
+        key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
 
     - name: Populate weights cache
       run: zamba utils dl-weights
@@ -98,7 +98,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: "${{ env.MODEL_CACHE_DIR }}"
-          key: weights
+          key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
 
       - if: matrix.os == 'ubuntu-latest'
         name: Setup FFmpeg
