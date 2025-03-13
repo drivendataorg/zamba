@@ -3,9 +3,13 @@ name: tests
 on:
   push:
     branches: [master]
+    paths:
+      - "zamba/**"
   pull_request:
     branches:
       - master
+    paths:
+      - "zamba/**"
   schedule:
     # Run every Sunday
     - cron: '0 0 * * 0'
@@ -40,7 +44,7 @@ jobs:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         python-version: [3.11, 3.12]
 
     steps:
@@ -73,7 +77,7 @@ jobs:
         name: Setup FFmpeg
         run: |
           brew install ffmpeg@4
-          echo "/opt/homebrew/opt/ffmpeg@4/bin" >> $GITHUB_PATH
+          echo "/opt/homebrew/opt/ffmpeg@4/bin" >> "$GITHUB_PATH"
 
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1

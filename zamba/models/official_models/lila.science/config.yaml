@@ -1,0 +1,3 @@
+predict_config:
+  model_name: lila.science
+public_checkpoint: zamba-image-base-model-2025-01-27-alpha.ckpt

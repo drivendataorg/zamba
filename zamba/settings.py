@@ -15,4 +15,3 @@ SPLIT_SEED = os.environ.get("SPLIT_SEED", 4007)
 IMAGE_SUFFIXES = [
     ext.strip() for ext in os.environ.get("IMAGE_SUFFIXES", ".jpg,.jpeg,.png,.webp").split(",")
 ]
-PREDICT_ON_IMAGES = os.environ.get("PREDICT_ON_IMAGES", "False").lower() == "true"

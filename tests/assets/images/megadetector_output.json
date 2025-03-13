@@ -1,0 +1,97 @@
+{
+    "info": {},
+    "detection_categories": {
+        "1": "animal",
+        "2": "person",
+        "3": "vehicle"
+    },
+    "classification_categories": {
+        "0": "fox",
+        "1": "elk",
+        "2": "wolf",
+        "3": "bear"
+    },
+    "images": [
+        {
+            "file": "path/to/example.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.915,
+                    "bbox": [
+                        0.0,
+                        0.2311,
+                        0.1422,
+                        0.2432
+                    ],
+                    "classifications": [
+                        [
+                            "3",
+                            0.951
+                        ],
+                        [
+                            "1",
+                            0.011
+                        ],
+                        [
+                            "2",
+                            0.005
+                        ]
+                    ]
+                },
+                {
+                    "category": "1",
+                    "conf": 0.061,
+                    "bbox": [
+                        0.0451,
+                        0.1849,
+                        0.3642,
+                        0.4636
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "path/to/example2.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.9871,
+                    "bbox": [
+                        0.0,
+                        0.2211,
+                        0.1122,
+                        0.2555
+                    ],
+                    "classifications": [
+                        [
+                            "2",
+                            0.901
+                        ],
+                        [
+                            "0",
+                            0.055
+                        ],
+                        [
+                            "3",
+                            0.011
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "/path/to/empty_image.jpg",
+            "detections": []
+        },
+        {
+            "file": "/path/to/corrupted_image.jpg",
+            "failure": "Failure image access"
+        },
+        {
+            "file": "/path/to/corrupted_image_2.jpg",
+            "failure": "Failure image access",
+            "detections": null
+        }
+    ]
+}

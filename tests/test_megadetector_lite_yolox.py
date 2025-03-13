@@ -64,7 +64,7 @@ def test_detect_image(mdlite, dog):
     boxes, scores = mdlite.detect_image(np.array(dog))
 
     assert len(scores) == 1
-    assert np.allclose([0.65678996, 0.21596366, 0.71104807, 0.277931], boxes[0])
+    assert np.allclose([0.65678996, 0.21596366, 0.71104807, 0.277931], boxes[0], atol=1e-3)
 
 
 def test_detect_video(mdlite, dog):

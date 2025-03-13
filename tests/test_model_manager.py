@@ -32,7 +32,7 @@ def test_no_early_stopping(
 
 
 def test_save_checkpoint(dummy_trained_model_checkpoint):
-    checkpoint = torch.load(dummy_trained_model_checkpoint)
+    checkpoint = torch.load(dummy_trained_model_checkpoint, weights_only=False)
 
     assert tuple(checkpoint["state_dict"].keys()) == (
         "backbone.weight",

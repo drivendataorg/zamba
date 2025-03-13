@@ -31,7 +31,10 @@ from zamba.models.utils import (
     get_default_hparams,
 )
 from zamba.pytorch.finetuning import BackboneFinetuning
-from zamba.pytorch_lightning.utils import ZambaDataModule, ZambaVideoClassificationLightningModule
+from zamba.pytorch_lightning.video_modules import (
+    ZambaVideoDataModule,
+    ZambaVideoClassificationLightningModule,
+)
 
 
 def instantiate_model(
@@ -41,6 +44,7 @@ def instantiate_model(
     from_scratch: Optional[bool] = None,
     model_name: Optional[ModelEnum] = None,
     use_default_model_labels: Optional[bool] = None,
+    species: Optional[list] = None,
 ) -> ZambaVideoClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
     The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
@@ -64,6 +68,7 @@ def instantiate_model(
             Only relevant if training from scratch.
         use_default_model_labels (bool, optional): Whether to output the full set of default model labels rather than
             just the species in the labels file. Only used if labels is not None.
+        species (list, optional): List of species in label order. If None, read from labels file.
 
     Returns:
         ZambaVideoClassificationLightningModule: Instantiated model
@@ -83,8 +88,9 @@ def instantiate_model(
         return model
 
     # get species from labels file
-    species = labels.filter(regex=r"^species_").columns.tolist()
-    species = [s.split("species_", 1)[1] for s in species]
+    if species is None:
+        species = labels.filter(regex=r"^species_").columns.tolist()
+        species = [s.split("species_", 1)[1] for s in species]
 
     # train from scratch
     if from_scratch:
@@ -175,7 +181,9 @@ def log_schedulers(model):
     logger.info(f"Using scheduler params: {model.hparams['scheduler_params']}")
 
 
-def validate_species(model: ZambaVideoClassificationLightningModule, data_module: ZambaDataModule):
+def validate_species(
+    model: ZambaVideoClassificationLightningModule, data_module: ZambaVideoDataModule
+):
     conflicts = []
     for dataloader_name, dataloader in zip(
         ("Train", "Val", "Test"),
@@ -226,7 +234,7 @@ def train_model(
         use_default_model_labels=train_config.use_default_model_labels,
     )
 
-    data_module = ZambaDataModule(
+    data_module = ZambaVideoDataModule(
         video_loader_config=video_loader_config,
         transform=MODEL_MAPPING[model.__class__.__name__]["transform"],
         train_metadata=train_config.labels,
@@ -371,7 +379,7 @@ def predict_model(
         checkpoint=predict_config.checkpoint,
     )
 
-    data_module = ZambaDataModule(
+    data_module = ZambaVideoDataModule(
         video_loader_config=video_loader_config,
         transform=MODEL_MAPPING[model.__class__.__name__]["transform"],
         predict_metadata=predict_config.filepaths,

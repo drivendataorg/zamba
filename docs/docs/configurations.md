@@ -1,16 +1,19 @@
+
 # All configuration options
 
-To make it easy to associate a model configuration with and a set of results, zamba accepts a `yaml` file to define all of the relevant parameters for training or prediction. You can then store the configuration you used with the results in order to easily reproduce it in the future.
+To make it easy to associate a model configuration with a set of results, zamba accepts a `yaml` file to define all of the relevant parameters for training or prediction. You can then store the configuration you used with the results in order to easily reproduce it in the future.
 
 In general, we've tried to pick defaults that are reasonable, but it is worth it to familiarize yourself with the options available.
 
 The primary configurations you may want to set are:
 
-* `VideoLoaderConfig`: Defines all possible parameters for how videos are loaded
-* `PredictConfig`: Defines all possible parameters for model inference
-* `TrainConfig`: Defines all possible parameters for model training
+* `VideoLoaderConfig`: Defines all possible parameters for how videos are loaded when working with videos
+* `PredictConfig`: Defines all possible parameters for model inference on videos
+* `TrainConfig`: Defines all possible parameters for model training on videos
+* `ImageClassificationPredictConfig`: Defines all possible parameters for model inference on images
+* `ImageClassificationTrainingConfig`: Defines all possible parameters for model training on images
 
-Here's a helpful diagram which shows how everything is related.
+Here's a helpful diagram which shows how everything is related for the video workflows:
 
 ![](../media/zamba_config_diagram.png)
 
@@ -142,9 +145,9 @@ Whether to delete the cache directory after training or predicting ends. Default
 
 <a id='prediction-arguments'></a>
 
-## Prediction arguments
+## Video prediction arguments
 
-All possible model inference parameters are defined by the [`PredictConfig` class](api-reference/models-config.md#zamba.models.config.PredictConfig). Let's see the class documentation in Python:
+All possible model inference parameters for videos are defined by the [`PredictConfig` class](api-reference/models-config.md#zamba.models.config.PredictConfig). Let's see the class documentation in Python:
 
 ```python
 >> from zamba.models.config import PredictConfig
@@ -186,7 +189,7 @@ Path to a csv containing a `filepath` column with paths to the videos that shoul
 
 Path to a model checkpoint to load and use for inference. If you train your own custom models, this is how you can pass those models to zamba when you want to predict on new videos. The default is `None`, which will load the pretrained checkpoint if the model specified by `model_name`.
 
-#### `model_name (time_distributed|slowfast|european, optional)`
+#### `model_name (time_distributed|slowfast|european|blank_nonblank, optional)`
 
 Name of the model to use for inference. The model options that ship with `zamba` are `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/species-detection.md) page for details. Defaults to `time_distributed`
 
@@ -243,9 +246,9 @@ Cache directory where downloaded model weights will be saved. If None and the `M
 
 <a id='training-arguments'></a>
 
-## Training arguments
+## Video training arguments
 
-All possible model training parameters are defined by the [`TrainConfig` class](api-reference/models-config.md#zamba.models.config.TrainConfig). Let's see the class documentation in Python:
+All possible model training parameters for videos are defined by the [`TrainConfig` class](api-reference/models-config.md#zamba.models.config.TrainConfig). Let's see the class documentation in Python:
 
 ```python
 >> from zamba.models.config import TrainConfig
@@ -299,7 +302,7 @@ Path to a model checkpoint to load and resume training from. The default is `Non
 
 A [PyTorch learning rate schedule](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate) to adjust the learning rate based on the number of epochs. Scheduler can either be `default` (the default), `None`, or a [`torch.optim.lr_scheduler`](https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py).
 
-#### `model_name (time_distributed|slowfast|european, optional)`
+#### `model_name (time_distributed|slowfast|european|blank_nonblank, optional)`
 
 Name of the model to use for inference. The model options that ship with `zamba` are `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. See the [Available Models](models/species-detection.md) page for details. Defaults to `time_distributed`
 
@@ -366,3 +369,209 @@ Whether the species outputted by the model should be the default model classes (
 #### `model_cache_dir (Path, optional)`
 
 Cache directory where downloaded model weights will be saved. If None and the `MODEL_CACHE_DIR` environment variable is not set, will use your default cache directory, which is often an automatic temp directory at `~/.cache/zamba`. Defaults to `None`
+
+<a id='image-prediction-arguments'></a>
+
+## Image prediction arguments
+
+All possible model inference parameters for images are defined by the [`ImageClassificationPredictConfig` class](api-reference/models-config.md#zamba.models.config.ImageClassificationPredictConfig).
+
+```python
+>> from zamba.images.config import ImageClassificationPredictConfig
+>> help(ImageClassificationPredictConfig)
+```
+
+Here's a description of all the parameters:
+
+#### `checkpoint (FilePath, optional)`
+
+Path to a custom checkpoint file (.ckpt) generated by zamba that can be used to generate predictions. If None, defaults to a pretrained model. Defaults to None.
+
+#### `model_name (str, optional)`
+
+Name of the model to use for inference. Options are: lila.science. Defaults to lila.science.
+
+#### `filepaths (FilePath, optional)`
+
+Path to a CSV containing images for inference, with one row per image in the data_dir. There must be a column called 'filepath' (absolute or relative to the data_dir). If None, uses all files in data_dir. Defaults to None.
+
+#### `data_dir (DirectoryPath, optional)`
+
+Path to a directory containing images for inference. Defaults to the working directory.
+
+#### `save (bool, optional)`
+
+Whether to save out predictions. If False, predictions are not saved. Defaults to True.
+
+#### `save_dir (Path, optional)`
+
+An optional directory in which to save the model predictions and configuration yaml. If no save_dir is specified and save=True, outputs will be written to the current working directory. Defaults to None.
+
+#### `overwrite (bool, optional)`
+
+If True, overwrite outputs in save_dir if they exist. Defaults to False.
+
+#### `crop_images (bool, optional)`
+
+Preprocess images using Megadetector or bounding box from labels file. Default is True.
+
+#### `detections_threshold (float, optional)`
+
+Threshold for Megadetector. Default value is 0.2.
+
+#### `gpus (int, optional)`
+
+Number of GPUs to use for inference. Defaults to all of the available GPUs found on the machine.
+
+#### `num_workers (int, optional)`
+
+Number of workers for parallel processing. Default is 3.
+
+#### `image_size (int, optional)`
+
+Image size for the input of the classification model. Default is 224.
+
+#### `results_file_format (ResultsFormat, optional)`
+
+The format in which to output the predictions. Currently 'csv' and 'megadetector' JSON formats are supported. Default is 'csv'.
+
+#### `results_file_name (Path, optional)`
+
+The filename for the output predictions in the save directory. Default is "zamba_predictions.csv".
+
+#### `model_cache_dir (Path, optional)`
+
+Cache directory where downloaded model weights will be saved. If None and no environment variable is set, will use your default cache directory. Defaults to None.
+
+#### `weight_download_region (str, optional)`
+
+s3 region to download pretrained weights from. Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".
+
+<a id='image-training-arguments'></a>
+
+## Image training arguments
+
+All possible model training parameters for images are defined by the [`ImageClassificationTrainingConfig` class](api-reference/models-config.md#zamba.models.config.ImageClassificationTrainingConfig).
+
+```python
+>> from zamba.images.config import ImageClassificationTrainingConfig
+>> help(ImageClassificationTrainingConfig)
+```
+
+Here's a description of all the parameters:
+
+#### `data_dir (Path, required)`
+
+Where to find the files listed in filepaths (or where to look if filepaths is not provided).
+
+#### `labels (pd.DataFrame or FilePath, required)`
+
+Labels dataframe or path to CSV file containing labels.
+
+#### `labels_format (BboxFormat, optional)`
+
+Format for bounding box annotations. Defaults to BboxFormat.COCO.
+
+#### `checkpoint (FilePath, optional)`
+
+Path to a custom checkpoint file (.ckpt) generated by zamba that can be used to resume training. If None, defaults to a pretrained model. Defaults to None.
+
+#### `model_name (str, optional)`
+
+Base model name that will be loaded by timm lib (e.g. resnet50). Default is lila.science.
+
+#### `name (str, optional)`
+
+Classification experiment name (MLFlow). Default value is 'image-classification'.
+
+#### `max_epochs (int, optional)`
+
+Max training epochs. Default value is 100.
+
+#### `lr (float, optional)`
+
+Learning rate value. Default value is 1e-5. If None, will find a good learning rate.
+
+#### `image_size (int, optional)`
+
+Image desired size. Default value is 224.
+
+#### `batch_size (int, optional)`
+
+Batch size. Default value is 16. This is the physical batch size; use accumulated_batch_size to set the virtual batch size.
+
+#### `accumulated_batch_size (int, optional)`
+
+Accumulated batch size; will accumulate gradients to this virtual batch size. Useful to match batch size / learning rate from published papers. If not specified, will use batch_size.
+
+#### `early_stopping_patience (int, optional)`
+
+Number of epochs with no improvement after which training will be stopped. Defaults to 3.
+
+#### `extra_train_augmentations (bool, optional)`
+
+If false, uses simple transforms for camera trap imagery (random perspective shift, random horizontal flip, random rotation); if true, also uses more complex transforms (random perspective shift, random horizontal flip, random rotation, random grayscale, random equalize, random autocontrast, random adjust sharpness).
+
+#### `num_workers (int, optional)`
+
+Number of workers to use for data loading. If None, default value is 8 (or 2/3 of available cores).
+
+#### `accelerator (str, optional)`
+
+Accelerator type. Default is "gpu" if CUDA is available, otherwise "cpu".
+
+#### `devices (Any, optional)`
+
+Devices to use for training. Default is "auto".
+
+#### `crop_images (bool, optional)`
+
+Preprocess images using Megadetector or bbox from labels file. Default is True.
+
+#### `detections_threshold (float, optional)`
+
+Threshold for Megadetector. Applied only if the bbox is not specified in the labels. Default value is 0.2.
+
+#### `checkpoint_path (Path, optional)`
+
+Directory for where to save the output files; defaults to current working directory.
+
+#### `weighted_loss (bool, optional)`
+
+Use weighted loss during training. Default value is False.
+
+#### `mlflow_tracking_uri (str, optional)`
+
+MLFlow tracking URI. Default is "./mlruns".
+
+#### `from_scratch (bool, optional)`
+
+Instantiate the model with base weights. Default is False.
+
+#### `use_default_model_labels (bool, optional)`
+
+By default, output the full set of default model labels rather than just the species in the labels file. Only applies if the provided labels are a subset of the default model labels. If set to False, will replace the model head for finetuning and output only the species in the provided labels file.
+
+#### `scheduler_config (SchedulerConfig or str, optional)`
+
+Config for setting up the learning rate scheduler on the model. If "default", uses scheduler that was used for training. If None, will not use a scheduler. Defaults to "default".
+
+#### `split_proportions (Dict, optional)`
+
+Split proportions (train, val, test). Default is {"train": 3, "val": 1, "test": 1}.
+
+#### `model_cache_dir (Path, optional)`
+
+Cache directory where downloaded model weights will be saved. Default is None.
+
+#### `cache_dir (Path, optional)`
+
+Path to the folder where clipped images will be saved. Applies only to training with images cropping (e.g. with bbox from coco format). Default is None.
+
+#### `weight_download_region (str, optional)`
+
+s3 region to download pretrained weights from. Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".
+
+#### `species_in_label_order (list, optional)`
+
+Optional list of species in the desired order. Default is None.

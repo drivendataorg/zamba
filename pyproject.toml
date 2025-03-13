@@ -26,6 +26,8 @@ dependencies = [
   "fvcore",
   "gitpython",
   "loguru",
+  "megadetector",
+  "mlflow",
   "numpy<2.0.0",
   "opencv-python-headless",
   "openpyxl",
@@ -57,7 +59,10 @@ tests = [
   "Pillow>=9.0.0",
   "pytest",
   "pytest-coverage",
+  "pytest-duration-insights",
   "pytest-mock",
+  "pytest-reportlog",
+  "pytest-xdist",
   "wheel",
 ]
 densepose = [
@@ -84,6 +89,9 @@ exclude = '''
 )
 '''
 
+[tool.ruff]
+line-length = 99
+
 [tool.coverage.run]
 source = ["zamba"]
 
@@ -97,4 +105,4 @@ allow_redefinition = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests/"]
-addopts = "--cov-append --cov=zamba --cov-report=term --cov-report=html --cov-report=xml"
+addopts = "--cov-append --cov=zamba --cov-report=term --cov-report=html --cov-report=xml -n=auto --report-log reportlog.jsonl"

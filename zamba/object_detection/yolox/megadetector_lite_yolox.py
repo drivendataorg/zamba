@@ -96,7 +96,7 @@ class MegadetectorLiteYoloX:
             model_kwargs_path=kwargs,
         )
 
-        ckpt = torch.load(yolox.args.ckpt, map_location=config.device)
+        ckpt = torch.load(yolox.args.ckpt, weights_only=False, map_location=config.device)
         model = yolox.exp.get_model()
         model.load_state_dict(ckpt["model"])
         model = model.eval().to(config.device)
@@ -194,7 +194,7 @@ class MegadetectorLiteYoloX:
         Returns:
             np.ndarray: An array of bounding box detections with dimensions (object, 4) where
                 object is the number of objects detected and the other 4 dimension are
-                (x1, y1, x2, y1).
+                (x1, y1, x2, y2).
 
             np.ndarray: An array of object detection confidence scores of length (object) where
                 object is the number of objects detected.

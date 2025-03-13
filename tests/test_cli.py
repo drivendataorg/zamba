@@ -7,7 +7,6 @@ import pandas as pd
 import pytest
 from pytest_mock import mocker  # noqa: F401
 
-import zamba
 from zamba.cli import app
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
@@ -191,42 +190,34 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     )
 
 
-@pytest.mark.parametrize("model", ["time_distributed", "blank_nonblank"])
-def test_actual_prediction_on_images(tmp_path, model, mocker):  # noqa: F811
+def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
     """Tests experimental feature of predicting on images."""
     shutil.copytree(ASSETS_DIR / "images", tmp_path / "images")
     data_dir = tmp_path / "images"
 
     save_dir = tmp_path / "zamba"
 
-    mocker.patch.object(zamba.models.config, "PREDICT_ON_IMAGES", True)
-
     result = runner.invoke(
         app,
         [
+            "image",
             "predict",
             "--data-dir",
             str(data_dir),
             "--yes",
             "--save-dir",
             str(save_dir),
-            "--model",
-            model,
         ],
     )
     assert result.exit_code == 0
     # check preds file got saved out
     assert save_dir.exists()
-    # check config got saved out too
-    assert (save_dir / "predict_configuration.yaml").exists()
     df = pd.read_csv(save_dir / "zamba_predictions.csv", index_col="filepath")
 
-    if model == "time_distributed":
-        for img, label in df.idxmax(axis=1).items():
+    for img, label in df.idxmax(axis=1).items():
+        # skip any assets that are not specifically designed for this test
+        if Path(img).stem in df.columns:
             assert Path(img).stem == label
-
-    if model == "blank_nonblank":
-        assert (df.blank < 0.1).all()
 
 
 def test_depth_cli_options(mocker, tmp_path):  # noqa: F811

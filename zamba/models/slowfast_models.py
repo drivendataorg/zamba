@@ -5,7 +5,7 @@ import torch
 
 from zamba.models.registry import register_model
 from zamba.pytorch.utils import build_multilayer_perceptron
-from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModule
+from zamba.pytorch_lightning.video_modules import ZambaVideoClassificationLightningModule
 
 
 @register_model

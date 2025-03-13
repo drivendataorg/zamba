@@ -65,7 +65,9 @@ def get_checkpoint_hparams(checkpoint):
 
 @lru_cache()
 def _cached_hparams(checkpoint):
-    return torch.load(checkpoint, map_location=torch.device("cpu"))["hyper_parameters"]
+    return torch.load(checkpoint, weights_only=False, map_location=torch.device("cpu"))[
+        "hyper_parameters"
+    ]
 
 
 def get_model_species(checkpoint, model_name):

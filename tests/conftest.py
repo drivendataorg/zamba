@@ -11,77 +11,161 @@ import pytest
 from _pytest.logging import caplog as _caplog  # noqa: F401
 import torch
 
-from zamba.data.video import VideoLoaderConfig
-from zamba.models.config import PredictConfig, TrainConfig
-from zamba.models.model_manager import MODEL_MAPPING, train_model
-from zamba.models.registry import register_model
-from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
-from zamba.pytorch.transforms import zamba_image_model_transforms
-from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModule
-
+try:
+    from zamba.data.video import VideoLoaderConfig
+    from zamba.models.config import PredictConfig, TrainConfig
+    from zamba.models.model_manager import MODEL_MAPPING, train_model
+    from zamba.models.registry import register_model
+    from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
+    from zamba.pytorch.transforms import zamba_image_model_transforms
+    from zamba.pytorch_lightning.video_modules import (
+        ZambaClassificationLightningModule,
+        ZambaVideoClassificationLightningModule,
+    )
+except ImportError:
+    pass
 
 ASSETS_DIR = Path(__file__).parent / "assets"
 TEST_VIDEOS_DIR = ASSETS_DIR / "videos"
 
 random.seed(56745)
 
+try:
 
-@register_model
-class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLightningModule):
-    """A dummy model whose linear weights start out as all zeros."""
+    @register_model
+    class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLightningModule):
+        """A dummy model whose linear weights start out as all zeros."""
 
-    _default_model_name = "dummy_model"  # used to look up default configuration for checkpoints
-
-    def __init__(
-        self,
-        num_frames: int,
-        num_hidden: int,
-        finetune_from: Optional[Union[os.PathLike, str]] = None,
-        **kwargs,
-    ):
-        super().__init__(**kwargs)
-
-        if finetune_from is None:
-            backbone = torch.nn.Linear(num_frames, num_hidden)
-            torch.nn.init.ones_(backbone.weight)
-        else:
-            backbone = self.from_disk(finetune_from).backbone
-
-        for param in backbone.parameters():
-            param.requires_grad = False
-
-        head = torch.nn.Linear(num_hidden, self.num_classes)
-        torch.nn.init.zeros_(head.weight)
-
-        self.backbone = backbone
-        self.head = head
-        self.model = torch.nn.Sequential(
-            torch.nn.AdaptiveAvgPool3d(1), torch.nn.Flatten(), backbone, head
+        _default_model_name = (
+            "dummy_model"  # used to look up default configuration for checkpoints
         )
 
-        self.save_hyperparameters("num_frames", "num_hidden")
+        def __init__(
+            self,
+            num_frames: int,
+            num_hidden: int,
+            finetune_from: Optional[Union[os.PathLike, str]] = None,
+            **kwargs,
+        ):
+            super().__init__(**kwargs)
 
-    def forward(self, x, *args, **kwargs):
-        return self.model(x)
+            if finetune_from is None:
+                backbone = torch.nn.Linear(num_frames, num_hidden)
+                torch.nn.init.ones_(backbone.weight)
+            else:
+                backbone = self.from_disk(finetune_from).backbone
 
+            for param in backbone.parameters():
+                param.requires_grad = False
 
-MODEL_MAPPING["DummyZambaVideoClassificationLightningModule"] = {
-    "transform": zamba_image_model_transforms()
-}
+            head = torch.nn.Linear(num_hidden, self.num_classes)
+            torch.nn.init.zeros_(head.weight)
 
+            self.backbone = backbone
+            self.head = head
+            self.model = torch.nn.Sequential(
+                torch.nn.AdaptiveAvgPool3d(1), torch.nn.Flatten(), backbone, head
+            )
 
-class DummyTrainConfig(TrainConfig):
-    # let model name be "dummy" without causing errors
-    model_name: str
-    batch_size = 1
-    max_epochs = 1
-    model_name = "dummy"
-    skip_load_validation = True
-    auto_lr_find = False
+            self.save_hyperparameters("num_frames", "num_hidden")
+
+        def forward(self, x, *args, **kwargs):
+            return self.model(x)
+
+    MODEL_MAPPING["DummyZambaVideoClassificationLightningModule"] = {
+        "transform": zamba_image_model_transforms()
+    }
+
+    @register_model
+    class DummyZambaImageClassificationLightningModule(ZambaClassificationLightningModule):
+        """A dummy model whose linear weights start out as all zeros."""
+
+        _default_model_name = (
+            "dummy_model"  # used to look up default configuration for checkpoints
+        )
+
+        def __init__(
+            self,
+            in_features: int = 224 * 224 * 3,
+            num_hidden: int = 1,
+            **kwargs,
+        ):
+            super().__init__(**kwargs)
+
+            backbone = torch.nn.Linear(in_features, num_hidden)
+            torch.nn.init.ones_(backbone.weight)
+            self.loss_fn = torch.nn.CrossEntropyLoss()
+
+            for param in backbone.parameters():
+                param.requires_grad = False
+
+            head = torch.nn.Linear(num_hidden, self.num_classes)
+            torch.nn.init.zeros_(head.weight)
+
+            self.backbone = backbone
+            self.head = head
+            self.model = torch.nn.Sequential(torch.nn.Flatten(), backbone, head)
+
+            self.save_hyperparameters("num_hidden")
+
+        def forward(self, x, *args, **kwargs):
+            return self.model(x)
+
+        def training_step(self, batch, batch_idx):
+            x, y = batch
+            y = torch.nn.functional.one_hot(y, num_classes=self.num_classes).to(torch.float)
+            y_hat = self.model(x)
+            loss = self.loss_fn(y_hat, y)
+            return loss
+
+        def _val_step(self, batch, batch_idx, subset):
+            x, y = batch
+            y = torch.nn.functional.one_hot(y, num_classes=self.num_classes).to(torch.float)
+
+            y_hat = self(x)
+            loss = self.loss_fn(y_hat, y)
+            self.log(f"{subset}_loss", loss.detach(), sync_dist=True, reduce_fx="mean")
+
+            return (
+                y.cpu().numpy().astype(int),
+                y_hat.cpu().numpy(),
+            )
+
+        def validation_step(self, batch, batch_idx):
+            output = self._val_step(batch, batch_idx, "val")
+            self.validation_step_outputs.append(output)
+            return output
+
+        def test_step(self, batch, batch_idx):
+            output = self._val_step(batch, batch_idx, "test")
+            self.test_step_outputs.append(output)
+
+            return output
+
+    MODEL_MAPPING["DummyZambaImageClassificationLightningModule"] = {
+        "transform": zamba_image_model_transforms()
+    }
+
+    class DummyTrainConfig(TrainConfig):
+        # let model name be "dummy" without causing errors
+        model_name: str
+        batch_size = 1
+        max_epochs = 1
+        model_name = "dummy"
+        skip_load_validation = True
+        auto_lr_find = False
+
+except Exception:
+    pass
 
 
 @pytest.fixture(scope="session")
 def labels_relative_path() -> os.PathLike:
+    return ASSETS_DIR / "labels.csv"
+
+
+@pytest.fixture(scope="session")
+def labels_json_relative_path() -> os.PathLike:
     return ASSETS_DIR / "labels.csv"
 
 

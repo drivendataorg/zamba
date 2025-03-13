@@ -138,3 +138,25 @@ def slowfast_transforms():
             PackSlowFastPathways(),
         ]
     )
+
+
+def resize_and_pad(image, desired_size):
+    width, height = image.size
+
+    if width > height:
+        new_width = desired_size
+        new_height = max(int(desired_size * (height / width)), 2)
+    else:
+        new_height = desired_size
+        new_width = max(int(desired_size * (width / height)), 2)
+
+    resized_image = image.resize((new_width, new_height))
+    padding_left = (desired_size - new_width) // 2
+    padding_right = desired_size - new_width - padding_left
+    padding_top = (desired_size - new_height) // 2
+    padding_bottom = desired_size - new_height - padding_top
+    padded_image = transforms.functional.pad(
+        resized_image, (padding_left, padding_top, padding_right, padding_bottom)
+    )
+
+    return padded_image

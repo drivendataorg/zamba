@@ -4,10 +4,12 @@ import warnings
 
 from loguru import logger
 from pydantic.error_wrappers import ValidationError
+from tqdm import tqdm
 import typer
 import yaml
 
 from zamba.data.video import VideoLoaderConfig
+from zamba.image_cli import app as image_app
 from zamba.models.config import (
     ModelConfig,
     ModelEnum,
@@ -21,8 +23,13 @@ from zamba.models.model_manager import ModelManager
 from zamba.models.utils import RegionEnum
 from zamba.version import __version__
 
+# make logger work with tqdm
+logger.remove()
+logger.add(lambda msg: tqdm.write(msg, end=""), colorize=True)
+
 
 app = typer.Typer(pretty_exceptions_show_locals=False)
+app.add_typer(image_app, name="image", help="Tools for working with images instead of videos.")
 
 
 @app.command()
@@ -569,8 +576,8 @@ def depth(
     try:
         depth_config = DepthEstimationConfig(**predict_dict)
     except ValidationError as ex:
-        logger.error("Invalid configuration.")
-        raise typer.Exit(ex)
+        logger.error(f"Invalid configuration: {ex}")
+        raise typer.Exit(1)
 
     msg = f"""The following configuration will be used for inference:
 

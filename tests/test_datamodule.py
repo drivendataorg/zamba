@@ -1,7 +1,7 @@
 import itertools
 
 from zamba.pytorch.dataloaders import get_datasets
-from zamba.pytorch_lightning.utils import ZambaDataModule
+from zamba.pytorch_lightning.video_modules import ZambaVideoDataModule
 
 
 def test_get_datasets_train_metadata(train_metadata):
@@ -46,14 +46,14 @@ def test_get_datasets_train_and_predict_metadata(train_metadata, predict_metadat
 
 
 def test_zamba_data_module_train(train_metadata):
-    data_module = ZambaDataModule(train_metadata=train_metadata)
+    data_module = ZambaVideoDataModule(train_metadata=train_metadata)
     for videos, labels in data_module.train_dataloader():
         assert videos.ndim == 5
         assert labels.sum() == 1
 
 
 def test_zamba_data_module_train_and_predict(train_metadata, predict_metadata):
-    data_module = ZambaDataModule(
+    data_module = ZambaVideoDataModule(
         train_metadata=train_metadata,
         predict_metadata=predict_metadata,
     )

@@ -1,0 +1,57 @@
+{
+    "info": {},
+    "categories": [
+        {"name": "Test1", "id": 1},
+        {"name": "Test2", "id": 2},
+        {"name": "Test3", "id": 3},
+        {"name": "Test4", "id": 4},
+        {"name": "Test5", "id": 5},
+        {"name": "Test6", "id": 6}
+    ],
+    "annotations": [
+        {
+            "id": "0001",
+            "category_id": 1,
+            "image_id": "ffe1",
+            "bbox": [1157.5, 650.5, 166.7, 255.0]
+        },
+        {
+            "id": "0002",
+            "category_id": 4,
+            "image_id": "ffe2",
+            "bbox": [650.5, 120.5, 100.7, 155.0]
+        },
+        {"id": "0003", "category_id": 6, "image_id": "ffe3", "bbox": [0.0, 0.0, 100.0, 255.0]},
+        {"id": "0004", "category_id": 5, "image_id": "ffe4", "bbox": [0.0, 0.0, 300.0, 255.0]}
+    ],
+    "images": [
+        {
+            "id": "ffe1",
+            "width": 2048,
+            "file_name": "ffe1.jpg",
+            "location": "A",
+            "height": 1536
+        },
+        {
+            "id": "ffe2",
+            "width": 2048,
+            "file_name": "ffe2.jpg",
+            "location": "B",
+            "height": 1536
+        },
+        {
+            "id": "ffe3",
+            "width": 2048,
+            "file_name": "ffe3.jpg",
+            "location": "C",
+            "height": 1536
+        },
+        {
+            "id": "ffe4",
+            "width": 2048,
+            "file_name": "ffe4.jpg",
+            "location": "D",
+            "height": 1536
+        }
+    ]
+}
