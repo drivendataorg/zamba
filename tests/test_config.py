@@ -232,7 +232,7 @@ def test_labels_with_all_null_species(labels_absolute_path, tmp_path):
 
 
 def test_labels_with_partially_null_species(
-    labels_absolute_path, caplog, tmp_path, mock_download_weights
+    labels_absolute_path, caplog, tmp_path, mock_download_weights, mock_model_species
 ):
     labels = pd.read_csv(labels_absolute_path)
     labels.loc[0, "label"] = np.nan
