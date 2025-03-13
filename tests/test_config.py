@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 import pytest
 
@@ -386,12 +385,13 @@ def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplo
 
 
 def test_model_cache_dir(
-    labels_absolute_path, tmp_path, mock_download_weights, mock_model_species
+    labels_absolute_path, tmp_path, mock_download_weights, mock_model_species, monkeypatch
 ):
+    monkeypatch.delenv("MODEL_CACHE_DIR", raising=False)
     config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.model_cache_dir == Path(appdirs.user_cache_dir()) / "zamba"
 
-    os.environ["MODEL_CACHE_DIR"] = str(tmp_path)
+    monkeypatch.setenv("MODEL_CACHE_DIR", str(tmp_path))
     config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.model_cache_dir == tmp_path
 
