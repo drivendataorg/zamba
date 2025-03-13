@@ -18,6 +18,20 @@ from zamba.models.config import (
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
 
 
+@pytest.fixture()
+def mock_download_weights(mocker):
+    mock = mocker.patch("zamba.models.config.download_weights")
+    mock.return_value = "dummy_model_checkpoint.ckpt"
+    return mock
+
+
+@pytest.fixture()
+def mock_model_species(mocker):
+    mock = mocker.patch("zamba.models.config.get_model_species")
+    mock.return_value = ["elephant", "gorilla"]
+    return mock
+
+
 def test_train_data_dir_only():
     with pytest.raises(ValidationError) as error:
         TrainConfig(data_dir=TEST_VIDEOS_DIR)
@@ -217,7 +231,9 @@ def test_labels_with_all_null_species(labels_absolute_path, tmp_path):
     assert "Species cannot be null for all videos." == error.value.errors()[0]["msg"]
 
 
-def test_labels_with_partially_null_species(labels_absolute_path, caplog, tmp_path):
+def test_labels_with_partially_null_species(
+    labels_absolute_path, caplog, tmp_path, mock_download_weights
+):
     labels = pd.read_csv(labels_absolute_path)
     labels.loc[0, "label"] = np.nan
     TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
@@ -357,7 +373,9 @@ def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplo
     assert "Found 1 duplicate row(s) in filepaths csv. Dropping duplicates" in caplog.text
 
 
-def test_model_cache_dir(labels_absolute_path, tmp_path):
+def test_model_cache_dir(
+    labels_absolute_path, tmp_path, mock_download_weights, mock_model_species
+):
     config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.model_cache_dir == Path(appdirs.user_cache_dir()) / "zamba"
 
