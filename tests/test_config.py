@@ -240,7 +240,9 @@ def test_labels_with_partially_null_species(
     assert "Found 1 filepath(s) with no label. Will skip." in caplog.text
 
 
-def test_binary_labels_no_blank(labels_absolute_path, tmp_path):
+def test_binary_labels_no_blank(
+    labels_absolute_path, tmp_path, mock_download_weights, mock_model_species
+):
     labels = pd.read_csv(labels_absolute_path)
     labels["label"] = np.where(labels.label != "antelope_duiker", "something_else", labels.label)
     assert labels.label.nunique() == 2
@@ -253,7 +255,9 @@ def test_binary_labels_no_blank(labels_absolute_path, tmp_path):
     assert labels_df.filter(regex="species_").columns == ["species_antelope_duiker"]
 
 
-def test_binary_labels_with_blank(labels_absolute_path, tmp_path):
+def test_binary_labels_with_blank(
+    labels_absolute_path, tmp_path, mock_download_weights, mock_model_species
+):
     labels = pd.read_csv(labels_absolute_path)
     labels["label"] = np.where(labels.label != "antelope_duiker", "Blank", labels.label)
 
@@ -263,14 +267,18 @@ def test_binary_labels_with_blank(labels_absolute_path, tmp_path):
     assert labels_df.filter(regex="species_").columns == ["species_blank"]
 
 
-def test_labels_with_all_null_split(labels_absolute_path, caplog, tmp_path):
+def test_labels_with_all_null_split(
+    labels_absolute_path, caplog, tmp_path, mock_download_weights, mock_model_species
+):
     labels = pd.read_csv(labels_absolute_path)
     labels["split"] = np.nan
     TrainConfig(labels=labels, save_dir=tmp_path / "my_model")
     assert "Split column is entirely null. Will generate splits automatically" in caplog.text
 
 
-def test_labels_with_partially_null_split(labels_absolute_path, tmp_path):
+def test_labels_with_partially_null_split(
+    labels_absolute_path, tmp_path, mock_download_weights, mock_model_species
+):
     labels = pd.read_csv(labels_absolute_path)
     labels.loc[0, "split"] = np.nan
     with pytest.raises(ValueError) as error:
@@ -280,7 +288,9 @@ def test_labels_with_partially_null_split(labels_absolute_path, tmp_path):
     ) in error.value.errors()[0]["msg"]
 
 
-def test_labels_with_invalid_split(labels_absolute_path, tmp_path):
+def test_labels_with_invalid_split(
+    labels_absolute_path, tmp_path, mock_download_weights, mock_model_species
+):
     labels = pd.read_csv(labels_absolute_path)
     labels.loc[0, "split"] = "test"
     with pytest.raises(ValueError) as error:
@@ -290,7 +300,7 @@ def test_labels_with_invalid_split(labels_absolute_path, tmp_path):
     ) == error.value.errors()[0]["msg"]
 
 
-def test_labels_no_splits(labels_no_splits, tmp_path):
+def test_labels_no_splits(labels_no_splits, tmp_path, mock_download_weights, mock_model_species):
     # ensure species are allocated to both sets
     labels_four_videos = pd.read_csv(labels_no_splits).head(4)
     labels_four_videos["label"] = ["gorilla"] * 2 + ["elephant"] * 2
@@ -317,7 +327,9 @@ def test_labels_no_splits(labels_no_splits, tmp_path):
     ) == error.value.errors()[0]["msg"]
 
 
-def test_labels_split_proportions(labels_no_splits, tmp_path):
+def test_labels_split_proportions(
+    labels_no_splits, tmp_path, mock_download_weights, mock_model_species
+):
     config = TrainConfig(
         data_dir=TEST_VIDEOS_DIR,
         labels=labels_no_splits,
@@ -327,7 +339,7 @@ def test_labels_split_proportions(labels_no_splits, tmp_path):
     assert config.labels.split.value_counts().to_dict() == {"a": 13, "b": 6}
 
 
-def test_from_scratch(labels_absolute_path, tmp_path):
+def test_from_scratch(labels_absolute_path, tmp_path, mock_download_weights, mock_model_species):
     config = TrainConfig(
         labels=labels_absolute_path,
         from_scratch=True,
