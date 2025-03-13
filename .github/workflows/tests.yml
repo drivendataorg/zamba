@@ -93,6 +93,13 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - name: Load weights cache
+        id: cache-weights
+        uses: actions/cache@v4
+        with:
+          path: "${{ env.MODEL_CACHE_DIR }}"
+          key: weights
+
       - if: matrix.os == 'ubuntu-latest'
         name: Setup FFmpeg
         uses: Iamshankhadeep/setup-ffmpeg@v1.1  # does not support arm64
