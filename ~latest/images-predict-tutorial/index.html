@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/yaml-config/">
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/images-predict-tutorial/">
       
       
-        <link rel="prev" href="../configurations/">
+        <link rel="prev" href="../quickstart/">
       
       
-        <link rel="next" href="../contribute/">
+        <link rel="next" href="../predict-tutorial/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Using YAML configuration files - Zamba</title>
+        <title>Classifying unlabeled images - Zamba</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#using-yaml-configuration-files" class="md-skip">
+        <a href="#user-tutorial-classifying-unlabeled-images" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Using YAML configuration files
+              Classifying unlabeled images
             
           </span>
         </div>
@@ -341,8 +341,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -364,11 +366,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -382,7 +384,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             User Tutorials
@@ -393,10 +395,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../images-predict-tutorial/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Classifying unlabeled images
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -405,6 +427,62 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage-command-line-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic usage: command line interface
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage-python-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic usage: Python package
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default behavior
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-tutorial" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-step tutorial
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -646,10 +724,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -665,11 +741,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
@@ -683,7 +759,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Advanced Options
@@ -715,30 +791,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Using YAML configuration files
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../yaml-config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -747,80 +803,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#basic-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic structure
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#required-arguments" class="md-nav__link">
-    <span class="md-ellipsis">
-      Required arguments
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#command-line-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      Command line interface
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#python-package" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python package
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#default-configurations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Default configurations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#templates" class="md-nav__link">
-    <span class="md-ellipsis">
-      Templates
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1969,54 +1951,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#basic-structure" class="md-nav__link">
+  <a href="#basic-usage-command-line-interface" class="md-nav__link">
     <span class="md-ellipsis">
-      Basic structure
+      Basic usage: command line interface
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#required-arguments" class="md-nav__link">
+  <a href="#basic-usage-python-package" class="md-nav__link">
     <span class="md-ellipsis">
-      Required arguments
+      Basic usage: Python package
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#command-line-interface" class="md-nav__link">
+  <a href="#default-behavior" class="md-nav__link">
     <span class="md-ellipsis">
-      Command line interface
+      Default behavior
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#python-package" class="md-nav__link">
+  <a href="#step-by-step-tutorial" class="md-nav__link">
     <span class="md-ellipsis">
-      Python package
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#default-configurations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Default configurations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#templates" class="md-nav__link">
-    <span class="md-ellipsis">
-      Templates
+      Step-by-step tutorial
     </span>
   </a>
   
@@ -2040,146 +2004,135 @@
   
 
 
-<h1 id="using-yaml-configuration-files">Using YAML configuration files<a class="headerlink" href="#using-yaml-configuration-files" title="Permanent link">&para;</a></h1>
-<p>In both the command line and the Python module, options for video loading, training, and prediction can be set by passing a YAML file instead of passing arguments directly. YAML files (<code>.yml</code> or <code>.yaml</code>) are commonly used to serialize data in an easily readable way.</p>
-<h2 id="basic-structure">Basic structure<a class="headerlink" href="#basic-structure" title="Permanent link">&para;</a></h2>
-<p>The basic structure of a YAML model configuration depends on whether you're working with videos or images:</p>
-<h3 id="video-workflows">Video Workflows<a class="headerlink" href="#video-workflows" title="Permanent link">&para;</a></h3>
-<p>For video workflows, the basic YAML structure includes:</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">$ cat video_config.yaml</span>
-<span class="l l-Scalar l-Scalar-Plain">video_loader_config</span><span class="p p-Indicator">:</span>
-<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span>
-<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span>
-<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
-<span class="w">  </span><span class="c1"># other video loading parameters</span>
-
-<span class="nt">train_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
-<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_labels.csv</span>
-<span class="w">  </span><span class="c1"># other training parameters, eg. batch_size</span>
-
-<span class="nt">predict_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
-<span class="w">  </span><span class="c1"># other prediction parameters, eg. batch_size</span>
-</code></pre></div>
-<p>For example, the configuration below will predict labels for the videos in <code>example_vids</code> using the <code>time_distributed</code> model. When videos are loaded, each will be resized to 240x426 pixels and 16 frames will be selected:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span>
-<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span>
-<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
-
-<span class="nt">predict_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
-</code></pre></div>
-<h3 id="image-workflows">Image Workflows<a class="headerlink" href="#image-workflows" title="Permanent link">&para;</a></h3>
-<p>For image classification workflows, the structure is:</p>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">$ cat image_config.yaml</span>
-<span class="l l-Scalar l-Scalar-Plain">train_config</span><span class="p p-Indicator">:</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lila.science</span>
-<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_imgs/</span>
-<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_labels.csv</span>
-<span class="w">  </span><span class="nt">image_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">224</span>
-<span class="w">  </span><span class="c1"># other training parameters, eg. batch_size</span>
-
-<span class="nt">predict_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lila.science</span>
-<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_imgs/</span>
-<span class="w">  </span><span class="nt">image_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">224</span>
-<span class="w">  </span><span class="c1"># other prediction parameters, eg. crop_images</span>
-</code></pre></div>
-<p>For example, this configuration will predict labels for the images in <code>example_imgs</code> using the <code>lila.science</code> model:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">predict_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lila.science</span>
-<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_imgs/</span>
-<span class="w">  </span><span class="nt">image_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">224</span>
-<span class="w">  </span><span class="nt">crop_images</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</code></pre></div>
-<h2 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h2>
-<h3 id="for-video-workflows">For Video Workflows<a class="headerlink" href="#for-video-workflows" title="Permanent link">&para;</a></h3>
-<p>Either <code>predict_config</code> or <code>train_config</code> is required, based on whether you will be running inference or training a model. See <a href="../configurations/">All Configuration Options</a> for a full list of what can be specified under each class. To run inference, <code>data_dir</code>and/or <code>filepaths</code> must be specified. To train a model, <code>labels</code> must be specified.</p>
-<p>In <code>video_loader_config</code>, you must specify at least <code>model_input_height</code>, <code>model_input_width</code>, and <code>total_frames</code>. While this is the minimum required, we strongly recommend being intentional in your choice of frame selection method. <code>total_frames</code> by itself will just take the first <code>n</code> frames. For a full list of frame selection methods, see the section on <a href="../configurations/#video-loading-arguments">Video loading arguments</a>.</p>
+<h1 id="user-tutorial-classifying-unlabeled-images">User tutorial: Classifying unlabeled images<a class="headerlink" href="#user-tutorial-classifying-unlabeled-images" title="Permanent link">&para;</a></h1>
+<p>This section walks through how to classify images using <code>zamba</code>. If you are new to <code>zamba</code> and just want to classify some images as soon as possible, see the <a href="../quickstart/">Quickstart</a> guide.</p>
+<p>This tutorial goes over the steps for using <code>zamba</code> if:</p>
 <ul>
-<li>For <code>time_distributed</code>, <code>european</code>, or <code>blank_nonblank</code>, <code>total_frames</code> must be 16</li>
-<li>For <code>slowfast</code>, <code>total_frames</code> must be 32</li>
+<li>You already have <code>zamba</code> installed (for details see the <a href="../install/">Installation</a> page)</li>
+<li>You have unlabeled images that you want to generate labels for</li>
+<li>The possible class species labels for your images are included in the list of possible <a href="../models/species-detection/#species-classes">zamba labels</a>. If your species are not included in this list, you can <a href="../train-tutorial/">retrain a model</a> using your own labeled data and then run inference.</li>
 </ul>
-<h3 id="for-image-workflows">For Image Workflows<a class="headerlink" href="#for-image-workflows" title="Permanent link">&para;</a></h3>
-<p>Either <code>predict_config</code> or <code>train_config</code> is required in the image pipeline. To run inference, <code>data_dir</code> and/or <code>filepaths</code> must be specified. To train a model, both <code>data_dir</code> and <code>labels</code> must be specified.</p>
-<p>For image workflows, <code>image_size</code> is a key parameter that defines the input dimensions for the model.</p>
-<h2 id="command-line-interface">Command line interface<a class="headerlink" href="#command-line-interface" title="Permanent link">&para;</a></h2>
-<p>A YAML configuration file can be passed to the command line interface with the <code>--config</code> argument. For example, say the example configuration above is saved as <code>video_config.yaml</code>. To run prediction:</p>
-<p>For video workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>predict<span class="w"> </span>--config<span class="w"> </span>video_config.yaml
-<span class="gp">$ </span>zamba<span class="w"> </span>train<span class="w"> </span>--config<span class="w"> </span>video_config.yaml
+<h2 id="basic-usage-command-line-interface">Basic usage: command line interface<a class="headerlink" href="#basic-usage-command-line-interface" title="Permanent link">&para;</a></h2>
+<p>Say that we want to classify the images in a folder called <code>example_images</code> as simply as possible using all of the default settings.</p>
+<p>Minimum example for prediction in the command line:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>predict<span class="w"> </span>--data-dir<span class="w"> </span>example_images/
 </code></pre></div>
-<p>For image workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>predict<span class="w"> </span>--config<span class="w"> </span>image_config.yaml
-<span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span>--config<span class="w"> </span>image_config.yaml
+<h3 id="required-arguments">Required arguments<a class="headerlink" href="#required-arguments" title="Permanent link">&para;</a></h3>
+<p>To run <code>zamba images predict</code> in the command line, you must specify <code>--data-dir</code> and/or <code>--filepaths</code>.</p>
+<ul>
+<li><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your images. If you don't also provide <code>filepaths</code>, Zamba will recursively search this folder for images.</li>
+<li><strong><code>--filepaths PATH</code>:</strong> Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for <code>filepath</code>. Filepaths can be absolute on your system or relative to the data directory that your provide in <code>--data-dir</code>.</li>
+</ul>
+<p>All other flags are optional. To choose the model you want to use for prediction, either <code>--model</code> or <code>--checkpoint</code> must be specified. Use <code>--model</code> to specify one of the <a href="../models/species-detection/">pretrained models</a> that ship with <code>zamba</code>. Use <code>--checkpoint</code> to run inference with a locally saved model. <code>--model</code> defaults to <a href="../models/species-detection/#what-species-can-zamba-detect"><code>lila.science</code></a>.</p>
+<h2 id="basic-usage-python-package">Basic usage: Python package<a class="headerlink" href="#basic-usage-python-package" title="Permanent link">&para;</a></h2>
+<p>We also support using Zamba as a Python package. Say that we want to classify the images in a folder called <code>example_images</code> as simply as possible using all of the default settings.</p>
+<p>Minimum example for prediction using the Python package:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
+
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">)</span>
+<span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
-<p>Only some of the possible parameters can be passed directly as arguments to the command line. Those not listed in the help output (e.g., <code>zamba predict --help</code> or <code>zamba image train --help</code>) must be passed in a YAML file (see the <a href="../quickstart/#getting-help">Quickstart guide</a> for details).</p>
-<h2 id="python-package">Python package<a class="headerlink" href="#python-package" title="Permanent link">&para;</a></h2>
-<h3 id="video-workflows_1">Video Workflows<a class="headerlink" href="#video-workflows_1" title="Permanent link">&para;</a></h3>
-<p>The main API for video workflows is the <a href="../api-reference/models-model_manager/#zamba.models.model_manager.ModelManager"><code>ModelManager</code> class</a> that can be accessed with:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.model_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelManager</span>
+<p>The only argument that can be passed to <code>predict</code> is <code>config</code>, so the only step is to instantiate an <a href="../configurations/#prediction-arguments"><code>ImageClassificationPredictConfig</code></a> and pass it to <code>predict</code>.</p>
+<h3 id="required-arguments_1">Required arguments<a class="headerlink" href="#required-arguments_1" title="Permanent link">&para;</a></h3>
+<p>To run <code>predict</code> in Python, you must specify either <code>data_dir</code> or <code>filepaths</code> when <code>PredictConfig</code> is instantiated.</p>
+<ul>
+<li>
+<p><strong><code>data_dir (DirectoryPath)</code>:</strong> Path to the folder containing your images. If you don't also provide <code>filepaths</code>, Zamba will recursively search this folder for images.</p>
+</li>
+<li>
+<p><strong><code>filepaths (FilePath)</code>:</strong> Path to a CSV file with a column for the filepath to each image you want to classify. The CSV must have a column for <code>filepath</code>. Filepaths can be absolute or relative to the data directory provided as <code>data_dir</code>.</p>
+</li>
+</ul>
+<p>For detailed explanations of all possible configuration arguments, see <a href="../configurations/">All Optional Arguments</a>.</p>
+<h2 id="default-behavior">Default behavior<a class="headerlink" href="#default-behavior" title="Permanent link">&para;</a></h2>
+<p>By default, the <a href="../models/species-detection/#lila.science"><code>lila.science</code></a> model will be used. <code>zamba</code> will output a <code>.csv</code> file with a row for each bounding box identified by megadetector (there may be multiple bounding boxes per image) and columns for each class (ie. species / species group). A cell in the CSV (i,j) can be interpreted as <em>the predicted likelihood that the animal present in bounding box i is of species group j.</em> Usually, most users want to just look at the top species prediction for each bounding box.</p>
+<p>By default, predictions will be saved to a file called <code>zamba_predictions.csv</code> in your working directory. You can save predictions to a custom directory using the <code>--save-dir</code> argument.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>zamba_predictions.csv
+<span class="go">filepath,detection_category,detection_conf,x1,y1,x2,y2,species_acinonyx_jubatus,species_aepyceros_melampus,species_alcelaphus_buselaphus...</span>
+<span class="go">1.jpg,1,0.85,2015,1235,2448,1544,4.924246e-06,0.0001539439,9.6043495e-06...</span>
+<span class="go">2.jpg,1,0.921,527,1246,1805,1501,5.061601e-05,3.6830465e-05,2.4510617e-05...</span>
+<span class="go">3.jpg,1,0.9,1422,528,1629,816,1.1791806e-06,4.080566e-06,3.4533906e-07...</span>
 </code></pre></div>
-<p>The <code>ModelManager</code> class is used by <code>zamba</code>'s command line interface to handle preprocessing the filenames, loading the videos, training the model, performing inference, and saving predictions. Therefore any functionality available to the command line interface is accessible via the <code>ModelManager</code> class.</p>
-<p>To instantiate the <code>ModelManager</code> based on a configuration file saved at <code>video_config.yaml</code>:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">ModelManager</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s1">&#39;video_config.yaml&#39;</span><span class="p">)</span>
-</code></pre></div></p>
-<p>We can now run inference or model training without specifying any additional parameters, because they are already associated with our instance of the <code>ModelManager</code> class. To run inference or training:
-<div class="highlight"><pre><span></span><code><span class="n">manager</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span> <span class="c1"># inference</span>
-<span class="n">manager</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c1"># training</span>
-</code></pre></div></p>
-<p>In our user tutorials, we refer to <code>train_model</code> and <code>predict_model</code> functions. The <code>ModelManager</code> class calls these same functions behind the scenes when <code>.predict()</code> or <code>.train()</code> is run.</p>
-<h3 id="image-workflows_1">Image Workflows<a class="headerlink" href="#image-workflows_1" title="Permanent link">&para;</a></h3>
-<p>For image classification workflows, the main API is the <a href="../api-reference/images-manager/#zamba.images.manager.ZambaImagesManager"><code>ZambaImagesManager</code> class</a>. A full workflow might look something like this:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZambaImagesManager</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassifictionPredictConfig</span>
-<span class="n">manager</span> <span class="o">=</span> <span class="n">ZambaImagesManager</span><span class="p">()</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">ImageClassifictionPredictConfig</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="s1">&#39;image_config.yaml&#39;</span><span class="p">)</span>
-<span class="n">manager</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<p>The <code>detection_category</code> and <code>detection_conf</code> come from <a href="https://github.com/agentmorris/MegaDetector">MegaDetector</a> which we use to find bounding boxes around individual animals in images. A <code>detection_category</code> of <code>"1"</code> indicates the presence of an animal, and <code>detection_conf</code> is the confidence the animal classifier had in the presence of an animal. The columns <code>x1</code>, <code>y1</code>, <code>x2</code>, <code>y2</code> indicate the coordinates of the top-left and bottom-right corners of the bounding box relative to the top-left corner of the image. The remaining columns are the scores assigned to each species for the individual animal in the given bounding box.</p>
+<h2 id="step-by-step-tutorial">Step-by-step tutorial<a class="headerlink" href="#step-by-step-tutorial" title="Permanent link">&para;</a></h2>
+<h3 id="1-specify-the-path-to-your-images">1. Specify the path to your images<a class="headerlink" href="#1-specify-the-path-to-your-images" title="Permanent link">&para;</a></h3>
+<p>Save all of your images within one parent folder.</p>
+<ul>
+<li>Images can be in nested subdirectories within the folder.</li>
+<li>Your images should be in be saved in formats that are suppored by Python's <a href="https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#fully-supported-formats"><code>pillow</code></a> library. Any images that fail a set of validation checks will be skipped during inference or training. By default, <code>zamba</code> will look for files with the following suffixes: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code> and <code>.webp</code>. To use other image formats that are supported by pillow, set your <code>IMAGE_SUFFIXES</code> environment variable.</li>
+</ul>
+<p>Add the path to your image folder to the command-line command. For example, if your images are in a folder called <code>example_images</code>:</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>predict<span class="w"> </span>--data-dir<span class="w"> </span>example_images/
 </code></pre></div>
-<h2 id="default-configurations">Default configurations<a class="headerlink" href="#default-configurations" title="Permanent link">&para;</a></h2>
-<p>In the command line, the default configuration for each model is passed in using a specified YAML file that ships with <code>zamba</code>. You can see the default configuration YAML files on <a href="https://github.com/drivendataorg/zamba/tree/master/zamba/models/official_models">Github</a> in the <code>config.yaml</code> file within each model's folder.</p>
-<p>For example, the default configuration for the <a href="../models/species-detection/#time-distributed"><code>time_distributed</code> model</a> is:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">train_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">scheduler_config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">scheduler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiStepLR</span>
-<span class="w">    </span><span class="nt">scheduler_params</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">gamma</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
-<span class="w">      </span><span class="nt">milestones</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-<span class="w">      </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-<span class="w">  </span><span class="nt">backbone_finetune_config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">backbone_initial_ratio_lr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
-<span class="w">    </span><span class="nt">multiplier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">pre_train_bn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">train_bn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">unfreeze_backbone_at_epoch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-<span class="w">    </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">early_stopping_config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">patience</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<span class="nt">video_loader_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span>
-<span class="w">  </span><span class="nt">model_input_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">426</span>
-<span class="w">  </span><span class="nt">crop_bottom_pixels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
-<span class="w">  </span><span class="nt">fps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
-<span class="w">  </span><span class="nt">total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
-<span class="w">  </span><span class="nt">ensure_total_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">megadetector_lite_config</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">confidence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span>
-<span class="w">    </span><span class="nt">fill_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score_sorted</span>
-<span class="w">    </span><span class="nt">n_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
-<span class="nt">predict_config</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed</span>
-<span class="nt">public_checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time_distributed_9e710aa8c92d25190a64b3b04b9122bdcb456982.ckpt</span>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
+
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">)</span>
+<span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="templates">Templates<a class="headerlink" href="#templates" title="Permanent link">&para;</a></h2>
-<p>To make modifying the existing defaults easier, we've set up the official models as templates in the <a href="https://github.com/drivendataorg/zamba/tree/master/templates"><code>templates</code> folder</a>.</p>
-<p>Just fill in your data directory and labels, make any desired tweaks to the model config, and then kick off some <a href="../train-tutorial/">training</a>. Happy modeling!</p>
+</div>
+</div>
+<h3 id="2-choose-a-model-for-prediction">2. Choose a model for prediction<a class="headerlink" href="#2-choose-a-model-for-prediction" title="Permanent link">&para;</a></h3>
+<p>Right now, Zamba supports only a single model out-of-the-box for images: <code>lila.science</code>. While there's only a single model, this model has been trained to detect hundreds of species, so it's a great first pass. The <code>lila.science</code> model will be used if no model is specified.</p>
+<p>If you've fine-tuned a model, you can select that model instead of a built-in model by using the <code>--checkpoint</code> argument. For example:</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>predict<span class="w"> </span>--data-dir<span class="w"> </span>example_images/<span class="w"> </span>--checkpoint<span class="w"> </span>zamba-image-classification-dummy_modelepoch<span class="o">=</span><span class="m">00</span>-val_loss<span class="o">=</span><span class="m">48</span>.372.ckpt
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
+
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
+    <span class="n">checkpoint</span><span class="o">=</span><span class="s2">&quot;zamba-image-classification-dummy_modelepoch=00-val_loss=48.372.ckpt&quot;</span><span class="p">)</span>
+<span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="3-choose-the-output-format">3. Choose the output format<a class="headerlink" href="#3-choose-the-output-format" title="Permanent link">&para;</a></h3>
+<p>There are two options for how to format predictions:</p>
+<ol>
+<li><strong>CSV (default):</strong> Return predictions with a row for each bounding box-filename combination and a column for each class label, with probabilities between 0 and 1. Bounding boxes are automatically created for each image, and each image can contain 0 or more bounding boxes (for example, if there are many rabbits in a single image). Cell <code>(i,j)</code> is the probability that species <code>j</code> is present in bounding box <code>i</code>.</li>
+<li><strong>MegaDetector:</strong> Returns much the same information as above, but in a <a href="https://lila.science/megadetector-output-format">JSON format</a> similar to the <a href="https://lila.science/coco-camera-traps">COCO image format</a> that's been augmented to be more useful for camera trap data.</li>
+</ol>
+<p>Say we want to generate predictions for images in <code>example_images</code> in MegaDetector format:</p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>predict<span class="w"> </span>--data-dir<span class="w"> </span>example_image/<span class="w"> </span>--results-file-format<span class="w"> </span>megadetector
+<span class="gp">$ </span>cat<span class="w"> </span>zamba_predictions.json
+<span class="go">{</span>
+<span class="go">    &quot;info&quot;: {},</span>
+<span class="go">    &quot;detection_categories&quot;: { &quot;1&quot;: &quot;animal&quot;, &quot;2&quot;: &quot;person&quot;, &quot;3&quot;: &quot;vehicle&quot; },</span>
+<span class="go">    &quot;classification_categories&quot;: {</span>
+<span class="go">        &quot;0&quot;: &quot;species_acinonyx_jubatus&quot;,</span>
+<span class="go">        &quot;1&quot;: &quot;species_aepyceros_melampus&quot;,</span>
+<span class="go">        &quot;2&quot;: &quot;species_alcelaphus_buselaphus&quot;,</span>
+<span class="go">...</span>
+<span class="go">},</span>
+<span class="go">&quot;images&quot;: [ {</span>
+<span class="go">    &quot;file&quot;: &quot;1.jpg&quot;,</span>
+<span class="go">    &quot;detections&quot;: [</span>
+<span class="go">        { &quot;category&quot;: &quot;1&quot;, &quot;conf&quot;: 0.85, &quot;bbox&quot;: [ 0.7, 0.2, 0.12, 0.4 ],</span>
+<span class="go">            &quot;classifications&quot;: [ [ 88, 0.9355112910270691 ],</span>
+<span class="go">...</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">,</span> <span class="n">ResultsFormat</span>
+
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
+    <span class="n">results_file_format</span><span class="o">=</span><span class="n">ResultsFormat</span><span class="o">.</span><span class="n">MEGADETECTOR</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="4-specify-any-additional-parameters">4. Specify any additional parameters<a class="headerlink" href="#4-specify-any-additional-parameters" title="Permanent link">&para;</a></h3>
+<p>And there's so much more! You can also do things like specify your region for faster model download (<code>--weight-download-region</code>), change the detection threshold above which we'll consider a bounding box contains an animal (<code>--detections-threshold</code>), or specify a different folder where your predictions should be saved (<code>--save-dir</code>). To read about a few common considerations, see the <a href="../extra-options/">Guide to Common Optional Parameters</a> page.</p>
 
 
 
