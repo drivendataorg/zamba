@@ -30,7 +30,7 @@ except ImportError:
     DensePoseOutputsVertexVisualizer = None
     get_texture_atlas = lambda x: None  # noqa: E731
 
-
+from loguru import logger
 import numpy as np
 import pandas as pd
 import torch
@@ -102,10 +102,14 @@ class DensePoseManager:
         self.cfg.merge_from_file(model["config"])
 
         if not (model_cache_dir / model["weights"]).exists():
+            logger.info(f"Available weights: {list(model_cache_dir.glob('*'))}")
+            logger.info(f"Downloading weights {model['weights']} to {model_cache_dir}")
             model_cache_dir.mkdir(parents=True, exist_ok=True)
             self.cfg.MODEL.WEIGHTS = download_weights(
                 model["weights"], model_cache_dir, download_region
             )
+        else:
+            self.cfg.MODEL.WEIGHTS = str(model_cache_dir / model["weights"])
 
         # automatically use CPU if no cuda available
         if not torch.cuda.is_available():
