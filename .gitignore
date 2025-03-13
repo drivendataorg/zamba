@@ -102,6 +102,9 @@ zamba_predictions.*
 # Potential outputs
 *.ckpt
 *.csv
+# allowed csvs in tests/assets
+!tests/assets/**/*.csv
+
 
 # Git leftovers
 *.orig

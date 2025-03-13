@@ -18,7 +18,7 @@ nav:
       - Installing zamba: "install.md"
       - Quickstart: "quickstart.md"
   - "User Tutorials":
-      - Classifying unlabeled images: "image-predict-tutorial.md"
+      - Classifying unlabeled images: "images-predict-tutorial.md"
       - Classifying unlabeled videos: "predict-tutorial.md"
       - Training a model on labeled videos: "train-tutorial.md"
       - Debugging: "debugging.md"
