@@ -1,24 +1,20 @@
-import os
 from multiprocessing import cpu_count
 from multiprocessing.context import BaseContext
-from typing import Dict, List, Optional, Tuple
-import warnings
+from typing import Dict, Optional, Tuple, TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
-import pytorch_lightning as pl
-from pytorch_lightning import LightningDataModule, LightningModule
-from sklearn.metrics import f1_score, top_k_accuracy_score, accuracy_score
 import torch
 import torch.nn.functional as F
 import torch.utils.data
+from pytorch_lightning import LightningDataModule
+from sklearn.metrics import accuracy_score, f1_score, top_k_accuracy_score
 from torchvision.transforms import transforms
 
-from zamba.data.video import VideoLoaderConfig
 from zamba.metrics import compute_species_specific_metrics
 from zamba.pytorch.dataloaders import get_datasets
 from zamba.pytorch.transforms import ConvertTHWCtoCTHW
-
+from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
 
 default_transform = transforms.Compose(
     [
@@ -27,16 +23,20 @@ default_transform = transforms.Compose(
     ]
 )
 
+if TYPE_CHECKING:
+    from zamba.pytorch.dataloaders import VideoLoaderConfig
+
+
 DEFAULT_TOP_K = (1, 3, 5, 10)
 
 
-class ZambaDataModule(LightningDataModule):
+class ZambaVideoDataModule(LightningDataModule):
     def __init__(
         self,
         batch_size: int = 1,
         num_workers: int = max(cpu_count() - 1, 1),
         transform: transforms.Compose = default_transform,
-        video_loader_config: Optional[VideoLoaderConfig] = None,
+        video_loader_config: Optional["VideoLoaderConfig"] = None,
         prefetch_factor: int = 2,
         train_metadata: Optional[pd.DataFrame] = None,
         predict_metadata: Optional[pd.DataFrame] = None,
@@ -122,43 +122,7 @@ class ZambaDataModule(LightningDataModule):
             )
 
 
-class ZambaVideoClassificationLightningModule(LightningModule):
-    def __init__(
-        self,
-        species: List[str],
-        lr: float = 1e-3,
-        scheduler: Optional[str] = None,
-        scheduler_params: Optional[dict] = None,
-        **kwargs,
-    ):
-        super().__init__()
-        if (scheduler is None) and (scheduler_params is not None):
-            warnings.warn(
-                "scheduler_params provided without scheduler. scheduler_params will have no effect."
-            )
-
-        self.lr = lr
-        self.species = species
-        self.num_classes = len(species)
-
-        if scheduler is not None:
-            self.scheduler = torch.optim.lr_scheduler.__dict__[scheduler]
-        else:
-            self.scheduler = scheduler
-
-        self.scheduler_params = scheduler_params
-        self.model_class = type(self).__name__
-
-        self.save_hyperparameters("lr", "scheduler", "scheduler_params", "species")
-        self.hparams["model_class"] = self.model_class
-
-        self.training_step_outputs = []
-        self.validation_step_outputs = []
-        self.test_step_outputs = []
-
-    def forward(self, x):
-        return self.model(x)
-
+class ZambaVideoClassificationLightningModule(ZambaClassificationLightningModule):
     def on_train_start(self):
         metrics = {"val_macro_f1": {}}
 
@@ -266,43 +230,3 @@ class ZambaVideoClassificationLightningModule(LightningModule):
         y_hat = self(x)
         pred = torch.sigmoid(y_hat).cpu().numpy()
         return pred
-
-    def _get_optimizer(self):
-        return torch.optim.Adam(filter(lambda p: p.requires_grad, self.parameters()), lr=self.lr)
-
-    def configure_optimizers(self):
-        """
-        Setup the Adam optimizer. Note, that this function also can return a lr scheduler, which is
-        usually useful for training video models.
-        """
-        optim = self._get_optimizer()
-
-        if self.scheduler is None:
-            return optim
-        else:
-            return {
-                "optimizer": optim,
-                "lr_scheduler": self.scheduler(
-                    optim, **({} if self.scheduler_params is None else self.scheduler_params)
-                ),
-            }
-
-    def to_disk(self, path: os.PathLike):
-        """Save out model weights to a checkpoint file on disk.
-
-        Note: this does not include callbacks, optimizer_states, or lr_schedulers.
-        To include those, use `Trainer.save_checkpoint()` instead.
-        """
-
-        checkpoint = {
-            "state_dict": self.state_dict(),
-            "hyper_parameters": self.hparams,
-            "global_step": self.global_step,
-            "pytorch-lightning_version": pl.__version__,
-        }
-        torch.save(checkpoint, path)
-
-    @classmethod
-    def from_disk(cls, path: os.PathLike, **kwargs):
-        # note: we always load models onto CPU; moving to GPU is handled by `devices` in pl.Trainer
-        return cls.load_from_checkpoint(path, map_location="cpu", **kwargs)

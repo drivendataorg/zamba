@@ -1,8 +1,10 @@
 # Species detection
 
-The classification algorithms in `zamba` are designed to identify species of animals that appear in camera trap videos. The pretrained models that ship with the `zamba` package are: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
+The classification algorithms in `zamba` are designed to identify species of animals that appear in camera trap images and videos. The pretrained models that ship with the `zamba` package are: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. For more details of each, read on!
 
 ## Model summary
+
+### Video models
 
 <table>
   <tr>
@@ -45,6 +47,27 @@ The classification algorithms in `zamba` are designed to identify species of ani
 The models trained on the largest datasets took a couple weeks to train on a single GPU machine. Some models will be updated in the future, and you can always check the [changelog](../../changelog) to see if there have been updates.
 
 All models support training, fine-tuning, and inference. For fine-tuning, we recommend using the `time_distributed` model as the starting point.
+
+### Image models
+
+<table>
+  <tr>
+    <th>Model</th>
+    <th>Geography</th>
+    <th>Relative strengths</th>
+    <th>Architecture</th>
+    <th>Number of training videos</th>
+  </tr>
+  <tr>
+    <td><code>lila.science</code></td>
+    <td>Global based on datasets from lila.science</td>
+    <td>Good base model for common global species.</td>
+    <td>ConvNextV2 backbone</td>
+    <td>15 million annotations from 7 million images</td>
+  </tr>
+</table>
+
+All models support training, fine-tuning, and inference.
 
 <h2 id="species-classes"></h2>
 
@@ -100,6 +123,187 @@ The `european` model is trained to identify 11 common species in Western Europe.
 * `red_fox`
 * `weasel`
 * `wild_boar`
+
+The `lila.science` model is trained to identify many species and groups from Lila.science's dataset, which contains over 15 million annotations from 7 million images. The 178 classes are:
+
+* `acinonyx_jubatus`
+* `aepyceros_melampus`
+* `alcelaphus_buselaphus`
+* `alces_alces`
+* `animalia`
+* `anseriform_bird`
+* `antilocapra_americana`
+* `artamid_corvid_icterid_bird`
+* `aves`
+* `bos_taurus`
+* `bucerotid_ramphastid_bird`
+* `burhinid_otidid_bird`
+* `callosciurine_squirrels`
+* `camelus_dromedarius`
+* `canidae`
+* `canis_familiaris`
+* `canis_latrans`
+* `canis_lupus`
+* `capra_goat`
+* `capreolinae_deer`
+* `capricornis_sumatraensis`
+* `caprimulgiform_bird`
+* `caracal_caracal`
+* `catopuma_temminckii`
+* `caviidae_dasyproctidae`
+* `cebid_monkey`
+* `cephalophini_neotragini_oreotragini`
+* `cephalophus_silvicultor`
+* `cercocebus_macaca_sp`
+* `cercopithecine_monkey`
+* `cerdocyon_thous`
+* `certhiid_furnariid_picid_bird`
+* `cervid_deer`
+* `cervini_deer`
+* `charadriiform_bird`
+* `chinchillidae`
+* `chiropteran_mammal`
+* `cingulata`
+* `colobine_monkey`
+* `columbimorph_bird`
+* `connochaetes_gnou`
+* `connochaetes_taurinus`
+* `coraciiform_galbuliform_trogoniform_bird`
+* `crocuta_crocuta`
+* `cuniculidae`
+* `damaliscus_lunatus`
+* `damaliscus_pygargus`
+* `didelphimorph_marsupial`
+* `didelphis`
+* `eira_pekania`
+* `elephantidae`
+* `equus_africanus`
+* `equus_asinus`
+* `equus_caballus`
+* `equus_ferus`
+* `erethizontidae_hystricidae`
+* `estrildid_fringillid_passerid_bird`
+* `eulipotyphla`
+* `euplerinae`
+* `euungulata`
+* `felidae`
+* `felis`
+* `formicariid_grallariid_pittid_bird`
+* `galidiinae`
+* `galliform_bird`
+* `gazelles`
+* `genetta`
+* `giraffa_camelopardalis`
+* `grallariid_pittid_bird`
+* `gruiform_bird`
+* `hemigaline_civet`
+* `herpailurus_yagouaroundi`
+* `herpestidae`
+* `herptile`
+* `hippopotamus_amphibius`
+* `hippotragini`
+* `hyaena_hyaena`
+* `hystricomorph_rats`
+* `ictonychinae`
+* `invertebrate`
+* `lagomorpha`
+* `larid_bird`
+* `leiotrichid_mimid_bird`
+* `leopardus`
+* `leptailurus_serval`
+* `litocranius`
+* `lupulella`
+* `lutrinae`
+* `lycalopex_urocyon_vulpes`
+* `lycaon_pictus`
+* `lynx_rufus`
+* `macroscelididae`
+* `madoqua`
+* `mammalia`
+* `manidae`
+* `marmota`
+* `martes`
+* `mazama_deer`
+* `melinae_mellivorinae_taxidiinae`
+* `meliphagid_nectariniid_trochilid_bird`
+* `melogale`
+* `mephitidae`
+* `moschiola_meminna`
+* `motacillid_muscicapid_petroicid_prunellid_bird`
+* `muntiacini_deer`
+* `muroid_mammal`
+* `mustelinae`
+* `myrmecophaga`
+* `nandiniidae_viverridae`
+* `nasua`
+* `neofelis`
+* `nilgiritragus_hylocrius`
+* `non_didelphis_opossum`
+* `notamacropus`
+* `orycteropus`
+* `other_antilopini`
+* `other_bovini`
+* `other_canid`
+* `other_haplorhini`
+* `other_passeriform_bird`
+* `otidimorph_bird`
+* `otocyon_megalotis`
+* `ovis_sheep`
+* `paleognath_bird`
+* `pan_troglodytes`
+* `panthera_leo`
+* `panthera_onca`
+* `panthera_pardus`
+* `panthera_tigris`
+* `papio_sp`
+* `paradoxurine_civet`
+* `parahyaena_brunnea`
+* `pardofelis_marmorata`
+* `passerellid_emberizid_bird`
+* `pelecanimorph_like_bird`
+* `phacochoerus_africanus`
+* `prionailurus_bengalensis`
+* `prionodontidae`
+* `procaviidae`
+* `procellariiform_bird`
+* `procyon`
+* `proteles_cristatus`
+* `psittaciform_bird`
+* `psophiid_bird`
+* `puma_concolor`
+* `raptors`
+* `ratufa_bicolor`
+* `reduncini`
+* `rhinocerotidae`
+* `rhipidurid_stenostirid_bird`
+* `rodentia`
+* `rupicapra_rupicapra`
+* `sciuridae`
+* `sciurine_squirrels`
+* `seal_or_sea_lion`
+* `spheniscid_bird`
+* `squamate`
+* `strepsirrhine_primate`
+* `strigid_tytonid_bird`
+* `suid_pig`
+* `tamandua`
+* `tapiridae`
+* `tayassuid_peccary`
+* `tenrecid_mammal`
+* `testudine`
+* `tinamid_phasianid_bird`
+* `tragelaphus`
+* `tragelaphus_oryx`
+* `tragulus_mouse_deer`
+* `trichosurus`
+* `tupaia`
+* `turdid_bird`
+* `ursidae`
+* `vicugna_pacos`
+* `viverrine_civet`
+* `vultures`
+* `xerine_squirrels`
+* `zebras`
 
 <a id='blank-nonblank'></a>
 
@@ -326,7 +530,7 @@ The `european` model is finetuned with data collected and annotated by partners 
 
 The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/european/config.yaml).
 
-The `european` model uses the same [default configuration](#time-distributed-config) as the `time_distributed` model. 
+The `european` model uses the same [default configuration](#time-distributed-config) as the `time_distributed` model.
 
 As with all models, you can choose different frame selection methods and vary the size of the images that are used by passing in a custom [YAML configuration file](../yaml-config.md). The only requirement for the `european` model is that the video loader must return 16 frames.
 
@@ -345,6 +549,52 @@ While highly accurate, Megadetector is too computationally intensive to run on e
 
 MegadetectorLite can be imported into Python code and used directly since it has convenient methods for `detect_image` and `detect_video`. See [the API documentation for more details](../../api-reference/object-detection-megadetector_lite_yolox/#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloX).
 
+<a id='lila-science'></a>
+
+## `lila.science` model
+
+### Architecture
+
+The `lila.science` model is a global model with a ConvNextV2 base size (87.7M parameters) backbone accepting 224x224 images as input.
+
+<a id='lila-science-training-data'></a>
+
+### Training data
+
+Lila.science dataset, which contains over 15 million annotations from 7 million images. The model was trained on cropped images of just the bounding box around an animal.
+
+Data came from the following [lila.science datasets](https://lila.science/datasets):
+
+* Caltech Camera Traps
+* Channel Islands Camera Traps
+* Desert Lion Camera Traps
+* Ena24
+* Idaho Camera Traps
+* Island Conservation Camera Traps
+* Missouri Camera Traps
+* Nacti
+* Nz Trailcams
+* Orinoquia Camera Traps
+* Snapshot Safari 2024 Expansion
+* Snapshot Safari Cdb
+* Snapshot Safari Eno
+* Snapshot Safari Kar
+* Snapshot Safari Kga
+* Snapshot Safari Kru
+* Snapshot Safari Mtz
+* Swg Camera Traps
+* Wcs Camera Traps
+* Wellington Camera Traps
+
+<a id='lila-science-config'></a>
+
+### Default configuration
+
+The full default configuration is available on [Github](https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/lila.science/config.yaml).
+
+The default configuration will use megadetector to identify bounding boxes for animals and then use the `lila.science` model to identify the species in the bounding box.
+
+It will generate a CSV file with predicted species probabilities for each bounding box.
 
 ## User contributed models
 

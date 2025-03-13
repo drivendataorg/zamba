@@ -2,9 +2,9 @@
 
 <script id="asciicast-1mXKsDiPzgyAZwk8CbdkrG2ac" src="https://asciinema.org/a/1mXKsDiPzgyAZwk8CbdkrG2ac.js" async data-autoplay="true" data-loop=1 data-cols=90></script>
 
-This section assumes you have successfully installed `zamba` and are ready to train a model or identify species in your videos!
+This section assumes you have successfully installed `zamba` and are ready to train a model or identify species in your images and videos!
 
-`zamba` can be used "out of the box" to generate predictions or train a model using your own videos. To perform inference, you simply need to run `zamba predict` followed by a set of arguments that let zamba know where your videos are located, which model you want to use, and where to save your output. To train a model, you can similarly run `zamba train` and specify your labels. The following sections provide details about these separate modules.
+`zamba` can be used "out of the box" to generate predictions or train a model using your own images and videos. By default, `zamba` expects video, but using images is just as easy. To perform inference, you simply need to run `zamba predict` or `zamba image predict` followed by a set of arguments that let zamba know where your media is located, which model you want to use, and where to save your output. To train a model, you can similarly run `zamba train` or `zamba image train` and specify your labels. The following sections provide details about these separate modules.
 
 There are two ways to interact with the `zamba` package:
 
@@ -18,9 +18,10 @@ Installation is the same for both the command line interface tool and the Python
 All of the commands on this page should be run at the command line. On
 macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
-## How do I organize my videos for `zamba`?
+## How do I organize my images or videos for `zamba`?
 
-You can specify the path to a directory of videos or specify a list of filepaths in a `.csv` file. `zamba` supports the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any videos that fail a set of FFmpeg checks will be skipped during inference or training.
+You can specify the path to a directory of images or videos or specify a list of filepaths in a `.csv` file. `zamba` supports the same image formats as [`pillow`](https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html#fully-supported-formats) and the same video formats as FFmpeg, [which are listed here](https://www.ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features). Any images or videos that fail a set of validation checks will be skipped during inference or training.
+
 
 For example, say we have a directory of videos called `example_vids` that we want to generate predictions for using `zamba`. Let's list the videos:
 
@@ -58,7 +59,7 @@ In this example, the videos have meaningful names so that we can easily
 compare the predictions made by `zamba`. In practice, your videos will
 probably be named something much less useful!
 
-## Generating predictions
+## Generating predictions for videos
 
 To generate and save predictions for your videos using the default settings, run:
 
@@ -87,12 +88,32 @@ There are pretrained models that ship with `zamba`: `blank_nonblank`, `time_dist
 $ zamba predict --data-dir example_vids/ --model slowfast
 ```
 
+## Generating predictions for images
+
+To generate and save predictions for your images using the default settings, run:
+
+```console
+$ zamba image predict --data-dir example_images/
+```
+
+Predictions will be saved to `zamba_predictions.csv` in the current working directory by default. You can save out predictions to a different folder using the `--save-dir` argument. `zamba` will output a `.csv` file with rows labeled by each detected bounding box in each filename and columns for each class (ie. species):
+
+```console
+$ cat zamba_predictions.csv
+filepath,detection_category,detection_conf,x1,y1,x2,y2,species_acinonyx_jubatus,species_aepyceros_melampus,species_alcelaphus_buselaphus...
+1.jpg,1,0.85,2015,1235,2448,1544,4.924246e-06,0.0001539439,9.6043495e-06...
+2.jpg,1,0.921,527,1246,1805,1501,5.061601e-05,3.6830465e-05,2.4510617e-05...
+3.jpg,1,0.9,1422,528,1629,816,1.1791806e-06,4.080566e-06,3.4533906e-07...
+```
+
+The `detection_category` and `detection_conf` come from [MegaDetector](https://github.com/agentmorris/MegaDetector) which we use to find bounding boxes around individual animals in images. A `detection_category` of `"1"` indicates the presence of an animal, and `detection_conf` is the confidence the animal classifier had in the presence of an animal. The columns `x1`, `y1`, `x2`, `y2` indicate the coordinates of the top-left and bottom-right corners of the bounding box relative to the top-left corner of the image. The remaining columns are the scores assigned to each species for the individual animal in the given bounding box. These scores will sum to one.
+
 ## Training a model
 
 You can continue training one of the [models](models/species-detection.md) that ships with `zamba` by either:
 
-* Finetuning with additional labeled videos where the species are included in the list of [`zamba` class labels](models/species-detection.md#species-classes)
-* Finetuning with labeled videos that include new species
+* Finetuning with additional labeled images or videos where the species are included in the list of [`zamba` class labels](models/species-detection.md#species-classes)
+* Finetuning with labeled images or videos that include new species
 
 In either case, the commands for training are the same. Say that we have labels for the videos in the `example_vids` folder saved in `example_labels.csv`. To train a model, run:
 
@@ -123,9 +144,11 @@ val_metrics.json
 ...
 ```
 
+For images, all the above is true except the command is `zamba image train`.
+
 ## Downloading model weights
 
-**`zamba` needs to download the "weights" files for the models it uses to make predictions. On first run, it will download ~200-500 MB of files with these weights depending which model you choose.**
+**`zamba` needs to download the "weights" files for the models it uses to make predictions. On first run, it will download ~200-2000 MB of files with these weights depending which model you choose.**
 Once a model's weights are downloaded, `zamba` will use the local version and will not need to perform this download again. If you are not in the United States, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server, the faster the downloads will be.
 
 <a id='getting-help'></a>

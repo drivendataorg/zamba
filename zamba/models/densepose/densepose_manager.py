@@ -1,6 +1,7 @@
 import json
 import logging
 from pathlib import Path
+from typing import Optional
 
 import cv2
 
@@ -29,7 +30,7 @@ except ImportError:
     DensePoseOutputsVertexVisualizer = None
     get_texture_atlas = lambda x: None  # noqa: E731
 
-
+from loguru import logger
 import numpy as np
 import pandas as pd
 import torch
@@ -37,6 +38,7 @@ from tqdm import tqdm
 
 from zamba.data.video import load_video_frames
 from zamba.models.utils import RegionEnum, download_weights
+from zamba.settings import get_model_cache_dir
 
 
 MODELS = dict(
@@ -76,7 +78,7 @@ class DensePoseManager:
     def __init__(
         self,
         model=MODELS["chimps"],
-        model_cache_dir: Path = Path(".zamba_cache"),
+        model_cache_dir: Optional[Path] = None,
         download_region=RegionEnum("us"),
     ):
         """Create a DensePoseManager object.
@@ -91,6 +93,8 @@ class DensePoseManager:
                 "Densepose not installed. See: https://zamba.drivendata.org/docs/stable/models/densepose/#installation"
             )
 
+        model_cache_dir = model_cache_dir or get_model_cache_dir()
+
         # setup configuration for densepose
         self.cfg = get_cfg()
         add_densepose_config(self.cfg)
@@ -98,10 +102,14 @@ class DensePoseManager:
         self.cfg.merge_from_file(model["config"])
 
         if not (model_cache_dir / model["weights"]).exists():
+            logger.info(f"Available weights: {list(model_cache_dir.glob('*'))}")
+            logger.info(f"Downloading weights {model['weights']} to {model_cache_dir}")
             model_cache_dir.mkdir(parents=True, exist_ok=True)
             self.cfg.MODEL.WEIGHTS = download_weights(
                 model["weights"], model_cache_dir, download_region
             )
+        else:
+            self.cfg.MODEL.WEIGHTS = str(model_cache_dir / model["weights"])
 
         # automatically use CPU if no cuda available
         if not torch.cuda.is_available():

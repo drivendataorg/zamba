@@ -7,7 +7,7 @@ from torch import nn
 
 from zamba.models.registry import register_model
 from zamba.pytorch.layers import TimeDistributed
-from zamba.pytorch_lightning.utils import ZambaVideoClassificationLightningModule
+from zamba.pytorch_lightning.video_modules import ZambaVideoClassificationLightningModule
 
 
 @register_model

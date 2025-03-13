@@ -1,0 +1,651 @@
+{
+    "info": {
+        "format_version": "1.4",
+        "detector": "md_v5.0.0",
+        "detection_completion_time": "2025-03-12 17:45:10",
+        "classifier": "ecosystem1_v2",
+        "classification_completion_time": "2025-03-12 17:45:12",
+        "detector_metadata": {
+            "megadetector_version": "v5.0.0",
+            "typical_detection_threshold": 0.8,
+            "conservative_detection_threshold": 0.6
+        },
+        "classifier_metadata": {
+            "typical_classification_threshold": 0.75
+        }
+    },
+    "detection_categories": {
+        "1": "animal",
+        "2": "person",
+        "3": "vehicle"
+    },
+    "classification_categories": {
+        "0": "virginia_opossum",
+        "1": "eastern_fox_squirrel",
+        "2": "american_black_bear",
+        "3": "american_crow",
+        "4": "striped_skunk",
+        "5": "chicken",
+        "6": "grey_fox"
+    },
+    "classification_category_descriptions": {
+        "0": "animalia;chordata;mammalia;didelphimorphia;didelphidae;didelphisvirginiana",
+        "1": "animalia;chordata;mammalia;rodentia;sciuridae;sciurusniger",
+        "2": "animalia;chordata;mammalia;carnivora;ursidae;ursusamericanus",
+        "3": "animalia;chordata;aves;passeriformes;corvidae;corvusbrachyrhynchos",
+        "4": "animalia;chordata;mammalia;carnivora;mephitidae;mephitismephitis",
+        "5": "animalia;chordata;aves;galliformes;phasianidae;gallusgallus",
+        "6": "animalia;chordata;mammalia;carnivora;canidae;urocyoncinereoargenteus"
+    },
+    "images": [
+        {
+            "file": "2480.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.926,
+                    "bbox": [
+                        0.35,
+                        0.35,
+                        0.3,
+                        0.3
+                    ],
+                    "classifications": [
+                        [
+                            "0",
+                            0.941
+                        ],
+                        [
+                            "6",
+                            0.032
+                        ],
+                        [
+                            "4",
+                            0.019
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "2595.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.918,
+                    "bbox": [
+                        0.32,
+                        0.38,
+                        0.35,
+                        0.28
+                    ],
+                    "classifications": [
+                        [
+                            "0",
+                            0.955
+                        ],
+                        [
+                            "4",
+                            0.028
+                        ],
+                        [
+                            "1",
+                            0.012
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "2573.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.934,
+                    "bbox": [
+                        0.37,
+                        0.33,
+                        0.32,
+                        0.34
+                    ],
+                    "classifications": [
+                        [
+                            "0",
+                            0.927
+                        ],
+                        [
+                            "4",
+                            0.041
+                        ],
+                        [
+                            "6",
+                            0.025
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "596.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.885,
+                    "bbox": [
+                        0.40,
+                        0.30,
+                        0.25,
+                        0.25
+                    ],
+                    "classifications": [
+                        [
+                            "1",
+                            0.903
+                        ],
+                        [
+                            "0",
+                            0.056
+                        ],
+                        [
+                            "6",
+                            0.031
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "352.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.892,
+                    "bbox": [
+                        0.38,
+                        0.32,
+                        0.28,
+                        0.26
+                    ],
+                    "classifications": [
+                        [
+                            "1",
+                            0.912
+                        ],
+                        [
+                            "6",
+                            0.047
+                        ],
+                        [
+                            "0",
+                            0.024
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "422.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.901,
+                    "bbox": [
+                        0.35,
+                        0.36,
+                        0.30,
+                        0.32
+                    ],
+                    "classifications": [
+                        [
+                            "1",
+                            0.889
+                        ],
+                        [
+                            "6",
+                            0.063
+                        ],
+                        [
+                            "0",
+                            0.028
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "9455.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.912,
+                    "bbox": [
+                        0.30,
+                        0.28,
+                        0.45,
+                        0.42
+                    ],
+                    "classifications": [
+                        [
+                            "2",
+                            0.938
+                        ],
+                        [
+                            "6",
+                            0.045
+                        ],
+                        [
+                            "4",
+                            0.012
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "8786.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.907,
+                    "bbox": [
+                        0.33,
+                        0.30,
+                        0.40,
+                        0.38
+                    ],
+                    "classifications": [
+                        [
+                            "2",
+                            0.922
+                        ],
+                        [
+                            "6",
+                            0.051
+                        ],
+                        [
+                            "4",
+                            0.019
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "8831.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.919,
+                    "bbox": [
+                        0.34,
+                        0.31,
+                        0.42,
+                        0.40
+                    ],
+                    "classifications": [
+                        [
+                            "2",
+                            0.931
+                        ],
+                        [
+                            "6",
+                            0.039
+                        ],
+                        [
+                            "0",
+                            0.021
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "7951.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.873,
+                    "bbox": [
+                        0.38,
+                        0.35,
+                        0.28,
+                        0.25
+                    ],
+                    "classifications": [
+                        [
+                            "3",
+                            0.918
+                        ],
+                        [
+                            "5",
+                            0.052
+                        ],
+                        [
+                            "2",
+                            0.021
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "8200.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.866,
+                    "bbox": [
+                        0.41,
+                        0.33,
+                        0.24,
+                        0.27
+                    ],
+                    "classifications": [
+                        [
+                            "3",
+                            0.903
+                        ],
+                        [
+                            "5",
+                            0.072
+                        ],
+                        [
+                            "2",
+                            0.012
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "49.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.879,
+                    "bbox": [
+                        0.36,
+                        0.32,
+                        0.30,
+                        0.28
+                    ],
+                    "classifications": [
+                        [
+                            "3",
+                            0.897
+                        ],
+                        [
+                            "5",
+                            0.081
+                        ],
+                        [
+                            "2",
+                            0.016
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "2968.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.925,
+                    "bbox": [
+                        0.32,
+                        0.30,
+                        0.38,
+                        0.35
+                    ],
+                    "classifications": [
+                        [
+                            "4",
+                            0.933
+                        ],
+                        [
+                            "0",
+                            0.042
+                        ],
+                        [
+                            "6",
+                            0.018
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "2999.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.931,
+                    "bbox": [
+                        0.34,
+                        0.28,
+                        0.36,
+                        0.38
+                    ],
+                    "classifications": [
+                        [
+                            "4",
+                            0.927
+                        ],
+                        [
+                            "6",
+                            0.051
+                        ],
+                        [
+                            "0",
+                            0.017
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "3084.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.909,
+                    "bbox": [
+                        0.33,
+                        0.31,
+                        0.37,
+                        0.34
+                    ],
+                    "classifications": [
+                        [
+                            "4",
+                            0.944
+                        ],
+                        [
+                            "0",
+                            0.032
+                        ],
+                        [
+                            "6",
+                            0.019
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "5899.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.892,
+                    "bbox": [
+                        0.38,
+                        0.36,
+                        0.32,
+                        0.30
+                    ],
+                    "classifications": [
+                        [
+                            "5",
+                            0.908
+                        ],
+                        [
+                            "3",
+                            0.063
+                        ],
+                        [
+                            "1",
+                            0.022
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "5840.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.885,
+                    "bbox": [
+                        0.39,
+                        0.35,
+                        0.33,
+                        0.31
+                    ],
+                    "classifications": [
+                        [
+                            "5",
+                            0.915
+                        ],
+                        [
+                            "3",
+                            0.057
+                        ],
+                        [
+                            "1",
+                            0.019
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "6039.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.897,
+                    "bbox": [
+                        0.36,
+                        0.33,
+                        0.34,
+                        0.32
+                    ],
+                    "classifications": [
+                        [
+                            "5",
+                            0.926
+                        ],
+                        [
+                            "3",
+                            0.043
+                        ],
+                        [
+                            "1",
+                            0.025
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "4383.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.921,
+                    "bbox": [
+                        0.33,
+                        0.32,
+                        0.36,
+                        0.35
+                    ],
+                    "classifications": [
+                        [
+                            "6",
+                            0.938
+                        ],
+                        [
+                            "0",
+                            0.041
+                        ],
+                        [
+                            "1",
+                            0.018
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "4330.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.913,
+                    "bbox": [
+                        0.35,
+                        0.30,
+                        0.35,
+                        0.37
+                    ],
+                    "classifications": [
+                        [
+                            "6",
+                            0.926
+                        ],
+                        [
+                            "1",
+                            0.048
+                        ],
+                        [
+                            "0",
+                            0.021
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "file": "4451.jpg",
+            "detections": [
+                {
+                    "category": "1",
+                    "conf": 0.928,
+                    "bbox": [
+                        0.32,
+                        0.34,
+                        0.38,
+                        0.33
+                    ],
+                    "classifications": [
+                        [
+                            "6",
+                            0.942
+                        ],
+                        [
+                            "0",
+                            0.037
+                        ],
+                        [
+                            "1",
+                            0.015
+                        ]
+                    ]
+                }
+            ]
+        }
+    ]
+}

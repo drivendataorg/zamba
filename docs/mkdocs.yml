@@ -18,6 +18,7 @@ nav:
       - Installing zamba: "install.md"
       - Quickstart: "quickstart.md"
   - "User Tutorials":
+      - Classifying unlabeled images: "images-predict-tutorial.md"
       - Classifying unlabeled videos: "predict-tutorial.md"
       - Training a model on labeled videos: "train-tutorial.md"
       - Debugging: "debugging.md"
@@ -38,6 +39,10 @@ nav:
       - zamba.data:
           - zamba.data.metadata: "api-reference/data-metadata.md"
           - zamba.data.video: "api-reference/data-video.md"
+      - zamba.images:
+          - zamba.images.config: "api-reference/images-config.md"
+          - zamba.images.manager: "api-reference/images-manager.md"
+          - zamba.images.classifier: "api-reference/images-classifier.md"
       - zamba.models:
           - zamba.models.config: "api-reference/models-config.md"
           - zamba.model.depth_estimation:
@@ -59,7 +64,7 @@ nav:
           - zamba.pytorch.transforms: "api-reference/pytorch-transforms.md"
           - zamba.pytorch.utils: "api-reference/pytorch-utils.md"
       - zamba.pytorch_lightning:
-          - zamba.pytorch_lightning.utils: "api-reference/pytorch_lightning-utils.md"
+          - zamba.pytorch_lightning.video_modules: "api-reference/pytorch_lightning-video_modules.md"
       - zamba.exceptions: "api-reference/exceptions.md"
       - zamba.metrics: "api-reference/metrics.md"
       - zamba.settings: "api-reference/settings.md"

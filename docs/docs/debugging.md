@@ -1,6 +1,6 @@
 # Debugging
 
-Before kicking off a full run of inference or model training, we recommend testing your code with a "dry run". If you are generating predictions, this will run one batch of inference to quickly detect any bugs. If you are trainig a model, this will run one training and validation batch for one epoch. If the dry run completes successfully, predict and train away!
+Before kicking off a full run of video inference or model training, we recommend testing your code with a "dry run". If you are generating predictions, this will run one batch of inference to quickly detect any bugs. If you are trainig a model, this will run one training and validation batch for one epoch. If the dry run completes successfully, predict and train away! Dry runs aren't yet implemented for `zamba image` commands.
 
 === "CLI"
     ```console

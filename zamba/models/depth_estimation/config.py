@@ -9,7 +9,7 @@ from typing import Optional, Union
 from zamba.models.config import (
     ZambaBaseModel,
     check_files_exist_and_load,
-    get_filepaths,
+    get_video_filepaths,
     GPUS_AVAILABLE,
     validate_gpus,
     validate_model_cache_dir,
@@ -72,7 +72,7 @@ class DepthEstimationConfig(ZambaBaseModel):
         logger.info(f"Depth predictions saved to {self.save_to}")
 
     _get_filepaths = root_validator(allow_reuse=True, pre=False, skip_on_failure=True)(
-        get_filepaths
+        get_video_filepaths
     )
 
     _validate_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(

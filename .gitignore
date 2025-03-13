@@ -42,6 +42,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+reportlog.jsonl
 
 # Translations
 *.mo
@@ -76,6 +77,7 @@ target/
 .ipynb_checkpoints/
 
 # exclude data from source control by default
+/data
 /data/
 
 # Mac OS-specific storage files
@@ -87,3 +89,22 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+# Default MLFlow tracking location
+mlruns/
+
+# direnv
+.envrc
+
+# Predictions
+zamba_predictions.*
+
+# Potential outputs
+*.ckpt
+*.csv
+# allowed csvs in tests/assets
+!tests/assets/**/*.csv
+
+
+# Git leftovers
+*.orig

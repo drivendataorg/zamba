@@ -1,0 +1,7 @@
+filepath,label,split
+images/small_cat.jpg,cat,train
+images/wild_dog_jackal.jpg,wild_dog,train
+images/chimpanzee_bonobo.jpeg,chimpanzee,train
+images/this_file_does_not_exist.jpg,lion,train
+images/wild_dog_jackal.jpg,wild_dog,val
+images/chimpanzee_bonobo.jpeg,chimpanzee,val

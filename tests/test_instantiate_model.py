@@ -11,7 +11,7 @@ from conftest import DummyZambaVideoClassificationLightningModule
 
 def test_scheduler_ignored_for_prediction(dummy_checkpoint):
     """Tests whether we can instantiate a model for prediction and ignore scheduler config."""
-    original_hyperparams = torch.load(dummy_checkpoint)["hyper_parameters"]
+    original_hyperparams = torch.load(dummy_checkpoint, weights_only=False)["hyper_parameters"]
     assert original_hyperparams["scheduler"] is None
 
     model = instantiate_model(

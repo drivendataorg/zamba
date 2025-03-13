@@ -12,7 +12,7 @@ from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
     ZambaBaseModel,
     check_files_exist_and_load,
-    get_filepaths,
+    get_video_filepaths,
     validate_model_cache_dir,
 )
 from zamba.models.densepose.densepose_manager import MODELS, DensePoseManager
@@ -106,7 +106,7 @@ class DensePoseConfig(ZambaBaseModel):
                 )
 
     _get_filepaths = root_validator(allow_reuse=True, pre=False, skip_on_failure=True)(
-        get_filepaths
+        get_video_filepaths
     )
 
     @root_validator(skip_on_failure=True)

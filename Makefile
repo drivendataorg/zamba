@@ -25,7 +25,8 @@ requirements:
 ifeq (${CPU_OR_GPU}, gpu)
 	conda install -y cudatoolkit=11.0.3 cudnn=8.0 -c conda-forge
 endif
-	$(PYTHON_INTERPRETER) -m pip install -U pip torch
+	$(PYTHON_INTERPRETER) -m pip install -U pip
+	$(PYTHON_INTERPRETER) -m pip install "torch<2.4.0"
 	$(PYTHON_INTERPRETER) -m pip install -r requirements-dev.txt
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
@@ -67,6 +68,14 @@ lint:
 ## Generate assets and run tests
 tests: clean-test
 	pytest tests -vv
+
+## Dev: Fail fast, do not run in parallel, and open debugger on failure
+tests-debug: clean-test
+	pytest tests -vvv --pdb --maxfail=1 -n=0
+
+## Dev: Run the tests that are just for images (no videos)
+images-tests: clean-test
+	pytest tests/test_images.py -vv
 
 ## Run the tests that are just for densepose
 densepose-tests:
