@@ -67,7 +67,7 @@ jobs:
 
   tests:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
-    needs: code-quality
+    needs: [code-quality, cache-model-weights]
     runs-on: ${{ matrix.os }}
     env:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
