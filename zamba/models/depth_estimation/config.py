@@ -3,7 +3,7 @@ from pathlib import Path
 
 from loguru import logger
 import pandas as pd
-from pydantic import DirectoryPath, FilePath, validator, root_validator
+from pydantic import model_validator, ConfigDict, DirectoryPath, FilePath, validator, root_validator
 from typing import Optional, Union
 
 from zamba.models.config import (
@@ -52,10 +52,7 @@ class DepthEstimationConfig(ZambaBaseModel):
     weight_download_region: RegionEnum = RegionEnum("us")
     num_workers: int = 8
     gpus: int = GPUS_AVAILABLE
-
-    class Config:
-        # support pandas dataframe
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def run_model(self):
         dm = DepthEstimationManager(
@@ -81,7 +78,8 @@ class DepthEstimationConfig(ZambaBaseModel):
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_save_to(cls, values):
         save_to = values["save_to"]
         if save_to is None:
@@ -99,7 +97,8 @@ class DepthEstimationConfig(ZambaBaseModel):
         values["save_to"] = save_path
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_files(cls, values):
         # if globbing from data directory, already have valid dataframe
         if isinstance(values["filepaths"], pd.DataFrame):

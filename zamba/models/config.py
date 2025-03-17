@@ -7,7 +7,7 @@ import ffmpeg
 from loguru import logger
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel
+from pydantic import model_validator, ConfigDict, BaseModel
 from pydantic import DirectoryPath, FilePath, validator, root_validator
 from pqdm.threads import pqdm
 import torch
@@ -254,11 +254,7 @@ def get_video_filepaths(cls, values):
 
 class ZambaBaseModel(BaseModel):
     """Set defaults for all models that inherit from the pydantic base model."""
-
-    class Config:
-        extra = "forbid"
-        use_enum_values = True
-        validate_assignment = True
+    model_config = ConfigDict(extra="forbid", use_enum_values=True, validate_assignment=True)
 
 
 class BackboneFinetuneConfig(ZambaBaseModel):
@@ -332,9 +328,11 @@ class SchedulerConfig(ZambaBaseModel):
             "verbose": True}). Defaults to None.
     """
 
-    scheduler: Optional[str]
+    scheduler: Optional[str] = None
     scheduler_params: Optional[dict] = None
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("scheduler", always=True)
     def validate_scheduler(cls, scheduler):
         if scheduler is None:
@@ -452,9 +450,7 @@ class TrainConfig(ZambaBaseModel):
     from_scratch: bool = False
     use_default_model_labels: Optional[bool] = None
     model_cache_dir: Optional[Path] = None
-
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     _validate_gpus = validator("gpus", allow_reuse=True, pre=True)(validate_gpus)
 
@@ -462,7 +458,8 @@ class TrainConfig(ZambaBaseModel):
         validate_model_cache_dir
     )
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_from_scratch_and_checkpoint(cls, values):
         if values["from_scratch"]:
             if values["checkpoint"] is not None:
@@ -477,6 +474,8 @@ class TrainConfig(ZambaBaseModel):
         validate_model_name_and_checkpoint
     )
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("scheduler_config", always=True)
     def validate_scheduler_config(cls, scheduler_config):
         if scheduler_config is None:
@@ -486,14 +485,16 @@ class TrainConfig(ZambaBaseModel):
         else:
             return scheduler_config
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def turn_off_load_validation_if_dry_run(cls, values):
         if values["dry_run"] and not values["skip_load_validation"]:
             logger.info("Turning off video loading check since dry_run=True.")
             values["skip_load_validation"] = True
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_filepaths_and_labels(cls, values):
         logger.info("Validating labels csv.")
         labels = (
@@ -555,7 +556,8 @@ class TrainConfig(ZambaBaseModel):
         )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_provided_species_and_use_default_model_labels(cls, values):
         """If the model species are the desired output, the labels file must contain
         a subset of the model species.
@@ -587,7 +589,8 @@ class TrainConfig(ZambaBaseModel):
 
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def preprocess_labels(cls, values):
         """One hot encode, add splits, and check for binary case.
 
@@ -776,7 +779,8 @@ class PredictConfig(ZambaBaseModel):
         validate_model_cache_dir
     )
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_dry_run_and_save(cls, values):
         if values["dry_run"] and (
             (values["save"] is not False) or (values["save_dir"] is not None)
@@ -789,7 +793,8 @@ class PredictConfig(ZambaBaseModel):
 
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_save_dir(cls, values):
         save_dir = values["save_dir"]
         save = values["save"]
@@ -824,7 +829,8 @@ class PredictConfig(ZambaBaseModel):
         validate_model_name_and_checkpoint
     )
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_proba_threshold(cls, values):
         if values["proba_threshold"] is not None:
             if (values["proba_threshold"] <= 0) or (values["proba_threshold"] >= 1):
@@ -842,7 +848,8 @@ class PredictConfig(ZambaBaseModel):
         get_video_filepaths
     )
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_files(cls, values):
         # if globbing from data directory, already have valid dataframe
         if isinstance(values["filepaths"], pd.DataFrame):
@@ -889,18 +896,20 @@ class ModelConfig(ZambaBaseModel):
     video_loader_config: Optional[VideoLoaderConfig] = None
     train_config: Optional[TrainConfig] = None
     predict_config: Optional[PredictConfig] = None
+    # TODO[pydantic]: The following keys were removed: `json_loads`.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
+    model_config = ConfigDict(json_loads=yaml.safe_load)
 
-    class Config:
-        json_loads = yaml.safe_load
-
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def one_config_must_exist(cls, values):
         if values["train_config"] is None and values["predict_config"] is None:
             raise ValueError("Must provide either `train_config` or `predict_config`.")
         else:
             return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def get_default_video_loader_config(cls, values):
         if values["video_loader_config"] is None:
             model_name = (

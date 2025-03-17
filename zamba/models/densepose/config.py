@@ -17,6 +17,7 @@ from zamba.models.config import (
 )
 from zamba.models.densepose.densepose_manager import MODELS, DensePoseManager
 from zamba.models.utils import RegionEnum
+from pydantic import model_validator
 
 
 class DensePoseOutputEnum(Enum):
@@ -109,7 +110,8 @@ class DensePoseConfig(ZambaBaseModel):
         get_video_filepaths
     )
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_files(cls, values):
         # if globbing from data directory, already have valid dataframe
         if isinstance(values["filepaths"], pd.DataFrame):

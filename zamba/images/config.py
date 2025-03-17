@@ -8,7 +8,7 @@ import appdirs
 import pandas as pd
 import torch
 from loguru import logger
-from pydantic import DirectoryPath, FilePath, root_validator, validator
+from pydantic import model_validator, ConfigDict, DirectoryPath, FilePath, root_validator, validator
 from tqdm.contrib.concurrent import process_map
 
 from zamba.images.bbox import BboxInputFormat, bbox_json_to_df
@@ -38,7 +38,8 @@ class ImageModelEnum(StrEnum):
 class ZambaImageConfig(ZambaBaseModel):
     save_dir: Optional[Path] = None
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_save(cls, values):
         save_dir = values["save_dir"]
 
@@ -114,9 +115,7 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
     results_file_name: Optional[Path] = Path("zamba_predictions.csv")
     model_cache_dir: Optional[Path] = None
     weight_download_region: str = RegionEnum.us.value
-
-    class Config:  # type: ignore
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir
@@ -126,7 +125,8 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
         get_image_filepaths
     )
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_save_dir(cls, values):
         save_dir = values["save_dir"]
         results_file_name = values["results_file_name"]
@@ -158,7 +158,8 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
 
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_filepaths(cls, values):
         if isinstance(values["filepaths"], pd.DataFrame):
             files_df = values["filepaths"]
@@ -190,7 +191,8 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
         values["filepaths"] = files_df
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_detections_threshold(cls, values):
         threshold = values["detections_threshold"]
 
@@ -201,7 +203,8 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
 
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_image_size(cls, values):
         if values["image_size"] <= 0:
             raise ValueError("Image size should be greater than or equal 64")
@@ -311,9 +314,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     cache_dir: Optional[Path] = Path(appdirs.user_cache_dir()) / "zamba" / "image_cache"
     weight_download_region: str = RegionEnum.us.value
     species_in_label_order: Optional[list] = None
-
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir
@@ -323,7 +324,8 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     def process_json_annotations(labels, labels_format: BboxInputFormat) -> pd.DataFrame:
         return bbox_json_to_df(labels, bbox_format=labels_format)
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def process_cache_dir(cls, values):
         cache_dir = values["cache_dir"]
         if not cache_dir.exists():
@@ -331,7 +333,8 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
             logger.info("Cache dir created.")
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_labels(cls, values):
         """Validate and load labels"""
         logger.info("Validating labels")
@@ -348,7 +351,8 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
 
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_devices(cls, values):
         # per pytorch lightning docs, should be int or list of ints
         # https://lightning.ai/docs/pytorch/stable/common/trainer.html#devices
@@ -362,13 +366,15 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
 
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_data_dir(cls, values):
         if not os.path.exists(values["data_dir"]):
             raise ValueError("Data dir doesn't exist.")
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_image_files(cls, values):
         """Validate and load image files."""
         logger.info("Validating image files exist")
@@ -396,7 +402,8 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
 
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def preprocess_labels(cls, values):
         """One hot encode and add splits."""
         logger.info("Preprocessing labels.")
@@ -438,7 +445,8 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         validate_model_name_and_checkpoint
     )
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_from_scratch(cls, values):
         from_scratch = values["from_scratch"]
         model_checkpoint = values["checkpoint"]

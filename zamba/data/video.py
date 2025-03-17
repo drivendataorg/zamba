@@ -16,7 +16,7 @@ import ffmpeg
 from loguru import logger
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, root_validator, validator
+from pydantic import model_validator, ConfigDict, BaseModel, validator
 
 from zamba.exceptions import ZambaFfmpegException
 from zamba.object_detection.yolox.megadetector_lite_yolox import (
@@ -209,10 +209,10 @@ class VideoLoaderConfig(BaseModel):
     model_input_width: Optional[int] = None
     cache_dir: Optional[Path] = None
     cleanup_cache: bool = False
+    model_config = ConfigDict(extra="forbid")
 
-    class Config:
-        extra = "forbid"
-
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("cache_dir", always=True)
     def validate_video_cache_dir(cls, cache_dir):
         """Set up cache directory for preprocessed videos. Config argument takes precedence
@@ -230,7 +230,8 @@ class VideoLoaderConfig(BaseModel):
 
         return cache_dir
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_height_and_width(cls, values):
         if (values["frame_selection_height"] is None) ^ (values["frame_selection_width"] is None):
             raise ValueError(
@@ -242,7 +243,8 @@ class VideoLoaderConfig(BaseModel):
             )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_fps_compatibility(cls, values):
         if values["fps"] and (
             values["evenly_sample_total_frames"] or values["i_frames"] or values["scene_threshold"]
@@ -252,7 +254,8 @@ class VideoLoaderConfig(BaseModel):
             )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_i_frame_compatibility(cls, values):
         if values["scene_threshold"] and values["i_frames"]:
             raise ValueError(
@@ -260,7 +263,8 @@ class VideoLoaderConfig(BaseModel):
             )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_early_bias_compatibility(cls, values):
         if values["early_bias"] and (
             values["i_frames"]
@@ -274,7 +278,8 @@ class VideoLoaderConfig(BaseModel):
             )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_frame_indices_compatibility(cls, values):
         if values["frame_indices"] and (
             values["total_frames"]
@@ -288,7 +293,8 @@ class VideoLoaderConfig(BaseModel):
             )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_megadetector_lite_compatibility(cls, values):
         if values["megadetector_lite_config"] and (
             values["early_bias"] or values["evenly_sample_total_frames"]
@@ -298,7 +304,8 @@ class VideoLoaderConfig(BaseModel):
             )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_evenly_sample_total_frames_compatibility(cls, values):
         if values["evenly_sample_total_frames"] is True and values["total_frames"] is None:
             raise ValueError(
@@ -315,7 +322,8 @@ class VideoLoaderConfig(BaseModel):
             )
         return values
 
-    @root_validator(skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def validate_total_frames(cls, values):
         if values["megadetector_lite_config"] is not None:
             # set n frames for megadetector_lite_config if only specified by total_frames

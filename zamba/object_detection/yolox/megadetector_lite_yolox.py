@@ -6,7 +6,7 @@ from typing import List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageOps
-from pydantic import BaseModel
+from pydantic import ConfigDict, BaseModel
 import torch
 from tqdm import tqdm
 from yolox.utils.boxes import postprocess
@@ -68,9 +68,7 @@ class MegadetectorLiteYoloXConfig(BaseModel):
     fill_mode: Optional[FillModeEnum] = FillModeEnum.score_sorted
     sort_by_time: bool = True
     seed: Optional[int] = 55
-
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
 
 class MegadetectorLiteYoloX:
