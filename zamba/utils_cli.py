@@ -134,5 +134,7 @@ def crop_bbox(
 
     out_df = data_module.preprocess_annotations(df, overwrite_cache=overwrite)
 
+    output_filename = input_file.stem + "_cropped.csv.gz"
+
     # write out_df to csv
-    out_df.to_csv(output_dir / "cropped_annotations.csv", index=False)
+    out_df.to_csv(output_dir / output_filename, index=False)
