@@ -187,7 +187,11 @@ def validate_model_name_and_checkpoint(cls, values):
         logger.info(f"Using checkpoint file: {checkpoint}.")
         # get model name from checkpoint so it can be used for the video loader config
         hparams = get_checkpoint_hparams(checkpoint)
-        values["model_name"] = available_models[hparams["model_class"]]._default_model_name
+
+        try:
+            values["model_name"] = available_models[hparams["model_class"]]._default_model_name
+        except (AttributeError, KeyError):
+            model_name = f"{model_name}-{checkpoint.stem}"
 
     elif checkpoint is None and model_name is not None:
         if not values.get("from_scratch"):
