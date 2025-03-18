@@ -500,15 +500,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#predicting-species-from-images" class="md-nav__link">
-    <span class="md-ellipsis">
-      Predicting species from images
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1995,15 +1986,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#predicting-species-from-images" class="md-nav__link">
-    <span class="md-ellipsis">
-      Predicting species from images
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -2323,18 +2305,6 @@
 <p>And there's so much more! You can also do things like specify your region for faster model download (<code>--weight-download-region</code>), use a saved model checkpoint (<code>--checkpoint</code>), or specify a different folder where your predictions should be saved (<code>--save-dir</code>). To read about a few common considerations, see the <a href="../extra-options/">Guide to Common Optional Parameters</a> page.</p>
 <h3 id="5-test-your-configuration-with-a-dry-run">5. Test your configuration with a dry run<a class="headerlink" href="#5-test-your-configuration-with-a-dry-run" title="Permanent link">&para;</a></h3>
 <p>Before kicking off a full run of inference, we recommend testing your code with a "dry run". This will run one batch of inference to quickly detect any bugs. See the <a href="../debugging/">Debugging</a> page for details.</p>
-<h2 id="predicting-species-from-images">Predicting species from images<a class="headerlink" href="#predicting-species-from-images" title="Permanent link">&para;</a></h2>
-<p>Zamba does not currently provide comprehensive support for images by default, only videos. We do, however, have experimental support for making predictions on images using our existing models. This may be useful if you have a few images that you would like to classify or you want to compare the performance on a small set of images.</p>
-<p>To do this, you will need to set the environment variable <code>PREDICT_ON_IMAGES=True</code> (for example by prefacing the <code>zamba</code> command with it: <code>PREDICT_ON_IMAGES=True zamba predict --data-dir example_images/</code>). </p>
-<p>By default, <code>zamba</code> will look for files with the following suffixes: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, and <code>.webp</code>. To use other image suffixes that are supported by OpenCV, set your <code>IMAGE_SUFFIXES</code> environment variable.</p>
-<p>The caveats are:</p>
-<ul>
-<li>The models may be less accurate since there is less information in a single image than in a video.</li>
-<li>This approach will be computationally inefficient as compared to a model that works natively on images.</li>
-<li>Blank / non-blank detection may be less effective since only the classification portion is executed, not the detection portion.</li>
-<li>This is not recommended for training or finetuning scenarios given the computational inefficiency.</li>
-</ul>
-<p>More comprehensive image support is planned for a future release.</p>
 
 
 
