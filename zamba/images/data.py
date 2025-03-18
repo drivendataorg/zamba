@@ -91,7 +91,9 @@ class ImageClassificationDataModule(pl.LightningDataModule):
         if crop_images:
             self.annotations = self.preprocess_annotations(annotations)
 
-    def preprocess_annotations(self, annotations: pd.DataFrame) -> pd.DataFrame:
+    def preprocess_annotations(
+        self, annotations: pd.DataFrame, overwrite_cache: bool = False
+    ) -> pd.DataFrame:
         num_annotations = len(annotations)
         bbox_in_df = all(column in annotations.columns for column in ["x1", "x2", "y1", "y2"])
         if bbox_in_df:
@@ -104,9 +106,12 @@ class ImageClassificationDataModule(pl.LightningDataModule):
                 annotations.iterrows(),
                 repeat(self.cache_dir),
                 repeat(self.data_dir),
+                repeat(overwrite_cache),
                 total=len(annotations),
                 desc="Cropping images",
             )
+
+            processed_annotations = [row for row in processed_annotations if row is not None]
 
             annotations = pd.DataFrame(processed_annotations)
         else:
@@ -132,7 +137,7 @@ class ImageClassificationDataModule(pl.LightningDataModule):
                     cache_path = self.cache_dir / get_cache_filename(
                         detection_row["filepath"], bbox
                     )
-                    if not cache_path.exists():
+                    if not cache_path.exists() or overwrite_cache:
                         cache_path.parent.mkdir(parents=True, exist_ok=True)
                         cropped_image = image.crop(bbox)
                         with open(cache_path, "wb") as f:
