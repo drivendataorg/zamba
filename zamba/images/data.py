@@ -92,7 +92,10 @@ class ImageClassificationDataModule(pl.LightningDataModule):
             self.annotations = self.preprocess_annotations(annotations)
 
     def preprocess_annotations(
-        self, annotations: pd.DataFrame, overwrite_cache: bool = False
+        self,
+        annotations: pd.DataFrame,
+        overwrite_cache: bool = False,
+        max_workers: Optional[int] = None,
     ) -> pd.DataFrame:
         num_annotations = len(annotations)
         bbox_in_df = all(column in annotations.columns for column in ["x1", "x2", "y1", "y2"])
@@ -101,14 +104,21 @@ class ImageClassificationDataModule(pl.LightningDataModule):
                 f"Bboxes found in annotations. Cropping images and save to cache_dir: {self.cache_dir}"
             )
 
+            kwargs = dict(
+                total=len(annotations),
+                desc="Cropping images",
+            )
+
+            if max_workers is not None:
+                kwargs["max_workers"] = max_workers
+
             processed_annotations = process_map(
                 crop_to_bounding_box,
                 annotations.iterrows(),
                 repeat(self.cache_dir),
                 repeat(self.data_dir),
                 repeat(overwrite_cache),
-                total=len(annotations),
-                desc="Cropping images",
+                **kwargs,
             )
 
             processed_annotations = [row for row in processed_annotations if row is not None]

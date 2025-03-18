@@ -1,7 +1,8 @@
+import json
 from itertools import chain
+import os
 from pathlib import Path
 
-import json
 from loguru import logger
 from tqdm import tqdm
 import typer
@@ -109,6 +110,12 @@ def crop_bbox(
         "-t",
         help="Detection threshold for MegaDetector; 0.2 is default and commonly used.",
     ),
+    max_workers: int = typer.Option(
+        os.cpu_count() / 2,
+        "--max-workers",
+        "-m",
+        help="Maximum number of workers for parallel processing.",
+    ),
 ):
     # turn json in DF
     try:
@@ -132,7 +139,9 @@ def crop_bbox(
         detection_threshold=detection_threshold,
     )
 
-    out_df = data_module.preprocess_annotations(df, overwrite_cache=overwrite)
+    out_df = data_module.preprocess_annotations(
+        df, overwrite_cache=overwrite, max_workers=max_workers
+    )
 
     output_filename = input_file.stem + "_cropped.csv.gz"
 
