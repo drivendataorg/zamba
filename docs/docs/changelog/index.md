@@ -1,6 +1,10 @@
 # `zamba` changelog
 
-## v.2.6.0 (2024-09-27)
+## v.2.6.1 (2025-03-18)
+
+ - Fix bug that prevented loading checkpoints when model name was provided ([PR #359](https://github.com/drivendataorg/zamba/pull/359))
+
+## v.2.6.0 (2025-03-14)
 
 * Added support for training and classifying on images ([PR #349](https://github.com/drivendataorg/zamba/pull/349))
 
