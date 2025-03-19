@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 
 import numpy as np
 import pandas as pd
@@ -15,6 +16,7 @@ from zamba.images.manager import train
 from zamba.images.result import results_to_megadetector_format
 
 from conftest import ASSETS_DIR, DummyZambaImageClassificationLightningModule
+from zamba.models.config import GPUS_AVAILABLE
 
 
 @pytest.fixture
@@ -211,6 +213,12 @@ def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path)
     save_dir = tmp_path / "my_model"
     checkpoint_path = tmp_path / "checkpoints"
 
+    # latest macos runners do no support MPS, so force cpu
+    if os.getenv("RUNNER_OS") == "macOS":
+        gpus = 0
+    else:
+        gpus = GPUS_AVAILABLE
+
     config = ImageClassificationTrainingConfig(
         data_dir=images_path,
         labels=labels_path,
@@ -221,6 +229,7 @@ def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path)
         checkpoint_path=checkpoint_path,
         from_scratch=False,
         save_dir=save_dir,
+        gpus=gpus,
     )
 
     train(config)
