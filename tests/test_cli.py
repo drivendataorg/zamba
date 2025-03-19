@@ -10,7 +10,6 @@ from pytest_mock import mocker  # noqa: F401
 from zamba.cli import app
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
-from zamba.models.config import GPUS_AVAILABLE
 
 runner = CliRunner()
 
@@ -198,12 +197,6 @@ def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
 
     save_dir = tmp_path / "zamba"
 
-    # latest macos runners do no support MPS, so force cpu
-    if os.getenv("RUNNER_OS") == "macOS":
-        gpus = 0
-    else:
-        gpus = GPUS_AVAILABLE
-
     result = runner.invoke(
         app,
         [
@@ -214,8 +207,6 @@ def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
             "--yes",
             "--save-dir",
             str(save_dir),
-            "--gpus",
-            str(gpus),
         ],
     )
     assert result.exit_code == 0
