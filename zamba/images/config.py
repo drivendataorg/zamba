@@ -296,7 +296,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     early_stopping_patience: int = 3
     extra_train_augmentations: bool = False
     num_workers: int = int(os.cpu_count() // 1.5)  # default use 2/3 of available cores
-    accelerator: str = "gpu" if torch.cuda.is_available() else "cpu"
+    accelerator: Optional[str] = "gpu" if torch.cuda.is_available() else "cpu"
     devices: Any = "auto"
     crop_images: bool = True
     detections_threshold: float = 0.2

@@ -212,11 +212,6 @@ def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path)
     save_dir = tmp_path / "my_model"
     checkpoint_path = tmp_path / "checkpoints"
 
-    # force CPU since MPS is unsupported on macOS github actions runners
-    kwargs = {}
-    if os.getenv("RUNNER_OS") == "macOS":
-        kwargs["acclerator"] = "cpu"
-
     config = ImageClassificationTrainingConfig(
         data_dir=images_path,
         labels=labels_path,
@@ -227,7 +222,8 @@ def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path)
         checkpoint_path=checkpoint_path,
         from_scratch=False,
         save_dir=save_dir,
-        **kwargs,
+        # force CPU since MPS is unsupported on macOS github actions runners
+        accelerator="cpu" if os.getenv("RUNNER_OS") == "macOS" else None,
     )
 
     train(config)
