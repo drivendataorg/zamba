@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 import shutil
 
-import torch
 from typer.testing import CliRunner
 import pandas as pd
 import pytest
