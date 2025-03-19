@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 
 import numpy as np
 import pandas as pd
@@ -223,7 +222,8 @@ def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path)
         from_scratch=False,
         save_dir=save_dir,
         # force CPU since MPS is unsupported on macOS github actions runners
-        accelerator="cpu" if os.getenv("RUNNER_OS") == "macOS" else None,
+        # accelerator="cpu" if os.getenv("RUNNER_OS") == "macOS" else None,
+        accelerator="cpu",
     )
 
     train(config)
