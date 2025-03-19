@@ -191,23 +191,28 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
 
 
 def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
-    """Tests experimental feature of predicting on images."""
+    """Test predicting on images."""
     shutil.copytree(ASSETS_DIR / "images", tmp_path / "images")
     data_dir = tmp_path / "images"
 
     save_dir = tmp_path / "zamba"
+    commands = [
+        "image",
+        "predict",
+        "--data-dir",
+        str(data_dir),
+        "--yes",
+        "--save-dir",
+        str(save_dir),
+    ]
+
+    # force CPU since MPS is unsupported on macOS github actions runners
+    if os.getenv("RUNNER_OS") == "macOS":
+        commands += ["--gpus", "0"]
 
     result = runner.invoke(
         app,
-        [
-            "image",
-            "predict",
-            "--data-dir",
-            str(data_dir),
-            "--yes",
-            "--save-dir",
-            str(save_dir),
-        ],
+        commands,
     )
     assert result.exit_code == 0
     # check preds file got saved out

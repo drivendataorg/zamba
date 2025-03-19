@@ -122,6 +122,10 @@ def predict(
         None,
         help="An optional threshold for detector to detect animal on image. Defaults 0.2.",
     ),
+    gpus: int = typer.Option(
+        None,
+        help="Number of GPUs to use for inference. If not specifiied, will use all GPUs found on machine.",
+    ),
     weight_download_region: RegionEnum = typer.Option(
         None, help="Server region for downloading weights."
     ),
@@ -157,6 +161,7 @@ def predict(
     Data directory: {image_config.data_dir}
     Model cache: {image_config.checkpoint}
     Detections threshold: {image_config.detections_threshold}
+    GPUs: {image_config.gpus}
     """
 
     if yes:
