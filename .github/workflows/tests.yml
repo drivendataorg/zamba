@@ -132,6 +132,8 @@ jobs:
           uv pip install -e .[tests]
 
       - name: Run tests
+        env:
+          PYTORCH_MPS_HIGH_WATERMARK_RATIO: 0.0
         run: |
           make tests
 
