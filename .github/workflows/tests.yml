@@ -10,6 +10,7 @@ on:
       - master
     paths:
       - "zamba/**"
+      - ".github/workflows/tests.yml"
   schedule:
     # Run every Sunday
     - cron: '0 0 * * 0'
