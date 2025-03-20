@@ -92,12 +92,12 @@ class ImageClassificationDataModule(pl.LightningDataModule):
             self.annotations = self.preprocess_annotations(annotations)
 
     def preprocess_annotations(self, annotations: pd.DataFrame) -> pd.DataFrame:
+        """Preprocesses annotations by cropping bounding boxes or running the MegaDetector."""
         num_annotations = len(annotations)
         bbox_in_df = all(column in annotations.columns for column in ["x1", "x2", "y1", "y2"])
+
         if bbox_in_df:
-            logger.info(
-                f"Bboxes found in annotations. Cropping images and save to cache_dir: {self.cache_dir}"
-            )
+            logger.info(f"Bboxes found in annotations. Cropping images to cache_dir: {self.cache_dir}")
 
             processed_annotations = process_map(
                 crop_to_bounding_box,
@@ -112,44 +112,44 @@ class ImageClassificationDataModule(pl.LightningDataModule):
         else:
             processed_annotations = []
             detector = run_detector.load_detector("MDV5A")
+
             for _, row in tqdm(
                 annotations.iterrows(),
                 total=len(annotations),
-                desc="Running megadetector to extract bboxes.",
+                desc="Running MegaDetector for bounding boxes",
             ):
-                filepath = (
-                    row["filepath"] if self.data_dir is None else self.data_dir / row["filepath"]
-                )
+                filepath = self.data_dir / row["filepath"]
                 image = load_image(filepath)
                 result = detector.generate_detections_one_image(
                     image, row["filepath"], detection_threshold=self.detection_threshold
                 )
+
                 for detection in result["detections"]:
-                    detection_row = copy.copy(row)
+                    detection_row = copy.deepcopy(row)
                     detection_row["detection_conf"] = detection["conf"]
                     detection_row["detection_category"] = detection["category"]
+
                     bbox = absolute_bbox(image, detection["bbox"], bbox_layout=BboxLayout.XYWH)
-                    cache_path = self.cache_dir / get_cache_filename(
-                        detection_row["filepath"], bbox
-                    )
+                    cache_path = self.cache_dir / get_cache_filename(detection_row["filepath"], bbox)
+
                     if not cache_path.exists():
                         cache_path.parent.mkdir(parents=True, exist_ok=True)
                         cropped_image = image.crop(bbox)
                         with open(cache_path, "wb") as f:
                             cropped_image.save(f)
-                    (
-                        detection_row["x1"],
-                        detection_row["x2"],
-                        detection_row["y1"],
-                        detection_row["y2"],
-                    ) = (bbox[0], bbox[2], bbox[1], bbox[3])
-                    detection_row["cached_bbox"] = cache_path.resolve().absolute()
+
+                    detection_row.update({
+                        "x1": bbox[0], "x2": bbox[2], "y1": bbox[1], "y2": bbox[3],
+                        "cached_bbox": cache_path.resolve().absolute(),
+                    })
+
                     processed_annotations.append(detection_row)
-                annotations = pd.DataFrame(processed_annotations)
+
+            annotations = pd.DataFrame(processed_annotations)
 
         logger.info(
-            f"Number of objects before preprocessing: {num_annotations}, "
-            f"number of objects after preprocessing: {len(annotations)}"
+            f"Objects before preprocessing: {num_annotations}, "
+            f"Objects after preprocessing: {len(annotations)}"
         )
 
         return annotations
