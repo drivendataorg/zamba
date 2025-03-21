@@ -56,14 +56,14 @@ def predict(config: ImageClassificationPredictConfig) -> None:
         ]
     )
     logger.info("Loading models")
-    # force CPU since MPS is unsupported on macOS github actions runners
-    force_cpu = True if os.getenv("RUNNER_OS") == "macOS" else False
-    detector = run_detector.load_detector("MDV5A", force_cpu=force_cpu)
+    detector = run_detector.load_detector(
+        "MDV5A", force_cpu=True if os.getenv("MACOS_CI") else False
+    )
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
-    # hardcode temporarily
-    classifier_module.to("cpu")
+    if os.getenv("MACOS_CI"):
+        classifier_module.to("cpu")
 
     logger.info("Running inference")
     predictions = []
@@ -320,8 +320,8 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         max_epochs=config.max_epochs,
         logger=mlflow_logger,
         callbacks=callbacks,
-        devices=1,
-        accelerator="cpu",
+        devices=config.devices,
+        accelerator=config.accelerator,
         strategy=strategy,
         log_every_n_steps=log_every_n_steps,
         accumulate_grad_batches=accumulate_n_batches,
@@ -332,7 +332,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         max_epochs=config.max_epochs,
         logger=mlflow_logger,
         devices=1,
-        accelerator="cpu",
+        accelerator=config.accelerator,
         log_every_n_steps=log_every_n_steps,
         accumulate_grad_batches=accumulate_n_batches,
     )

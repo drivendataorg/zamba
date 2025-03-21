@@ -67,7 +67,7 @@ lint:
 
 ## Generate assets and run tests
 tests: clean-test
-	pytest tests -vv --numprocesses=1
+	pytest tests -vv
 
 ## Dev: Fail fast, do not run in parallel, and open debugger on failure
 tests-debug: clean-test

@@ -196,23 +196,18 @@ def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
     data_dir = tmp_path / "images"
 
     save_dir = tmp_path / "zamba"
-    commands = [
-        "image",
-        "predict",
-        "--data-dir",
-        str(data_dir),
-        "--yes",
-        "--save-dir",
-        str(save_dir),
-    ]
-
-    # force CPU since MPS is unsupported on macOS github actions runners
-    # if os.getenv("RUNNER_OS") == "macOS":
-    # commands += ["--gpus", "0"]
 
     result = runner.invoke(
         app,
-        commands,
+        [
+            "image",
+            "predict",
+            "--data-dir",
+            str(data_dir),
+            "--yes",
+            "--save-dir",
+            str(save_dir),
+        ],
     )
     assert result.exit_code == 0
     # check preds file got saved out

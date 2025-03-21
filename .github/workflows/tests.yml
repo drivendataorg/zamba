@@ -132,6 +132,9 @@ jobs:
           uv pip install -e .[tests]
 
       - name: Run tests
+        env:
+          # this will force CPU for macOS github action runners since MPS is unsupported
+          MACOS_CI: ${{ runner.os == 'macOS' }}
         run: |
           make tests
 
