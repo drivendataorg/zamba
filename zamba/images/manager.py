@@ -62,8 +62,6 @@ def predict(config: ImageClassificationPredictConfig) -> None:
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
-    # if os.getenv("MACOS_CI"):
-    # classifier_module.to("cpu")
 
     logger.info("Running inference")
     predictions = []
@@ -321,7 +319,6 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         logger=mlflow_logger,
         callbacks=callbacks,
         devices=config.devices,
-        # accelerator="cpu" if (os.getenv("RUNNER_OS") == "macOS") else config.accelerator,
         accelerator=config.accelerator,
         strategy=strategy,
         log_every_n_steps=log_every_n_steps,

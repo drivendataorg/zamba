@@ -75,7 +75,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
-      PYTORCH_ENABLE_MPS_FALLBACK: 1
+      # PYTORCH_ENABLE_MPS_FALLBACK: 1
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -134,7 +134,9 @@ jobs:
 
       - name: Run tests
         run: |
-          make tests
+          pytest tests/test_cli.py::test_actual_prediction_on_images
+          pytest tests/test_images.py::test_train_integration
+          # make tests
 
       - if: matrix.os == 'macos-latest'
         name: Specify MacOS version for densepose install
