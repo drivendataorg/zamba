@@ -112,7 +112,7 @@ class ImageClassificationDataModule(pl.LightningDataModule):
         else:
             processed_annotations = []
             detector = run_detector.load_detector(
-                "MDV5A", force_cpu=True if os.getenv("MACOS_CI") else False
+                "MDV5A", force_cpu=True if (os.getenv("RUNNER_OS") == "macOS") else False
             )
             for _, row in tqdm(
                 annotations.iterrows(),

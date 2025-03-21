@@ -57,13 +57,13 @@ def predict(config: ImageClassificationPredictConfig) -> None:
     )
     logger.info("Loading models")
     detector = run_detector.load_detector(
-        "MDV5A", force_cpu=True if os.getenv("MACOS_CI") else False
+        "MDV5A", force_cpu=True if (os.getenv("RUNNER_OS") == "macOS") else False
     )
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
-    if os.getenv("MACOS_CI"):
-        classifier_module.to("cpu")
+    # if os.getenv("MACOS_CI"):
+    # classifier_module.to("cpu")
 
     logger.info("Running inference")
     predictions = []
@@ -321,6 +321,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         logger=mlflow_logger,
         callbacks=callbacks,
         devices=config.devices,
+        # accelerator="cpu" if (os.getenv("RUNNER_OS") == "macOS") else config.accelerator,
         accelerator=config.accelerator,
         strategy=strategy,
         log_every_n_steps=log_every_n_steps,
