@@ -49,10 +49,7 @@ jobs:
 
   cache-model-weights:
     name: Download or use cached model weights
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, "${{ inputs.chosen-os }}"]
+    runs-on: [ubuntu-latest, "${{ inputs.chosen-os }}"]
 
     steps:
     - uses: actions/checkout@v4
@@ -79,12 +76,12 @@ jobs:
   tests:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: [code-quality, cache-model-weights]
-    runs-on: ${{ matrix.os }}
+    runs-on: [ubuntu-latest, "${{ inputs.chosen-os }}"]
     env:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
-        os: [ubuntu-latest, "${{ inputs.chosen-os }}"]
+        # os: [ubuntu-latest, "${{ inputs.chosen-os }}"]
         python-version: [3.11, 3.12]
 
     steps:
