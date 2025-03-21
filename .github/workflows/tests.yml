@@ -47,8 +47,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         exclude:
+          # only run on macos on scheduled run or manual trigger
           - os: macos-latest
-            condition: ${{ github.event_name != 'schedule' || github.event_name != 'workflow_dispatch' }}
+            if: ${{ github.event_name != 'schedule' && github.event_name != 'workflow_dispatch' }}
 
     steps:
     - uses: actions/checkout@v4
@@ -83,8 +84,9 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         python-version: [3.11, 3.12]
         exclude:
+          # only run on macos on scheduled run or manual trigger
           - os: macos-latest
-            condition: ${{ github.event_name != 'schedule' || github.event_name != 'workflow_dispatch' }}
+            if: ${{ github.event_name != 'schedule' && github.event_name != 'workflow_dispatch' }}
 
 
     steps:
