@@ -15,6 +15,13 @@ on:
     # Run every Sunday
     - cron: '0 0 * * 0'
   workflow_dispatch:
+    inputs:
+      chosen-os:
+        required: true
+        type: choice
+        options:
+        - ubuntu-latest
+        - macos-latest
 
 env:
   MODEL_CACHE_DIR: ${{ github.workspace }}/.zamba-weights
@@ -45,11 +52,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        exclude:
-          # only run on macos on scheduled run or manual trigger
-          - os: macos-latest
-            if: ${{ github.event_name != 'schedule' && github.event_name != 'workflow_dispatch' }}
+        os: [ubuntu-latest, "${{ inputs.chosen-os }}"]
 
     steps:
     - uses: actions/checkout@v4
@@ -81,13 +84,8 @@ jobs:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, "${{ inputs.chosen-os }}"]
         python-version: [3.11, 3.12]
-        exclude:
-          # only run on macos on scheduled run or manual trigger
-          - os: macos-latest
-            if: ${{ github.event_name != 'schedule' && github.event_name != 'workflow_dispatch' }}
-
 
     steps:
       - if: matrix.os == 'ubuntu-latest'
