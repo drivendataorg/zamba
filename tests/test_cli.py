@@ -208,7 +208,7 @@ def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
 
     # force CPU since MPS is unsupported on macOS github actions runners
     # if os.getenv("RUNNER_OS") == "macOS":
-    commands += ["--gpus", "0"]
+    # commands += ["--gpus", "0"]
 
     result = runner.invoke(
         app,

@@ -211,13 +211,6 @@ def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path)
     save_dir = tmp_path / "my_model"
     checkpoint_path = tmp_path / "checkpoints"
 
-    import torch
-
-    torch.cuda.empty_cache()
-
-    if torch.backends.mps.is_available():
-        torch.mps.empty_cache()
-
     config = ImageClassificationTrainingConfig(
         data_dir=images_path,
         labels=labels_path,

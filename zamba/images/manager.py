@@ -56,10 +56,14 @@ def predict(config: ImageClassificationPredictConfig) -> None:
         ]
     )
     logger.info("Loading models")
-    detector = run_detector.load_detector("MDV5A")
+    # force CPU since MPS is unsupported on macOS github actions runners
+    force_cpu = True if os.getenv("RUNNER_OS") == "macOS" else False
+    detector = run_detector.load_detector("MDV5A", force_cpu=force_cpu)
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
+    # hardcode temporarily
+    classifier_module.to("cpu")
 
     logger.info("Running inference")
     predictions = []
