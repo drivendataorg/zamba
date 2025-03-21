@@ -18,8 +18,6 @@ on:
 
 env:
   MODEL_CACHE_DIR: ${{ github.workspace }}/.zamba-weights
-  # only run macos tests on scheduled run or manual triggers because they're very slow
-  MACOS_TESTS_ENABLED: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
 
 jobs:
   code-quality:
@@ -47,10 +45,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        include:
+        os: [ubuntu-latest, macos-latest]
+        exclude:
           - os: macos-latest
-            condition: ${{ env.MACOS_TESTS_ENABLED == 'true' }}
+            condition: ${{ github.event_name != 'schedule' || github.event_name != 'workflow_dispatch' }}
 
     steps:
     - uses: actions/checkout@v4
@@ -82,11 +80,11 @@ jobs:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: [3.11, 3.12]
-        include:
+        exclude:
           - os: macos-latest
-            condition: ${{ env.MACOS_TESTS_ENABLED == 'true' }}
+            condition: ${{ github.event_name != 'schedule' || github.event_name != 'workflow_dispatch' }}
 
 
     steps:
