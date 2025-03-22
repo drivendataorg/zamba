@@ -49,16 +49,11 @@ jobs:
 
   cache-model-weights:
     name: Download or use cached model weights
-    runs-on: ${{ 
-      github.event_name == 'pull_request' && 'ubuntu-latest' || 
-      github.event_name == 'workflow_dispatch' && (inputs.chosen-os != '' && inputs.chosen-os || 'ubuntu-latest') || 
-      github.event_name == 'schedule' && 'ubuntu-latest' 
-    }}
     strategy:
       matrix:
-        # Conditionally include 'macos-latest' in the matrix for scheduled runs
-        os: ${{ github.event_name == 'schedule' && 'ubuntu-latest, macos-latest' || (github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest') }}
-      
+        os: ${{ github.event_name == 'schedule' && ['ubuntu-latest', 'macos-latest'] || [github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest'] }}
+    runs-on: ${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v4
 
@@ -86,17 +81,12 @@ jobs:
     needs: [code-quality, cache-model-weights]
     env:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
-    runs-on: ${{ 
-      github.event_name == 'pull_request' && 'ubuntu-latest' || 
-      github.event_name == 'workflow_dispatch' && (inputs.chosen-os != '' && inputs.chosen-os || 'ubuntu-latest') || 
-      github.event_name == 'schedule' && 'ubuntu-latest' 
-    }}
     strategy:
       matrix:
         python-version: [3.9, 3.10]
-        # Conditionally include 'macos-latest' in the matrix for scheduled runs
-        os: ${{ github.event_name == 'schedule' && 'ubuntu-latest, macos-latest' || (github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest') }}
-     
+        os: ${{ github.event_name == 'schedule' && ['ubuntu-latest', 'macos-latest'] || [github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest'] }}
+    runs-on: ${{ matrix.os }}
+
     steps:
       - if: matrix.os == 'ubuntu-latest'
         name: Remove unused software
