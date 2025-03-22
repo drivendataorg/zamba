@@ -191,7 +191,7 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
 
 
 def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
-    """Tests experimental feature of predicting on images."""
+    """Test predicting on images."""
     shutil.copytree(ASSETS_DIR / "images", tmp_path / "images")
     data_dir = tmp_path / "images"
 

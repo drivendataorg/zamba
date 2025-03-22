@@ -10,10 +10,18 @@ on:
       - master
     paths:
       - "zamba/**"
+      - ".github/workflows/tests.yml"
   schedule:
     # Run every Sunday
     - cron: '0 0 * * 0'
   workflow_dispatch:
+    inputs:
+      chosen-os:
+        required: true
+        type: choice
+        options:
+        - ubuntu-latest
+        - macos-latest
 
 env:
   MODEL_CACHE_DIR: ${{ github.workspace }}/.zamba-weights
@@ -41,7 +49,10 @@ jobs:
 
   cache-model-weights:
     name: Download or use cached model weights
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: ${{ github.event_name == 'schedule' && '[ubuntu-latest, macos-latest]' || '[github.event_name == 'workflow_dispatch' && inputs.chosen-os || ubuntu-latest]' }}
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
@@ -68,13 +79,13 @@ jobs:
   tests:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: [code-quality, cache-model-weights]
-    runs-on: ${{ matrix.os }}
     env:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.11, 3.12]
+        python-version: [3.9, 3.10]
+        os: ${{ github.event_name == 'schedule' && '[ubuntu-latest, macos-latest]' || '[github.event_name == 'workflow_dispatch' && inputs.chosen-os || ubuntu-latest]' }}
+    runs-on: ${{ matrix.os }}
 
     steps:
       - if: matrix.os == 'ubuntu-latest'
