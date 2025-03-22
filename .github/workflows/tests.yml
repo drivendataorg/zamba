@@ -51,7 +51,7 @@ jobs:
     name: Download or use cached model weights
     strategy:
       matrix:
-        os: ${{ github.event_name == 'schedule' && ['ubuntu-latest', 'macos-latest'] || [github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest'] }}
+        os: ${{ github.event_name == 'schedule' && 'macos-latest' || github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest' }}
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -84,7 +84,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.9, 3.10]
-        os: ${{ github.event_name == 'schedule' && ['ubuntu-latest', 'macos-latest'] || [github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest'] }}
+        os: ${{ github.event_name == 'schedule' && 'macos-latest' || github.event_name == 'workflow_dispatch' && inputs.chosen-os || 'ubuntu-latest' }}
     runs-on: ${{ matrix.os }}
 
     steps:
