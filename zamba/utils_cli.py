@@ -135,7 +135,7 @@ def crop_bbox(
         data_dir=data_dir,
         annotations=df,
         cache_dir=output_dir,
-        crop_images=True,
+        crop_images=False,  # called explicitly with preprocess_annotations below
         detection_threshold=detection_threshold,
     )
 

@@ -116,7 +116,7 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         y = torch.nn.functional.one_hot(y, num_classes=self.num_classes).to(torch.float)
         logits = self(x)
         loss = self.loss_fn(logits, y)
-        self.log("train_loss", loss, sync_dist=True, reduce_fx="mean")
+        self.log("train_loss", loss, logger=True, sync_dist=True, reduce_fx="mean")
         return loss
 
     def _val_step(self, batch, batch_idx, subset):
@@ -125,7 +125,7 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
 
         y_hat = self(x)
         loss = self.loss_fn(y_hat, y)
-        self.log(f"{subset}_loss", loss.detach(), sync_dist=True, reduce_fx="mean")
+        self.log(f"{subset}_loss", loss.detach(), logger=True, sync_dist=True, reduce_fx="mean")
 
         return (
             y.cpu().numpy().astype(int),
