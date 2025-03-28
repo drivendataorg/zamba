@@ -56,7 +56,7 @@ def predict(config: ImageClassificationPredictConfig) -> None:
         ]
     )
     logger.info("Loading models")
-    detector = run_detector.load_detector("MDV5A")
+    detector = run_detector.load_detector("MDV5A", force_cpu=(os.getenv("RUNNER_OS") == "macOS"))
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )

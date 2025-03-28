@@ -111,7 +111,9 @@ class ImageClassificationDataModule(pl.LightningDataModule):
             annotations = pd.DataFrame(processed_annotations)
         else:
             processed_annotations = []
-            detector = run_detector.load_detector("MDV5A")
+            detector = run_detector.load_detector(
+                "MDV5A", force_cpu=(os.getenv("RUNNER_OS") == "macOS")
+            )
             for _, row in tqdm(
                 annotations.iterrows(),
                 total=len(annotations),
