@@ -40,7 +40,7 @@ jobs:
 
       - uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.11
+          python-version: "3.11"
           enable-cache: true
           cache-suffix: "lint"
           cache-dependency-glob: |
@@ -89,7 +89,7 @@ jobs:
 
     - uses: astral-sh/setup-uv@v5
       with:
-        python-version: 3.11
+        python-version: "3.11"
         enable-cache: true
         cache-suffix: "cache-weights"
         cache-dependency-glob: |
