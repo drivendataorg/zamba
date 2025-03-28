@@ -117,7 +117,7 @@ jobs:
     strategy:
       matrix:
         os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
-        python-version: [3.9, 3.10]
+        python-version: [3.9, "3.10"]
     runs-on: ${{ matrix.os }}
 
     steps:
