@@ -5,11 +5,14 @@ on:
     branches: [master]
     paths:
       - "zamba/**"
+      - "pyproject.toml"
+      - ".github/workflows/tests.yml"
   pull_request:
     branches:
       - master
     paths:
       - "zamba/**"
+      - "pyproject.toml"
       - ".github/workflows/tests.yml"
   schedule:
     # Run every Sunday
@@ -17,8 +20,10 @@ on:
   workflow_dispatch:
     inputs:
       chosen-os:
+        description: 'OS to run on'
         required: true
         type: choice
+        default: ubuntu-latest
         options:
         - ubuntu-latest
         - macos-latest
@@ -30,14 +35,15 @@ jobs:
   code-quality:
     name: Code Quality
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python and uv
-        uses: drivendataorg/setup-python-uv-action@v1
+      - uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.11
+          enable-cache: true
+          cache-suffix: "lint"
+          cache-dependency-glob: |
+            requirements-dev/lint.txt
 
       - name: Install dependencies
         run: |
@@ -47,20 +53,46 @@ jobs:
         run: |
           make lint
 
+
+  set-up-os-matrix:
+    name: "Set up OS matrix"
+    needs: code-quality
+    runs-on: ubuntu-latest
+    outputs:
+      os_matrix: ${{ steps.step.outputs.os_matrix }}
+    steps:
+      - name: Set up OS matrix
+        id: step
+        run: |
+          if [[ ${{ github.event_name }} = 'schedule' ]]; then
+            MATRIX='["ubuntu-latest", "macos-latest"]'
+          elif [[ ${{ github.event_name }} = 'workflow_dispatch' ]]; then
+            MATRIX='["${{ inputs.chosen-os }}"]'
+          else
+            MATRIX='["ubuntu-latest"]'
+          fi
+          echo "$MATRIX"
+          echo "os_matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+
   cache-model-weights:
     name: Download or use cached model weights
+    needs: set-up-os-matrix
     strategy:
       matrix:
-        os: ${{ github.event_name == 'schedule' && '[ubuntu-latest, macos-latest]' || '[github.event_name == 'workflow_dispatch' && inputs.chosen-os || ubuntu-latest]' }}
+        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python and uv
-      uses: drivendataorg/setup-python-uv-action@v1
+    - uses: astral-sh/setup-uv@v5
       with:
         python-version: 3.11
+        enable-cache: true
+        cache-suffix: "cache-weights"
+        cache-dependency-glob: |
+          pyproject.toml
 
     - name: Install dependencies
       run: |
@@ -78,13 +110,13 @@ jobs:
 
   tests:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
-    needs: [code-quality, cache-model-weights]
+    needs: [set-up-os-matrix, cache-model-weights]
     env:
       DISTUTILS_USE_SDK: 1 # for MSVC compiler
     strategy:
       matrix:
+        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
         python-version: [3.9, 3.10]
-        os: ${{ github.event_name == 'schedule' && '[ubuntu-latest, macos-latest]' || '[github.event_name == 'workflow_dispatch' && inputs.chosen-os || ubuntu-latest]' }}
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -129,10 +161,13 @@ jobs:
       - name: Configure Windows compilers
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Set up Python and uv
-        uses: drivendataorg/setup-python-uv-action@v1
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-suffix: "tests-${{ matrix.python-version }}"
+          cache-dependency-glob: |
+            pyproject.toml
 
       - name: Install dependencies
         run: |
@@ -161,7 +196,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
-          fail_ci_if_error: true
+          fail_ci_if_error: ${{ (github.event_name == 'push' && true) || (github.event_name == 'pull_request' && true) || false }}
 
   test-install:
     name: Test install from built distributions
@@ -196,10 +231,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: "4.4"
 
-      - name: Set up Python and uv
-        uses: drivendataorg/setup-python-uv-action@v1
+      - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-suffix: "test-install-${{ matrix.python-version }}"
+          cache-dependency-glob: |
+            pyproject.toml
 
       - name: Build package
         run: |
@@ -224,7 +262,7 @@ jobs:
 
   notify:
     name: Notify failed build
-    needs: [code-quality, tests, test-install]
+    needs: [code-quality, set-up-os-matrix, tests, test-install]
     if: failure() && (github.event_name == 'push' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     steps:
