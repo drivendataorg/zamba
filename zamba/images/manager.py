@@ -16,6 +16,7 @@ from loguru import logger
 from megadetector.detection import run_detector
 from pytorch_lightning.callbacks import (
     EarlyStopping,
+    LearningRateMonitor,
     ModelCheckpoint,
     StochasticWeightAveraging,
 )
@@ -36,6 +37,7 @@ from zamba.images.config import (
 from zamba.images.data import ImageClassificationDataModule, load_image, absolute_bbox, BboxLayout
 from zamba.images.result import results_to_megadetector_format
 from zamba.models.model_manager import instantiate_model
+from zamba.images.logging import patch_mlflow_logger
 from zamba.pytorch.transforms import resize_and_pad
 
 
@@ -213,7 +215,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         ]
     )
 
-    os.makedirs(config.checkpoint_path, exist_ok=True)
+    config.checkpoint_path.mkdir(parents=True, exist_ok=True)
     checkpoint_callback = ModelCheckpoint(
         monitor="val_loss",
         dirpath=config.checkpoint_path,
@@ -225,7 +227,8 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         monitor="val_loss", patience=config.early_stopping_patience, mode="min"
     )
     swa = StochasticWeightAveraging(swa_lrs=1e-2)
-    callbacks = [swa, early_stopping, checkpoint_callback]
+    lr_monitor = LearningRateMonitor(logging_interval="step")
+    callbacks = [swa, early_stopping, checkpoint_callback, lr_monitor]
 
     # Enable system metrics logging in MLflow
     mlflow.enable_system_metrics_logging()
@@ -235,6 +238,9 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         experiment_name=config.name,
         tracking_uri=config.mlflow_tracking_uri,
     )
+
+    mlflow_logger = patch_mlflow_logger(mlflow_logger)
+    mlflow_logger.log_config_artifact(config)
 
     data = ImageClassificationDataModule(
         data_dir=config.data_dir,
@@ -275,7 +281,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             labels=config.labels,
             scheduler_config=config.scheduler_config,
             from_scratch=config.from_scratch,
-            model_name=None,
+            model_name=None,  # get from checkpoint
             use_default_model_labels=config.use_default_model_labels,
             species=config.species_in_label_order,
         )
