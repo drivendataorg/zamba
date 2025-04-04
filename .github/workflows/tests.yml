@@ -119,7 +119,9 @@ jobs:
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
 
 
+
   tests:
+    # Full test suite, slow
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: [set-up-os-matrix, cache-model-weights]
     env:
@@ -127,7 +129,8 @@ jobs:
     strategy:
       matrix:
         os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
-        python-version: ["3.9", "3.13"]
+        # Only run on oldest and newest supported Python versions
+        python-version: ["3.11", "3.13"]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -209,14 +212,16 @@ jobs:
           file: ./coverage.xml
           fail_ci_if_error: ${{ (github.event_name == 'push' && true) || (github.event_name == 'pull_request' && true) || false }}
 
+
   install-tests:
+    # Fast smoke tests
     name: Install and loading tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: [cache-model-weights]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13"]
 
     steps:
       - name: Remove unused software
