@@ -82,6 +82,8 @@ jobs:
     runs-on: ['ubuntu-latest']
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Check weights cache
       id: cache-weights
       uses: actions/cache@v4
@@ -89,9 +91,6 @@ jobs:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
         lookup-only: true
-
-    - uses: actions/checkout@v4
-      if: steps.cache-weights.outputs.cache-hit != 'true'
 
     - uses: astral-sh/setup-uv@v5
       if: steps.cache-weights.outputs.cache-hit != 'true'
