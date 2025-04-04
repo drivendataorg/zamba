@@ -119,7 +119,7 @@ jobs:
 
 
 
-  tests:
+  test-suite:
     # Full test suite, slow
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: [set-up-os-matrix, cache-model-weights]
@@ -178,7 +178,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
-          cache-suffix: "tests-${{ matrix.python-version }}"
+          cache-suffix: "test-suite-${{ matrix.python-version }}"
           cache-dependency-glob: |
             pyproject.toml
 
@@ -212,7 +212,7 @@ jobs:
           fail_ci_if_error: ${{ (github.event_name == 'push' && true) || (github.event_name == 'pull_request' && true) || false }}
 
 
-  install-tests:
+  test-install:
     # Fast smoke tests
     name: Install and loading tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: [set-up-os-matrix, cache-model-weights]
@@ -258,7 +258,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
-          cache-suffix: "install-tests-${{ matrix.python-version }}"
+          cache-suffix: "test-install-${{ matrix.python-version }}"
           cache-dependency-glob: |
             pyproject.toml
 
@@ -273,7 +273,7 @@ jobs:
 
   notify:
     name: Notify failed build
-    needs: [code-quality, set-up-os-matrix, tests, install-tests]
+    needs: [code-quality, set-up-os-matrix, test-suite, test-install]
     if: failure() && (github.event_name == 'push' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     steps:
