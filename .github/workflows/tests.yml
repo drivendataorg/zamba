@@ -78,16 +78,23 @@ jobs:
 
   cache-model-weights:
     name: Download or use cached model weights
-    needs: set-up-os-matrix
-    strategy:
-      matrix:
-        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
-    runs-on: ${{ matrix.os }}
+    needs: code-quality
+    runs-on: ['ubuntu-latest']
 
     steps:
+    - name: Check weights cache
+      id: cache-weights
+      uses: actions/cache@v4
+      with:
+        path: "${{ env.MODEL_CACHE_DIR }}"
+        key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
+        lookup-only: true
+
     - uses: actions/checkout@v4
+      if: steps.cache-weights.outputs.cache-hit != 'true'
 
     - uses: astral-sh/setup-uv@v5
+      if: steps.cache-weights.outputs.cache-hit != 'true'
       with:
         python-version: "3.11"
         enable-cache: true
@@ -96,18 +103,21 @@ jobs:
           pyproject.toml
 
     - name: Install dependencies
+      if: steps.cache-weights.outputs.cache-hit != 'true'
       run: |
         uv pip install -e .[tests]
 
-    - name: Load weights cache
-      id: cache-weights
-      uses: actions/cache@v4
+    - name: Download weights
+      if: steps.cache-weights.outputs.cache-hit != 'true'
+      run: zamba utils dl-weights
+
+    - name: Save weights to cache
+      if: steps.cache-weights.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
 
-    - name: Populate weights cache
-      run: zamba utils dl-weights
 
   tests:
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
