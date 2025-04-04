@@ -25,7 +25,7 @@ def _remove_prefix(text: str, prefix: str) -> str:
     return text
 
 
-def load_image_from_bucket(source: str) -> Image:
+def load_image_from_bucket(source: str) -> Image.Image:
     s3 = boto3.resource("s3", config=Config(signature_version=UNSIGNED))
     source = _remove_prefix(source, "s3://")
     bucket_name, object_key = source.split("/", 1)
@@ -128,7 +128,7 @@ def merge_datasets(
     return df
 
 
-def crop_image(img: Image, bbox: List) -> Image:
+def crop_image(img: Image, bbox: List) -> Image.Image:
     """
     Crop image using annotation bbox.
 
