@@ -215,11 +215,11 @@ jobs:
   install-tests:
     # Fast smoke tests
     name: Install and loading tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
-    needs: [cache-model-weights]
+    needs: [set-up-os-matrix, cache-model-weights]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
         python-version: ["3.11", "3.12", "3.13"]
 
     steps:
