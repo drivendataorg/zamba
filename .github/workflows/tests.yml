@@ -77,7 +77,7 @@ jobs:
 
 
   cache-model-weights:
-    name: Download or use cached model weights
+    name: Populate model weights cache
     needs: code-quality
     runs-on: ['ubuntu-latest']
 
