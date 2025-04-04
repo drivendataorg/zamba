@@ -133,7 +133,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - if: runner.os == 'Linux'
+      - if: matrix.os == 'ubuntu-latest'
         name: Remove unused software
         run: |
           echo "Available storage before:"
@@ -156,7 +156,7 @@ jobs:
           path: "${{ env.MODEL_CACHE_DIR }}"
           key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
 
-      - if: runner.os == 'Linux'
+      - if: matrix.os == 'ubuntu-latest'
         name: Setup FFmpeg
         uses: Iamshankhadeep/setup-ffmpeg@v1.1  # does not support arm64
         with:
@@ -165,7 +165,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: "4.4"
 
-      - if: runner.os == 'macOS'
+      - if: matrix.os == 'macos-latest'
         name: Setup FFmpeg
         run: |
           brew install ffmpeg@4
@@ -190,7 +190,7 @@ jobs:
         run: |
           make tests
 
-      - if: runner.os == 'macOS'
+      - if: matrix.os == 'macos-latest'
         name: Specify MacOS version for densepose install
         run: |
           echo "MACOSX_DEPLOYMENT_TARGET=$(sw_vers -productVersion)" >> $GITHUB_ENV
@@ -223,7 +223,8 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
 
     steps:
-      - name: Remove unused software
+      - if: matrix.os == 'ubuntu-latest'
+        name: Remove unused software
         run: |
           echo "Available storage before:"
           sudo df -h
@@ -247,7 +248,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: "4.4"
 
-      - if: runner.os == 'macOS'
+      - if: matrix.os == 'macos-latest'
         name: Setup FFmpeg
         run: |
           brew install ffmpeg@4
