@@ -41,7 +41,7 @@ class ClassificationEvaluator:
             normalize="true",
         )
 
-    def confusion_matrix_plot(self, y_true, y_pred) -> Optional[Image]:
+    def confusion_matrix_plot(self, y_true, y_pred) -> Optional[Image.Image]:
         try:
             import matplotlib.pyplot as plt
         except ImportError:
