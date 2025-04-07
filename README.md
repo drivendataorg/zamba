@@ -44,7 +44,7 @@ See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page o
 Once you have `zamba` installed, some good starting points are:
 
 - The [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page for basic examples of usage
-- The user tutorials for [classifying images](https://zamba.drivendata.org/docs/stable/image-predict-tutorial/), [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/), or [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/)
+- The user tutorials for [classifying images](https://zamba.drivendata.org/docs/stable/images-predict-tutorial/), [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/), or [training a model](https://zamba.drivendata.org/docs/stable/train-tutorial/)
 
 ## Example usage
 
@@ -91,7 +91,7 @@ $ zamba image predict --data-dir path/to/videos
 
 By default, predictions will be saved to `zamba_predictions.csv`. Run `zamba predict --help` or `zamba image predict --help` to list all possible options to pass to `predict`.
 
-See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [classifying images](https://zamba.drivendata.org/docs/stable/image-predict-tutorial/) or [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) for more details.
+See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page or the user tutorial on [classifying images](https://zamba.drivendata.org/docs/stable/images-predict-tutorial/) or [classifying videos](https://zamba.drivendata.org/docs/stable/predict-tutorial/) for more details.
 
 ### Training a model
 
