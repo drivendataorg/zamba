@@ -77,17 +77,23 @@ jobs:
 
 
   cache-model-weights:
-    name: Download or use cached model weights
-    needs: set-up-os-matrix
-    strategy:
-      matrix:
-        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
-    runs-on: ${{ matrix.os }}
+    name: Populate model weights cache
+    needs: code-quality
+    runs-on: ['ubuntu-latest']
 
     steps:
     - uses: actions/checkout@v4
 
+    - name: Check weights cache
+      id: cache-weights
+      uses: actions/cache@v4
+      with:
+        path: "${{ env.MODEL_CACHE_DIR }}"
+        key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
+        lookup-only: true
+
     - uses: astral-sh/setup-uv@v5
+      if: steps.cache-weights.outputs.cache-hit != 'true'
       with:
         python-version: "3.11"
         enable-cache: true
@@ -96,20 +102,25 @@ jobs:
           pyproject.toml
 
     - name: Install dependencies
+      if: steps.cache-weights.outputs.cache-hit != 'true'
       run: |
         uv pip install -e .[tests]
 
-    - name: Load weights cache
-      id: cache-weights
-      uses: actions/cache@v4
+    - name: Download weights
+      if: steps.cache-weights.outputs.cache-hit != 'true'
+      run: zamba utils dl-weights
+
+    - name: Save weights to cache
+      if: steps.cache-weights.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
 
-    - name: Populate weights cache
-      run: zamba utils dl-weights
 
-  tests:
+
+  test-suite:
+    # Full test suite, slow
     name: Test suite (${{ matrix.os }}, Python ${{ matrix.python-version }})
     needs: [set-up-os-matrix, cache-model-weights]
     env:
@@ -117,7 +128,8 @@ jobs:
     strategy:
       matrix:
         os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
-        python-version: [3.11, 3.12]
+        # Only run on oldest and newest supported Python versions
+        python-version: ["3.11", "3.13"]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -166,7 +178,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
-          cache-suffix: "tests-${{ matrix.python-version }}"
+          cache-suffix: "test-suite-${{ matrix.python-version }}"
           cache-dependency-glob: |
             pyproject.toml
 
@@ -199,17 +211,20 @@ jobs:
           file: ./coverage.xml
           fail_ci_if_error: ${{ (github.event_name == 'push' && true) || (github.event_name == 'pull_request' && true) || false }}
 
+
   test-install:
-    name: Test install from built distributions
-    needs: tests
+    # Fast smoke tests
+    name: Install and loading tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    needs: [set-up-os-matrix, cache-model-weights]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.11, 3.12]
+        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
+        python-version: ["3.11", "3.12", "3.13"]
 
     steps:
-      - name: Remove unused software
+      - if: matrix.os == 'ubuntu-latest'
+        name: Remove unused software
         run: |
           echo "Available storage before:"
           sudo df -h
@@ -222,15 +237,22 @@ jobs:
           sudo df -h
           echo
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Setup FFmpeg
-        uses: Iamshankhadeep/setup-ffmpeg@v1.2
+      - if: matrix.os == 'ubuntu-latest'
+        name: Setup FFmpeg
+        uses: Iamshankhadeep/setup-ffmpeg@v1.1  # does not support arm64
         with:
           # Not strictly necessary, but it may prevent rate limit
           # errors especially on GitHub-hosted macos machines.
           token: ${{ secrets.GITHUB_TOKEN }}
           version: "4.4"
+
+      - if: matrix.os == 'macos-latest'
+        name: Setup FFmpeg
+        run: |
+          brew install ffmpeg@4
+          echo "/opt/homebrew/opt/ffmpeg@4/bin" >> "$GITHUB_PATH"
 
       - uses: astral-sh/setup-uv@v5
         with:
@@ -240,30 +262,18 @@ jobs:
           cache-dependency-glob: |
             pyproject.toml
 
-      - name: Build package
+      - name: Build from source
         run: |
-          uv pip install build
-          make dist
+          uv pip install .
 
-      - name: Install wheel; test CLI + models with assets
+      - name: Test import and model loading
         run: |
-          uv venv .venv-whl
-          PYTHON_BIN=.venv-whl/bin/python
-          uv pip install --python=$PYTHON_BIN zamba@$(find dist -name 'zamba*.whl') --force-reinstall
-          $PYTHON_BIN -m zamba --help
-          $PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
-
-      - name: Install source; test CLI + models with assets
-        run: |
-          uv venv .venv-sdist
-          PYTHON_BIN=.venv-sdist/bin/python
-          uv pip install --python=$PYTHON_BIN zamba@$(find dist -name 'zamba*.tar.gz') --force-reinstall
-          $PYTHON_BIN -m zamba --help
-          $PYTHON_BIN -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          python -m zamba --help
+          python -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
 
   notify:
     name: Notify failed build
-    needs: [code-quality, set-up-os-matrix, tests, test-install]
+    needs: [code-quality, set-up-os-matrix, test-suite, test-install]
     if: failure() && (github.event_name == 'push' || github.event_name == 'schedule')
     runs-on: ubuntu-latest
     steps:
