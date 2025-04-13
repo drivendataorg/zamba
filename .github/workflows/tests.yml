@@ -78,8 +78,13 @@ jobs:
 
   cache-model-weights:
     name: Populate model weights cache
-    needs: code-quality
-    runs-on: ['ubuntu-latest']
+    needs: [code-quality, set-up-os-matrix]
+    # actions/cache cross-OS is very fragile, breaks when zstd (compression) versions diverge across runners
+    # so run based on OS matrix, in case we get a cache miss across OSes
+    strategy:
+      matrix:
+        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
@@ -91,7 +96,6 @@ jobs:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
         lookup-only: true
-        enableCrossOsArchive: true
 
     - uses: astral-sh/setup-uv@v5
       if: steps.cache-weights.outputs.cache-hit != 'true'
@@ -117,7 +121,6 @@ jobs:
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
-        enableCrossOsArchive: true
 
 
   test-suite:
@@ -156,7 +159,6 @@ jobs:
         with:
           path: "${{ env.MODEL_CACHE_DIR }}"
           key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
-          enableCrossOsArchive: true
           fail-on-cache-miss: true
 
       - if: matrix.os == 'ubuntu-latest'
