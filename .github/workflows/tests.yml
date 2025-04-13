@@ -86,11 +86,12 @@ jobs:
 
     - name: Check weights cache
       id: cache-weights
-      uses: actions/cache@v4
+      uses: actions/cache/restore@v4
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
         lookup-only: true
+        enableCrossOsArchive: true
 
     - uses: astral-sh/setup-uv@v5
       if: steps.cache-weights.outputs.cache-hit != 'true'
@@ -116,7 +117,7 @@ jobs:
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
-
+        enableCrossOsArchive: true
 
 
   test-suite:
@@ -151,10 +152,12 @@ jobs:
 
       - name: Load weights cache
         id: cache-weights
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: "${{ env.MODEL_CACHE_DIR }}"
           key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
 
       - if: matrix.os == 'ubuntu-latest'
         name: Setup FFmpeg
