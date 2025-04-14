@@ -78,15 +78,20 @@ jobs:
 
   cache-model-weights:
     name: Populate model weights cache
-    needs: code-quality
-    runs-on: ['ubuntu-latest']
+    needs: [code-quality, set-up-os-matrix]
+    # actions/cache cross-OS is very fragile, breaks when zstd (compression) versions diverge across runners
+    # so run based on OS matrix, in case we get a cache miss across OSes
+    strategy:
+      matrix:
+        os: ${{ fromJson(needs.set-up-os-matrix.outputs.os_matrix) }}
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Check weights cache
       id: cache-weights
-      uses: actions/cache@v4
+      uses: actions/cache/restore@v4
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
@@ -116,7 +121,6 @@ jobs:
       with:
         path: "${{ env.MODEL_CACHE_DIR }}"
         key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
-
 
 
   test-suite:
@@ -151,10 +155,11 @@ jobs:
 
       - name: Load weights cache
         id: cache-weights
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: "${{ env.MODEL_CACHE_DIR }}"
           key: weights-${{ hashFiles('zamba/models/official_models/**/config.yaml', 'zamba/models/densepose/densepose_manager.py') }}
+          fail-on-cache-miss: true
 
       - if: matrix.os == 'ubuntu-latest'
         name: Setup FFmpeg
