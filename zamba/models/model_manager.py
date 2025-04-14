@@ -35,6 +35,7 @@ from zamba.pytorch_lightning.video_modules import (
     ZambaVideoDataModule,
     ZambaVideoClassificationLightningModule,
 )
+from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
 
 
 def instantiate_model(
@@ -42,10 +43,12 @@ def instantiate_model(
     labels: Optional[pd.DataFrame] = None,
     scheduler_config: Optional[SchedulerConfig] = None,
     from_scratch: Optional[bool] = None,
+    batch_size: Optional[int] = None,
     model_name: Optional[ModelEnum] = None,
     use_default_model_labels: Optional[bool] = None,
     species: Optional[list] = None,
-) -> ZambaVideoClassificationLightningModule:
+    **kwargs,
+) -> ZambaClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
     The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
 
@@ -71,7 +74,7 @@ def instantiate_model(
         species (list, optional): List of species in label order. If None, read from labels file.
 
     Returns:
-        ZambaVideoClassificationLightningModule: Instantiated model
+        ZambaClassificationLightningModule: Instantiated model
     """
     if from_scratch:
         hparams = get_default_hparams(model_name)

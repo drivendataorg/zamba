@@ -91,7 +91,12 @@ class ImageClassificationDataModule(pl.LightningDataModule):
         if crop_images:
             self.annotations = self.preprocess_annotations(annotations)
 
-    def preprocess_annotations(self, annotations: pd.DataFrame) -> pd.DataFrame:
+    def preprocess_annotations(
+        self,
+        annotations: pd.DataFrame,
+        overwrite_cache: bool = False,
+        max_workers: Optional[int] = None,
+    ) -> pd.DataFrame:
         num_annotations = len(annotations)
         bbox_in_df = all(column in annotations.columns for column in ["x1", "x2", "y1", "y2"])
         if bbox_in_df:
@@ -99,14 +104,24 @@ class ImageClassificationDataModule(pl.LightningDataModule):
                 f"Bboxes found in annotations. Cropping images and save to cache_dir: {self.cache_dir}"
             )
 
+            kwargs = dict(
+                total=len(annotations),
+                desc="Cropping images",
+            )
+
+            if max_workers is not None:
+                kwargs["max_workers"] = max_workers
+
             processed_annotations = process_map(
                 crop_to_bounding_box,
                 annotations.iterrows(),
                 repeat(self.cache_dir),
                 repeat(self.data_dir),
-                total=len(annotations),
-                desc="Cropping images",
+                repeat(overwrite_cache),
+                **kwargs,
             )
+
+            processed_annotations = [row for row in processed_annotations if row is not None]
 
             annotations = pd.DataFrame(processed_annotations)
         else:
@@ -134,7 +149,7 @@ class ImageClassificationDataModule(pl.LightningDataModule):
                     cache_path = self.cache_dir / get_cache_filename(
                         detection_row["filepath"], bbox
                     )
-                    if not cache_path.exists():
+                    if not cache_path.exists() or overwrite_cache:
                         cache_path.parent.mkdir(parents=True, exist_ok=True)
                         cropped_image = image.crop(bbox)
                         with open(cache_path, "wb") as f:
