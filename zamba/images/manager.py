@@ -40,10 +40,9 @@ from zamba.pytorch.transforms import resize_and_pad
 
 
 def get_weights(split):
-    labels_df = split.filter(like="species_")
-    y_array = pd.from_dummies(labels_df).values.flatten()
-    classes = labels_df.columns.values
-    class_weights = compute_class_weight("balanced", classes=classes, y=y_array)
+    classes = split.label.unique()
+    classes.sort()
+    class_weights = compute_class_weight("balanced", classes=classes, y=split.label)
     return torch.tensor(class_weights).to(torch.float32)
 
 
