@@ -411,7 +411,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         # with missing examples.
         encoder = LabelEncoder()
         labels["label"] = encoder.fit_transform(labels["class_name"])
-        values["species_in_label_order"] = encoder.classes_
+        values["species_in_label_order"] = encoder.classes_.tolist()
 
         # one hot encoding
         one_hot = pd.get_dummies(labels, columns=["class_name"])
