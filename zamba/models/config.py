@@ -678,7 +678,11 @@ def make_split(labels, values):
             num_videos_per_species = labels.filter(regex="species_").sum().to_dict()
             species = labels.filter(regex="species_").columns
 
-        too_few = {k: v for k, v in num_videos_per_species.items() if 0 < v < len(expected_splits)}
+        too_few = {
+            k.removeprefix("species_"): v
+            for k, v in num_videos_per_species.items()
+            if 0 < v < len(expected_splits)
+        }
 
         if len(too_few) > 0:
             raise ValueError(
