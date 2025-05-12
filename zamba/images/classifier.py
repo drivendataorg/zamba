@@ -181,8 +181,6 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
             # remove weights for loss if required
             del state_dict["loss_fn.weight"]
 
-        self.hparams["species"] = [s.removeprefix("species_") for s in self.hparams["species"]]
-
         checkpoint = {
             "state_dict": state_dict,
             "hyper_parameters": self.hparams,
