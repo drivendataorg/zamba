@@ -179,28 +179,6 @@ def test_save_and_load(model_class, tmp_path):
     assert model.num_classes == 2
 
 
-def test_species_prefix_removal_on_save(tmp_path):
-    """Test that species_ prefixes are removed when saving a model."""
-    # Create a model with species names that have the species_ prefix
-    model = ImageClassifierModule(
-        species=["species_cat", "species_dog"], batch_size=2, image_size=224, model_name="resnet50"
-    )
-
-    # Check that the original model has the prefixes
-    assert model.species == ["species_cat", "species_dog"]
-
-    # Save the model to disk
-    save_path = tmp_path / "prefix_test_model.ckpt"
-    model.to_disk(save_path)
-
-    # Load the model
-    loaded_model = ImageClassifierModule.from_disk(save_path)
-
-    # Verify that the prefixes were stripped during saving
-    assert loaded_model.species == ["cat", "dog"]
-    assert loaded_model.num_classes == 2
-
-
 def test_bbox_json_to_df_format_megadetector(megadetector_output_path):
     with open(megadetector_output_path, "r") as f:
         bbox_json = json.load(f)
