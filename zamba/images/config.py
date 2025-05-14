@@ -414,8 +414,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         values["species_in_label_order"] = encoder.classes_.tolist()
 
         # one hot encoding
-        one_hot = pd.get_dummies(labels, columns=["class_name"])
-        one_hot.columns = one_hot.columns.str.replace("class_name_", "", regex=False)
+        one_hot = pd.get_dummies(labels["class_name"])
         labels = labels.assign(**one_hot)
 
         # if no "split" column, set up train, val, and test split

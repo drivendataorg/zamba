@@ -9,6 +9,7 @@ import sys
 
 import git
 import mlflow
+import numpy as np
 import pandas as pd
 import pytorch_lightning as pl
 import torch
@@ -39,10 +40,8 @@ from zamba.models.model_manager import instantiate_model
 from zamba.pytorch.transforms import resize_and_pad
 
 
-def get_weights(split):
-    classes = split.label.unique()
-    classes.sort()
-    class_weights = compute_class_weight("balanced", classes=classes, y=split.label)
+def get_weights(split, all_labels):
+    class_weights = compute_class_weight("balanced", classes=all_labels, y=split.label)
     return torch.tensor(class_weights).to(torch.float32)
 
 
@@ -249,7 +248,9 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
 
     loss_fn = torch.nn.CrossEntropyLoss()
     if config.weighted_loss is True:
-        loss_fn = torch.nn.CrossEntropyLoss(weight=get_weights(data.annotations), reduction="mean")
+        loss_fn = torch.nn.CrossEntropyLoss(
+            weight=get_weights(data.annotations, np.unique(config.labels.label)), reduction="mean"
+        )
 
     # Calculate number of training batches
     num_training_batches = len(data.train_dataloader())
