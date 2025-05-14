@@ -308,7 +308,7 @@ def test_train_with_md_labels(mocker, ena24_dataset_setup):
     assert set(["x1", "y1", "x2", "y2"]).issubset(config.labels.columns)
 
     # MD bounds are relative
-    assert config.labels.loc[0, "x1"] < 1.0
+    assert config.labels.iloc[0]["x1"] < 1.0
 
     data = ImageClassificationDataModule(
         data_dir=config.data_dir,
@@ -320,15 +320,15 @@ def test_train_with_md_labels(mocker, ena24_dataset_setup):
         crop_images=config.crop_images,
     )
 
-    assert data.annotations.loc[0, "x1"] == 1920 * 0.35  # 672
-    assert data.annotations.loc[0, "y1"] == 1080 * 0.35  # 378
+    assert data.annotations.iloc[0]["x1"] == 1920 * 0.35  # 672
+    assert data.annotations.iloc[0]["y1"] == 1080 * 0.35  # 378
 
     # some buffer for floating point precision
     assert (
-        abs(data.annotations.loc[0, "x2"] - ((1920 * 0.35) + (1920 * 0.3))) <= 1
+        abs(data.annotations.iloc[0]["x2"] - ((1920 * 0.35) + (1920 * 0.3))) <= 1
     )  # 672 + 576 = 1248
     assert (
-        abs(data.annotations.loc[0, "y2"] - ((1080 * 0.35) + (1080 * 0.3))) <= 1
+        abs(data.annotations.iloc[0]["y2"] - ((1080 * 0.35) + (1080 * 0.3))) <= 1
     )  # 378 + 324 = 702
 
     # make sure bounding boxes are absolute

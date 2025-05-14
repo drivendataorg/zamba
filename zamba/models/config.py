@@ -671,9 +671,15 @@ def make_split(labels, values):
 
         # check we have at least as many videos per species as we have splits
         # labels are OHE at this point
-        num_videos_per_species = labels.filter(regex="species_").sum().to_dict()
+        if "species_in_label_order" in values:
+            num_videos_per_species = labels.class_name.value_counts().to_dict()
+            species = values["species_in_label_order"]
+        else:
+            num_videos_per_species = labels.filter(regex="species_").sum().to_dict()
+            species = labels.filter(regex="species_").columns
+
         too_few = {
-            k.split("species_", 1)[1]: v
+            k.removeprefix("species_"): v
             for k, v in num_videos_per_species.items()
             if 0 < v < len(expected_splits)
         }
@@ -683,7 +689,7 @@ def make_split(labels, values):
                 f"Not all species have enough media files to allocate into the following splits: {', '.join(expected_splits)}. A minimum of {len(expected_splits)} media files per label is required. Found the following counts: {too_few}. Either remove these labels or add more images/videos."
             )
 
-        for c in labels.filter(regex="species_").columns:
+        for c in species:
             species_df = labels[labels[c] > 0]
 
             if len(species_df):
