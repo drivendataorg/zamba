@@ -145,17 +145,25 @@ def absolute_bbox(
         return bbox
 
 
-def crop_to_bounding_box(row, cache_dir, image_dir: Path | None = None) -> Image:
+def crop_to_bounding_box(
+    row, cache_dir, image_dir: Path | None = None, overwrite_cache: bool = False
+) -> Image:
     _, row = row  # Unpack the index and the row
     filepath = row["filepath"] if image_dir is None else image_dir / row["filepath"]
-    image = load_image(filepath)
+
+    try:
+        image = load_image(filepath)
+    except Exception:
+        logger.warning(f"Could not load image: {filepath}")
+        return None
+
     bbox = absolute_bbox(
         image, [row["x1"], row["y1"], row["x2"], row["y2"]], bbox_layout=BboxLayout.XYXY
     )
     row["x1"], row["y1"], row["x2"], row["y2"] = bbox
     cache_path = cache_dir / get_cache_filename(row["filepath"], bbox)
 
-    if not cache_path.exists():
+    if not cache_path.exists() or overwrite_cache:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cropped_image = image.crop(bbox)
         with open(cache_path, "wb") as f:

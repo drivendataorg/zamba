@@ -189,7 +189,10 @@ def validate_model_name_and_checkpoint(cls, values):
         hparams = get_checkpoint_hparams(checkpoint)
 
         try:
-            values["model_name"] = available_models[hparams["model_class"]]._default_model_name
+            if "model_name" in hparams:
+                values["model_name"] = hparams["model_name"]
+            else:
+                values["model_name"] = available_models[hparams["model_class"]]._default_model_name
         except (AttributeError, KeyError):
             model_name = f"{model_name}-{checkpoint.stem}"
 
