@@ -86,6 +86,8 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
             Defaults to 3.
         image_size (int, optional): Image size (height and width) for the input to the
             classification model. Defaults to 224.
+        batch_size (int, optional): Batch size for inference. Defaults to 1 to save memory;
+            you will want to increase if you have a more powerful GPU.
         results_file_format (ResultsFormat): The format in which to output the predictions.
             Currently 'csv' and 'megadetector' JSON formats are supported. Default is 'csv'.
         results_file_name (Path, optional): The filename for the output predictions in the
@@ -110,6 +112,7 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3
     image_size: Optional[int] = 224
+    batch_size: Optional[int] = 1
     results_file_format: ResultsFormat = ResultsFormat.CSV
     results_file_name: Optional[Path] = Path("zamba_predictions.csv")
     model_cache_dir: Optional[Path] = None
@@ -280,6 +283,8 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
             Options are 'us', 'eu', or 'asia'. Defaults to 'us'.
         species_in_label_order (list, optional): Optional list to specify the order of
             species labels in the model output. Defaults to None.
+        skip_load_validation (bool): Skip image existence check, which verifies that all
+            images exist. Defaults to False.
     """
 
     data_dir: Path
@@ -311,6 +316,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     cache_dir: Optional[Path] = Path(appdirs.user_cache_dir()) / "zamba" / "image_cache"
     weight_download_region: str = RegionEnum.us.value
     species_in_label_order: Optional[list] = None
+    skip_load_validation: bool = False
 
     class Config:
         arbitrary_types_allowed = True
@@ -371,6 +377,9 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     @root_validator(skip_on_failure=True)
     def validate_image_files(cls, values):
         """Validate and load image files."""
+        if values["skip_load_validation"]:
+            return values
+        
         logger.info("Validating image files exist")
 
         exists = process_map(

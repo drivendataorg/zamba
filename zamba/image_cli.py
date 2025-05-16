@@ -295,7 +295,6 @@ def train(
             "no_crop_images": lambda x: ("crop_images", not x),
         },
         to_drop=[
-            "batch_size",
             "config",
             "mlflow_experiment_name",
             "model",

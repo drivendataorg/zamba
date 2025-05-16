@@ -24,10 +24,11 @@ from pytorch_lightning.loggers import MLFlowLogger
 from pytorch_lightning.tuner.tuning import Tuner
 from sklearn.utils.class_weight import compute_class_weight
 from torch.nn import ModuleList
-from torchvision.transforms import transforms
+from torchvision.transforms import transforms, RandAugment
 from tqdm import tqdm
 import yaml
 
+from zamba.images.augment import CutMixUpCallback
 from zamba.images.classifier import ImageClassifierModule
 from zamba.images.config import (
     ImageClassificationPredictConfig,
@@ -49,7 +50,12 @@ def get_weights(split):
     return torch.tensor(class_weights).to(torch.float32)
 
 
-def predict(config: ImageClassificationPredictConfig) -> None:
+def predict(config: ImageClassificationPredictConfig) -> pd.DataFrame:
+    logger.info("Loading models")
+
+    # Initialize predictions list outside the if/else
+    predictions = []
+
     image_transforms = transforms.Compose(
         [
             transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
@@ -57,52 +63,86 @@ def predict(config: ImageClassificationPredictConfig) -> None:
             transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
         ]
     )
-    logger.info("Loading models")
-    detector = run_detector.load_detector("MDV5A")
+
+    device = "cuda" if config.gpus > 0 else "cpu"
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
+    classifier_module = classifier_module.to(device)
 
-    logger.info("Running inference")
-    predictions = []
-    assert isinstance(config.filepaths, pd.DataFrame)
+    if config.crop_images:
+        detector = run_detector.load_detector("MDV5A", force_cpu=device == "cpu")
 
-    for filepath in tqdm(config.filepaths["filepath"]):
-        image = load_image(filepath)
-        results = detector.generate_detections_one_image(
-            image, filepath, detection_threshold=config.detections_threshold
-        )
+        logger.info("Running inference with cropping")
+        # predictions = [] # Moved initialization up
+        assert isinstance(config.filepaths, pd.DataFrame)
 
-        for detection in results["detections"]:
+        for filepath in tqdm(config.filepaths["filepath"]):
+            image = load_image(filepath)
+            results = detector.generate_detections_one_image(
+                image, filepath, detection_threshold=config.detections_threshold
+            )
+
+            for detection in results["detections"]:
+                try:
+                    bbox = absolute_bbox(image, detection["bbox"], bbox_layout=BboxLayout.XYWH)
+                    detection_category = detection["category"]
+                    detection_conf = detection["conf"]
+                    img = image.crop(bbox)
+                    input_data = image_transforms(img).to(device)
+
+                    with torch.no_grad():
+                        y_hat = (
+                            torch.softmax(classifier_module(input_data.unsqueeze(0)), dim=1)
+                            .squeeze(0)
+                            .cpu()
+                            .numpy()
+                        )
+                        predictions.append((filepath, detection_category, detection_conf, bbox, y_hat))
+                except Exception as e:
+                    logger.exception(e)
+                    continue
+    else:
+        logger.info("Running inference without cropping")
+        assert isinstance(config.filepaths, pd.DataFrame)
+
+        for filepath in tqdm(config.filepaths["filepath"]):
             try:
-                bbox = absolute_bbox(image, detection["bbox"], bbox_layout=BboxLayout.XYWH)
-                detection_category = detection["category"]
-                detection_conf = detection["conf"]
-                img = image.crop(bbox)
-                input_data = image_transforms(img)
+                image = load_image(filepath)
+                input_data = image_transforms(image).to(device)
 
                 with torch.no_grad():
                     y_hat = (
                         torch.softmax(classifier_module(input_data.unsqueeze(0)), dim=1)
                         .squeeze(0)
+                        .cpu()
                         .numpy()
                     )
-                    predictions.append((filepath, detection_category, detection_conf, bbox, y_hat))
+                    # Append None for detection-related fields to maintain structure
+                    predictions.append((filepath, None, None, None, y_hat))
             except Exception as e:
-                logger.exception(e)
+                logger.exception(f"Could not process file {filepath}: {e}")
                 continue
+
+    # Store reference to species labels for DataFrame creation
+    species_labels = classifier_module.species
 
     if config.save:
         df = pd.DataFrame(
             predictions,
             columns=["filepath", "detection_category", "detection_conf", "bbox", "result"],
         )
-        # Split bbox into separate columns x1, y1, x2, y2
-        df[["x1", "y1", "x2", "y2"]] = pd.DataFrame(df["bbox"].tolist(), index=df.index)
+        # Split bbox into separate columns x1, y1, x2, y2 if bbox column is not all None
+        if not df["bbox"].isnull().all():
+            df[["x1", "y1", "x2", "y2"]] = pd.DataFrame(df["bbox"].tolist(), index=df.index)
+        else:
+            # Add empty columns if no bboxes were generated
+            df[["x1", "y1", "x2", "y2"]] = None
+
 
         # Split result into separate columns for each class using "species" from classifier module
         species_df = pd.DataFrame(df["result"].tolist(), index=df.index)
-        species_df.columns = classifier_module.species
+        species_df.columns = species_labels # Use stored labels
         df = pd.concat([df, species_df], axis=1)
 
         # Drop the original 'bbox' and 'result' columns
@@ -122,9 +162,11 @@ def predict(config: ImageClassificationPredictConfig) -> None:
                 json.dump(megadetector_format_results.dict(), f)
         logger.info(f"Results saved to {save_path}")
 
+        return df
+
 
 def _save_metrics(
-    data: pl.LightningDataModule, trainer: pl.Trainer, model: pl.LightningModule, save_dir: Path
+    data: pl.LightningDataModule, trainer: pl.Trainer, model: pl.LightningModule, save_dir: Path 
 ):
     if data.test_dataloader() is not None and len(data.test_dataloader()) > 0:
         logger.info("Calculating metrics on holdout set.")
@@ -185,6 +227,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
                 transforms.RandomAdjustSharpness(
                     sharpness_factor=0.9, p=0.05
                 ),  # < 1 is more blurry
+                RandAugment(),
                 transforms.ToTensor(),
                 transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
                 transforms.RandomErasing(p=0.25, scale=(0.02, 0.33), ratio=(0.3, 3.3)),
@@ -228,7 +271,11 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
     )
     swa = StochasticWeightAveraging(swa_lrs=1e-2)
     lr_monitor = LearningRateMonitor(logging_interval="step")
+
     callbacks = [swa, early_stopping, checkpoint_callback, lr_monitor]
+
+    if config.extra_train_augmentations:
+        callbacks.append(CutMixUpCallback(num_classes=len(config.species_in_label_order), p=0.2))
 
     # Enable system metrics logging in MLflow
     mlflow.enable_system_metrics_logging()
@@ -272,8 +319,8 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             num_training_batches=num_training_batches,
             loss=loss_fn,
             pin_memory=config.accelerator == "gpu",
-            scheduler="CosineAnnealingLR",
-            scheduler_params={"T_max": config.early_stopping_patience},
+            scheduler="CyclicLR",
+            # scheduler_params={"T_max": config.early_stopping_patience},
         )
     else:
         classifier_module = instantiate_model(
@@ -284,22 +331,49 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             model_name=None,  # get from checkpoint
             use_default_model_labels=config.use_default_model_labels,
             species=config.species_in_label_order,
+            scheduler="CyclicLR",
         )
-
-    # compile for faster performance; disabled for MacOS which is not supported
-    if sys.platform != "darwin":
-        classifier = torch.compile(classifier_module)
-    else:
-        classifier = classifier_module
 
     # lower precision multiplication to speed up training
     try:
         torch.set_float32_matmul_precision("medium")
-        torch._dynamo.config.cache_size_limit = (
-            16  # cache more functions than default 8 to avoid recompiling
-        )
+        torch._dynamo.config.cache_size_limit = 128
     except Exception:
         logger.warning("Could not set float32 matmul precision to medium")
+
+    # Compile just the underlying nn.Module, not the whole Lightning module
+    if sys.platform != "darwin":
+        logger.info("Compiling the underlying neural network model (not the LightningModule)")
+        try:
+            # Store reference to original model
+            original_model = classifier_module.model
+
+            kwargs = {}
+
+            # Error: accessing tensor output of CUDAGraphs  otherwise
+            # only options _or_ mode are allowed, not both
+            if config.accumulated_batch_size is not None:
+                kwargs["options"] = {
+                    "triton.cudagraphs": False,
+                }
+            else:
+                kwargs["mode"] = "reduce-overhead"
+
+            # Compile just the neural network
+            compiled_model = torch.compile(
+                original_model,
+                **kwargs
+            )
+            
+            # Replace model in the Lightning module
+            classifier_module.model = compiled_model
+            classifier = classifier_module
+            logger.info("Model compilation successful")
+        except Exception as e:
+            logger.warning(f"Model compilation failed with error: {e}. Using uncompiled model.")
+            classifier = classifier_module
+    else:
+        classifier = classifier_module
 
     # Set log_every_n_steps to a reasonable value (e.g., 1/10th of batches, minimum of 1)
     log_every_n_steps = max(1, num_training_batches // 10)
@@ -313,7 +387,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         strategy = "auto"
 
     if config.accumulated_batch_size is not None:
-        accumulate_n_batches = config.accumulated_batch_size // classifier_module.batch_size
+        accumulate_n_batches = config.accumulated_batch_size // classifier_module.hparams["batch_size"]
     else:
         accumulate_n_batches = 1
 
@@ -354,14 +428,36 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         # so we need to make sure these stay in sync.
         classifier.hparams.batch_size = data.batch_size
 
+        # Clear the existing optimizer and scheduler so they get re-initialized
+        if hasattr(classifier, "_optimizer_states"):
+            classifier._optimizer_states = None
+        if hasattr(classifier, "_lightning_optimizers"):
+            classifier._lightning_optimizers = {}
+
     # find an optimal learning rate on single device
     if config.lr is None:
         logger.info("Finding a good learning rate")
         lr_finder = tuner.lr_find(classifier, data)
         new_lr = lr_finder.suggestion()
         logger.info(f"Changing learning rate to {new_lr}")
+
         # Make sure the new learning rate gets saved out as an hparam
+        # and is used everywhere
+        classifier.lr = new_lr
         classifier.hparams.lr = new_lr
+
+        # set additional lr hparams that may be used by the scheduler
+        if "scheduler_params" in classifier.hparams:
+            if "base_lr" in classifier.hparams.scheduler_params:
+                classifier.hparams.scheduler_params["base_lr"] = new_lr / 10
+            if "max_lr" in classifier.hparams.scheduler_params:
+                classifier.hparams.scheduler_params["max_lr"] = new_lr
+
+        # Clear the existing optimizer and scheduler so they get re-initialized
+        if hasattr(classifier, "_optimizer_states"):
+            classifier._optimizer_states = None
+        if hasattr(classifier, "_lightning_optimizers"):
+            classifier._lightning_optimizers = {}
 
     _save_config(classifier, config)
 

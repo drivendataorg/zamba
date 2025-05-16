@@ -6,13 +6,27 @@ import pytorch_lightning as pl
 import timm
 import torch
 from torch.optim import AdamW
-from torch.optim.lr_scheduler import LRScheduler
+from torch.optim.lr_scheduler import LRScheduler, CyclicLR
 import torch.nn as nn
 import torch.utils
 from zamba.images.evaluate import ClassificationEvaluator
 from zamba.models.registry import register_model
 from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
 
+
+class SoftCrossEntropy(nn.Module):
+    def __init__(self, smoothing: float = 0.0):
+        super().__init__()
+        self.cross_entropy = nn.CrossEntropyLoss()
+
+    def forward(self, logits, y):
+        if y.ndim == 2:
+            log_preds = torch.log_softmax(logits, dim=1)
+            loss = -torch.mean(torch.sum(y * log_preds, dim=1))
+        else:
+            loss = self.cross_entropy(logits, y)
+
+        return loss
 
 @register_model
 class ImageClassifierModule(ZambaClassificationLightningModule):
@@ -53,10 +67,14 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         self.lr = lr
 
         if loss is None:
-            loss = nn.CrossEntropyLoss()
+            loss = SoftCrossEntropy()
+
         self.loss_fn = loss
 
         self.evaluator = ClassificationEvaluator(species)
+
+        if scheduler_params is None:
+            scheduler_params = dict()
 
         self.save_hyperparameters(
             "lr",
@@ -75,19 +93,33 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         optimizer = AdamW(
             self.parameters(),
             lr=self.lr,
-            weight_decay=(
-                1 / (self.lr * self.num_training_batches)
-                if self.num_training_batches is not None
-                else 0.01
-            ),
+            # weight_decay=(
+            #     1 / (self.lr * self.num_training_batches)
+            #     if self.num_training_batches is not None
+            #     else 0.01
+            # ),
+            weight_decay=0.01,
         )
 
         # Reset CyclicLR params assuming learning rate was found with lr_find or other empirical method
-        if "base_lr" in self.hparams.scheduler_params:
-            self.hparams.scheduler_params["base_lr"] = self.lr / 10
+        if self.scheduler is CyclicLR:
+            if "base_lr" not in self.hparams.scheduler_params:
+                self.hparams.scheduler_params["base_lr"] = self.lr / 10
 
-        if "max_lr" in self.hparams.scheduler_params:
-            self.hparams.scheduler_params["max_lr"] = self.lr * 10
+            if "max_lr" not in self.hparams.scheduler_params:
+                self.hparams.scheduler_params["max_lr"] = self.lr
+
+            if "mode" not in self.hparams.scheduler_params:
+                self.hparams.scheduler_params["mode"] = "triangular2"
+
+            if "cycle_momentum" not in self.hparams.scheduler_params:
+                self.hparams.scheduler_params["cycle_momentum"] = False  # Adam-based optimizers don't use momentum
+
+            # per cycliclr paper, step_size_up should be 2 - 10x the number of training batches
+            # we put a reasonable cap for very large datasets
+            if "step_size_up" not in self.hparams.scheduler_params:
+                steps_per_batch = 2 * self.num_training_batches if self.num_training_batches is not None else 200_000
+                self.hparams.scheduler_params["step_size_up"] = min(steps_per_batch, 200000)
 
         if self.scheduler is not None:
             scheduler = self.scheduler(
@@ -95,9 +127,18 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
                 **self.hparams.scheduler_params,
             )
 
-            return [optimizer], [scheduler]
+            return {
+                "optimizer": optimizer,
+                "lr_scheduler": {
+                    "scheduler": scheduler,
+                    "interval": "step" if self.scheduler is CyclicLR else "epoch",
+                    "frequency": 1,
+                },
+            }
         else:
-            return [optimizer]
+            return {
+                "optimizer": optimizer,
+            }
 
     @staticmethod
     def aggregate_step_outputs(outputs):
@@ -116,7 +157,15 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         y = torch.nn.functional.one_hot(y, num_classes=self.num_classes).to(torch.float)
         logits = self(x)
         loss = self.loss_fn(logits, y)
-        self.log("train_loss", loss, logger=True, sync_dist=True, reduce_fx="mean")
+    
+        self.log("train_loss", loss, logger=True, sync_dist=True, reduce_fx="mean", prog_bar=True)
+
+        opt = self.optimizers()
+        if isinstance(opt, list):
+            opt = opt[0]
+
+        self.log("lr", opt.param_groups[0]["lr"], logger=True, sync_dist=True, prog_bar=True)
+    
         return loss
 
     def _val_step(self, batch, batch_idx, subset):
