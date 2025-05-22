@@ -20,7 +20,7 @@ requires-python = ">=3.11"
 dependencies = [
   "appdirs",
   "av",
-  "click<=8.1.8",
+  "click",
   "cloudpathlib[s3]",
   "ffmpeg-python",
   "future",
