@@ -97,6 +97,10 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
             Defaults to "us".
+        validate_images (bool): Whether to validate that images can be opened with PIL
+            and filter out invalid ones. When enabled, images that cannot be opened
+            will be removed from processing and a warning will be logged.
+            Defaults to False.
     """
 
     checkpoint: Optional[FilePath] = None
@@ -114,6 +118,7 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
     results_file_name: Optional[Path] = Path("zamba_predictions.csv")
     model_cache_dir: Optional[Path] = None
     weight_download_region: str = RegionEnum.us.value
+    validate_images: bool = False
 
     class Config:  # type: ignore
         arbitrary_types_allowed = True
@@ -207,6 +212,40 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
             raise ValueError("Image size should be greater than or equal 64")
         return values
 
+    @root_validator(skip_on_failure=True)
+    def validate_image_files_predict(cls, values):
+        """Validate image files for prediction when validate_images is enabled."""
+        validate_images = values.get("validate_images", False)
+        
+        if not validate_images:
+            return values
+        
+        logger.info("Validating image files can be opened with PIL")
+        filepaths = values["filepaths"]
+        
+        # Check each file with PIL
+        valid_files = []
+        invalid_count = 0
+        
+        for _, row in filepaths.iterrows():
+            filepath = Path(row["filepath"])
+            try:
+                from PIL import Image
+                with Image.open(filepath) as img:
+                    # Just verify it can be opened, no need to load the data
+                    img.verify()
+                valid_files.append(row)
+            except Exception:
+                invalid_count += 1
+                
+        if invalid_count > 0:
+            logger.warning(
+                f"{invalid_count} image files cannot be opened with PIL; ignoring those files."
+            )
+        
+        values["filepaths"] = pd.DataFrame(valid_files)
+        return values
+
     _validate_model_name_and_checkpoint = root_validator(allow_reuse=True, skip_on_failure=True)(
         validate_model_name_and_checkpoint
     )
@@ -280,6 +319,10 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
             Options are 'us', 'eu', or 'asia'. Defaults to 'us'.
         species_in_label_order (list, optional): Optional list to specify the order of
             species labels in the model output. Defaults to None.
+        validate_images (bool): Whether to validate that images can be opened with PIL
+            and filter out invalid ones. When enabled, images that cannot be opened
+            will be removed from processing and a warning will be logged.
+            Defaults to False.
     """
 
     data_dir: Path
@@ -311,6 +354,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     cache_dir: Optional[Path] = Path(appdirs.user_cache_dir()) / "zamba" / "image_cache"
     weight_download_region: str = RegionEnum.us.value
     species_in_label_order: Optional[list] = None
+    validate_images: bool = False
 
     class Config:
         arbitrary_types_allowed = True
@@ -371,10 +415,17 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     @root_validator(skip_on_failure=True)
     def validate_image_files(cls, values):
         """Validate and load image files."""
-        logger.info("Validating image files exist")
+        validate_images = values.get("validate_images", False)
+        
+        if validate_images:
+            logger.info("Validating image files exist and can be opened with PIL")
+            validation_func = cls._validate_filepath_with_pil
+        else:
+            logger.info("Validating image files exist")
+            validation_func = cls._validate_filepath
 
         exists = process_map(
-            cls._validate_filepath,
+            validation_func,
             (values["data_dir"] / values["labels"].filepath.path).items(),
             chunksize=max(
                 1, len(values["labels"]) // 1000
@@ -388,9 +439,14 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         if not exists.all():
             missing_files = file_existence[~exists]
             example_missing = [str(f) for f in missing_files.head(3)[1].values]
-            logger.warning(
-                f"{(~exists).sum()} files in provided labels file do not exist on disk; ignoring those files. Example: {example_missing}..."
-            )
+            if validate_images:
+                logger.warning(
+                    f"{(~exists).sum()} files in provided labels file do not exist on disk or cannot be opened with PIL; ignoring those files. Example: {example_missing}..."
+                )
+            else:
+                logger.warning(
+                    f"{(~exists).sum()} files in provided labels file do not exist on disk; ignoring those files. Example: {example_missing}..."
+                )
 
         values["labels"] = values["labels"][exists]
 
@@ -453,3 +509,23 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         ix, path = ix_path
         path = Path(path)
         return ix, path, path.exists() and path.stat().st_size > 0
+
+    @staticmethod
+    def _validate_filepath_with_pil(ix_path):
+        """Validate filepath including PIL image loading."""
+        ix, path = ix_path
+        path = Path(path)
+        
+        # First check if file exists and has non-zero size
+        if not (path.exists() and path.stat().st_size > 0):
+            return ix, path, False
+        
+        # Try to open with PIL
+        try:
+            from PIL import Image
+            with Image.open(path) as img:
+                # Just verify it can be opened, no need to load the data
+                img.verify()
+            return ix, path, True
+        except Exception:
+            return ix, path, False
