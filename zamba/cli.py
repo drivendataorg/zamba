@@ -19,8 +19,10 @@ from zamba.models.config import (
 from zamba import MODELS_DIRECTORY
 from zamba.models.densepose import DensePoseConfig, DensePoseOutputEnum
 from zamba.models.depth_estimation import DepthEstimationConfig
-from zamba.models.model_manager import ModelManager
-from zamba.models.utils import RegionEnum
+from zamba.models.depth_estimation.depth_manager import DepthEstimationManager
+from zamba.models.model_manager import ModelManager, instantiate_model
+from zamba.models.utils import RegionEnum, get_model_checkpoint_filename
+from zamba.onnx_converter import ONNXConverter, validate_onnx_model, test_onnx_inference
 from zamba.utils_cli import app as utils_app
 from zamba.version import __version__
 
@@ -606,6 +608,141 @@ def depth(
     if yes:
         # kick off prediction
         depth_config.run_model()
+
+
+@app.command()
+def convert_to_onnx(
+    output_dir: Path = typer.Option(
+        "./onnx_models",
+        help="Directory to save converted ONNX models.",
+    ),
+    include_video: bool = typer.Option(
+        True,
+        help="Whether to convert video models.",
+    ),
+    include_image: bool = typer.Option(
+        True,
+        help="Whether to convert image models.",
+    ),
+    include_depth: bool = typer.Option(
+        True,
+        help="Whether to convert depth model.",
+    ),
+    opset_version: int = typer.Option(
+        11,
+        help="ONNX opset version to use for conversion.",
+    ),
+    model_cache_dir: Path = typer.Option(
+        None,
+        help="Directory for model weights cache.",
+    ),
+    weight_download_region: RegionEnum = typer.Option(
+        "us",
+        help="Server region for downloading weights.",
+    ),
+    validate: bool = typer.Option(
+        False,
+        help="Whether to validate converted models against original PyTorch models.",
+    ),
+    test_performance: bool = typer.Option(
+        False,
+        help="Whether to test ONNX model inference performance.",
+    ),
+    yes: bool = typer.Option(
+        False,
+        "--yes",
+        "-y",
+        help="Skip confirmation and proceed with conversion.",
+    ),
+):
+    """Convert PyTorch models to ONNX format for optimized inference.
+    
+    This command converts video classification models, image classification models,
+    and depth estimation models to ONNX format. The converted models can be used
+    for faster inference with ONNX Runtime.
+    """
+    msg = f"""The following configuration will be used for ONNX conversion:
+
+    Output directory: {output_dir}
+    Include video models: {include_video}
+    Include image models: {include_image}
+    Include depth model: {include_depth}
+    ONNX opset version: {opset_version}
+    Model cache directory: {model_cache_dir or "Default"}
+    Weight download region: {weight_download_region}
+    Validate models: {validate}
+    Test performance: {test_performance}
+    """
+
+    if yes:
+        typer.echo(f"{msg}\n\nSkipping confirmation and proceeding with conversion.")
+    else:
+        yes = typer.confirm(
+            f"{msg}\n\nIs this correct?",
+            abort=False,
+            default=True,
+        )
+
+    if yes:
+        # Initialize converter
+        converter = ONNXConverter(
+            model_cache_dir=model_cache_dir,
+            weight_download_region=weight_download_region,
+        )
+
+        # Convert models
+        converted_models = converter.convert_all_models(
+            output_dir=output_dir,
+            include_video=include_video,
+            include_image=include_image,
+            include_depth=include_depth,
+            opset_version=opset_version,
+        )
+
+        # Validate models if requested
+        if validate:
+            logger.info("Validating converted models...")
+            for model_name, onnx_path in converted_models.items():
+                if "video_" in model_name:
+                    # For video models, we need to load the original model for validation
+                    model_enum = ModelEnum(model_name.replace("video_", ""))
+                    checkpoint_filename = get_model_checkpoint_filename(model_enum)
+                    checkpoint_path = converter.model_cache_dir / checkpoint_filename
+                    pytorch_model = instantiate_model(checkpoint=checkpoint_path)
+                    
+                    # Validate with appropriate input shape
+                    input_shape = (1, 16, 3, 224, 224)  # Default video input shape
+                    validate_onnx_model(onnx_path, pytorch_model, input_shape)
+                
+                elif model_name == "depth":
+                    # For depth model, load the TorchScript model
+                    depth_manager = DepthEstimationManager(
+                        model_cache_dir=model_cache_dir or Path.home() / ".cache" / "zamba",
+                        gpus=0,
+                        weight_download_region=weight_download_region,
+                    )
+                    pytorch_model = torch.jit.load(depth_manager.model_weights, map_location='cpu')
+                    
+                    # Validate with appropriate input shape
+                    input_shape = (1, 15, 270, 480)  # Depth model input shape
+                    validate_onnx_model(onnx_path, pytorch_model, input_shape)
+
+        # Test performance if requested
+        if test_performance:
+            logger.info("Testing ONNX model performance...")
+            for model_name, onnx_path in converted_models.items():
+                if "video_" in model_name:
+                    input_shape = (1, 16, 3, 224, 224)
+                elif model_name == "depth":
+                    input_shape = (1, 15, 270, 480)
+                else:
+                    input_shape = (1, 3, 224, 224)  # Default image shape
+                
+                test_onnx_inference(onnx_path, input_shape)
+
+        logger.info(f"ONNX conversion completed. Models saved to: {output_dir}")
+        for model_name, onnx_path in converted_models.items():
+            logger.info(f"  - {model_name}: {onnx_path}")
 
 
 if __name__ == "__main__":

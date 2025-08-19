@@ -79,6 +79,7 @@ target/
 # exclude data from source control by default
 /data
 /data/
+/onnx_models/
 
 # Mac OS-specific storage files
 .DS_Store

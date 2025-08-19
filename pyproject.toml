@@ -49,6 +49,8 @@ dependencies = [
   "tqdm",
   "typer[all]",
   "yolox @ git+https://github.com/r-b-g-b/YOLOX.git@build-requirements",
+  "onnx",
+  "onnxruntime",
 ]
 
 [project.scripts]

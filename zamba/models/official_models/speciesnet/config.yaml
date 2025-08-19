@@ -1,0 +1,5 @@
+predict_config:
+  model_name: speciesnet
+  image_size: 480
+  batch_size: 1
+public_checkpoint: speciesnet-1.0-pytorch-zamba.pth
