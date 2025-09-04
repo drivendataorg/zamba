@@ -26,6 +26,7 @@ def two_video_filepaths(tmp_path):
     return output_path
 
 
+@pytest.mark.cached
 def test_prediction(two_video_filepaths):
     dem = DepthEstimationManager(
         model_cache_dir=Path(appdirs.user_cache_dir()) / "zamba", gpus=GPUS_AVAILABLE
@@ -82,6 +83,7 @@ def test_save_dir_and_overwrite(tmp_path, two_video_filepaths):
     assert config.overwrite
 
 
+@pytest.mark.cached
 def test_invalid_video_is_skipped(tmp_path):
     # create invalid vid
     invalid_video = tmp_path / "invalid_vid.mp4"

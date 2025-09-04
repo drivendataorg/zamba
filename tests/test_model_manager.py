@@ -182,7 +182,11 @@ def test_train_save_dir_overwrite(
     "model_name", ["time_distributed", "slowfast", "european", "blank_nonblank"]
 )
 @pytest.mark.parametrize("weight_region", ["us", "asia", "eu"])
+@pytest.mark.network
 def test_download_weights(model_name, weight_region, tmp_path):
+    """end-to-end test which performs a download of the weight files from
+    each AWS region.
+    """
     public_weights = get_model_checkpoint_filename(model_name)
 
     ckpt_path = download_weights(

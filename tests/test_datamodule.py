@@ -1,9 +1,12 @@
 import itertools
 
+import pytest
+
 from zamba.pytorch.dataloaders import get_datasets
 from zamba.pytorch_lightning.video_modules import ZambaVideoDataModule
 
 
+@pytest.mark.cached
 def test_get_datasets_train_metadata(train_metadata):
     train_dataset, val_dataset, test_dataset, predict_dataset = get_datasets(
         train_metadata=train_metadata,
@@ -16,6 +19,7 @@ def test_get_datasets_train_metadata(train_metadata):
     assert predict_dataset is None
 
 
+@pytest.mark.cached
 def test_get_datasets_predict_metadata(predict_metadata):
     train_dataset, val_dataset, test_dataset, predict_dataset = get_datasets(
         predict_metadata=predict_metadata,
@@ -30,6 +34,7 @@ def test_get_datasets_predict_metadata(predict_metadata):
     assert test_dataset is None
 
 
+@pytest.mark.cached
 def test_get_datasets_train_and_predict_metadata(train_metadata, predict_metadata):
     train_dataset, val_dataset, test_dataset, predict_dataset = get_datasets(
         train_metadata=train_metadata,
@@ -45,6 +50,7 @@ def test_get_datasets_train_and_predict_metadata(train_metadata, predict_metadat
         assert label.sum() == 0
 
 
+@pytest.mark.cached
 def test_zamba_data_module_train(train_metadata):
     data_module = ZambaVideoDataModule(train_metadata=train_metadata)
     for videos, labels in data_module.train_dataloader():
@@ -52,6 +58,7 @@ def test_zamba_data_module_train(train_metadata):
         assert labels.sum() == 1
 
 
+@pytest.mark.cached
 def test_zamba_data_module_train_and_predict(train_metadata, predict_metadata):
     data_module = ZambaVideoDataModule(
         train_metadata=train_metadata,
