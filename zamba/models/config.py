@@ -32,11 +32,13 @@ from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, VIDEO_SUFFIXES, get_model
 
 GPUS_AVAILABLE = torch.cuda.device_count()
 
+# private model weights; used for publishing models to the public buckets
 WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_1/",
     "european": "s3://drivendata-client-zamba/data/results/zamba_v2_classification/european_td_dev_base/version_0/",
     "slowfast": "s3://drivendata-client-zamba/data/results/zamba_v2_classification/experiments/slowfast_small_set_full_size_mdlite/version_2/",
     "blank_nonblank": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set_bnb/version_0/",
+    "speciesnet": "https://github.com/pjbull/speciesnet-convert/releases/download//always_crop_99710272_22x8_v12_epoch_00148.pth",
 }
 
 MODEL_MAPPING = {

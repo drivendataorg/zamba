@@ -33,6 +33,7 @@ class ResultsFormat(StrEnum):
 
 class ImageModelEnum(StrEnum):
     LILA_SCIENCE = "lila.science"
+    SPECIESNET = "speciesnet"
 
 
 class ZambaImageConfig(ZambaBaseModel):
@@ -109,7 +110,7 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
     detections_threshold: float = 0.2
     gpus: int = GPUS_AVAILABLE
     num_workers: int = 3
-    image_size: Optional[int] = 224
+    image_size: Optional[int] = None
     results_file_format: ResultsFormat = ResultsFormat.CSV
     results_file_name: Optional[Path] = Path("zamba_predictions.csv")
     model_cache_dir: Optional[Path] = None
@@ -117,6 +118,9 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
 
     class Config:  # type: ignore
         arbitrary_types_allowed = True
+        validate_assignment = (
+            False  # don't rerun validation (which has side effects) on assignment
+        )
 
     _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir
@@ -203,8 +207,8 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
 
     @root_validator(skip_on_failure=True)
     def validate_image_size(cls, values):
-        if values["image_size"] <= 0:
-            raise ValueError("Image size should be greater than or equal 64")
+        if values["image_size"] is not None and values["image_size"] <= 0:
+            raise ValueError("Image size should be greater than 0")
         return values
 
     _validate_model_name_and_checkpoint = root_validator(allow_reuse=True, skip_on_failure=True)(
@@ -290,7 +294,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     name: Optional[str] = "image-classification"
     max_epochs: int = 100
     lr: Optional[float] = None  # if None, will find a good learning rate
-    image_size: int = 224
+    image_size: Optional[int] = None
     batch_size: Optional[int] = 16
     accumulated_batch_size: Optional[int] = None
     early_stopping_patience: int = 3
@@ -314,6 +318,9 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
 
     class Config:
         arbitrary_types_allowed = True
+        validate_assignment = (
+            False  # don't rerun validation (which has side effects) on assignment
+        )
 
     _validate_model_cache_dir = validator("model_cache_dir", allow_reuse=True, always=True)(
         validate_model_cache_dir

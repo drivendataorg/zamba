@@ -45,6 +45,7 @@ def instantiate_model(
     model_name: Optional[ModelEnum] = None,
     use_default_model_labels: Optional[bool] = None,
     species: Optional[list] = None,
+    batch_size: Optional[int] = None,
 ) -> ZambaVideoClassificationLightningModule:
     """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
     The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
@@ -77,6 +78,13 @@ def instantiate_model(
         hparams = get_default_hparams(model_name)
     else:
         hparams = get_checkpoint_hparams(checkpoint)
+
+    if batch_size is not None:
+        hparams.update({"batch_size": batch_size})
+
+    # we didn't get batch size from the user or the checkpoint, so use a default of 1
+    if "batch_size" not in hparams:
+        hparams.update({"batch_size": 1})
 
     model_class = available_models[hparams["model_class"]]
     logger.info(f"Instantiating model: {model_class.__name__}")

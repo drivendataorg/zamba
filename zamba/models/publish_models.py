@@ -65,7 +65,9 @@ def publish_model(model_name, trained_model_dir):
             train_configuration.yaml, predict_configuration.yaml, config.yaml, hparams.yaml, and
             val_metrics.json.
     """
-    checkpoints = list(AnyPath(trained_model_dir).rglob("*.ckpt"))
+    checkpoints = list(AnyPath(trained_model_dir).rglob("*.ckpt")) + list(
+        AnyPath(trained_model_dir).rglob("*.pt")
+    )
     if len(checkpoints) > 1:
         raise ValueError(
             f"{len(checkpoints)} were found in {trained_model_dir}. There can only be one. Checkpoints found include: {checkpoints}"
@@ -92,6 +94,7 @@ def publish_model(model_name, trained_model_dir):
         "hparams.yaml",
         "val_metrics.json",
     ]:
+
         (AnyPath(trained_model_dir) / file).copy(MODELS_DIRECTORY / model_name)
 
     # prepare config for use in official models dir

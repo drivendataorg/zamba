@@ -31,6 +31,7 @@ from zamba.images.classifier import ImageClassifierModule
 from zamba.images.config import (
     ImageClassificationPredictConfig,
     ImageClassificationTrainingConfig,
+    ImageModelEnum,
     ResultsFormat,
 )
 from zamba.images.data import ImageClassificationDataModule, load_image, absolute_bbox, BboxLayout
@@ -47,25 +48,72 @@ def get_weights(split):
     return torch.tensor(class_weights).to(torch.float32)
 
 
-def predict(config: ImageClassificationPredictConfig) -> None:
-    image_transforms = transforms.Compose(
-        [
-            transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
+def get_default_transforms(
+    config: ImageClassificationPredictConfig | ImageClassificationTrainingConfig,
+):
+    logger.info(f"Using default transforms for {config.model_name} model")
+    if config.model_name == ImageModelEnum.SPECIESNET.value:
+        # speciesnet is trained on 480x480 images by default
+        if config.image_size is None:
+            logger.info("Image size not specified, using value from model checkpoint: 480")
+            config.image_size = 480
+
+        top_transforms = [
+            transforms.Resize(
+                (config.image_size, config.image_size),
+                interpolation=transforms.InterpolationMode.BICUBIC,
+            ),
+        ]
+        bottom_transforms = [
+            transforms.ToTensor(),
+        ]
+    elif config.model_name == ImageModelEnum.LILA_SCIENCE.value:
+        # lila.science is trained on 224x224 images by default
+        if config.image_size is None:
+            logger.info("Image size not specified, using value from model checkpoint: 224")
+            config.image_size = 224
+
+        top_transforms = [
+            transforms.Lambda(
+                partial(resize_and_pad, desired_size=(config.image_size, config.image_size))
+            ),
+        ]
+        bottom_transforms = [
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
         ]
-    )
+
+    return top_transforms, bottom_transforms
+
+
+def predict(config: ImageClassificationPredictConfig) -> None:
     logger.info("Loading models")
     detector = run_detector.load_detector("MDV5A", force_cpu=(os.getenv("RUNNER_OS") == "macOS"))
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
 
+    classifier_module.eval()
+
+    # get image_size from checkpoint
+    if config.image_size is None:
+        logger.info(
+            f"Image size not specified, using value from model checkpoint: {classifier_module.image_size}"
+        )
+        config.image_size = (
+            classifier_module.image_size[0]
+            if isinstance(classifier_module.image_size, tuple)
+            else classifier_module.image_size
+        )
+
+    top_transforms, bottom_transforms = get_default_transforms(config)
+    image_transforms = transforms.Compose(top_transforms + bottom_transforms)
+
     logger.info("Running inference")
     predictions = []
     assert isinstance(config.filepaths, pd.DataFrame)
 
-    for filepath in tqdm(config.filepaths["filepath"]):
+    for filepath in tqdm(sorted(config.filepaths["filepath"].tolist())):
         image = load_image(filepath)
         results = detector.generate_detections_one_image(
             image, filepath, detection_threshold=config.detections_threshold
@@ -167,50 +215,42 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             format="{time} - {name} - {level} - {message}",
         )
 
+    top_transforms, bottom_transforms = get_default_transforms(config)
+
     if config.extra_train_augmentations:
-        train_transforms = transforms.Compose(
-            [
-                transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
-                transforms.RandomResizedCrop(
-                    size=(config.image_size, config.image_size), scale=(0.75, 1.0)
-                ),
-                transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
-                transforms.RandomHorizontalFlip(p=0.3),
-                transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
-                transforms.RandomGrayscale(p=0.05),
-                transforms.RandomEqualize(p=0.05),
-                transforms.RandomAutocontrast(p=0.05),
-                transforms.RandomAdjustSharpness(
-                    sharpness_factor=0.9, p=0.05
-                ),  # < 1 is more blurry
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
-                transforms.RandomErasing(p=0.25, scale=(0.02, 0.33), ratio=(0.3, 3.3)),
-            ]
-        )
+        augment_transforms = [
+            transforms.RandomResizedCrop(
+                size=(config.image_size, config.image_size), scale=(0.75, 1.0)
+            ),
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+            transforms.RandomHorizontalFlip(p=0.3),
+            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
+            transforms.RandomGrayscale(p=0.05),
+            transforms.RandomEqualize(p=0.05),
+            transforms.RandomAutocontrast(p=0.05),
+            transforms.RandomAdjustSharpness(sharpness_factor=0.9, p=0.05),  # < 1 is more blurry
+        ]
+
+        # add random erasing to the end of the pipeline
+        final_transforms = [
+            transforms.RandomErasing(p=0.25, scale=(0.02, 0.33), ratio=(0.3, 3.3)),
+        ]
 
     # defaults simple transforms are specifically chosen for camera trap imagery
     # - random perspective shift
     # - random horizontal flip (no vertical flip; unlikely animals appear upside down cuz gravity)
     # - random rotation
     else:
-        train_transforms = transforms.Compose(
-            [
-                transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
-                transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
-                transforms.RandomHorizontalFlip(p=0.3),
-                transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
-            ]
-        )
-
-    validation_transforms = transforms.Compose(
-        [
-            transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
+        augment_transforms = [
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+            transforms.RandomHorizontalFlip(p=0.3),
+            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
         ]
+        final_transforms = []
+
+    validation_transforms = transforms.Compose(top_transforms + bottom_transforms)
+    train_transforms = transforms.Compose(
+        top_transforms + augment_transforms + bottom_transforms + final_transforms
     )
 
     os.makedirs(config.checkpoint_path, exist_ok=True)
@@ -278,6 +318,18 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             model_name=None,
             use_default_model_labels=config.use_default_model_labels,
             species=config.species_in_label_order,
+            batch_size=config.batch_size,
+        )
+
+    # get image_size from checkpoint
+    if config.image_size is None:
+        logger.info(
+            f"Image size not specified, using value from model checkpoint: {classifier_module.image_size}"
+        )
+        config.image_size = (
+            classifier_module.image_size[0]
+            if isinstance(classifier_module.image_size, tuple)
+            else classifier_module.image_size
         )
 
     # compile for faster performance; disabled for MacOS which is not supported
