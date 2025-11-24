@@ -34,11 +34,13 @@ from zamba.models.utils import (
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
+# private model weights; used for publishing models to the public buckets
 WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_1/",
     "european": "s3://drivendata-client-zamba/data/results/zamba_v2_classification/european_td_dev_base/version_0/",
     "slowfast": "s3://drivendata-client-zamba/data/results/zamba_v2_classification/experiments/slowfast_small_set_full_size_mdlite/version_2/",
     "blank_nonblank": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set_bnb/version_0/",
+    "speciesnet": "https://github.com/pjbull/speciesnet-convert/releases/download//always_crop_99710272_22x8_v12_epoch_00148.pth",
 }
 
 MODEL_MAPPING = {

@@ -6,7 +6,7 @@ This tutorial goes over the steps for using `zamba` if:
 
 * You already have `zamba` installed (for details see the [Installation](install.md) page)
 * You have unlabeled images that you want to generate labels for
-* The possible class species labels for your images are included in the list of possible [zamba labels](models/species-detection.md#species-classes). If your species are not included in this list, you can [retrain a model](train-tutorial.md) using your own labeled data and then run inference.
+* The possible class species labels for your images are included in the list of possible [zamba labels](models/species-detection.md#species-classes). If your species are not included in this list, you can [retrain a model](images-train-tutorial.md) using your own labeled data and then run inference.
 
 ## Basic usage: command line interface
 

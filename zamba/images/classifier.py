@@ -47,8 +47,14 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
                 self.base_model_name, pretrained=True, num_classes=self.num_classes
             )
         else:
-            self.model = self.from_disk(finetune_from).model
-            self.model.head.fc = nn.Linear(self.model.head.fc.in_features, self.num_classes)
+            self.model = self.from_disk(finetune_from, batch_size=batch_size, **kwargs).model
+
+            if hasattr(self.model, "head") and hasattr(self.model.head, "fc"):
+                self.model.head.fc = nn.Linear(self.model.head.fc.in_features, self.num_classes)
+            elif hasattr(self.model, "classifier"):
+                self.model.classifier = nn.Linear(
+                    self.model.classifier.in_features, self.num_classes
+                )
 
         self.lr = lr
 
@@ -82,17 +88,19 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
             ),
         )
 
+        params = self.hparams.scheduler_params or {}
+
         # Reset CyclicLR params assuming learning rate was found with lr_find or other empirical method
-        if "base_lr" in self.hparams.scheduler_params:
+        if "base_lr" in params:
             self.hparams.scheduler_params["base_lr"] = self.lr / 10
 
-        if "max_lr" in self.hparams.scheduler_params:
+        if "max_lr" in params:
             self.hparams.scheduler_params["max_lr"] = self.lr * 10
 
         if self.scheduler is not None:
             scheduler = self.scheduler(
                 optimizer,
-                **self.hparams.scheduler_params,
+                **params,
             )
 
             return [optimizer], [scheduler]

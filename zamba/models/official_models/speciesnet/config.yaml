@@ -1,0 +1,3 @@
+predict_config:
+  model_name: speciesnet
+public_checkpoint: always_crop_99710272_22x8_v12_epoch_00148__convert_v0.0.2.pt
