@@ -284,6 +284,9 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
             Options are 'us', 'eu', or 'asia'. Defaults to 'us'.
         species_in_label_order (list, optional): Optional list to specify the order of
             species labels in the model output. Defaults to None.
+        debug (int, optional): If set, samples the final data down to N images per class
+            per split (train, val, test). Defaults to 3 if True is passed, or the specified
+            integer value. Useful for quick testing and debugging. Defaults to None.
     """
 
     data_dir: Path
@@ -315,6 +318,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     cache_dir: Optional[Path] = Path(appdirs.user_cache_dir()) / "zamba" / "image_cache"
     weight_download_region: str = RegionEnum.us.value
     species_in_label_order: Optional[list] = None
+    debug: Optional[int] = None
 
     class Config:
         arbitrary_types_allowed = True
@@ -430,6 +434,36 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         # if no "split" column, set up train, val, and test split
         if "split" not in labels.columns:
             make_split(labels, values)
+
+        # Apply debug sampling if enabled
+        debug = values.get("debug")
+        if debug is not None:
+            if not isinstance(debug, int) or debug < 1:
+                raise ValueError(f"debug must be a positive integer, got {debug}")
+            
+            logger.info(f"Debug mode enabled: sampling {debug} images per class per split")
+            
+            # Sample N images per class per split
+            sampled_labels = []
+            for split_name in ["train", "val", "test"]:
+                split_data = labels[labels["split"] == split_name]
+                if len(split_data) == 0:
+                    continue
+                
+                for label_idx in split_data["label"].unique():
+                    label_data = split_data[split_data["label"] == label_idx]
+                    n_samples = min(debug, len(label_data))
+                    sampled = label_data.sample(n=n_samples, random_state=42)
+                    sampled_labels.append(sampled)
+            
+            if sampled_labels:
+                labels = pd.concat(sampled_labels, ignore_index=True)
+                logger.info(
+                    f"Debug sampling complete: {len(labels)} total images "
+                    f"(up to {debug} per class per split)"
+                )
+            else:
+                logger.warning("Debug mode enabled but no data found to sample")
 
         values["labels"] = labels.reset_index()
 

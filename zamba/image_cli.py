@@ -1,6 +1,7 @@
 from collections.abc import Callable
 import os
 from pathlib import Path
+from typing import Optional
 
 from click.core import ParameterSource
 from loguru import logger
@@ -272,6 +273,11 @@ def train(
         "--weighted-loss",
         help="Use weighted cross entropy as loss.",
     ),
+    debug: int = typer.Option(
+        None,
+        "--debug",
+        help="Debug mode: samples data down to N images per class per split. Use --debug=3 or --debug=10 for a custom number.",
+    ),
     yes: bool = typer.Option(
         False,
         "--yes",
@@ -293,6 +299,7 @@ def train(
             "mlflow_experiment_name": lambda x: ("name", x),
             "model_checkpoint": lambda x: ("checkpoint", x),
             "no_crop_images": lambda x: ("crop_images", not x),
+            "debug": lambda x: ("debug", x if isinstance(x, int) and x > 0 else None),
         },
         to_drop=[
             "batch_size",

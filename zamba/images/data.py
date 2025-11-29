@@ -93,30 +93,42 @@ class ImageClassificationDataModule(pl.LightningDataModule):
 
     def preprocess_annotations(self, annotations: pd.DataFrame) -> pd.DataFrame:
         num_annotations = len(annotations)
-        bbox_in_df = all(column in annotations.columns for column in ["x1", "x2", "y1", "y2"])
-        if bbox_in_df:
+
+        has_bbox_columns = all(column in annotations.columns for column in ["x1", "x2", "y1", "y2"])
+
+        if not has_bbox_columns:
+            with_bbox_annotations = pd.DataFrame([])
+            no_bbox_annotations = annotations
+        else:
+            with_bbox_annotations = annotations[annotations[["x1", "x2", "y1", "y2"]].notna().all(axis=1)]
+            no_bbox_annotations = annotations[annotations[["x1", "x2", "y1", "y2"]].isna().any(axis=1)]
+
+        # Initialize empty dataframes for cropped and megadetector annotations
+        cropped_annotations = pd.DataFrame([])
+        megadetector_annotations = pd.DataFrame([])
+
+        if len(with_bbox_annotations) > 0:
             logger.info(
-                f"Bboxes found in annotations. Cropping images and save to cache_dir: {self.cache_dir}"
+                f"Bboxes found in some of the annotations. Cropping images and save to cache_dir: {self.cache_dir}"
             )
 
             processed_annotations = process_map(
                 crop_to_bounding_box,
-                annotations.iterrows(),
+                with_bbox_annotations.iterrows(),
                 repeat(self.cache_dir),
                 repeat(self.data_dir),
-                total=len(annotations),
+                total=len(with_bbox_annotations),
                 desc="Cropping images",
             )
 
-            annotations = pd.DataFrame(processed_annotations)
-        else:
-            processed_annotations = []
+            cropped_annotations = pd.DataFrame(processed_annotations)
+        elif len(no_bbox_annotations) > 0:
             detector = run_detector.load_detector(
                 "MDV5A", force_cpu=(os.getenv("RUNNER_OS") == "macOS")
             )
             for _, row in tqdm(
-                annotations.iterrows(),
-                total=len(annotations),
+                no_bbox_annotations.iterrows(),
+                total=len(no_bbox_annotations),
                 desc="Running megadetector to extract bboxes.",
             ):
                 filepath = (
@@ -147,14 +159,14 @@ class ImageClassificationDataModule(pl.LightningDataModule):
                     ) = (bbox[0], bbox[2], bbox[1], bbox[3])
                     detection_row["cached_bbox"] = cache_path.resolve().absolute()
                     processed_annotations.append(detection_row)
-                annotations = pd.DataFrame(processed_annotations)
+                megadetector_annotations = pd.DataFrame(megadetector_annotations)
 
         logger.info(
             f"Number of objects before preprocessing: {num_annotations}, "
-            f"number of objects after preprocessing: {len(annotations)}"
+            f"number of objects after preprocessing: {len(cropped_annotations) + len(megadetector_annotations)}"
         )
 
-        return annotations
+        return pd.concat([cropped_annotations, megadetector_annotations])
 
     def train_dataloader(self) -> DataLoader:
         return DataLoader(
