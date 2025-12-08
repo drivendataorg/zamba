@@ -74,7 +74,12 @@ def predict(config: ImageClassificationPredictConfig) -> None:
         for detection in results["detections"]:
             try:
                 bbox = absolute_bbox(image, detection["bbox"], bbox_layout=BboxLayout.XYWH)
-                detection_category = detection["category"]
+                if detection["category"] == "1":
+                    detection_category = "animal"
+                elif detection["category"] == "2":
+                    detection_category = "person"
+                elif detection["category"] == "3":
+                    detection_category = "vehicle"
                 detection_conf = detection["conf"]
                 img = image.crop(bbox)
                 input_data = image_transforms(img)
