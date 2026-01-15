@@ -143,4 +143,4 @@ See the docs page on [contributing to `zamba`](contribute/) for details.
 
 ## Reference paper
 
-Dorne, E., Qi, J., Bull, P., Stephens, C., Bessone, M., Debetencourt, B., Fruth, B., Morgan, D., Palmer, M. S., Sanz, C., Wendefeuer, J., Crockford, C., Deschner, T., Langergraber, K. E., Piel, A. K., Robbins, M., Sommer, V., Stewart, F. A., Wittig, R. M., . . . Arandjelovic, M. (2025). Zamba: Computer vision for wildlife conservation. _Proceedings of the Python in Science Conferences_, 85–111. https://doi.org/10.25080/crcw9835
+Dorne, E., Qi, J., Bull, P., Stephens, C., Bessone, M., Debetencourt, B., Fruth, B., Morgan, D., Palmer, M. S., Sanz, C., Wendefeuer, J., Crockford, C., Deschner, T., Langergraber, K. E., Piel, A. K., Robbins, M., Sommer, V., Stewart, F. A., Wittig, R. M., . . . Arandjelovic, M. (2025). Zamba: Computer vision for wildlife conservation. _Proceedings of the Python in Science Conferences_, 85–111. [https://doi.org/10.25080/crcw9835](https://doi.org/10.25080/crcw9835)
