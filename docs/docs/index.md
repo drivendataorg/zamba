@@ -1,7 +1,7 @@
 # Zamba
 
 [![Docs Status](https://img.shields.io/badge/docs-stable-informational)](https://zamba.drivendata.org/docs/)
-[![tests](https://github.com/drivendataorg/zamba/workflows/tests/badge.svg?branch=master)](https://github.com/drivendataorg/zamba/actions?query=workflow%3Atests+branch%3Amaster)
+[![tests](https://github.com/drivendataorg/zamba/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/drivendataorg/zamba/actions/workflows/tests.yml?query=branch%3Amaster)
 [![codecov](https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/zamba)
 <!-- [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/) -->
 
@@ -44,7 +44,7 @@ See the [Installation](install/) page of the documentation for details.
 Once you have `zamba` installed, some good starting points are:
 
 - The [Quickstart](quickstart/) page for basic examples of usage
-- The user tutorials for [classifying images](image-predict-tutorial/), [classifying videos](predict-tutorial/), or [training a model](train-tutorial/)
+- The user tutorials for [classifying images](images-predict-tutorial/), [classifying videos](predict-tutorial/), or [training a model](train-tutorial/)
 
 ## Example usage
 
@@ -91,7 +91,7 @@ $ zamba image predict --data-dir path/to/videos
 
 By default, predictions will be saved to `zamba_predictions.csv`. Run `zamba predict --help` or `zamba image predict --help` to list all possible options to pass to `predict`.
 
-See the [Quickstart](quickstart/) page or the user tutorial on [classifying images](image-predict-tutorial/) or [classifying videos](predict-tutorial/) for more details.
+See the [Quickstart](quickstart/) page or the user tutorial on [classifying images](images-predict-tutorial/) or [classifying videos](predict-tutorial/) for more details.
 
 ### Training a model
 
@@ -140,3 +140,7 @@ See the [depth estimation page](models/depth/) for more details.
 We would love your contributions of code fixes, new models, additional training data, docs revisions, and anything else you can bring to the project!
 
 See the docs page on [contributing to `zamba`](contribute/) for details.
+
+## Reference paper
+
+Dorne, E., Qi, J., Bull, P., Stephens, C., Bessone, M., Debetencourt, B., Fruth, B., Morgan, D., Palmer, M. S., Sanz, C., Wendefeuer, J., Crockford, C., Deschner, T., Langergraber, K. E., Piel, A. K., Robbins, M., Sommer, V., Stewart, F. A., Wittig, R. M., . . . Arandjelovic, M. (2025). Zamba: Computer vision for wildlife conservation. _Proceedings of the Python in Science Conferences_, 85–111. https://doi.org/10.25080/crcw9835
