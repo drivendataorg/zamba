@@ -140,3 +140,7 @@ See the [depth estimation page](https://zamba.drivendata.org/docs/stable/models/
 We would love your contributions of code fixes, new models, additional training data, docs revisions, and anything else you can bring to the project!
 
 See the docs page on [contributing to `zamba`](https://zamba.drivendata.org/docs/stable/contribute/) for details.
+
+## Reference paper
+
+Dorne, E., Qi, J., Bull, P., Stephens, C., Bessone, M., Debetencourt, B., Fruth, B., Morgan, D., Palmer, M. S., Sanz, C., Wendefeuer, J., Crockford, C., Deschner, T., Langergraber, K. E., Piel, A. K., Robbins, M., Sommer, V., Stewart, F. A., Wittig, R. M., . . . Arandjelovic, M. (2025). Zamba: Computer vision for wildlife conservation. _Proceedings of the Python in Science Conferences_, 85–111. [https://doi.org/10.25080/crcw9835](https://doi.org/10.25080/crcw9835)
