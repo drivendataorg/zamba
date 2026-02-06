@@ -12,19 +12,23 @@ from zamba.settings import VIDEO_SUFFIXES
 def main(
     video_dir: Path = typer.Argument(..., help="Directory containing video files."),
     total_frames: int = typer.Option(16, help="Target number of frames."),
-    model_input_height: int = typer.Option(224, help="Model input height."),
-    model_input_width: int = typer.Option(224, help="Model input width."),
+    model_input_height: int = typer.Option(240, help="Model input height."),
+    model_input_width: int = typer.Option(426, help="Model input width."),
+    fps: float = typer.Option(4.0, help="Frames per second for sampling."),
+    crop_bottom_pixels: int = typer.Option(50, help="Pixels to crop from bottom."),
 ):
     """Compare video loading speed for MDLite vs MegaDetector."""
     video_dir = Path(video_dir)
     if not video_dir.is_dir():
         raise ValueError(f"{video_dir} is not a directory.")
 
-    suffixes = [s.lower() if s.startswith(".") else f".{s.lower()}" for s in VIDEO_SUFFIXES]
-    videos = []
-    for suffix in suffixes:
-        videos.extend(video_dir.rglob(f"*{suffix}"))
-    videos = sorted(set(videos))
+    suffixes = {s.lower() if s.startswith(".") else f".{s.lower()}" for s in VIDEO_SUFFIXES}
+    videos = [
+        path
+        for path in video_dir.rglob("*")
+        if path.is_file() and path.suffix.lower() in suffixes
+    ]
+    videos = sorted(videos)
 
     if not videos:
         raise ValueError(f"No video files found in {video_dir}")
@@ -35,12 +39,21 @@ def main(
         total_frames=total_frames,
         model_input_height=model_input_height,
         model_input_width=model_input_width,
+        crop_bottom_pixels=crop_bottom_pixels,
+        fps=fps,
         ensure_total_frames=True,
     )
 
     mdlite_config = base_config.copy(
         update={
-            "megadetector_lite_config": MegadetectorLiteYoloXConfig(n_frames=total_frames)
+            "megadetector_lite_config": MegadetectorLiteYoloXConfig(
+                confidence=0.25,
+                fill_mode="score_sorted",
+                frame_batch_size=24,
+                image_height=640,
+                image_width=640,
+                n_frames=total_frames,
+            )
         }
     )
 

@@ -1,5 +1,5 @@
 from fractions import Fraction
-from functools import reduce
+from functools import reduce, lru_cache
 import hashlib
 import json
 from math import floor
@@ -28,6 +28,10 @@ from zamba.object_detection.yolox.megadetector_lite_yolox import (
     filter_detections,
 )
 from zamba.settings import IMAGE_SUFFIXES
+
+@lru_cache(maxsize=None)
+def _get_md_detector(model_name: str, force_cpu: bool):
+    return run_detector.load_detector(model_name, force_cpu=force_cpu)
 
 
 def ffprobe(path: os.PathLike) -> pd.Series:
@@ -161,6 +165,8 @@ class MegadetectorConfig(BaseModel):
         sort_by_time (bool, optional): Whether to return selected frames in original order.
         seed (int, optional): Random state for random number generator.
         force_cpu (bool, optional): Force CPU inference for MegaDetector.
+        batch_size (int, optional): Number of frames per batch for MegaDetector inference.
+            Defaults to 24 to match MDLite's frame_batch_size.
     """
 
     model: str = "MDV5A"
@@ -170,6 +176,7 @@ class MegadetectorConfig(BaseModel):
     sort_by_time: bool = True
     seed: Optional[int] = 55
     force_cpu: Optional[bool] = None
+    batch_size: int = 24
 
     class Config:
         extra = "forbid"
@@ -506,7 +513,30 @@ def load_and_repeat_image(path, target_size=(224, 224), repeat_count=4):
     return repeated_image
 
 
+def _detect_md_video(arr: np.ndarray, md_config: "MegadetectorConfig"):
+    force_cpu = md_config.force_cpu
+    if force_cpu is None:
+        force_cpu = os.getenv("RUNNER_OS") == "macOS"
 
+    detector = _get_md_detector(md_config.model, force_cpu)
+    detections = []
+    batch_size = max(1, md_config.batch_size)
+    for start in range(0, len(arr), batch_size):
+        batch = [Image.fromarray(frame) for frame in arr[start : start + batch_size]]
+        image_ids = [f"frame_{i}" for i in range(start, start + len(batch))]
+        results = detector.generate_detections_one_batch(
+            batch,
+            image_id=image_ids,
+            detection_threshold=md_config.detection_threshold,
+        )
+        for result in results:
+            frame_boxes = []
+            frame_scores = []
+            for detection in result.get("detections", []):
+                frame_boxes.append(detection.get("bbox"))
+                frame_scores.append(detection.get("conf"))
+            detections.append((np.array(frame_boxes), np.array(frame_scores)))
+    return detections
 
 
 def load_video_frames(
@@ -603,25 +633,7 @@ def load_video_frames(
         if isinstance(md_config, dict):
             md_config = MegadetectorConfig.parse_obj(md_config)
 
-        force_cpu = md_config.force_cpu
-        if force_cpu is None:
-            force_cpu = os.getenv("RUNNER_OS") == "macOS"
-
-        detector = run_detector.load_detector(md_config.model, force_cpu=force_cpu)
-        detections = []
-        for ix, frame in enumerate(arr):
-            image = Image.fromarray(frame)
-            result = detector.generate_detections_one_image(
-                image,
-                f"frame_{ix}",
-                detection_threshold=md_config.detection_threshold,
-            )
-            frame_boxes = []
-            frame_scores = []
-            for detection in result.get("detections", []):
-                frame_boxes.append(detection.get("bbox"))
-                frame_scores.append(detection.get("conf"))
-            detections.append((np.array(frame_boxes), np.array(frame_scores)))
+        detections = _detect_md_video(arr, md_config)
 
         arr = filter_detections(
             frames=arr,
