@@ -565,134 +565,28 @@ Lila.science dataset, which contains over 15 million annotations from 7 million 
 
 Data came from the following [lila.science datasets](https://lila.science/datasets):
 
-<table>
-  <tr>
-    <th>Dataset</th>
-    <th>Geography</th>
-    <th>Count of original images</th>
-    <th>Count of cropped annotations</th>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/caltech-camera-traps">Caltech Camera Traps</a><br/>Beery et al., 2018</td>
-    <td>Southwestern United States</td>
-    <td>59,205</td>
-    <td>96,724</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/channel-islands-camera-traps/">Channel Islands Camera Traps</a><br/>The Nature Conservancy, 2021</td>
-    <td>California, United States</td>
-    <td>125,369</td>
-    <td>239,472</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/desert-lion-conservation-camera-traps/">Desert Lion Camera Traps</a><br/>Desert Lion Conservation Project, 2024</td>
-    <td>Namibia</td>
-    <td>61,910</td>
-    <td>185,475</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/ena24detection">ENA24-detection</a><br/>Yousif et al., 2019</td>
-    <td>Eastern North America</td>
-    <td>8,652</td>
-    <td>11,092</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/idaho-camera-traps/">Idaho Camera Traps</a><br/>Idaho Department of Fish and Game, 2021</td>
-    <td>Idaho, United States</td>
-    <td>338,706</td>
-    <td>1,072,912</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/island-conservation-camera-traps/">Island Conservation Camera Traps</a><br/>Island Conservation, 2020</td>
-    <td>7 islands around the world</td>
-    <td>44,007</td>
-    <td>79,660</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/missouricameratraps">Missouri Camera Traps</a><br/>Zhang et al., 2016</td>
-    <td>Missouri, United States</td>
-    <td>946</td>
-    <td>955</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/nacti">North American Camera Trap Images</a><br/>Tabak et al., 2018</td>
-    <td>United States</td>
-    <td>2,705,394</td>
-    <td>7,426,839</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/nz-trailcams">New Zealand Trailcams</a><br/>New Zealand Trailcams, 2024</td>
-    <td>New Zealand</td>
-    <td>2,109,592</td>
-    <td>2,794,859</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/orinoquia-camera-traps/">Orinoquia Camera Traps</a><br/>Vélez et al., 2022</td>
-    <td>Colombia</td>
-    <td>80,307</td>
-    <td>103,856</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/snapshot-safari-2024-expansion/">Snapshot Safari 2024 Expansion</a><br/>Pardo et al., 2021</td>
-    <td>Africa (multiple countries)</td>
-    <td>836,522</td>
-    <td>1,949,366</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/snapshot-camdeboo">Snapshot Safari Camdeboo</a><br/>Pardo et al., 2021</td>
-    <td>South Africa</td>
-    <td>15,299</td>
-    <td>26,379</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/snapshot-enonkishu">Snapshot Safari Enonkishu</a><br/>Pardo et al., 2021</td>
-    <td>Kenya</td>
-    <td>9,049</td>
-    <td>37,252</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/snapshot-karoo">Snapshot Safari Karoo</a><br/>Pardo et al., 2021</td>
-    <td>South Africa</td>
-    <td>5,764</td>
-    <td>8,426</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/snapshot-kgalagadi">Snapshot Safari Kgalagadi</a><br/>Pardo et al., 2021</td>
-    <td>South Africa and Botswana</td>
-    <td>2,060</td>
-    <td>2,938</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/snapshot-kruger">Snapshot Safari Kruger</a><br/>Pardo et al., 2021</td>
-    <td>South Africa</td>
-    <td>3,112</td>
-    <td>6,343</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/snapshot-mountain-zebra/">Snapshot Safari Mountain Zebra</a><br/>Pardo et al., 2021</td>
-    <td>South Africa</td>
-    <td>5,535</td>
-    <td>9,333</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/swg-camera-traps">SWG Camera Traps</a><br/>Saola Working Group, 2021</td>
-    <td>Vietnam and Laos</td>
-    <td>87,309</td>
-    <td>100,677</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/wcscameratraps">WCS Camera Traps</a><br/>Wildlife Conservation Society, 2019</td>
-    <td>12 countries</td>
-    <td>523,897</td>
-    <td>920,471</td>
-  </tr>
-  <tr>
-    <td><a href="https://lila.science/datasets/wellingtoncameratraps">Wellington Camera Traps</a><br/>Anton et al., 2018</td>
-    <td>New Zealand</td>
-    <td>203,038</td>
-    <td>269,146</td>
-  </tr>
-</table>
+| Dataset                                                                                                                          | Geography                  | Count of original images | Count of cropped annotations |
+| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -----------------------: | ---------------------------: |
+| [Caltech Camera Traps](https://lila.science/datasets/caltech-camera-traps)<br/>Beery et al., 2018                                | Southwestern United States |                   59,205 |                       96,724 |
+| [Channel Islands Camera Traps](https://lila.science/datasets/channel-islands-camera-traps/)<br/>The Nature Conservancy, 2021     | California, United States  |                  125,369 |                      239,472 |
+| [Desert Lion Camera Traps](https://lila.science/datasets/desert-lion-conservation-camera-traps/)<br/>Desert Lion Conservation Project, 2024 | Namibia           |                   61,910 |                      185,475 |
+| [ENA24-detection](https://lila.science/datasets/ena24detection)<br/>Yousif et al., 2019                                          | Eastern North America      |                    8,652 |                       11,092 |
+| [Idaho Camera Traps](https://lila.science/datasets/idaho-camera-traps/)<br/>Idaho Department of Fish and Game, 2021              | Idaho, United States       |                  338,706 |                    1,072,912 |
+| [Island Conservation Camera Traps](https://lila.science/datasets/island-conservation-camera-traps/)<br/>Island Conservation, 2020 | 7 islands around the world |                  44,007 |                       79,660 |
+| [Missouri Camera Traps](https://lila.science/datasets/missouricameratraps)<br/>Zhang et al., 2016                                | Missouri, United States    |                      946 |                          955 |
+| [North American Camera Trap Images](https://lila.science/datasets/nacti)<br/>Tabak et al., 2018                                  | United States              |                2,705,394 |                    7,426,839 |
+| [New Zealand Trailcams](https://lila.science/datasets/nz-trailcams)<br/>New Zealand Trailcams, 2024                              | New Zealand                |                2,109,592 |                    2,794,859 |
+| [Orinoquia Camera Traps](https://lila.science/datasets/orinoquia-camera-traps/)<br/>Vélez et al., 2022                           | Colombia                   |                   80,307 |                      103,856 |
+| [Snapshot Safari 2024 Expansion](https://lila.science/datasets/snapshot-safari-2024-expansion/)<br/>Pardo et al., 2021           | Africa (multiple countries)|                  836,522 |                    1,949,366 |
+| [Snapshot Safari Camdeboo](https://lila.science/datasets/snapshot-camdeboo)<br/>Pardo et al., 2021                               | South Africa               |                   15,299 |                       26,379 |
+| [Snapshot Safari Enonkishu](https://lila.science/datasets/snapshot-enonkishu)<br/>Pardo et al., 2021                             | Kenya                      |                    9,049 |                       37,252 |
+| [Snapshot Safari Karoo](https://lila.science/datasets/snapshot-karoo)<br/>Pardo et al., 2021                                     | South Africa               |                    5,764 |                        8,426 |
+| [Snapshot Safari Kgalagadi](https://lila.science/datasets/snapshot-kgalagadi)<br/>Pardo et al., 2021                             | South Africa and Botswana  |                    2,060 |                        2,938 |
+| [Snapshot Safari Kruger](https://lila.science/datasets/snapshot-kruger)<br/>Pardo et al., 2021                                   | South Africa               |                    3,112 |                        6,343 |
+| [Snapshot Safari Mountain Zebra](https://lila.science/datasets/snapshot-mountain-zebra/)<br/>Pardo et al., 2021                  | South Africa               |                    5,535 |                        9,333 |
+| [SWG Camera Traps](https://lila.science/datasets/swg-camera-traps)<br/>Saola Working Group, 2021                                | Vietnam and Laos           |                   87,309 |                      100,677 |
+| [WCS Camera Traps](https://lila.science/datasets/wcscameratraps)<br/>Wildlife Conservation Society, 2019                        | 12 countries               |                  523,897 |                      920,471 |
+| [Wellington Camera Traps](https://lila.science/datasets/wellingtoncameratraps)<br/>Anton et al., 2018                            | New Zealand                |                  203,038 |                      269,146 |
 
 <a id='lila-science-config'></a>
 
