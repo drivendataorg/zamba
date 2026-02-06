@@ -40,7 +40,6 @@ from zamba.data.video import load_video_frames
 from zamba.models.utils import RegionEnum, download_weights
 from zamba.settings import get_model_cache_dir
 
-
 MODELS = dict(
     animals=dict(
         config=str(

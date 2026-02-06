@@ -3,7 +3,6 @@ from pathlib import Path
 
 import appdirs
 
-
 VIDEO_SUFFIXES = os.environ.get("VIDEO_SUFFIXES")
 if VIDEO_SUFFIXES is not None:
     VIDEO_SUFFIXES = VIDEO_SUFFIXES.split(",")
