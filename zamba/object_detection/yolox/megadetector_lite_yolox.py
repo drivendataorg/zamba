@@ -36,6 +36,106 @@ class FillModeEnum(str, Enum):
     weighted_prob = "weighted_prob"
 
 
+def filter_detections(
+    frames: np.ndarray,
+    detections: List[Tuple[np.ndarray, np.ndarray]],
+    confidence: float,
+    n_frames: Optional[int] = None,
+    fill_mode: Union[str, FillModeEnum] = FillModeEnum.score_sorted,
+    sort_by_time: bool = True,
+    seed: Optional[int] = 55,
+) -> np.ndarray:
+    """Filter frames based on detection scores.
+
+    Which frames are returned depends on the fill_mode and how many frames are above the
+    confidence threshold. If more than n_frames are above the threshold, the top n_frames are
+    returned. Otherwise add to those over threshold based on fill_mode. If none of these
+    conditions are met, returns all frames above the threshold.
+
+    Args:
+        frames (np.ndarray): Array of video frames to filter with dimensions (frames, height,
+            width, channels)
+        detections (list of tuples): List of detection results for each frame. Each element is
+            a tuple of (bounding boxes array, detection scores array).
+        confidence (float): Minimum detection confidence to count a frame.
+        n_frames (int, optional): Max number of frames to return. If None returns all frames above
+            the threshold. Defaults to None.
+        fill_mode (str or FillModeEnum, optional): Mode for upsampling if the number of frames
+            above the threshold is less than n_frames. Defaults to "score_sorted".
+        sort_by_time (bool, optional): Whether to return selected frames in original order.
+            Defaults to True.
+        seed (int, optional): Random state for random number generator. Defaults to 55.
+
+    Returns:
+        np.ndarray: An array of video frames of length n_frames or shorter
+    """
+    if isinstance(fill_mode, str):
+        fill_mode = FillModeEnum(fill_mode)
+
+    frame_scores = pd.Series(
+        [(np.max(score) if (len(score) > 0) else 0) for _, score in detections]
+    ).sort_values(ascending=False)
+
+    selected_indices = frame_scores.loc[frame_scores > confidence].index
+
+    if n_frames is None:
+        # no minimum n_frames provided, just select all the frames with scores > threshold
+        pass
+
+    elif len(selected_indices) >= n_frames:
+        # num. frames with scores > threshold is greater than the requested number of frames
+        selected_indices = (
+            frame_scores[selected_indices].sort_values(ascending=False).iloc[:n_frames].index
+        )
+
+    elif len(selected_indices) < n_frames:
+        # num. frames with scores > threshold is less than the requested number of frames
+        rng = np.random.RandomState(seed)
+
+        if fill_mode == FillModeEnum.repeat:
+            repeated_indices = rng.choice(
+                selected_indices,
+                n_frames - len(selected_indices),
+                replace=True,
+            )
+            selected_indices = np.concatenate((selected_indices, repeated_indices))
+
+        elif fill_mode == FillModeEnum.score_sorted:
+            selected_indices = frame_scores.sort_values(ascending=False).iloc[:n_frames].index
+
+        elif fill_mode == FillModeEnum.weighted_euclidean:
+            sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
+            if len(sample_from) > 0 and len(selected_indices) > 0:
+                weights = [
+                    1 / np.linalg.norm(selected_indices - sample) for sample in sample_from
+                ]
+                weights = weights / np.sum(weights)
+                sampled = rng.choice(
+                    sample_from,
+                    n_frames - len(selected_indices),
+                    replace=False,
+                    p=weights,
+                )
+                selected_indices = np.concatenate((selected_indices, sampled))
+
+        elif (fill_mode == FillModeEnum.weighted_prob) and (len(selected_indices) > 0):
+            sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
+            if len(sample_from) > 0:
+                weights = frame_scores[sample_from] / np.sum(frame_scores[sample_from])
+                sampled = rng.choice(
+                    sample_from,
+                    n_frames - len(selected_indices),
+                    replace=False,
+                    p=weights,
+                )
+                selected_indices = np.concatenate((selected_indices, sampled))
+
+    if sort_by_time:
+        selected_indices = sorted(selected_indices)
+
+    return frames[selected_indices]
+
+
 class MegadetectorLiteYoloXConfig(BaseModel):
     """Configuration for a MegadetectorLiteYoloX frame selection model
 
@@ -251,78 +351,12 @@ class MegadetectorLiteYoloX:
         Returns:
             np.ndarray: An array of video frames of length n_frames or shorter
         """
-
-        frame_scores = pd.Series(
-            [(np.max(score) if (len(score) > 0) else 0) for _, score in detections]
-        ).sort_values(
-            ascending=False
-        )  # reduce to one score per frame
-
-        selected_indices = frame_scores.loc[frame_scores > self.config.confidence].index
-
-        if self.config.n_frames is None:
-            # no minimum n_frames provided, just select all the frames with scores > threshold
-            pass
-
-        elif len(selected_indices) >= self.config.n_frames:
-            # num. frames with scores > threshold is greater than the requested number of frames
-            selected_indices = (
-                frame_scores[selected_indices]
-                .sort_values(ascending=False)
-                .iloc[: self.config.n_frames]
-                .index
-            )
-
-        elif len(selected_indices) < self.config.n_frames:
-            # num. frames with scores > threshold is less than the requested number of frames
-            # repeat frames that are above threshold to get to n_frames
-            rng = np.random.RandomState(self.config.seed)
-
-            if self.config.fill_mode == "repeat":
-                repeated_indices = rng.choice(
-                    selected_indices,
-                    self.config.n_frames - len(selected_indices),
-                    replace=True,
-                )
-                selected_indices = np.concatenate((selected_indices, repeated_indices))
-
-            # take frames in sorted order up to n_frames, even if score is zero
-            elif self.config.fill_mode == "score_sorted":
-                selected_indices = (
-                    frame_scores.sort_values(ascending=False).iloc[: self.config.n_frames].index
-                )
-
-            # sample up to n_frames, prefer points closer to frames with detection
-            elif self.config.fill_mode == "weighted_euclidean":
-                sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
-                # take one over euclidean distance to all points with detection
-                weights = [1 / np.linalg.norm(selected_indices - sample) for sample in sample_from]
-                # normalize weights
-                weights /= np.sum(weights)
-                sampled = rng.choice(
-                    sample_from,
-                    self.config.n_frames - len(selected_indices),
-                    replace=False,
-                    p=weights,
-                )
-
-                selected_indices = np.concatenate((selected_indices, sampled))
-
-            # sample up to n_frames, weight by predicted probability - only if some frames have nonzero prob
-            elif (self.config.fill_mode == "weighted_prob") and (len(selected_indices) > 0):
-                sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
-                weights = frame_scores[sample_from] / np.sum(frame_scores[sample_from])
-                sampled = rng.choice(
-                    sample_from,
-                    self.config.n_frames - len(selected_indices),
-                    replace=False,
-                    p=weights,
-                )
-
-                selected_indices = np.concatenate((selected_indices, sampled))
-
-        # sort the selected images back into their original order
-        if self.config.sort_by_time:
-            selected_indices = sorted(selected_indices)
-
-        return frames[selected_indices]
+        return filter_detections(
+            frames=frames,
+            detections=detections,
+            confidence=self.config.confidence,
+            n_frames=self.config.n_frames,
+            fill_mode=self.config.fill_mode,
+            sort_by_time=self.config.sort_by_time,
+            seed=self.config.seed,
+        )

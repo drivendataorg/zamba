@@ -16,12 +16,16 @@ import ffmpeg
 from loguru import logger
 import numpy as np
 import pandas as pd
+from PIL import Image
 from pydantic import BaseModel, root_validator, validator
+from megadetector.detection import run_detector
 
 from zamba.exceptions import ZambaFfmpegException
 from zamba.object_detection.yolox.megadetector_lite_yolox import (
+    FillModeEnum,
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
+    filter_detections,
 )
 from zamba.settings import IMAGE_SUFFIXES
 
@@ -144,6 +148,33 @@ class VideoMetadata(BaseModel):
         )
 
 
+class MegadetectorConfig(BaseModel):
+    """Configuration for MegaDetector frame selection on videos.
+
+    Attributes:
+        model (str): MegaDetector model name.
+        detection_threshold (float): Minimum detection confidence to count a frame.
+        n_frames (int, optional): Max number of frames to return. If None returns all frames above
+            the threshold. Defaults to None.
+        fill_mode (str, optional): Mode for upsampling if the number of frames above the threshold
+            is less than n_frames. Defaults to "score_sorted".
+        sort_by_time (bool, optional): Whether to return selected frames in original order.
+        seed (int, optional): Random state for random number generator.
+        force_cpu (bool, optional): Force CPU inference for MegaDetector.
+    """
+
+    model: str = "MDV5A"
+    detection_threshold: float = 0.2
+    n_frames: Optional[int] = None
+    fill_mode: Optional[FillModeEnum] = FillModeEnum.score_sorted
+    sort_by_time: bool = True
+    seed: Optional[int] = 55
+    force_cpu: Optional[bool] = None
+
+    class Config:
+        extra = "forbid"
+
+
 class VideoLoaderConfig(BaseModel):
     """
     Configuration for load_video_frames.
@@ -157,6 +188,8 @@ class VideoLoaderConfig(BaseModel):
             See http://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect
         megadetector_lite_config (MegadetectorLiteYoloXConfig, optional): Configuration of
             MegadetectorLiteYoloX frame selection model.
+        megadetector_config (MegadetectorConfig, optional): Configuration of MegaDetector frame
+            selection model.
         frame_selection_height (int, optional): Resize the video to this height in pixels, prior to
             frame selection. If None, the full size video will be used for frame selection. Using full
             size images (setting to None) is recommended for MegadetectorLite, especially if your
@@ -196,6 +229,7 @@ class VideoLoaderConfig(BaseModel):
     i_frames: Optional[bool] = False
     scene_threshold: Optional[float] = None
     megadetector_lite_config: Optional[MegadetectorLiteYoloXConfig] = None
+    megadetector_config: Optional[MegadetectorConfig] = None
     frame_selection_height: Optional[int] = None
     frame_selection_width: Optional[int] = None
     total_frames: Optional[int] = None
@@ -299,6 +333,20 @@ class VideoLoaderConfig(BaseModel):
         return values
 
     @root_validator(skip_on_failure=True)
+    def check_megadetector_compatibility(cls, values):
+        if values["megadetector_config"] and (
+            values["early_bias"] or values["evenly_sample_total_frames"]
+        ):
+            raise ValueError(
+                f"megadetector_config cannot be used with early_bias or evenly_sample_total_frames. Values provided are {values}."
+            )
+        if values["megadetector_config"] and values["megadetector_lite_config"]:
+            raise ValueError(
+                "Cannot use megadetector_config and megadetector_lite_config simultaneously."
+            )
+        return values
+
+    @root_validator(skip_on_failure=True)
     def check_evenly_sample_total_frames_compatibility(cls, values):
         if values["evenly_sample_total_frames"] is True and values["total_frames"] is None:
             raise ValueError(
@@ -325,6 +373,15 @@ class VideoLoaderConfig(BaseModel):
             # set total frames if only specified in megadetector_lite_config
             if values["total_frames"] is None:
                 values["total_frames"] = values["megadetector_lite_config"].n_frames
+
+        if values["megadetector_config"] is not None:
+            # set n frames for megadetector_config if only specified by total_frames
+            if values["megadetector_config"].n_frames is None:
+                values["megadetector_config"].n_frames = values["total_frames"]
+
+            # set total frames if only specified in megadetector_config
+            if values["total_frames"] is None:
+                values["total_frames"] = values["megadetector_config"].n_frames
 
         return values
 
@@ -449,6 +506,9 @@ def load_and_repeat_image(path, target_size=(224, 224), repeat_count=4):
     return repeated_image
 
 
+
+
+
 def load_video_frames(
     filepath: os.PathLike,
     config: Optional[VideoLoaderConfig] = None,
@@ -537,6 +597,41 @@ def load_video_frames(
         detection_probs = mdlite.detect_video(video_arr=arr)
 
         arr = mdlite.filter_frames(arr, detection_probs)
+
+    if config.megadetector_config is not None:
+        md_config = config.megadetector_config
+        if isinstance(md_config, dict):
+            md_config = MegadetectorConfig.parse_obj(md_config)
+
+        force_cpu = md_config.force_cpu
+        if force_cpu is None:
+            force_cpu = os.getenv("RUNNER_OS") == "macOS"
+
+        detector = run_detector.load_detector(md_config.model, force_cpu=force_cpu)
+        detections = []
+        for ix, frame in enumerate(arr):
+            image = Image.fromarray(frame)
+            result = detector.generate_detections_one_image(
+                image,
+                f"frame_{ix}",
+                detection_threshold=md_config.detection_threshold,
+            )
+            frame_boxes = []
+            frame_scores = []
+            for detection in result.get("detections", []):
+                frame_boxes.append(detection.get("bbox"))
+                frame_scores.append(detection.get("conf"))
+            detections.append((np.array(frame_boxes), np.array(frame_scores)))
+
+        arr = filter_detections(
+            frames=arr,
+            detections=detections,
+            confidence=md_config.detection_threshold,
+            n_frames=md_config.n_frames,
+            fill_mode=md_config.fill_mode,
+            sort_by_time=md_config.sort_by_time,
+            seed=md_config.seed,
+        )
 
     if (config.model_input_height is not None) and (config.model_input_width is not None):
         resized_frames = np.zeros(
