@@ -1,0 +1,94 @@
+import time
+from pathlib import Path
+from statistics import mean, median
+
+import typer
+
+from zamba.data.video import MegadetectorConfig, VideoLoaderConfig, load_video_frames
+from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
+from zamba.settings import VIDEO_SUFFIXES
+
+
+def main(
+    video_dir: Path = typer.Argument(..., help="Directory containing video files."),
+    total_frames: int = typer.Option(16, help="Target number of frames."),
+    model_input_height: int = typer.Option(224, help="Model input height."),
+    model_input_width: int = typer.Option(224, help="Model input width."),
+    max_videos: int = typer.Option(5, help="Maximum number of videos to test."),
+):
+    """Compare video loading speed for MDLite vs MegaDetector models."""
+    video_dir = Path(video_dir)
+    if not video_dir.is_dir():
+        raise ValueError(f"{video_dir} is not a directory.")
+
+    # Get all video files recursively, case-insensitive
+    suffixes = {s.lower() if s.startswith(".") else f".{s.lower()}" for s in VIDEO_SUFFIXES}
+    videos = [
+        f for f in video_dir.rglob("*")
+        if f.is_file() and f.suffix.lower() in suffixes
+    ]
+    videos = sorted(videos)[:max_videos]
+
+    if not videos:
+        raise ValueError(f"No video files found in {video_dir}")
+
+    print(f"Found {len(videos)} videos (limited to {max_videos})\n")
+
+    base_config = VideoLoaderConfig(
+        total_frames=total_frames,
+        model_input_height=model_input_height,
+        model_input_width=model_input_width,
+        ensure_total_frames=True,
+    )
+
+    mdlite_config = base_config.copy(
+        update={
+            "megadetector_lite_config": MegadetectorLiteYoloXConfig(n_frames=total_frames)
+        }
+    )
+
+    md_models = ["MDV5A", "MD1000-CEDAR", "MD1000-LARCH"]
+    
+    print("Loading with MDLite...")
+    mdlite_times = []
+    for video in videos:
+        start = time.perf_counter()
+        _ = load_video_frames(video, config=mdlite_config)
+        mdlite_times.append(time.perf_counter() - start)
+        print(f"  {video.name}: {mdlite_times[-1]:.2f}s")
+
+    results = {"MDLite": {"times": mdlite_times}}
+
+    for model_name in md_models:
+        print(f"\nLoading with MegaDetector ({model_name})...")
+        md_config = base_config.copy(
+            update={
+                "megadetector_config": MegadetectorConfig(
+                    model=model_name,
+                    n_frames=total_frames
+                )
+            }
+        )
+        
+        md_times = []
+        for video in videos:
+            start = time.perf_counter()
+            _ = load_video_frames(video, config=md_config)
+            md_times.append(time.perf_counter() - start)
+            print(f"  {video.name}: {md_times[-1]:.2f}s")
+        results[model_name] = {"times": md_times}
+
+    print("\n" + "=" * 60)
+    print(f"MDLite - mean: {mean(results['MDLite']['times']):.3f}s, median: {median(results['MDLite']['times']):.3f}s")
+    
+    for model_name in results:
+        if model_name == "MDLite":
+            continue
+        times = results[model_name]["times"]
+        speedup = mean(results['MDLite']['times']) / mean(times)
+        print(f"{model_name:8} - mean: {mean(times):.3f}s, median: {median(times):.3f}s (speedup: {speedup:.2f}x)")
+
+
+if __name__ == "__main__":
+    typer.run(main)
+
