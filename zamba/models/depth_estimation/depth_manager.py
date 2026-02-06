@@ -14,7 +14,6 @@ from zamba.models.utils import RegionEnum, download_weights
 from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
 from zamba.pytorch.transforms import ConvertHWCtoCHW
 
-
 MODELS = dict(
     depth=dict(
         private_weights_url="s3://drivendata-client-zamba/depth_estimation_winner_weights/second_place/tf_efficientnetv2_l_in21k_2_5_pl4/model_best.pt",
