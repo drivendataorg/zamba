@@ -121,9 +121,7 @@ class YoloXModel:
             # Validate requested GPUs don't exceed available
             max_gpus = utils.get_num_devices()
             if gpus > max_gpus:
-                raise ValueError(
-                    f"Requested {gpus} GPUs but only {max_gpus} available"
-                )
+                raise ValueError(f"Requested {gpus} GPUs but only {max_gpus} available")
             self.num_gpu = gpus
 
         if image_size is not None:
