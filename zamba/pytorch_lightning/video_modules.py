@@ -1,3 +1,4 @@
+import sys
 from multiprocessing import cpu_count
 from multiprocessing.context import BaseContext
 from typing import Dict, Optional, Tuple, TYPE_CHECKING
@@ -15,6 +16,8 @@ from zamba.metrics import compute_species_specific_metrics
 from zamba.pytorch.dataloaders import get_datasets
 from zamba.pytorch.transforms import ConvertTHWCtoCTHW
 from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
+
+_DEFAULT_MP_CONTEXT = "spawn" if sys.platform == "win32" else "forkserver"
 
 default_transform = transforms.Compose(
     [
@@ -40,12 +43,12 @@ class ZambaVideoDataModule(LightningDataModule):
         prefetch_factor: int = 2,
         train_metadata: Optional[pd.DataFrame] = None,
         predict_metadata: Optional[pd.DataFrame] = None,
-        multiprocessing_context: Optional[str] = "forkserver",
+        multiprocessing_context: Optional[str] = _DEFAULT_MP_CONTEXT,
         *args,
         **kwargs,
     ):
         self.batch_size = batch_size
-        self.num_workers = num_workers  # Number of parallel processes fetching data
+        self.num_workers = num_workers
         self.prefetch_factor = prefetch_factor
         self.video_loader_config = (
             None if video_loader_config is None else video_loader_config.dict()
@@ -73,52 +76,41 @@ class ZambaVideoDataModule(LightningDataModule):
 
         super().__init__(*args, **kwargs)
 
+    def _dataloader_kwargs(self, shuffle: bool = False) -> dict:
+        """Build kwargs dict for DataLoader, omitting options invalid with num_workers=0."""
+        kwargs = {
+            "batch_size": self.batch_size,
+            "num_workers": self.num_workers,
+            "shuffle": shuffle,
+        }
+        if self.num_workers > 0:
+            kwargs["multiprocessing_context"] = self.multiprocessing_context
+            kwargs["prefetch_factor"] = self.prefetch_factor
+            kwargs["persistent_workers"] = True
+        return kwargs
+
     def train_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
         if self.train_dataset:
             return torch.utils.data.DataLoader(
-                self.train_dataset,
-                batch_size=self.batch_size,
-                num_workers=self.num_workers,
-                shuffle=True,
-                multiprocessing_context=self.multiprocessing_context,
-                prefetch_factor=self.prefetch_factor,
-                persistent_workers=self.num_workers > 0,
+                self.train_dataset, **self._dataloader_kwargs(shuffle=True)
             )
 
     def val_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
         if self.val_dataset:
             return torch.utils.data.DataLoader(
-                self.val_dataset,
-                batch_size=self.batch_size,
-                num_workers=self.num_workers,
-                shuffle=False,
-                multiprocessing_context=self.multiprocessing_context,
-                prefetch_factor=self.prefetch_factor,
-                persistent_workers=self.num_workers > 0,
+                self.val_dataset, **self._dataloader_kwargs()
             )
 
     def test_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
         if self.test_dataset:
             return torch.utils.data.DataLoader(
-                self.test_dataset,
-                batch_size=self.batch_size,
-                num_workers=self.num_workers,
-                shuffle=False,
-                multiprocessing_context=self.multiprocessing_context,
-                prefetch_factor=self.prefetch_factor,
-                persistent_workers=self.num_workers > 0,
+                self.test_dataset, **self._dataloader_kwargs()
             )
 
     def predict_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
         if self.predict_dataset:
             return torch.utils.data.DataLoader(
-                self.predict_dataset,
-                batch_size=self.batch_size,
-                num_workers=self.num_workers,
-                shuffle=False,
-                multiprocessing_context=self.multiprocessing_context,
-                prefetch_factor=self.prefetch_factor,
-                persistent_workers=True,
+                self.predict_dataset, **self._dataloader_kwargs()
             )
 
 

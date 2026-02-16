@@ -8,7 +8,7 @@ import yaml
 
 from zamba import MODELS_DIRECTORY
 from zamba.images.config import ImageModelEnum
-from zamba.models.config import ModelEnum
+from zamba.models.config_common import ModelEnum
 from zamba.models.densepose.densepose_manager import MODELS as DENSEPOSE_MODELS
 from zamba.models.utils import download_weights
 from zamba.settings import get_model_cache_dir

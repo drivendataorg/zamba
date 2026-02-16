@@ -29,10 +29,6 @@ from zamba.models.config_common import (
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import VIDEO_SUFFIXES
 
-<<<<<<< HEAD
-GPUS_AVAILABLE = torch.cuda.device_count()
-=======
->>>>>>> 24802fa (separate image and video dependencies)
 
 WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_1/",
