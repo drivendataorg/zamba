@@ -25,6 +25,7 @@ config_yaml = """
     i_frames: false
     megadetector_lite_config:
         confidence: 0.25
+        device: cpu
         fill_mode: score_sorted
         image_height: 640
         image_width: 640
@@ -58,7 +59,7 @@ def test_get_cached_array_path():
     vid_path = Path(vid_path_str)
 
     expected_cache_path = vid_path.with_suffix(".npy")
-    expected_hash = "0a5f341d4f2b287dee05b8c942da862b8e2b6ab5"
+    expected_hash = "5769ee9120dac20bb1abfff74228820938143224"
     expected = config.cache_dir / expected_hash / expected_cache_path
 
     # test video path as string or Path
@@ -94,6 +95,6 @@ def test_get_cached_array_path():
 
     config = VideoLoaderConfig(**config_dict)
     path = get_cached_array_path(vid_path, config)
-    different_hash = "5115c618c7a1bb18d1c96f4626b80e074b59eceb"
+    different_hash = "4bf4b6db8248aa9cf6ffec1250a708d5d9b690e8"
     expected_different_hash = config.cache_dir / different_hash / expected_cache_path
     assert path == expected_different_hash
