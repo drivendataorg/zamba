@@ -57,10 +57,23 @@ def predict(config: ImageClassificationPredictConfig) -> None:
     )
     logger.info("Loading models")
     detector = run_detector.load_detector("MDV5A", force_cpu=(os.getenv("RUNNER_OS") == "macOS"))
+
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
 
+    # Determine device based on gpus setting
+    if config.gpus > 0 and torch.cuda.is_available():
+        device = torch.device("cuda:0")
+    else:
+        device = torch.device("cpu")
+        if config.gpus > 0:
+            logger.warning("CUDA not available, falling back to CPU for inference")
+
+    classifier_module = classifier_module.to(device)
+    classifier_module.eval()
+    
+    
     logger.info("Running inference")
     predictions = []
     assert isinstance(config.filepaths, pd.DataFrame)
@@ -78,11 +91,14 @@ def predict(config: ImageClassificationPredictConfig) -> None:
                 detection_conf = detection["conf"]
                 img = image.crop(bbox)
                 input_data = image_transforms(img)
+                input_data = input_data.to(device)
 
                 with torch.no_grad():
                     y_hat = (
                         torch.softmax(classifier_module(input_data.unsqueeze(0)), dim=1)
                         .squeeze(0)
+                        .detach()
+                        .cpu()
                         .numpy()
                     )
                     predictions.append((filepath, detection_category, detection_conf, bbox, y_hat))
