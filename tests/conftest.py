@@ -283,7 +283,7 @@ if _HAS_VIDEO:
 
     @pytest.fixture(scope="session")
     def predict_metadata(filepaths) -> pd.DataFrame:
-        return PredictConfig(filepaths=filepaths).filepaths
+        return PredictConfig(filepaths=filepaths, save=False).filepaths
 
     @pytest.fixture(scope="session")
     def time_distributed_checkpoint(labels_absolute_path) -> os.PathLike:

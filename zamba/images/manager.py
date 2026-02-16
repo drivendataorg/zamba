@@ -291,8 +291,8 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             species=config.species_in_label_order,
         )
 
-    # compile for faster performance; disabled for MacOS which is not supported
-    if sys.platform != "darwin":
+    # compile for faster performance; disabled for MacOS and Windows (unsupported/unreliable)
+    if sys.platform not in ("darwin", "win32"):
         classifier = torch.compile(classifier_module)
     else:
         classifier = classifier_module

@@ -21,7 +21,13 @@ def minimum_valid_train(labels_absolute_path):
 
 @pytest.fixture
 def minimum_valid_predict():
-    return ["predict", "--data-dir", str(TEST_VIDEOS_DIR), "--skip-load-validation"]
+    return [
+        "predict",
+        "--data-dir",
+        str(TEST_VIDEOS_DIR),
+        "--skip-load-validation",
+        "--no-save",
+    ]
 
 
 # mock training to just test CLI args
@@ -144,7 +150,14 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
 
     result = runner.invoke(
         app,
-        minimum_valid_predict + ["--output-class-names", "--save"],
+        minimum_valid_predict
+        + [
+            "--output-class-names",
+            "--save",
+            "--save-dir",
+            str(tmp_path / "save_test"),
+            "-o",
+        ],
     )
     assert result.exit_code == 0
 

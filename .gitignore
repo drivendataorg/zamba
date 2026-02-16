@@ -102,6 +102,7 @@ mlruns/
 
 # Predictions
 zamba_predictions.*
+predict_configuration.yaml
 
 # Potential outputs
 *.ckpt

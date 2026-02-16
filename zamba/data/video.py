@@ -365,12 +365,13 @@ def get_cached_array_path(vid_path, config):
     hash_str = hashlib.sha1(hash_input.encode("utf-8")).hexdigest()
     logger.opt(lazy=True).debug(f"Generated hash {hash_str} from {hashed_part}")
 
-    # strip leading "/" in absolute path
-    vid_path = AnyPath(str(vid_path).lstrip("/"))
+    vid_path = AnyPath(str(vid_path))
 
-    # if the video is in S3, drop the prefix and bucket name
+    # if the video is in S3, drop the prefix and bucket name; otherwise make path relative
     if isinstance(vid_path, S3Path):
         vid_path = AnyPath(vid_path.key)
+    elif Path(vid_path).is_absolute():
+        vid_path = Path(*Path(vid_path).parts[1:])
 
     cache_dir = config.cache_dir
     npy_path = AnyPath(cache_dir) / hash_str / vid_path.with_suffix(".npy")
@@ -419,7 +420,7 @@ class npy_cache:
 
     def __del__(self):
         if hasattr(self, "cache_path") and self.cleanup and self.cache_path.exists():
-            if self.cache_path.parents[0] == tempfile.gettempdir():
+            if Path(self.cache_path).parents[0] == Path(tempfile.gettempdir()):
                 logger.info(f"Deleting cache dir {self.cache_path}.")
                 rmtree(self.cache_path)
             else:
