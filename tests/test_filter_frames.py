@@ -6,11 +6,11 @@ from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLit
 pytestmark = pytest.mark.video
 
 n_frames = 100
-rng = np.random.RandomState(68891)
 
 
 @pytest.fixture
 def frames():
+    rng = np.random.RandomState(68891)
     # 20 6x8 RGB frames where the upper-right hand pixel is the frame index
     frames = rng.randint(0, 255, size=(n_frames, 6, 8, 3), dtype=np.uint8)
     frames[:, 0, 0, 0] = np.arange(n_frames, dtype=np.uint8)
@@ -19,6 +19,7 @@ def frames():
 
 @pytest.fixture
 def detections():
+    rng = np.random.RandomState(68891)
     # Frame scores that increase monotonically
     scores = np.zeros(n_frames, dtype=float)
     scores[np.arange(0, n_frames, 10)] = np.arange(0, n_frames, 10)
@@ -73,7 +74,7 @@ def test_weighted_euclidean(mdlite, frames, detections):
     assert (
         filtered_frames[:, 0, 0, 0]
         == np.array(
-            [90, 80, 70, 60, 44, 67, 73, 5, 54, 64, 65, 34, 93, 72, 56, 50, 87, 83, 47, 88]
+            [90, 80, 70, 60, 72, 96, 66, 75, 95, 93, 69, 23, 76, 57, 45, 83, 50, 51, 56, 73]
         )
     ).all()
 
@@ -86,6 +87,6 @@ def test_weighted_prob(mdlite, frames, detections):
     assert (
         filtered_frames[:, 0, 0, 0]
         == np.array(
-            [90, 80, 70, 60, 50, 87, 30, 40, 34, 10, 22, 20, 71, 16, 39, 14, 77, 65, 42, 13]
+            [90, 80, 70, 60, 50, 13, 30, 40, 49, 10, 34, 14, 52, 36, 81, 99, 79, 24, 0, 20]
         )
     ).all()

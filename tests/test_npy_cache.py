@@ -58,7 +58,7 @@ def test_get_cached_array_path():
     vid_path = Path(vid_path_str)
 
     expected_cache_path = vid_path.with_suffix(".npy")
-    expected_hash = "2d1fee2b1e1f78d06aa08bdea88e7661f927bd81"
+    expected_hash = "0a5f341d4f2b287dee05b8c942da862b8e2b6ab5"
     expected = config.cache_dir / expected_hash / expected_cache_path
 
     # test video path as string or Path
@@ -94,6 +94,6 @@ def test_get_cached_array_path():
 
     config = VideoLoaderConfig(**config_dict)
     path = get_cached_array_path(vid_path, config)
-    different_hash = "9becb6d6dfe6b9970afe05af06ef49af4881bd73"
+    different_hash = "5115c618c7a1bb18d1c96f4626b80e074b59eceb"
     expected_different_hash = config.cache_dir / different_hash / expected_cache_path
     assert path == expected_different_hash

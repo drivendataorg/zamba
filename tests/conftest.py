@@ -4,6 +4,10 @@ import random
 import string
 from typing import Optional, Union
 
+# Keep tests on a single visible GPU to avoid nested DDP spawning under pytest-xdist.
+if "CUDA_VISIBLE_DEVICES" not in os.environ:
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 from loguru import logger
 import pandas as pd
 from pathlib import Path
@@ -124,6 +128,9 @@ if _HAS_VIDEO:
         model_name: str
         batch_size = 1
         max_epochs = 1
+        # Keep test training single-device to avoid DDP spawning from xdist workers.
+        # On CPU-only hosts, fall back to gpus=0 so config validation still passes.
+        gpus = 1 if torch.cuda.is_available() else 0
         model_name = "dummy"
         skip_load_validation = True
         auto_lr_find = False

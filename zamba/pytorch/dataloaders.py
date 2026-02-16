@@ -145,6 +145,7 @@ class FfmpegZambaVideoDataset(VisionDataset):
             video = self.transform(video)
 
         target = self.targets.iloc[index]
-        target = torch.tensor(target).float()
+        # Convert Series-like rows to a concrete numeric array for torch tensor creation.
+        target = torch.from_numpy(np.asarray(target, dtype=np.float32))
 
         return video, target

@@ -1,3 +1,4 @@
+from enum import Enum
 from fractions import Fraction
 from functools import reduce
 import hashlib
@@ -346,8 +347,22 @@ def get_cached_array_path(vid_path, config):
     keys = config_dict.keys() - {"cleanup_cache", "cache_dir"}
     hashed_part = {k: config_dict[k] for k in sorted(keys)}
 
+    def _hashable(value):
+        if isinstance(value, dict):
+            return {k: _hashable(v) for k, v in sorted(value.items())}
+        if isinstance(value, list):
+            return [_hashable(v) for v in value]
+        if isinstance(value, tuple):
+            return tuple(_hashable(v) for v in value)
+        if isinstance(value, Enum):
+            return value.value
+        if isinstance(value, Path):
+            return str(value)
+        return value
+
+    hash_input = json.dumps(_hashable(hashed_part), sort_keys=True, separators=(",", ":"))
     # hash config for inclusion in path
-    hash_str = hashlib.sha1(str(hashed_part).encode("utf-8")).hexdigest()
+    hash_str = hashlib.sha1(hash_input.encode("utf-8")).hexdigest()
     logger.opt(lazy=True).debug(f"Generated hash {hash_str} from {hashed_part}")
 
     # strip leading "/" in absolute path

@@ -8,7 +8,6 @@ from functools import partial
 import sys
 
 import git
-import mlflow
 import pandas as pd
 import pytorch_lightning as pl
 import torch
@@ -22,7 +21,6 @@ from pytorch_lightning.callbacks import (
     ModelCheckpoint,
     StochasticWeightAveraging,
 )
-from pytorch_lightning.loggers import MLFlowLogger
 from pytorch_lightning.tuner.tuning import Tuner
 from sklearn.utils.class_weight import compute_class_weight
 from torch.nn import ModuleList
@@ -230,14 +228,23 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
     swa = StochasticWeightAveraging(swa_lrs=1e-2)
     callbacks = [swa, early_stopping, checkpoint_callback]
 
-    # Enable system metrics logging in MLflow
-    mlflow.enable_system_metrics_logging()
+    mlflow_logger = False
+    try:
+        import mlflow
+        from pytorch_lightning.loggers import MLFlowLogger
 
-    mlflow_logger = MLFlowLogger(
-        run_name=f"zamba-{config.name}-{config.model_name}-{config.lr}-{random.randint(1000, 9999)}",
-        experiment_name=config.name,
-        tracking_uri=config.mlflow_tracking_uri,
-    )
+        # Enable system metrics logging in MLflow
+        mlflow.enable_system_metrics_logging()
+        mlflow_logger = MLFlowLogger(
+            run_name=f"zamba-{config.name}-{config.model_name}-{config.lr}-{random.randint(1000, 9999)}",
+            experiment_name=config.name,
+            tracking_uri=config.mlflow_tracking_uri,
+        )
+    except Exception as exc:
+        logger.warning(
+            "MLflow is unavailable; training will continue without MLflow logging. Reason: {}",
+            exc,
+        )
 
     data = ImageClassificationDataModule(
         data_dir=config.data_dir,
