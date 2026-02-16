@@ -1,9 +1,0 @@
--e .[tests]
-
--r requirements-dev/docs.txt
--r requirements-dev/lint.txt
-
-# MLFlow system metrics capture dependencies
-# Not included by default per https://mlflow.org/docs/latest/system-metrics/index.html#extra-dependencies
-psutil
-pynvml

@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -r requirements-dev/docs.txt
+          uv pip install -e ".[docs]"
 
       - name: Build documentation
         run: |

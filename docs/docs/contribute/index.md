@@ -17,12 +17,22 @@ To install for development:
 ```console
 $ git clone https://github.com/drivendataorg/zamba.git
 $ cd zamba
-$ pip install -r requirements-dev.txt
+$ pip install -e ".[tests, image, video, docs]"
+```
+
+You can also install the dependencies using `uv` with the makefile target:
+```console
+$ make requirements
 ```
 
 If your contribution is to the [DensePose](../models/densepose.md) model, you will need to install the additional dependencies with:
 ```console
 $ pip install -e .[densepose]
+```
+
+To build the documentation locally, install the `docs` extra:
+```console
+$ pip install -e ".[docs]"
 ```
 
 ## Running the `zamba` test suite

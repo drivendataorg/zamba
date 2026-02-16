@@ -83,9 +83,7 @@ def test_predict_data_dir_only():
 
 def test_predict_data_dir_and_filepaths(labels_absolute_path, labels_relative_path):
     # correct data dir
-    config = PredictConfig(
-        data_dir=TEST_VIDEOS_DIR, filepaths=labels_relative_path, save=False
-    )
+    config = PredictConfig(data_dir=TEST_VIDEOS_DIR, filepaths=labels_relative_path, save=False)
     assert config.data_dir is not None
     assert config.filepaths is not None
     assert config.filepaths.filepath.str.startswith(str(TEST_VIDEOS_DIR)).all()
@@ -111,9 +109,7 @@ def test_filepath_column(tmp_path, labels_absolute_path):
     )
     # predict: filepaths
     with pytest.raises(ValidationError) as error:
-        PredictConfig(
-            filepaths=tmp_path / "bad_filepath_column.csv", save=False
-        )
+        PredictConfig(filepaths=tmp_path / "bad_filepath_column.csv", save=False)
     assert "must contain a `filepath` column" in error.value.errors()[0]["msg"]
 
     # train: labels
@@ -154,9 +150,7 @@ def test_extra_column(tmp_path, labels_absolute_path):
     ]
 
     # extra columns are excluded in predict config
-    config = PredictConfig(
-        filepaths=tmp_path / "extra_species_col.csv", save=False
-    )
+    config = PredictConfig(filepaths=tmp_path / "extra_species_col.csv", save=False)
     assert config.filepaths.columns == ["filepath"]
 
 
@@ -174,9 +168,7 @@ def test_one_video_does_not_exist(tmp_path, labels_absolute_path, caplog):
     )
     files_df.to_csv(tmp_path / "labels_with_fake_video.csv")
 
-    config = PredictConfig(
-        filepaths=tmp_path / "labels_with_fake_video.csv", save=False
-    )
+    config = PredictConfig(filepaths=tmp_path / "labels_with_fake_video.csv", save=False)
     assert "Skipping 1 file(s) that could not be found" in caplog.text
     # one fewer file than in original list since bad file is skipped
     assert len(config.filepaths) == (len(files_df) - 1)
@@ -206,9 +198,7 @@ def test_videos_cannot_be_loaded(tmp_path, labels_absolute_path, caplog):
 
     files_df.to_csv(tmp_path / "labels_with_non_loadable_videos.csv")
 
-    config = PredictConfig(
-        filepaths=tmp_path / "labels_with_non_loadable_videos.csv", save=False
-    )
+    config = PredictConfig(filepaths=tmp_path / "labels_with_non_loadable_videos.csv", save=False)
     assert "Skipping 2 file(s) that could not be loaded with ffmpeg" in caplog.text
     assert len(config.filepaths) == (len(files_df) - 2)
 
@@ -396,9 +386,7 @@ def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplo
         tmp_path / "filepaths_with_dupe.csv"
     )
 
-    PredictConfig(
-        filepaths=tmp_path / "filepaths_with_dupe.csv", save=False
-    )
+    PredictConfig(filepaths=tmp_path / "filepaths_with_dupe.csv", save=False)
     assert "Found 1 duplicate row(s) in filepaths csv. Dropping duplicates" in caplog.text
 
 
