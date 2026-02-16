@@ -294,11 +294,16 @@ class MegadetectorLiteYoloX:
 
             # sample up to n_frames, prefer points closer to frames with detection
             elif self.config.fill_mode == "weighted_euclidean":
-                sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
+                sample_from = np.asarray(
+                    frame_scores.loc[~frame_scores.index.isin(selected_indices)].index, dtype=int
+                )
                 # take one over euclidean distance to all points with detection
-                weights = [1 / np.linalg.norm(selected_indices - sample) for sample in sample_from]
+                weights = np.asarray(
+                    [1 / np.linalg.norm(selected_indices - sample) for sample in sample_from],
+                    dtype=float,
+                )
                 # normalize weights
-                weights /= np.sum(weights)
+                weights /= weights.sum()
                 sampled = rng.choice(
                     sample_from,
                     self.config.n_frames - len(selected_indices),
@@ -310,8 +315,11 @@ class MegadetectorLiteYoloX:
 
             # sample up to n_frames, weight by predicted probability - only if some frames have nonzero prob
             elif (self.config.fill_mode == "weighted_prob") and (len(selected_indices) > 0):
-                sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
-                weights = frame_scores[sample_from] / np.sum(frame_scores[sample_from])
+                sample_from = np.asarray(
+                    frame_scores.loc[~frame_scores.index.isin(selected_indices)].index, dtype=int
+                )
+                weights = frame_scores[sample_from].to_numpy(dtype=float, copy=True)
+                weights /= weights.sum()
                 sampled = rng.choice(
                     sample_from,
                     self.config.n_frames - len(selected_indices),

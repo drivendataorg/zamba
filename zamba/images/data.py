@@ -7,7 +7,10 @@ from typing import Optional
 import pandas as pd
 import pytorch_lightning as pl
 from loguru import logger
-from megadetector.detection import run_detector
+try:
+    from megadetector.detection import run_detector
+except ModuleNotFoundError:
+    from detection import run_detector
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
