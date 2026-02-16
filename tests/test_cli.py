@@ -7,8 +7,6 @@ import pytest
 from pytest_mock import mocker  # noqa: F401
 from typer.testing import CliRunner
 
-pytestmark = pytest.mark.video
-
 from zamba.cli import app  # noqa: E402
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
@@ -36,6 +34,7 @@ def pred_mock(self):
     return None
 
 
+@pytest.mark.video
 def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa: F811
     mocker.patch("zamba.cli.ModelManager.train", train_mock)
 
@@ -60,6 +59,7 @@ def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa:
     assert result.exit_code == 0
 
 
+@pytest.mark.video
 def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):  # noqa: F811
     """Test CLI options that are shared between train and predict commands."""
 
@@ -110,6 +110,7 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
         assert "Cannot use 2" in str(result.exc_info)
 
 
+@pytest.mark.video
 def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # noqa: F811
     mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
 
@@ -157,6 +158,7 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
 
 
 @pytest.mark.parametrize("model", ["time_distributed", "blank_nonblank"])
+@pytest.mark.video
 def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     data_dir = tmp_path / "videos"
     data_dir.mkdir()
@@ -192,6 +194,7 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     )
 
 
+@pytest.mark.image
 def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
     """Test predicting on images."""
     shutil.copytree(ASSETS_DIR / "images", tmp_path / "images")
@@ -222,6 +225,7 @@ def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
             assert Path(img).stem == label
 
 
+@pytest.mark.video
 def test_depth_cli_options(mocker, tmp_path):  # noqa: F811
     mocker.patch("zamba.models.depth_estimation.config.DepthEstimationConfig.run_model", pred_mock)
 
@@ -256,6 +260,7 @@ def test_depth_cli_options(mocker, tmp_path):  # noqa: F811
     assert "The following configuration will be used" in result.output
 
 
+@pytest.mark.video
 @pytest.mark.skipif(
     not bool(int(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", 0))),
     reason="""Skip the densepose specific tests unless environment variable \

@@ -1,4 +1,4 @@
-.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up tests test-image-only test-video-only
+.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up tests tests-fast test-image-only test-video-only
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -70,9 +70,13 @@ lint:
 tests: clean-test
 	pytest tests -vv
 
+## Dev: fail fast on the first test failure
+tests-fast: clean-test
+	pytest tests -vv --maxfail=1 -x
+
 ## Dev: Fail fast, do not run in parallel, and open debugger on failure
 tests-debug: clean-test
-	pytest tests -vvv --pdb --maxfail=1 -n=0
+	pytest tests -vvv --pdb --maxfail=1 -n=0 --lf --last-failed-no-failures=all
 
 ## Dev: Run the tests that are just for images (no videos)
 images-tests: clean-test

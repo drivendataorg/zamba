@@ -12,15 +12,18 @@ from typing import Optional
 from loguru import logger
 import numpy as np
 import pandas as pd
+from pandas_path import path  # noqa: F401  -- registers pandas .path accessor
 from pydantic import BaseModel, DirectoryPath, validator
 from pqdm.threads import pqdm
 import torch
 
 from zamba.data.metadata import create_site_specific_splits
-from zamba.models.utils import (
+from zamba.models.utils import (  # noqa: F401
     download_weights,
     get_checkpoint_hparams,
     get_model_checkpoint_filename,
+    get_model_species,  # re-exported for zamba.models.config
+    RegionEnum,  # re-exported for zamba.models.config
 )
 from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, get_model_cache_dir
 
