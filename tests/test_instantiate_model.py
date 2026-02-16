@@ -8,6 +8,8 @@ from zamba.models.utils import get_model_species
 
 from conftest import DummyZambaVideoClassificationLightningModule
 
+pytestmark = pytest.mark.video
+
 
 def test_scheduler_ignored_for_prediction(dummy_checkpoint):
     """Tests whether we can instantiate a model for prediction and ignore scheduler config."""

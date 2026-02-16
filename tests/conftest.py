@@ -11,72 +11,133 @@ import pytest
 from _pytest.logging import caplog as _caplog  # noqa: F401
 import torch
 
-from zamba.data.video import VideoLoaderConfig
-from zamba.models.config import PredictConfig, TrainConfig
-from zamba.models.model_manager import MODEL_MAPPING, train_model
-from zamba.models.registry import register_model
-from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
 from zamba.pytorch.transforms import zamba_image_model_transforms
-from zamba.pytorch_lightning.video_modules import (
-    ZambaClassificationLightningModule,
-    ZambaVideoClassificationLightningModule,
-)
+from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
+from zamba.models.registry import register_model
 
 ASSETS_DIR = Path(__file__).parent / "assets"
 TEST_VIDEOS_DIR = ASSETS_DIR / "videos"
 
 random.seed(56745)
 
+# ---------------------------------------------------------------------------
+# Probe which optional extras are installed so we can skip test files whose
+# imports would fail.  collect_ignore is evaluated by pytest *before* it
+# tries to import the test modules, preventing ImportError during collection.
+# ---------------------------------------------------------------------------
+try:
+    import ffmpeg  # noqa: F401
 
-@register_model
-class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLightningModule):
-    """A dummy model whose linear weights start out as all zeros."""
+    _HAS_VIDEO = True
+except ImportError:
+    _HAS_VIDEO = False
 
-    _default_model_name = "dummy_model"  # used to look up default configuration for checkpoints
+try:
+    import megadetector  # noqa: F401
 
-    def __init__(
-        self,
-        num_frames: int,
-        num_hidden: int,
-        finetune_from: Optional[Union[os.PathLike, str]] = None,
-        **kwargs,
+    _HAS_IMAGE = True
+except ImportError:
+    _HAS_IMAGE = False
+
+collect_ignore = []
+if not _HAS_VIDEO:
+    collect_ignore.extend([
+        "test_cli.py",
+        "test_config.py",
+        "test_datamodule.py",
+        "test_densepose.py",
+        "test_depth.py",
+        "test_filter_frames.py",
+        "test_instantiate_model.py",
+        "test_load_video_frames.py",
+        "test_megadetector_lite_yolox.py",
+        "test_model_manager.py",
+        "test_npy_cache.py",
+        "test_zamba_video_classification_lightning_module.py",
+    ])
+if not _HAS_IMAGE:
+    collect_ignore.extend([
+        "test_images.py",
+        "test_image_file_handling.py",
+    ])
+
+# ---------------------------------------------------------------------------
+# Video-specific imports for fixtures (only when video extra is installed)
+# ---------------------------------------------------------------------------
+if _HAS_VIDEO:
+    from zamba.data.video import VideoLoaderConfig
+    from zamba.models.config import PredictConfig, TrainConfig
+    from zamba.models.model_manager import MODEL_MAPPING, train_model
+    from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloX
+    from zamba.pytorch_lightning.video_modules import ZambaVideoClassificationLightningModule
+
+# ---------------------------------------------------------------------------
+# Dummy video model (only defined when video deps are available)
+# ---------------------------------------------------------------------------
+if _HAS_VIDEO:
+
+    @register_model
+    class DummyZambaVideoClassificationLightningModule(
+        ZambaVideoClassificationLightningModule
     ):
-        super().__init__(**kwargs)
+        """A dummy model whose linear weights start out as all zeros."""
 
-        if finetune_from is None:
-            backbone = torch.nn.Linear(num_frames, num_hidden)
-            torch.nn.init.ones_(backbone.weight)
-        else:
-            backbone = self.from_disk(finetune_from).backbone
+        _default_model_name = "dummy_model"
 
-        for param in backbone.parameters():
-            param.requires_grad = False
+        def __init__(
+            self,
+            num_frames: int,
+            num_hidden: int,
+            finetune_from: Optional[Union[os.PathLike, str]] = None,
+            **kwargs,
+        ):
+            super().__init__(**kwargs)
 
-        head = torch.nn.Linear(num_hidden, self.num_classes)
-        torch.nn.init.zeros_(head.weight)
+            if finetune_from is None:
+                backbone = torch.nn.Linear(num_frames, num_hidden)
+                torch.nn.init.ones_(backbone.weight)
+            else:
+                backbone = self.from_disk(finetune_from).backbone
 
-        self.backbone = backbone
-        self.head = head
-        self.model = torch.nn.Sequential(
-            torch.nn.AdaptiveAvgPool3d(1), torch.nn.Flatten(), backbone, head
-        )
+            for param in backbone.parameters():
+                param.requires_grad = False
 
-        self.save_hyperparameters("num_frames", "num_hidden")
+            head = torch.nn.Linear(num_hidden, self.num_classes)
+            torch.nn.init.zeros_(head.weight)
 
-    def forward(self, x, *args, **kwargs):
-        return self.model(x)
+            self.backbone = backbone
+            self.head = head
+            self.model = torch.nn.Sequential(
+                torch.nn.AdaptiveAvgPool3d(1), torch.nn.Flatten(), backbone, head
+            )
 
+            self.save_hyperparameters("num_frames", "num_hidden")
 
-MODEL_MAPPING["DummyZambaVideoClassificationLightningModule"] = {
-    "transform": zamba_image_model_transforms()
-}
+        def forward(self, x, *args, **kwargs):
+            return self.model(x)
+
+    MODEL_MAPPING["DummyZambaVideoClassificationLightningModule"] = {
+        "transform": zamba_image_model_transforms()
+    }
+
+    class DummyTrainConfig(TrainConfig):
+        model_name: str
+        batch_size = 1
+        max_epochs = 1
+        model_name = "dummy"
+        skip_load_validation = True
+        auto_lr_find = False
+
+# ---------------------------------------------------------------------------
+# Dummy image model (always available — only depends on base lightning module)
+# ---------------------------------------------------------------------------
 
 
 @register_model
 class DummyZambaImageClassificationLightningModule(ZambaClassificationLightningModule):
     """A dummy model whose linear weights start out as all zeros."""
 
-    _default_model_name = "dummy_model"  # used to look up default configuration for checkpoints
+    _default_model_name = "dummy_model"
 
     def __init__(
         self,
@@ -137,19 +198,15 @@ class DummyZambaImageClassificationLightningModule(ZambaClassificationLightningM
         return output
 
 
-MODEL_MAPPING["DummyZambaImageClassificationLightningModule"] = {
-    "transform": zamba_image_model_transforms()
-}
+if _HAS_VIDEO:
+    MODEL_MAPPING["DummyZambaImageClassificationLightningModule"] = {
+        "transform": zamba_image_model_transforms()
+    }
 
 
-class DummyTrainConfig(TrainConfig):
-    # let model name be "dummy" without causing errors
-    model_name: str
-    batch_size = 1
-    max_epochs = 1
-    model_name = "dummy"
-    skip_load_validation = True
-    auto_lr_find = False
+# ---------------------------------------------------------------------------
+# Shared fixtures
+# ---------------------------------------------------------------------------
 
 
 @pytest.fixture(scope="session")
@@ -205,71 +262,77 @@ def filepaths(labels_absolute_path, tmp_path_factory) -> os.PathLike:
     return tmp_path / "filepaths.csv"
 
 
-@pytest.fixture(scope="session")
-def train_metadata(labels_absolute_path) -> pd.DataFrame:
-    return TrainConfig(labels=labels_absolute_path).labels
+# ---------------------------------------------------------------------------
+# Video-only fixtures (guarded behind _HAS_VIDEO)
+# ---------------------------------------------------------------------------
+if _HAS_VIDEO:
+
+    @pytest.fixture(scope="session")
+    def train_metadata(labels_absolute_path) -> pd.DataFrame:
+        return TrainConfig(labels=labels_absolute_path).labels
+
+    @pytest.fixture(scope="session")
+    def predict_metadata(filepaths) -> pd.DataFrame:
+        return PredictConfig(filepaths=filepaths).filepaths
+
+    @pytest.fixture(scope="session")
+    def time_distributed_checkpoint(labels_absolute_path) -> os.PathLike:
+        return TrainConfig(
+            labels=labels_absolute_path, model_name="time_distributed"
+        ).checkpoint
+
+    @pytest.fixture(scope="session")
+    def mdlite():
+        return MegadetectorLiteYoloX()
+
+    @pytest.fixture(scope="session")
+    def dummy_checkpoint(labels_absolute_path, tmp_path_factory) -> os.PathLike:
+        tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
+        labels = pd.read_csv(labels_absolute_path)
+        species = list(labels.label.unique())
+        output_path = tmp_path / "dummy.ckpt"
+        DummyZambaVideoClassificationLightningModule(
+            num_frames=4, num_hidden=1, species=species
+        ).to_disk(output_path)
+        return output_path
+
+    @pytest.fixture(scope="session")
+    def dummy_train_config(labels_absolute_path, dummy_checkpoint, tmp_path_factory):
+        tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
+        return DummyTrainConfig(
+            labels=labels_absolute_path,
+            data_dir=TEST_VIDEOS_DIR,
+            model_name="dummy",
+            checkpoint=dummy_checkpoint,
+            max_epochs=1,
+            batch_size=1,
+            auto_lr_find=False,
+            num_workers=2,
+            save_dir=tmp_path / "my_model",
+            skip_load_validation=True,
+        )
+
+    @pytest.fixture(scope="session")
+    def dummy_video_loader_config():
+        return VideoLoaderConfig(
+            total_frames=4, frame_selection_height=19, frame_selection_width=19
+        )
+
+    @pytest.fixture(scope="session")
+    def dummy_trainer(dummy_train_config, dummy_video_loader_config):
+        return train_model(
+            train_config=dummy_train_config,
+            video_loader_config=dummy_video_loader_config,
+        )
+
+    @pytest.fixture(scope="session")
+    def dummy_trained_model_checkpoint(dummy_trainer):
+        return next(iter((Path(dummy_trainer.logger.log_dir).glob("*.ckpt"))))
 
 
-@pytest.fixture(scope="session")
-def predict_metadata(filepaths) -> pd.DataFrame:
-    return PredictConfig(filepaths=filepaths).filepaths
-
-
-@pytest.fixture(scope="session")
-def time_distributed_checkpoint(labels_absolute_path) -> os.PathLike:
-    return TrainConfig(labels=labels_absolute_path, model_name="time_distributed").checkpoint
-
-
-@pytest.fixture(scope="session")
-def mdlite():
-    return MegadetectorLiteYoloX()
-
-
-@pytest.fixture(scope="session")
-def dummy_checkpoint(labels_absolute_path, tmp_path_factory) -> os.PathLike:
-    tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
-    labels = pd.read_csv(labels_absolute_path)
-    species = list(labels.label.unique())
-    output_path = tmp_path / "dummy.ckpt"
-    DummyZambaVideoClassificationLightningModule(
-        num_frames=4, num_hidden=1, species=species
-    ).to_disk(output_path)
-    return output_path
-
-
-@pytest.fixture(scope="session")
-def dummy_train_config(labels_absolute_path, dummy_checkpoint, tmp_path_factory):
-    tmp_path = tmp_path_factory.mktemp("dummy-model-dir")
-    return DummyTrainConfig(
-        labels=labels_absolute_path,
-        data_dir=TEST_VIDEOS_DIR,
-        model_name="dummy",
-        checkpoint=dummy_checkpoint,
-        max_epochs=1,
-        batch_size=1,
-        auto_lr_find=False,
-        num_workers=2,
-        save_dir=tmp_path / "my_model",
-        skip_load_validation=True,
-    )
-
-
-@pytest.fixture(scope="session")
-def dummy_video_loader_config():
-    return VideoLoaderConfig(total_frames=4, frame_selection_height=19, frame_selection_width=19)
-
-
-@pytest.fixture(scope="session")
-def dummy_trainer(dummy_train_config, dummy_video_loader_config):
-    return train_model(
-        train_config=dummy_train_config, video_loader_config=dummy_video_loader_config
-    )
-
-
-@pytest.fixture(scope="session")
-def dummy_trained_model_checkpoint(dummy_trainer):
-    # get saved out checkpoint from trainer
-    return next(iter((Path(dummy_trainer.logger.log_dir).glob("*.ckpt"))))
+# ---------------------------------------------------------------------------
+# General fixtures
+# ---------------------------------------------------------------------------
 
 
 @pytest.fixture

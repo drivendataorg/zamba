@@ -1,4 +1,4 @@
-.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up tests
+.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up tests test-image-only test-video-only
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -14,6 +14,7 @@ CPU_OR_GPU ?= cpu
 else
 CPU_OR_GPU ?= gpu
 endif
+
 
 
 #################################################################################
@@ -80,6 +81,20 @@ images-tests: clean-test
 ## Run the tests that are just for densepose
 densepose-tests:
 	ZAMBA_RUN_DENSEPOSE_TESTS=1 pytest tests/test_densepose.py tests/test_cli.py::test_densepose_cli_options -vv
+
+## Test image deps in isolation: fresh venv, install image extra only, run image + agnostic tests, cleanup
+test-image-only:
+	UV_VENV_CLEAR=1 uv venv .venv-image
+	uv pip install -p .venv-image ".[image,tests]"
+	UV_PROJECT_ENVIRONMENT=.venv-image uv run --no-sync pytest tests -m "image or not (image or video)" -vv ; \
+	EXIT=$$? ; rm -rf .venv-image ; exit $$EXIT
+
+## Test video deps in isolation: fresh venv, install video extra only, run video + agnostic tests, cleanup
+test-video-only:
+	UV_VENV_CLEAR=1 uv venv .venv-video
+	uv pip install -p .venv-video ".[video,tests]"
+	UV_PROJECT_ENVIRONMENT=.venv-video uv run --no-sync pytest tests -m "video or not (image or video)" -vv ; \
+	EXIT=$$? ; rm -rf .venv-video ; exit $$EXIT
 
 ## Set up python interpreter environment
 create_environment:

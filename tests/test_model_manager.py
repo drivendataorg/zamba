@@ -9,6 +9,8 @@ import yaml
 from zamba.models.utils import download_weights, get_model_checkpoint_filename
 from zamba.models.model_manager import train_model
 
+pytestmark = pytest.mark.video
+
 from conftest import DummyTrainConfig, TEST_VIDEOS_DIR, labels_n_classes_df
 
 

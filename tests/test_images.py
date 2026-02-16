@@ -6,6 +6,8 @@ import pandas as pd
 import pytest
 from PIL import Image
 
+pytestmark = pytest.mark.image
+
 from zamba.images.bbox import BboxInputFormat, bbox_json_to_df, BboxLayout
 from zamba.images.classifier import ImageClassifierModule
 from zamba.images.config import ImageClassificationTrainingConfig

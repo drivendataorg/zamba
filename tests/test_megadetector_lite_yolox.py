@@ -6,6 +6,8 @@ import pytest
 import torch
 
 from zamba.object_detection import YoloXModel, YoloXExp, YoloXArgs
+
+pytestmark = pytest.mark.video
 from zamba.object_detection.yolox.megadetector_lite_yolox import (
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,

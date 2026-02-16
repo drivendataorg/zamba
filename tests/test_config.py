@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 from pydantic import ValidationError
 
+pytestmark = pytest.mark.video
+
 from zamba.models.config import (
     EarlyStoppingConfig,
     ModelConfig,

@@ -9,6 +9,8 @@ import pytest
 import torch
 from typer.testing import CliRunner
 
+pytestmark = pytest.mark.image
+
 from zamba.image_cli import app as image_app
 from zamba.images.data import ImageClassificationDataModule
 from conftest import ASSETS_DIR

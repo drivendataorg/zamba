@@ -1,11 +1,12 @@
 import os
 
 import pytest
-
 from pydantic import ValidationError
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.densepose import DensePoseManager, DensePoseConfig
+
+pytestmark = pytest.mark.video
 from zamba.models.densepose.densepose_manager import MODELS
 
 from conftest import ASSETS_DIR

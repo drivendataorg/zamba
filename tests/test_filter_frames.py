@@ -3,6 +3,8 @@ import pytest
 
 from zamba.object_detection.yolox.megadetector_lite_yolox import MegadetectorLiteYoloXConfig
 
+pytestmark = pytest.mark.video
+
 n_frames = 100
 rng = np.random.RandomState(68891)
 

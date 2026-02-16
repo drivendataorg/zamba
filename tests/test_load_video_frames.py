@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-import pytest
 import shutil
 import subprocess
 from typing import Any, Callable, Dict, Optional, Union
@@ -8,6 +7,9 @@ from unittest import mock
 
 import numpy as np
 from PIL import Image
+import pytest
+
+pytestmark = pytest.mark.video
 from pydantic import BaseModel, ValidationError
 
 from zamba.data.video import (

@@ -2,10 +2,12 @@ import os
 from pathlib import Path
 import shutil
 
-from typer.testing import CliRunner
 import pandas as pd
 import pytest
 from pytest_mock import mocker  # noqa: F401
+from typer.testing import CliRunner
+
+pytestmark = pytest.mark.video
 
 from zamba.cli import app
 

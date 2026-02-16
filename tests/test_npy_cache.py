@@ -1,4 +1,6 @@
 from pathlib import Path
+
+import pytest
 import yaml
 
 from zamba.data.video import (
@@ -7,6 +9,8 @@ from zamba.data.video import (
     get_cached_array_path,
     load_video_frames,
 )
+
+pytestmark = pytest.mark.video
 
 config_yaml = """
     cache_dir: local_data/cache
