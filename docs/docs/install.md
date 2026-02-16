@@ -47,9 +47,21 @@ To check your installed version, run `ffmpeg -version`.
 
 On macOS, run these commands in the terminal (⌘+space, "Terminal"). On Windows, run them in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
-To install zamba:
+`zamba` is split into optional extras so you only install the dependencies you need:
+
+- **Video workflows** (species classification in camera trap videos):
 ```console
-$ pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
+$ pip install "zamba[video] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+```
+
+- **Image workflows** (species classification in camera trap images):
+```console
+$ pip install "zamba[image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+```
+
+- **Both video and image workflows**:
+```console
+$ pip install "zamba[video,image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
 ```
 
 To check what version of zamba you have installed:
@@ -59,7 +71,7 @@ $ pip show zamba
 
 To update zamba to the most recent version if needed:
 ```console
-$ pip install -U https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
+$ pip install -U "zamba[video,image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
 ```
 
 

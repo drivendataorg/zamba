@@ -1,2 +1,2 @@
-from zamba.models.efficientnet_models import TimeDistributedEfficientNet  # noqa: F401
-from zamba.models.slowfast_models import SlowFast  # noqa: F401
+# Models are registered lazily via registry.ensure_registered()
+# to avoid pulling in heavy video dependencies at import time.

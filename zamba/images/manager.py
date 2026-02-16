@@ -35,7 +35,7 @@ from zamba.images.config import (
 )
 from zamba.images.data import ImageClassificationDataModule, load_image, absolute_bbox, BboxLayout
 from zamba.images.result import results_to_megadetector_format
-from zamba.models.model_manager import instantiate_model
+from zamba.models.instantiation import instantiate_model
 from zamba.pytorch.transforms import resize_and_pad
 
 

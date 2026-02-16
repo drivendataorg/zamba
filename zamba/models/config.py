@@ -1,35 +1,38 @@
-from enum import Enum
 from pathlib import Path
-import random
 from typing import Dict, Optional, Union
 
 import ffmpeg
 from loguru import logger
-import numpy as np
 import pandas as pd
-from pydantic import BaseModel
 from pydantic import DirectoryPath, FilePath, validator, root_validator
-from pqdm.threads import pqdm
-import torch
 from tqdm import tqdm
 import yaml
 
 from zamba import MODELS_DIRECTORY
-from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
-from zamba.models.registry import available_models
-from zamba.models.utils import (
-    download_weights,
-    get_checkpoint_hparams,
-    get_model_checkpoint_filename,
+from zamba.models.config_common import (
+    GPUS_AVAILABLE,
+    ModelEnum,
+    MonitorEnum,
+    ZambaBaseModel,
+    SchedulerConfig,
+    check_files_exist_and_load as _check_files_exist,
+    get_filepaths,
     get_model_species,
+    make_split,
+    validate_gpus,
+    validate_model_cache_dir,
+    validate_model_name_and_checkpoint,
     RegionEnum,
 )
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, VIDEO_SUFFIXES, get_model_cache_dir
+from zamba.settings import VIDEO_SUFFIXES
 
+<<<<<<< HEAD
 GPUS_AVAILABLE = torch.cuda.device_count()
+=======
+>>>>>>> 24802fa (separate image and video dependencies)
 
 WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_1/",
@@ -47,109 +50,24 @@ MODEL_MAPPING = {
 }
 
 
-class ModelEnum(str, Enum):
-    """Shorthand names of models supported by zamba."""
-
-    time_distributed = "time_distributed"
-    slowfast = "slowfast"
-    european = "european"
-    blank_nonblank = "blank_nonblank"
-
-
-class MonitorEnum(str, Enum):
-    """Validation metric to monitor for early stopping. Training is stopped when no
-    improvement is observed."""
-
-    val_macro_f1 = "val_macro_f1"
-    val_loss = "val_loss"
-
-
-def validate_gpus(gpus: int):
-    """Ensure the number of GPUs requested is equal to or less than the number of GPUs
-    available on the machine."""
-    if gpus > GPUS_AVAILABLE:
-        raise ValueError(f"Found only {GPUS_AVAILABLE} GPU(s). Cannot use {gpus}.")
-    else:
-        return gpus
-
-
-def validate_model_cache_dir(model_cache_dir: Optional[Path]):
-    """Set up cache directory for downloading model weight. Order of priority is:
-    config argument, environment variable, or user's default cache dir.
-    """
-    if model_cache_dir is None:
-        model_cache_dir = get_model_cache_dir()
-
-    model_cache_dir = Path(model_cache_dir)
-    model_cache_dir.mkdir(parents=True, exist_ok=True)
-    return model_cache_dir
-
-
 def check_files_exist_and_load(
     df: pd.DataFrame, data_dir: DirectoryPath, skip_load_validation: bool
 ):
-    """Check whether files in file list exist and can be loaded with ffmpeg.
-    Warn and skip files that don't exist or can't be loaded.
+    """Check whether files exist and can be loaded with ffmpeg.
 
-    Args:
-        df (pd.DataFrame): DataFrame with a "filepath" column
-        data_dir (Path): Data folder to prepend if filepath is not an
-            absolute path.
-        skip_load_validation (bool): Skip ffprobe check that verifies all videos
-            can be loaded.
-
-    Returns:
-        pd.DataFrame: DataFrame with valid and loadable videos.
+    Extends the base check from config_common with an ffprobe load check.
     """
-    # update filepath column to prepend data_dir
-    df["filepath"] = str(data_dir) / df.filepath.path
-
-    # we can have multiple rows per file with labels so limit just to one row per file for these checks
-    files_df = df[["filepath"]].drop_duplicates()
-
-    # check for missing files
-    logger.info(f"Checking all {len(files_df):,} filepaths exist. Trying fast file checking...")
-
-    # try to check files in parallel
-    paths = files_df["filepath"].apply(Path)
-    exists = pqdm(paths, Path.exists, n_jobs=16)
-    exists = np.array(exists)
-
-    # if fast checking fails, fall back to slow checking
-    # if an I/O error is in `exists`, the array has dtype `object`
-    if exists.dtype != bool:
-        logger.info(
-            "Fast file checking failed. Running slower check, which can take 30 seconds per thousand files."
-        )
-        exists = files_df["filepath"].path.exists()
-
-    # select the missing files
-    invalid_files = files_df[~exists]
-
-    # if no files exist
-    if len(invalid_files) == len(files_df):
-        raise ValueError(
-            f"None of the video filepaths exist. Are you sure they're specified correctly? Here's an example invalid path: {invalid_files.filepath.values[0]}. Either specify absolute filepaths in the csv or provide filepaths relative to `data_dir`."
-        )
-
-    # if at least some files exist
-    elif len(invalid_files) > 0:
-        logger.debug(
-            f"The following files could not be found: {'/n'.join(invalid_files.filepath.values.tolist())}"
-        )
-        logger.warning(
-            f"Skipping {len(invalid_files)} file(s) that could not be found. For example, {invalid_files.filepath.values[0]}."
-        )
-        # remove invalid files to prep for ffprobe check on remaining
-        files_df = files_df[~files_df.filepath.isin(invalid_files.filepath)]
+    df = _check_files_exist(df, data_dir, skip_load_validation=True)
 
     bad_load = []
     if not skip_load_validation:
         logger.info(
-            "Checking that all videos can be loaded. If you're very confident all your videos can be loaded, you can skip this with `skip_load_validation`, but it's not recommended."
+            "Checking that all videos can be loaded. If you're very confident all your "
+            "videos can be loaded, you can skip this with `skip_load_validation`, "
+            "but it's not recommended."
         )
 
-        # ffprobe check
+        files_df = df[["filepath"]].drop_duplicates()
         for f in tqdm(files_df.filepath):
             try:
                 ffmpeg.probe(str(f))
@@ -162,106 +80,12 @@ def check_files_exist_and_load(
                 f"Skipping {len(bad_load)} file(s) that could not be loaded with ffmpeg."
             )
 
-    df = df[
-        (~df.filepath.isin(bad_load)) & (~df.filepath.isin(invalid_files.filepath))
-    ].reset_index(drop=True)
-
+    df = df[~df.filepath.isin(bad_load)].reset_index(drop=True)
     return df
-
-
-def validate_model_name_and_checkpoint(cls, values):
-    """Ensures a checkpoint file or model name is provided. If a model name is provided,
-    looks up the corresponding public checkpoint file from the official configs.
-    Download the checkpoint if it does not yet exist.
-    """
-    checkpoint = values.get("checkpoint")
-    model_name = values.get("model_name")
-
-    # must specify either checkpoint or model name
-    if checkpoint is None and model_name is None:
-        raise ValueError("Must provide either model_name or checkpoint path.")
-
-    # checkpoint supercedes model
-    elif checkpoint is not None and model_name is not None:
-        logger.info(f"Using checkpoint file: {checkpoint}.")
-        # get model name from checkpoint so it can be used for the video loader config
-        hparams = get_checkpoint_hparams(checkpoint)
-
-        try:
-            values["model_name"] = available_models[hparams["model_class"]]._default_model_name
-        except (AttributeError, KeyError):
-            model_name = f"{model_name}-{checkpoint.stem}"
-
-    elif checkpoint is None and model_name is not None:
-        if not values.get("from_scratch"):
-            # get public weights file from official models config
-            values["checkpoint"] = get_model_checkpoint_filename(model_name)
-
-            # if cached version exists, use that
-            cached_path = Path(values["model_cache_dir"]) / values["checkpoint"]
-            if cached_path.exists():
-                values["checkpoint"] = cached_path
-
-            # download if checkpoint doesn't exist
-            if not values["checkpoint"].exists():
-                logger.info(
-                    f"Downloading weights for model '{model_name}' to {values['model_cache_dir']}."
-                )
-                values["checkpoint"] = download_weights(
-                    filename=str(values["checkpoint"]),
-                    weight_region=values["weight_download_region"],
-                    destination_dir=values["model_cache_dir"],
-                )
-
-    return values
-
-
-def get_filepaths(values, suffix_whitelist):
-    """If no file list is passed, get all files in data directory. Warn if there
-    are unsupported suffixes. Filepaths is set to a dataframe, where column `filepath`
-    contains files with valid suffixes.
-    """
-    if values["filepaths"] is None:
-        logger.info(f"Getting files in {values['data_dir']}.")
-        files = []
-        new_suffixes = []
-
-        # iterate over all files in data directory
-        for f in Path(values["data_dir"]).rglob("*"):
-            if f.is_file():
-                # keep just files with supported suffixes
-                if f.suffix.lower() in suffix_whitelist:
-                    files.append(f.resolve())
-                else:
-                    new_suffixes.append(f.suffix.lower())
-
-        if len(new_suffixes) > 0:
-            logger.warning(
-                f"Ignoring {len(new_suffixes)} file(s) with suffixes {set(new_suffixes)}. To include, specify all suffixes with a VIDEO_SUFFIXES or IMAGE_SUFFIXES environment variable."
-            )
-
-        if len(files) == 0:
-            error_msg = f"No relevant files found in {values['data_dir']}."
-            if len(set(new_suffixes) & set(IMAGE_SUFFIXES)) > 0:
-                error_msg += " Image files *were* found. Use a command starting with `zamba image` to work with images rather than videos."
-            raise ValueError(error_msg)
-
-        logger.info(f"Found {len(files):,} media files in {values['data_dir']}.")
-        values["filepaths"] = pd.DataFrame(files, columns=["filepath"])
-    return values
 
 
 def get_video_filepaths(cls, values):
     return get_filepaths(values, VIDEO_SUFFIXES)
-
-
-class ZambaBaseModel(BaseModel):
-    """Set defaults for all models that inherit from the pydantic base model."""
-
-    class Config:
-        extra = "forbid"
-        use_enum_values = True
-        validate_assignment = True
 
 
 class BackboneFinetuneConfig(ZambaBaseModel):

@@ -24,161 +24,16 @@ from zamba.models.config import (
     TrainConfig,
     PredictConfig,
 )
+from zamba.models.instantiation import instantiate_model  # noqa: F401  -- re-exported
 from zamba.models.registry import available_models
 from zamba.models.utils import (
     configure_accelerator_and_devices_from_gpus,
-    get_checkpoint_hparams,
-    get_default_hparams,
 )
 from zamba.pytorch.finetuning import BackboneFinetuning
 from zamba.pytorch_lightning.video_modules import (
     ZambaVideoDataModule,
     ZambaVideoClassificationLightningModule,
 )
-
-
-def instantiate_model(
-    checkpoint: os.PathLike,
-    labels: Optional[pd.DataFrame] = None,
-    scheduler_config: Optional[SchedulerConfig] = None,
-    from_scratch: Optional[bool] = None,
-    model_name: Optional[ModelEnum] = None,
-    use_default_model_labels: Optional[bool] = None,
-    species: Optional[list] = None,
-) -> ZambaVideoClassificationLightningModule:
-    """Instantiates the model from a checkpoint and detects whether the model head should be replaced.
-    The model head is replaced if labels contain species that are not on the model or use_default_model_labels=False.
-
-    Supports model instantiation for the following cases:
-    - train from scratch (from_scratch=True)
-    - finetune with new species (from_scratch=False, labels contains different species than model)
-    - finetune with a subset of zamba species and output only the species in the labels file (use_default_model_labels=False)
-    - finetune with a subset of zamba species but output all zamba species (use_default_model_labels=True)
-    - predict using pretrained model (labels=None)
-
-    Args:
-        checkpoint (path): Path to a checkpoint on disk.
-        labels (pd.DataFrame, optional): Dataframe where filepath is the index and columns are one hot encoded species.
-        scheduler_config (SchedulerConfig, optional): SchedulerConfig to use for training or finetuning.
-            Only used if labels is not None.
-        from_scratch (bool, optional): Whether to instantiate the model with base weights. This means starting
-            from the imagenet weights for image based models and the Kinetics weights for video models.
-           Only used if labels is not None.
-        model_name (ModelEnum, optional): Model name used to look up default hparams used for that model.
-            Only relevant if training from scratch.
-        use_default_model_labels (bool, optional): Whether to output the full set of default model labels rather than
-            just the species in the labels file. Only used if labels is not None.
-        species (list, optional): List of species in label order. If None, read from labels file.
-
-    Returns:
-        ZambaVideoClassificationLightningModule: Instantiated model
-    """
-    if from_scratch:
-        hparams = get_default_hparams(model_name)
-    else:
-        hparams = get_checkpoint_hparams(checkpoint)
-
-    model_class = available_models[hparams["model_class"]]
-    logger.info(f"Instantiating model: {model_class.__name__}")
-
-    # predicting
-    if labels is None:
-        logger.info("Loading from checkpoint.")
-        model = model_class.from_disk(path=checkpoint, **hparams)
-        return model
-
-    # get species from labels file
-    if species is None:
-        species = labels.filter(regex=r"^species_").columns.tolist()
-        species = [s.split("species_", 1)[1] for s in species]
-
-    # train from scratch
-    if from_scratch:
-        logger.info("Training from scratch.")
-
-        # default would use scheduler used for pretrained model
-        if scheduler_config != "default":
-            hparams.update(scheduler_config.dict())
-
-        hparams.update({"species": species})
-        model = model_class(**hparams)
-        log_schedulers(model)
-        return model
-
-    # determine if finetuning or resuming training
-
-    # check if species in label file are a subset of pretrained model species
-    is_subset = set(species).issubset(set(hparams["species"]))
-
-    if is_subset:
-        if use_default_model_labels:
-            return resume_training(
-                scheduler_config=scheduler_config,
-                hparams=hparams,
-                model_class=model_class,
-                checkpoint=checkpoint,
-            )
-
-        else:
-            logger.info(
-                "Limiting only to species in labels file. Replacing model head and finetuning."
-            )
-            return replace_head(
-                scheduler_config=scheduler_config,
-                hparams=hparams,
-                species=species,
-                model_class=model_class,
-                checkpoint=checkpoint,
-            )
-
-    # without a subset, you will always get a new head
-    # the config validation prohibits setting use_default_model_labels to True without a subset
-    else:
-        logger.info(
-            "Provided species do not fully overlap with Zamba species. Replacing model head and finetuning."
-        )
-        return replace_head(
-            scheduler_config=scheduler_config,
-            hparams=hparams,
-            species=species,
-            model_class=model_class,
-            checkpoint=checkpoint,
-        )
-
-
-def replace_head(scheduler_config, hparams, species, model_class, checkpoint):
-    # update in case we want to finetune with different scheduler
-    if scheduler_config != "default":
-        hparams.update(scheduler_config.dict())
-
-    hparams.update({"species": species})
-    model = model_class(finetune_from=checkpoint, **hparams)
-    log_schedulers(model)
-    return model
-
-
-def resume_training(
-    scheduler_config,
-    hparams,
-    model_class,
-    checkpoint,
-):
-    # resume training; add additional species columns to labels file if needed
-    logger.info(
-        "Provided species fully overlap with Zamba species. Resuming training from latest checkpoint."
-    )
-    # update in case we want to resume with different scheduler
-    if scheduler_config != "default":
-        hparams.update(scheduler_config.dict())
-
-    model = model_class.from_disk(path=checkpoint, **hparams)
-    log_schedulers(model)
-    return model
-
-
-def log_schedulers(model):
-    logger.info(f"Using learning rate scheduler: {model.hparams['scheduler']}")
-    logger.info(f"Using scheduler params: {model.hparams['scheduler_params']}")
 
 
 def validate_species(

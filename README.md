@@ -30,11 +30,18 @@ Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
 First, make sure you have the prerequisites installed:
 
 * Python >= 3.11
-* FFmpeg > 4.3
+* FFmpeg > 4.3 (only needed for video workflows)
 
-Then run:
+Then install the extras you need:
 ```console
-pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
+# For video workflows
+pip install "zamba[video] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+
+# For image workflows
+pip install "zamba[image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+
+# For both
+pip install "zamba[video,image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
 ```
 
 See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.

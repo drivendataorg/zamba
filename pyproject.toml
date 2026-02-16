@@ -19,18 +19,12 @@ classifiers = [
 requires-python = ">=3.11"
 dependencies = [
   "appdirs",
-  "av",
   "click<=8.1.8",
   "cloudpathlib[s3]",
-  "ffmpeg-python",
-  "future",
-  "fvcore",
   "gitpython",
   "loguru",
-  "megadetector",
   "mlflow",
   "numpy<2.0.0",
-  "opencv-python-headless",
   "openpyxl",
   "pandas>=2.0.0",
   "pandas_path",
@@ -38,7 +32,6 @@ dependencies = [
   "pydantic<2.0.0",
   "python-dotenv",
   "pytorch-lightning>=2.0.0",
-  "pytorchvideo",
   "scikit-learn",
   "tensorboard",
   "thop",
@@ -48,16 +41,28 @@ dependencies = [
   "torchvision>=0.10.0",
   "tqdm",
   "typer[all]",
-  "yolox @ git+https://github.com/r-b-g-b/YOLOX.git@build-requirements",
 ]
 
 [project.scripts]
 zamba = "zamba.cli:app"
 
 [project.optional-dependencies]
-tests = [
-  "coverage",
+video = [
+  "av",
+  "ffmpeg-python",
+  "future",
+  "fvcore",
+  "opencv-python-headless",
+  "pytorchvideo",
+  "yolox @ git+https://github.com/r-b-g-b/YOLOX.git@build-requirements",
+]
+image = [
+  "megadetector>=10.0.0",
   "Pillow>=9.0.0",
+]
+tests = [
+  "zamba[video,image]",
+  "coverage",
   "pytest",
   "pytest-coverage",
   "pytest-duration-insights",

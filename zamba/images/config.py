@@ -12,15 +12,15 @@ from pydantic import DirectoryPath, FilePath, root_validator, validator
 from tqdm.contrib.concurrent import process_map
 
 from zamba.images.bbox import BboxInputFormat, bbox_json_to_df
-from zamba.models.config import (
+from zamba.models.config_common import (
     SchedulerConfig,
     ZambaBaseModel,
     get_filepaths,
     make_split,
     validate_model_cache_dir,
     validate_model_name_and_checkpoint,
+    RegionEnum,
 )
-from zamba.models.utils import RegionEnum
 from zamba.settings import IMAGE_SUFFIXES
 
 GPUS_AVAILABLE = torch.cuda.device_count()
