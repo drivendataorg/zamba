@@ -25,10 +25,7 @@ You can also install the dependencies using `uv` with the makefile target:
 $ make requirements
 ```
 
-If your contribution is to the [DensePose](../models/densepose.md) model, you will need to install the additional dependencies with:
-```console
-$ pip install -e .[densepose]
-```
+If your contribution is to the [DensePose](../models/densepose.md) model, install the DensePose dependencies from GitHub as described in the [DensePose installation](../models/densepose.md#installation) section.
 
 To build the documentation locally, install the `docs` extra:
 ```console
@@ -45,7 +42,7 @@ The command is (from the project root):
 $ make tests
 ```
 
-For [DensePose](../models/densepose.md) related tests, the command is:
+For [DensePose](../models/densepose.md) related tests, install the DensePose dependencies from GitHub (see [DensePose installation](../models/densepose.md#installation)), then run:
 ```console
 $ make densepose-tests
 ```

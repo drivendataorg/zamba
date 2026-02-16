@@ -189,11 +189,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -e .[tests]
+          uv pip install -e .[tests,image,video]
 
       - name: Run tests
         run: |
           make tests
+
+      - name: Run video and image isolation tests
+        run: |
+          make test-image-only
+          make test-video-only
 
       - if: matrix.os == 'macos-latest'
         name: Specify MacOS version for densepose install
@@ -204,9 +209,9 @@ jobs:
         env:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
-          uv pip install flit-core
-          # torch is already installed, so just add the densepose extra
-          uv pip install -e .[densepose] --no-build-isolation
+          # DensePose deps are not on PyPI; install from GitHub (see docs/models/densepose.md)
+          uv pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git"
+          uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
           make densepose-tests
 
       - name: Upload coverage to codecov

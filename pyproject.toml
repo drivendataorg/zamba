@@ -86,11 +86,6 @@ docs = [
   "mkdocs-material>=7.3.4,<9.6",
   "mkdocstrings[python]>=0.19.0,<=0.27",
 ]
-densepose = [
-  "torch",
-  "detectron2 @ git+https://github.com/facebookresearch/detectron2.git",
-  "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
-]
 
 [project.urls]
 "Homepage" = "https://github.com/drivendataorg/zamba"

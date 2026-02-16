@@ -40,6 +40,19 @@ from zamba.data.video import load_video_frames
 from zamba.models.utils import RegionEnum, download_weights
 from zamba.settings import get_model_cache_dir
 
+# Message shown when DensePose deps are not installed (not on PyPI; install from GitHub).
+DENSEPOSE_INSTALL_MESSAGE = """
+DensePose dependencies are not installed. They are not distributed on PyPI.
+Install them from GitHub after installing PyTorch:
+
+  pip install torch
+  pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git"
+  pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
+
+See https://zamba.drivendata.org/docs/stable/models/densepose/#installation for details.
+""".strip()
+
+
 MODELS = dict(
     animals=dict(
         config=str(
@@ -88,9 +101,7 @@ class DensePoseManager:
             A dictionary with the densepose model defintion like those defined in MODELS.
         """
         if not DENSEPOSE_AVAILABLE:
-            raise ImportError(
-                "Densepose not installed. See: https://zamba.drivendata.org/docs/stable/models/densepose/#installation"
-            )
+            raise ImportError(DENSEPOSE_INSTALL_MESSAGE)
 
         model_cache_dir = model_cache_dir or get_model_cache_dir()
 

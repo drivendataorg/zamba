@@ -534,9 +534,15 @@ def densepose(
 
     if yes:
         # kick off prediction
-        with warnings.catch_warnings():
-            warnings.filterwarnings("ignore")
-            densepose_config.run_model()
+        try:
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore")
+                densepose_config.run_model()
+        except ImportError as e:
+            from zamba.models.densepose.densepose_manager import DENSEPOSE_INSTALL_MESSAGE
+
+            logger.error(DENSEPOSE_INSTALL_MESSAGE)
+            raise typer.Exit(1) from e
 
 
 @app.command()
