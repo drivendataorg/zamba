@@ -93,4 +93,6 @@ class ZambaClassificationLightningModule(LightningModule):
     @classmethod
     def from_disk(cls, path: os.PathLike, **kwargs):
         # note: we always load models onto CPU; moving to GPU is handled by `devices` in pl.Trainer
-        return cls.load_from_checkpoint(path, map_location="cpu", **kwargs)
+        return cls.load_from_checkpoint(
+            str(path), map_location="cpu", weights_only=False, **kwargs
+        )

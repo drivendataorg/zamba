@@ -29,7 +29,6 @@ from zamba.models.utils import (
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
 from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, VIDEO_SUFFIXES, get_model_cache_dir
 
-
 GPUS_AVAILABLE = torch.cuda.device_count()
 
 WEIGHT_LOOKUP = {

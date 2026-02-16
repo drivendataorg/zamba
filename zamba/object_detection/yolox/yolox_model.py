@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 import yaml
 
+import torch
+
 from pydantic import BaseModel
 
 from yolox.exp import Exp
@@ -111,8 +113,16 @@ class YoloXModel:
         self.args = args
 
         gpus = gpus or args.devices
-        self.num_gpu = utils.get_num_devices() if gpus is None else gpus
-        assert self.num_gpu <= utils.get_num_devices()
+
+        if gpus is None:
+            # Auto-detect: use all GPUs if available, else CPU (0 GPUs)
+            self.num_gpu = utils.get_num_devices() if torch.cuda.is_available() else 0
+        else:
+            # Validate requested GPUs don't exceed available
+            max_gpus = utils.get_num_devices()
+            if gpus > max_gpus:
+                raise ValueError(f"Requested {gpus} GPUs but only {max_gpus} available")
+            self.num_gpu = gpus
 
         if image_size is not None:
             self.exp.input_size = (image_size, image_size)
