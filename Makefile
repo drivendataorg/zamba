@@ -68,6 +68,9 @@ lint:
 ## Generate assets and run tests
 tests: clean-test
 	pytest tests -vv
+	pytest tests -vv -m cached
+	pytest tests -vv -m "network and not slow"
+	pytest tests -vv -m slow
 
 ## Dev: Fail fast, do not run in parallel, and open debugger on failure
 tests-debug: clean-test

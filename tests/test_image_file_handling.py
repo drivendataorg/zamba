@@ -145,6 +145,7 @@ def ena24_dataset_setup(tmp_path):
 
 
 @pytest.mark.parametrize("input_format", ["relative_csv", "absolute_csv", "mixed_csv"])
+@pytest.mark.network
 def test_image_cli_with_paths(mocker, ena24_dataset_setup, input_format):
     """Test that the image CLI can handle a CSV with the specified path format."""
     predict_mock = mocker.patch("zamba.images.manager.ZambaImagesManager.predict")
@@ -211,6 +212,7 @@ def test_train_with_different_path_formats(mocker, ena24_dataset_setup, input_fo
     assert processed_images == expected_images
 
 
+@pytest.mark.network
 def test_image_cli_file_discovery(mocker, ena24_dataset_setup):
     """Test that the image CLI can discover files in a directory when no CSV is provided."""
     predict_mock = mocker.patch("zamba.images.manager.ZambaImagesManager.predict")
@@ -342,6 +344,7 @@ def test_train_with_md_labels(mocker, ena24_dataset_setup):
     )
 
 
+@pytest.mark.network
 def test_image_cli_csv_output(mocker, ena24_dataset_setup):
     """Test that the image CLI can output predictions in CSV format."""
 
@@ -402,6 +405,7 @@ def test_image_cli_csv_output(mocker, ena24_dataset_setup):
         assert species in predictions.columns
 
 
+@pytest.mark.network
 def test_image_cli_megadetector_output(mocker, ena24_dataset_setup):
     """Test that the image CLI can output predictions in MegaDetector JSON format."""
     # Mock detector

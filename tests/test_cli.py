@@ -34,6 +34,7 @@ def pred_mock(self):
     return None
 
 
+@pytest.mark.network
 def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa: F811
     mocker.patch("zamba.cli.ModelManager.train", train_mock)
 
@@ -57,7 +58,7 @@ def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa:
     result = runner.invoke(app, minimum_valid_train + ["--save-dir", str(tmp_path)])
     assert result.exit_code == 0
 
-
+@pytest.mark.network
 def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):  # noqa: F811
     """Test CLI options that are shared between train and predict commands."""
 
@@ -108,6 +109,7 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
         assert "Cannot use 2" in str(result.exc_info)
 
 
+@pytest.mark.cached
 def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # noqa: F811
     mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
 
@@ -155,6 +157,7 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
 
 
 @pytest.mark.parametrize("model", ["time_distributed", "blank_nonblank"])
+@pytest.mark.network
 def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     data_dir = tmp_path / "videos"
     data_dir.mkdir()
@@ -190,6 +193,7 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     )
 
 
+@pytest.mark.network
 def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
     """Test predicting on images."""
     shutil.copytree(ASSETS_DIR / "images", tmp_path / "images")

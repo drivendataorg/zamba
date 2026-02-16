@@ -384,6 +384,7 @@ def test_load_video_frames(case: Case, video_metadata: Dict[str, Any]):
                     assert video_shape[field] == value
 
 
+@pytest.mark.cached
 def test_same_filename_new_kwargs(tmp_path, train_metadata):
     """Test that load_video_frames does not load the npz file if the params change."""
     cache = tmp_path / "test_cache"
@@ -422,6 +423,7 @@ def test_same_filename_new_kwargs(tmp_path, train_metadata):
         assert first_load.shape != new_params_same_name.shape
 
 
+@pytest.mark.cached
 def test_megadetector_lite_yolox_dog(tmp_path):
     dog = Image.open(ASSETS_DIR / "dog.jpg")
     blank = Image.new("RGB", dog.size, (64, 64, 64))
@@ -517,6 +519,7 @@ def test_validate_total_frames():
     assert config.total_frames == 8
 
 
+@pytest.mark.cached
 def test_caching(tmp_path, caplog, train_metadata):
     cache = tmp_path / "video_cache"
 

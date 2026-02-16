@@ -114,18 +114,21 @@ def test_image_annotation_crop_images_the_same_size(annotation, dog, trimmed_dog
     assert result.width == trimmed_dog.width
 
 
+@pytest.mark.cached
 def test_train_config_validate_labels_from_path(labels_path, images_path):
     config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path)
 
     assert isinstance(config.labels, pd.DataFrame)
 
 
+@pytest.mark.cached
 def test_train_config_labels(labels_path, images_path):
     config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path)
     logging.warning(config.labels.head())
     assert "label" in config.labels.columns
 
 
+@pytest.mark.cached
 def test_train_config_data_exist(labels_path, images_path):
     config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path)
 
@@ -207,6 +210,7 @@ def test_results_to_megadetector_format(dataframe_result_csv_path):
     assert len(result.images[1].detections) == 1
 
 
+@pytest.mark.network
 def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path):
     save_dir = tmp_path / "my_model"
     checkpoint_path = tmp_path / "checkpoints"

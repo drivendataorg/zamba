@@ -106,4 +106,9 @@ allow_redefinition = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests/"]
-addopts = "--cov-append --cov=zamba --cov-report=term --cov-report=html --cov-report=xml -n=auto --report-log reportlog.jsonl"
+addopts = "-m 'not network and not cached' --cov-append --cov=zamba --cov-report=term --cov-report=html --cov-report=xml -n=auto --report-log reportlog.jsonl"
+markers = [
+    "network: Tests which require the use of a network connection",
+    "cached: Tests which require cached data files, which will be downloaded the first time they run",
+    "slow: Especially slow tests",
+]

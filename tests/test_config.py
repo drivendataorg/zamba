@@ -39,7 +39,7 @@ def test_train_data_dir_only():
         {"loc": ("labels",), "msg": "field required", "type": "value_error.missing"}
     ]
 
-
+@pytest.mark.cached
 def test_train_data_dir_and_labels(tmp_path, labels_relative_path, labels_absolute_path):
     # correct data dir
     config = TrainConfig(
@@ -64,11 +64,13 @@ def test_train_data_dir_and_labels(tmp_path, labels_relative_path, labels_absolu
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
+@pytest.mark.cached
 def test_train_labels_only(labels_absolute_path, tmp_path):
     config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.labels is not None
 
 
+@pytest.mark.cached
 def test_predict_data_dir_only():
     config = PredictConfig(data_dir=TEST_VIDEOS_DIR)
     assert config.data_dir == TEST_VIDEOS_DIR
@@ -79,6 +81,7 @@ def test_predict_data_dir_only():
     assert config.filepaths.columns == ["filepath"]
 
 
+@pytest.mark.cached
 def test_predict_data_dir_and_filepaths(labels_absolute_path, labels_relative_path):
     # correct data dir
     config = PredictConfig(data_dir=TEST_VIDEOS_DIR, filepaths=labels_relative_path)
@@ -92,11 +95,13 @@ def test_predict_data_dir_and_filepaths(labels_absolute_path, labels_relative_pa
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
+@pytest.mark.cached
 def test_predict_filepaths_only(labels_absolute_path):
     config = PredictConfig(filepaths=labels_absolute_path)
     assert config.filepaths is not None
 
 
+@pytest.mark.cached
 def test_filepath_column(tmp_path, labels_absolute_path):
     pd.read_csv(labels_absolute_path).rename(columns={"filepath": "video"}).to_csv(
         tmp_path / "bad_filepath_column.csv"
@@ -112,6 +117,7 @@ def test_filepath_column(tmp_path, labels_absolute_path):
     assert "must contain `filepath` and `label` columns" in error.value.errors()[0]["msg"]
 
 
+@pytest.mark.cached
 def test_label_column(tmp_path, labels_absolute_path):
     pd.read_csv(labels_absolute_path).rename(columns={"label": "animal"}).to_csv(
         tmp_path / "bad_label_column.csv"
@@ -121,6 +127,7 @@ def test_label_column(tmp_path, labels_absolute_path):
     assert "must contain `filepath` and `label` columns" in error.value.errors()[0]["msg"]
 
 
+@pytest.mark.cached
 def test_extra_column(tmp_path, labels_absolute_path):
     # add extra column that has species_ prefix
     df = pd.read_csv(labels_absolute_path)
@@ -148,6 +155,7 @@ def test_extra_column(tmp_path, labels_absolute_path):
     assert config.filepaths.columns == ["filepath"]
 
 
+@pytest.mark.cached
 def test_one_video_does_not_exist(tmp_path, labels_absolute_path, caplog):
     files_df = pd.read_csv(labels_absolute_path)
     # add a fake file
@@ -174,6 +182,7 @@ def test_one_video_does_not_exist(tmp_path, labels_absolute_path, caplog):
     assert len(config.labels) == (len(files_df) - 1)
 
 
+@pytest.mark.cached
 def test_videos_cannot_be_loaded(tmp_path, labels_absolute_path, caplog):
     files_df = pd.read_csv(labels_absolute_path)
     # create bad files
@@ -222,6 +231,7 @@ def test_early_stopping_mode():
     assert "Provided mode max is incorrect for val_loss monitor." == error.value.errors()[0]["msg"]
 
 
+@pytest.mark.cached
 def test_labels_with_all_null_species(labels_absolute_path, tmp_path):
     labels = pd.read_csv(labels_absolute_path)
     labels["label"] = np.nan
@@ -359,6 +369,7 @@ def test_from_scratch(labels_absolute_path, tmp_path, mock_download_weights, moc
     assert "If from_scratch=True, model_name cannot be None." == error.value.errors()[0]["msg"]
 
 
+@pytest.mark.cached
 def test_predict_dry_run_and_save(labels_absolute_path, caplog, tmp_path):
     config = PredictConfig(filepaths=labels_absolute_path, dry_run=True, save=True)
     assert (
@@ -373,6 +384,7 @@ def test_predict_dry_run_and_save(labels_absolute_path, caplog, tmp_path):
     assert config.save_dir is None
 
 
+@pytest.mark.cached
 def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplog):
     filepaths = pd.read_csv(labels_absolute_path, usecols=["filepath"])
     # add duplicate filepath
@@ -399,6 +411,7 @@ def test_model_cache_dir(
     assert config.model_cache_dir == tmp_path / "my_cache"
 
 
+@pytest.mark.cached
 def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkpoint):
     # if save is True, save in current working directory
     config = PredictConfig(filepaths=labels_absolute_path, skip_load_validation=True)
@@ -456,6 +469,7 @@ def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkp
     assert config.save_dir == save_dir
 
 
+@pytest.mark.cached
 def test_validate_scheduler(labels_absolute_path, tmp_path):
     # None gets transformed into SchedulerConfig
     config = TrainConfig(
@@ -500,6 +514,7 @@ def test_validate_scheduler(labels_absolute_path, tmp_path):
     )
 
 
+@pytest.mark.cached
 def test_dry_run_and_skip_load_validation(labels_absolute_path, caplog, tmp_path):
     # check dry_run is True sets skip_load_validation to True
     config = TrainConfig(
@@ -521,6 +536,7 @@ def test_dry_run_and_skip_load_validation(labels_absolute_path, caplog, tmp_path
     assert not config.skip_load_validation
 
 
+@pytest.mark.cached
 def test_default_video_loader_config(labels_absolute_path, tmp_path):
     # if no video loader is specified, use default for model
     config = ModelConfig(
@@ -557,6 +573,7 @@ def test_checkpoint_sets_model_to_default(
     assert config.model_name == "dummy_model"
 
 
+@pytest.mark.cached
 def test_validate_provided_species_and_use_default_model_labels(labels_absolute_path, tmp_path):
     # labels are subset of time distributed model
     config = TrainConfig(

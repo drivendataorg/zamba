@@ -25,6 +25,7 @@ def test_scheduler_ignored_for_prediction(dummy_checkpoint):
     # # in Train Config, which contains ModelParams, labels cannot be None
 
 
+@pytest.mark.cached
 def test_default_scheduler_used(time_distributed_checkpoint):
     """Tests instantiate model uses the default scheduler from the hparams on the model."""
     default_scheduler_passed_model = instantiate_model(
@@ -40,6 +41,7 @@ def test_default_scheduler_used(time_distributed_checkpoint):
     )
 
 
+@pytest.mark.cached
 def test_scheduler_used_if_passed(time_distributed_checkpoint):
     """Tests that scheduler config gets used and overrides scheduler on time distributed training."""
     scheduler_passed_model = instantiate_model(
@@ -62,6 +64,7 @@ def test_scheduler_used_if_passed(time_distributed_checkpoint):
     assert scheduler_params_passed_model.hparams["scheduler_params"] == {"gamma": 0.3}
 
 
+@pytest.mark.cached
 def test_remove_scheduler(time_distributed_checkpoint):
     """Tests that a scheduler config with None values removes the scheduler on the model."""
     remove_scheduler_model = instantiate_model(
@@ -120,6 +123,7 @@ def test_not_use_default_model_labels(dummy_trained_model_checkpoint):
 @pytest.mark.parametrize(
     "model_name", ["time_distributed", "slowfast", "european", "blank_nonblank"]
 )
+@pytest.mark.cached
 def test_head_replaced_for_new_species(labels_absolute_path, model_name, tmp_path):
     """Check that output species reflect the new head."""
     # pick species that is not present in any models
@@ -143,6 +147,7 @@ def test_head_replaced_for_new_species(labels_absolute_path, model_name, tmp_pat
 
 
 @pytest.mark.parametrize("model_name", ["time_distributed", "slowfast", "european"])
+@pytest.mark.cached
 def test_resume_subset_labels(labels_absolute_path, model_name, tmp_path):
     """Check that output species reflect the default model labels."""
     # pick species that is present in all models
