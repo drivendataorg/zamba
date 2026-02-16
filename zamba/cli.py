@@ -10,6 +10,7 @@ import yaml
 
 from zamba import MODELS_DIRECTORY
 from zamba.models.config_common import ModelEnum, RegionEnum
+from zamba.models.model_manager import ModelManager
 from zamba.version import __version__
 
 try:
@@ -102,7 +103,6 @@ def train(
     """
     from zamba.data.video import VideoLoaderConfig
     from zamba.models.config import ModelConfig, TrainConfig
-    from zamba.models.model_manager import ModelManager
 
     if config is not None:
         with config.open() as f:
@@ -286,7 +286,6 @@ def predict(
     """
     from zamba.data.video import VideoLoaderConfig
     from zamba.models.config import ModelConfig, PredictConfig
-    from zamba.models.model_manager import ModelManager
 
     if config is not None:
         with config.open() as f:

@@ -8,9 +8,11 @@ from pydantic import BaseModel
 
 try:
     from yolox.exp import Exp as BaseExp
+
     USES_YOLOX_CONFIG = False
 except ModuleNotFoundError:
     from yolox.config import YoloxConfig as BaseExp
+
     USES_YOLOX_CONFIG = True
 import yolox.utils as utils
 

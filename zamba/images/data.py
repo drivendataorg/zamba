@@ -7,6 +7,7 @@ from typing import Optional
 import pandas as pd
 import pytorch_lightning as pl
 from loguru import logger
+
 try:
     from megadetector.detection import run_detector
 except ModuleNotFoundError:

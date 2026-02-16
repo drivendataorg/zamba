@@ -1,6 +1,5 @@
 from datetime import datetime
 import json
-import os
 from pathlib import Path
 from typing import Optional
 import yaml
@@ -18,14 +17,11 @@ from pytorch_lightning.tuner import Tuner
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.config import (
     ModelConfig,
-    ModelEnum,
     MODEL_MAPPING,
-    SchedulerConfig,
     TrainConfig,
     PredictConfig,
 )
 from zamba.models.instantiation import instantiate_model  # noqa: F401  -- re-exported
-from zamba.models.registry import available_models
 from zamba.models.utils import (
     configure_accelerator_and_devices_from_gpus,
 )

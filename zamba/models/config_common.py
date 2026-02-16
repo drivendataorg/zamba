@@ -7,27 +7,22 @@ video-only packages (ffmpeg, av, opencv, pytorchvideo, yolox).
 from enum import Enum
 from pathlib import Path
 import random
-from typing import Dict, Optional, Union
+from typing import Optional
 
 from loguru import logger
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, DirectoryPath, FilePath, validator, root_validator
+from pydantic import BaseModel, DirectoryPath, validator
 from pqdm.threads import pqdm
 import torch
-from tqdm import tqdm
 
-from zamba import MODELS_DIRECTORY
 from zamba.data.metadata import create_site_specific_splits
 from zamba.models.utils import (
     download_weights,
     get_checkpoint_hparams,
     get_model_checkpoint_filename,
-    get_model_species,
-    RegionEnum,
 )
-from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, VIDEO_SUFFIXES, get_model_cache_dir
-
+from zamba.settings import IMAGE_SUFFIXES, SPLIT_SEED, get_model_cache_dir
 
 GPUS_AVAILABLE = torch.cuda.device_count()
 

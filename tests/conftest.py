@@ -45,25 +45,29 @@ except ImportError:
 
 collect_ignore = []
 if not _HAS_VIDEO:
-    collect_ignore.extend([
-        "test_cli.py",
-        "test_config.py",
-        "test_datamodule.py",
-        "test_densepose.py",
-        "test_depth.py",
-        "test_filter_frames.py",
-        "test_instantiate_model.py",
-        "test_load_video_frames.py",
-        "test_megadetector_lite_yolox.py",
-        "test_model_manager.py",
-        "test_npy_cache.py",
-        "test_zamba_video_classification_lightning_module.py",
-    ])
+    collect_ignore.extend(
+        [
+            "test_cli.py",
+            "test_config.py",
+            "test_datamodule.py",
+            "test_densepose.py",
+            "test_depth.py",
+            "test_filter_frames.py",
+            "test_instantiate_model.py",
+            "test_load_video_frames.py",
+            "test_megadetector_lite_yolox.py",
+            "test_model_manager.py",
+            "test_npy_cache.py",
+            "test_zamba_video_classification_lightning_module.py",
+        ]
+    )
 if not _HAS_IMAGE:
-    collect_ignore.extend([
-        "test_images.py",
-        "test_image_file_handling.py",
-    ])
+    collect_ignore.extend(
+        [
+            "test_images.py",
+            "test_image_file_handling.py",
+        ]
+    )
 
 # ---------------------------------------------------------------------------
 # Video-specific imports for fixtures (only when video extra is installed)
@@ -81,9 +85,7 @@ if _HAS_VIDEO:
 if _HAS_VIDEO:
 
     @register_model
-    class DummyZambaVideoClassificationLightningModule(
-        ZambaVideoClassificationLightningModule
-    ):
+    class DummyZambaVideoClassificationLightningModule(ZambaVideoClassificationLightningModule):
         """A dummy model whose linear weights start out as all zeros."""
 
         _default_model_name = "dummy_model"
@@ -134,6 +136,7 @@ if _HAS_VIDEO:
         model_name = "dummy"
         skip_load_validation = True
         auto_lr_find = False
+
 
 # ---------------------------------------------------------------------------
 # Dummy image model (always available — only depends on base lightning module)
@@ -284,9 +287,7 @@ if _HAS_VIDEO:
 
     @pytest.fixture(scope="session")
     def time_distributed_checkpoint(labels_absolute_path) -> os.PathLike:
-        return TrainConfig(
-            labels=labels_absolute_path, model_name="time_distributed"
-        ).checkpoint
+        return TrainConfig(labels=labels_absolute_path, model_name="time_distributed").checkpoint
 
     @pytest.fixture(scope="session")
     def mdlite():

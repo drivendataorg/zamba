@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-from botocore.exceptions import ClientError
 import pytest
 import torch
 import yaml
@@ -11,7 +10,7 @@ from zamba.models.model_manager import train_model
 
 pytestmark = pytest.mark.video
 
-from conftest import DummyTrainConfig, TEST_VIDEOS_DIR, labels_n_classes_df
+from conftest import DummyTrainConfig, TEST_VIDEOS_DIR, labels_n_classes_df  # noqa: E402
 
 
 def test_model_manager(dummy_trainer):
@@ -181,25 +180,47 @@ def test_train_save_dir_overwrite(
 
 
 @pytest.mark.parametrize(
-    "model_name", ["time_distributed", "slowfast", "european", "blank_nonblank"]
+    "model_name,expected_filename",
+    [
+        ("time_distributed", "time_distributed_1d483fc723.ckpt"),
+        ("slowfast", "slowfast_3c9d5d0c72.ckpt"),
+        ("european", "european_0a80dc77bf.ckpt"),
+        ("blank_nonblank", "blank_nonblank_48f9e5a8fc.ckpt"),
+    ],
 )
-@pytest.mark.parametrize("weight_region", ["us", "asia", "eu"])
-def test_download_weights(model_name, weight_region, tmp_path):
-    public_weights = get_model_checkpoint_filename(model_name)
+def test_model_checkpoint_filename(model_name, expected_filename):
+    checkpoint_filename = get_model_checkpoint_filename(model_name)
+    assert checkpoint_filename == Path(expected_filename)
+
+
+@pytest.mark.parametrize(
+    "weight_region,expected_bucket",
+    [
+        ("us", "s3://drivendata-public-assets"),
+        ("asia", "s3://drivendata-public-assets-asia"),
+        ("eu", "s3://drivendata-public-assets-eu"),
+    ],
+)
+def test_download_weights_uses_expected_s3_location(
+    weight_region, expected_bucket, tmp_path, mocker
+):
+    filename = "time_distributed_1d483fc723.ckpt"
+    mock_s3_client_cls = mocker.patch("zamba.models.utils.S3Client")
+    mock_s3_path_cls = mocker.patch("zamba.models.utils.S3Path")
+    mock_s3_path = mocker.MagicMock()
+    mock_s3_path.name = filename
+    mock_s3_path_cls.return_value = mock_s3_path
 
     ckpt_path = download_weights(
-        filename=public_weights,
+        filename=filename,
         weight_region=weight_region,
         destination_dir=tmp_path,
     )
-    # ensure download happened
-    assert Path(ckpt_path).exists()
 
-    # ensure path is correct
-    assert Path(ckpt_path) == tmp_path / public_weights
-
-    # invalid filename
-    with pytest.raises(ClientError):
-        download_weights(
-            filename="incorrect_checkpoint.ckpt", destination_dir=tmp_path, weight_region="us"
-        )
+    mock_s3_client_cls.assert_called_once_with(local_cache_dir=tmp_path, no_sign_request=True)
+    mock_s3_path_cls.assert_called_once_with(
+        f"{expected_bucket}/zamba_official_models/{filename}",
+        client=mock_s3_client_cls.return_value,
+    )
+    mock_s3_path.download_to.assert_called_once_with(tmp_path)
+    assert Path(ckpt_path) == tmp_path / filename

@@ -1,3 +1,4 @@
+import random
 from pathlib import Path
 from typing import Dict, Optional, Union
 
@@ -5,10 +6,12 @@ import ffmpeg
 from loguru import logger
 import pandas as pd
 from pydantic import DirectoryPath, FilePath, validator, root_validator
+import torch
 from tqdm import tqdm
 import yaml
 
 from zamba import MODELS_DIRECTORY
+from zamba.data.metadata import create_site_specific_splits
 from zamba.data.video import VideoLoaderConfig
 from zamba.exceptions import ZambaFfmpegException
 from zamba.models.config_common import (
@@ -16,19 +19,20 @@ from zamba.models.config_common import (
     ModelEnum,
     MonitorEnum,
     ZambaBaseModel,
-    SchedulerConfig,
     check_files_exist_and_load as _check_files_exist,
     get_filepaths,
     get_model_species,
-    make_split,
     validate_gpus,
     validate_model_cache_dir,
-    validate_model_name_and_checkpoint,
     RegionEnum,
 )
+from zamba.models.utils import (
+    download_weights,
+    get_checkpoint_hparams,
+    get_model_checkpoint_filename,
+)
 from zamba.pytorch.transforms import zamba_image_model_transforms, slowfast_transforms
-from zamba.settings import VIDEO_SUFFIXES
-
+from zamba.settings import SPLIT_SEED, VIDEO_SUFFIXES
 
 WEIGHT_LOOKUP = {
     "time_distributed": "s3://drivendata-client-zamba/data/results/zamba_classification_retraining/td_full_set/version_1/",
@@ -82,6 +86,47 @@ def check_files_exist_and_load(
 
 def get_video_filepaths(cls, values):
     return get_filepaths(values, VIDEO_SUFFIXES)
+
+
+def validate_model_name_and_checkpoint(cls, values):
+    """Ensures a checkpoint file or model name is provided."""
+    # lazily ensure video models are registered so available_models is populated
+    from zamba.models.registry import available_models, ensure_registered
+
+    ensure_registered()
+
+    checkpoint = values.get("checkpoint")
+    model_name = values.get("model_name")
+
+    if checkpoint is None and model_name is None:
+        raise ValueError("Must provide either model_name or checkpoint path.")
+
+    elif checkpoint is not None and model_name is not None:
+        logger.info(f"Using checkpoint file: {checkpoint}.")
+        hparams = get_checkpoint_hparams(checkpoint)
+        try:
+            values["model_name"] = available_models[hparams["model_class"]]._default_model_name
+        except (AttributeError, KeyError):
+            model_name = f"{model_name}-{checkpoint.stem}"
+
+    elif checkpoint is None and model_name is not None:
+        if not values.get("from_scratch"):
+            values["checkpoint"] = get_model_checkpoint_filename(model_name)
+            cached_path = Path(values["model_cache_dir"]) / values["checkpoint"]
+            if cached_path.exists():
+                values["checkpoint"] = cached_path
+
+            if not values["checkpoint"].exists():
+                logger.info(
+                    f"Downloading weights for model '{model_name}' to {values['model_cache_dir']}."
+                )
+                values["checkpoint"] = download_weights(
+                    filename=str(values["checkpoint"]),
+                    weight_region=values["weight_download_region"],
+                    destination_dir=values["model_cache_dir"],
+                )
+
+    return values
 
 
 class BackboneFinetuneConfig(ZambaBaseModel):

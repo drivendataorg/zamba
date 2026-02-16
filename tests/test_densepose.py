@@ -7,9 +7,9 @@ from zamba.data.video import VideoLoaderConfig
 from zamba.models.densepose import DensePoseManager, DensePoseConfig
 
 pytestmark = pytest.mark.video
-from zamba.models.densepose.densepose_manager import MODELS
+from zamba.models.densepose.densepose_manager import MODELS  # noqa: E402
 
-from conftest import ASSETS_DIR
+from conftest import ASSETS_DIR  # noqa: E402
 
 
 @pytest.fixture

@@ -8,12 +8,12 @@ import torch
 from zamba.object_detection import YoloXModel, YoloXExp, YoloXArgs
 
 pytestmark = pytest.mark.video
-from zamba.object_detection.yolox.megadetector_lite_yolox import (
+from zamba.object_detection.yolox.megadetector_lite_yolox import (  # noqa: E402
     MegadetectorLiteYoloX,
     MegadetectorLiteYoloXConfig,
 )
 
-from conftest import ASSETS_DIR
+from conftest import ASSETS_DIR  # noqa: E402
 
 
 @pytest.fixture

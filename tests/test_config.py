@@ -8,7 +8,7 @@ from pydantic import ValidationError
 
 pytestmark = pytest.mark.video
 
-from zamba.models.config import (
+from zamba.models.config import (  # noqa: E402
     EarlyStoppingConfig,
     ModelConfig,
     PredictConfig,
@@ -16,7 +16,7 @@ from zamba.models.config import (
     TrainConfig,
 )
 
-from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
+from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
 
 
 @pytest.fixture()

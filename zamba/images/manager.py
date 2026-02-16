@@ -12,6 +12,7 @@ import pandas as pd
 import pytorch_lightning as pl
 import torch
 from loguru import logger
+
 try:
     from megadetector.detection import run_detector
 except ModuleNotFoundError:

@@ -11,9 +11,9 @@ from typer.testing import CliRunner
 
 pytestmark = pytest.mark.image
 
-from zamba.image_cli import app as image_app
-from zamba.images.data import ImageClassificationDataModule
-from conftest import ASSETS_DIR
+from zamba.image_cli import app as image_app  # noqa: E402
+from zamba.images.data import ImageClassificationDataModule  # noqa: E402
+from conftest import ASSETS_DIR  # noqa: E402
 
 runner = CliRunner()
 

@@ -9,9 +9,9 @@ from typer.testing import CliRunner
 
 pytestmark = pytest.mark.video
 
-from zamba.cli import app
+from zamba.cli import app  # noqa: E402
 
-from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
+from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
 
 runner = CliRunner()
 

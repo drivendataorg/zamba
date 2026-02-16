@@ -10,16 +10,16 @@ from PIL import Image
 import pytest
 
 pytestmark = pytest.mark.video
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError  # noqa: E402
 
-from zamba.data.video import (
+from zamba.data.video import (  # noqa: E402
     load_video_frames,
     MegadetectorLiteYoloXConfig,
     VideoLoaderConfig,
 )
-from zamba.pytorch.dataloaders import FfmpegZambaVideoDataset
+from zamba.pytorch.dataloaders import FfmpegZambaVideoDataset  # noqa: E402
 
-from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
+from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
 
 
 class Case(BaseModel):

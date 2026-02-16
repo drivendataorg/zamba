@@ -97,21 +97,15 @@ class ZambaVideoDataModule(LightningDataModule):
 
     def val_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
         if self.val_dataset:
-            return torch.utils.data.DataLoader(
-                self.val_dataset, **self._dataloader_kwargs()
-            )
+            return torch.utils.data.DataLoader(self.val_dataset, **self._dataloader_kwargs())
 
     def test_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
         if self.test_dataset:
-            return torch.utils.data.DataLoader(
-                self.test_dataset, **self._dataloader_kwargs()
-            )
+            return torch.utils.data.DataLoader(self.test_dataset, **self._dataloader_kwargs())
 
     def predict_dataloader(self) -> Optional[torch.utils.data.DataLoader]:
         if self.predict_dataset:
-            return torch.utils.data.DataLoader(
-                self.predict_dataset, **self._dataloader_kwargs()
-            )
+            return torch.utils.data.DataLoader(self.predict_dataset, **self._dataloader_kwargs())
 
 
 class ZambaVideoClassificationLightningModule(ZambaClassificationLightningModule):
