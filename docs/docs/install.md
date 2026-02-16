@@ -1,6 +1,6 @@
 # Installing `zamba`
 
-Zamba has been developed and tested on macOS and Ubuntu Linux for both CPU and
+Zamba has been developed and tested on macOS, Ubuntu Linux, and Windows for both CPU and
 GPU configurations.
 
 ## To install `zamba`
@@ -20,28 +20,21 @@ We recommend [Python installation using Anaconda](https://www.anaconda.com/downl
  - [macOS installation video](https://www.youtube.com/watch?v=nVlrpNf3EdM)
 
 
-#### FFmpeg version 4
+#### FFmpeg > 4.3 (only needed for video workflows)
 
-[FFmpeg](https://ffmpeg.org/ffmpeg.html) is an open source library for loading videos of different codecs. Using FFmpeg means that `zamba` can be flexible in terms of the video formats we support. FFmpeg can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos and instructions walking through FFmpeg installation:
+[FFmpeg](https://ffmpeg.org/ffmpeg.html) is an open source library for loading videos of different codecs. Using FFmpeg means that `zamba` can be flexible in terms of the video formats we support. FFmpeg can be installed on all different platforms, but requires some additional configuration depending on the platform.
 
- - [FFmpeg download link](https://www.ffmpeg.org/download.html)
- - [Install on Ubuntu or Linux](https://www.tecmint.com/install-ffmpeg-in-linux/).
-     - In the command line, enter `sudo apt update` and then `sudo apt install ffmpeg`.
- - [MacOS install video](https://www.youtube.com/watch?v=8nbuqYw2OCw&t=5s)
-     - First, install [Homebrew](https://brew.sh/). Then run `brew install ffmpeg@4`
-     - Follow the brew instructions to add FFmpeg to your path.
+ - **Linux (Ubuntu/Debian):** `sudo apt update && sudo apt install ffmpeg`
+ - **macOS:** Install [Homebrew](https://brew.sh/), then `brew install ffmpeg`
+ - **Windows:** Install via [Chocolatey](https://chocolatey.org/) (`choco install ffmpeg`) or download from [ffmpeg.org](https://www.ffmpeg.org/download.html) and add the `bin` folder to your PATH.
 
-To check that `FFmpeg` is installed, run `ffmpeg`:
+To check that FFmpeg is installed, run `ffmpeg -version`:
 
 ```console
-$ ffmpeg
-
+$ ffmpeg -version
 ffmpeg version 4.4 Copyright (c) 2000-2021 the FFmpeg developers
-  built with Apple clang version 12.0.0 (clang-1200.0.32.29)
 ...
 ```
-
-To check your installed version, run `ffmpeg -version`.
 
 ### 2. Install `zamba`
 
@@ -115,9 +108,26 @@ apt-get update && \
 
 ### Windows
 
-**Note: `zamba` does not currently work on Windows because one of our dependencies fails to build.**
+`zamba` works on Windows. The **image** extra installs without any additional tools. The **video** extra requires a C++ compiler because some dependencies (e.g. `pycocotools`) have native extensions.
 
-You can try using [Docker](https://www.docker.com/products/docker-desktop/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) to run `zamba` on a Linux OS like Ubuntu on top of your Windows machine.
+#### Image workflows (no extra tools needed)
+
+```console
+pip install "zamba[image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+```
+
+#### Video workflows
+
+1. **Install Visual Studio Build Tools** — download the [Build Tools for Visual Studio](https://visualstudio.microsoft.com/visual-cpp-build-tools/) installer and select the **"Desktop development with C++"** workload. This provides the `cl.exe` compiler needed to build native extensions.
+
+2. **Install FFmpeg** — use [Chocolatey](https://chocolatey.org/) (`choco install ffmpeg`) or download from [ffmpeg.org](https://www.ffmpeg.org/download.html) and add the `bin` folder to your system PATH.
+
+3. **Install zamba**:
+```console
+pip install "zamba[video] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+```
+
+Alternatively, you can use [Docker](https://www.docker.com/products/docker-desktop/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) to run `zamba` in a Linux environment on Windows.
 
 ## Using GPU(s)
 
