@@ -55,7 +55,7 @@ video = [
   "fvcore",
   "opencv-python-headless",
   "pytorchvideo",
-  "yolox @ git+https://github.com/r-b-g-b/YOLOX.git@build-requirements",
+  "pixeltable-yolox",
 ]
 image = [
   "megadetector>=10.0.0",

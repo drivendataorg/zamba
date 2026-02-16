@@ -13,7 +13,10 @@ import pandas as pd
 import pytorch_lightning as pl
 import torch
 from loguru import logger
-from megadetector.detection import run_detector
+try:
+    from megadetector.detection import run_detector
+except ModuleNotFoundError:
+    from detection import run_detector
 from pytorch_lightning.callbacks import (
     EarlyStopping,
     ModelCheckpoint,
