@@ -210,8 +210,8 @@ jobs:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
           # DensePose deps are not on PyPI; install from GitHub (see docs/models/densepose.md)
-          uv pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git"
-          uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
+          uv pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git" --no-build-isolation
+          uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose" --no-build-isolation
           make densepose-tests
 
       - name: Upload coverage to codecov
