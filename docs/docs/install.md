@@ -38,33 +38,36 @@ ffmpeg version 4.4 Copyright (c) 2000-2021 the FFmpeg developers
 
 ### 2. Install `zamba`
 
-On macOS, run these commands in the terminal (⌘+space, "Terminal"). On Windows, run them in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
+We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages and managing environments. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if you haven't already. On macOS, run these commands in the terminal (⌘+space, "Terminal"). On Windows, run them in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
 
-`zamba` is split into optional extras so you only install the dependencies you need:
+`zamba` is split into optional extras so you only install the dependencies you need. With uv (recommended):
 
 - **Video workflows** (species classification in camera trap videos):
 ```console
-$ pip install "zamba[video] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+$ uv pip install zamba[video]
 ```
 
 - **Image workflows** (species classification in camera trap images):
 ```console
-$ pip install "zamba[image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+$ uv pip install zamba[image]
 ```
 
 - **Both video and image workflows**:
 ```console
-$ pip install "zamba[video,image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+$ uv pip install zamba[video,image]
 ```
+
+With pip, use the same extras: `pip install zamba[video]`, `pip install zamba[image]`, or `pip install zamba[video,image]`. To install from the latest GitHub source instead of PyPI: `pip install "zamba[video] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"` (and similarly for other extras).
 
 To check what version of zamba you have installed:
 ```console
-$ pip show zamba
+$ uv pip show zamba
 ```
+Or with pip: `pip show zamba`.
 
 To update zamba to the most recent version if needed:
 ```console
-$ pip install -U "zamba[video,image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+$ uv pip install -U zamba[video,image]
 ```
 
 
@@ -113,7 +116,7 @@ apt-get update && \
 #### Image workflows (no extra tools needed)
 
 ```console
-pip install "zamba[image] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+uv pip install zamba[image]
 ```
 
 #### Video workflows
@@ -122,10 +125,11 @@ pip install "zamba[image] @ https://github.com/drivendataorg/zamba/releases/late
 
 2. **Install FFmpeg** — use [Chocolatey](https://chocolatey.org/) (`choco install ffmpeg`) or download from [ffmpeg.org](https://www.ffmpeg.org/download.html) and add the `bin` folder to your system PATH.
 
-3. **Install zamba**:
+3. **Install zamba** (we recommend [uv](https://docs.astral.sh/uv/)):
 ```console
-pip install "zamba[video] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"
+uv pip install zamba[video]
 ```
+Or with pip: `pip install zamba[video]`.
 
 Alternatively, you can use [Docker](https://www.docker.com/products/docker-desktop/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) to run `zamba` in a Linux environment on Windows.
 

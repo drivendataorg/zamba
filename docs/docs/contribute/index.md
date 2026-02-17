@@ -11,26 +11,28 @@ There you can find [open issues](https://github.com/drivendataorg/zamba/issues) 
 
 ## Installation for development
 
-To install `zamba` for development, you need to clone the git repository and then install the cloned version of the library for local development.
+To install `zamba` for development, clone the git repository and install the package with the dev extras. We recommend [uv](https://docs.astral.sh/uv/) for managing the environment.
 
-To install for development:
+With uv (recommended):
 ```console
 $ git clone https://github.com/drivendataorg/zamba.git
 $ cd zamba
-$ pip install -e ".[tests, image, video, docs]"
+$ uv pip install -e ".[tests,image,video,docs]"
 ```
 
-You can also install the dependencies using `uv` with the makefile target:
+Or use the Makefile target (which uses uv):
 ```console
 $ make requirements
 ```
 
+With pip:
+```console
+$ pip install -e ".[tests,image,video,docs]"
+```
+
 If your contribution is to the [DensePose](../models/densepose.md) model, install the DensePose dependencies from GitHub as described in the [DensePose installation](../models/densepose.md#installation) section.
 
-To build the documentation locally, install the `docs` extra:
-```console
-$ pip install -e ".[docs]"
-```
+To build the documentation locally, install the `docs` extra (e.g. `uv pip install -e ".[docs]"` or `pip install -e ".[docs]"`).
 
 ## Running the `zamba` test suite
 

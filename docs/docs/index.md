@@ -27,17 +27,26 @@ We encourage people to share their custom models trained with Zamba. If you trai
 
 ## Installing `zamba`
 
-First, make sure you have the prerequisites installed:
+We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then ensure you have Python >= 3.11 and (if you will run video workflows) FFmpeg > 4.3. Then run:
 
-* Python >= 3.11
-* FFmpeg > 4.3
-
-Then run:
 ```console
-pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
+uv pip install zamba[image]
 ```
 
-See the [Installation](install/) page of the documentation for details.
+or
+
+```console
+uv pip install zamba[video]
+```
+
+or, if you need both:
+
+```console
+uv pip install zamba[video,image]
+```
+Or with pip: `pip install zamba[image]`, `pip install zamba[video]`, or `pip install zamba[video,image]`.
+
+See the [Installation](install/) page of the documentation for details and extra options.
 
 ## Getting started
 
