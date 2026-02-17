@@ -24,6 +24,7 @@ endif
 ## Install Python Dependencies
 requirements:
 	uv pip install -e ".[tests, image, video, docs]"
+
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts

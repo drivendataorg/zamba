@@ -109,7 +109,7 @@ jobs:
     - name: Install dependencies
       if: steps.cache-weights.outputs.cache-hit != 'true'
       run: |
-        uv pip install -e .[tests]
+        uv pip install -e .[tests,image,video]
 
     - name: Download weights
       if: steps.cache-weights.outputs.cache-hit != 'true'
