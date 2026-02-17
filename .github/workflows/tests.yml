@@ -274,12 +274,13 @@ jobs:
 
       - name: Build from source
         run: |
-          uv pip install .
+          uv pip install .[image,video]
 
       - name: Test import and model loading
         run: |
           python -m zamba --help
           python -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          python -c "from zamba.images.data import ImageClassificationDataset; ImageClassificationDataset('.', '.', '.')"
 
   notify:
     name: Notify failed build
