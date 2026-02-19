@@ -128,6 +128,11 @@ def predict(
     overwrite: bool = typer.Option(
         None, "--overwrite", "-o", help="Overwrite outputs in the save directory if they exist."
     ),
+    validate_images: bool = typer.Option(
+        False,
+        "--validate-images",
+        help="Validate that images can be opened with PIL and filter out invalid ones.",
+    ),
     yes: bool = typer.Option(
         False,
         "--yes",
@@ -271,6 +276,11 @@ def train(
         None,
         "--weighted-loss",
         help="Use weighted cross entropy as loss.",
+    ),
+    validate_images: bool = typer.Option(
+        False,
+        "--validate-images",
+        help="Validate that images can be opened with PIL and filter out invalid ones.",
     ),
     yes: bool = typer.Option(
         False,
