@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional, Union
 
 import appdirs
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 import torch
 from loguru import logger
 from pydantic import DirectoryPath, FilePath, root_validator, validator
@@ -403,32 +404,26 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         labels = values["labels"]
 
         # lowercase to facilitate subset checking
-        labels["label"] = labels.label.str.lower()
-
-        # one hot encoding
-        labels = pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
+        labels["class_name"] = labels.label.str.lower()
 
         # We validate that all the images exist prior to this, so once this assembles the set of classes,
         # we should have at least one example of each label and don't need to worry about filtering out classes
         # with missing examples.
-        species_columns = labels.columns[labels.columns.str.contains("species_")]
-        values["species_in_label_order"] = species_columns.to_list()
+        encoder = LabelEncoder()
+        labels["label"] = encoder.fit_transform(labels["class_name"])
+        values["species_in_label_order"] = encoder.classes_.tolist()
 
-        indices = (
-            labels[species_columns].idxmax(axis=1).apply(lambda x: species_columns.get_loc(x))
-        )
-
-        labels["label"] = indices
+        # one hot encoding
+        one_hot = pd.get_dummies(labels["class_name"])
+        labels = labels.assign(**one_hot)
 
         # if no "split" column, set up train, val, and test split
         if "split" not in labels.columns:
             make_split(labels, values)
 
-        values["labels"] = labels.reset_index()
+        values["labels"] = labels
 
-        example_species = [
-            species.replace("species_", "") for species in values["species_in_label_order"][:3]
-        ]
+        example_species = values["species_in_label_order"][:3]
         logger.info(
             f"Labels preprocessed. {len(values['species_in_label_order'])} species found: {example_species}..."
         )
