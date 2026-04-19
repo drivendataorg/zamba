@@ -35,6 +35,7 @@ from zamba.pytorch_lightning.video_modules import (
     ZambaVideoDataModule,
     ZambaVideoClassificationLightningModule,
 )
+from zamba.version import __version__
 
 
 def instantiate_model(
@@ -218,6 +219,8 @@ def train_model(
         video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.
             If None, will use default for model specified in TrainConfig.
     """
+    logger.info(f"Running zamba version {__version__}")
+
     # get default VLC for model if not specified
     if video_loader_config is None:
         video_loader_config = ModelConfig(
@@ -368,6 +371,8 @@ def predict_model(
         video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.
             If None, will use default for model specified in PredictConfig.
     """
+    logger.info(f"Running zamba version {__version__}")
+
     # get default VLC for model if not specified
     if video_loader_config is None:
         video_loader_config = ModelConfig(
