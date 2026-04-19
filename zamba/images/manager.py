@@ -37,6 +37,7 @@ from zamba.images.data import ImageClassificationDataModule, load_image, absolut
 from zamba.images.result import results_to_megadetector_format
 from zamba.models.model_manager import instantiate_model
 from zamba.pytorch.transforms import resize_and_pad
+from zamba.version import __version__
 
 
 def get_weights(split):
@@ -48,6 +49,7 @@ def get_weights(split):
 
 
 def predict(config: ImageClassificationPredictConfig) -> None:
+    logger.info(f"Running zamba version {__version__}")
     image_transforms = transforms.Compose(
         [
             transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
@@ -160,6 +162,7 @@ def _save_config(model, config):
 
 
 def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
+    logger.info(f"Running zamba version {__version__}")
     if config.save_dir:
         logger.add(
             str(config.save_dir / "training.log"),
