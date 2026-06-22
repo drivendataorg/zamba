@@ -19,6 +19,8 @@ def frames():
 
 @pytest.fixture
 def detections():
+    # Keep detection generation independent from the frames fixture so weighted samples do not
+    # depend on fixture evaluation order.
     rng = np.random.RandomState(68891)
     # Frame scores that increase monotonically
     scores = np.zeros(n_frames, dtype=float)

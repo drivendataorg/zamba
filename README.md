@@ -30,7 +30,7 @@ Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
 We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages and managing environments. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then ensure you have:
 
 * Python >= 3.11
-* FFmpeg > 4.3 (only needed for video workflows)
+* FFmpeg > 4.3 and < 5 (only needed for video workflows)
 
 Then install the extras you need with uv. **We recommend only installing one or the other depending on your use case.**
 

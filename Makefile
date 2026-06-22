@@ -1,4 +1,4 @@
-.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up tests tests-fast test-image-only test-video-only
+.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up test test-fast test-debug test-densepose test-image-only test-video-only
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -23,7 +23,7 @@ endif
 
 ## Install Python Dependencies
 requirements:
-	uv pip install -e ".[tests, image, video, docs]"
+	uv pip install -e ".[image,video]" --group dev
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -62,23 +62,19 @@ lint:
 	black --check zamba tests
 
 ## Generate assets and run tests
-tests: clean-test
+test: clean-test
 	pytest tests -vv
 
 ## Dev: fail fast on the first test failure
-tests-fast: clean-test
+test-fast: clean-test
 	pytest tests -vv --maxfail=1 -x
 
 ## Dev: Fail fast, do not run in parallel, and open debugger on failure
-tests-debug: clean-test
+test-debug: clean-test
 	pytest tests -vvv --pdb --maxfail=1 -n=0 --lf --last-failed-no-failures=all
 
-## Dev: Run the tests that are just for images (no videos)
-images-tests: clean-test
-	pytest tests/test_images.py -vv
-
 ## Run the tests that are just for densepose
-densepose-tests:
+test-densepose:
 	ZAMBA_RUN_DENSEPOSE_TESTS=1 pytest tests/test_densepose.py tests/test_cli.py::test_densepose_cli_options -vv
 
 ## Test image deps in isolation: fresh venv, install image extra only, run image + agnostic tests, cleanup

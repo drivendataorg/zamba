@@ -27,7 +27,7 @@ We encourage people to share their custom models trained with Zamba. If you trai
 
 ## Installing `zamba`
 
-We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then ensure you have Python >= 3.11 and (if you will run video workflows) FFmpeg > 4.3. Then run:
+We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then ensure you have Python >= 3.11 and (if you will run video workflows) FFmpeg > 4.3 and < 5. Then run:
 
 ```console
 uv pip install zamba[image]
