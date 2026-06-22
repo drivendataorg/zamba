@@ -11,13 +11,13 @@ There you can find [open issues](https://github.com/drivendataorg/zamba/issues) 
 
 ## Installation for development
 
-To install `zamba` for development, clone the git repository and install the package with the dev extras. We recommend [uv](https://docs.astral.sh/uv/) for managing the environment.
+To install `zamba` for development, clone the git repository and install the package with the developer dependency group. We recommend [uv](https://docs.astral.sh/uv/) for managing the environment.
 
 With uv (recommended):
 ```console
 $ git clone https://github.com/drivendataorg/zamba.git
 $ cd zamba
-$ uv pip install -e ".[tests,image,video,docs]"
+$ uv pip install -e ".[image,video]" --group dev
 ```
 
 Or use the Makefile target (which uses uv):
@@ -32,7 +32,7 @@ $ pip install -e ".[tests,image,video,docs]"
 
 If your contribution is to the [DensePose](../models/densepose.md) model, install the DensePose dependencies from GitHub as described in the [DensePose installation](../models/densepose.md#installation) section.
 
-To build the documentation locally, install the `docs` extra (e.g. `uv pip install -e ".[docs]"` or `pip install -e ".[docs]"`).
+To build the documentation locally with uv, install the docs dependency group (e.g. `uv pip install -e . --group docs`). With pip, install the `docs` extra (e.g. `pip install -e ".[docs]"`).
 
 ## Running the `zamba` test suite
 
@@ -41,12 +41,12 @@ The included [`Makefile`](https://github.com/drivendataorg/zamba/blob/master/Mak
 The command is (from the project root):
 
 ```console
-$ make tests
+$ make test
 ```
 
 For [DensePose](../models/densepose.md) related tests, install the DensePose dependencies from GitHub (see [DensePose installation](../models/densepose.md#installation)), then run:
 ```console
-$ make densepose-tests
+$ make test-densepose
 ```
 
 ## Submit additional training videos

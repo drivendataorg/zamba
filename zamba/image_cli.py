@@ -26,11 +26,12 @@ def get_cli_args(ctx: typer.Context, source=ParameterSource.COMMANDLINE) -> dict
     Returns a dictionary of arguments that were explicitly passed via CLI.
     """
     cli_args = {}
+    source_name = source.name
 
     for param_name, value in ctx.params.items():
         # Check if the parameter was provided via CLI
         param_source = ctx.get_parameter_source(param_name)
-        if param_source == source:
+        if param_source is not None and param_source.name == source_name:
             cli_args[param_name] = value
 
     return cli_args

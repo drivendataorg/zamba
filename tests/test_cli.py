@@ -16,7 +16,7 @@ runner = CliRunner()
 
 @pytest.fixture
 def minimum_valid_train(labels_absolute_path):
-    return ["train", "--labels", str(labels_absolute_path), "--skip-load-validation"]
+    return ["train", "--labels", str(labels_absolute_path), "--skip-load-validation", "--yes"]
 
 
 @pytest.fixture
@@ -27,6 +27,7 @@ def minimum_valid_predict():
         str(TEST_VIDEOS_DIR),
         "--skip-load-validation",
         "--no-save",
+        "--yes",
     ]
 
 
@@ -56,7 +57,7 @@ def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa:
 
     # test from config
     result = runner.invoke(
-        app, ["train", "--config", str(ASSETS_DIR / "sample_train_config.yaml")]
+        app, ["train", "--config", str(ASSETS_DIR / "sample_train_config.yaml")], input="\n"
     )
     assert result.exit_code == 0
     assert f"Config file: {str(ASSETS_DIR / 'sample_train_config.yaml')}" in result.output

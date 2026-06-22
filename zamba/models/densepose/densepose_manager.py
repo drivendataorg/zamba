@@ -45,9 +45,9 @@ DENSEPOSE_INSTALL_MESSAGE = """
 DensePose dependencies are not installed. They are not distributed on PyPI.
 Install them from GitHub after installing PyTorch:
 
-  pip install torch
-  pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git"
-  pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
+  uv pip install torch
+  uv pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git"
+  uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
 
 See https://zamba.drivendata.org/docs/stable/models/densepose/#installation for details.
 """.strip()

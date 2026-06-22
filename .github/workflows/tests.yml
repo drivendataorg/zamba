@@ -48,7 +48,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -e ".[tests]"
+          uv pip install -e . --group tests
 
       - name: Lint package
         run: |
@@ -109,7 +109,7 @@ jobs:
     - name: Install dependencies
       if: steps.cache-weights.outputs.cache-hit != 'true'
       run: |
-        uv pip install -e .[tests,image,video]
+        uv pip install -e ".[image,video]" --group tests
 
     - name: Download weights
       if: steps.cache-weights.outputs.cache-hit != 'true'
@@ -189,11 +189,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -e .[tests,image,video]
+          uv pip install -e ".[image,video]" --group tests
 
       - name: Run tests
         run: |
-          make tests
+          make test
 
       - name: Run video and image isolation tests
         run: |
@@ -212,7 +212,7 @@ jobs:
           # DensePose deps are not on PyPI; install from GitHub (see docs/models/densepose.md)
           uv pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git" --no-build-isolation
           uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose" --no-build-isolation
-          make densepose-tests
+          make test-densepose
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v4
