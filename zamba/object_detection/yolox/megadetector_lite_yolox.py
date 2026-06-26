@@ -19,6 +19,17 @@ LOCAL_MD_LITE_MODEL_KWARGS = (
 )
 
 
+def _rank_frame_indices(scores: np.ndarray) -> np.ndarray:
+    """Frame indices ordered by score descending, then frame index ascending.
+
+    The index-ascending tie-break makes the ordering deterministic across pandas and numpy
+    versions. Policy: among equal scores, prefer earlier (chronological)
+    frames.
+    """
+    frame_indices = np.arange(len(scores))
+    return frame_indices[np.lexsort((frame_indices, -scores))]
+
+
 class FillModeEnum(str, Enum):
     """Enum for frame filtering fill modes
 
@@ -252,13 +263,15 @@ class MegadetectorLiteYoloX:
             np.ndarray: An array of video frames of length n_frames or shorter
         """
 
-        frame_scores = pd.Series(
-            [(np.max(score) if (len(score) > 0) else 0) for _, score in detections]
-        ).sort_values(
-            ascending=False
-        )  # reduce to one score per frame
+        # reduce to one score per frame
+        scores = np.array(
+            [(np.max(score) if (len(score) > 0) else 0.0) for _, score in detections],
+            dtype=np.float64,
+        )
 
-        selected_indices = frame_scores.loc[frame_scores > self.config.confidence].index
+        # frames above threshold, ordered by score descending then frame index ascending
+        above = np.flatnonzero(scores > self.config.confidence)
+        selected_indices = above[np.lexsort((above, -scores[above]))]
 
         if self.config.n_frames is None:
             # no minimum n_frames provided, just select all the frames with scores > threshold
@@ -266,17 +279,14 @@ class MegadetectorLiteYoloX:
 
         elif len(selected_indices) >= self.config.n_frames:
             # num. frames with scores > threshold is greater than the requested number of frames
-            selected_indices = (
-                frame_scores[selected_indices]
-                .sort_values(ascending=False)
-                .iloc[: self.config.n_frames]
-                .index
-            )
+            selected_indices = selected_indices[: self.config.n_frames]
 
         elif len(selected_indices) < self.config.n_frames:
             # num. frames with scores > threshold is less than the requested number of frames
             # repeat frames that are above threshold to get to n_frames
             rng = np.random.RandomState(self.config.seed)
+
+            frame_scores = pd.Series(scores).sort_values(ascending=False)
 
             if self.config.fill_mode == "repeat":
                 repeated_indices = rng.choice(
@@ -288,9 +298,7 @@ class MegadetectorLiteYoloX:
 
             # take frames in sorted order up to n_frames, even if score is zero
             elif self.config.fill_mode == "score_sorted":
-                selected_indices = (
-                    frame_scores.sort_values(ascending=False).iloc[: self.config.n_frames].index
-                )
+                selected_indices = _rank_frame_indices(scores)[: self.config.n_frames]
 
             # sample up to n_frames, prefer points closer to frames with detection
             elif self.config.fill_mode == "weighted_euclidean":

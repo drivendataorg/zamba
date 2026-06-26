@@ -60,6 +60,26 @@ def test_score_sorted(mdlite, frames, detections):
     assert (filtered_frames[:, 0, 0, 0] == np.array([90, 80, 70, 60, 50])).all()
 
 
+def test_score_sorted_tie_break_is_by_frame_index(mdlite, frames):
+    """Zero-score ties must pick lowest frame indices, not pandas-version-dependent order."""
+    detections = [
+        (
+            np.array([]),
+            np.array([0.9 if i in (5, 10) else 0.0]),  # only frames 5, 10 detected
+        )
+        for i in range(20)
+    ]
+    mdlite.config = MegadetectorLiteYoloXConfig(
+        confidence=0.25,
+        n_frames=6,
+        fill_mode="score_sorted",
+        sort_by_time=False,
+    )
+    out = mdlite.filter_frames(frames[:20], detections)
+    # top 2 by score: 5, 10; fill remaining 4 zeros with the lowest frame indices: 0, 1, 2, 3
+    assert list(out[:, 0, 0, 0]) == [5, 10, 0, 1, 2, 3]
+
+
 def test_sort_by_time(mdlite, frames, detections):
     mdlite.config = MegadetectorLiteYoloXConfig(
         confidence=50, n_frames=5, fill_mode="repeat", sort_by_time=True
