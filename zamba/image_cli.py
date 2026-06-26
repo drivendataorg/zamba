@@ -1,7 +1,6 @@
 from collections.abc import Callable
 import os
 from pathlib import Path
-from typing import Optional
 
 from click.core import ParameterSource
 from loguru import logger
