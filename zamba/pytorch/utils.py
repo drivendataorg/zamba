@@ -1,6 +1,31 @@
 from typing import Optional, Tuple
 
+import pytorch_lightning as pl
 import torch
+
+from zamba.settings import INFERENCE_SEED
+
+
+def configure_inference_determinism(
+    *,
+    seed: Optional[int] = None,
+    deterministic: bool = True,
+) -> None:
+    """Seed RNGs and optionally enable deterministic CUDA/cuDNN for inference.
+
+    Args:
+        seed: Random seed for Python, NumPy, and PyTorch. Defaults to ``INFERENCE_SEED``
+            from settings (env ``INFERENCE_SEED``, default 55).
+        deterministic: If True, request deterministic cuDNN algorithms and disable
+            cuDNN benchmark mode. May reduce GPU throughput.
+    """
+    effective_seed = INFERENCE_SEED if seed is None else seed
+    pl.seed_everything(effective_seed, workers=True)
+
+    if deterministic:
+        torch.use_deterministic_algorithms(True, warn_only=True)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
 
 def build_multilayer_perceptron(

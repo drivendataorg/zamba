@@ -39,6 +39,7 @@ from zamba.images.data import ImageClassificationDataModule, load_image, absolut
 from zamba.images.result import results_to_megadetector_format
 from zamba.models.instantiation import instantiate_model
 from zamba.pytorch.transforms import resize_and_pad
+from zamba.pytorch.utils import configure_inference_determinism
 
 
 def get_weights(split):
@@ -50,6 +51,8 @@ def get_weights(split):
 
 
 def predict(config: ImageClassificationPredictConfig) -> None:
+    configure_inference_determinism(deterministic=config.deterministic)
+
     image_transforms = transforms.Compose(
         [
             transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
@@ -62,6 +65,7 @@ def predict(config: ImageClassificationPredictConfig) -> None:
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
+    classifier_module.eval()
 
     logger.info("Running inference")
     predictions = []

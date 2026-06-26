@@ -97,6 +97,9 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
             Defaults to "us".
+        deterministic (bool): If True, seed RNGs and use deterministic CUDA/cuDNN algorithms
+            where supported so repeated inference runs produce identical predictions.
+            Defaults to True.
     """
 
     checkpoint: Optional[FilePath] = None
@@ -114,6 +117,7 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
     results_file_name: Optional[Path] = Path("zamba_predictions.csv")
     model_cache_dir: Optional[Path] = None
     weight_download_region: str = RegionEnum.us.value
+    deterministic: bool = True
 
     class Config:  # type: ignore
         arbitrary_types_allowed = True

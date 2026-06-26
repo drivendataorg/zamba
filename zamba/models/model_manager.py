@@ -26,6 +26,7 @@ from zamba.models.utils import (
     configure_accelerator_and_devices_from_gpus,
 )
 from zamba.pytorch.finetuning import BackboneFinetuning
+from zamba.pytorch.utils import configure_inference_determinism
 from zamba.pytorch_lightning.video_modules import (
     ZambaVideoDataModule,
     ZambaVideoClassificationLightningModule,
@@ -219,6 +220,8 @@ def predict_model(
         video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.
             If None, will use default for model specified in PredictConfig.
     """
+    configure_inference_determinism(deterministic=predict_config.deterministic)
+
     # get default VLC for model if not specified
     if video_loader_config is None:
         video_loader_config = ModelConfig(
@@ -252,6 +255,7 @@ def predict_model(
         devices=devices,
         logger=False,
         fast_dev_run=predict_config.dry_run,
+        deterministic=predict_config.deterministic,
     )
 
     configuration = {
