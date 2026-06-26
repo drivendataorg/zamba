@@ -37,11 +37,16 @@ def test_configure_inference_determinism_custom_seed(monkeypatch):
 
 
 def test_configure_inference_determinism_skips_cublas_when_disabled(monkeypatch):
-    monkeypatch.setattr("zamba.pytorch.utils.pl.seed_everything", MagicMock())
+    seed_calls = []
+    monkeypatch.setattr(
+        "zamba.pytorch.utils.pl.seed_everything",
+        lambda seed, workers=False: seed_calls.append((seed, workers)),
+    )
     monkeypatch.delenv("CUBLAS_WORKSPACE_CONFIG", raising=False)
 
     configure_inference_determinism(deterministic=False)
 
+    assert seed_calls == [(55, True)]
     assert "CUBLAS_WORKSPACE_CONFIG" not in os.environ
 
 

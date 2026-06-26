@@ -21,7 +21,7 @@
  - Update tests to use new config/instantiation imports and markers; add image dataset import check in the install smoke test.
  - Installation docs: document optional extras (video, image), PyPI install (`pip install zamba[video]` etc.), and Windows (image extra no extra tools; video needs Visual Studio Build Tools and FFmpeg). State FFmpeg only required for video workflows and recommend FFmpeg 4.x. Contribute page: dev install with `--group dev`, DensePose deps from GitHub, `make requirements` with uv. DensePose doc: install detectron2/detectron2-densepose from GitHub; note that `zamba densepose` prints instructions if deps missing.
  - Re-enable PyPI publish steps in the release workflow (Test PyPI and Production PyPI). Docs workflows and release job install `.[docs]` instead of `requirements-dev/docs.txt`.
- - Add `deterministic` option (default `True`) to video and image prediction configs to seed RNGs and request best-effort deterministic CUDA/cuDNN during inference. Control the seed with the `INFERENCE_SEED` environment variable (default `55`).
+ - Add `deterministic` option (default `False`) to video and image prediction configs. Inference always seeds RNGs (`INFERENCE_SEED`, default `55`); set `deterministic=True` for strict CUDA/cuDNN reproducibility at some GPU throughput cost.
  - Fix non-deterministic frame ordering in MegadetectorLite `score_sorted` fill mode when frame scores tie; equal scores now break by lowest frame index.
 
 ## v.2.6.1 (2025-03-18)

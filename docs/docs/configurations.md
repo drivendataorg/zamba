@@ -171,7 +171,7 @@ class PredictConfig(ZambaBaseModel)
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  skip_load_validation: bool = False,
  model_cache_dir: pathlib.Path = None,
- deterministic: bool = True) -> None
+ deterministic: bool = False) -> None
 
  ...
 ```
@@ -247,7 +247,7 @@ Cache directory where downloaded model weights will be saved. If None and the `M
 
 #### `deterministic (bool, optional)`
 
-If `True`, seed Python, NumPy, and PyTorch RNGs and request deterministic CUDA/cuDNN algorithms where supported (best effort; some GPU ops may remain non-deterministic and will warn rather than error). The random seed defaults to `55` and can be overridden with the `INFERENCE_SEED` environment variable. May reduce GPU throughput on CUDA devices. Set to `False` if you prefer maximum inference speed over reproducibility. Defaults to `True`.
+If `True`, enable strict deterministic CUDA/cuDNN algorithms during inference (best effort; some GPU ops may remain non-deterministic and will warn rather than error). May reduce GPU throughput on CUDA devices. Inference always seeds Python, NumPy, and PyTorch RNGs regardless of this flag; the seed defaults to `55` and can be overridden with the `INFERENCE_SEED` environment variable. Defaults to `False`.
 
 <a id='training-arguments'></a>
 
@@ -454,7 +454,7 @@ s3 region to download pretrained weights from. Options are "us" (United States),
 
 #### `deterministic (bool, optional)`
 
-If `True`, seed Python, NumPy, and PyTorch RNGs and request deterministic CUDA/cuDNN algorithms where supported (best effort; some GPU ops may remain non-deterministic and will warn rather than error). The random seed defaults to `55` and can be overridden with the `INFERENCE_SEED` environment variable. May reduce GPU throughput on CUDA devices. Set to `False` if you prefer maximum inference speed over reproducibility. Defaults to `True`.
+If `True`, enable strict deterministic CUDA/cuDNN algorithms during inference (best effort; some GPU ops may remain non-deterministic and will warn rather than error). May reduce GPU throughput on CUDA devices. Inference always seeds Python, NumPy, and PyTorch RNGs regardless of this flag; the seed defaults to `55` and can be overridden with the `INFERENCE_SEED` environment variable. Defaults to `False`.
 
 <a id='image-training-arguments'></a>
 

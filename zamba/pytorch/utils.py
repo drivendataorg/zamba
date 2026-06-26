@@ -10,16 +10,20 @@ from zamba.settings import INFERENCE_SEED
 def configure_inference_determinism(
     *,
     seed: Optional[int] = None,
-    deterministic: bool = True,
+    deterministic: bool = False,
 ) -> None:
-    """Seed RNGs and optionally request deterministic CUDA/cuDNN for inference.
+    """Seed RNGs for inference and optionally enable strict GPU determinism.
+
+    Seeding always runs so frame sampling and other stochastic preprocessing are
+    reproducible. When ``deterministic`` is True, also request deterministic CUDA/cuDNN
+    algorithms (best effort; may reduce GPU throughput).
 
     Args:
         seed: Random seed for Python, NumPy, and PyTorch. Defaults to ``INFERENCE_SEED``
             from settings (env ``INFERENCE_SEED``, default 55).
-        deterministic: If True, request deterministic CUDA/cuDNN algorithms where supported
-            (best effort; some GPU ops may remain non-deterministic and will warn rather than
-            error). Disables cuDNN benchmark mode. May reduce GPU throughput.
+        deterministic: If True, enable strict deterministic CUDA/cuDNN algorithms where
+            supported (best effort; some GPU ops may remain non-deterministic and will warn
+            rather than error). Disables cuDNN benchmark mode. May reduce GPU throughput.
     """
     effective_seed = INFERENCE_SEED if seed is None else seed
     pl.seed_everything(effective_seed, workers=True)
