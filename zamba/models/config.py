@@ -619,9 +619,9 @@ class PredictConfig(ZambaBaseModel):
         model_cache_dir (Path, optional): Cache directory where downloaded model weights
             will be saved. If None and the MODEL_CACHE_DIR environment variable is
             not set, uses your default cache directory. Defaults to None.
-        deterministic (bool): If True, seed RNGs and use deterministic CUDA/cuDNN algorithms
-            where supported so repeated inference runs produce identical predictions.
-            Defaults to True.
+        deterministic (bool): If True, seed RNGs and request deterministic CUDA/cuDNN algorithms
+            where supported (best effort; some GPU ops may remain non-deterministic and will warn
+            rather than error). May reduce GPU throughput. Defaults to True.
     """
 
     data_dir: DirectoryPath = ""

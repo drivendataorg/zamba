@@ -286,8 +286,6 @@ class MegadetectorLiteYoloX:
             # repeat frames that are above threshold to get to n_frames
             rng = np.random.RandomState(self.config.seed)
 
-            frame_scores = pd.Series(scores).sort_values(ascending=False)
-
             if self.config.fill_mode == "repeat":
                 repeated_indices = rng.choice(
                     selected_indices,
@@ -302,6 +300,7 @@ class MegadetectorLiteYoloX:
 
             # sample up to n_frames, prefer points closer to frames with detection
             elif self.config.fill_mode == "weighted_euclidean":
+                frame_scores = pd.Series(scores).sort_values(ascending=False)
                 sample_from = np.asarray(
                     frame_scores.loc[~frame_scores.index.isin(selected_indices)].index, dtype=int
                 )
@@ -323,6 +322,7 @@ class MegadetectorLiteYoloX:
 
             # sample up to n_frames, weight by predicted probability - only if some frames have nonzero prob
             elif (self.config.fill_mode == "weighted_prob") and (len(selected_indices) > 0):
+                frame_scores = pd.Series(scores).sort_values(ascending=False)
                 sample_from = np.asarray(
                     frame_scores.loc[~frame_scores.index.isin(selected_indices)].index, dtype=int
                 )

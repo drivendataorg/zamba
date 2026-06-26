@@ -255,7 +255,7 @@ def predict_model(
         devices=devices,
         logger=False,
         fast_dev_run=predict_config.dry_run,
-        deterministic=predict_config.deterministic,
+        deterministic="warn" if predict_config.deterministic else False,
     )
 
     configuration = {

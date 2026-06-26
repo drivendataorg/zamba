@@ -80,6 +80,73 @@ def test_score_sorted_tie_break_is_by_frame_index(mdlite, frames):
     assert list(out[:, 0, 0, 0]) == [5, 10, 0, 1, 2, 3]
 
 
+def test_above_threshold_tie_break_is_by_frame_index(mdlite, frames):
+    """When more than n_frames share the top score, lowest frame indices win."""
+    detections = [
+        (np.array([]), np.array([0.9])) for _ in range(10)
+    ]
+    mdlite.config = MegadetectorLiteYoloXConfig(
+        confidence=0.25,
+        n_frames=5,
+        fill_mode="score_sorted",
+        sort_by_time=False,
+    )
+    out = mdlite.filter_frames(frames[:10], detections)
+    assert list(out[:, 0, 0, 0]) == [0, 1, 2, 3, 4]
+
+
+def test_n_frames_none_returns_all_above_threshold(mdlite, frames):
+    detections = [
+        (np.array([]), np.array([0.9 if i in (2, 7) else 0.0])) for i in range(10)
+    ]
+    mdlite.config = MegadetectorLiteYoloXConfig(
+        confidence=0.25,
+        n_frames=None,
+        fill_mode="score_sorted",
+        sort_by_time=False,
+    )
+    out = mdlite.filter_frames(frames[:10], detections)
+    assert list(out[:, 0, 0, 0]) == [2, 7]
+
+
+def test_all_zero_scores_fills_by_lowest_frame_index(mdlite, frames):
+    detections = [(np.array([]), np.array([0.0])) for _ in range(10)]
+    mdlite.config = MegadetectorLiteYoloXConfig(
+        confidence=0.25,
+        n_frames=5,
+        fill_mode="score_sorted",
+        sort_by_time=False,
+    )
+    out = mdlite.filter_frames(frames[:10], detections)
+    assert list(out[:, 0, 0, 0]) == [0, 1, 2, 3, 4]
+
+
+def test_filter_frames_repeated_runs_identical(mdlite, frames):
+    detections = [
+        (np.array([]), np.array([0.9 if i in (5, 10) else 0.0])) for i in range(20)
+    ]
+    mdlite.config = MegadetectorLiteYoloXConfig(
+        confidence=0.25,
+        n_frames=6,
+        fill_mode="score_sorted",
+        sort_by_time=False,
+    )
+    first = mdlite.filter_frames(frames[:20], detections)
+    second = mdlite.filter_frames(frames[:20], detections)
+    np.testing.assert_array_equal(first, second)
+
+
+def test_empty_detections_returns_empty(mdlite, frames):
+    mdlite.config = MegadetectorLiteYoloXConfig(
+        confidence=0.25,
+        n_frames=5,
+        fill_mode="score_sorted",
+        sort_by_time=False,
+    )
+    out = mdlite.filter_frames(frames[:0], [])
+    assert out.shape[0] == 0
+
+
 def test_sort_by_time(mdlite, frames, detections):
     mdlite.config = MegadetectorLiteYoloXConfig(
         confidence=50, n_frames=5, fill_mode="repeat", sort_by_time=True

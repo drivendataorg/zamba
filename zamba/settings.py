@@ -10,7 +10,7 @@ else:
     VIDEO_SUFFIXES = [".avi", ".mp4", ".asf"]
 
 # random seed to use for splitting data without site info into train / val / holdout sets
-SPLIT_SEED = os.environ.get("SPLIT_SEED", 4007)
+SPLIT_SEED = int(os.environ.get("SPLIT_SEED", 4007))
 
 # random seed for inference (RNG seeding and optional deterministic CUDA/cuDNN)
 INFERENCE_SEED = int(os.environ.get("INFERENCE_SEED", 55))
