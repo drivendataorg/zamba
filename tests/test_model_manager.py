@@ -224,3 +224,23 @@ def test_download_weights_uses_expected_s3_location(
     )
     mock_s3_path.download_to.assert_called_once_with(tmp_path)
     assert Path(ckpt_path) == tmp_path / filename
+
+
+def test_download_weights_invalid_filename_raises(tmp_path, mocker):
+    from botocore.exceptions import ClientError
+
+    mock_s3_path = mocker.MagicMock()
+    mock_s3_path.name = "incorrect_checkpoint.ckpt"
+    mock_s3_path.download_to.side_effect = ClientError(
+        {"Error": {"Code": "404", "Message": "Not Found"}},
+        "GetObject",
+    )
+    mocker.patch("zamba.models.utils.S3Client")
+    mocker.patch("zamba.models.utils.S3Path", return_value=mock_s3_path)
+
+    with pytest.raises(ClientError):
+        download_weights(
+            filename="incorrect_checkpoint.ckpt",
+            destination_dir=tmp_path,
+            weight_region="us",
+        )

@@ -354,13 +354,19 @@ def get_cached_array_path(vid_path, config):
             return [_hashable(v) for v in value]
         if isinstance(value, tuple):
             return tuple(_hashable(v) for v in value)
+        if isinstance(value, (set, frozenset)):
+            return sorted(_hashable(v) for v in value)
         if isinstance(value, Enum):
             return value.value
         if isinstance(value, Path):
             return str(value)
+        if isinstance(value, np.generic):
+            return value.item()
         return value
 
-    hash_input = json.dumps(_hashable(hashed_part), sort_keys=True, separators=(",", ":"))
+    hash_input = json.dumps(
+        _hashable(hashed_part), sort_keys=True, separators=(",", ":"), default=str
+    )
     # hash config for inclusion in path
     hash_str = hashlib.sha1(hash_input.encode("utf-8")).hexdigest()
     logger.opt(lazy=True).debug(f"Generated hash {hash_str} from {hashed_part}")

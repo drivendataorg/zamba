@@ -1,3 +1,5 @@
+from loguru import logger
+
 from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
 
 available_models = {}
@@ -14,17 +16,18 @@ def ensure_registered():
     global _registered
     if _registered:
         return
-    _registered = True
 
     try:
         from zamba.models.efficientnet_models import TimeDistributedEfficientNet  # noqa: F401
-    except ImportError:
-        pass
+    except ImportError as exc:
+        logger.debug(f"Video model TimeDistributedEfficientNet unavailable: {exc}")
 
     try:
         from zamba.models.slowfast_models import SlowFast  # noqa: F401
-    except ImportError:
-        pass
+    except ImportError as exc:
+        logger.debug(f"Video model SlowFast unavailable: {exc}")
+
+    _registered = True
 
 
 def register_model(cls):

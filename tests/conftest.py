@@ -58,6 +58,8 @@ if not _HAS_VIDEO:
             "test_megadetector_lite_yolox.py",
             "test_model_manager.py",
             "test_npy_cache.py",
+            "test_registry.py",
+            "test_determinism.py",
             "test_zamba_video_classification_lightning_module.py",
         ]
     )

@@ -82,9 +82,7 @@ def test_score_sorted_tie_break_is_by_frame_index(mdlite, frames):
 
 def test_above_threshold_tie_break_is_by_frame_index(mdlite, frames):
     """When more than n_frames share the top score, lowest frame indices win."""
-    detections = [
-        (np.array([]), np.array([0.9])) for _ in range(10)
-    ]
+    detections = [(np.array([]), np.array([0.9])) for _ in range(10)]
     mdlite.config = MegadetectorLiteYoloXConfig(
         confidence=0.25,
         n_frames=5,
@@ -96,9 +94,7 @@ def test_above_threshold_tie_break_is_by_frame_index(mdlite, frames):
 
 
 def test_n_frames_none_returns_all_above_threshold(mdlite, frames):
-    detections = [
-        (np.array([]), np.array([0.9 if i in (2, 7) else 0.0])) for i in range(10)
-    ]
+    detections = [(np.array([]), np.array([0.9 if i in (2, 7) else 0.0])) for i in range(10)]
     mdlite.config = MegadetectorLiteYoloXConfig(
         confidence=0.25,
         n_frames=None,
@@ -122,9 +118,7 @@ def test_all_zero_scores_fills_by_lowest_frame_index(mdlite, frames):
 
 
 def test_filter_frames_repeated_runs_identical(mdlite, frames):
-    detections = [
-        (np.array([]), np.array([0.9 if i in (5, 10) else 0.0])) for i in range(20)
-    ]
+    detections = [(np.array([]), np.array([0.9 if i in (5, 10) else 0.0])) for i in range(20)]
     mdlite.config = MegadetectorLiteYoloXConfig(
         confidence=0.25,
         n_frames=6,

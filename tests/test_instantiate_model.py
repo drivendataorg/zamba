@@ -42,6 +42,17 @@ def test_default_scheduler_used(time_distributed_checkpoint):
     )
 
 
+def test_scheduler_config_none_uses_checkpoint_scheduler(time_distributed_checkpoint):
+    """None scheduler_config must not crash and should leave checkpoint scheduler in place."""
+    model = instantiate_model(
+        checkpoint=time_distributed_checkpoint,
+        scheduler_config=None,
+        labels=pd.DataFrame([{"filepath": "gorilla.mp4", "species_gorilla": 1}]),
+    )
+    assert model.hparams["scheduler"] == "MultiStepLR"
+    assert model.hparams["scheduler_params"] == dict(milestones=[3], gamma=0.5, verbose=True)
+
+
 def test_scheduler_used_if_passed(time_distributed_checkpoint):
     """Tests that scheduler config gets used and overrides scheduler on time distributed training."""
     scheduler_passed_model = instantiate_model(

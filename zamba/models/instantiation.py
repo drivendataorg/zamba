@@ -16,6 +16,11 @@ from zamba.models.registry import available_models, ensure_registered
 from zamba.models.utils import get_checkpoint_hparams, get_default_hparams
 
 
+def _apply_scheduler_config(hparams, scheduler_config):
+    if scheduler_config not in (None, "default"):
+        hparams.update(scheduler_config.dict())
+
+
 def instantiate_model(
     checkpoint: os.PathLike,
     labels: Optional[pd.DataFrame] = None,
@@ -53,8 +58,7 @@ def instantiate_model(
     # train from scratch
     if from_scratch:
         logger.info("Training from scratch.")
-        if scheduler_config != "default":
-            hparams.update(scheduler_config.dict())
+        _apply_scheduler_config(hparams, scheduler_config)
         hparams.update({"species": species})
         model = model_class(**hparams)
         _log_schedulers(model)
@@ -97,8 +101,7 @@ def instantiate_model(
 
 
 def _replace_head(scheduler_config, hparams, species, model_class, checkpoint):
-    if scheduler_config != "default":
-        hparams.update(scheduler_config.dict())
+    _apply_scheduler_config(hparams, scheduler_config)
     hparams.update({"species": species})
     model = model_class(finetune_from=checkpoint, **hparams)
     _log_schedulers(model)
@@ -110,8 +113,7 @@ def _resume_training(scheduler_config, hparams, model_class, checkpoint):
         "Provided species fully overlap with Zamba species. "
         "Resuming training from latest checkpoint."
     )
-    if scheduler_config != "default":
-        hparams.update(scheduler_config.dict())
+    _apply_scheduler_config(hparams, scheduler_config)
     model = model_class.from_disk(path=checkpoint, **hparams)
     _log_schedulers(model)
     return model

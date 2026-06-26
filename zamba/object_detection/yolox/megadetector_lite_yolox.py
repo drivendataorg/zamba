@@ -309,8 +309,11 @@ class MegadetectorLiteYoloX:
                     [1 / np.linalg.norm(selected_indices - sample) for sample in sample_from],
                     dtype=float,
                 )
-                # normalize weights
-                weights /= weights.sum()
+                weight_sum = weights.sum()
+                if weight_sum <= 0:
+                    weights = np.ones(len(sample_from), dtype=float) / len(sample_from)
+                else:
+                    weights /= weight_sum
                 sampled = rng.choice(
                     sample_from,
                     self.config.n_frames - len(selected_indices),
@@ -327,7 +330,11 @@ class MegadetectorLiteYoloX:
                     frame_scores.loc[~frame_scores.index.isin(selected_indices)].index, dtype=int
                 )
                 weights = frame_scores[sample_from].to_numpy(dtype=float, copy=True)
-                weights /= weights.sum()
+                weight_sum = weights.sum()
+                if weight_sum <= 0:
+                    weights = np.ones(len(sample_from), dtype=float) / len(sample_from)
+                else:
+                    weights /= weight_sum
                 sampled = rng.choice(
                     sample_from,
                     self.config.n_frames - len(selected_indices),

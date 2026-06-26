@@ -34,15 +34,15 @@ def _register_sub_apps():
         app.add_typer(
             image_app, name="image", help="Tools for working with images instead of videos."
         )
-    except ImportError:
-        pass
+    except ImportError as exc:
+        logger.debug(f"Image CLI unavailable (image extra not installed): {exc}")
 
     try:
         from zamba.utils_cli import app as utils_app
 
         app.add_typer(utils_app, name="utils", help="Utilities")
-    except ImportError:
-        pass
+    except ImportError as exc:
+        logger.debug(f"Utils CLI unavailable: {exc}")
 
 
 _register_sub_apps()

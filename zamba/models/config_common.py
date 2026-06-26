@@ -65,7 +65,9 @@ def check_files_exist_and_load(
 
     The ffprobe load-check is NOT done here -- it lives in the video-specific
     ``config.py`` which overrides this with an extended version.
+    ``skip_load_validation`` is accepted for API compatibility but ignored here.
     """
+    df = df.copy()
     df["filepath"] = str(data_dir) / df.filepath.path
 
     files_df = df[["filepath"]].drop_duplicates()
@@ -97,14 +99,6 @@ def check_files_exist_and_load(
         logger.warning(
             f"Skipping {len(invalid_files)} file(s) that could not be found. "
             f"For example, {invalid_files.filepath.values[0]}."
-        )
-        files_df = files_df[~files_df.filepath.isin(invalid_files.filepath)]
-
-    if not skip_load_validation:
-        logger.info(
-            "Checking that all media files can be loaded. If you're very confident all "
-            "your files can be loaded, you can skip this with `skip_load_validation`, "
-            "but it's not recommended."
         )
 
     df = df[~df.filepath.isin(invalid_files.filepath)].reset_index(drop=True)
