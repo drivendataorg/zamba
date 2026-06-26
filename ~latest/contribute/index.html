@@ -1935,22 +1935,27 @@
 There you can find <a href="https://github.com/drivendataorg/zamba/issues">open issues</a> with comments and links to help you along.</p>
 <p><code>zamba</code> uses continuous integration and test-driven development to ensure that we always have a working project. So what are you waiting for? <code>git</code> going!</p>
 <h2 id="installation-for-development">Installation for development<a class="headerlink" href="#installation-for-development" title="Permanent link">&para;</a></h2>
-<p>To install <code>zamba</code> for development, you need to clone the git repository and then install the cloned version of the library for local development.</p>
-<p>To install for development:
+<p>To install <code>zamba</code> for development, clone the git repository and install the package with the developer dependency group. We recommend <a href="https://docs.astral.sh/uv/">uv</a> for managing the environment.</p>
+<p>With uv (recommended):
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/drivendataorg/zamba.git
 <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>zamba
-<span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+<span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[image,video]&quot;</span><span class="w"> </span>--group<span class="w"> </span>dev
 </code></pre></div></p>
-<p>If your contribution is to the <a href="../models/densepose/">DensePose</a> model, you will need to install the additional dependencies with:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>densepose<span class="o">]</span>
+<p>Or use the Makefile target (which uses uv):
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span>requirements
 </code></pre></div></p>
+<p>With pip:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[tests,image,video,docs]&quot;</span>
+</code></pre></div></p>
+<p>If your contribution is to the <a href="../models/densepose/">DensePose</a> model, install the DensePose dependencies from GitHub as described in the <a href="../models/densepose/#installation">DensePose installation</a> section.</p>
+<p>To build the documentation locally with uv, install the docs dependency group (e.g. <code>uv pip install -e . --group docs</code>). With pip, install the <code>docs</code> extra (e.g. <code>pip install -e ".[docs]"</code>).</p>
 <h2 id="running-the-zamba-test-suite">Running the <code>zamba</code> test suite<a class="headerlink" href="#running-the-zamba-test-suite" title="Permanent link">&para;</a></h2>
 <p>The included <a href="https://github.com/drivendataorg/zamba/blob/master/Makefile"><code>Makefile</code></a> contains code that uses pytest to run all tests in <code>zamba/tests</code>.</p>
 <p>The command is (from the project root):</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span>tests
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span><span class="nb">test</span>
 </code></pre></div>
-<p>For <a href="../models/densepose/">DensePose</a> related tests, the command is:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span>densepose-tests
+<p>For <a href="../models/densepose/">DensePose</a> related tests, install the DensePose dependencies from GitHub (see <a href="../models/densepose/#installation">DensePose installation</a>), then run:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span>test-densepose
 </code></pre></div></p>
 <h2 id="submit-additional-training-videos">Submit additional training videos<a class="headerlink" href="#submit-additional-training-videos" title="Permanent link">&para;</a></h2>
 <p>If you have additional labeled videos that may be useful for improving the basic models that ship with <code>zamba</code>, we'd love to hear from you! You can get in touch at <a href="mailto:info@drivendata.org">info@drivendata.org</a></p>

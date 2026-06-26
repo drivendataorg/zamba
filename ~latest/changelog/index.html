@@ -1875,6 +1875,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#v270-2026-02-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      v.2.7.0 (2026-02-17)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v261-2025-03-18" class="md-nav__link">
     <span class="md-ellipsis">
       v.2.6.1 (2025-03-18)
@@ -2064,6 +2073,30 @@
 
 
 <h1 id="zamba-changelog"><code>zamba</code> changelog<a class="headerlink" href="#zamba-changelog" title="Permanent link">&para;</a></h1>
+<h2 id="v270-2026-02-17">v.2.7.0 (2026-02-17)<a class="headerlink" href="#v270-2026-02-17" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Split core dependencies into optional extras: <code>video</code> (av, ffmpeg-python, pytorchvideo, pixeltable-yolox, etc.), <code>image</code> (megadetector, Pillow), <code>tests</code> (pytest, black, flake8, coverage, nvidia-ml-py, etc.), and <code>docs</code> (mkdocs, mike, mkdocstrings). Base install no longer pulls in video/image stacks; use <code>pip install zamba[video]</code>, <code>zamba[image]</code>, or <code>zamba[video,image]</code>.</li>
+<li>Remove <code>requirements-dev.txt</code> and <code>requirements-dev/</code>; use <code>uv pip install -e ".[image,video]" --group dev</code> for development or <code>pip install -e ".[tests,image,video,docs]"</code> with pip.</li>
+<li>Replace <code>mlflow</code> with <code>mlflow-skinny</code> in core dependencies. Add <code>pyarrow&gt;=23.0.0</code>. Add Windows-specific torch version constraint for gloo bug. Declare Python 3.11–3.13 support and <code>requires-python = "&gt;=3.11, &lt;3.14"</code>.</li>
+<li>Remove DensePose from optional dependencies so the package is publishable to PyPI. DensePose (detectron2, detectron2-densepose) must be installed from GitHub; see docs. Running <code>zamba densepose</code> without them prints install instructions and exits. Add <code>[tool.uv.extra-build-dependencies]</code> for detectron2 (torch) so CI can build it from GitHub.</li>
+<li>Pin <code>setuptools&lt;82</code> so the image extra works on Python 3.12 (megadetector’s yolov5 stack requires <code>pkg_resources</code>, which setuptools 82 removed). Add <code>[tool.uv]</code> override-dependencies for protobuf and setuptools.</li>
+<li>Add <code>zamba.models.config_common</code> with shared types and validators (ModelEnum, MonitorEnum, ZambaBaseModel, RegionEnum, get_filepaths, validate_model_cache_dir, etc.). Move video-specific file/checkpoint logic into <code>zamba.models.config</code> and reuse common helpers.</li>
+<li>Add <code>zamba.models.instantiation</code> and move <code>instantiate_model</code>, head-replacement, and resume logic out of <code>model_manager</code> for clearer separation.</li>
+<li>Add lazy model registration in <code>zamba.models.registry</code> (<code>ensure_registered()</code>): video model classes are imported only when needed so the package can be imported without video dependencies. Config validation calls <code>ensure_registered()</code> when resolving checkpoint/model name.</li>
+<li>Register image and utils sub-apps lazily so <code>zamba --help</code> and non-image/non-utils commands work without image or densepose dependencies. Defer imports of VideoLoaderConfig and config classes into the train, predict, and depth command callbacks.</li>
+<li>Handle missing DensePose dependencies in the <code>densepose</code> command: catch ImportError when running the model and print install-from-GitHub instructions and exit with code 1.</li>
+<li>Make NPY cache path hashing stable: use a JSON-serializable, order-invariant representation of the config (including Enum and Path) instead of <code>str(hashed_part)</code>. For local absolute paths, use a relative-style path in the cache key.</li>
+<li>Fix cache cleanup in <code>npy_cache.__del__</code> by comparing <code>Path(cache_path).parents[0]</code> with <code>Path(tempfile.gettempdir())</code>.</li>
+<li>Import image classifier lazily from <code>zamba.images</code> to avoid pulling in torch at package import time. Images config and manager use <code>zamba.models.config_common</code> and <code>zamba.models.instantiation</code> instead of config/utils from video.</li>
+<li>Make megadetector import resilient: try <code>megadetector.detection.run_detector</code>, fall back to <code>detection.run_detector</code>. Make MLflow optional in image training (log warning and continue without it if import or setup fails). Disable <code>torch.compile</code> on Windows in addition to macOS.</li>
+<li>Add pytest markers <code>video</code> and <code>image</code> and skip test files when the corresponding extra is not installed (conftest <code>collect_ignore</code> based on <code>_HAS_VIDEO</code> / <code>_HAS_IMAGE</code>). Define video-only fixtures and the dummy video model only when video deps are present. Set <code>CUDA_VISIBLE_DEVICES=0</code> in conftest to avoid DDP issues under pytest-xdist.</li>
+<li>Add Makefile targets <code>test-fast</code> (fail on first failure) and <code>test-image-only</code> / <code>test-video-only</code> (isolated venvs with only image or video extra). CI runs these isolation steps and installs image,video extras for the main test matrix. DensePose tests install detectron2 from GitHub with <code>--no-build-isolation</code> instead of using a densepose extra.</li>
+<li>Update tests to use new config/instantiation imports and markers; add image dataset import check in the install smoke test.</li>
+<li>Installation docs: document optional extras (video, image), PyPI install (<code>pip install zamba[video]</code> etc.), and Windows (image extra no extra tools; video needs Visual Studio Build Tools and FFmpeg). State FFmpeg only required for video workflows and recommend FFmpeg 4.x. Contribute page: dev install with <code>--group dev</code>, DensePose deps from GitHub, <code>make requirements</code> with uv. DensePose doc: install detectron2/detectron2-densepose from GitHub; note that <code>zamba densepose</code> prints instructions if deps missing.</li>
+<li>Re-enable PyPI publish steps in the release workflow (Test PyPI and Production PyPI). Docs workflows and release job install <code>.[docs]</code> instead of <code>requirements-dev/docs.txt</code>.</li>
+<li>Add <code>deterministic</code> option (default <code>False</code>) to video and image prediction configs. Inference always seeds RNGs (<code>INFERENCE_SEED</code>, default <code>55</code>); set <code>deterministic=True</code> for strict CUDA/cuDNN reproducibility at some GPU throughput cost.</li>
+<li>Fix non-deterministic frame ordering in MegadetectorLite <code>score_sorted</code> fill mode when frame scores tie; equal scores now break by lowest frame index.</li>
+</ul>
 <h2 id="v261-2025-03-18">v.2.6.1 (2025-03-18)<a class="headerlink" href="#v261-2025-03-18" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Fix bug that prevented loading checkpoints when model name was provided (<a href="https://github.com/drivendataorg/zamba/pull/359">PR #359</a>)</li>

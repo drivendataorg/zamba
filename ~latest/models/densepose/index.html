@@ -2038,10 +2038,13 @@
 </ul>
 <p>Running the DensePose model is fairly computationally intensive. It is recommended to run the model at a relatively low framerate (e.g., 1 frame per second) to generate outputs for a video. JSON output files can also be quite large because they contain the full embedding. These are not written out by default.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<p>In order to use the DensePose model, you must have <a href="https://pytorch.org/get-started/locally/">PyTorch</a> already installed on your system. Then you must install the <code>densepose</code> extra:</p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>torch
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz#egg=zamba[densepose]&quot;</span>
+<p>DensePose dependencies are not distributed on PyPI (so they are not installed with <code>pip install zamba</code> or <code>uv pip install zamba</code>). Install them from GitHub after installing <a href="https://pytorch.org/get-started/locally/">PyTorch</a>. We recommend <a href="https://docs.astral.sh/uv/">uv</a> for installing packages:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;detectron2 @ git+https://github.com/facebookresearch/detectron2.git&quot;</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose&quot;</span>
 </code></pre></div>
+<p>With pip: <code>pip install torch</code>, then the same <code>pip install "detectron2 @ ..."</code> and <code>pip install "detectron2-densepose @ ..."</code> commands.</p>
+<p>If you run <code>zamba densepose</code> without these installed, zamba will print these instructions and exit.</p>
 <h2 id="running-densepose">Running DensePose<a class="headerlink" href="#running-densepose" title="Permanent link">&para;</a></h2>
 <p>Once that is done, here's how to run the DensePose model:</p>
 <div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">CLI</label><div class="tabbed-content">

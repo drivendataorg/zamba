@@ -343,18 +343,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#to-install-zamba" class="md-nav__link">
+  <a href="#linux" class="md-nav__link">
     <span class="md-ellipsis">
-      To install zamba
+      Linux
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#operating-systems-that-have-been-tested" class="md-nav__link">
+  <a href="#macos" class="md-nav__link">
     <span class="md-ellipsis">
-      Operating systems that have been tested
+      macOS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pip-and-source-installs" class="md-nav__link">
+    <span class="md-ellipsis">
+      pip and source installs
     </span>
   </a>
   
@@ -1942,18 +1960,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#to-install-zamba" class="md-nav__link">
+  <a href="#linux" class="md-nav__link">
     <span class="md-ellipsis">
-      To install zamba
+      Linux
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#operating-systems-that-have-been-tested" class="md-nav__link">
+  <a href="#macos" class="md-nav__link">
     <span class="md-ellipsis">
-      Operating systems that have been tested
+      macOS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pip-and-source-installs" class="md-nav__link">
+    <span class="md-ellipsis">
+      pip and source installs
     </span>
   </a>
   
@@ -1987,61 +2023,30 @@
 
 
 <h1 id="installing-zamba">Installing <code>zamba</code><a class="headerlink" href="#installing-zamba" title="Permanent link">&para;</a></h1>
-<p>Zamba has been developed and tested on macOS and Ubuntu Linux for both CPU and
+<p>Zamba has been developed and tested on macOS, Ubuntu Linux, and Windows for both CPU and
 GPU configurations.</p>
-<h2 id="to-install-zamba">To install <code>zamba</code><a class="headerlink" href="#to-install-zamba" title="Permanent link">&para;</a></h2>
-<h3 id="1-install-prerequisites">1. Install prerequisites<a class="headerlink" href="#1-install-prerequisites" title="Permanent link">&para;</a></h3>
-<p>Prerequisites:</p>
+<p><code>zamba</code> is split into optional extras so you only install the dependencies you need:</p>
 <ul>
-<li>Python &gt;= 3.11</li>
-<li>FFmpeg</li>
+<li><strong>Image workflows:</strong> <code>zamba[image]</code></li>
+<li><strong>Video workflows:</strong> <code>zamba[video]</code></li>
+<li><strong>Both image and video workflows:</strong> <code>zamba[video,image]</code></li>
 </ul>
-<h4 id="python-311"><a href="https://www.python.org/">Python</a> &gt;= 3.11<a class="headerlink" href="#python-311" title="Permanent link">&para;</a></h4>
-<p>We recommend <a href="https://www.anaconda.com/download/">Python installation using Anaconda</a> for all platforms. For more information about how to install Anaconda, here are some useful YouTube videos of installation:</p>
-<ul>
-<li><a href="https://www.anaconda.com/download/">Anaconda download link</a></li>
-<li><a href="https://www.youtube.com/watch?v=nVlrpNf3EdM">macOS installation video</a></li>
-</ul>
-<h4 id="ffmpeg-version-4">FFmpeg version 4<a class="headerlink" href="#ffmpeg-version-4" title="Permanent link">&para;</a></h4>
-<p><a href="https://ffmpeg.org/ffmpeg.html">FFmpeg</a> is an open source library for loading videos of different codecs. Using FFmpeg means that <code>zamba</code> can be flexible in terms of the video formats we support. FFmpeg can be installed on all different platforms, but requires some additional configuration depending on the platform. Here are some videos and instructions walking through FFmpeg installation:</p>
-<ul>
-<li><a href="https://www.ffmpeg.org/download.html">FFmpeg download link</a></li>
-<li><a href="https://www.tecmint.com/install-ffmpeg-in-linux/">Install on Ubuntu or Linux</a>.<ul>
-<li>In the command line, enter <code>sudo apt update</code> and then <code>sudo apt install ffmpeg</code>.</li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch?v=8nbuqYw2OCw&amp;t=5s">MacOS install video</a><ul>
-<li>First, install <a href="https://brew.sh/">Homebrew</a>. Then run <code>brew install ffmpeg@4</code></li>
-<li>Follow the brew instructions to add FFmpeg to your path.</li>
-</ul>
-</li>
-</ul>
-<p>To check that <code>FFmpeg</code> is installed, run <code>ffmpeg</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ffmpeg
-
+<p>We recommend <a href="https://docs.astral.sh/uv/">uv</a> for installing Python packages and managing environments. Install <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> if you haven't already.</p>
+<h2 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h2>
+<p><code>zamba</code> has been tested on <a href="https://www.ubuntu.com/">Ubuntu</a> regularly since 16.04. Tests run every week against the <a href="https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources"><code>ubuntu-latest</code> Github runner environment</a>, so the version that Github uses is most likely to work. As of October 2023, that is 22.04.</p>
+<h3 id="1-install-python">1. Install Python<a class="headerlink" href="#1-install-python" title="Permanent link">&para;</a></h3>
+<p>Install <a href="https://www.python.org/">Python</a> &gt;= 3.11. We recommend <a href="https://www.anaconda.com/download/">Python installation using Anaconda</a>.</p>
+<h3 id="2-install-ffmpeg-for-video-workflows">2. Install FFmpeg for video workflows<a class="headerlink" href="#2-install-ffmpeg-for-video-workflows" title="Permanent link">&para;</a></h3>
+<p><a href="https://ffmpeg.org/ffmpeg.html">FFmpeg</a> is required for video workflows. Use FFmpeg &gt; 4.3 and &lt; 5. On Ubuntu/Debian:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ffmpeg
+</code></pre></div>
+<p>To check that FFmpeg is installed:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ffmpeg<span class="w"> </span>-version
 <span class="go">ffmpeg version 4.4 Copyright (c) 2000-2021 the FFmpeg developers</span>
-<span class="go">  built with Apple clang version 12.0.0 (clang-1200.0.32.29)</span>
 <span class="go">...</span>
 </code></pre></div>
-<p>To check your installed version, run <code>ffmpeg -version</code>.</p>
-<h3 id="2-install-zamba">2. Install <code>zamba</code><a class="headerlink" href="#2-install-zamba" title="Permanent link">&para;</a></h3>
-<p>On macOS, run these commands in the terminal (⌘+space, "Terminal"). On Windows, run them in a command prompt, or if you installed Anaconda an anaconda prompt (Start &gt; Anaconda3 &gt; Anaconda Prompt).</p>
-<p>To install zamba:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
-</code></pre></div></p>
-<p>To check what version of zamba you have installed:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>show<span class="w"> </span>zamba
-</code></pre></div></p>
-<p>To update zamba to the most recent version if needed:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
-</code></pre></div></p>
-<h2 id="operating-systems-that-have-been-tested">Operating systems that have been tested<a class="headerlink" href="#operating-systems-that-have-been-tested" title="Permanent link">&para;</a></h2>
-<h3 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
-<p><code>zamba</code> has been tested on macOS High Sierra.</p>
-<h3 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h3>
-<p><code>zamba</code> has been tested on <a href="https://www.ubuntu.com/">Ubuntu</a> regularly since 16.04. Tests run every week against the <a href="https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources"><code>ubuntu-latest</code> Github runner environment</a>, so the version that Github uses is most likely to work. As of October 2023, that is 22.04.</p>
-<p>Note, for Linux, you may need to install additional system packages to get <code>zamba</code> to work. For example, on Ubuntu, you may need to install <code>build-essentials</code> to have compilers.</p>
-<p>FFMpeg 4, build-essentials, and some other packages that include more codecs to support additional videos and some other utilities can be installed with:</p>
+<p>Note, for Linux, you may need to install additional system packages to get <code>zamba</code> to work. For example, on Ubuntu, you may need to install <code>build-essential</code> to have compilers.</p>
+<p>FFmpeg 4, build-essential, and some other packages that include more codecs to support additional videos and some other utilities can be installed with:</p>
 <div class="highlight"><pre><span></span><code>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>software-properties-common<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>add-apt-repository<span class="w"> </span>-y<span class="w"> </span>ppa:savoury1/ffmpeg4<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
@@ -2064,9 +2069,76 @@ GPU configurations.</p>
 <span class="w">    </span>x264<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>x265
 </code></pre></div>
-<h3 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h3>
-<p><strong>Note: <code>zamba</code> does not currently work on Windows because one of our dependencies fails to build.</strong></p>
-<p>You can try using <a href="https://www.docker.com/products/docker-desktop/">Docker</a> or <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a> to run <code>zamba</code> on a Linux OS like Ubuntu on top of your Windows machine.</p>
+<h3 id="3-install-zamba">3. Install <code>zamba</code><a class="headerlink" href="#3-install-zamba" title="Permanent link">&para;</a></h3>
+<p>For image workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span>
+</code></pre></div>
+<p>For video workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span>
+</code></pre></div>
+<p>For both image and video workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+</code></pre></div>
+<h2 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h2>
+<p><code>zamba</code> has been tested on macOS High Sierra.</p>
+<h3 id="1-install-python_1">1. Install Python<a class="headerlink" href="#1-install-python_1" title="Permanent link">&para;</a></h3>
+<p>Install <a href="https://www.python.org/">Python</a> &gt;= 3.11. We recommend <a href="https://www.anaconda.com/download/">Python installation using Anaconda</a>. For more information about how to install Anaconda, see the <a href="https://www.anaconda.com/download/">Anaconda download link</a> and <a href="https://www.youtube.com/watch?v=nVlrpNf3EdM">macOS installation video</a>.</p>
+<h3 id="2-install-ffmpeg-for-video-workflows_1">2. Install FFmpeg for video workflows<a class="headerlink" href="#2-install-ffmpeg-for-video-workflows_1" title="Permanent link">&para;</a></h3>
+<p><a href="https://ffmpeg.org/ffmpeg.html">FFmpeg</a> is required for video workflows. Use FFmpeg &gt; 4.3 and &lt; 5. Install <a href="https://brew.sh/">Homebrew</a>, then run:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>brew<span class="w"> </span>install<span class="w"> </span>ffmpeg@4
+<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;/opt/homebrew/opt/ffmpeg@4/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
+</code></pre></div>
+<p>Open a new terminal and check that FFmpeg is installed:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ffmpeg<span class="w"> </span>-version
+<span class="go">ffmpeg version 4.4 Copyright (c) 2000-2021 the FFmpeg developers</span>
+<span class="go">...</span>
+</code></pre></div>
+<h3 id="3-install-zamba_1">3. Install <code>zamba</code><a class="headerlink" href="#3-install-zamba_1" title="Permanent link">&para;</a></h3>
+<p>For image workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span>
+</code></pre></div>
+<p>For video workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span>
+</code></pre></div>
+<p>For both image and video workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+</code></pre></div>
+<h2 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h2>
+<p><code>zamba</code> works on Windows. The <strong>image</strong> extra installs without any additional tools. The <strong>video</strong> extra requires a C++ compiler because some dependencies have native extensions, and FFmpeg for loading videos.</p>
+<h3 id="image-workflows">Image workflows<a class="headerlink" href="#image-workflows" title="Permanent link">&para;</a></h3>
+<p>Install <a href="https://www.python.org/">Python</a> &gt;= 3.11. We recommend <a href="https://www.anaconda.com/download/">Python installation using Anaconda</a>. Then run:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span>
+</code></pre></div>
+<h3 id="video-workflows">Video workflows<a class="headerlink" href="#video-workflows" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Install <a href="https://www.python.org/">Python</a> &gt;= 3.11. We recommend <a href="https://www.anaconda.com/download/">Python installation using Anaconda</a>.</p>
+</li>
+<li>
+<p>Install Visual Studio Build Tools. Download the <a href="https://visualstudio.microsoft.com/visual-cpp-build-tools/">Build Tools for Visual Studio</a> installer and select the <strong>"Desktop development with C++"</strong> workload. This provides the <code>cl.exe</code> compiler needed to build native extensions.</p>
+</li>
+<li>
+<p>Install FFmpeg &gt; 4.3 and &lt; 5. Download a 4.x build from <a href="https://www.ffmpeg.org/download.html">ffmpeg.org</a> and add the <code>bin</code> folder to your system PATH.</p>
+</li>
+<li>
+<p>Install zamba:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span>
+</code></pre></div>
+<p>For both image and video workflows:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+</code></pre></div>
+<p>Alternatively, you can use <a href="https://www.docker.com/products/docker-desktop/">Docker</a> or <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a> to run <code>zamba</code> in a Linux environment on Windows.</p>
+<h2 id="pip-and-source-installs">pip and source installs<a class="headerlink" href="#pip-and-source-installs" title="Permanent link">&para;</a></h2>
+<p>With pip, use the same extras: <code>pip install zamba[video]</code>, <code>pip install zamba[image]</code>, or <code>pip install zamba[video,image]</code>. To install from the latest GitHub source instead of PyPI: <code>pip install "zamba[video] @ https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz"</code> (and similarly for other extras).</p>
+<p>To check what version of zamba you have installed:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>show<span class="w"> </span>zamba
+</code></pre></div>
+<p>Or with pip: <code>pip show zamba</code>.</p>
+<p>To update zamba to the most recent version if needed:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+</code></pre></div>
 <h2 id="using-gpus">Using GPU(s)<a class="headerlink" href="#using-gpus" title="Permanent link">&para;</a></h2>
 <p><code>zamba</code> is much faster on a machine with a graphics processing unit (GPU), but has also been developed and tested for machines without GPU(s).</p>
 <p>To use a GPU, you must be using an

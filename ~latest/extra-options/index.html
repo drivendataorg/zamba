@@ -563,6 +563,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#reproducibility-determinism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reproducibility / determinism
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1986,6 +1995,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#reproducibility-determinism" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reproducibility / determinism
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2155,6 +2173,31 @@
 </code></pre></div>
 </div>
 </div>
+<h2 id="reproducibility-determinism">Reproducibility / determinism<a class="headerlink" href="#reproducibility-determinism" title="Permanent link">&para;</a></h2>
+<p>By default, <code>zamba</code> seeds random number generators during <strong>inference</strong> (video and image prediction) so repeated runs on the same inputs produce consistent results (for example, MegadetectorLite frame sampling). The inference seed defaults to <code>55</code> and can be set with the <code>INFERENCE_SEED</code> environment variable:</p>
+<div class="highlight"><pre><span></span><code><span class="go">export INFERENCE_SEED=42</span>
+<span class="go">zamba predict --data-dir example_vids/</span>
+</code></pre></div>
+<p>For bitwise-identical GPU results across runs (strict CUDA/cuDNN determinism, at some throughput cost on CUDA devices), set <code>deterministic=True</code> in your predict config:</p>
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">YAML file</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nt">predict_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example_vids/</span>
+<span class="w">    </span><span class="nt">deterministic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">PredictConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.model_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict_model</span>
+
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">,</span>
+    <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">predict_model</span><span class="p">(</span><span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<p>The same <code>deterministic</code> option is available on <a href="../configurations/#image-prediction-arguments"><code>ImageClassificationPredictConfig</code></a> for image inference. Training is not affected by this setting.</p>
 <p>And that's just the tip of the iceberg! See <a href="../configurations/">All Configuration Options</a> page for more possibilities.</p>
 
 

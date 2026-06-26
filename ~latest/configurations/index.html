@@ -2146,7 +2146,8 @@ competition winner. Defaults to <code>False</code></p>
  <span class="n">output_class_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
  <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">zamba</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">RegionEnum</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span><span class="p">,</span>
  <span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
- <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+ <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 
  <span class="o">...</span>
 </code></pre></div>
@@ -2185,6 +2186,8 @@ no <code>save_dir</code> is specified and <code>save</code> is True, outputs wil
 <p>By default, before kicking off inference <code>zamba</code> will iterate through all of the videos in the data and verify that each can be loaded. Setting <code>skip_load_verification</code> to <code>True</code> skips this step. Validation can be very time intensive depending on the number of videos. It is recommended to run validation once, but not on future inference runs if the videos have not changed. Defaults to <code>False</code></p>
 <h4 id="model_cache_dir-path-optional"><code>model_cache_dir (Path, optional)</code><a class="headerlink" href="#model_cache_dir-path-optional" title="Permanent link">&para;</a></h4>
 <p>Cache directory where downloaded model weights will be saved. If None and the <code>MODEL_CACHE_DIR</code> environment variable is not set, will use your default cache directory (e.g. <code>~/.cache</code>). Defaults to <code>None</code></p>
+<h4 id="deterministic-bool-optional"><code>deterministic (bool, optional)</code><a class="headerlink" href="#deterministic-bool-optional" title="Permanent link">&para;</a></h4>
+<p>If <code>True</code>, enable strict deterministic CUDA/cuDNN algorithms during inference (best effort; some GPU ops may remain non-deterministic and will warn rather than error). May reduce GPU throughput on CUDA devices. Inference always seeds Python, NumPy, and PyTorch RNGs regardless of this flag; the seed defaults to <code>55</code> and can be overridden with the <code>INFERENCE_SEED</code> environment variable. Defaults to <code>False</code>.</p>
 <p><a id='training-arguments'></a></p>
 <h2 id="video-training-arguments">Video training arguments<a class="headerlink" href="#video-training-arguments" title="Permanent link">&para;</a></h2>
 <p>All possible model training parameters for videos are defined by the <a href="../api-reference/models-config/#zamba.models.config.TrainConfig"><code>TrainConfig</code> class</a>. Let's see the class documentation in Python:</p>
@@ -2303,6 +2306,8 @@ no <code>save_dir</code> is specified and <code>save</code> is True, outputs wil
 <p>Cache directory where downloaded model weights will be saved. If None and no environment variable is set, will use your default cache directory. Defaults to None.</p>
 <h4 id="weight_download_region-str-optional"><code>weight_download_region (str, optional)</code><a class="headerlink" href="#weight_download_region-str-optional" title="Permanent link">&para;</a></h4>
 <p>s3 region to download pretrained weights from. Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".</p>
+<h4 id="deterministic-bool-optional_1"><code>deterministic (bool, optional)</code><a class="headerlink" href="#deterministic-bool-optional_1" title="Permanent link">&para;</a></h4>
+<p>If <code>True</code>, enable strict deterministic CUDA/cuDNN algorithms during inference (best effort; some GPU ops may remain non-deterministic and will warn rather than error). May reduce GPU throughput on CUDA devices. Inference always seeds Python, NumPy, and PyTorch RNGs regardless of this flag; the seed defaults to <code>55</code> and can be overridden with the <code>INFERENCE_SEED</code> environment variable. Defaults to <code>False</code>.</p>
 <p><a id='image-training-arguments'></a></p>
 <h2 id="image-training-arguments">Image training arguments<a class="headerlink" href="#image-training-arguments" title="Permanent link">&para;</a></h2>
 <p>All possible model training parameters for images are defined by the <a href="../api-reference/models-config/#zamba.models.config.ImageClassificationTrainingConfig"><code>ImageClassificationTrainingConfig</code> class</a>.</p>

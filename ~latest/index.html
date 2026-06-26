@@ -2043,14 +2043,22 @@ frameborder="0" allowfullscreen=""></iframe></div>
 <p><code>zamba</code> can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, <a href="https://www.zambacloud.com/">Zamba Cloud</a>.</p>
 <p>We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a> for others to be able to use!</p>
 <h2 id="installing-zamba">Installing <code>zamba</code><a class="headerlink" href="#installing-zamba" title="Permanent link">&para;</a></h2>
-<p>First, make sure you have the prerequisites installed:</p>
+<p>We recommend <a href="https://docs.astral.sh/uv/">uv</a> for installing Python packages and managing environments. Install <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>, then ensure you have:</p>
 <ul>
 <li>Python &gt;= 3.11</li>
-<li>FFmpeg &gt; 4.3</li>
+<li>FFmpeg &gt; 4.3 and &lt; 5 (only needed for video workflows)</li>
 </ul>
-<p>Then run:
-<div class="highlight"><pre><span></span><code><span class="go">pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz</span>
-</code></pre></div></p>
+<p>Then install the extras you need with uv. <strong>We recommend only installing one or the other depending on your use case.</strong></p>
+<div class="highlight"><pre><span></span><code><span class="gp"># </span>For<span class="w"> </span>video<span class="w"> </span>workflows
+<span class="go">uv pip install zamba[video]</span>
+
+<span class="gp"># </span>For<span class="w"> </span>image<span class="w"> </span>workflows
+<span class="go">uv pip install zamba[image]</span>
+
+<span class="gp"># </span>For<span class="w"> </span>both
+<span class="go">uv pip install zamba[video,image]</span>
+</code></pre></div>
+<p>You can also use pip: <code>pip install zamba[video]</code>, <code>pip install zamba[image]</code>, or <code>pip install zamba[video,image]</code>.</p>
 <p>See the <a href="install/">Installation</a> page of the documentation for details.</p>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>Once you have <code>zamba</code> installed, some good starting points are:</p>
