@@ -24,12 +24,17 @@ Running the DensePose model is fairly computationally intensive. It is recommend
 
 ## Installation
 
-In order to use the DensePose model, you must have [PyTorch](https://pytorch.org/get-started/locally/) already installed on your system. Then you must install the `densepose` extra:
+DensePose dependencies are not distributed on PyPI (so they are not installed with `pip install zamba` or `uv pip install zamba`). Install them from GitHub after installing [PyTorch](https://pytorch.org/get-started/locally/). We recommend [uv](https://docs.astral.sh/uv/) for installing packages:
 
 ```bash
-pip install torch
-pip install "https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz#egg=zamba[densepose]"
+uv pip install torch
+uv pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git"
+uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
 ```
+
+With pip: `pip install torch`, then the same `pip install "detectron2 @ ..."` and `pip install "detectron2-densepose @ ..."` commands.
+
+If you run `zamba densepose` without these installed, zamba will print these instructions and exit.
 
 ## Running DensePose
 

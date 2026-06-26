@@ -6,15 +6,17 @@ import pandas as pd
 import pytest
 from PIL import Image
 
-from zamba.images.bbox import BboxInputFormat, bbox_json_to_df, BboxLayout
-from zamba.images.classifier import ImageClassifierModule
-from zamba.images.config import ImageClassificationTrainingConfig
-from zamba.images.data import absolute_bbox
-from zamba.images.dataset.dataset import crop_image, prepare_dataset
-from zamba.images.manager import train
-from zamba.images.result import results_to_megadetector_format
+pytestmark = pytest.mark.image
 
-from conftest import ASSETS_DIR, DummyZambaImageClassificationLightningModule
+from zamba.images.bbox import BboxInputFormat, bbox_json_to_df, BboxLayout  # noqa: E402
+from zamba.images.classifier import ImageClassifierModule  # noqa: E402
+from zamba.images.config import ImageClassificationTrainingConfig  # noqa: E402
+from zamba.images.data import absolute_bbox  # noqa: E402
+from zamba.images.dataset.dataset import crop_image, prepare_dataset  # noqa: E402
+from zamba.images.manager import train  # noqa: E402
+from zamba.images.result import results_to_megadetector_format  # noqa: E402
+
+from conftest import ASSETS_DIR, DummyZambaImageClassificationLightningModule  # noqa: E402
 
 
 @pytest.fixture

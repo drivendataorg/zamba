@@ -12,15 +12,15 @@ from pydantic import DirectoryPath, FilePath, root_validator, validator
 from tqdm.contrib.concurrent import process_map
 
 from zamba.images.bbox import BboxInputFormat, bbox_json_to_df
-from zamba.models.config import (
+from zamba.models.config_common import (
     SchedulerConfig,
     ZambaBaseModel,
     get_filepaths,
     make_split,
     validate_model_cache_dir,
     validate_model_name_and_checkpoint,
+    RegionEnum,
 )
-from zamba.models.utils import RegionEnum
 from zamba.settings import IMAGE_SUFFIXES
 
 GPUS_AVAILABLE = torch.cuda.device_count()
@@ -97,6 +97,9 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
         weight_download_region (str): s3 region to download pretrained weights from.
             Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).
             Defaults to "us".
+        deterministic (bool): If True, enable strict deterministic CUDA/cuDNN algorithms during
+            inference (best effort; may reduce GPU throughput). RNGs are always seeded for
+            inference regardless of this flag. Defaults to False.
     """
 
     checkpoint: Optional[FilePath] = None
@@ -114,6 +117,7 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
     results_file_name: Optional[Path] = Path("zamba_predictions.csv")
     model_cache_dir: Optional[Path] = None
     weight_download_region: str = RegionEnum.us.value
+    deterministic: bool = False
 
     class Config:  # type: ignore
         arbitrary_types_allowed = True

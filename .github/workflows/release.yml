@@ -33,8 +33,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -r requirements-dev/docs.txt
-          uv pip install -e .
+          uv pip install -e ".[docs]"
 
       - name: Check that versions match
         id: version
@@ -63,21 +62,20 @@ jobs:
         run: |
           make docs
 
-      # PUBLISHING CURRENTLY BLOCKED BY ISSUE #160
-      # - name: Publish to Test PyPI
-      #   uses: pypa/gh-action-pypi-publish@v1.3.0
-      #   with:
-      #     user: ${{ secrets.PYPI_TEST_USERNAME }}
-      #     password: ${{ secrets.PYPI_TEST_PASSWORD }}
-      #     repository_url: https://test.pypi.org/legacy/
-      #     skip_existing: true
+      - name: Publish to Test PyPI
+        uses: pypa/gh-action-pypi-publish@v1.13.0
+        with:
+          user: ${{ secrets.PYPI_TEST_USERNAME }}
+          password: ${{ secrets.PYPI_TEST_PASSWORD }}
+          repository_url: https://test.pypi.org/legacy/
+          skip_existing: true
 
-      # - name: Publish to Production PyPI
-      #   uses: pypa/gh-action-pypi-publish@v1.3.0
-      #   with:
-      #     user: ${{ secrets.PYPI_PROD_USERNAME }}
-      #     password: ${{ secrets.PYPI_PROD_PASSWORD }}
-      #     skip_existing: false
+      - name: Publish to Production PyPI
+        uses: pypa/gh-action-pypi-publish@v1.13.0
+        with:
+          user: ${{ secrets.PYPI_PROD_USERNAME }}
+          password: ${{ secrets.PYPI_PROD_PASSWORD }}
+          skip_existing: false
 
       - name: Stage 'stable' docs on gh-pages
         working-directory: docs

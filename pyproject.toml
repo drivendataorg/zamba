@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "zamba"
-version = "2.6.1"
+version = "2.7.0"
 authors = [
   {name = "DrivenData", email = "info@drivendata.org"}
 ]
@@ -13,51 +13,65 @@ readme = "README.md"
 license = {text = "MIT License"}
 classifiers = [
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.11, <3.14"
 dependencies = [
   "appdirs",
-  "av",
   "click<=8.1.8",
   "cloudpathlib[s3]",
-  "ffmpeg-python",
-  "future",
-  "fvcore",
   "gitpython",
   "loguru",
-  "megadetector",
-  "mlflow",
+  "mlflow-skinny",
   "numpy<2.0.0",
-  "opencv-python-headless",
   "openpyxl",
   "pandas>=2.0.0",
   "pandas_path",
   "pqdm",
+  "pyarrow>=23.0.0",
   "pydantic<2.0.0",
   "python-dotenv",
   "pytorch-lightning>=2.0.0",
-  "pytorchvideo",
   "scikit-learn",
   "tensorboard",
   "thop",
   "timm",
   "torch",
+  # Windows: allow <=2.7.1 or >2.10 (gloo bug in 2.7.2–2.10.0). PEP 440 uses AND only, so we exclude that range.
+  "torch>=2.7.1,!=2.7.2,!=2.7.3,!=2.8.0,!=2.8.1,!=2.8.2,!=2.9.0,!=2.9.1,!=2.10.0; sys_platform == 'win32'",
   "torchinfo",
   "torchvision>=0.10.0",
   "tqdm",
   "typer[all]",
-  "yolox @ git+https://github.com/r-b-g-b/YOLOX.git@build-requirements",
 ]
 
 [project.scripts]
 zamba = "zamba.cli:app"
 
 [project.optional-dependencies]
-tests = [
-  "coverage",
+video = [
+  "av",
+  "ffmpeg-python",
+  "future",
+  "fvcore",
+  "opencv-python-headless",
+  "pytorchvideo",
+  "pixeltable-yolox",
+]
+image = [
+  "megadetector>=10.0.0",
   "Pillow>=9.0.0",
+]
+tests = [
+  "black>=26.1.0",
+  "coverage",
+  "flake8",
+  "nvidia-ml-py",
+  "psutil",
   "pytest",
   "pytest-coverage",
   "pytest-duration-insights",
@@ -66,10 +80,37 @@ tests = [
   "pytest-xdist",
   "wheel",
 ]
-densepose = [
-  "torch",
-  "detectron2 @ git+https://github.com/facebookresearch/detectron2.git",
-  "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"
+docs = [
+  "mike",
+  "mkdocs>=1.2.2",
+  "mkdocs-material>=7.3.4,<9.6",
+  "mkdocstrings[python]>=0.19.0,<=0.27",
+]
+
+[dependency-groups]
+dev = [
+  {include-group = "docs"},
+  {include-group = "tests"},
+]
+docs = [
+  "mike",
+  "mkdocs>=1.2.2",
+  "mkdocs-material>=7.3.4,<9.6",
+  "mkdocstrings[python]>=0.19.0,<=0.27",
+]
+tests = [
+  "black>=26.1.0",
+  "coverage",
+  "flake8",
+  "nvidia-ml-py",
+  "psutil",
+  "pytest",
+  "pytest-coverage",
+  "pytest-duration-insights",
+  "pytest-mock",
+  "pytest-reportlog",
+  "pytest-xdist",
+  "wheel",
 ]
 
 [project.urls]
@@ -107,3 +148,13 @@ allow_redefinition = true
 [tool.pytest.ini_options]
 testpaths = ["tests/"]
 addopts = "--cov-append --cov=zamba --cov-report=term --cov-report=html --cov-report=xml -n=auto --report-log reportlog.jsonl"
+markers = [
+  "video: tests that require the video extra (av, ffmpeg, opencv, yolox, pytorchvideo)",
+  "image: tests that require the image extra (megadetector, Pillow)",
+]
+
+[tool.uv]
+override-dependencies = [
+  "protobuf>=3.20.2",  # megadetector dependencies pin too low, allow newer
+  "setuptools<82",  # setuptools 82 removed pkg_resources; ultralytics-yolov5 (megadetector) needs it
+]

@@ -181,5 +181,35 @@ Both can be specified in either [`predict_config`](configurations.md#prediction-
     )
     ```
 
+## Reproducibility / determinism
+
+By default, `zamba` seeds random number generators during **inference** (video and image prediction) so repeated runs on the same inputs produce consistent results (for example, MegadetectorLite frame sampling). The inference seed defaults to `55` and can be set with the `INFERENCE_SEED` environment variable:
+
+```console
+export INFERENCE_SEED=42
+zamba predict --data-dir example_vids/
+```
+
+For bitwise-identical GPU results across runs (strict CUDA/cuDNN determinism, at some throughput cost on CUDA devices), set `deterministic=True` in your predict config:
+
+=== "YAML file"
+    ```yaml
+    predict_config:
+        data_dir: example_vids/
+        deterministic: true
+    ```
+=== "Python"
+    ```python
+    from zamba.models.config import PredictConfig
+    from zamba.models.model_manager import predict_model
+
+    predict_config = PredictConfig(
+        data_dir="example_vids/",
+        deterministic=True,
+    )
+    predict_model(predict_config=predict_config)
+    ```
+
+The same `deterministic` option is available on [`ImageClassificationPredictConfig`](configurations.md#image-prediction-arguments) for image inference. Training is not affected by this setting.
 
 And that's just the tip of the iceberg! See [All Configuration Options](configurations.md) page for more possibilities.

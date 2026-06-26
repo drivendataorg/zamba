@@ -1,3 +1,4 @@
+from enum import Enum
 from fractions import Fraction
 from functools import reduce
 import hashlib
@@ -346,16 +347,37 @@ def get_cached_array_path(vid_path, config):
     keys = config_dict.keys() - {"cleanup_cache", "cache_dir"}
     hashed_part = {k: config_dict[k] for k in sorted(keys)}
 
+    def _hashable(value):
+        if isinstance(value, dict):
+            return {k: _hashable(v) for k, v in sorted(value.items())}
+        if isinstance(value, list):
+            return [_hashable(v) for v in value]
+        if isinstance(value, tuple):
+            return tuple(_hashable(v) for v in value)
+        if isinstance(value, (set, frozenset)):
+            return sorted(_hashable(v) for v in value)
+        if isinstance(value, Enum):
+            return value.value
+        if isinstance(value, Path):
+            return str(value)
+        if isinstance(value, np.generic):
+            return value.item()
+        return value
+
+    hash_input = json.dumps(
+        _hashable(hashed_part), sort_keys=True, separators=(",", ":"), default=str
+    )
     # hash config for inclusion in path
-    hash_str = hashlib.sha1(str(hashed_part).encode("utf-8")).hexdigest()
+    hash_str = hashlib.sha1(hash_input.encode("utf-8")).hexdigest()
     logger.opt(lazy=True).debug(f"Generated hash {hash_str} from {hashed_part}")
 
-    # strip leading "/" in absolute path
-    vid_path = AnyPath(str(vid_path).lstrip("/"))
+    vid_path = AnyPath(str(vid_path))
 
-    # if the video is in S3, drop the prefix and bucket name
+    # if the video is in S3, drop the prefix and bucket name; otherwise make path relative
     if isinstance(vid_path, S3Path):
         vid_path = AnyPath(vid_path.key)
+    elif Path(vid_path).is_absolute():
+        vid_path = Path(*Path(vid_path).parts[1:])
 
     cache_dir = config.cache_dir
     npy_path = AnyPath(cache_dir) / hash_str / vid_path.with_suffix(".npy")
@@ -404,7 +426,7 @@ class npy_cache:
 
     def __del__(self):
         if hasattr(self, "cache_path") and self.cleanup and self.cache_path.exists():
-            if self.cache_path.parents[0] == tempfile.gettempdir():
+            if Path(self.cache_path).parents[0] == Path(tempfile.gettempdir()):
                 logger.info(f"Deleting cache dir {self.cache_path}.")
                 rmtree(self.cache_path)
             else:

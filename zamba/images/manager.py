@@ -8,18 +8,20 @@ from functools import partial
 import sys
 
 import git
-import mlflow
 import pandas as pd
 import pytorch_lightning as pl
 import torch
 from loguru import logger
-from megadetector.detection import run_detector
+
+try:
+    from megadetector.detection import run_detector
+except ModuleNotFoundError:
+    from detection import run_detector
 from pytorch_lightning.callbacks import (
     EarlyStopping,
     ModelCheckpoint,
     StochasticWeightAveraging,
 )
-from pytorch_lightning.loggers import MLFlowLogger
 from pytorch_lightning.tuner.tuning import Tuner
 from sklearn.utils.class_weight import compute_class_weight
 from torch.nn import ModuleList
@@ -35,8 +37,9 @@ from zamba.images.config import (
 )
 from zamba.images.data import ImageClassificationDataModule, load_image, absolute_bbox, BboxLayout
 from zamba.images.result import results_to_megadetector_format
-from zamba.models.model_manager import instantiate_model
+from zamba.models.instantiation import instantiate_model
 from zamba.pytorch.transforms import resize_and_pad
+from zamba.pytorch.utils import configure_inference_determinism
 
 
 def get_weights(split):
@@ -48,6 +51,8 @@ def get_weights(split):
 
 
 def predict(config: ImageClassificationPredictConfig) -> None:
+    configure_inference_determinism(deterministic=config.deterministic)
+
     image_transforms = transforms.Compose(
         [
             transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
@@ -60,6 +65,7 @@ def predict(config: ImageClassificationPredictConfig) -> None:
     classifier_module = instantiate_model(
         checkpoint=config.checkpoint,
     )
+    classifier_module.eval()
 
     logger.info("Running inference")
     predictions = []
@@ -227,14 +233,23 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
     swa = StochasticWeightAveraging(swa_lrs=1e-2)
     callbacks = [swa, early_stopping, checkpoint_callback]
 
-    # Enable system metrics logging in MLflow
-    mlflow.enable_system_metrics_logging()
+    mlflow_logger = False
+    try:
+        import mlflow
+        from pytorch_lightning.loggers import MLFlowLogger
 
-    mlflow_logger = MLFlowLogger(
-        run_name=f"zamba-{config.name}-{config.model_name}-{config.lr}-{random.randint(1000, 9999)}",
-        experiment_name=config.name,
-        tracking_uri=config.mlflow_tracking_uri,
-    )
+        # Enable system metrics logging in MLflow
+        mlflow.enable_system_metrics_logging()
+        mlflow_logger = MLFlowLogger(
+            run_name=f"zamba-{config.name}-{config.model_name}-{config.lr}-{random.randint(1000, 9999)}",
+            experiment_name=config.name,
+            tracking_uri=config.mlflow_tracking_uri,
+        )
+    except Exception as exc:
+        logger.warning(
+            "MLflow is unavailable; training will continue without MLflow logging. Reason: {}",
+            exc,
+        )
 
     data = ImageClassificationDataModule(
         data_dir=config.data_dir,
@@ -280,8 +295,8 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             species=config.species_in_label_order,
         )
 
-    # compile for faster performance; disabled for MacOS which is not supported
-    if sys.platform != "darwin":
+    # compile for faster performance; disabled for MacOS and Windows (unsupported/unreliable)
+    if sys.platform not in ("darwin", "win32"):
         classifier = torch.compile(classifier_module)
     else:
         classifier = classifier_module

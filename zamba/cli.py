@@ -8,21 +8,15 @@ from tqdm import tqdm
 import typer
 import yaml
 
-from zamba.data.video import VideoLoaderConfig
-from zamba.image_cli import app as image_app
-from zamba.models.config import (
-    ModelConfig,
-    ModelEnum,
-    PredictConfig,
-    TrainConfig,
-)
 from zamba import MODELS_DIRECTORY
-from zamba.models.densepose import DensePoseConfig, DensePoseOutputEnum
-from zamba.models.depth_estimation import DepthEstimationConfig
+from zamba.models.config_common import ModelEnum, RegionEnum
 from zamba.models.model_manager import ModelManager
-from zamba.models.utils import RegionEnum
-from zamba.utils_cli import app as utils_app
 from zamba.version import __version__
+
+try:
+    from zamba.models.densepose import DensePoseOutputEnum
+except ImportError:
+    DensePoseOutputEnum = str  # graceful fallback when densepose extra not installed
 
 # make logger work with tqdm
 logger.remove()
@@ -30,8 +24,28 @@ logger.add(lambda msg: tqdm.write(msg, end=""), colorize=True)
 
 
 app = typer.Typer(pretty_exceptions_show_locals=False)
-app.add_typer(image_app, name="image", help="Tools for working with images instead of videos.")
-app.add_typer(utils_app, name="utils", help="Utilities")
+
+
+def _register_sub_apps():
+    """Lazily add image and utils sub-apps so their deps are only imported when used."""
+    try:
+        from zamba.image_cli import app as image_app
+
+        app.add_typer(
+            image_app, name="image", help="Tools for working with images instead of videos."
+        )
+    except ImportError as exc:
+        logger.debug(f"Image CLI unavailable (image extra not installed): {exc}")
+
+    try:
+        from zamba.utils_cli import app as utils_app
+
+        app.add_typer(utils_app, name="utils", help="Utilities")
+    except ImportError as exc:
+        logger.debug(f"Utils CLI unavailable: {exc}")
+
+
+_register_sub_apps()
 
 
 @app.command()
@@ -87,6 +101,9 @@ def train(
 
     If an argument is specified in both the command line and in a yaml file, the command line input will take precedence.
     """
+    from zamba.data.video import VideoLoaderConfig
+    from zamba.models.config import ModelConfig, TrainConfig
+
     if config is not None:
         with config.open() as f:
             config_dict = yaml.safe_load(f)
@@ -267,6 +284,9 @@ def predict(
 
     If an argument is specified in both the command line and in a yaml file, the command line input will take precedence.
     """
+    from zamba.data.video import VideoLoaderConfig
+    from zamba.models.config import ModelConfig, PredictConfig
+
     if config is not None:
         with config.open() as f:
             config_dict = yaml.safe_load(f)
@@ -446,6 +466,8 @@ def densepose(
 
     If an argument is specified in both the command line and in a yaml file, the command line input will take precedence.
     """
+    from zamba.models.densepose import DensePoseConfig
+
     if config is not None:
         with config.open() as f:
             config_dict = yaml.safe_load(f)
@@ -512,9 +534,15 @@ def densepose(
 
     if yes:
         # kick off prediction
-        with warnings.catch_warnings():
-            warnings.filterwarnings("ignore")
-            densepose_config.run_model()
+        try:
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore")
+                densepose_config.run_model()
+        except ImportError as e:
+            from zamba.models.densepose.densepose_manager import DENSEPOSE_INSTALL_MESSAGE
+
+            logger.error(DENSEPOSE_INSTALL_MESSAGE)
+            raise typer.Exit(1) from e
 
 
 @app.command()
@@ -555,6 +583,8 @@ def depth(
     ),
 ):
     """Estimate animal distance at each second in the video."""
+    from zamba.models.depth_estimation import DepthEstimationConfig
+
     predict_dict = dict(filepaths=filepaths)
 
     # override if any command line arguments are passed

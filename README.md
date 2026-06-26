@@ -27,15 +27,25 @@ Visit https://zamba.drivendata.org/docs/ for full documentation and tutorials.
 
 ## Installing `zamba`
 
-First, make sure you have the prerequisites installed:
+We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages and managing environments. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then ensure you have:
 
 * Python >= 3.11
-* FFmpeg > 4.3
+* FFmpeg > 4.3 and < 5 (only needed for video workflows)
 
-Then run:
+Then install the extras you need with uv. **We recommend only installing one or the other depending on your use case.**
+
 ```console
-pip install https://github.com/drivendataorg/zamba/releases/latest/download/zamba.tar.gz
+# For video workflows
+uv pip install zamba[video]
+
+# For image workflows
+uv pip install zamba[image]
+
+# For both
+uv pip install zamba[video,image]
 ```
+
+You can also use pip: `pip install zamba[video]`, `pip install zamba[image]`, or `pip install zamba[video,image]`.
 
 See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.
 

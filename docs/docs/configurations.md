@@ -170,7 +170,8 @@ class PredictConfig(ZambaBaseModel)
  output_class_names: bool = False,
  weight_download_region: zamba.models.utils.RegionEnum = 'us',
  skip_load_validation: bool = False,
- model_cache_dir: pathlib.Path = None) -> None
+ model_cache_dir: pathlib.Path = None,
+ deterministic: bool = False) -> None
 
  ...
 ```
@@ -243,6 +244,10 @@ By default, before kicking off inference `zamba` will iterate through all of the
 #### `model_cache_dir (Path, optional)`
 
 Cache directory where downloaded model weights will be saved. If None and the `MODEL_CACHE_DIR` environment variable is not set, will use your default cache directory (e.g. `~/.cache`). Defaults to `None`
+
+#### `deterministic (bool, optional)`
+
+If `True`, enable strict deterministic CUDA/cuDNN algorithms during inference (best effort; some GPU ops may remain non-deterministic and will warn rather than error). May reduce GPU throughput on CUDA devices. Inference always seeds Python, NumPy, and PyTorch RNGs regardless of this flag; the seed defaults to `55` and can be overridden with the `INFERENCE_SEED` environment variable. Defaults to `False`.
 
 <a id='training-arguments'></a>
 
@@ -446,6 +451,10 @@ Cache directory where downloaded model weights will be saved. If None and no env
 #### `weight_download_region (str, optional)`
 
 s3 region to download pretrained weights from. Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".
+
+#### `deterministic (bool, optional)`
+
+If `True`, enable strict deterministic CUDA/cuDNN algorithms during inference (best effort; some GPU ops may remain non-deterministic and will warn rather than error). May reduce GPU throughput on CUDA devices. Inference always seeds Python, NumPy, and PyTorch RNGs regardless of this flag; the seed defaults to `55` and can be overridden with the `INFERENCE_SEED` environment variable. Defaults to `False`.
 
 <a id='image-training-arguments'></a>
 

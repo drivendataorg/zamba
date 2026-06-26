@@ -1,7 +1,11 @@
 import itertools
 
+import pytest
+
 from zamba.pytorch.dataloaders import get_datasets
 from zamba.pytorch_lightning.video_modules import ZambaVideoDataModule
+
+pytestmark = pytest.mark.video
 
 
 def test_get_datasets_train_metadata(train_metadata):

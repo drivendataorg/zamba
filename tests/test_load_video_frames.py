@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-import pytest
 import shutil
 import subprocess
 from typing import Any, Callable, Dict, Optional, Union
@@ -8,16 +7,19 @@ from unittest import mock
 
 import numpy as np
 from PIL import Image
-from pydantic import BaseModel, ValidationError
+import pytest
 
-from zamba.data.video import (
+pytestmark = pytest.mark.video
+from pydantic import BaseModel, ValidationError  # noqa: E402
+
+from zamba.data.video import (  # noqa: E402
     load_video_frames,
     MegadetectorLiteYoloXConfig,
     VideoLoaderConfig,
 )
-from zamba.pytorch.dataloaders import FfmpegZambaVideoDataset
+from zamba.pytorch.dataloaders import FfmpegZambaVideoDataset  # noqa: E402
 
-from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
+from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
 
 
 class Case(BaseModel):

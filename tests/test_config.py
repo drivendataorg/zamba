@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 from pydantic import ValidationError
 
-from zamba.models.config import (
+pytestmark = pytest.mark.video
+
+from zamba.models.config import (  # noqa: E402
     EarlyStoppingConfig,
     ModelConfig,
     PredictConfig,
@@ -14,7 +16,7 @@ from zamba.models.config import (
     TrainConfig,
 )
 
-from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
+from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
 
 
 @pytest.fixture()
@@ -70,7 +72,7 @@ def test_train_labels_only(labels_absolute_path, tmp_path):
 
 
 def test_predict_data_dir_only():
-    config = PredictConfig(data_dir=TEST_VIDEOS_DIR)
+    config = PredictConfig(data_dir=TEST_VIDEOS_DIR, save=False)
     assert config.data_dir == TEST_VIDEOS_DIR
     assert isinstance(config.filepaths, pd.DataFrame)
     assert sorted(config.filepaths.filepath.values) == sorted(
@@ -81,19 +83,23 @@ def test_predict_data_dir_only():
 
 def test_predict_data_dir_and_filepaths(labels_absolute_path, labels_relative_path):
     # correct data dir
-    config = PredictConfig(data_dir=TEST_VIDEOS_DIR, filepaths=labels_relative_path)
+    config = PredictConfig(data_dir=TEST_VIDEOS_DIR, filepaths=labels_relative_path, save=False)
     assert config.data_dir is not None
     assert config.filepaths is not None
     assert config.filepaths.filepath.str.startswith(str(TEST_VIDEOS_DIR)).all()
 
     # incorrect data dir
     with pytest.raises(ValidationError) as error:
-        PredictConfig(data_dir=ASSETS_DIR, filepaths=labels_relative_path)
+        PredictConfig(
+            data_dir=ASSETS_DIR,
+            filepaths=labels_relative_path,
+            save=False,
+        )
     assert "None of the video filepaths exist" in error.value.errors()[0]["msg"]
 
 
 def test_predict_filepaths_only(labels_absolute_path):
-    config = PredictConfig(filepaths=labels_absolute_path)
+    config = PredictConfig(filepaths=labels_absolute_path, save=False)
     assert config.filepaths is not None
 
 
@@ -103,7 +109,7 @@ def test_filepath_column(tmp_path, labels_absolute_path):
     )
     # predict: filepaths
     with pytest.raises(ValidationError) as error:
-        PredictConfig(filepaths=tmp_path / "bad_filepath_column.csv")
+        PredictConfig(filepaths=tmp_path / "bad_filepath_column.csv", save=False)
     assert "must contain a `filepath` column" in error.value.errors()[0]["msg"]
 
     # train: labels
@@ -144,7 +150,7 @@ def test_extra_column(tmp_path, labels_absolute_path):
     ]
 
     # extra columns are excluded in predict config
-    config = PredictConfig(filepaths=tmp_path / "extra_species_col.csv")
+    config = PredictConfig(filepaths=tmp_path / "extra_species_col.csv", save=False)
     assert config.filepaths.columns == ["filepath"]
 
 
@@ -162,7 +168,7 @@ def test_one_video_does_not_exist(tmp_path, labels_absolute_path, caplog):
     )
     files_df.to_csv(tmp_path / "labels_with_fake_video.csv")
 
-    config = PredictConfig(filepaths=tmp_path / "labels_with_fake_video.csv")
+    config = PredictConfig(filepaths=tmp_path / "labels_with_fake_video.csv", save=False)
     assert "Skipping 1 file(s) that could not be found" in caplog.text
     # one fewer file than in original list since bad file is skipped
     assert len(config.filepaths) == (len(files_df) - 1)
@@ -192,7 +198,7 @@ def test_videos_cannot_be_loaded(tmp_path, labels_absolute_path, caplog):
 
     files_df.to_csv(tmp_path / "labels_with_non_loadable_videos.csv")
 
-    config = PredictConfig(filepaths=tmp_path / "labels_with_non_loadable_videos.csv")
+    config = PredictConfig(filepaths=tmp_path / "labels_with_non_loadable_videos.csv", save=False)
     assert "Skipping 2 file(s) that could not be loaded with ffmpeg" in caplog.text
     assert len(config.filepaths) == (len(files_df) - 2)
 
@@ -380,7 +386,7 @@ def test_predict_filepaths_with_duplicates(labels_absolute_path, tmp_path, caplo
         tmp_path / "filepaths_with_dupe.csv"
     )
 
-    PredictConfig(filepaths=tmp_path / "filepaths_with_dupe.csv")
+    PredictConfig(filepaths=tmp_path / "filepaths_with_dupe.csv", save=False)
     assert "Found 1 duplicate row(s) in filepaths csv. Dropping duplicates" in caplog.text
 
 
@@ -395,13 +401,21 @@ def test_model_cache_dir(
     config = TrainConfig(labels=labels_absolute_path, save_dir=tmp_path / "my_model")
     assert config.model_cache_dir == tmp_path
 
-    config = PredictConfig(filepaths=labels_absolute_path, model_cache_dir=tmp_path / "my_cache")
+    config = PredictConfig(
+        filepaths=labels_absolute_path,
+        model_cache_dir=tmp_path / "my_cache",
+        save=False,
+    )
     assert config.model_cache_dir == tmp_path / "my_cache"
 
 
 def test_predict_save(labels_absolute_path, tmp_path, dummy_trained_model_checkpoint):
     # if save is True, save in current working directory
-    config = PredictConfig(filepaths=labels_absolute_path, skip_load_validation=True)
+    config = PredictConfig(
+        filepaths=labels_absolute_path,
+        skip_load_validation=True,
+        overwrite=True,
+    )
     assert config.save_dir == Path.cwd()
 
     config = PredictConfig(filepaths=labels_absolute_path, save=False, skip_load_validation=True)
@@ -532,7 +546,11 @@ def test_default_video_loader_config(labels_absolute_path, tmp_path):
     assert config.video_loader_config is not None
 
     config = ModelConfig(
-        predict_config=PredictConfig(filepaths=labels_absolute_path, skip_load_validation=True),
+        predict_config=PredictConfig(
+            filepaths=labels_absolute_path,
+            skip_load_validation=True,
+            save=False,
+        ),
         video_loader_config=None,
     )
     assert config.video_loader_config is not None
@@ -553,6 +571,7 @@ def test_checkpoint_sets_model_to_default(
         filepaths=labels_absolute_path,
         checkpoint=dummy_trained_model_checkpoint,
         skip_load_validation=True,
+        save=False,
     )
     assert config.model_name == "dummy_model"
 

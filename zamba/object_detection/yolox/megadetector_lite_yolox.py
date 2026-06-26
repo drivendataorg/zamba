@@ -19,6 +19,17 @@ LOCAL_MD_LITE_MODEL_KWARGS = (
 )
 
 
+def _rank_frame_indices(scores: np.ndarray) -> np.ndarray:
+    """Frame indices ordered by score descending, then frame index ascending.
+
+    The index-ascending tie-break makes the ordering deterministic across pandas and numpy
+    versions. Policy: among equal scores, prefer earlier (chronological)
+    frames.
+    """
+    frame_indices = np.arange(len(scores))
+    return frame_indices[np.lexsort((frame_indices, -scores))]
+
+
 class FillModeEnum(str, Enum):
     """Enum for frame filtering fill modes
 
@@ -252,13 +263,15 @@ class MegadetectorLiteYoloX:
             np.ndarray: An array of video frames of length n_frames or shorter
         """
 
-        frame_scores = pd.Series(
-            [(np.max(score) if (len(score) > 0) else 0) for _, score in detections]
-        ).sort_values(
-            ascending=False
-        )  # reduce to one score per frame
+        # reduce to one score per frame
+        scores = np.array(
+            [(np.max(score) if (len(score) > 0) else 0.0) for _, score in detections],
+            dtype=np.float64,
+        )
 
-        selected_indices = frame_scores.loc[frame_scores > self.config.confidence].index
+        # frames above threshold, ordered by score descending then frame index ascending
+        above = np.flatnonzero(scores > self.config.confidence)
+        selected_indices = above[np.lexsort((above, -scores[above]))]
 
         if self.config.n_frames is None:
             # no minimum n_frames provided, just select all the frames with scores > threshold
@@ -266,12 +279,7 @@ class MegadetectorLiteYoloX:
 
         elif len(selected_indices) >= self.config.n_frames:
             # num. frames with scores > threshold is greater than the requested number of frames
-            selected_indices = (
-                frame_scores[selected_indices]
-                .sort_values(ascending=False)
-                .iloc[: self.config.n_frames]
-                .index
-            )
+            selected_indices = selected_indices[: self.config.n_frames]
 
         elif len(selected_indices) < self.config.n_frames:
             # num. frames with scores > threshold is less than the requested number of frames
@@ -288,17 +296,24 @@ class MegadetectorLiteYoloX:
 
             # take frames in sorted order up to n_frames, even if score is zero
             elif self.config.fill_mode == "score_sorted":
-                selected_indices = (
-                    frame_scores.sort_values(ascending=False).iloc[: self.config.n_frames].index
-                )
+                selected_indices = _rank_frame_indices(scores)[: self.config.n_frames]
 
             # sample up to n_frames, prefer points closer to frames with detection
             elif self.config.fill_mode == "weighted_euclidean":
-                sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
+                frame_scores = pd.Series(scores).sort_values(ascending=False)
+                sample_from = np.asarray(
+                    frame_scores.loc[~frame_scores.index.isin(selected_indices)].index, dtype=int
+                )
                 # take one over euclidean distance to all points with detection
-                weights = [1 / np.linalg.norm(selected_indices - sample) for sample in sample_from]
-                # normalize weights
-                weights /= np.sum(weights)
+                weights = np.asarray(
+                    [1 / np.linalg.norm(selected_indices - sample) for sample in sample_from],
+                    dtype=float,
+                )
+                weight_sum = weights.sum()
+                if weight_sum <= 0:
+                    weights = np.ones(len(sample_from), dtype=float) / len(sample_from)
+                else:
+                    weights /= weight_sum
                 sampled = rng.choice(
                     sample_from,
                     self.config.n_frames - len(selected_indices),
@@ -310,8 +325,16 @@ class MegadetectorLiteYoloX:
 
             # sample up to n_frames, weight by predicted probability - only if some frames have nonzero prob
             elif (self.config.fill_mode == "weighted_prob") and (len(selected_indices) > 0):
-                sample_from = frame_scores.loc[~frame_scores.index.isin(selected_indices)].index
-                weights = frame_scores[sample_from] / np.sum(frame_scores[sample_from])
+                frame_scores = pd.Series(scores).sort_values(ascending=False)
+                sample_from = np.asarray(
+                    frame_scores.loc[~frame_scores.index.isin(selected_indices)].index, dtype=int
+                )
+                weights = frame_scores[sample_from].to_numpy(dtype=float, copy=True)
+                weight_sum = weights.sum()
+                if weight_sum <= 0:
+                    weights = np.ones(len(sample_from), dtype=float) / len(sample_from)
+                else:
+                    weights /= weight_sum
                 sampled = rng.choice(
                     sample_from,
                     self.config.n_frames - len(selected_indices),

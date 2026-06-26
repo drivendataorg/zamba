@@ -1,4 +1,4 @@
-.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up tests
+.PHONY: docs docs-serve clean lint requirements sync_data_down sync_data_up test test-fast test-debug test-densepose test-image-only test-video-only
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -16,18 +16,14 @@ CPU_OR_GPU ?= gpu
 endif
 
 
+
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
 
 ## Install Python Dependencies
 requirements:
-ifeq (${CPU_OR_GPU}, gpu)
-	conda install -y cudatoolkit=11.0.3 cudnn=8.0 -c conda-forge
-endif
-	$(PYTHON_INTERPRETER) -m pip install -U pip
-	$(PYTHON_INTERPRETER) -m pip install "torch<2.4.0"
-	$(PYTHON_INTERPRETER) -m pip install -r requirements-dev.txt
+	uv pip install -e ".[image,video]" --group dev
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -66,20 +62,34 @@ lint:
 	black --check zamba tests
 
 ## Generate assets and run tests
-tests: clean-test
+test: clean-test
 	pytest tests -vv
 
-## Dev: Fail fast, do not run in parallel, and open debugger on failure
-tests-debug: clean-test
-	pytest tests -vvv --pdb --maxfail=1 -n=0
+## Dev: fail fast on the first test failure
+test-fast: clean-test
+	pytest tests -vv --maxfail=1 -x
 
-## Dev: Run the tests that are just for images (no videos)
-images-tests: clean-test
-	pytest tests/test_images.py -vv
+## Dev: Fail fast, do not run in parallel, and open debugger on failure
+test-debug: clean-test
+	pytest tests -vvv --pdb --maxfail=1 -n=0 --lf --last-failed-no-failures=all
 
 ## Run the tests that are just for densepose
-densepose-tests:
+test-densepose:
 	ZAMBA_RUN_DENSEPOSE_TESTS=1 pytest tests/test_densepose.py tests/test_cli.py::test_densepose_cli_options -vv
+
+## Test image deps in isolation: fresh venv, install image extra only, run image + agnostic tests, cleanup
+test-image-only:
+	UV_VENV_CLEAR=1 uv venv .venv-image
+	uv pip install -p .venv-image ".[image,tests]"
+	UV_PROJECT_ENVIRONMENT=.venv-image uv run --no-sync pytest tests -m "image or not (image or video)" -vv ; \
+	EXIT=$$? ; rm -rf .venv-image ; exit $$EXIT
+
+## Test video deps in isolation: fresh venv, install video extra only, run video + agnostic tests, cleanup
+test-video-only:
+	UV_VENV_CLEAR=1 uv venv .venv-video
+	uv pip install -p .venv-video ".[video,tests]"
+	UV_PROJECT_ENVIRONMENT=.venv-video uv run --no-sync pytest tests -m "video or not (image or video)" -vv ; \
+	EXIT=$$? ; rm -rf .venv-video ; exit $$EXIT
 
 ## Set up python interpreter environment
 create_environment:

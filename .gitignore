@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+# venvs
+.venv/
+.venv*/
+
 # C extensions
 *.so
 
@@ -98,6 +102,7 @@ mlruns/
 
 # Predictions
 zamba_predictions.*
+predict_configuration.yaml
 
 # Potential outputs
 *.ckpt

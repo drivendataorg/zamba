@@ -1,14 +1,15 @@
 import os
 
 import pytest
-
 from pydantic import ValidationError
 
 from zamba.data.video import VideoLoaderConfig
 from zamba.models.densepose import DensePoseManager, DensePoseConfig
-from zamba.models.densepose.densepose_manager import MODELS
 
-from conftest import ASSETS_DIR
+pytestmark = pytest.mark.video
+from zamba.models.densepose.densepose_manager import MODELS  # noqa: E402
+
+from conftest import ASSETS_DIR  # noqa: E402
 
 
 @pytest.fixture

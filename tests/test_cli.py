@@ -2,26 +2,33 @@ import os
 from pathlib import Path
 import shutil
 
-from typer.testing import CliRunner
 import pandas as pd
 import pytest
 from pytest_mock import mocker  # noqa: F401
+from typer.testing import CliRunner
 
-from zamba.cli import app
+from zamba.cli import app  # noqa: E402
 
-from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
+from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
 
 runner = CliRunner()
 
 
 @pytest.fixture
 def minimum_valid_train(labels_absolute_path):
-    return ["train", "--labels", str(labels_absolute_path), "--skip-load-validation"]
+    return ["train", "--labels", str(labels_absolute_path), "--skip-load-validation", "--yes"]
 
 
 @pytest.fixture
 def minimum_valid_predict():
-    return ["predict", "--data-dir", str(TEST_VIDEOS_DIR), "--skip-load-validation"]
+    return [
+        "predict",
+        "--data-dir",
+        str(TEST_VIDEOS_DIR),
+        "--skip-load-validation",
+        "--no-save",
+        "--yes",
+    ]
 
 
 # mock training to just test CLI args
@@ -34,6 +41,7 @@ def pred_mock(self):
     return None
 
 
+@pytest.mark.video
 def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa: F811
     mocker.patch("zamba.cli.ModelManager.train", train_mock)
 
@@ -49,7 +57,7 @@ def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa:
 
     # test from config
     result = runner.invoke(
-        app, ["train", "--config", str(ASSETS_DIR / "sample_train_config.yaml")]
+        app, ["train", "--config", str(ASSETS_DIR / "sample_train_config.yaml")], input="\n"
     )
     assert result.exit_code == 0
     assert f"Config file: {str(ASSETS_DIR / 'sample_train_config.yaml')}" in result.output
@@ -58,6 +66,7 @@ def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa:
     assert result.exit_code == 0
 
 
+@pytest.mark.video
 def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):  # noqa: F811
     """Test CLI options that are shared between train and predict commands."""
 
@@ -108,6 +117,7 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
         assert "Cannot use 2" in str(result.exc_info)
 
 
+@pytest.mark.video
 def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # noqa: F811
     mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
 
@@ -141,7 +151,14 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
 
     result = runner.invoke(
         app,
-        minimum_valid_predict + ["--output-class-names", "--save"],
+        minimum_valid_predict
+        + [
+            "--output-class-names",
+            "--save",
+            "--save-dir",
+            str(tmp_path / "save_test"),
+            "-o",
+        ],
     )
     assert result.exit_code == 0
 
@@ -155,6 +172,7 @@ def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # n
 
 
 @pytest.mark.parametrize("model", ["time_distributed", "blank_nonblank"])
+@pytest.mark.video
 def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     data_dir = tmp_path / "videos"
     data_dir.mkdir()
@@ -190,6 +208,7 @@ def test_actual_prediction_on_single_video(tmp_path, model):  # noqa: F811
     )
 
 
+@pytest.mark.image
 def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
     """Test predicting on images."""
     shutil.copytree(ASSETS_DIR / "images", tmp_path / "images")
@@ -220,6 +239,7 @@ def test_actual_prediction_on_images(tmp_path, mocker):  # noqa: F811
             assert Path(img).stem == label
 
 
+@pytest.mark.video
 def test_depth_cli_options(mocker, tmp_path):  # noqa: F811
     mocker.patch("zamba.models.depth_estimation.config.DepthEstimationConfig.run_model", pred_mock)
 
@@ -254,6 +274,7 @@ def test_depth_cli_options(mocker, tmp_path):  # noqa: F811
     assert "The following configuration will be used" in result.output
 
 
+@pytest.mark.video
 @pytest.mark.skipif(
     not bool(int(os.environ.get("ZAMBA_RUN_DENSEPOSE_TESTS", 0))),
     reason="""Skip the densepose specific tests unless environment variable \

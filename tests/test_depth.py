@@ -1,14 +1,17 @@
+from pathlib import Path
+
 import appdirs
 import numpy as np
 import pandas as pd
-from pathlib import Path
-from pydantic import ValidationError
 import pytest
+from pydantic import ValidationError
 
 from zamba.models.config import GPUS_AVAILABLE
 from zamba.models.depth_estimation import DepthEstimationManager, DepthEstimationConfig
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR
+
+pytestmark = pytest.mark.video
 
 
 @pytest.fixture

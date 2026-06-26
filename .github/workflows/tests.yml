@@ -44,11 +44,11 @@ jobs:
           enable-cache: true
           cache-suffix: "lint"
           cache-dependency-glob: |
-            requirements-dev/lint.txt
+            pyproject.toml
 
       - name: Install dependencies
         run: |
-          uv pip install -r requirements-dev/lint.txt
+          uv pip install -e . --group tests
 
       - name: Lint package
         run: |
@@ -109,7 +109,7 @@ jobs:
     - name: Install dependencies
       if: steps.cache-weights.outputs.cache-hit != 'true'
       run: |
-        uv pip install -e .[tests]
+        uv pip install -e ".[image,video]" --group tests
 
     - name: Download weights
       if: steps.cache-weights.outputs.cache-hit != 'true'
@@ -189,11 +189,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -e .[tests]
+          uv pip install -e ".[image,video]" --group tests
 
       - name: Run tests
         run: |
-          make tests
+          make test
+
+      - name: Run video and image isolation tests
+        run: |
+          make test-image-only
+          make test-video-only
 
       - if: matrix.os == 'macos-latest'
         name: Specify MacOS version for densepose install
@@ -204,10 +209,10 @@ jobs:
         env:
           ZAMBA_RUN_DENSEPOSE_TESTS: 1
         run: |
-          uv pip install flit-core
-          # torch is already installed, so just add the densepose extra
-          uv pip install -e .[densepose] --no-build-isolation
-          make densepose-tests
+          # DensePose deps are not on PyPI; install from GitHub (see docs/models/densepose.md)
+          uv pip install "detectron2 @ git+https://github.com/facebookresearch/detectron2.git" --no-build-isolation
+          uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose" --no-build-isolation
+          make test-densepose
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v4
@@ -269,12 +274,13 @@ jobs:
 
       - name: Build from source
         run: |
-          uv pip install .
+          uv pip install .[image,video]
 
       - name: Test import and model loading
         run: |
           python -m zamba --help
           python -c "from zamba.data.video import MegadetectorLiteYoloX; MegadetectorLiteYoloX()"
+          python -c "from zamba.images.data import ImageClassificationDataset; ImageClassificationDataset('.', '.', '.')"
 
   notify:
     name: Notify failed build

@@ -5,6 +5,8 @@ from zamba.models.efficientnet_models import TimeDistributedEfficientNet
 
 from conftest import DummyZambaVideoClassificationLightningModule
 
+pytestmark = pytest.mark.video
+
 
 @pytest.mark.parametrize("model_class", (SlowFast, TimeDistributedEfficientNet))
 def test_save_and_load(model_class, tmp_path):

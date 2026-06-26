@@ -6,7 +6,14 @@ import torch
 
 from pydantic import BaseModel
 
-from yolox.exp import Exp
+try:
+    from yolox.exp import Exp as BaseExp
+
+    USES_YOLOX_CONFIG = False
+except ModuleNotFoundError:
+    from yolox.config import YoloxConfig as BaseExp
+
+    USES_YOLOX_CONFIG = True
 import yolox.utils as utils
 
 
@@ -80,17 +87,22 @@ class YoloXExp(BaseModel):
     nmsthre: float = 0.65
 
 
-class TinyExp(Exp):
+class TinyExp(BaseExp):
     # default tiny exp copied from:
     # https://github.com/Megvii-BaseDetection/YOLOX/blob/main/exps/default/yolox_tiny.py
     def __init__(self):
-        super(TinyExp, self).__init__()
+        if USES_YOLOX_CONFIG:
+            super(TinyExp, self).__init__(name="yolox_tiny")
+        else:
+            super(TinyExp, self).__init__()
         self.depth = 0.33
         self.width = 0.375
         self.scale = (0.5, 1.5)
         self.random_size = (10, 20)
         self.test_size = (416, 416)
         self.exp_name = os.path.split(os.path.realpath(__file__))[1].split(".")[0]
+        if hasattr(self, "name"):
+            self.name = self.exp_name
         self.enable_mixup = False
 
 
@@ -107,7 +119,9 @@ class YoloXModel:
             setattr(base_exp, k, v)
 
         if not args.experiment_name:
-            args.experiment_name = base_exp.exp_name
+            args.experiment_name = (
+                getattr(base_exp, "exp_name", None) or getattr(base_exp, "name", None) or "yolox"
+            )
 
         self.exp = base_exp
         self.args = args
