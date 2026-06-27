@@ -29,7 +29,7 @@ from torchvision.transforms import transforms
 from tqdm import tqdm
 import yaml
 
-from zamba.images.classifier import ImageClassifierModule
+from zamba.images.classifier import ImageClassifierModule, infer_model_family
 from zamba.images.config import (
     ImageClassificationPredictConfig,
     ImageClassificationTrainingConfig,
@@ -39,8 +39,30 @@ from zamba.images.config import (
 from zamba.images.data import ImageClassificationDataModule, load_image, absolute_bbox, BboxLayout
 from zamba.images.result import results_to_megadetector_format
 from zamba.models.instantiation import instantiate_model
+from zamba.models.utils import get_checkpoint_hparams
 from zamba.pytorch.transforms import resize_and_pad
 from zamba.pytorch.utils import configure_inference_determinism
+
+
+def resolve_inference_family(model_name, checkpoint) -> str:
+    """Determine the preprocessing family without trusting a (possibly stale/mangled)
+    ``model_name`` default.
+
+    When a checkpoint is provided it is authoritative: the family is read from the
+    checkpoint's persisted ``model_family`` / legacy ``zamba_model`` hparam, falling
+    back to inference from the stored architecture name. Only when there is no
+    checkpoint do we fall back to the configured ``model_name``.
+    """
+    if checkpoint is not None:
+        try:
+            hp = get_checkpoint_hparams(checkpoint)
+            family = hp.get("model_family") or hp.get("zamba_model")
+            if family:
+                return family
+            return infer_model_family(hp.get("model_name"))
+        except Exception as exc:  # noqa: BLE001 -- fall back to model_name on any read error
+            logger.warning(f"Could not read family from checkpoint ({exc}); using model_name.")
+    return infer_model_family(model_name)
 
 
 def get_weights(split):
@@ -51,57 +73,49 @@ def get_weights(split):
     return torch.tensor(class_weights).to(torch.float32)
 
 
-def get_default_transforms(
-    config: ImageClassificationPredictConfig | ImageClassificationTrainingConfig,
-):
-    logger.info(f"Using default transforms for {config.model_name} model")
-    if config.model_name == ImageModelEnum.SPECIESNET.value:
+def get_default_transforms(model_family: str, image_size=None):
+    """Build the (top, bottom) eval transform lists for a preprocessing family.
+
+    The preprocessing is fully determined by ``model_family`` (and the resolved
+    ``image_size``), NOT by a model_name string on the config. This lets prediction
+    derive transforms directly from a loaded checkpoint. Returns the transform lists
+    plus the resolved integer image size.
+    """
+    # checkpoints may store image_size as a tuple (e.g. (480, 480)); normalize to int
+    if isinstance(image_size, (tuple, list)):
+        image_size = image_size[0]
+
+    logger.info(f"Using default transforms for '{model_family}' model family")
+    if model_family == ImageModelEnum.SPECIESNET.value:
         # speciesnet is trained on 480x480 images by default
-        if config.image_size is None:
+        if image_size is None:
             logger.info("Image size not specified, using value from model checkpoint: 480")
-            config.image_size = 480
+            image_size = 480
 
         top_transforms = [
             transforms.Resize(
-                (config.image_size, config.image_size),
+                (image_size, image_size),
                 interpolation=transforms.InterpolationMode.BICUBIC,
             ),
         ]
         bottom_transforms = [
             transforms.ToTensor(),
         ]
-    elif config.model_name == ImageModelEnum.LILA_SCIENCE.value:
-        # lila.science is trained on 224x224 images by default
-        if config.image_size is None:
-            logger.info("Image size not specified, using value from model checkpoint: 224")
-            config.image_size = 224
-
-        top_transforms = [
-            transforms.Lambda(
-                partial(resize_and_pad, desired_size=(config.image_size, config.image_size))
-            ),
-        ]
-        bottom_transforms = [
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
-        ]
     else:
-        # generic default transforms for any other model
-        if config.image_size is None:
+        # lila.science and generic models: pad to square + ImageNet-ish normalization
+        if image_size is None:
             logger.info("Image size not specified, using default value: 224")
-            config.image_size = 224
+            image_size = 224
 
         top_transforms = [
-            transforms.Lambda(
-                partial(resize_and_pad, desired_size=(config.image_size, config.image_size))
-            ),
+            transforms.Lambda(partial(resize_and_pad, desired_size=(image_size, image_size))),
         ]
         bottom_transforms = [
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
         ]
 
-    return top_transforms, bottom_transforms
+    return top_transforms, bottom_transforms, image_size
 
 
 def predict(config: ImageClassificationPredictConfig) -> None:
@@ -114,20 +128,27 @@ def predict(config: ImageClassificationPredictConfig) -> None:
     )
     classifier_module.eval()
 
-    # get image_size from checkpoint if available; otherwise get_default_transforms
-    # falls back to a model-appropriate default
-    checkpoint_image_size = getattr(classifier_module, "image_size", None)
-    if config.image_size is None and isinstance(checkpoint_image_size, (int, tuple)):
-        config.image_size = (
-            checkpoint_image_size[0]
-            if isinstance(checkpoint_image_size, tuple)
-            else checkpoint_image_size
-        )
-        logger.info(
-            f"Image size not specified, using value from model checkpoint: {config.image_size}"
+    # The loaded checkpoint is the source of truth for preprocessing. Derive the family
+    # (and image size) from the module rather than from config.model_name, which is
+    # unreliable when predicting from a bare --checkpoint (it defaults to lila.science).
+    # Every real ImageClassifierModule sets a string `model_family`; fall back to the
+    # arch name / config only if the loaded object doesn't expose usable values.
+    model_family = getattr(classifier_module, "model_family", None)
+    if not isinstance(model_family, str):
+        base_model_name = getattr(classifier_module, "base_model_name", None)
+        model_family = infer_model_family(
+            base_model_name if isinstance(base_model_name, str) else config.model_name
         )
 
-    top_transforms, bottom_transforms = get_default_transforms(config)
+    image_size = config.image_size
+    if image_size is None:
+        module_image_size = getattr(classifier_module, "image_size", None)
+        if isinstance(module_image_size, (int, tuple, list)):
+            image_size = module_image_size
+
+    top_transforms, bottom_transforms, config.image_size = get_default_transforms(
+        model_family, image_size
+    )
     image_transforms = transforms.Compose(top_transforms + bottom_transforms)
 
     logger.info("Running inference")
@@ -236,7 +257,10 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             format="{time} - {name} - {level} - {message}",
         )
 
-    top_transforms, bottom_transforms = get_default_transforms(config)
+    model_family = resolve_inference_family(config.model_name, config.checkpoint)
+    top_transforms, bottom_transforms, config.image_size = get_default_transforms(
+        model_family, config.image_size
+    )
 
     if config.extra_train_augmentations:
         augment_transforms = [

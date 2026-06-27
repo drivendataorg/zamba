@@ -9,11 +9,15 @@ from PIL import Image
 pytestmark = pytest.mark.image
 
 from zamba.images.bbox import BboxInputFormat, bbox_json_to_df, BboxLayout  # noqa: E402
-from zamba.images.classifier import ImageClassifierModule  # noqa: E402
+from zamba.images.classifier import ImageClassifierModule, infer_model_family  # noqa: E402
 from zamba.images.config import ImageClassificationTrainingConfig  # noqa: E402
 from zamba.images.data import absolute_bbox  # noqa: E402
 from zamba.images.dataset.dataset import crop_image, prepare_dataset  # noqa: E402
-from zamba.images.manager import train  # noqa: E402
+from zamba.images.manager import (  # noqa: E402
+    get_default_transforms,
+    resolve_inference_family,
+    train,
+)
 from zamba.images.result import results_to_megadetector_format  # noqa: E402
 
 from conftest import ASSETS_DIR, DummyZambaImageClassificationLightningModule  # noqa: E402
@@ -179,6 +183,96 @@ def test_save_and_load(model_class, tmp_path):
     model = model_class.from_disk(tmp_path / model_class.__name__)
     assert model.species == ["cat", "dog"]
     assert model.num_classes == 2
+
+
+@pytest.mark.parametrize(
+    "name,expected",
+    [
+        ("tf_efficientnetv2_m", "speciesnet"),
+        ("speciesnet", "speciesnet"),
+        ("convnextv2_base.fcmae_ft_in22k_in1k", "lila.science"),
+        ("resnet50", "lila.science"),
+        (None, "lila.science"),
+    ],
+)
+def test_infer_model_family(name, expected):
+    assert infer_model_family(name) == expected
+
+
+def test_get_default_transforms_speciesnet_has_no_normalization():
+    """SpeciesNet uses 480px bicubic resize and NO normalization, unlike lila.science."""
+    from torchvision.transforms import transforms
+
+    top_s, bottom_s, size_s = get_default_transforms("speciesnet", None)
+    assert size_s == 480
+    assert isinstance(top_s[0], transforms.Resize)
+    assert not any(isinstance(t, transforms.Normalize) for t in bottom_s)
+
+    top_l, bottom_l, size_l = get_default_transforms("lila.science", None)
+    assert size_l == 224
+    assert any(isinstance(t, transforms.Normalize) for t in bottom_l)
+
+    # an unknown family behaves like the generic (lila.science) pipeline
+    _, bottom_g, _ = get_default_transforms("something_else", None)
+    assert any(isinstance(t, transforms.Normalize) for t in bottom_g)
+
+    # tuple image_size (as stored on speciesnet checkpoints) is normalized to int
+    _, _, size_t = get_default_transforms("speciesnet", (480, 480))
+    assert size_t == 480
+
+
+def test_image_classifier_persists_and_resolves_model_family(tmp_path):
+    """model_family round-trips through a checkpoint and is inferred for legacy ones."""
+    model = ImageClassifierModule(
+        species=["cat", "dog"], batch_size=2, image_size=224, model_name="resnet50"
+    )
+    # inferred from arch name; persisted to hparams so prediction can read it back
+    assert model.model_family == "lila.science"
+    assert model.hparams["model_family"] == "lila.science"
+
+    path = tmp_path / "m.ckpt"
+    model.to_disk(path)
+    reloaded = ImageClassifierModule.from_disk(path)
+    assert reloaded.model_family == "lila.science"
+
+
+def test_model_family_explicit_and_legacy_zamba_model_override():
+    explicit = ImageClassifierModule(
+        species=["cat"],
+        batch_size=1,
+        image_size=480,
+        model_name="resnet50",
+        model_family="speciesnet",
+    )
+    assert explicit.model_family == "speciesnet"
+
+    # converted SpeciesNet weights carry the family under the legacy `zamba_model` key
+    legacy = ImageClassifierModule(
+        species=["cat"],
+        batch_size=1,
+        image_size=480,
+        model_name="resnet50",
+        zamba_model="speciesnet",
+    )
+    assert legacy.model_family == "speciesnet"
+
+
+def test_resolve_inference_family_prefers_checkpoint(tmp_path):
+    """A provided checkpoint is authoritative over a (possibly stale) model_name."""
+    model = ImageClassifierModule(
+        species=["cat", "dog"],
+        batch_size=2,
+        image_size=480,
+        model_name="resnet50",
+        model_family="speciesnet",
+    )
+    path = tmp_path / "ck.ckpt"
+    model.to_disk(path)
+
+    # model_name defaults to lila.science, but the checkpoint says speciesnet -> wins
+    assert resolve_inference_family("lila.science", path) == "speciesnet"
+    # with no checkpoint, fall back to inference from model_name
+    assert resolve_inference_family("lila.science", None) == "lila.science"
 
 
 def test_bbox_json_to_df_format_megadetector(megadetector_output_path):

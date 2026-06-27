@@ -9,9 +9,23 @@ from torch.optim import AdamW
 from torch.optim.lr_scheduler import LRScheduler
 import torch.nn as nn
 import torch.utils
+from zamba.images.config import ImageModelEnum
 from zamba.images.evaluate import ClassificationEvaluator
 from zamba.models.registry import register_model
 from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
+
+
+def infer_model_family(model_name: Optional[str]) -> str:
+    """Best-effort inference of the preprocessing family from a model/arch name.
+
+    Used as a fallback for legacy checkpoints that don't persist ``model_family``.
+    Only SpeciesNet needs special preprocessing (480px bicubic resize, no
+    normalization); everything else uses the lila.science / generic pipeline.
+    """
+    name = (model_name or "").lower()
+    if name == ImageModelEnum.SPECIESNET.value or name.startswith("tf_efficientnetv2"):
+        return ImageModelEnum.SPECIESNET.value
+    return ImageModelEnum.LILA_SCIENCE.value
 
 
 @register_model
@@ -28,6 +42,7 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         finetune_from: Optional[Union[os.PathLike, str]] = None,
         scheduler: Optional[LRScheduler] = None,
         scheduler_params: Optional[dict] = None,
+        model_family: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(
@@ -41,6 +56,14 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         self.image_size = image_size
         self.base_model_name = model_name
         self.num_training_batches = num_training_batches
+
+        # Preprocessing family that fully determines inference transforms. Persisted on
+        # the checkpoint so prediction never has to re-derive it from a model_name string.
+        # Priority: explicit arg > legacy `zamba_model` hparam (on converted SpeciesNet
+        # weights) > inference from the timm architecture name.
+        self.model_family = (
+            model_family or kwargs.get("zamba_model") or infer_model_family(model_name)
+        )
 
         if finetune_from is None:
             self.model = timm.create_model(
@@ -73,6 +96,9 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
             "scheduler",
             "scheduler_params",
         )
+        # store the *resolved* family (save_hyperparameters would capture the raw arg,
+        # which may be None before inference)
+        self.hparams["model_family"] = self.model_family
 
     def configure_optimizers(self):
         # Use Adam optimizer
