@@ -4,13 +4,17 @@ import logging
 import numpy as np
 import pandas as pd
 import pytest
+import torch
 from PIL import Image
 
 pytestmark = pytest.mark.image
 
 from zamba.images.bbox import BboxInputFormat, bbox_json_to_df, BboxLayout  # noqa: E402
 from zamba.images.classifier import ImageClassifierModule, infer_model_family  # noqa: E402
-from zamba.images.config import ImageClassificationTrainingConfig  # noqa: E402
+from zamba.images.config import (  # noqa: E402
+    ImageClassificationPredictConfig,
+    ImageClassificationTrainingConfig,
+)
 from zamba.images.data import absolute_bbox  # noqa: E402
 from zamba.images.dataset.dataset import crop_image, prepare_dataset  # noqa: E402
 from zamba.images.manager import (  # noqa: E402
@@ -136,6 +140,20 @@ def test_train_config_data_exist(labels_path, images_path):
     config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path)
 
     assert len(config.labels) == 5
+
+
+def test_train_config_debug_sampling(labels_path, images_path):
+    full = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path)
+    debug = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path, debug=1)
+
+    assert len(debug.labels) <= len(full.labels)
+    # debug caps the data at N images per (split, class)
+    assert (debug.labels.groupby(["split", "label"]).size() <= 1).all()
+
+
+def test_train_config_debug_must_be_positive(labels_path, images_path):
+    with pytest.raises(ValueError, match="debug must be a positive integer"):
+        ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path, debug=0)
 
 
 def test_absolute_bbox():
@@ -273,6 +291,71 @@ def test_resolve_inference_family_prefers_checkpoint(tmp_path):
     assert resolve_inference_family("lila.science", path) == "speciesnet"
     # with no checkpoint, fall back to inference from model_name
     assert resolve_inference_family("lila.science", None) == "lila.science"
+
+
+def test_resolve_inference_family_falls_back_on_unreadable_checkpoint(tmp_path):
+    """A corrupt/unreadable checkpoint must not crash prediction; fall back to model_name."""
+    bad_ckpt = tmp_path / "corrupt.ckpt"
+    bad_ckpt.write_text("not a real checkpoint")
+    assert resolve_inference_family("speciesnet", bad_ckpt) == "speciesnet"
+
+
+def test_predict_config_resolves_model_name_from_checkpoint_family(tmp_path, images_path):
+    """An image checkpoint has no _default_model_name, so model_name falls back to the
+    persisted preprocessing family rather than the (conflicting) passed model_name."""
+    model = ImageClassifierModule(
+        species=["cat", "dog"],
+        batch_size=1,
+        image_size=480,
+        model_name="resnet50",
+        model_family="speciesnet",
+    )
+    ckpt = tmp_path / "ck.ckpt"
+    model.to_disk(ckpt)
+
+    config = ImageClassificationPredictConfig(
+        data_dir=images_path,
+        filepaths=pd.DataFrame({"filepath": ["dog.jpg"]}),
+        checkpoint=ckpt,
+        model_name="lila.science",
+        save=False,
+    )
+    assert config.model_name == "speciesnet"
+
+
+def test_on_load_checkpoint_remaps_unprefixed_speciesnet_weights():
+    """SpeciesNet weights are saved without the lightning 'model.' prefix; on_load_checkpoint
+    must add it for keys that belong to the model subtree and leave everything else alone."""
+    model = DummyZambaImageClassificationLightningModule(species=["a", "b"])
+    expected = model.state_dict()
+
+    # speciesnet-style: model weights present but WITHOUT the "model." prefix, plus an
+    # unrelated key that must be passed through untouched.
+    unprefixed = {k[len("model.") :]: v for k, v in expected.items() if k.startswith("model.")}
+    unprefixed["unrelated_buffer"] = torch.zeros(1)
+
+    ckpt = {"state_dict": dict(unprefixed)}
+    model.on_load_checkpoint(ckpt)
+    remapped = ckpt["state_dict"]
+    assert all(k.startswith("model.") for k in remapped if k != "unrelated_buffer")
+    assert "unrelated_buffer" in remapped
+
+    # already-prefixed (normal zamba) checkpoints are left unchanged
+    normal = {"state_dict": dict(expected)}
+    model.on_load_checkpoint(normal)
+    assert set(normal["state_dict"]) == set(expected)
+
+    # empty state dict is a no-op
+    empty = {"state_dict": {}}
+    model.on_load_checkpoint(empty)
+    assert empty["state_dict"] == {}
+
+
+def test_resize_and_pad_accepts_scalar_and_tuple(dog):
+    from zamba.pytorch.transforms import resize_and_pad
+
+    assert resize_and_pad(dog, desired_size=64).size == (64, 64)
+    assert resize_and_pad(dog, desired_size=(64, 32)).size == (64, 32)
 
 
 def test_bbox_json_to_df_format_megadetector(megadetector_output_path):
