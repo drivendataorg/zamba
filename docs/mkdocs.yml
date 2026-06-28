@@ -19,15 +19,22 @@ nav:
       - Quickstart: "quickstart.md"
   - "User Tutorials":
       - Classifying unlabeled images: "images-predict-tutorial.md"
+      - Training a model on labeled images: "images-train-tutorial.md"
       - Classifying unlabeled videos: "predict-tutorial.md"
       - Training a model on labeled videos: "train-tutorial.md"
       - Debugging: "debugging.md"
       - Guide to common optional parameters: "extra-options.md"
   - "Available Models":
-      - Species detection: "models/species-detection.md"
-      - Depth estimation: "models/depth.md"
-      - DensePose: "models/densepose.md"
-      - African species performance: "models/td-full-metrics.md"
+      - Overview: "models/index.md"
+      - "Image models":
+          - Species classification: "models/image-classification.md"
+      - "Video models":
+          - Species classification: "models/video-classification.md"
+          - Blank detection: "models/blank-detection.md"
+          - Depth estimation: "models/depth.md"
+          - Pose estimation (DensePose): "models/densepose.md"
+      - "Shared components":
+          - MegaDetector: "models/megadetector.md"
   - "Advanced Options":
       - All configuration options: "configurations.md"
       - Using YAML configuration files: "yaml-config.md"
@@ -70,12 +77,17 @@ nav:
       - zamba.settings: "api-reference/settings.md"
 
 markdown_extensions:
+  - admonition
+  - md_in_html
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tabbed
   - toc:
       permalink: True
       toc_depth: 2
+
+hooks:
+  - hooks.py
 
 plugins:
   - search

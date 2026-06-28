@@ -17,7 +17,7 @@ We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages and
 
 ### 1. Install Python
 
-Install [Python](https://www.python.org/) >= 3.11. We recommend [Python installation using Anaconda](https://www.anaconda.com/download/).
+Install [Python](https://www.python.org/) >= 3.11. With [uv](https://docs.astral.sh/uv/) you can install and pin a suitable version with `uv python install 3.11`.
 
 ### 2. Install FFmpeg for video workflows
 
@@ -89,7 +89,7 @@ $ uv pip install zamba[video,image]
 
 ### 1. Install Python
 
-Install [Python](https://www.python.org/) >= 3.11. We recommend [Python installation using Anaconda](https://www.anaconda.com/download/). For more information about how to install Anaconda, see the [Anaconda download link](https://www.anaconda.com/download/) and [macOS installation video](https://www.youtube.com/watch?v=nVlrpNf3EdM).
+Install [Python](https://www.python.org/) >= 3.11. With [uv](https://docs.astral.sh/uv/) you can install and pin a suitable version with `uv python install 3.11`.
 
 ### 2. Install FFmpeg for video workflows
 
@@ -134,7 +134,7 @@ $ uv pip install zamba[video,image]
 
 ### Image workflows
 
-Install [Python](https://www.python.org/) >= 3.11. We recommend [Python installation using Anaconda](https://www.anaconda.com/download/). Then run:
+Install [Python](https://www.python.org/) >= 3.11. With [uv](https://docs.astral.sh/uv/) you can install and pin a suitable version with `uv python install 3.11`. Then run:
 
 ```console
 $ uv pip install zamba[image]
@@ -142,7 +142,7 @@ $ uv pip install zamba[image]
 
 ### Video workflows
 
-1. Install [Python](https://www.python.org/) >= 3.11. We recommend [Python installation using Anaconda](https://www.anaconda.com/download/).
+1. Install [Python](https://www.python.org/) >= 3.11. With [uv](https://docs.astral.sh/uv/) you can install and pin a suitable version with `uv python install 3.11`.
 
 2. Install Visual Studio Build Tools. Download the [Build Tools for Visual Studio](https://visualstudio.microsoft.com/visual-cpp-build-tools/) installer and select the **"Desktop development with C++"** workload. This provides the `cl.exe` compiler needed to build native extensions.
 
@@ -190,4 +190,4 @@ have installed and configured [CUDA](https://developer.nvidia.com/cuda-downloads
 and have installed and configured [CuDNN](https://developer.nvidia.com/cudnn) per
 their specifications.
 
-If you are using `conda`, these dependencies can be installed through the [`cudatoolkit` package](https://anaconda.org/anaconda/cudatoolkit). If using a GPU, you will also want to make sure that you install a compatible version of PyTorch with the version of CUDA you use. See the [PyTorch installation docs](https://pytorch.org/get-started/locally/) for the easiest way to install the right version on your system.
+If you are using `conda`, these dependencies can be installed through the [`cudatoolkit` package](https://anaconda.org/anaconda/cudatoolkit). With `uv`, install a CUDA-enabled PyTorch build into your environment by pointing at the matching PyTorch index, for example `uv pip install torch --index-url https://download.pytorch.org/whl/cu121` (replace `cu121` with the CUDA version you have installed). Either way, make sure the PyTorch build matches your installed CUDA version. See the [PyTorch installation docs](https://pytorch.org/get-started/locally/) for the easiest way to install the right version on your system.

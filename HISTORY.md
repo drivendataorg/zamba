@@ -1,5 +1,10 @@
 # `zamba` changelog
 
+## Unreleased
+
+ - Add the `speciesnet` image classification model, a `zamba`-compatible conversion of [Google's SpeciesNet](https://github.com/google/cameratrapai) classifier (EfficientNetV2-M backbone, 2,000+ class global taxonomy). Select it with `zamba image predict --model speciesnet` or `zamba image train --model speciesnet`. See the [Available Models](https://zamba.drivendata.org/docs/stable/models/image-classification/#speciesnet) page.
+ - Persist the preprocessing `model_family` on image classifier checkpoints and derive inference transforms (resize size, interpolation, normalization) from the loaded checkpoint rather than from the `model_name` string. This fixes incorrect preprocessing (and near-random predictions) when running `zamba image predict --checkpoint <ckpt>` on a fine-tuned SpeciesNet model without also passing `--model`.
+
 ## v.2.7.0 (2026-02-17)
 
  - Split core dependencies into optional extras: `video` (av, ffmpeg-python, pytorchvideo, pixeltable-yolox, etc.), `image` (megadetector, Pillow), `tests` (pytest, black, flake8, coverage, nvidia-ml-py, etc.), and `docs` (mkdocs, mike, mkdocstrings). Base install no longer pulls in video/image stacks; use `pip install zamba[video]`, `zamba[image]`, or `zamba[video,image]`.
@@ -140,7 +145,7 @@ The algorithms used by `zamba` v1 were based on the winning solution from the
 The core algorithm in `zamba` v1 was a [stacked ensemble](https://en.wikipedia.org/wiki/Ensemble_learning#Stacking) which consisted of a first layer of models that were then combined into a final prediction in a second layer. The first level of the stack consisted of 5 `keras` deep learning models, whose individual predictions were combined in the second level
 of the stack to form the final prediction.
 
-In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful [single-model options](models/species-detection.md): `time_distributed`, `slowfast`, and `european`. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.
+In v2, the stacked ensemble algorithm from v1 is replaced with three more powerful [single-model options](https://zamba.drivendata.org/docs/stable/models/video-classification/): `time_distributed`, `slowfast`, and `european`. The new models utilize state-of-the-art image and video classification architectures, and are able to outperform the much more computationally intensive stacked ensemble model.
 
 ### New geographies and species
 

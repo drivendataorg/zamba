@@ -124,7 +124,13 @@ def validate_model_name_and_checkpoint(cls, values):
         try:
             values["model_name"] = available_models[hparams["model_class"]]._default_model_name
         except (AttributeError, KeyError):
-            model_name = f"{model_name}-{checkpoint.stem}"
+            # No canonical model name on the class (e.g. image ImageClassifierModule).
+            # Prefer the preprocessing family recorded on the checkpoint; otherwise keep
+            # the user-provided model_name. (Note: image preprocessing is selected from the
+            # loaded checkpoint, not from this string -- see zamba.images.manager.)
+            values["model_name"] = (
+                hparams.get("model_family") or hparams.get("zamba_model") or model_name
+            )
 
     elif checkpoint is None and model_name is not None:
         if not values.get("from_scratch"):

@@ -9,14 +9,14 @@ This tutorial goes over the steps for using `zamba` if:
 
 `zamba` can run two types of model training:
 
-* Finetuning a model with labels that are a subset of the possible [zamba labels](models/species-detection.md#species-classes)
+* Finetuning a model with labels that are a subset of the possible [zamba labels](models/video-classification.md#species-classes)
 * Finetuning a model to predict an entirely new set of labels
 
 The process is the same for both cases.
 
 ## Basic usage: command line interface
 
-By default, the [`time_distributed`](models/species-detection.md#time-distributed) species classification model is used. Say that we want to finetune that model based on the videos in `example_vids` and the labels in `example_labels.csv`.
+By default, the [`time_distributed`](models/video-classification.md#time-distributed) species classification model is used. Say that we want to finetune that model based on the videos in `example_vids` and the labels in `example_labels.csv`.
 
 ```console
 $ cat example_labels.csv
@@ -65,7 +65,7 @@ You'll want to go over the documentation to familiarize yourself with the option
 
 ## Model output classes
 
-The classes your trained model will predict are determined by which model you choose and whether the species in your labels are a subset of that model's [default labels](models/species-detection.md#species-classes). This table outlines the default behavior for a set of common scenarios.
+The classes your trained model will predict are determined by which model you choose and whether the species in your labels are a subset of that model's [default labels](models/video-classification.md#species-classes). This table outlines the default behavior for a set of common scenarios.
 
 | Classes in labels csv | Model | What we infer | Classes trained model predicts |
 | --- | --- | --- | --- |
@@ -132,7 +132,7 @@ Add the path to your labels with `--labels`.  For example, if your videos are in
 
 #### Labels `zamba` has seen before
 
-Your labels may be included in the list of [`zamba` class labels](models/species-detection.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
+Your labels may be included in the list of [`zamba` class labels](models/video-classification.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
 
 By default, the model you train will continue to output all of the Zamba class labels, not just the ones in your dataset. For different behavior, see [`use_default_model_labels`](configurations.md#use_default_model_labels-bool-optional).
 
@@ -144,7 +144,7 @@ You can then make your model available to others by adding it to the [Model Zoo 
 
 ### 3. Choose a model for training
 
-Any of the models that ship with `zamba` can be trained. If you're training on entirely new species or new ecologies, we recommend starting with the [`time_distributed` model](models/species-detection.md#time-distributed) as this model is less computationally intensive than the [`slowfast` model](models/species-detection.md#slowfast).
+Any of the models that ship with `zamba` can be trained. If you're training on entirely new species or new ecologies, we recommend starting with the [`time_distributed` model](models/video-classification.md#time-distributed) as this model is less computationally intensive than the [`slowfast` model](models/video-classification.md#slowfast).
 
 However, if you're tuning a model to a subset of species (e.g. a `european_beaver` or `blank` model), use the model that was trained on data that is most similar to your new data.
 

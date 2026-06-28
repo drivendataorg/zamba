@@ -93,8 +93,8 @@ test-video-only:
 
 ## Set up python interpreter environment
 create_environment:
-	conda create --name $(PROJECT_NAME) python=$(PYTHON_VERSION) -y
-	@echo ">>> conda env created. Activate with:\nconda activate $(PROJECT_NAME)"
+	uv venv --python $(PYTHON_VERSION) .venv
+	@echo ">>> uv venv created. Activate with:\nsource .venv/bin/activate"
 
 ## Generate the index.md page of the docs automatically from README.md
 docs-setup:

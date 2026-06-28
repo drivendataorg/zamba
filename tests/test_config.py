@@ -5,6 +5,7 @@ import appdirs
 import numpy as np
 import pandas as pd
 from pydantic import ValidationError
+import torch
 
 pytestmark = pytest.mark.video
 
@@ -14,6 +15,7 @@ from zamba.models.config import (  # noqa: E402
     PredictConfig,
     SchedulerConfig,
     TrainConfig,
+    validate_model_name_and_checkpoint,
 )
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
@@ -215,6 +217,22 @@ def test_empty_model_config():
     assert (
         "Must provide either `train_config` or `predict_config`" in error.value.errors()[0]["msg"]
     )
+
+
+def test_validate_model_name_and_checkpoint_falls_back_to_checkpoint_family(tmp_path):
+    """When a checkpoint's model class has no canonical `_default_model_name` (or isn't
+    registered), the validator resolves model_name to the preprocessing family persisted
+    on the checkpoint rather than mangling it with the checkpoint stem."""
+    ckpt = tmp_path / "ck.ckpt"
+    torch.save(
+        {"hyper_parameters": {"model_class": "NotARegisteredModel", "model_family": "speciesnet"}},
+        ckpt,
+    )
+
+    values = validate_model_name_and_checkpoint(
+        None, {"checkpoint": ckpt, "model_name": "time_distributed"}
+    )
+    assert values["model_name"] == "speciesnet"
 
 
 def test_early_stopping_mode():

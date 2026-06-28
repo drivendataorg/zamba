@@ -29,17 +29,40 @@ from torchvision.transforms import transforms
 from tqdm import tqdm
 import yaml
 
-from zamba.images.classifier import ImageClassifierModule
+from zamba.images.classifier import ImageClassifierModule, infer_model_family
 from zamba.images.config import (
     ImageClassificationPredictConfig,
     ImageClassificationTrainingConfig,
+    ImageModelEnum,
     ResultsFormat,
 )
 from zamba.images.data import ImageClassificationDataModule, load_image, absolute_bbox, BboxLayout
 from zamba.images.result import results_to_megadetector_format
 from zamba.models.instantiation import instantiate_model
+from zamba.models.utils import get_checkpoint_hparams
 from zamba.pytorch.transforms import resize_and_pad
 from zamba.pytorch.utils import configure_inference_determinism
+
+
+def resolve_inference_family(model_name, checkpoint) -> str:
+    """Determine the preprocessing family without trusting a (possibly stale/mangled)
+    ``model_name`` default.
+
+    When a checkpoint is provided it is authoritative: the family is read from the
+    checkpoint's persisted ``model_family`` / legacy ``zamba_model`` hparam, falling
+    back to inference from the stored architecture name. Only when there is no
+    checkpoint do we fall back to the configured ``model_name``.
+    """
+    if checkpoint is not None:
+        try:
+            hp = get_checkpoint_hparams(checkpoint)
+            family = hp.get("model_family") or hp.get("zamba_model")
+            if family:
+                return family
+            return infer_model_family(hp.get("model_name"))
+        except Exception as exc:  # noqa: BLE001 -- fall back to model_name on any read error
+            logger.warning(f"Could not read family from checkpoint ({exc}); using model_name.")
+    return infer_model_family(model_name)
 
 
 def get_weights(split):
@@ -50,16 +73,76 @@ def get_weights(split):
     return torch.tensor(class_weights).to(torch.float32)
 
 
-def predict(config: ImageClassificationPredictConfig) -> None:
-    configure_inference_determinism(deterministic=config.deterministic)
+def get_default_transforms(model_family: str, image_size=None):
+    """Build the (top, bottom) eval transform lists for a preprocessing family.
 
-    image_transforms = transforms.Compose(
-        [
-            transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
+    The preprocessing is fully determined by ``model_family`` (and the resolved
+    ``image_size``), NOT by a model_name string on the config. This lets prediction
+    derive transforms directly from a loaded checkpoint. Returns the transform lists
+    plus the resolved integer image size.
+    """
+    # checkpoints may store image_size as a tuple (e.g. (480, 480)); normalize to int
+    if isinstance(image_size, (tuple, list)):
+        image_size = image_size[0]
+
+    logger.info(f"Using default transforms for '{model_family}' model family")
+    if model_family == ImageModelEnum.SPECIESNET.value:
+        # speciesnet is trained on 480x480 images by default
+        if image_size is None:
+            logger.info("Image size not specified, using value from model checkpoint: 480")
+            image_size = 480
+
+        top_transforms = [
+            transforms.Resize(
+                (image_size, image_size),
+                interpolation=transforms.InterpolationMode.BICUBIC,
+            ),
+        ]
+        bottom_transforms = [
+            transforms.ToTensor(),
+        ]
+    else:
+        # lila.science and generic models: pad to square + ImageNet-ish normalization
+        if image_size is None:
+            logger.info("Image size not specified, using default value: 224")
+            image_size = 224
+
+        top_transforms = [
+            transforms.Lambda(partial(resize_and_pad, desired_size=(image_size, image_size))),
+        ]
+        bottom_transforms = [
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
         ]
-    )
+
+    return top_transforms, bottom_transforms, image_size
+
+
+def resolve_training_image_size(config: ImageClassificationTrainingConfig):
+    """Resolve the image size to train at.
+
+    An explicitly configured ``image_size`` always wins. Otherwise, when finetuning or
+    resuming from a checkpoint, the checkpoint's own ``image_size`` takes precedence over
+    the preprocessing-family default, since a finetuned model may have been trained at a
+    non-default size. Returns ``None`` (deferring to the family default) only when there is
+    no explicit size and no usable size on the checkpoint. The returned value may be a
+    scalar or a tuple; ``get_default_transforms`` normalizes it to an int.
+    """
+    if config.image_size is not None:
+        return config.image_size
+
+    if config.checkpoint is not None and not config.from_scratch:
+        try:
+            return get_checkpoint_hparams(config.checkpoint).get("image_size")
+        except Exception as exc:  # noqa: BLE001 -- fall back to the family default
+            logger.warning(f"Could not read image_size from checkpoint ({exc}); using default.")
+
+    return None
+
+
+def predict(config: ImageClassificationPredictConfig) -> None:
+    configure_inference_determinism(deterministic=config.deterministic)
+
     logger.info("Loading models")
     detector = run_detector.load_detector("MDV5A", force_cpu=(os.getenv("RUNNER_OS") == "macOS"))
     classifier_module = instantiate_model(
@@ -67,11 +150,34 @@ def predict(config: ImageClassificationPredictConfig) -> None:
     )
     classifier_module.eval()
 
+    # The loaded checkpoint is the source of truth for preprocessing. Derive the family
+    # (and image size) from the module rather than from config.model_name, which is
+    # unreliable when predicting from a bare --checkpoint (it defaults to lila.science).
+    # Every real ImageClassifierModule sets a string `model_family`; fall back to the
+    # arch name / config only if the loaded object doesn't expose usable values.
+    model_family = getattr(classifier_module, "model_family", None)
+    if not isinstance(model_family, str):
+        base_model_name = getattr(classifier_module, "base_model_name", None)
+        model_family = infer_model_family(
+            base_model_name if isinstance(base_model_name, str) else config.model_name
+        )
+
+    image_size = config.image_size
+    if image_size is None:
+        module_image_size = getattr(classifier_module, "image_size", None)
+        if isinstance(module_image_size, (int, tuple, list)):
+            image_size = module_image_size
+
+    top_transforms, bottom_transforms, config.image_size = get_default_transforms(
+        model_family, image_size
+    )
+    image_transforms = transforms.Compose(top_transforms + bottom_transforms)
+
     logger.info("Running inference")
     predictions = []
     assert isinstance(config.filepaths, pd.DataFrame)
 
-    for filepath in tqdm(config.filepaths["filepath"]):
+    for filepath in tqdm(sorted(config.filepaths["filepath"].tolist())):
         image = load_image(filepath)
         results = detector.generate_detections_one_image(
             image, filepath, detection_threshold=config.detections_threshold
@@ -173,50 +279,46 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             format="{time} - {name} - {level} - {message}",
         )
 
+    model_family = resolve_inference_family(config.model_name, config.checkpoint)
+    config.image_size = resolve_training_image_size(config)
+    top_transforms, bottom_transforms, config.image_size = get_default_transforms(
+        model_family, config.image_size
+    )
+
     if config.extra_train_augmentations:
-        train_transforms = transforms.Compose(
-            [
-                transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
-                transforms.RandomResizedCrop(
-                    size=(config.image_size, config.image_size), scale=(0.75, 1.0)
-                ),
-                transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
-                transforms.RandomHorizontalFlip(p=0.3),
-                transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
-                transforms.RandomGrayscale(p=0.05),
-                transforms.RandomEqualize(p=0.05),
-                transforms.RandomAutocontrast(p=0.05),
-                transforms.RandomAdjustSharpness(
-                    sharpness_factor=0.9, p=0.05
-                ),  # < 1 is more blurry
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
-                transforms.RandomErasing(p=0.25, scale=(0.02, 0.33), ratio=(0.3, 3.3)),
-            ]
-        )
+        augment_transforms = [
+            transforms.RandomResizedCrop(
+                size=(config.image_size, config.image_size), scale=(0.75, 1.0)
+            ),
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+            transforms.RandomHorizontalFlip(p=0.3),
+            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
+            transforms.RandomGrayscale(p=0.05),
+            transforms.RandomEqualize(p=0.05),
+            transforms.RandomAutocontrast(p=0.05),
+            transforms.RandomAdjustSharpness(sharpness_factor=0.9, p=0.05),  # < 1 is more blurry
+        ]
+
+        # add random erasing to the end of the pipeline
+        final_transforms = [
+            transforms.RandomErasing(p=0.25, scale=(0.02, 0.33), ratio=(0.3, 3.3)),
+        ]
 
     # defaults simple transforms are specifically chosen for camera trap imagery
     # - random perspective shift
     # - random horizontal flip (no vertical flip; unlikely animals appear upside down cuz gravity)
     # - random rotation
     else:
-        train_transforms = transforms.Compose(
-            [
-                transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
-                transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
-                transforms.RandomHorizontalFlip(p=0.3),
-                transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
-            ]
-        )
-
-    validation_transforms = transforms.Compose(
-        [
-            transforms.Lambda(partial(resize_and_pad, desired_size=config.image_size)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.45, 0.45, 0.45], std=[0.225, 0.225, 0.225]),
+        augment_transforms = [
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+            transforms.RandomHorizontalFlip(p=0.3),
+            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
         ]
+        final_transforms = []
+
+    validation_transforms = transforms.Compose(top_transforms + bottom_transforms)
+    train_transforms = transforms.Compose(
+        top_transforms + augment_transforms + bottom_transforms + final_transforms
     )
 
     os.makedirs(config.checkpoint_path, exist_ok=True)
@@ -293,6 +395,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             model_name=None,
             use_default_model_labels=config.use_default_model_labels,
             species=config.species_in_label_order,
+            batch_size=config.batch_size,
         )
 
     # compile for faster performance; disabled for MacOS and Windows (unsupported/unreliable)

@@ -6,7 +6,7 @@ This tutorial goes over the steps for using `zamba` if:
 
 * You already have `zamba` installed (for details see the [Installation](install.md) page)
 * You have unlabeled images that you want to generate labels for
-* The possible class species labels for your images are included in the list of possible [zamba labels](models/species-detection.md#species-classes). If your species are not included in this list, you can [retrain a model](train-tutorial.md) using your own labeled data and then run inference.
+* The possible class species labels for your images are included in the list of possible [zamba labels](models/image-classification.md#species-classes). If your species are not included in this list, you can [retrain a model](images-train-tutorial.md) using your own labeled data and then run inference.
 
 ## Basic usage: command line interface
 
@@ -25,7 +25,7 @@ To run `zamba images predict` in the command line, you must specify `--data-dir`
 * **`--data-dir PATH`:** Path to the folder containing your images. If you don't also provide `filepaths`, Zamba will recursively search this folder for images.
 * **`--filepaths PATH`:** Path to a CSV file with a column for the filepath to each video you want to classify. The CSV must have a column for `filepath`. Filepaths can be absolute on your system or relative to the data directory that your provide in `--data-dir`.
 
-All other flags are optional. To choose the model you want to use for prediction, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the [pretrained models](models/species-detection.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to [`lila.science`](models/species-detection.md#what-species-can-zamba-detect).
+All other flags are optional. To choose the model you want to use for prediction, either `--model` or `--checkpoint` must be specified. Use `--model` to specify one of the [pretrained models](models/index.md) that ship with `zamba`. Use `--checkpoint` to run inference with a locally saved model. `--model` defaults to [`lila.science`](models/image-classification.md#what-species-can-zamba-detect).
 
 ## Basic usage: Python package
 
@@ -55,7 +55,7 @@ For detailed explanations of all possible configuration arguments, see [All Opti
 
 ## Default behavior
 
-By default, the [`lila.science`](models/species-detection.md#lila.science) model will be used. `zamba` will output a `.csv` file with a row for each bounding box identified by megadetector (there may be multiple bounding boxes per image) and columns for each class (ie. species / species group). A cell in the CSV (i,j) can be interpreted as *the predicted likelihood that the animal present in bounding box i is of species group j.* Usually, most users want to just look at the top species prediction for each bounding box.
+By default, the [`lila.science`](models/image-classification.md#lila.science) model will be used. `zamba` will output a `.csv` file with a row for each bounding box identified by megadetector (there may be multiple bounding boxes per image) and columns for each class (ie. species / species group). A cell in the CSV (i,j) can be interpreted as *the predicted likelihood that the animal present in bounding box i is of species group j.* Usually, most users want to just look at the top species prediction for each bounding box.
 
 By default, predictions will be saved to a file called `zamba_predictions.csv` in your working directory. You can save predictions to a custom directory using the `--save-dir` argument.
 
@@ -96,13 +96,33 @@ Add the path to your image folder to the command-line command. For example, if y
 
 ### 2. Choose a model for prediction
 
-Right now, Zamba supports only a single model out-of-the-box for images: `lila.science`. While there's only a single model, this model has been trained to detect hundreds of species, so it's a great first pass. The `lila.science` model will be used if no model is specified.
+Zamba ships with two image classification models that you can use out of the box (see the [Available Models](models/index.md) page for details):
+
+* **[`lila.science`](models/image-classification.md#lila.science)** (default): A ConvNextV2 model trained on 178 species and groups from around the world. Used if no model is specified.
+* **[`speciesnet`](models/image-classification.md#speciesnet)**: A conversion of Google's SpeciesNet classifier (EfficientNetV2-M) with a very large global taxonomy of 2,000+ classes.
+
+Select a built-in model with the `--model` argument. For example, to use `speciesnet`:
+
+=== "CLI"
+    ```console
+    $ zamba image predict --data-dir example_images/ --model speciesnet
+    ```
+=== "Python"
+    ```python
+    from zamba.images.manager import predict
+    from zamba.images.config import ImageClassificationPredictConfig
+
+    predict_config = ImageClassificationPredictConfig(
+        data_dir="example_images/", model_name="speciesnet"
+    )
+    predict(config=predict_config)
+    ```
 
 If you've fine-tuned a model, you can select that model instead of a built-in model by using the `--checkpoint` argument. For example:
 
 === "CLI"
     ```console
-    $ zamba predict --data-dir example_images/ --checkpoint zamba-image-classification-dummy_modelepoch=00-val_loss=48.372.ckpt
+    $ zamba image predict --data-dir example_images/ --checkpoint zamba-image-classification-dummy_modelepoch=00-val_loss=48.372.ckpt
     ```
 === "Python"
     ```python

@@ -142,7 +142,7 @@ def predict(
         ctx,
         config_file=config,
         config_key="predict_config",
-        mutators={"model": lambda x: ("model_name", x.value)},
+        mutators={"model": lambda x: ("model_name", ImageModelEnum(x).value)},
         to_drop=["config", "yes", "batch_size", "model"],
     )
 
@@ -273,6 +273,11 @@ def train(
         "--weighted-loss",
         help="Use weighted cross entropy as loss.",
     ),
+    debug: int = typer.Option(
+        None,
+        "--debug",
+        help="Debug mode: samples data down to N images per class per split. Use --debug=3 or --debug=10 for a custom number.",
+    ),
     yes: bool = typer.Option(
         False,
         "--yes",
@@ -290,10 +295,11 @@ def train(
         config_file=config,
         config_key="train_config",
         mutators={
-            "model": lambda x: ("model_name", x.value),
+            "model": lambda x: ("model_name", ImageModelEnum(x).value),
             "mlflow_experiment_name": lambda x: ("name", x),
             "model_checkpoint": lambda x: ("checkpoint", x),
             "no_crop_images": lambda x: ("crop_images", not x),
+            "debug": lambda x: ("debug", x if isinstance(x, int) and x > 0 else None),
         },
         to_drop=[
             "batch_size",

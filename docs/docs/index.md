@@ -5,7 +5,10 @@
 [![codecov](https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/zamba)
 <!-- [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/) -->
 
- <div class="embed-responsive embed-responsive-16by9" width=500>     <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" frameborder="0" allowfullscreen=""></iframe></div>
+ 
+<div class="embed-responsive embed-responsive-16by9" width=500> 
+    <iframe width=600 height=340 class="embed-responsive-item" src="https://s3.amazonaws.com/drivendata-public-assets/monkey-vid.mp4" 
+frameborder="0" allowfullscreen=""></iframe></div>
 
 > *Zamba* means "forest" in Lingala, a Bantu language spoken throughout the Democratic Republic of the Congo and the Republic of the Congo.
 
@@ -17,7 +20,7 @@
 - Estimate the distance between animals in the frame and the video camera
 - And more! 🙈 🙉 🙊
 
-The official video models in `zamba` can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species common to Europe. The official image models can identify 178 species from throughout the world. Users can also finetune models using their own labeled images and videos to then make predictions for new species and/or new ecologies.
+The official video models in `zamba` can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species common to Europe. The official image models identify species from throughout the world: `lila.science` covers 178 global species and groups, and `speciesnet` (a conversion of Google's SpeciesNet) covers a much larger taxonomy of over 2,000 classes. Users can also finetune models using their own labeled images and videos to then make predictions for new species and/or new ecologies.
 
 `zamba` can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, [Zamba Cloud](https://www.zambacloud.com/).
 
@@ -27,26 +30,27 @@ We encourage people to share their custom models trained with Zamba. If you trai
 
 ## Installing `zamba`
 
-We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then ensure you have Python >= 3.11 and (if you will run video workflows) FFmpeg > 4.3 and < 5. Then run:
+We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages and managing environments. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then ensure you have:
+
+* Python >= 3.11
+* FFmpeg > 4.3 and < 5 (only needed for video workflows)
+
+Then install the extras you need with uv. **We recommend only installing one or the other depending on your use case.**
 
 ```console
-uv pip install zamba[image]
-```
-
-or
-
-```console
+# For video workflows
 uv pip install zamba[video]
-```
 
-or, if you need both:
+# For image workflows
+uv pip install zamba[image]
 
-```console
+# For both
 uv pip install zamba[video,image]
 ```
-Or with pip: `pip install zamba[image]`, `pip install zamba[video]`, or `pip install zamba[video,image]`.
 
-See the [Installation](install/) page of the documentation for details and extra options.
+You can also use pip: `pip install zamba[video]`, `pip install zamba[image]`, or `pip install zamba[video,image]`.
+
+See the [Installation](install/) page of the documentation for details.
 
 ## Getting started
 

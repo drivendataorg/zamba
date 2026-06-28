@@ -16,7 +16,7 @@ This guide uses the CLI, but you can see the [prediction tutorial](predict-tutor
 Installation is the same for both the command line interface tool and the Python package.
 
 All of the commands on this page should be run at the command line. On
-macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt, or if you installed Anaconda an anaconda prompt (Start > Anaconda3 > Anaconda Prompt).
+macOS, this can be done in the terminal (⌘+space, "Terminal"). On Windows, this can be done in a command prompt or PowerShell.
 
 ## How do I organize my images or videos for `zamba`?
 
@@ -82,7 +82,7 @@ eleph.mp4,elephant
 leopard.mp4,leopard
 ```
 
-There are pretrained models that ship with `zamba`: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models/species-detection.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
+There are pretrained models that ship with `zamba`: `blank_nonblank`, `time_distributed`, `slowfast`, and `european`. Which model you should use depends on your priorities and geography (see the [Available Models](models/index.md) page for more details). By default `zamba` will use the `time_distributed` model. Add the `--model` argument to specify one of other options:
 
 ```console
 $ zamba predict --data-dir example_vids/ --model slowfast
@@ -108,11 +108,17 @@ filepath,detection_category,detection_conf,x1,y1,x2,y2,species_acinonyx_jubatus,
 
 The `detection_category` and `detection_conf` come from [MegaDetector](https://github.com/agentmorris/MegaDetector) which we use to find bounding boxes around individual animals in images. A `detection_category` of `"1"` indicates the presence of an animal, and `detection_conf` is the confidence the animal classifier had in the presence of an animal. The columns `x1`, `y1`, `x2`, `y2` indicate the coordinates of the top-left and bottom-right corners of the bounding box relative to the top-left corner of the image. The remaining columns are the scores assigned to each species for the individual animal in the given bounding box. These scores will sum to one.
 
+Two image models ship with `zamba`: `lila.science` and `speciesnet` (see the [Available Models](models/index.md) page for details). By default `zamba` will use the `lila.science` model. Add the `--model` argument to use the other:
+
+```console
+$ zamba image predict --data-dir example_images/ --model speciesnet
+```
+
 ## Training a model
 
-You can continue training one of the [models](models/species-detection.md) that ships with `zamba` by either:
+You can continue training one of the [models](models/index.md) that ships with `zamba` by either:
 
-* Finetuning with additional labeled images or videos where the species are included in the list of [`zamba` class labels](models/species-detection.md#species-classes)
+* Finetuning with additional labeled images or videos where the species are included in the list of [`zamba` class labels](models/index.md)
 * Finetuning with labeled images or videos that include new species
 
 In either case, the commands for training are the same. Say that we have labels for the videos in the `example_vids` folder saved in `example_labels.csv`. To train a model, run:
