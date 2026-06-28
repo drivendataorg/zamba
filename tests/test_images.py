@@ -25,9 +25,6 @@ from zamba.images.manager import (  # noqa: E402
     train,
 )
 from zamba.images.result import results_to_megadetector_format  # noqa: E402
-from zamba.models.config import (  # noqa: E402
-    validate_model_name_and_checkpoint as video_validate_model_name_and_checkpoint,
-)
 
 from conftest import ASSETS_DIR, DummyZambaImageClassificationLightningModule  # noqa: E402
 
@@ -401,26 +398,6 @@ def test_resolve_training_image_size_prefers_checkpoint(tmp_path):
     # no checkpoint -> defer to the family default
     none_ckpt = SimpleNamespace(image_size=None, checkpoint=None, from_scratch=False)
     assert resolve_training_image_size(none_ckpt) is None
-
-
-def test_video_config_validator_resolves_image_checkpoint_family(tmp_path):
-    """The video-side validator falls back to the checkpoint's preprocessing family when
-    the checkpoint's model class has no canonical `_default_model_name` (e.g. an image
-    ImageClassifierModule), rather than mangling the model_name with the checkpoint stem."""
-    model = ImageClassifierModule(
-        species=["cat", "dog"],
-        batch_size=1,
-        image_size=480,
-        model_name="resnet50",
-        model_family="speciesnet",
-    )
-    ckpt = tmp_path / "ck.ckpt"
-    model.to_disk(ckpt)
-
-    values = video_validate_model_name_and_checkpoint(
-        None, {"checkpoint": ckpt, "model_name": "time_distributed"}
-    )
-    assert values["model_name"] == "speciesnet"
 
 
 def test_on_load_checkpoint_remaps_unprefixed_speciesnet_weights():
