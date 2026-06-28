@@ -11,7 +11,7 @@ The species in the training dataset included bushbucks, chimpanzees, duikers, el
 The Zamba package supports running the depth estimation model on videos. Under the hood, it does the following:
 
 - Resamples the video to one frame per second
-- Runs the [MegadetectorLite](../models/species-detection.md#megadetectorlite) model on each frame to find frames with animals in them
+- Runs the [MegadetectorLite](megadetector.md#megadetectorlite) model on each frame to find frames with animals in them
 - Estimates depth for each detected animal in the frame
 - Outputs a csv with predictions
 

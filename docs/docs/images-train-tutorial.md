@@ -9,14 +9,14 @@ This tutorial goes over the steps for using `zamba` if:
 
 `zamba` can run two types of model training:
 
-* Finetuning a model with labels that are a subset of the possible [zamba labels](models/species-detection.md#species-classes)
+* Finetuning a model with labels that are a subset of the possible [zamba labels](models/image-classification.md#species-classes)
 * Finetuning a model to predict an entirely new set of labels
 
 The process is the same for both cases.
 
 ## Basic usage: command line interface
 
-By default, the [`lila.science`](models/species-detection.md#lila.science) image classification model is used. Say that we want to finetune that model based on the images in `example_images` and the labels in `example_labels.csv`.
+By default, the [`lila.science`](models/image-classification.md#lila.science) image classification model is used. Say that we want to finetune that model based on the images in `example_images` and the labels in `example_labels.csv`.
 
 ```console
 $ cat example_labels.csv
@@ -62,7 +62,7 @@ You'll want to go over the documentation to familiarize yourself with the option
 
 ## Model output classes
 
-The classes your trained model will predict are determined by which model you choose and whether the species in your labels are a subset of that model's [default labels](models/species-detection.md#species-classes). This table outlines the default behavior for a set of common scenarios.
+The classes your trained model will predict are determined by which model you choose and whether the species in your labels are a subset of that model's [default labels](models/image-classification.md#species-classes). This table outlines the default behavior for a set of common scenarios.
 
 | Classes in labels csv | Model | What we infer | Classes trained model predicts |
 | --- | --- | --- | --- |
@@ -133,7 +133,7 @@ Add the path to your labels with `--labels`.  For example, if your images are in
 
 #### Labels `zamba` has seen before
 
-Your labels may be included in the list of [`zamba` class labels](models/species-detection.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
+Your labels may be included in the list of [`zamba` class labels](models/image-classification.md#species-classes) that the provided models are trained to predict. If so, the relevant model that ships with `zamba` will essentially be used as a checkpoint, and model training will resume from that checkpoint.
 
 By default, the model you train will continue to output all of the Zamba class labels, not just the ones in your dataset. For different behavior, see [`use_default_model_labels`](configurations.md#use_default_model_labels-bool-optional).
 
@@ -168,10 +168,10 @@ If your labels include bounding box annotations (e.g., in COCO format), `zamba` 
 
 Any of the image models that ship with `zamba` can be trained. Currently, `zamba` supports two image models:
 
-* **`lila.science`** (default): Trained on 178 species from around the world. This is the recommended model for most use cases.
-* **`speciesnet`**: An alternative model architecture that may work better for certain datasets.
+* **[`lila.science`](models/image-classification.md#lila.science)** (default): A ConvNextV2 model trained on 178 species from around the world. This is the recommended model for most use cases.
+* **[`speciesnet`](models/image-classification.md#speciesnet)**: A conversion of Google's SpeciesNet classifier (EfficientNetV2-M) with a very large global taxonomy of 2,000+ classes. A strong alternative starting point that may work better for certain datasets.
 
-If you're training on entirely new species or new ecologies, we recommend starting with the [`lila.science` model](models/species-detection.md#lila.science) as it has been trained on a diverse set of species.
+If you're training on entirely new species or new ecologies, we recommend starting with the [`lila.science` model](models/image-classification.md#lila.science) as it has been trained on a diverse set of species.
 
 Add the model name to your command with `--model`. The `lila.science` model will be used if no model is specified. For example, if you want to train the `speciesnet` model:
 

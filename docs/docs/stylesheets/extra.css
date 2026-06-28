@@ -9,3 +9,27 @@
 h4 > code {
   color: #388e3c !important;
 }
+
+/* Collapsible, scrollable container for long class/species lists */
+details.zamba-classlist {
+  margin: 0.6rem 0 1rem;
+}
+
+details.zamba-classlist > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+details.zamba-classlist .scroll-box {
+  max-height: 360px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 4px;
+}
+
+/* keep the list tight inside the scroll box */
+details.zamba-classlist .scroll-box ul {
+  margin: 0.2rem 0;
+}

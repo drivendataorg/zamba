@@ -17,7 +17,7 @@ https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-
 - Estimate the distance between animals in the frame and the video camera
 - And more! 🙈 🙉 🙊
 
-The official video models in `zamba` can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species common to Europe. The official image models can identify 178 species from throughout the world. Users can also finetune models using their own labeled images and videos to then make predictions for new species and/or new ecologies.
+The official video models in `zamba` can identify blank videos (where no animal is present) along with 32 species common to Africa and 11 species common to Europe. The official image models identify species from throughout the world: `lila.science` covers 178 global species and groups, and `speciesnet` (a conversion of Google's SpeciesNet) covers a much larger taxonomy of over 2,000 classes. Users can also finetune models using their own labeled images and videos to then make predictions for new species and/or new ecologies.
 
 `zamba` can be used both as a command-line tool and as a Python package. It is also available as a user-friendly website application, [Zamba Cloud](https://www.zambacloud.com/).
 
