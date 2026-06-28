@@ -118,6 +118,28 @@ def get_default_transforms(model_family: str, image_size=None):
     return top_transforms, bottom_transforms, image_size
 
 
+def resolve_training_image_size(config: ImageClassificationTrainingConfig):
+    """Resolve the image size to train at.
+
+    An explicitly configured ``image_size`` always wins. Otherwise, when finetuning or
+    resuming from a checkpoint, the checkpoint's own ``image_size`` takes precedence over
+    the preprocessing-family default, since a finetuned model may have been trained at a
+    non-default size. Returns ``None`` (deferring to the family default) only when there is
+    no explicit size and no usable size on the checkpoint. The returned value may be a
+    scalar or a tuple; ``get_default_transforms`` normalizes it to an int.
+    """
+    if config.image_size is not None:
+        return config.image_size
+
+    if config.checkpoint is not None and not config.from_scratch:
+        try:
+            return get_checkpoint_hparams(config.checkpoint).get("image_size")
+        except Exception as exc:  # noqa: BLE001 -- fall back to the family default
+            logger.warning(f"Could not read image_size from checkpoint ({exc}); using default.")
+
+    return None
+
+
 def predict(config: ImageClassificationPredictConfig) -> None:
     configure_inference_determinism(deterministic=config.deterministic)
 
@@ -258,6 +280,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         )
 
     model_family = resolve_inference_family(config.model_name, config.checkpoint)
+    config.image_size = resolve_training_image_size(config)
     top_transforms, bottom_transforms, config.image_size = get_default_transforms(
         model_family, config.image_size
     )
