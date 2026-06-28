@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/models/species-detection/">
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/models/video-classification/">
       
       
-        <link rel="prev" href="../../extra-options/">
+        <link rel="prev" href="../image-classification/">
       
       
-        <link rel="next" href="../depth/">
+        <link rel="next" href="../blank-detection/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Species detection - Zamba</title>
+        <title>Species classification - Zamba</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#species-detection" class="md-skip">
+        <a href="#video-species-classification" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Species detection
+              Species classification
             
           </span>
         </div>
@@ -356,6 +356,8 @@
       
         
       
+        
+      
     
     
       
@@ -401,6 +403,27 @@
   
   <span class="md-ellipsis">
     Classifying unlabeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-train-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Training a model on labeled images
   </span>
   
 
@@ -513,6 +536,8 @@
     
       
         
+          
+        
       
         
       
@@ -535,21 +560,150 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
-            
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   <span class="md-ellipsis">
     Available Models
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Available Models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Image models
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Image models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Species classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Video models
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Video models
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -573,7 +727,7 @@
           
   
   <span class="md-ellipsis">
-    Species detection
+    Species classification
   </span>
   
 
@@ -584,7 +738,7 @@
         
   
   <span class="md-ellipsis">
-    Species detection
+    Species classification
   </span>
   
 
@@ -606,27 +760,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#model-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Model summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#what-species-can-zamba-detect" class="md-nav__link">
     <span class="md-ellipsis">
       What species can zamba detect?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#blank_nonblank-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      blank_nonblank model
     </span>
   </a>
   
@@ -659,37 +795,31 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#megadetectorlite" class="md-nav__link">
-    <span class="md-ellipsis">
-      MegadetectorLite
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lilascience-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      lila.science model
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#user-contributed-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      User contributed models
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blank-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blank detection
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -727,11 +857,19 @@
         
   
   <span class="md-ellipsis">
-    DensePose
+    Pose estimation (DensePose)
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -743,16 +881,65 @@
   
   
   
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Shared components
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Shared components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../td-full-metrics/" class="md-nav__link">
+      <a href="../megadetector/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    African species performance
+    MegaDetector
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1996,27 +2183,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#model-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Model summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#what-species-can-zamba-detect" class="md-nav__link">
     <span class="md-ellipsis">
       What species can zamba detect?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#blank_nonblank-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      blank_nonblank model
     </span>
   </a>
   
@@ -2049,33 +2218,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#megadetectorlite" class="md-nav__link">
-    <span class="md-ellipsis">
-      MegadetectorLite
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lilascience-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      lila.science model
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#user-contributed-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      User contributed models
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -2094,74 +2236,20 @@
   
 
 
-<h1 id="species-detection">Species detection<a class="headerlink" href="#species-detection" title="Permanent link">&para;</a></h1>
-<p>The classification algorithms in <code>zamba</code> are designed to identify species of animals that appear in camera trap images and videos. The pretrained models that ship with the <code>zamba</code> package are: <code>blank_nonblank</code>, <code>time_distributed</code>, <code>slowfast</code>, and <code>european</code>. For more details of each, read on!</p>
-<h2 id="model-summary">Model summary<a class="headerlink" href="#model-summary" title="Permanent link">&para;</a></h2>
-<h3 id="video-models">Video models<a class="headerlink" href="#video-models" title="Permanent link">&para;</a></h3>
-<table>
-  <tr>
-    <th>Model</th>
-    <th>Geography</th>
-    <th>Relative strengths</th>
-    <th>Architecture</th>
-    <th>Number of training videos</th>
-  </tr>
-  <tr>
-    <td><code>blank_nonblank</code></td>
-    <td>Central Africa, West Africa, and Western Europe</td>
-    <td>Just blank detection, without species classification </td>
-    <td>Image-based <code>TimeDistributedEfficientNet</code></td>
-    <td>~263,000</td>
-  </tr>
-  <tr>
-    <td><code>time_distributed</code></td>
-    <td>Central and West Africa</td>
-    <td>Recommended species classification model for jungle ecologies</td>
-    <td>Image-based <code>TimeDistributedEfficientNet</code></td>
-    <td>~250,000</td>
-  </tr>
-  <tr>
-      <td><code>slowfast</code></td>
-      <td>Central and West Africa</td>
-      <td>Potentially better than <code>time_distributed</code> at small species detection</td>
-      <td>Video-native <code>SlowFast</code></td>
-    <td>~15,000</td>
-    </tr>
-  <tr>
-    <td><code>european</code></td>
-    <td>Western Europe</td>
-    <td>Trained on non-jungle ecologies</td>
-    <td>Finetuned <code>time_distributed</code>model</td>
-    <td>~13,000</td>
-  </tr>
-</table>
-
-<p>The models trained on the largest datasets took a couple weeks to train on a single GPU machine. Some models will be updated in the future, and you can always check the <a href="../../changelog">changelog</a> to see if there have been updates.</p>
-<p>All models support training, fine-tuning, and inference. For fine-tuning, we recommend using the <code>time_distributed</code> model as the starting point.</p>
-<h3 id="image-models">Image models<a class="headerlink" href="#image-models" title="Permanent link">&para;</a></h3>
-<table>
-  <tr>
-    <th>Model</th>
-    <th>Geography</th>
-    <th>Relative strengths</th>
-    <th>Architecture</th>
-    <th>Number of training videos</th>
-  </tr>
-  <tr>
-    <td><code>lila.science</code></td>
-    <td>Global based on datasets from lila.science</td>
-    <td>Good base model for common global species.</td>
-    <td>ConvNextV2 backbone</td>
-    <td>15 million annotations from 7 million images</td>
-  </tr>
-</table>
-
-<p>All models support training, fine-tuning, and inference.</p>
-<h2 id="species-classes"></h2>
-
+<h1 id="video-species-classification">Video species classification<a class="headerlink" href="#video-species-classification" title="Permanent link">&para;</a></h1>
+<p><code>zamba</code> ships with three models for classifying the species in camera trap <strong>videos</strong>:</p>
+<ul>
+<li><strong><a href="#time-distributed"><code>time_distributed</code></a></strong> (default): the recommended species classification model for Central and West African (jungle) ecologies.</li>
+<li><strong><a href="#slowfast"><code>slowfast</code></a></strong>: a video-native model that may do better than <code>time_distributed</code> at detecting small species.</li>
+<li><strong><a href="#european"><code>european</code></a></strong>: a <code>time_distributed</code> model finetuned for Western European species.</li>
+</ul>
+<p>If you only want to separate blank videos from videos containing animals (without species classification), see the <a href="../blank-detection/">blank detection</a> page. All of these models use <a href="../megadetector/">MegadetectorLite</a> for frame selection before classification.</p>
+<p><a id='species-classes'></a></p>
 <h2 id="what-species-can-zamba-detect">What species can <code>zamba</code> detect?<a class="headerlink" href="#what-species-can-zamba-detect" title="Permanent link">&para;</a></h2>
-<p>The <code>blank_nonblank</code> model is trained to do blank detection, without the species classification. It only outputs the probability that the video is <code>blank</code>, meaning that it does not contain an animal.</p>
 <p>The <code>time_distributed</code> and <code>slowfast</code> models are both trained to identify 32 common species from Central and West Africa. The output labels in these models are:</p>
+<details class="zamba-classlist">
+<summary>Show all 32 <code>time_distributed</code> / <code>slowfast</code> classes</summary>
+<div class="scroll-box">
 <ul>
 <li><code>aardvark</code></li>
 <li><code>antelope_duiker</code></li>
@@ -2196,7 +2284,12 @@
 <li><code>small_cat</code></li>
 <li><code>wild_dog_jackal</code></li>
 </ul>
+</div>
+</details>
 <p>The <code>european</code> model is trained to identify 11 common species in Western Europe. The possible class labels are:</p>
+<details class="zamba-classlist">
+<summary>Show all 11 <code>european</code> classes</summary>
+<div class="scroll-box">
 <ul>
 <li><code>bird</code></li>
 <li><code>blank</code></li>
@@ -2210,202 +2303,14 @@
 <li><code>weasel</code></li>
 <li><code>wild_boar</code></li>
 </ul>
-<p>The <code>lila.science</code> model is trained to identify many species and groups from Lila.science's dataset, which contains over 15 million annotations from 7 million images. The 178 classes are:</p>
-<ul>
-<li><code>acinonyx_jubatus</code></li>
-<li><code>aepyceros_melampus</code></li>
-<li><code>alcelaphus_buselaphus</code></li>
-<li><code>alces_alces</code></li>
-<li><code>animalia</code></li>
-<li><code>anseriform_bird</code></li>
-<li><code>antilocapra_americana</code></li>
-<li><code>artamid_corvid_icterid_bird</code></li>
-<li><code>aves</code></li>
-<li><code>bos_taurus</code></li>
-<li><code>bucerotid_ramphastid_bird</code></li>
-<li><code>burhinid_otidid_bird</code></li>
-<li><code>callosciurine_squirrels</code></li>
-<li><code>camelus_dromedarius</code></li>
-<li><code>canidae</code></li>
-<li><code>canis_familiaris</code></li>
-<li><code>canis_latrans</code></li>
-<li><code>canis_lupus</code></li>
-<li><code>capra_goat</code></li>
-<li><code>capreolinae_deer</code></li>
-<li><code>capricornis_sumatraensis</code></li>
-<li><code>caprimulgiform_bird</code></li>
-<li><code>caracal_caracal</code></li>
-<li><code>catopuma_temminckii</code></li>
-<li><code>caviidae_dasyproctidae</code></li>
-<li><code>cebid_monkey</code></li>
-<li><code>cephalophini_neotragini_oreotragini</code></li>
-<li><code>cephalophus_silvicultor</code></li>
-<li><code>cercocebus_macaca_sp</code></li>
-<li><code>cercopithecine_monkey</code></li>
-<li><code>cerdocyon_thous</code></li>
-<li><code>certhiid_furnariid_picid_bird</code></li>
-<li><code>cervid_deer</code></li>
-<li><code>cervini_deer</code></li>
-<li><code>charadriiform_bird</code></li>
-<li><code>chinchillidae</code></li>
-<li><code>chiropteran_mammal</code></li>
-<li><code>cingulata</code></li>
-<li><code>colobine_monkey</code></li>
-<li><code>columbimorph_bird</code></li>
-<li><code>connochaetes_gnou</code></li>
-<li><code>connochaetes_taurinus</code></li>
-<li><code>coraciiform_galbuliform_trogoniform_bird</code></li>
-<li><code>crocuta_crocuta</code></li>
-<li><code>cuniculidae</code></li>
-<li><code>damaliscus_lunatus</code></li>
-<li><code>damaliscus_pygargus</code></li>
-<li><code>didelphimorph_marsupial</code></li>
-<li><code>didelphis</code></li>
-<li><code>eira_pekania</code></li>
-<li><code>elephantidae</code></li>
-<li><code>equus_africanus</code></li>
-<li><code>equus_asinus</code></li>
-<li><code>equus_caballus</code></li>
-<li><code>equus_ferus</code></li>
-<li><code>erethizontidae_hystricidae</code></li>
-<li><code>estrildid_fringillid_passerid_bird</code></li>
-<li><code>eulipotyphla</code></li>
-<li><code>euplerinae</code></li>
-<li><code>euungulata</code></li>
-<li><code>felidae</code></li>
-<li><code>felis</code></li>
-<li><code>formicariid_grallariid_pittid_bird</code></li>
-<li><code>galidiinae</code></li>
-<li><code>galliform_bird</code></li>
-<li><code>gazelles</code></li>
-<li><code>genetta</code></li>
-<li><code>giraffa_camelopardalis</code></li>
-<li><code>grallariid_pittid_bird</code></li>
-<li><code>gruiform_bird</code></li>
-<li><code>hemigaline_civet</code></li>
-<li><code>herpailurus_yagouaroundi</code></li>
-<li><code>herpestidae</code></li>
-<li><code>herptile</code></li>
-<li><code>hippopotamus_amphibius</code></li>
-<li><code>hippotragini</code></li>
-<li><code>hyaena_hyaena</code></li>
-<li><code>hystricomorph_rats</code></li>
-<li><code>ictonychinae</code></li>
-<li><code>invertebrate</code></li>
-<li><code>lagomorpha</code></li>
-<li><code>larid_bird</code></li>
-<li><code>leiotrichid_mimid_bird</code></li>
-<li><code>leopardus</code></li>
-<li><code>leptailurus_serval</code></li>
-<li><code>litocranius</code></li>
-<li><code>lupulella</code></li>
-<li><code>lutrinae</code></li>
-<li><code>lycalopex_urocyon_vulpes</code></li>
-<li><code>lycaon_pictus</code></li>
-<li><code>lynx_rufus</code></li>
-<li><code>macroscelididae</code></li>
-<li><code>madoqua</code></li>
-<li><code>mammalia</code></li>
-<li><code>manidae</code></li>
-<li><code>marmota</code></li>
-<li><code>martes</code></li>
-<li><code>mazama_deer</code></li>
-<li><code>melinae_mellivorinae_taxidiinae</code></li>
-<li><code>meliphagid_nectariniid_trochilid_bird</code></li>
-<li><code>melogale</code></li>
-<li><code>mephitidae</code></li>
-<li><code>moschiola_meminna</code></li>
-<li><code>motacillid_muscicapid_petroicid_prunellid_bird</code></li>
-<li><code>muntiacini_deer</code></li>
-<li><code>muroid_mammal</code></li>
-<li><code>mustelinae</code></li>
-<li><code>myrmecophaga</code></li>
-<li><code>nandiniidae_viverridae</code></li>
-<li><code>nasua</code></li>
-<li><code>neofelis</code></li>
-<li><code>nilgiritragus_hylocrius</code></li>
-<li><code>non_didelphis_opossum</code></li>
-<li><code>notamacropus</code></li>
-<li><code>orycteropus</code></li>
-<li><code>other_antilopini</code></li>
-<li><code>other_bovini</code></li>
-<li><code>other_canid</code></li>
-<li><code>other_haplorhini</code></li>
-<li><code>other_passeriform_bird</code></li>
-<li><code>otidimorph_bird</code></li>
-<li><code>otocyon_megalotis</code></li>
-<li><code>ovis_sheep</code></li>
-<li><code>paleognath_bird</code></li>
-<li><code>pan_troglodytes</code></li>
-<li><code>panthera_leo</code></li>
-<li><code>panthera_onca</code></li>
-<li><code>panthera_pardus</code></li>
-<li><code>panthera_tigris</code></li>
-<li><code>papio_sp</code></li>
-<li><code>paradoxurine_civet</code></li>
-<li><code>parahyaena_brunnea</code></li>
-<li><code>pardofelis_marmorata</code></li>
-<li><code>passerellid_emberizid_bird</code></li>
-<li><code>pelecanimorph_like_bird</code></li>
-<li><code>phacochoerus_africanus</code></li>
-<li><code>prionailurus_bengalensis</code></li>
-<li><code>prionodontidae</code></li>
-<li><code>procaviidae</code></li>
-<li><code>procellariiform_bird</code></li>
-<li><code>procyon</code></li>
-<li><code>proteles_cristatus</code></li>
-<li><code>psittaciform_bird</code></li>
-<li><code>psophiid_bird</code></li>
-<li><code>puma_concolor</code></li>
-<li><code>raptors</code></li>
-<li><code>ratufa_bicolor</code></li>
-<li><code>reduncini</code></li>
-<li><code>rhinocerotidae</code></li>
-<li><code>rhipidurid_stenostirid_bird</code></li>
-<li><code>rodentia</code></li>
-<li><code>rupicapra_rupicapra</code></li>
-<li><code>sciuridae</code></li>
-<li><code>sciurine_squirrels</code></li>
-<li><code>seal_or_sea_lion</code></li>
-<li><code>spheniscid_bird</code></li>
-<li><code>squamate</code></li>
-<li><code>strepsirrhine_primate</code></li>
-<li><code>strigid_tytonid_bird</code></li>
-<li><code>suid_pig</code></li>
-<li><code>tamandua</code></li>
-<li><code>tapiridae</code></li>
-<li><code>tayassuid_peccary</code></li>
-<li><code>tenrecid_mammal</code></li>
-<li><code>testudine</code></li>
-<li><code>tinamid_phasianid_bird</code></li>
-<li><code>tragelaphus</code></li>
-<li><code>tragelaphus_oryx</code></li>
-<li><code>tragulus_mouse_deer</code></li>
-<li><code>trichosurus</code></li>
-<li><code>tupaia</code></li>
-<li><code>turdid_bird</code></li>
-<li><code>ursidae</code></li>
-<li><code>vicugna_pacos</code></li>
-<li><code>viverrine_civet</code></li>
-<li><code>vultures</code></li>
-<li><code>xerine_squirrels</code></li>
-<li><code>zebras</code></li>
-</ul>
-<p><a id='blank-nonblank'></a></p>
-<h2 id="blank_nonblank-model"><code>blank_nonblank</code> model<a class="headerlink" href="#blank_nonblank-model" title="Permanent link">&para;</a></h2>
-<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
-<p>The <code>blank_nonblank</code> uses the same <a href="#time-distributed">architecture</a> as <code>time_distributed</code> model, but there is only one output class as this is a binary classification problem.</p>
-<h3 id="default-configuration">Default configuration<a class="headerlink" href="#default-configuration" title="Permanent link">&para;</a></h3>
-<p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/blank_nonblank/config.yaml">Github</a>.</p>
-<p>The <code>blank_nonblank</code> model uses the same <a href="#time-distributed-config">default configuration</a> as the <code>time_distributed</code> model. For the frame selection, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then the classification model is run on only the 16 frames with the highest predicted probability of detection.</p>
-<h3 id="training-data">Training data<a class="headerlink" href="#training-data" title="Permanent link">&para;</a></h3>
-<p>The <code>blank_nonblank</code> model was trained on all the data used for the the <a href="#time-distributed-training-data"><code>time_distributed</code></a> and <a href="#european-training-data"><code>european</code></a> models.</p>
+</div>
+</details>
 <p><a id='time-distributed'></a></p>
 <h2 id="time_distributed-model"><code>time_distributed</code> model<a class="headerlink" href="#time_distributed-model" title="Permanent link">&para;</a></h2>
-<h3 id="architecture_1">Architecture<a class="headerlink" href="#architecture_1" title="Permanent link">&para;</a></h3>
+<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
 <p>The <code>time_distributed</code> model was built by re-training a well-known image classification architecture called <a href="https://arxiv.org/abs/1905.11946">EfficientNetV2</a> (Tan, M., &amp; Le, Q., 2019) to identify the species in our camera trap videos. EfficientNetV2 models are convolutional <a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=995s">neural networks</a> designed to jointly optimize model size and training speed. EfficientNetV2 is image native, meaning it classifies each frame separately when generating predictions. The model is wrapped in a <a href="https://docs.fast.ai/layers.html#TimeDistributed"><code>TimeDistributed</code> layer</a> which enables a single prediction per video.</p>
 <p><a id='time-distributed-training-data'></a></p>
-<h3 id="training-data_1">Training data<a class="headerlink" href="#training-data_1" title="Permanent link">&para;</a></h3>
+<h3 id="training-data">Training data<a class="headerlink" href="#training-data" title="Permanent link">&para;</a></h3>
 <p>The <code>time_distributed</code> model was trained using data collected and annotated by trained ecologists from Cameroon, Central African Republic, Democratic Republic of the Congo, Gabon, Guinea, Liberia, Mozambique, Nigeria, Republic of the Congo, Senegal, Tanzania, and Uganda, as well as citizen scientists on the <a href="https://www.chimpandsee.org/">Chimp&amp;See</a> platform.</p>
 <p>The data included camera trap videos from:</p>
 <table>
@@ -2504,9 +2409,9 @@
 </table>
 
 <p><a id='time-distributed-config'></a></p>
-<h3 id="default-configuration_1">Default configuration<a class="headerlink" href="#default-configuration_1" title="Permanent link">&para;</a></h3>
+<h3 id="default-configuration">Default configuration<a class="headerlink" href="#default-configuration" title="Permanent link">&para;</a></h3>
 <p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/time_distributed/config.yaml">Github</a>.</p>
-<p>By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>time_distributed</code> is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.</p>
+<p>By default, an efficient object detection model called <a href="../megadetector/">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>time_distributed</code> is run on only the 16 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels following frame selection.</p>
 <p>The default video loading configuration for <code>time_distributed</code> is:
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span>
@@ -2524,9 +2429,161 @@
 <span class="w">    </span><span class="nt">image_width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">640</span>
 </code></pre></div></p>
 <p>You can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The only requirement for the <code>time_distributed</code> model is that the video loader must return 16 frames.</p>
+<p><a id='time-distributed-performance'></a></p>
+<h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h3>
+<p>The African species <code>time_distributed</code> model was trained using almost <strong>250,000 videos from 14 countries</strong> in West, Central, and East Africa.
+These videos include examples of 30 animal species, plus some blank videos and some showing humans.
+To evaluate the performance of the model, we held out 30,324 videos from 101 randomly-chosen sites.</p>
+<h4 id="removing-blank-videos">Removing blank videos<a class="headerlink" href="#removing-blank-videos" title="Permanent link">&para;</a></h4>
+<p>One use of this model is to identify blank videos so they can be discarded or ignored.
+In this dataset, 42% of the videos are blank, so removing them can save substantial amounts of
+viewing time and storage space.</p>
+<p>The model assigns a probability that each video is blank, so one strategy is to remove videos
+if their probability exceeds a given threshold.
+Of course, the model is not perfect, so there is a chance we will wrongly remove a video that actually
+contains an animal.</p>
+<p>To assess this tradeoff, we can use the holdout set to simulate this strategy with a range of thresholds.
+For each threshold, we compute the fraction of blank videos correctly discarded and the fraction of non-blank
+videos incorrectly discarded.
+The following figure shows the results.</p>
+<p><img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_recall_recall_curve.png" alt="" style="width:600px;"/></p>
+<p>The markers indicate three levels of tolerance for losing non-blank videos. For example, if it's acceptable to
+lose 5% of non-blank videos, we can choose a threshold that removes 63% of the blank videos.
+If we can tolerate a loss of 10%, we can remove 80% of the blanks.
+And if we can tolerate a loss of 15%, we can remove 90% of the blanks.
+Above that, the percentage of lost videos increases steeply.</p>
+<h4 id="accuracy">Accuracy<a class="headerlink" href="#accuracy" title="Permanent link">&para;</a></h4>
+<p>In addition to identifying blank videos, the model also computes a probability that each of 30 animal species appears in each video (plus human and blank).
+We can use these probabilities to quantify the accuracy of the model for species classification.
+Specifically, we computed:</p>
+<ul>
+<li>
+<p>Top-1 accuracy, which is the fraction of videos where the species with the highest predicted probability is, in fact, present.</p>
+</li>
+<li>
+<p>Top-3 accuracy, which is the fraction of videos where one of the three species the model considered most likely is present.</p>
+</li>
+</ul>
+<p>Over all videos in the holdout set, the <strong>top-1 accuracy is 82%; the top-3 accuracy is 94%</strong>.
+As an example, if you choose a video at random and the species with the highest predicted probability is elephant, the probability is 82% that the video contains an elephant, according to the human-generated labels.
+If the three most likely species were elephant, hippopotamus, and cattle, the probability is 94% that the video
+contains at least one of those species.</p>
+<p>These results depend in part on the species represented in a particular dataset. For example, in the small
+number of videos from Equatorial Guinea, only three species appear. For these videos, the top-1 accuracy is 97%, much
+higher than the overall accuracy.
+In the videos from Ivory Coast, 21 species are represented, so the problem is harder. For these
+videos, top-1 accuracy is 80%, a little lower than the overall accuracy.</p>
+<h4 id="recall-and-precision-by-species">Recall and precision by species<a class="headerlink" href="#recall-and-precision-by-species" title="Permanent link">&para;</a></h4>
+<p>One of the goals of classification is to help with retrieval, that is, efficiently finding videos containing
+a particular species. To evaluate the performance of the model for retrieval, we can use</p>
+<ul>
+<li>
+<p>Recall, which is the fraction of videos containing a particular species that are correctly classified, and</p>
+</li>
+<li>
+<p>Precision, which is the fraction of videos the model labels with a particular species that actually contain that species.</p>
+</li>
+</ul>
+<p>The following figure shows recall and precision for the species in the holdout set,
+excluding 11 species where there are too few examples in the holdout set to compute meaningful estimates of these metrics.</p>
+<p><img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_precision_recall_by_species.png" alt="" style="width:800px;"/></p>
+<p>It's clear that we are able to retrieve some species more efficiently than others. For example, elephants are relatively
+easy to find. Of the videos that contain elephants, 84% are correctly classified; and of the videos that the model
+labels "elephant", 94% contain elephants.
+So a researcher using the model to find elephant videos could find a large majority of them while viewing only a
+small number of non-elephant videos.</p>
+<p>Not surprisingly, smaller animals are harder to find. For example, the recall for rodent videos is only 22%.
+However, it is still possible to search for rodents by selecting videos that assign a relatively high probability
+to "rodent", even if it assigns a higher probability to another species or "blank".</p>
+<details class="zamba-classlist">
+<summary>Description of the holdout set</summary>
+<div>
+<p>The videos in the holdout set are a random sample from the complete set of labeled videos, but they are
+selected on a transect-by-transect basis; that is, videos from each transect are assigned entirely to the
+training set or entirely to the holdout set.
+So the performance of the model on the holdout set should reflect its performance on videos from a transect
+the model has never seen.</p>
+<p>All 14 countries are represented in the holdout set; the following table shows the number of videos from
+each country.
+These proportions are roughly consistent with the proportions in the complete set.</p>
+<table>
+<thead>
+    <tr>
+      <th>Country</th>
+      <th>Number of videos</th>
+    </tr>
+  </thead>
+<tbody>
+    <tr>
+      <th>Ivory Coast</th>
+      <td>10,987</td>
+    </tr>
+    <tr>
+      <th>Guinea</th>
+      <td>4,300</td>
+    </tr>
+    <tr>
+      <th>DR Congo</th>
+      <td>2,750</td>
+    </tr>
+    <tr>
+      <th>Uganda</th>
+      <td>2,497</td>
+    </tr>
+    <tr>
+      <th>Tanzania</th>
+      <td>1,794</td>
+    </tr>
+    <tr>
+      <th>Mozambique</th>
+      <td>1,168</td>
+    </tr>
+    <tr>
+      <th>Senegal</th>
+      <td>1,131</td>
+    </tr>
+    <tr>
+      <th>Gabon</th>
+      <td>1,116</td>
+    </tr>
+    <tr>
+      <th>Cameroon</th>
+      <td>1,114</td>
+    </tr>
+    <tr>
+      <th>Liberia</th>
+      <td>1,065</td>
+    </tr>
+    <tr>
+      <th>Central African Republic</th>
+      <td>997</td>
+    </tr>
+    <tr>
+      <th>Nigeria</th>
+      <td>889</td>
+    </tr>
+    <tr>
+      <th>Congo Republic</th>
+      <td>678</td>
+    </tr>
+    <tr>
+      <th>Equatorial Guinea</th>
+      <td>38</td>
+    </tr>
+  </tbody>
+</table>
+<p>The following figure shows the number of videos containing each of 30 animal species, plus some videos showing humans and
+a substantial number of blank videos.</p>
+<p><img src="https://s3.amazonaws.com/drivendata-public-assets/zamba/td_full_set_number_videos_by_species.png" alt="" style="width:800px;"/></p>
+<p>One of the challenges of this kind of classification is that some species are
+much more common than others. For species that appear in a small number of videos, we expect
+the model to be less accurate because it has fewer examples to learn from.
+Also, for these species it is hard to assess performance precisely because there are few examples in the holdout set. If you would like to add more examples of the species you work with, see <a href="../../train-tutorial/">how to build on the model</a>.</p>
+</div>
+</details>
 <p><a id='slowfast'></a></p>
 <h2 id="slowfast-model"><code>slowfast</code> model<a class="headerlink" href="#slowfast-model" title="Permanent link">&para;</a></h2>
-<h3 id="architecture_2">Architecture<a class="headerlink" href="#architecture_2" title="Permanent link">&para;</a></h3>
+<h3 id="architecture_1">Architecture<a class="headerlink" href="#architecture_1" title="Permanent link">&para;</a></h3>
 <p>The <code>slowfast</code> model was built by re-training a video classification backbone called <a href="https://arxiv.org/abs/1812.03982">SlowFast</a> (Feichtenhofer, C., Fan, H., Malik, J., &amp; He, K., 2019). SlowFast refers to the two model pathways involved: one that operates at a low frame rate to capture spatial semantics, and one that operates at a high frame rate to capture motion over time.</p>
 <div style="text-align:center;">
 <img src="https://s3.amazonaws.com/drivendata-public-assets/zamba-slowfast-diagram.png" alt="Architecture showing the two pathways of the slowfast model" style="width:400px;"/>
@@ -2535,11 +2592,11 @@
 </div>
 
 <p>Unlike <code>time_distributed</code>, <code>slowfast</code> is video native. This means it takes into account the relationship between frames in a video, rather than running independently on each frame.</p>
-<h3 id="training-data_2">Training data<a class="headerlink" href="#training-data_2" title="Permanent link">&para;</a></h3>
+<h3 id="training-data_1">Training data<a class="headerlink" href="#training-data_1" title="Permanent link">&para;</a></h3>
 <p>The <code>slowfast</code> model was trained on a subset of the <a href="#time-distributed-training-data">data used</a> for the <code>time_distributed</code> model.</p>
-<h3 id="default-configuration_2">Default configuration<a class="headerlink" href="#default-configuration_2" title="Permanent link">&para;</a></h3>
+<h3 id="default-configuration_1">Default configuration<a class="headerlink" href="#default-configuration_1" title="Permanent link">&para;</a></h3>
 <p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/slowfast/config.yaml">Github</a>.</p>
-<p>By default, an efficient object detection model called <a href="#megadetectorlite">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>slowfast</code> is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.</p>
+<p>By default, an efficient object detection model called <a href="../megadetector/">MegadetectorLite</a> is run on all frames to determine which are the most likely to contain an animal. Then <code>slowfast</code> is run on only the 32 frames with the highest predicted probability of detection. By default, videos are resized to 240x426 pixels.</p>
 <p>The full default video loading configuration is:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">model_input_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">240</span>
@@ -2562,175 +2619,15 @@
 </ul>
 <p><a id='european'></a></p>
 <h2 id="european-model"><code>european</code> model<a class="headerlink" href="#european-model" title="Permanent link">&para;</a></h2>
-<h3 id="architecture_3">Architecture<a class="headerlink" href="#architecture_3" title="Permanent link">&para;</a></h3>
+<h3 id="architecture_2">Architecture<a class="headerlink" href="#architecture_2" title="Permanent link">&para;</a></h3>
 <p>The <code>european</code> model starts from the a previous version of the <code>time_distributed</code> model, and then replaces and trains the final output layer to predict European species.</p>
 <p><a id='european-training-data'></a></p>
-<h3 id="training-data_3">Training data<a class="headerlink" href="#training-data_3" title="Permanent link">&para;</a></h3>
+<h3 id="training-data_2">Training data<a class="headerlink" href="#training-data_2" title="Permanent link">&para;</a></h3>
 <p>The <code>european</code> model is finetuned with data collected and annotated by partners at the <a href="https://www.idiv.de/en/index.html">German Centre for Integrative Biodiversity Research (iDiv) Halle-Jena-Leipzig</a> and <a href="https://www.eva.mpg.de/index.html">The Max Planck Institute for Evolutionary Anthropology</a>. The finetuning data included camera trap videos from Hintenteiche bei Biesenbrow, Germany.</p>
-<h3 id="default-configuration_3">Default configuration<a class="headerlink" href="#default-configuration_3" title="Permanent link">&para;</a></h3>
+<h3 id="default-configuration_2">Default configuration<a class="headerlink" href="#default-configuration_2" title="Permanent link">&para;</a></h3>
 <p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/european/config.yaml">Github</a>.</p>
 <p>The <code>european</code> model uses the same <a href="#time-distributed-config">default configuration</a> as the <code>time_distributed</code> model.</p>
 <p>As with all models, you can choose different frame selection methods and vary the size of the images that are used by passing in a custom <a href="../../yaml-config/">YAML configuration file</a>. The only requirement for the <code>european</code> model is that the video loader must return 16 frames.</p>
-<p><a id='megadetectorlite'></a></p>
-<h2 id="megadetectorlite">MegadetectorLite<a class="headerlink" href="#megadetectorlite" title="Permanent link">&para;</a></h2>
-<p>Frame selection for video models is critical as it would be infeasible to train neural networks on all the frames in a video. For all the species detection models that ship with <code>zamba</code>, the default frame selection method is an efficient object detection model called MegadetectorLite that determines the likelihood that each frame contains an animal. Then, only the frames with the highest probability of detection are passed to the model.</p>
-<p>MegadetectorLite combines two open-source models:</p>
-<ul>
-<li><a href="https://github.com/microsoft/CameraTraps/blob/master/megadetector.md">Megadetector</a> is a pretrained image model designed to detect animals, people, and vehicles in camera trap videos.</li>
-<li><a href="https://github.com/Megvii-BaseDetection/YOLOX">YOLOX</a> is a high-performance, lightweight object detection model that is much less computationally intensive than Megadetector.</li>
-</ul>
-<p>While highly accurate, Megadetector is too computationally intensive to run on every frame. MegadetectorLite was created by training a YOLOX model using the predictions of the Megadetector as ground truth - this method is called <a href="https://towardsdatascience.com/knowledge-distillation-simplified-dd4973dbc764">student-teacher training</a>.</p>
-<p>MegadetectorLite can be imported into Python code and used directly since it has convenient methods for <code>detect_image</code> and <code>detect_video</code>. See <a href="../../api-reference/object-detection-megadetector_lite_yolox/#zamba.object_detection.yolox.megadetector_lite_yolox.MegadetectorLiteYoloX">the API documentation for more details</a>.</p>
-<p><a id='lila-science'></a></p>
-<h2 id="lilascience-model"><code>lila.science</code> model<a class="headerlink" href="#lilascience-model" title="Permanent link">&para;</a></h2>
-<h3 id="architecture_4">Architecture<a class="headerlink" href="#architecture_4" title="Permanent link">&para;</a></h3>
-<p>The <code>lila.science</code> model is a global model with a ConvNextV2 base size (87.7M parameters) backbone accepting 224x224 images as input.</p>
-<p><a id='lila-science-training-data'></a></p>
-<h3 id="training-data_4">Training data<a class="headerlink" href="#training-data_4" title="Permanent link">&para;</a></h3>
-<p>Lila.science dataset, which contains over 15 million annotations from 7 million images. The model was trained on cropped images of just the bounding box around an animal.</p>
-<p>Data came from the following <a href="https://lila.science/datasets">lila.science datasets</a>:</p>
-<table>
-<thead>
-<tr>
-<th>Dataset</th>
-<th>Geography</th>
-<th style="text-align: right;">Count of original images</th>
-<th style="text-align: right;">Count of cropped annotations</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://lila.science/datasets/caltech-camera-traps">Caltech Camera Traps</a><br/>Beery et al., 2018</td>
-<td>Southwestern United States</td>
-<td style="text-align: right;">59,205</td>
-<td style="text-align: right;">96,724</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/channel-islands-camera-traps/">Channel Islands Camera Traps</a><br/>The Nature Conservancy, 2021</td>
-<td>California, United States</td>
-<td style="text-align: right;">125,369</td>
-<td style="text-align: right;">239,472</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/desert-lion-conservation-camera-traps/">Desert Lion Camera Traps</a><br/>Desert Lion Conservation Project, 2024</td>
-<td>Namibia</td>
-<td style="text-align: right;">61,910</td>
-<td style="text-align: right;">185,475</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/ena24detection">ENA24-detection</a><br/>Yousif et al., 2019</td>
-<td>Eastern North America</td>
-<td style="text-align: right;">8,652</td>
-<td style="text-align: right;">11,092</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/idaho-camera-traps/">Idaho Camera Traps</a><br/>Idaho Department of Fish and Game, 2021</td>
-<td>Idaho, United States</td>
-<td style="text-align: right;">338,706</td>
-<td style="text-align: right;">1,072,912</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/island-conservation-camera-traps/">Island Conservation Camera Traps</a><br/>Island Conservation, 2020</td>
-<td>7 islands around the world</td>
-<td style="text-align: right;">44,007</td>
-<td style="text-align: right;">79,660</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/missouricameratraps">Missouri Camera Traps</a><br/>Zhang et al., 2016</td>
-<td>Missouri, United States</td>
-<td style="text-align: right;">946</td>
-<td style="text-align: right;">955</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/nacti">North American Camera Trap Images</a><br/>Tabak et al., 2018</td>
-<td>United States</td>
-<td style="text-align: right;">2,705,394</td>
-<td style="text-align: right;">7,426,839</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/nz-trailcams">New Zealand Trailcams</a><br/>New Zealand Trailcams, 2024</td>
-<td>New Zealand</td>
-<td style="text-align: right;">2,109,592</td>
-<td style="text-align: right;">2,794,859</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/orinoquia-camera-traps/">Orinoquia Camera Traps</a><br/>Vélez et al., 2022</td>
-<td>Colombia</td>
-<td style="text-align: right;">80,307</td>
-<td style="text-align: right;">103,856</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/snapshot-safari-2024-expansion/">Snapshot Safari 2024 Expansion</a><br/>Pardo et al., 2021</td>
-<td>Africa (multiple countries)</td>
-<td style="text-align: right;">836,522</td>
-<td style="text-align: right;">1,949,366</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/snapshot-camdeboo">Snapshot Safari Camdeboo</a><br/>Pardo et al., 2021</td>
-<td>South Africa</td>
-<td style="text-align: right;">15,299</td>
-<td style="text-align: right;">26,379</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/snapshot-enonkishu">Snapshot Safari Enonkishu</a><br/>Pardo et al., 2021</td>
-<td>Kenya</td>
-<td style="text-align: right;">9,049</td>
-<td style="text-align: right;">37,252</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/snapshot-karoo">Snapshot Safari Karoo</a><br/>Pardo et al., 2021</td>
-<td>South Africa</td>
-<td style="text-align: right;">5,764</td>
-<td style="text-align: right;">8,426</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/snapshot-kgalagadi">Snapshot Safari Kgalagadi</a><br/>Pardo et al., 2021</td>
-<td>South Africa and Botswana</td>
-<td style="text-align: right;">2,060</td>
-<td style="text-align: right;">2,938</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/snapshot-kruger">Snapshot Safari Kruger</a><br/>Pardo et al., 2021</td>
-<td>South Africa</td>
-<td style="text-align: right;">3,112</td>
-<td style="text-align: right;">6,343</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/snapshot-mountain-zebra/">Snapshot Safari Mountain Zebra</a><br/>Pardo et al., 2021</td>
-<td>South Africa</td>
-<td style="text-align: right;">5,535</td>
-<td style="text-align: right;">9,333</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/swg-camera-traps">SWG Camera Traps</a><br/>Saola Working Group, 2021</td>
-<td>Vietnam and Laos</td>
-<td style="text-align: right;">87,309</td>
-<td style="text-align: right;">100,677</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/wcscameratraps">WCS Camera Traps</a><br/>Wildlife Conservation Society, 2019</td>
-<td>12 countries</td>
-<td style="text-align: right;">523,897</td>
-<td style="text-align: right;">920,471</td>
-</tr>
-<tr>
-<td><a href="https://lila.science/datasets/wellingtoncameratraps">Wellington Camera Traps</a><br/>Anton et al., 2018</td>
-<td>New Zealand</td>
-<td style="text-align: right;">203,038</td>
-<td style="text-align: right;">269,146</td>
-</tr>
-</tbody>
-</table>
-<p><a id='lila-science-config'></a></p>
-<h3 id="default-configuration_4">Default configuration<a class="headerlink" href="#default-configuration_4" title="Permanent link">&para;</a></h3>
-<p>The full default configuration is available on <a href="https://github.com/drivendataorg/zamba/blob/master/zamba/models/official_models/lila.science/config.yaml">Github</a>.</p>
-<p>The default configuration will use megadetector to identify bounding boxes for animals and then use the <code>lila.science</code> model to identify the species in the bounding box.</p>
-<p>It will generate a CSV file with predicted species probabilities for each bounding box.</p>
-<h2 id="user-contributed-models">User contributed models<a class="headerlink" href="#user-contributed-models" title="Permanent link">&para;</a></h2>
-<p>We encourage people to share their custom models trained with Zamba. If you train a model and want to make it available, please add it to the <a href="https://github.com/drivendataorg/zamba/wiki">Model Zoo Wiki</a> for others to be able to use!</p>
-<p>To use one of these models, download the weights file and the configuration file from the Model Zoo Wiki. You'll need to create a <a href="../../yaml-config/">configuration yaml</a> to use that at least contains the same <code>video_loader_config</code> from the configuration yaml you downloaded. Then you can run the model with:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>predict<span class="w"> </span>--checkpoint<span class="w"> </span>downloaded_weights.ckpt<span class="w"> </span>--config<span class="w"> </span>predict_config.yaml
-</code></pre></div>
 
 
 
