@@ -1,5 +1,6 @@
 import json
 import logging
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -20,6 +21,7 @@ from zamba.images.dataset.dataset import crop_image, prepare_dataset  # noqa: E4
 from zamba.images.manager import (  # noqa: E402
     get_default_transforms,
     resolve_inference_family,
+    resolve_training_image_size,
     train,
 )
 from zamba.images.result import results_to_megadetector_format  # noqa: E402
@@ -376,6 +378,29 @@ def test_finetune_from_replaces_head(model_name, head_path, tmp_path):
     for attr in head_path:
         head = getattr(head, attr)
     assert head.out_features == 3
+
+
+def test_resolve_training_image_size_prefers_checkpoint(tmp_path):
+    """Without an explicit image size, the checkpoint's own image size wins over the
+    family default; an explicit size always wins, and training from scratch ignores it."""
+    ckpt = tmp_path / "ck.ckpt"
+    torch.save({"hyper_parameters": {"image_size": (384, 384)}}, ckpt)
+
+    # no explicit size + checkpoint -> use the checkpoint's size
+    no_explicit = SimpleNamespace(image_size=None, checkpoint=ckpt, from_scratch=False)
+    assert resolve_training_image_size(no_explicit) == (384, 384)
+
+    # explicit size always wins
+    explicit = SimpleNamespace(image_size=256, checkpoint=ckpt, from_scratch=False)
+    assert resolve_training_image_size(explicit) == 256
+
+    # training from scratch ignores the checkpoint and defers to the family default
+    scratch = SimpleNamespace(image_size=None, checkpoint=ckpt, from_scratch=True)
+    assert resolve_training_image_size(scratch) is None
+
+    # no checkpoint -> defer to the family default
+    none_ckpt = SimpleNamespace(image_size=None, checkpoint=None, from_scratch=False)
+    assert resolve_training_image_size(none_ckpt) is None
 
 
 def test_video_config_validator_resolves_image_checkpoint_family(tmp_path):
