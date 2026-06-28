@@ -23,6 +23,9 @@ from zamba.images.manager import (  # noqa: E402
     train,
 )
 from zamba.images.result import results_to_megadetector_format  # noqa: E402
+from zamba.models.config import (  # noqa: E402
+    validate_model_name_and_checkpoint as video_validate_model_name_and_checkpoint,
+)
 
 from conftest import ASSETS_DIR, DummyZambaImageClassificationLightningModule  # noqa: E402
 
@@ -154,6 +157,27 @@ def test_train_config_debug_sampling(labels_path, images_path):
 def test_train_config_debug_must_be_positive(labels_path, images_path):
     with pytest.raises(ValueError, match="debug must be a positive integer"):
         ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path, debug=0)
+
+
+def test_train_config_debug_with_no_matching_split_rows(labels_path, images_path):
+    """If the provided splits don't include train/val/test, debug sampling finds nothing
+    to sample and leaves the labels untouched (rather than erroring)."""
+    labels = pd.read_csv(labels_path)
+    labels["split"] = "holdout"  # none of train/val/test
+
+    config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels, debug=1)
+    # nothing was sampled, so all (existing) rows are retained
+    assert (config.labels["split"] == "holdout").all()
+
+
+def test_predict_config_rejects_nonpositive_image_size(images_path):
+    with pytest.raises(ValueError, match="Image size should be greater than 0"):
+        ImageClassificationPredictConfig(
+            data_dir=images_path,
+            filepaths=pd.DataFrame({"filepath": ["dog.jpg"]}),
+            image_size=0,
+            save=False,
+        )
 
 
 def test_absolute_bbox():
@@ -323,6 +347,57 @@ def test_predict_config_resolves_model_name_from_checkpoint_family(tmp_path, ima
     assert config.model_name == "speciesnet"
 
 
+@pytest.mark.parametrize(
+    "model_name,head_path",
+    [
+        ("convnext_atto", ("head", "fc")),  # head.fc layout
+        ("efficientnet_b0", ("classifier",)),  # classifier layout
+    ],
+)
+def test_finetune_from_replaces_head(model_name, head_path, tmp_path):
+    """Finetuning from a checkpoint rebuilds the classification head to the new class
+    count, handling both the `head.fc` (convnext) and `classifier` (efficientnet) layouts."""
+    base = ImageClassifierModule(
+        species=["cat", "dog"], batch_size=1, image_size=224, model_name=model_name
+    )
+    ckpt = tmp_path / f"{model_name}.ckpt"
+    base.to_disk(ckpt)
+
+    finetuned = ImageClassifierModule(
+        species=["cat", "dog", "bird"],
+        batch_size=1,
+        image_size=224,
+        model_name=model_name,
+        finetune_from=ckpt,
+    )
+    assert finetuned.num_classes == 3
+
+    head = finetuned.model
+    for attr in head_path:
+        head = getattr(head, attr)
+    assert head.out_features == 3
+
+
+def test_video_config_validator_resolves_image_checkpoint_family(tmp_path):
+    """The video-side validator falls back to the checkpoint's preprocessing family when
+    the checkpoint's model class has no canonical `_default_model_name` (e.g. an image
+    ImageClassifierModule), rather than mangling the model_name with the checkpoint stem."""
+    model = ImageClassifierModule(
+        species=["cat", "dog"],
+        batch_size=1,
+        image_size=480,
+        model_name="resnet50",
+        model_family="speciesnet",
+    )
+    ckpt = tmp_path / "ck.ckpt"
+    model.to_disk(ckpt)
+
+    values = video_validate_model_name_and_checkpoint(
+        None, {"checkpoint": ckpt, "model_name": "time_distributed"}
+    )
+    assert values["model_name"] == "speciesnet"
+
+
 def test_on_load_checkpoint_remaps_unprefixed_speciesnet_weights():
     """SpeciesNet weights are saved without the lightning 'model.' prefix; on_load_checkpoint
     must add it for keys that belong to the model subtree and leave everything else alone."""
@@ -386,7 +461,10 @@ def test_results_to_megadetector_format(dataframe_result_csv_path):
     assert len(result.images[1].detections) == 1
 
 
-def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path):
+@pytest.mark.parametrize("extra_train_augmentations", [False, True])
+def test_train_integration(
+    extra_train_augmentations, images_path, labels_path, dummy_checkpoint, tmp_path
+):
     save_dir = tmp_path / "my_model"
     checkpoint_path = tmp_path / "checkpoints"
 
@@ -400,6 +478,7 @@ def test_train_integration(images_path, labels_path, dummy_checkpoint, tmp_path)
         checkpoint_path=checkpoint_path,
         from_scratch=False,
         save_dir=save_dir,
+        extra_train_augmentations=extra_train_augmentations,
     )
 
     train(config)

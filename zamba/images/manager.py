@@ -375,17 +375,6 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             batch_size=config.batch_size,
         )
 
-    # get image_size from checkpoint
-    if config.image_size is None:
-        logger.info(
-            f"Image size not specified, using value from model checkpoint: {classifier_module.image_size}"
-        )
-        config.image_size = (
-            classifier_module.image_size[0]
-            if isinstance(classifier_module.image_size, tuple)
-            else classifier_module.image_size
-        )
-
     # compile for faster performance; disabled for MacOS and Windows (unsupported/unreliable)
     if sys.platform not in ("darwin", "win32"):
         classifier = torch.compile(classifier_module)
