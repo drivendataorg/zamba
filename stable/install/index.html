@@ -2262,6 +2262,20 @@ GPU configurations.</p>
 <li><strong>Both image and video workflows:</strong> <code>zamba[video,image]</code></li>
 </ul>
 <p>We recommend <a href="https://docs.astral.sh/uv/">uv</a> for installing Python packages and managing environments. Install <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> if you haven't already.</p>
+<h3 id="uv-install-tips">uv install tips<a class="headerlink" href="#uv-install-tips" title="Permanent link">&para;</a></h3>
+<p>We recommend passing <a href="https://docs.astral.sh/uv/guides/integration/pytorch/"><code>--torch-backend=auto</code></a> when installing with uv (or set <code>UV_TORCH_BACKEND=auto</code>). uv will detect your GPU (CUDA, ROCm, or Intel) and install matching PyTorch wheels, or fall back to CPU if none is found:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto
+</code></pre></div>
+<p>When installing from a clone of this repository, <code>torch-backend = "auto"</code> is already set in <code>pyproject.toml</code> under <code>[tool.uv]</code>, so <code>uv pip install -e ".[video]"</code> picks the right PyTorch build automatically.</p>
+<p>If you install <strong>both</strong> image and video extras (<code>zamba[video,image]</code>), dependency resolution can fail: megadetector's YOLOv5 stack pins <code>protobuf&lt;=3.20.1</code>, while video dependencies (via <code>onnx</code>) require <code>protobuf&gt;=3.20.2</code>. Pass dependency overrides when installing both extras:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>zamba-overrides.txt<span class="w"> </span>&lt;&lt;<span class="s1">&#39;EOF&#39;</span>
+<span class="go">protobuf&gt;=3.20.2</span>
+<span class="go">setuptools&lt;82</span>
+<span class="go">EOF</span>
+
+<span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto<span class="w"> </span>--overrides<span class="w"> </span>zamba-overrides.txt
+</code></pre></div>
+<p>The <code>setuptools&lt;82</code> override keeps megadetector's YOLOv5 stack working on Python 3.12 (<code>pkg_resources</code> was removed in setuptools 82). When developing from a clone of this repository, these overrides and <code>torch-backend = "auto"</code> are already configured in <code>pyproject.toml</code> under <code>[tool.uv]</code>.</p>
 <h2 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h2>
 <p><code>zamba</code> has been tested on <a href="https://www.ubuntu.com/">Ubuntu</a> regularly since 16.04. Tests run every week against the <a href="https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources"><code>ubuntu-latest</code> Github runner environment</a>, so the version that Github uses is most likely to work. As of October 2023, that is 22.04.</p>
 <h3 id="1-install-python">1. Install Python<a class="headerlink" href="#1-install-python" title="Permanent link">&para;</a></h3>
@@ -2301,13 +2315,13 @@ GPU configurations.</p>
 </code></pre></div>
 <h3 id="3-install-zamba">3. Install <code>zamba</code><a class="headerlink" href="#3-install-zamba" title="Permanent link">&para;</a></h3>
 <p>For image workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto
 </code></pre></div>
 <p>For video workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto
 </code></pre></div>
-<p>For both image and video workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+<p>For both image and video workflows, use the <a href="#uv-install-tips">overrides file</a> described above:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto<span class="w"> </span>--overrides<span class="w"> </span>zamba-overrides.txt
 </code></pre></div>
 <h2 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h2>
 <p><code>zamba</code> has been tested on macOS High Sierra.</p>
@@ -2325,19 +2339,19 @@ GPU configurations.</p>
 </code></pre></div>
 <h3 id="3-install-zamba_1">3. Install <code>zamba</code><a class="headerlink" href="#3-install-zamba_1" title="Permanent link">&para;</a></h3>
 <p>For image workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto
 </code></pre></div>
 <p>For video workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto
 </code></pre></div>
-<p>For both image and video workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+<p>For both image and video workflows, use the <a href="#uv-install-tips">overrides file</a> described above:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto<span class="w"> </span>--overrides<span class="w"> </span>zamba-overrides.txt
 </code></pre></div>
 <h2 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h2>
 <p><code>zamba</code> works on Windows. The <strong>image</strong> extra installs without any additional tools. The <strong>video</strong> extra requires a C++ compiler because some dependencies have native extensions, and FFmpeg for loading videos.</p>
 <h3 id="image-workflows">Image workflows<a class="headerlink" href="#image-workflows" title="Permanent link">&para;</a></h3>
 <p>Install <a href="https://www.python.org/">Python</a> &gt;= 3.11. With <a href="https://docs.astral.sh/uv/">uv</a> you can install and pin a suitable version with <code>uv python install 3.11</code>. Then run:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto
 </code></pre></div>
 <h3 id="video-workflows">Video workflows<a class="headerlink" href="#video-workflows" title="Permanent link">&para;</a></h3>
 <ol>
@@ -2354,10 +2368,10 @@ GPU configurations.</p>
 <p>Install zamba:</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto
 </code></pre></div>
-<p>For both image and video workflows:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+<p>For both image and video workflows, use the <a href="#uv-install-tips">overrides file</a> described above:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto<span class="w"> </span>--overrides<span class="w"> </span>zamba-overrides.txt
 </code></pre></div>
 <p>Alternatively, you can use <a href="https://www.docker.com/products/docker-desktop/">Docker</a> or <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a> to run <code>zamba</code> in a Linux environment on Windows.</p>
 <h2 id="pip-and-source-installs">pip and source installs<a class="headerlink" href="#pip-and-source-installs" title="Permanent link">&para;</a></h2>
@@ -2367,7 +2381,7 @@ GPU configurations.</p>
 </code></pre></div>
 <p>Or with pip: <code>pip show zamba</code>.</p>
 <p>To update zamba to the most recent version if needed:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>zamba<span class="o">[</span>video,image<span class="o">]</span><span class="w"> </span>--torch-backend<span class="o">=</span>auto<span class="w"> </span>--overrides<span class="w"> </span>zamba-overrides.txt
 </code></pre></div>
 <h2 id="using-gpus">Using GPU(s)<a class="headerlink" href="#using-gpus" title="Permanent link">&para;</a></h2>
 <p><code>zamba</code> is much faster on a machine with a graphics processing unit (GPU), but has also been developed and tested for machines without GPU(s).</p>
@@ -2376,7 +2390,7 @@ GPU configurations.</p>
 have installed and configured <a href="https://developer.nvidia.com/cuda-downloads">CUDA</a>,
 and have installed and configured <a href="https://developer.nvidia.com/cudnn">CuDNN</a> per
 their specifications.</p>
-<p>If you are using <code>conda</code>, these dependencies can be installed through the <a href="https://anaconda.org/anaconda/cudatoolkit"><code>cudatoolkit</code> package</a>. With <code>uv</code>, install a CUDA-enabled PyTorch build into your environment by pointing at the matching PyTorch index, for example <code>uv pip install torch --index-url https://download.pytorch.org/whl/cu121</code> (replace <code>cu121</code> with the CUDA version you have installed). Either way, make sure the PyTorch build matches your installed CUDA version. See the <a href="https://pytorch.org/get-started/locally/">PyTorch installation docs</a> for the easiest way to install the right version on your system.</p>
+<p>If you are using <code>conda</code>, these dependencies can be installed through the <a href="https://anaconda.org/anaconda/cudatoolkit"><code>cudatoolkit</code> package</a>. With <code>uv</code>, we recommend <code>--torch-backend=auto</code> (see <a href="#uv-install-tips">uv install tips</a>) so the correct CUDA-enabled PyTorch build is selected automatically. You can also install a specific CUDA build manually, for example <code>uv pip install torch --index-url https://download.pytorch.org/whl/cu121</code> (replace <code>cu121</code> with the CUDA version you have installed). Either way, make sure the PyTorch build matches your installed CUDA version. See the <a href="https://pytorch.org/get-started/locally/">PyTorch installation docs</a> for the easiest way to install the right version on your system.</p>
 
 
 
