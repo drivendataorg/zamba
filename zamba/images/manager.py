@@ -398,18 +398,15 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             batch_size=config.batch_size,
         )
 
-    # compile for faster performance; disabled for MacOS and Windows (unsupported/unreliable)
-    if sys.platform not in ("darwin", "win32"):
-        classifier = torch.compile(classifier_module)
-    else:
-        classifier = classifier_module
+    # torch.compile is deferred until after batch-size / LR tuning below.
+    # Compiling before tuning breaks PyTorch Lightning's lr_find because self.log()
+    # introspects training_step via inspect, which torch dynamo cannot trace.
+    compile_enabled = sys.platform not in ("darwin", "win32")
+    classifier = classifier_module
 
     # lower precision multiplication to speed up training
     try:
         torch.set_float32_matmul_precision("medium")
-        torch._dynamo.config.cache_size_limit = (
-            16  # cache more functions than default 8 to avoid recompiling
-        )
     except Exception:
         logger.warning("Could not set float32 matmul precision to medium")
 
@@ -476,6 +473,15 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         classifier.hparams.lr = new_lr
 
     _save_config(classifier, config)
+
+    if compile_enabled:
+        try:
+            torch._dynamo.config.cache_size_limit = (
+                16  # cache more functions than default 8 to avoid recompiling
+            )
+        except Exception:
+            logger.warning("Could not configure torch dynamo cache size limit")
+        classifier = torch.compile(classifier_module)
 
     # Train with distributed training
     train_trainer.fit(

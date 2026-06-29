@@ -1,5 +1,12 @@
 # `zamba` changelog
 
+## v2.7.1 (2026-06-29)
+
+ - Fix video and image training on PyTorch 2.7+ by dropping deprecated scheduler kwargs like `verbose`.
+ - Fix image training LR finder crash by deferring `torch.compile` until after tuning.
+ - Set `torch-backend = "auto"` in `[tool.uv]` for clone-based uv installs.
+ - Document uv install tips: `--torch-backend=auto` and protobuf/setuptools overrides for `zamba[video,image]`.
+
 ## v2.7.0 (2026-06-28)
 
  - Add the `speciesnet` image classification model, a `zamba`-compatible conversion of [Google's SpeciesNet](https://github.com/google/cameratrapai) classifier (EfficientNetV2-M backbone, 2,000+ class global taxonomy). Select it with `zamba image predict --model speciesnet` or `zamba image train --model speciesnet`. See the [Available Models](https://zamba.drivendata.org/docs/stable/models/image-classification/#speciesnet) page.

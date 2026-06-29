@@ -20,6 +20,8 @@ $ cd zamba
 $ uv pip install -e ".[image,video]" --group dev
 ```
 
+When installing from a clone, `[tool.uv]` in `pyproject.toml` already sets `torch-backend = "auto"` and the `protobuf` / `setuptools` overrides needed for both image and video extras. End users installing from PyPI need to pass `--torch-backend=auto` and `--overrides` manually; see [Installing zamba](../install.md#uv-install-tips).
+
 Or use the Makefile target (which uses uv):
 ```console
 $ make requirements

@@ -9,6 +9,7 @@ from pytorch_lightning import LightningModule
 from torchvision.transforms import transforms
 
 from zamba.pytorch.transforms import ConvertTHWCtoCTHW
+from zamba.pytorch.utils import filter_scheduler_params
 
 default_transform = transforms.Compose(
     [
@@ -68,11 +69,10 @@ class ZambaClassificationLightningModule(LightningModule):
         if self.scheduler is None:
             return optim
         else:
+            scheduler_params = filter_scheduler_params(self.scheduler, self.scheduler_params)
             return {
                 "optimizer": optim,
-                "lr_scheduler": self.scheduler(
-                    optim, **({} if self.scheduler_params is None else self.scheduler_params)
-                ),
+                "lr_scheduler": self.scheduler(optim, **scheduler_params),
             }
 
     def to_disk(self, path: os.PathLike):

@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "zamba"
-version = "2.7.0"
+version = "2.7.1"
 authors = [
   {name = "DrivenData", email = "info@drivendata.org"}
 ]
@@ -154,6 +154,7 @@ markers = [
 ]
 
 [tool.uv]
+torch-backend = "auto"  # uv pip only: pick CUDA/ROCm/CPU PyTorch wheels for this machine
 override-dependencies = [
   "protobuf>=3.20.2",  # megadetector dependencies pin too low, allow newer
   "setuptools<82",  # setuptools 82 removed pkg_resources; ultralytics-yolov5 (megadetector) needs it

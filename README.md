@@ -32,22 +32,22 @@ We recommend [uv](https://docs.astral.sh/uv/) for installing Python packages and
 * Python >= 3.11
 * FFmpeg > 4.3 and < 5 (only needed for video workflows)
 
-Then install the extras you need with uv. **We recommend only installing one or the other depending on your use case.**
+Then install the extras you need with uv. **We recommend only installing one or the other depending on your use case.** Pass `--torch-backend=auto` so uv installs a PyTorch build matched to your GPU (or CPU):
 
 ```console
 # For video workflows
-uv pip install zamba[video]
+uv pip install zamba[video] --torch-backend=auto
 
 # For image workflows
-uv pip install zamba[image]
+uv pip install zamba[image] --torch-backend=auto
 
-# For both
-uv pip install zamba[video,image]
+# For both (requires protobuf/setuptools overrides — see Installation docs)
+uv pip install zamba[video,image] --torch-backend=auto --overrides zamba-overrides.txt
 ```
 
-You can also use pip: `pip install zamba[video]`, `pip install zamba[image]`, or `pip install zamba[video,image]`.
+See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page for the overrides file and full details.
 
-See the [Installation](https://zamba.drivendata.org/docs/stable/install/) page of the documentation for details.
+You can also use pip: `pip install zamba[video]`, `pip install zamba[image]`, or `pip install zamba[video,image]`.
 
 ## Getting started
 

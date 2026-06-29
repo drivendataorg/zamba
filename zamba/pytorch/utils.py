@@ -1,10 +1,27 @@
+import inspect
 import os
-from typing import Optional, Tuple
+from typing import Any, Dict, Optional, Tuple, Type
 
 import pytorch_lightning as pl
 import torch
 
 from zamba.settings import INFERENCE_SEED
+
+
+def filter_scheduler_params(
+    scheduler_cls: Type,
+    params: Optional[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Return scheduler kwargs supported by the scheduler constructor.
+
+    Configs and checkpoints may include deprecated args (e.g. ``verbose`` was removed
+    from PyTorch lr schedulers in 2.7).
+    """
+    if not params:
+        return {}
+    signature = inspect.signature(scheduler_cls.__init__)
+    supported = set(signature.parameters) - {"self", "optimizer"}
+    return {key: value for key, value in params.items() if key in supported}
 
 
 def configure_inference_determinism(

@@ -12,6 +12,7 @@ import torch.utils
 from zamba.images.config import ImageModelEnum
 from zamba.images.evaluate import ClassificationEvaluator
 from zamba.models.registry import register_model
+from zamba.pytorch.utils import filter_scheduler_params
 from zamba.pytorch_lightning.base_module import ZambaClassificationLightningModule
 
 
@@ -124,10 +125,8 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
             self.hparams.scheduler_params["max_lr"] = self.lr * 10
 
         if self.scheduler is not None:
-            scheduler = self.scheduler(
-                optimizer,
-                **params,
-            )
+            scheduler_params = filter_scheduler_params(self.scheduler, params)
+            scheduler = self.scheduler(optimizer, **scheduler_params)
 
             return [optimizer], [scheduler]
         else:
