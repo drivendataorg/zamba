@@ -2105,9 +2105,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased" class="md-nav__link">
+  <a href="#v280-2026-06-28" class="md-nav__link">
     <span class="md-ellipsis">
-      Unreleased
+      v2.8.0 (2026-06-28)
     </span>
   </a>
   
@@ -2312,7 +2312,7 @@
 
 
 <h1 id="zamba-changelog"><code>zamba</code> changelog<a class="headerlink" href="#zamba-changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased">Unreleased<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<h2 id="v280-2026-06-28">v2.8.0 (2026-06-28)<a class="headerlink" href="#v280-2026-06-28" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Add the <code>speciesnet</code> image classification model, a <code>zamba</code>-compatible conversion of <a href="https://github.com/google/cameratrapai">Google's SpeciesNet</a> classifier (EfficientNetV2-M backbone, 2,000+ class global taxonomy). Select it with <code>zamba image predict --model speciesnet</code> or <code>zamba image train --model speciesnet</code>. See the <a href="../models/image-classification/#speciesnet">Available Models</a> page.</li>
 <li>Persist the preprocessing <code>model_family</code> on image classifier checkpoints and derive inference transforms (resize size, interpolation, normalization) from the loaded checkpoint rather than from the <code>model_name</code> string. This fixes incorrect preprocessing (and near-random predictions) when running <code>zamba image predict --checkpoint &lt;ckpt&gt;</code> on a fine-tuned SpeciesNet model without also passing <code>--model</code>.</li>
