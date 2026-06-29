@@ -43,7 +43,7 @@ def pred_mock(self):
 
 @pytest.mark.video
 def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa: F811
-    mocker.patch("zamba.cli.ModelManager.train", train_mock)
+    mocker.patch("zamba.models.model_manager.ModelManager.train", train_mock)
 
     # check labels must exist
     result = runner.invoke(app, ["train", "--labels", "my_labels.csv"])
@@ -70,8 +70,8 @@ def test_train_specific_options(mocker, minimum_valid_train, tmp_path):  # noqa:
 def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):  # noqa: F811
     """Test CLI options that are shared between train and predict commands."""
 
-    mocker.patch("zamba.cli.ModelManager.train", train_mock)
-    mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
+    mocker.patch("zamba.models.model_manager.ModelManager.train", train_mock)
+    mocker.patch("zamba.models.model_manager.ModelManager.predict", pred_mock)
 
     for command in [minimum_valid_train, minimum_valid_predict]:
         # check default model is time distributed one
@@ -119,7 +119,7 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
 
 @pytest.mark.video
 def test_predict_specific_options(mocker, minimum_valid_predict, tmp_path):  # noqa: F811
-    mocker.patch("zamba.cli.ModelManager.predict", pred_mock)
+    mocker.patch("zamba.models.model_manager.ModelManager.predict", pred_mock)
 
     # check data dir must exist
     result = runner.invoke(app, ["predict", "--data-dir", "my_data"])

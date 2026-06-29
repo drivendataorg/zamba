@@ -1,6 +1,6 @@
 # `zamba` changelog
 
-## Unreleased
+## v2.8.0 (2026-06-28)
 
  - Add the `speciesnet` image classification model, a `zamba`-compatible conversion of [Google's SpeciesNet](https://github.com/google/cameratrapai) classifier (EfficientNetV2-M backbone, 2,000+ class global taxonomy). Select it with `zamba image predict --model speciesnet` or `zamba image train --model speciesnet`. See the [Available Models](https://zamba.drivendata.org/docs/stable/models/image-classification/#speciesnet) page.
  - Persist the preprocessing `model_family` on image classifier checkpoints and derive inference transforms (resize size, interpolation, normalization) from the loaded checkpoint rather than from the `model_name` string. This fixes incorrect preprocessing (and near-random predictions) when running `zamba image predict --checkpoint <ckpt>` on a fine-tuned SpeciesNet model without also passing `--model`.

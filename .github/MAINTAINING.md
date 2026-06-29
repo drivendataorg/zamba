@@ -6,7 +6,7 @@ This page contains documentation for Zamba maintainers.
 
 To release a new version of `zamba`:
 
-1. Bump the version in [`setup.cfg`](https://github.com/drivendataorg/zamba/blob/master/setup.cfg). The version number should follow [semantic versioning](https://semver.org/).
+1. Bump the version in `pyproject.toml`. The version number should follow [semantic versioning](https://semver.org/).
 2. Create a new release using the [GitHub releases UI](https://github.com/drivendataorg/zamba/releases/new). The tag version must have a prefix `v`, e.g., `v2.0.1`.
 
 On publishing of the release, the [`release`](https://github.com/drivendataorg/zamba/blob/master/.github/workflows/release.yml) GitHub action workflow will be triggered. This workflow builds the package and publishes it to PyPI. You will be able to see the workflow status in the [Actions tab](https://github.com/drivendataorg/zamba/actions?query=workflow%3Arelease).

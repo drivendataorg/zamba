@@ -169,7 +169,14 @@ def test_train_config_debug_with_no_matching_split_rows(labels_path, images_path
     assert (config.labels["split"] == "holdout").all()
 
 
-def test_predict_config_rejects_nonpositive_image_size(images_path):
+@pytest.fixture
+def isolated_cwd(tmp_path, monkeypatch):
+    """Keep predict-config tests off the repo root (save paths default to cwd)."""
+    monkeypatch.chdir(tmp_path)
+    return tmp_path
+
+
+def test_predict_config_rejects_nonpositive_image_size(images_path, isolated_cwd):
     with pytest.raises(ValueError, match="Image size should be greater than 0"):
         ImageClassificationPredictConfig(
             data_dir=images_path,
@@ -323,7 +330,7 @@ def test_resolve_inference_family_falls_back_on_unreadable_checkpoint(tmp_path):
     assert resolve_inference_family("speciesnet", bad_ckpt) == "speciesnet"
 
 
-def test_predict_config_resolves_model_name_from_checkpoint_family(tmp_path, images_path):
+def test_predict_config_resolves_model_name_from_checkpoint_family(isolated_cwd, images_path):
     """An image checkpoint has no _default_model_name, so model_name falls back to the
     persisted preprocessing family rather than the (conflicting) passed model_name."""
     model = ImageClassifierModule(
@@ -333,7 +340,7 @@ def test_predict_config_resolves_model_name_from_checkpoint_family(tmp_path, ima
         model_name="resnet50",
         model_family="speciesnet",
     )
-    ckpt = tmp_path / "ck.ckpt"
+    ckpt = isolated_cwd / "ck.ckpt"
     model.to_disk(ckpt)
 
     config = ImageClassificationPredictConfig(

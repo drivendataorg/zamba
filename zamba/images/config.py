@@ -43,7 +43,8 @@ class ZambaImageConfig(ZambaBaseModel):
     def validate_save(cls, values):
         save_dir = values["save_dir"]
 
-        if save_dir is None:
+        # Only default to cwd when saving; predict configs may set save=False.
+        if save_dir is None and values.get("save", True):
             save_dir = Path.cwd()
 
         values["save_dir"] = save_dir
@@ -144,7 +145,7 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
         if save_dir is None and save:
             save_dir = Path.cwd()
 
-        if save_dir is not None:
+        if save_dir is not None and save:
             # check if files exist
             save_path = save_dir / results_file_name
             if values["results_file_format"] == ResultsFormat.MEGADETECTOR:
@@ -156,10 +157,6 @@ class ImageClassificationPredictConfig(ZambaImageConfig):
 
             # make a directory if needed
             save_dir.mkdir(parents=True, exist_ok=True)
-
-            # set save to True if save_dir is set
-            if not save:
-                save = True
 
         values["save_dir"] = save_dir
         values["save"] = save
