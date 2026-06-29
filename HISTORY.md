@@ -1,12 +1,9 @@
 # `zamba` changelog
 
-## v2.8.0 (2026-06-28)
+## v2.7.0 (2026-06-28)
 
  - Add the `speciesnet` image classification model, a `zamba`-compatible conversion of [Google's SpeciesNet](https://github.com/google/cameratrapai) classifier (EfficientNetV2-M backbone, 2,000+ class global taxonomy). Select it with `zamba image predict --model speciesnet` or `zamba image train --model speciesnet`. See the [Available Models](https://zamba.drivendata.org/docs/stable/models/image-classification/#speciesnet) page.
  - Persist the preprocessing `model_family` on image classifier checkpoints and derive inference transforms (resize size, interpolation, normalization) from the loaded checkpoint rather than from the `model_name` string. This fixes incorrect preprocessing (and near-random predictions) when running `zamba image predict --checkpoint <ckpt>` on a fine-tuned SpeciesNet model without also passing `--model`.
-
-## v.2.7.0 (2026-02-17)
-
  - Split core dependencies into optional extras: `video` (av, ffmpeg-python, pytorchvideo, pixeltable-yolox, etc.), `image` (megadetector, Pillow), `tests` (pytest, black, flake8, coverage, nvidia-ml-py, etc.), and `docs` (mkdocs, mike, mkdocstrings). Base install no longer pulls in video/image stacks; use `pip install zamba[video]`, `zamba[image]`, or `zamba[video,image]`.
  - Remove `requirements-dev.txt` and `requirements-dev/`; use `uv pip install -e ".[image,video]" --group dev` for development or `pip install -e ".[tests,image,video,docs]"` with pip.
  - Replace `mlflow` with `mlflow-skinny` in core dependencies. Add `pyarrow>=23.0.0`. Add Windows-specific torch version constraint for gloo bug. Declare Python 3.11–3.13 support and `requires-python = ">=3.11, <3.14"`.
