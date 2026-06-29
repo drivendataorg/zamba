@@ -2171,6 +2171,7 @@ There you can find <a href="https://github.com/drivendataorg/zamba/issues">open 
 <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>zamba
 <span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[image,video]&quot;</span><span class="w"> </span>--group<span class="w"> </span>dev
 </code></pre></div></p>
+<p>When installing from a clone, <code>[tool.uv]</code> in <code>pyproject.toml</code> already sets <code>torch-backend = "auto"</code> and the <code>protobuf</code> / <code>setuptools</code> overrides needed for both image and video extras. End users installing from PyPI need to pass <code>--torch-backend=auto</code> and <code>--overrides</code> manually; see <a href="../install/#uv-install-tips">Installing zamba</a>.</p>
 <p>Or use the Makefile target (which uses uv):
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span>requirements
 </code></pre></div></p>

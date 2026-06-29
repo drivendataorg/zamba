@@ -2278,18 +2278,18 @@ frameborder="0" allowfullscreen=""></iframe></div>
 <li>Python &gt;= 3.11</li>
 <li>FFmpeg &gt; 4.3 and &lt; 5 (only needed for video workflows)</li>
 </ul>
-<p>Then install the extras you need with uv. <strong>We recommend only installing one or the other depending on your use case.</strong></p>
+<p>Then install the extras you need with uv. <strong>We recommend only installing one or the other depending on your use case.</strong> Pass <code>--torch-backend=auto</code> so uv installs a PyTorch build matched to your GPU (or CPU):</p>
 <div class="highlight"><pre><span></span><code><span class="gp"># </span>For<span class="w"> </span>video<span class="w"> </span>workflows
-<span class="go">uv pip install zamba[video]</span>
+<span class="go">uv pip install zamba[video] --torch-backend=auto</span>
 
 <span class="gp"># </span>For<span class="w"> </span>image<span class="w"> </span>workflows
-<span class="go">uv pip install zamba[image]</span>
+<span class="go">uv pip install zamba[image] --torch-backend=auto</span>
 
-<span class="gp"># </span>For<span class="w"> </span>both
-<span class="go">uv pip install zamba[video,image]</span>
+<span class="gp"># </span>For<span class="w"> </span>both<span class="w"> </span><span class="o">(</span>requires<span class="w"> </span>protobuf/setuptools<span class="w"> </span>overrides<span class="w"> </span>—<span class="w"> </span>see<span class="w"> </span>Installation<span class="w"> </span>docs<span class="o">)</span>
+<span class="go">uv pip install zamba[video,image] --torch-backend=auto --overrides zamba-overrides.txt</span>
 </code></pre></div>
+<p>See the <a href="install/">Installation</a> page for the overrides file and full details.</p>
 <p>You can also use pip: <code>pip install zamba[video]</code>, <code>pip install zamba[image]</code>, or <code>pip install zamba[video,image]</code>.</p>
-<p>See the <a href="install/">Installation</a> page of the documentation for details.</p>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
 <p>Once you have <code>zamba</code> installed, some good starting points are:</p>
 <ul>
