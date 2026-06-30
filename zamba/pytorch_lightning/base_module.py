@@ -98,28 +98,39 @@ class ZambaClassificationLightningModule(LightningModule):
         )
 
     def on_load_checkpoint(self, checkpoint):
-        """Some third-party models (notably speciesnet) save the model weights without the 'model.' prefix.
-        This function remaps the keys to add the 'model.' prefix so it is compatible with PyTorch Lightning.
+        """Remap checkpoint state_dict keys so they match the keys this module currently
+        expects. This reconciles two independent sources of key mismatch:
+
+        - ``torch.compile`` inserts an ``_orig_mod.`` segment (e.g.
+          ``model._orig_mod.stem.0.weight``). Depending on whether the *live* module is
+          compiled, the checkpoint may need that segment added or removed. We match on the
+          key with ``_orig_mod.`` removed, so it works in either direction (e.g. an
+          in-process lr_find restore of a compiled module, or predict-time loading of a
+          compiled checkpoint into an uncompiled module).
+        - Some third-party models (notably speciesnet) save the backbone weights without
+          the leading ``model.`` prefix.
         """
         sd = checkpoint.get("state_dict", {})
         if not sd:
             return
 
-        # Does this module expect 'model.'-prefixed keys?
         expected = self.state_dict()
-        expects_model_prefix = any(k.startswith("model.") for k in expected.keys())
-        has_model_prefix = any(k.startswith("model.") for k in sd.keys())
-        if not expects_model_prefix or has_model_prefix:
-            return
 
-        # Build a suffix set of the expected 'model.' parameters
-        expected_suffixes = {k[len("model.") :] for k in expected.keys() if k.startswith("model.")}
+        def normalize(key: str) -> str:
+            return key.replace("_orig_mod.", "")
 
-        # Prefix only the keys that map into the 'model.' subtree; leave others alone
+        # Map each expected key by its normalized (compile-agnostic) form so we can
+        # recover the exact key the live module wants regardless of compile state.
+        normalized_to_expected = {normalize(k): k for k in expected.keys()}
+
         remapped = {}
         for k, v in sd.items():
-            if k in expected_suffixes:
-                remapped[f"model.{k}"] = v
+            nk = normalize(k)
+            if nk in normalized_to_expected:
+                remapped[normalized_to_expected[nk]] = v
+            elif f"model.{nk}" in normalized_to_expected:
+                # checkpoint stored backbone weights without the 'model.' prefix
+                remapped[normalized_to_expected[f"model.{nk}"]] = v
             else:
                 remapped[k] = v
 
