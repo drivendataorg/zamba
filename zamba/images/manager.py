@@ -398,11 +398,19 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             batch_size=config.batch_size,
         )
 
-    # torch.compile is deferred until after batch-size / LR tuning below.
-    # Compiling before tuning breaks PyTorch Lightning's lr_find because self.log()
-    # introspects training_step via inspect, which torch dynamo cannot trace.
-    compile_enabled = sys.platform not in ("darwin", "win32")
+    # Compile only the inner backbone (not the whole LightningModule) for faster
+    # performance; disabled for MacOS and Windows (unsupported/unreliable). Compiling
+    # the LightningModule makes torch dynamo trace training_step, which calls
+    # self.log() and fails because Lightning introspects the hook with inspect.
     classifier = classifier_module
+    if sys.platform not in ("darwin", "win32"):
+        try:
+            torch._dynamo.config.cache_size_limit = (
+                16  # cache more functions than default 8 to avoid recompiling
+            )
+        except Exception:
+            logger.warning("Could not configure torch dynamo cache size limit")
+        classifier_module.model = torch.compile(classifier_module.model)
 
     # lower precision multiplication to speed up training
     try:
@@ -413,10 +421,16 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
     # Set log_every_n_steps to a reasonable value (e.g., 1/10th of batches, minimum of 1)
     log_every_n_steps = max(1, num_training_batches // 10)
 
-    # get the strategy based on devices
+    # Use DDP only for genuine multi-device runs. Note that `devices` may be the
+    # string "auto" (the default), which is iterable but NOT multi-device, so it must
+    # not fall into the Iterable branch below or single-GPU jobs wrongly run under DDP.
     if isinstance(config.devices, int) and config.devices > 1:
         strategy = "ddp"
-    elif isinstance(config.devices, Iterable) and len(config.devices) > 1:
+    elif (
+        not isinstance(config.devices, str)
+        and isinstance(config.devices, Iterable)
+        and len(list(config.devices)) > 1
+    ):
         strategy = "ddp"
     else:
         strategy = "auto"
@@ -473,15 +487,6 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         classifier.hparams.lr = new_lr
 
     _save_config(classifier, config)
-
-    if compile_enabled:
-        try:
-            torch._dynamo.config.cache_size_limit = (
-                16  # cache more functions than default 8 to avoid recompiling
-            )
-        except Exception:
-            logger.warning("Could not configure torch dynamo cache size limit")
-        classifier = torch.compile(classifier_module)
 
     # Train with distributed training
     train_trainer.fit(
