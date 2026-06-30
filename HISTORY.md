@@ -1,5 +1,11 @@
 # `zamba` changelog
 
+## v2.7.2 (2026-06-30)
+
+ - Fix single-GPU image training wrongly running under DDP when `devices="auto"`.
+ - Compile only the image backbone, not the whole module, so `torch.compile` no longer breaks training under DDP.
+ - Reconcile `_orig_mod.` checkpoint keys so compiled-model checkpoints load on any setup.
+
 ## v2.7.1 (2026-06-29)
 
  - Fix video and image training on PyTorch 2.7+ by dropping deprecated scheduler kwargs like `verbose`.
