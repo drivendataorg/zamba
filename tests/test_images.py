@@ -233,6 +233,34 @@ def test_save_and_load(model_class, tmp_path):
     assert model.num_classes == 2
 
 
+def test_image_classifier_from_disk_does_not_request_pretrained_weights(monkeypatch, tmp_path):
+    pretrained_values = []
+
+    def fake_create_model(model_name, pretrained, num_classes):
+        pretrained_values.append(pretrained)
+        return torch.nn.Sequential(torch.nn.Flatten(), torch.nn.Linear(4, num_classes))
+
+    monkeypatch.setattr("zamba.images.classifier.timm.create_model", fake_create_model)
+
+    model = ImageClassifierModule(
+        species=["cat", "dog"], batch_size=2, image_size=224, model_name="tiny"
+    )
+    path = tmp_path / "tiny.ckpt"
+    model.to_disk(path)
+
+    ImageClassifierModule.from_disk(path)
+    # Finetuning official checkpoints goes through from_disk as well.
+    ImageClassifierModule(
+        species=["cat", "dog"],
+        batch_size=2,
+        image_size=224,
+        model_name="tiny",
+        finetune_from=path,
+    )
+
+    assert pretrained_values == [True, False, False]
+
+
 @pytest.mark.parametrize(
     "name,expected",
     [
