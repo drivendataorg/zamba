@@ -213,6 +213,38 @@ def test_train_with_different_path_formats(mocker, ena24_dataset_setup, input_fo
     assert processed_images == expected_images
 
 
+def test_train_cli_respects_batch_size(mocker, ena24_dataset_setup):
+    """--batch-size must reach the training config (was silently dropped from to_drop)."""
+    train_mock = mocker.patch("zamba.images.manager.ZambaImagesManager.train")
+
+    result = runner.invoke(
+        image_app,
+        [
+            "train",
+            "--data-dir",
+            str(ena24_dataset_setup["data_dir"]),
+            "--labels",
+            str(ena24_dataset_setup["relative_labels"]),
+            "--save-dir",
+            str(ena24_dataset_setup["save_dir"]),
+            "--cache-dir",
+            str(ena24_dataset_setup["cache_dir"]),
+            "--checkpoint-path",
+            str(ena24_dataset_setup["checkpoint_dir"]),
+            "--from-scratch",
+            "--batch-size",
+            "1",
+            "--max-epochs",
+            "1",
+            "--yes",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    train_mock.assert_called_once()
+    assert train_mock.call_args[0][0].batch_size == 1
+
+
 def test_image_cli_file_discovery(mocker, ena24_dataset_setup):
     """Test that the image CLI can discover files in a directory when no CSV is provided."""
     predict_mock = mocker.patch("zamba.images.manager.ZambaImagesManager.predict")

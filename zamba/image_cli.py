@@ -302,7 +302,6 @@ def train(
             "debug": lambda x: ("debug", x if isinstance(x, int) and x > 0 else None),
         },
         to_drop=[
-            "batch_size",
             "config",
             "mlflow_experiment_name",
             "model",
