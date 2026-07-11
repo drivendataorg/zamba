@@ -20,6 +20,8 @@ from zamba.images.data import absolute_bbox  # noqa: E402
 from zamba.images.dataset.dataset import crop_image, prepare_dataset  # noqa: E402
 from zamba.images.manager import (  # noqa: E402
     get_default_transforms,
+    get_prediction_labels,
+    normalize_prediction_labels,
     resolve_inference_family,
     resolve_training_image_size,
     train,
@@ -136,6 +138,26 @@ def test_train_config_labels(labels_path, images_path):
     config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path)
     logging.warning(config.labels.head())
     assert "label" in config.labels.columns
+    assert config.species_in_label_order == ["cat", "chimpanzee", "wild_dog"]
+
+
+def test_normalize_prediction_labels_preserves_new_and_normalizes_legacy_labels():
+    assert normalize_prediction_labels(["cat", "species_wild_dog", "species_species_fox"]) == [
+        "cat",
+        "wild_dog",
+        "species_fox",
+    ]
+
+    legacy_checkpoint = SimpleNamespace(
+        species=["species_wild_dog"], hparams={"species": ["species_wild_dog"]}
+    )
+    assert get_prediction_labels(legacy_checkpoint) == ["wild_dog"]
+
+    new_checkpoint = SimpleNamespace(
+        species=["species_wild_dog"],
+        hparams={"species": ["species_wild_dog"], "species_labels_are_user_provided": True},
+    )
+    assert get_prediction_labels(new_checkpoint) == ["species_wild_dog"]
 
 
 def test_train_config_data_exist(labels_path, images_path):
@@ -516,6 +538,7 @@ def test_train_integration(
         from_scratch=False,
         save_dir=save_dir,
         extra_train_augmentations=extra_train_augmentations,
+        num_workers=0,
     )
 
     train(config)
@@ -523,3 +546,7 @@ def test_train_integration(
 
     for f in ["train_configuration.yaml", "val_metrics.json", f"{config.model_name}.ckpt"]:
         assert (config.save_dir / f).exists()
+
+    checkpoint = torch.load(config.save_dir / f"{config.model_name}.ckpt", weights_only=False)
+    assert checkpoint["hyper_parameters"]["species"] == config.species_in_label_order
+    assert checkpoint["hyper_parameters"]["species_labels_are_user_provided"] is True

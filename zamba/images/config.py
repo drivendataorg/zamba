@@ -423,8 +423,13 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         # We validate that all the images exist prior to this, so once this assembles the set of classes,
         # we should have at least one example of each label and don't need to worry about filtering out classes
         # with missing examples.
-        species_columns = labels.columns[labels.columns.str.contains("species_")]
-        values["species_in_label_order"] = species_columns.to_list()
+        species_columns = labels.columns[labels.columns.str.startswith("species_")]
+        # ``species_`` is an implementation detail of the temporary one-hot encoding.
+        # Keep those columns for constructing numeric targets, but save the labels users
+        # supplied in the checkpoint so they are also used in prediction outputs.
+        values["species_in_label_order"] = [
+            column.removeprefix("species_") for column in species_columns
+        ]
 
         indices = (
             labels[species_columns].idxmax(axis=1).apply(lambda x: species_columns.get_loc(x))
@@ -468,9 +473,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
 
         values["labels"] = labels.reset_index()
 
-        example_species = [
-            species.replace("species_", "") for species in values["species_in_label_order"][:3]
-        ]
+        example_species = values["species_in_label_order"][:3]
         logger.info(
             f"Labels preprocessed. {len(values['species_in_label_order'])} species found: {example_species}..."
         )
