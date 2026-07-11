@@ -3757,7 +3757,37 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 <span class="normal">494</span>
 <span class="normal">495</span>
 <span class="normal">496</span>
-<span class="normal">497</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImageClassificationTrainingConfig</span><span class="p">(</span><span class="n">ZambaImageConfig</span><span class="p">):</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImageClassificationTrainingConfig</span><span class="p">(</span><span class="n">ZambaImageConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for running image classification training.</span>
 
 <span class="sd">    Args:</span>
@@ -3952,10 +3982,36 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">preprocess_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;One hot encode and add splits.&quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels.&quot;</span><span class="p">)</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># Preserve the user-facing label names for checkpoints and predictions. The</span>
+        <span class="c1"># normalized names below remain an internal implementation detail used for</span>
+        <span class="c1"># one-hot encoding and numeric target creation.</span>
+        <span class="n">user_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">normalized_labels</span> <span class="o">=</span> <span class="n">user_labels</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">display_labels_by_normalized_name</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;normalized&quot;</span><span class="p">:</span> <span class="n">normalized_labels</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">:</span> <span class="n">user_labels</span><span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">case_collisions</span> <span class="o">=</span> <span class="n">display_labels_by_normalized_name</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;normalized&quot;</span><span class="p">)[</span>
+            <span class="s2">&quot;display&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+        <span class="n">case_collisions</span> <span class="o">=</span> <span class="n">case_collisions</span><span class="p">[</span><span class="n">case_collisions</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">case_collisions</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="n">ambiguous_labels</span> <span class="o">=</span> <span class="n">display_labels_by_normalized_name</span><span class="p">[</span>
+                <span class="n">display_labels_by_normalized_name</span><span class="p">[</span><span class="s2">&quot;normalized&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">case_collisions</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="p">][</span><span class="s2">&quot;display&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Labels that differ only by case are not supported: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ambiguous_labels</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">display_labels_by_normalized_name</span> <span class="o">=</span> <span class="n">display_labels_by_normalized_name</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span>
+            <span class="s2">&quot;normalized&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;normalized&quot;</span><span class="p">)[</span><span class="s2">&quot;display&quot;</span><span class="p">]</span>
 
         <span class="c1"># lowercase to facilitate subset checking</span>
-        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalized_labels</span>
 
         <span class="c1"># one hot encoding</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;species&quot;</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">])</span>
@@ -3963,8 +4019,14 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
         <span class="c1"># We validate that all the images exist prior to this, so once this assembles the set of classes,</span>
         <span class="c1"># we should have at least one example of each label and don&#39;t need to worry about filtering out classes</span>
         <span class="c1"># with missing examples.</span>
-        <span class="n">species_columns</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">)]</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+        <span class="n">species_columns</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">)]</span>
+        <span class="c1"># ``species_`` is an implementation detail of the temporary one-hot encoding.</span>
+        <span class="c1"># Keep those columns for numeric targets, and map their order back to the</span>
+        <span class="c1"># original labels so checkpoint outputs align with those target indices.</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">display_labels_by_normalized_name</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">species_columns</span>
+        <span class="p">]</span>
 
         <span class="n">indices</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">labels</span><span class="p">[</span><span class="n">species_columns</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">species_columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -4008,9 +4070,7 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
-        <span class="n">example_species</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">species</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span>
-        <span class="p">]</span>
+        <span class="n">example_species</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Labels preprocessed. </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;species_in_label_order&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> species found: </span><span class="si">{</span><span class="n">example_species</span><span class="si">}</span><span class="s2">...&quot;</span>
         <span class="p">)</span>
@@ -4131,14 +4191,70 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 <span class="normal">474</span>
 <span class="normal">475</span>
 <span class="normal">476</span>
-<span class="normal">477</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">preprocess_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;One hot encode and add splits.&quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels.&quot;</span><span class="p">)</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Preserve the user-facing label names for checkpoints and predictions. The</span>
+    <span class="c1"># normalized names below remain an internal implementation detail used for</span>
+    <span class="c1"># one-hot encoding and numeric target creation.</span>
+    <span class="n">user_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">normalized_labels</span> <span class="o">=</span> <span class="n">user_labels</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">display_labels_by_normalized_name</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;normalized&quot;</span><span class="p">:</span> <span class="n">normalized_labels</span><span class="p">,</span> <span class="s2">&quot;display&quot;</span><span class="p">:</span> <span class="n">user_labels</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">case_collisions</span> <span class="o">=</span> <span class="n">display_labels_by_normalized_name</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;normalized&quot;</span><span class="p">)[</span>
+        <span class="s2">&quot;display&quot;</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+    <span class="n">case_collisions</span> <span class="o">=</span> <span class="n">case_collisions</span><span class="p">[</span><span class="n">case_collisions</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">case_collisions</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">ambiguous_labels</span> <span class="o">=</span> <span class="n">display_labels_by_normalized_name</span><span class="p">[</span>
+            <span class="n">display_labels_by_normalized_name</span><span class="p">[</span><span class="s2">&quot;normalized&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">case_collisions</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="p">][</span><span class="s2">&quot;display&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Labels that differ only by case are not supported: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ambiguous_labels</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">display_labels_by_normalized_name</span> <span class="o">=</span> <span class="n">display_labels_by_normalized_name</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span>
+        <span class="s2">&quot;normalized&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;normalized&quot;</span><span class="p">)[</span><span class="s2">&quot;display&quot;</span><span class="p">]</span>
 
     <span class="c1"># lowercase to facilitate subset checking</span>
-    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalized_labels</span>
 
     <span class="c1"># one hot encoding</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;species&quot;</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">])</span>
@@ -4146,8 +4262,14 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
     <span class="c1"># We validate that all the images exist prior to this, so once this assembles the set of classes,</span>
     <span class="c1"># we should have at least one example of each label and don&#39;t need to worry about filtering out classes</span>
     <span class="c1"># with missing examples.</span>
-    <span class="n">species_columns</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">)]</span>
-    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="n">species_columns</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">)]</span>
+    <span class="c1"># ``species_`` is an implementation detail of the temporary one-hot encoding.</span>
+    <span class="c1"># Keep those columns for numeric targets, and map their order back to the</span>
+    <span class="c1"># original labels so checkpoint outputs align with those target indices.</span>
+    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">display_labels_by_normalized_name</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">species_columns</span>
+    <span class="p">]</span>
 
     <span class="n">indices</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">labels</span><span class="p">[</span><span class="n">species_columns</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">species_columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -4191,9 +4313,7 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 
     <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
-    <span class="n">example_species</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">species</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span>
-    <span class="p">]</span>
+    <span class="n">example_species</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;species_in_label_order&quot;</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Labels preprocessed. </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;species_in_label_order&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> species found: </span><span class="si">{</span><span class="n">example_species</span><span class="si">}</span><span class="s2">...&quot;</span>
     <span class="p">)</span>
