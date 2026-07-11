@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+ - Fix `zamba image train --batch-size` (and yaml `batch_size`) being ignored; the CLI was dropping the value before config construction.
  - Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official `lila.science` or `speciesnet`); those weights were immediately overwritten by the checkpoint ([PR #407](https://github.com/drivendataorg/zamba/pull/407)).
 
 ## v2.7.2 (2026-06-30)
