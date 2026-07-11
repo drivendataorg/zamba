@@ -73,6 +73,18 @@ def get_weights(split):
     return torch.tensor(class_weights).to(torch.float32)
 
 
+def normalize_prediction_labels(species: list[str]) -> list[str]:
+    """Remove the legacy one-hot-encoding prefix from checkpoint labels."""
+    return [label.removeprefix("species_") for label in species]
+
+
+def get_prediction_labels(classifier_module) -> list[str]:
+    """Return user-facing labels for new and legacy image checkpoints."""
+    if classifier_module.hparams.get("species_labels_are_user_provided", False):
+        return classifier_module.species
+    return normalize_prediction_labels(classifier_module.species)
+
+
 def get_default_transforms(model_family: str, image_size=None):
     """Build the (top, bottom) eval transform lists for a preprocessing family.
 
@@ -149,6 +161,7 @@ def predict(config: ImageClassificationPredictConfig) -> None:
         checkpoint=config.checkpoint,
     )
     classifier_module.eval()
+    output_species = get_prediction_labels(classifier_module)
 
     # The loaded checkpoint is the source of truth for preprocessing. Derive the family
     # (and image size) from the module rather than from config.model_name, which is
@@ -212,7 +225,7 @@ def predict(config: ImageClassificationPredictConfig) -> None:
 
         # Split result into separate columns for each class using "species" from classifier module
         species_df = pd.DataFrame(df["result"].tolist(), index=df.index)
-        species_df.columns = classifier_module.species
+        species_df.columns = output_species
         df = pd.concat([df, species_df], axis=1)
 
         # Drop the original 'bbox' and 'result' columns
@@ -224,9 +237,7 @@ def predict(config: ImageClassificationPredictConfig) -> None:
             save_path = save_path.with_suffix(".csv")
             df.to_csv(save_path, index=False)
         elif config.results_file_format == ResultsFormat.MEGADETECTOR:
-            megadetector_format_results = results_to_megadetector_format(
-                df, classifier_module.species
-            )
+            megadetector_format_results = results_to_megadetector_format(df, output_species)
             save_path = save_path.with_suffix(".json")
             with open(save_path, "w") as f:
                 json.dump(megadetector_format_results.dict(), f)
@@ -397,6 +408,11 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
             species=config.species_in_label_order,
             batch_size=config.batch_size,
         )
+
+    # New checkpoints store the original label names rather than the temporary
+    # one-hot column names. This distinguishes them from legacy checkpoints whose
+    # labels need output-time normalization.
+    classifier_module.hparams["species_labels_are_user_provided"] = True
 
     # Compile only the inner backbone (not the whole LightningModule) for faster
     # performance; disabled for MacOS and Windows (unsupported/unreliable). Compiling

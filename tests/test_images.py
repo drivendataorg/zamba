@@ -20,11 +20,14 @@ from zamba.images.data import absolute_bbox  # noqa: E402
 from zamba.images.dataset.dataset import crop_image, prepare_dataset  # noqa: E402
 from zamba.images.manager import (  # noqa: E402
     get_default_transforms,
+    get_prediction_labels,
+    normalize_prediction_labels,
     resolve_inference_family,
     resolve_training_image_size,
     train,
 )
 from zamba.images.result import results_to_megadetector_format  # noqa: E402
+from zamba.models.instantiation import instantiate_model  # noqa: E402
 
 from conftest import ASSETS_DIR, DummyZambaImageClassificationLightningModule  # noqa: E402
 
@@ -136,6 +139,73 @@ def test_train_config_labels(labels_path, images_path):
     config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels_path)
     logging.warning(config.labels.head())
     assert "label" in config.labels.columns
+    assert config.species_in_label_order == ["cat", "chimpanzee", "wild_dog"]
+
+
+def test_train_config_preserves_user_label_names_and_target_order(images_path):
+    user_labels = ["Wild Dog", "Cat", "Chimpanzee"]
+    labels = pd.DataFrame(
+        {
+            "filepath": [
+                "images/wild_dog_jackal.jpg",
+                "images/small_cat.jpg",
+                "images/chimpanzee_bonobo.jpeg",
+            ],
+            "label": user_labels,
+            "split": "train",
+        }
+    )
+
+    config = ImageClassificationTrainingConfig(data_dir=images_path, labels=labels)
+
+    assert config.species_in_label_order == ["Cat", "Chimpanzee", "Wild Dog"]
+    assert [
+        config.species_in_label_order[index] for index in config.labels["label"]
+    ] == user_labels
+    assert labels["label"].tolist() == user_labels
+
+
+def test_train_config_rejects_labels_that_differ_only_by_case(images_path):
+    labels = pd.DataFrame(
+        {
+            "filepath": ["images/small_cat.jpg", "images/wild_dog_jackal.jpg"],
+            "label": ["Fox", "fox"],
+            "split": "train",
+        }
+    )
+
+    with pytest.raises(ValueError, match="differ only by case"):
+        ImageClassificationTrainingConfig(data_dir=images_path, labels=labels)
+
+
+def test_finetuning_uses_case_insensitive_subset_matching(dummy_checkpoint):
+    model = instantiate_model(
+        checkpoint=dummy_checkpoint,
+        labels=pd.DataFrame(),
+        species=["Cat"],
+        use_default_model_labels=True,
+    )
+
+    assert model.species == ["cat", "wild_dog", "chimpanzee", "lion"]
+
+
+def test_normalize_prediction_labels_preserves_new_and_normalizes_legacy_labels():
+    assert normalize_prediction_labels(["cat", "species_wild_dog", "species_species_fox"]) == [
+        "cat",
+        "wild_dog",
+        "species_fox",
+    ]
+
+    legacy_checkpoint = SimpleNamespace(
+        species=["species_wild_dog"], hparams={"species": ["species_wild_dog"]}
+    )
+    assert get_prediction_labels(legacy_checkpoint) == ["wild_dog"]
+
+    new_checkpoint = SimpleNamespace(
+        species=["species_wild_dog"],
+        hparams={"species": ["species_wild_dog"], "species_labels_are_user_provided": True},
+    )
+    assert get_prediction_labels(new_checkpoint) == ["species_wild_dog"]
 
 
 def test_train_config_data_exist(labels_path, images_path):
@@ -504,10 +574,14 @@ def test_train_integration(
 ):
     save_dir = tmp_path / "my_model"
     checkpoint_path = tmp_path / "checkpoints"
+    labels = pd.read_csv(labels_path)
+    labels["label"] = labels["label"].replace(
+        {"cat": "Cat", "wild_dog": "Wild Dog", "chimpanzee": "Chimpanzee", "lion": "Lion"}
+    )
 
     config = ImageClassificationTrainingConfig(
         data_dir=images_path,
-        labels=labels_path,
+        labels=labels,
         model_name="dummy",
         max_epochs=1,
         batch_size=1,
@@ -516,6 +590,7 @@ def test_train_integration(
         from_scratch=False,
         save_dir=save_dir,
         extra_train_augmentations=extra_train_augmentations,
+        num_workers=0,
     )
 
     train(config)
@@ -523,3 +598,7 @@ def test_train_integration(
 
     for f in ["train_configuration.yaml", "val_metrics.json", f"{config.model_name}.ckpt"]:
         assert (config.save_dir / f).exists()
+
+    checkpoint = torch.load(config.save_dir / f"{config.model_name}.ckpt", weights_only=False)
+    assert checkpoint["hyper_parameters"]["species"] == config.species_in_label_order
+    assert checkpoint["hyper_parameters"]["species_labels_are_user_provided"] is True

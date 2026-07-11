@@ -412,10 +412,36 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     def preprocess_labels(cls, values):
         """One hot encode and add splits."""
         logger.info("Preprocessing labels.")
-        labels = values["labels"]
+        labels = values["labels"].copy()
+
+        # Preserve the user-facing label names for checkpoints and predictions. The
+        # normalized names below remain an internal implementation detail used for
+        # one-hot encoding and numeric target creation.
+        user_labels = labels["label"].copy()
+        normalized_labels = user_labels.str.lower()
+        display_labels_by_normalized_name = pd.DataFrame(
+            {"normalized": normalized_labels, "display": user_labels}
+        )
+
+        case_collisions = display_labels_by_normalized_name.groupby("normalized")[
+            "display"
+        ].nunique()
+        case_collisions = case_collisions[case_collisions > 1]
+        if not case_collisions.empty:
+            ambiguous_labels = display_labels_by_normalized_name[
+                display_labels_by_normalized_name["normalized"].isin(case_collisions.index)
+            ]["display"].drop_duplicates()
+            raise ValueError(
+                "Labels that differ only by case are not supported: "
+                f"{ambiguous_labels.tolist()}"
+            )
+
+        display_labels_by_normalized_name = display_labels_by_normalized_name.drop_duplicates(
+            "normalized"
+        ).set_index("normalized")["display"]
 
         # lowercase to facilitate subset checking
-        labels["label"] = labels.label.str.lower()
+        labels["label"] = normalized_labels
 
         # one hot encoding
         labels = pd.get_dummies(labels.rename(columns={"label": "species"}), columns=["species"])
@@ -423,8 +449,14 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
         # We validate that all the images exist prior to this, so once this assembles the set of classes,
         # we should have at least one example of each label and don't need to worry about filtering out classes
         # with missing examples.
-        species_columns = labels.columns[labels.columns.str.contains("species_")]
-        values["species_in_label_order"] = species_columns.to_list()
+        species_columns = labels.columns[labels.columns.str.startswith("species_")]
+        # ``species_`` is an implementation detail of the temporary one-hot encoding.
+        # Keep those columns for numeric targets, and map their order back to the
+        # original labels so checkpoint outputs align with those target indices.
+        values["species_in_label_order"] = [
+            display_labels_by_normalized_name[column.removeprefix("species_")]
+            for column in species_columns
+        ]
 
         indices = (
             labels[species_columns].idxmax(axis=1).apply(lambda x: species_columns.get_loc(x))
@@ -468,9 +500,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
 
         values["labels"] = labels.reset_index()
 
-        example_species = [
-            species.replace("species_", "") for species in values["species_in_label_order"][:3]
-        ]
+        example_species = values["species_in_label_order"][:3]
         logger.info(
             f"Labels preprocessed. {len(values['species_in_label_order'])} species found: {example_species}..."
         )
