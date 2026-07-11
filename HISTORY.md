@@ -1,5 +1,9 @@
 # `zamba` changelog
 
+## Unreleased
+
+ - Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official `lila.science` or `speciesnet`); those weights were immediately overwritten by the checkpoint ([PR #407](https://github.com/drivendataorg/zamba/pull/407)).
+
 ## v2.7.2 (2026-06-30)
 
  - Fix single-GPU image training wrongly running under DDP when `devices="auto"`.

@@ -44,6 +44,7 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         scheduler: Optional[LRScheduler] = None,
         scheduler_params: Optional[dict] = None,
         model_family: Optional[str] = None,
+        pretrained: bool = True,
         **kwargs: Any,
     ) -> None:
         super().__init__(
@@ -68,7 +69,7 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
 
         if finetune_from is None:
             self.model = timm.create_model(
-                self.base_model_name, pretrained=True, num_classes=self.num_classes
+                self.base_model_name, pretrained=pretrained, num_classes=self.num_classes
             )
         else:
             self.model = self.from_disk(finetune_from, batch_size=batch_size, **kwargs).model
@@ -100,6 +101,12 @@ class ImageClassifierModule(ZambaClassificationLightningModule):
         # store the *resolved* family (save_hyperparameters would capture the raw arg,
         # which may be None before inference)
         self.hparams["model_family"] = self.model_family
+
+    @classmethod
+    def from_disk(cls, path: os.PathLike, **kwargs):
+        # Checkpoint weights replace the backbone; never pull ImageNet/timm weights.
+        kwargs["pretrained"] = False
+        return super().from_disk(path, **kwargs)
 
     def configure_optimizers(self):
         # Use Adam optimizer
