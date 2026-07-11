@@ -3,6 +3,7 @@
 ## Unreleased
 
  - Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official `lila.science` or `speciesnet`); those weights were immediately overwritten by the checkpoint ([PR #407](https://github.com/drivendataorg/zamba/pull/407)).
+ - Preserve user-provided labels in image fine-tuning checkpoints and prediction outputs instead of exposing the temporary `species_` one-hot prefix.
 
 ## v2.7.2 (2026-06-30)
 
