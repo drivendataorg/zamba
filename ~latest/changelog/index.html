@@ -2332,6 +2332,7 @@
 <h1 id="zamba-changelog"><code>zamba</code> changelog<a class="headerlink" href="#zamba-changelog" title="Permanent link">&para;</a></h1>
 <h2 id="unreleased">Unreleased<a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Fix <code>zamba image train --batch-size</code> (and yaml <code>batch_size</code>) being ignored; the CLI was dropping the value before config construction.</li>
 <li>Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official <code>lila.science</code> or <code>speciesnet</code>); those weights were immediately overwritten by the checkpoint (<a href="https://github.com/drivendataorg/zamba/pull/407">PR #407</a>).</li>
 </ul>
 <h2 id="v272-2026-06-30">v2.7.2 (2026-06-30)<a class="headerlink" href="#v272-2026-06-30" title="Permanent link">&para;</a></h2>
