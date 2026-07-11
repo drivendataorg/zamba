@@ -21,6 +21,13 @@ def _apply_scheduler_config(hparams, scheduler_config):
         hparams.update(scheduler_config.dict())
 
 
+def _species_are_subset(species, model_species):
+    """Compare labels using the normalization applied during image training."""
+    return {label.lower() for label in species}.issubset(
+        {label.lower() for label in model_species}
+    )
+
+
 def instantiate_model(
     checkpoint: os.PathLike,
     labels: Optional[pd.DataFrame] = None,
@@ -73,7 +80,7 @@ def instantiate_model(
         return model
 
     # finetuning / resume
-    is_subset = set(species).issubset(set(hparams["species"]))
+    is_subset = _species_are_subset(species, hparams["species"])
 
     if is_subset:
         if use_default_model_labels:
