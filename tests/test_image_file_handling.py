@@ -497,3 +497,7 @@ def test_image_cli_megadetector_output(mocker, ena24_dataset_setup):
 
     classification = detection["classifications"][0]
     assert len(classification) == 2
+    # Classification category must be a string-int to match the keys in
+    # classification_categories (like detection categories), per the MD spec.
+    assert isinstance(classification[0], str)
+    assert classification[0] in predictions["classification_categories"]

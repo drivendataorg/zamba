@@ -29,13 +29,16 @@ class ClassificationResultMegadetectorFormat(BaseModel):
 def get_top_3_classifications(row, species) -> list:
     row_to_compare = row[species]
     row_to_compare = pd.to_numeric(row_to_compare, errors="coerce")
-    return [[species.index(col), value] for col, value in row_to_compare.nlargest(3).items()]
+    return [
+        [str(species.index(col)), round(float(value), 4)]
+        for col, value in row_to_compare.nlargest(3).items()
+    ]
 
 
 def results_to_megadetector_format(
     df: pd.DataFrame, species: list
 ) -> ClassificationResultMegadetectorFormat:
-    classification_categories = {idx: specie for idx, specie in enumerate(species)}
+    classification_categories = {str(idx): specie for idx, specie in enumerate(species)}
     info = {}
     detection_categories = {"1": "animal", "2": "person", "3": "vehicle"}
 
@@ -57,12 +60,12 @@ def results_to_megadetector_format(
         image_results[filepath].detections.append(
             ImageDetectionResult(
                 category=detection_category,
-                conf=row["detection_conf"],
+                conf=round(float(row["detection_conf"]), 4),
                 bbox=[
-                    row["x1"] / width,
-                    row["y1"] / height,
-                    (row["x2"] - row["x1"]) / width,
-                    (row["y2"] - row["y1"]) / height,
+                    round(row["x1"] / width, 4),
+                    round(row["y1"] / height, 4),
+                    round((row["x2"] - row["x1"]) / width, 4),
+                    round((row["y2"] - row["y1"]) / height, 4),
                 ],  # MegaDetector bbox is relative measures from top left [x1, y1, width, height]
                 classifications=detection_classifications,
             )

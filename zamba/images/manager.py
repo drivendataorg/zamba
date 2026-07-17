@@ -240,7 +240,7 @@ def predict(config: ImageClassificationPredictConfig) -> None:
             megadetector_format_results = results_to_megadetector_format(df, output_species)
             save_path = save_path.with_suffix(".json")
             with open(save_path, "w") as f:
-                json.dump(megadetector_format_results.dict(), f)
+                json.dump(megadetector_format_results.dict(), f, indent=1)
         logger.info(f"Results saved to {save_path}")
 
 
