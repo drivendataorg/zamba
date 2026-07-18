@@ -38,7 +38,7 @@ $ zamba image train --data-dir example_images/ --labels example_labels.csv
 
 To run `zamba image train` in the command line, you must specify `labels` and `data_dir`.
 
-* **`--labels PATH`:** Path to a CSV or JSON file containing the image labels to use as ground truth during training. For CSV files, there must be columns for both `filepath` and `label`. Optionally, there can also be columns for `split` (which can have one of the three values for each row: `train`, `val`, or `test`) or `site` (which can contain any string identifying the location of the camera, used to allocate images to splits if not already specified). For JSON files, the format should be COCO or another supported bounding box format as specified by `--labels-format`.
+* **`--labels PATH`:** Path to labels used as ground truth during training. For CSV files, there must be columns for both `filepath` and `label`. Optionally, there can also be columns for `split` (which can have one of the three values for each row: `train`, `val`, or `test`) or `site` (which can contain any string identifying the location of the camera, used to allocate images to splits if not already specified). For JSON files, the format should be COCO or MegaDetector as specified by `--labels-format`. For Camtrap DP packages, pass a package directory, `datapackage.json`, or `.zip` with `--labels-format camtrap_dp`.
 
 * **`--data-dir PATH`:** Path to the folder containing your labeled images. If the image filepaths in the labels csv are not absolute, be sure to provide the `data-dir` to which the filepaths are relative.
 
@@ -160,6 +160,29 @@ If your labels include bounding box annotations (e.g., in COCO format), `zamba` 
         data_dir='example_images/',
         labels='example_labels.json',
         labels_format=BboxInputFormat.COCO
+    )
+    train(config=train_config)
+    ```
+
+Supported bounding box label formats:
+
+* **`coco`** (default): COCO Camera Traps JSON
+* **`megadetector`**: MegaDetector batch output JSON with classifications
+* **`camtrap_dp`**: [Camtrap DP](https://camtrap-dp.tdwg.org/) package (directory with `datapackage.json`, path to `datapackage.json`, or `.zip`). Labels use `scientificName` when present, otherwise `observationType`, and `deploymentID` is mapped to `site` for split allocation. Bounding boxes (`bboxX`, `bboxY`, `bboxWidth`, `bboxHeight`) are used when present; packages without boxes train on whole images. See [Camtrap DP compatibility](camtrap-dp.md) for details.
+
+=== "CLI"
+    ```console
+    $ zamba image train --data-dir example_images/ --labels path/to/camtrap_dp/ --labels-format camtrap_dp
+    ```
+=== "Python"
+    ```python
+    from zamba.images.config import ImageClassificationTrainingConfig, BboxInputFormat
+    from zamba.images.manager import train
+
+    train_config = ImageClassificationTrainingConfig(
+        data_dir='example_images/',
+        labels='path/to/camtrap_dp/',
+        labels_format=BboxInputFormat.CAMTRAP_DP,
     )
     train(config=train_config)
     ```

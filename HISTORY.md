@@ -7,6 +7,7 @@
  - Fix `zamba image train --batch-size` (and yaml `batch_size`) being ignored; the CLI was dropping the value before config construction.
  - Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official `lila.science` or `speciesnet`); those weights were immediately overwritten by the checkpoint ([PR #407](https://github.com/drivendataorg/zamba/pull/407)).
  - Preserve user-provided labels in image fine-tuning checkpoints and prediction outputs instead of exposing the temporary `species_` one-hot prefix.
+ - Add [Camtrap DP](https://camtrap-dp.tdwg.org/) support for image workflows. Train directly from a Camtrap DP package (directory with `datapackage.json`, a `datapackage.json` path, or a `.zip`) with `zamba image train --labels <package> --labels-format camtrap_dp`; observations join to media on `mediaID`, labels come from `scientificName` (falling back to `observationType`), and `deploymentID` maps to `site` for split allocation. Packages with relative bounding boxes train on crops; packages without boxes fall back to whole-image labels. Export predictions as a Camtrap DP package directory with `zamba image predict --results-file-format camtrap_dp`. See the [Camtrap DP compatibility](https://zamba.drivendata.org/docs/stable/camtrap-dp/) page, including how to merge predictions into an existing package.
 
 ## v2.7.2 (2026-06-30)
 

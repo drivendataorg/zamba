@@ -2,11 +2,30 @@
 
 ## Unreleased
 
+ - Add `zamba image train --balanced-sampling`: draws training batches with a class-balanced sampler (`WeightedRandomSampler` with inverse class-frequency weights) so each class is seen equally often per epoch, up-sampling rare classes at the input as an alternative to `--weighted-loss`. Enabling it automatically applies a stronger train-time augmentation stack (heavier than `--extra-train-augmentations`) so the up-sampled rare classes are seen as diverse views rather than memorizable duplicates; the augmentation is what makes up-sampling pay off on imbalanced data.
+ - Fix MegaDetector-format image prediction output: classification categories are now emitted as string-ints (e.g. `"10"`) to match the keys in `classification_categories` and the (already correct) detection categories, per the MD spec. Also round confidence and bounding-box values to 4 decimal places and indent the JSON for readability.
+ - Fix `zamba image train --batch-size` (and yaml `batch_size`) being ignored; the CLI was dropping the value before config construction.
+ - Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official `lila.science` or `speciesnet`); those weights were immediately overwritten by the checkpoint ([PR #407](https://github.com/drivendataorg/zamba/pull/407)).
+ - Preserve user-provided labels in image fine-tuning checkpoints and prediction outputs instead of exposing the temporary `species_` one-hot prefix.
+ - Add [Camtrap DP](https://camtrap-dp.tdwg.org/) support for image workflows. Train directly from a Camtrap DP package (directory with `datapackage.json`, a `datapackage.json` path, or a `.zip`) with `zamba image train --labels <package> --labels-format camtrap_dp`; observations join to media on `mediaID`, labels come from `scientificName` (falling back to `observationType`), and `deploymentID` maps to `site` for split allocation. Packages with relative bounding boxes train on crops; packages without boxes fall back to whole-image labels. Export predictions as a Camtrap DP package directory with `zamba image predict --results-file-format camtrap_dp`. See the [Camtrap DP compatibility](../camtrap-dp/) page, including how to merge predictions into an existing package.
+
+## v2.7.2 (2026-06-30)
+
+ - Fix single-GPU image training wrongly running under DDP when `devices="auto"`.
+ - Compile only the image backbone, not the whole module, so `torch.compile` no longer breaks training under DDP.
+ - Reconcile `_orig_mod.` checkpoint keys so compiled-model checkpoints load on any setup.
+
+## v2.7.1 (2026-06-29)
+
+ - Fix video and image training on PyTorch 2.7+ by dropping deprecated scheduler kwargs like `verbose`.
+ - Fix image training LR finder crash by deferring `torch.compile` until after tuning.
+ - Set `torch-backend = "auto"` in `[tool.uv]` for clone-based uv installs.
+ - Document uv install tips: `--torch-backend=auto` and protobuf/setuptools overrides for `zamba[video,image]`.
+
+## v2.7.0 (2026-06-28)
+
  - Add the `speciesnet` image classification model, a `zamba`-compatible conversion of [Google's SpeciesNet](https://github.com/google/cameratrapai) classifier (EfficientNetV2-M backbone, 2,000+ class global taxonomy). Select it with `zamba image predict --model speciesnet` or `zamba image train --model speciesnet`. See the [Available Models](../models/image-classification/#speciesnet) page.
  - Persist the preprocessing `model_family` on image classifier checkpoints and derive inference transforms (resize size, interpolation, normalization) from the loaded checkpoint rather than from the `model_name` string. This fixes incorrect preprocessing (and near-random predictions) when running `zamba image predict --checkpoint <ckpt>` on a fine-tuned SpeciesNet model without also passing `--model`.
-
-## v.2.7.0 (2026-02-17)
-
  - Split core dependencies into optional extras: `video` (av, ffmpeg-python, pytorchvideo, pixeltable-yolox, etc.), `image` (megadetector, Pillow), `tests` (pytest, black, flake8, coverage, nvidia-ml-py, etc.), and `docs` (mkdocs, mike, mkdocstrings). Base install no longer pulls in video/image stacks; use `pip install zamba[video]`, `zamba[image]`, or `zamba[video,image]`.
  - Remove `requirements-dev.txt` and `requirements-dev/`; use `uv pip install -e ".[image,video]" --group dev` for development or `pip install -e ".[tests,image,video,docs]"` with pip.
  - Replace `mlflow` with `mlflow-skinny` in core dependencies. Add `pyarrow>=23.0.0`. Add Windows-specific torch version constraint for gloo bug. Declare Python 3.11–3.13 support and `requires-python = ">=3.11, <3.14"`.

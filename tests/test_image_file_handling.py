@@ -376,6 +376,49 @@ def test_train_with_md_labels(mocker, ena24_dataset_setup):
     )
 
 
+def test_train_with_camtrap_dp_labels(mocker, tmp_path):
+    """Test training with Camtrap DP package labels including bounding boxes."""
+    train_mock = mocker.patch("zamba.images.manager.ZambaImagesManager.train")
+
+    camtrap_dp = ASSETS_DIR / "images" / "camtrap_dp_small"
+    save_dir = tmp_path / "output"
+    save_dir.mkdir()
+    cache_dir = tmp_path / "cache"
+    cache_dir.mkdir()
+    checkpoint_dir = tmp_path / "checkpoints"
+    checkpoint_dir.mkdir()
+
+    result = runner.invoke(
+        image_app,
+        [
+            "train",
+            "--data-dir",
+            str(TEST_IMAGES_DIR),
+            "--labels",
+            str(camtrap_dp),
+            "--labels-format",
+            "camtrap_dp",
+            "--save-dir",
+            str(save_dir),
+            "--cache-dir",
+            str(cache_dir),
+            "--checkpoint-path",
+            str(checkpoint_dir),
+            "--from-scratch",
+            "--max-epochs",
+            "1",
+            "--yes",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    train_mock.assert_called_once()
+
+    train_config = train_mock.call_args[0][0]
+    assert len(train_config.labels) == 4
+    assert set(["x1", "y1", "x2", "y2"]).issubset(train_config.labels.columns)
+
+
 def test_image_cli_csv_output(mocker, ena24_dataset_setup):
     """Test that the image CLI can output predictions in CSV format."""
 
