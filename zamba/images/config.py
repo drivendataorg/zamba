@@ -263,19 +263,12 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
             Defaults to current working directory.
         weighted_loss (bool): Whether to use class-weighted loss during training.
             Helpful for imbalanced datasets. Defaults to False.
-        balanced_sampling (bool): Whether to draw training batches with a class-balanced
-            sampler (``WeightedRandomSampler`` with inverse class-frequency weights) so
-            that, in expectation, every class is seen equally often within an epoch.
-            An alternative to ``weighted_loss`` for imbalanced datasets that up-samples
-            rare classes at the input rather than re-weighting the loss; the two are
-            usually not combined. When enabled it automatically applies a stronger train-time
-            augmentation stack (heavier than ``extra_train_augmentations``), because the
-            sampler repeats rare images with replacement and the stochastic transforms turn
-            each redraw into a diverse view instead of a memorizable pixel-identical
-            duplicate -- the sampler decides how often each class is seen, the augmentation
-            decides how different each showing looks, and it is the combination that delivers
-            the macro-accuracy gain. This augmentation stack takes precedence over
-            ``extra_train_augmentations`` when both are set. Defaults to False.
+        balanced_sampling (bool): Whether to up-sample rare classes with a class-balanced
+            sampler (``WeightedRandomSampler``, inverse class-frequency weights) so every
+            class is seen equally often per epoch. An alternative to ``weighted_loss`` for
+            imbalanced data. Automatically applies a stronger train-time augmentation stack
+            (taking precedence over ``extra_train_augmentations``) so up-sampled rare classes
+            are seen as diverse views instead of memorizable duplicates. Defaults to False.
         mlflow_tracking_uri (str, optional): URI for MLFlow tracking server.
             Defaults to './mlruns'.
         from_scratch (bool): Whether to train the model from scratch (base weights)
