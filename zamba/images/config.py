@@ -263,6 +263,19 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
             Defaults to current working directory.
         weighted_loss (bool): Whether to use class-weighted loss during training.
             Helpful for imbalanced datasets. Defaults to False.
+        balanced_sampling (bool): Whether to draw training batches with a class-balanced
+            sampler (``WeightedRandomSampler`` with inverse class-frequency weights) so
+            that, in expectation, every class is seen equally often within an epoch.
+            An alternative to ``weighted_loss`` for imbalanced datasets that up-samples
+            rare classes at the input rather than re-weighting the loss; the two are
+            usually not combined. When enabled it automatically applies a stronger train-time
+            augmentation stack (heavier than ``extra_train_augmentations``), because the
+            sampler repeats rare images with replacement and the stochastic transforms turn
+            each redraw into a diverse view instead of a memorizable pixel-identical
+            duplicate -- the sampler decides how often each class is seen, the augmentation
+            decides how different each showing looks, and it is the combination that delivers
+            the macro-accuracy gain. This augmentation stack takes precedence over
+            ``extra_train_augmentations`` when both are set. Defaults to False.
         mlflow_tracking_uri (str, optional): URI for MLFlow tracking server.
             Defaults to './mlruns'.
         from_scratch (bool): Whether to train the model from scratch (base weights)
@@ -310,6 +323,7 @@ class ImageClassificationTrainingConfig(ZambaImageConfig):
     detections_threshold: float = 0.2
     checkpoint_path: Path = Path.cwd()
     weighted_loss: bool = False
+    balanced_sampling: bool = False
     mlflow_tracking_uri: Optional[str] = "./mlruns"
     from_scratch: Optional[bool] = False
     use_default_model_labels: Optional[bool] = None

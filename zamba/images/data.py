@@ -12,8 +12,10 @@ try:
     from megadetector.detection import run_detector
 except ModuleNotFoundError:
     from detection import run_detector
+import numpy as np
+import torch
 from PIL import Image
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 from torchvision import transforms
 from tqdm import tqdm
 from tqdm.contrib.concurrent import process_map
@@ -71,6 +73,7 @@ class ImageClassificationDataModule(pl.LightningDataModule):
         train_transforms=None,
         test_transforms=None,
         detection_threshold: float = 0.2,
+        balanced_sampling: bool = False,
     ) -> None:
         super().__init__()
         if train_transforms is None:
@@ -84,6 +87,7 @@ class ImageClassificationDataModule(pl.LightningDataModule):
         self.batch_size = batch_size
         self.train_transforms = train_transforms
         self.test_transforms = test_transforms
+        self.balanced_sampling = balanced_sampling
 
         self.detection_threshold = detection_threshold
 
@@ -179,15 +183,49 @@ class ImageClassificationDataModule(pl.LightningDataModule):
 
         return pd.concat([cropped_annotations, megadetector_annotations])
 
+    def _build_balanced_sampler(self, train_annotations: pd.DataFrame) -> WeightedRandomSampler:
+        """Class-balanced sampler: weight each training example by the inverse frequency
+        of its class, so every class is drawn equally often in expectation.
+
+        ``num_samples`` is kept equal to the number of training rows, so one epoch sees the
+        same number of images as ``shuffle=True`` would (rare classes up-sampled with
+        replacement, common classes down-sampled). ``label`` has already been encoded to an
+        integer class index by the config's ``preprocess_labels`` step, so we can bincount
+        it directly. Every referenced class has count >= 1 (it appears in ``labels``), so no
+        weight divides by zero.
+        """
+        labels = train_annotations["label"].to_numpy()
+        counts = np.bincount(labels, minlength=int(labels.max()) + 1)
+        weights = 1.0 / counts[labels]
+        logger.info(
+            f"Class-balanced sampling: {(counts > 0).sum()} classes, "
+            f"per-class train count min={counts[counts > 0].min()} max={counts.max()}."
+        )
+        return WeightedRandomSampler(
+            torch.as_tensor(weights, dtype=torch.double),
+            num_samples=len(labels),
+            replacement=True,
+        )
+
     def train_dataloader(self) -> DataLoader:
+        # reset_index so the sampler's positional indices line up with the dataset's
+        # positional (.iloc) lookups after the split filter.
+        train_annotations = self.annotations[self.annotations["split"] == "train"].reset_index(
+            drop=True
+        )
+        sampler = (
+            self._build_balanced_sampler(train_annotations) if self.balanced_sampling else None
+        )
         return DataLoader(
             ImageClassificationDataset(
                 self.data_dir,
-                self.annotations[self.annotations["split"] == "train"],
+                train_annotations,
                 self.train_transforms,
             ),
             batch_size=self.batch_size,
-            shuffle=True,
+            # `sampler` and `shuffle` are mutually exclusive; shuffle only when unsampled.
+            shuffle=(sampler is None),
+            sampler=sampler,
             num_workers=self.num_workers,
         )
 

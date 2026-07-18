@@ -273,6 +273,11 @@ def train(
         "--weighted-loss",
         help="Use weighted cross entropy as loss.",
     ),
+    balanced_sampling: bool = typer.Option(
+        None,
+        "--balanced-sampling",
+        help="Draw training batches with a class-balanced sampler (up-samples rare classes).",
+    ),
     debug: int = typer.Option(
         None,
         "--debug",
@@ -343,6 +348,7 @@ def train(
         Checkpoints dir: {image_config.checkpoint_path}
         Model checkpoint: {image_config.checkpoint}
         Weighted loss: {image_config.weighted_loss}
+        Balanced sampling: {image_config.balanced_sampling}
         Extra train augmentations: {image_config.extra_train_augmentations}
         """
 

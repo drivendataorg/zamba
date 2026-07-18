@@ -130,6 +130,92 @@ def get_default_transforms(model_family: str, image_size=None):
     return top_transforms, bottom_transforms, image_size
 
 
+def get_train_augmentations(config: ImageClassificationTrainingConfig):
+    """Build the train-time augmentation lists that wrap the model's preprocessing.
+
+    Returns ``(augment_transforms, final_transforms)`` where ``augment_transforms`` operate
+    in PIL space (inserted between the ``top`` resize/pad and the ``bottom`` ToTensor +
+    Normalize) and ``final_transforms`` operate on the normalized tensor (RandomErasing,
+    which must come last). Validation/test transforms never include either list.
+
+    Three tiers, strongest first:
+
+    - ``balanced_sampling``: the class-balanced sampler draws rare classes with replacement,
+      so a class with a handful of images is shown as often per epoch as a common class.
+      Without strong augmentation that just re-shows the same pixel-identical rare images and
+      the model memorizes the tail. This heavier stochastic stack turns each redraw into a
+      different-looking view (crop, flip, lighting, blur, occlusion), converting duplication
+      into diversity -- which is the mechanism that actually delivers the macro-accuracy gain.
+      It is applied to every training image, but its benefit concentrates on the up-sampled
+      rare classes (common classes were already diverse). Intentionally heavier than
+      ``extra_train_augmentations`` because the sampler is repeating images; it takes
+      precedence when both flags are set.
+    - ``extra_train_augmentations``: a moderate stack for imbalanced data without the sampler.
+    - default: a mild camera-trap-appropriate stack (perspective / flip / rotation).
+    """
+    image_size = config.image_size
+
+    if config.balanced_sampling:
+        # Grouped by what each transform simulates for camera-trap imagery:
+        augment_transforms = [
+            # Geometric -- framing / pose / mounting-angle variation. No vertical flip:
+            # gravity means animals are not upside-down.
+            transforms.RandomResizedCrop(size=(image_size, image_size), scale=(0.65, 1.0)),
+            transforms.RandomHorizontalFlip(p=0.5),
+            transforms.RandomApply(ModuleList([transforms.RandomRotation((-20, 20))]), p=0.3),
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.4),
+            # Photometric -- dawn/day/dusk/overcast + white-balance drift. brightness/contrast
+            # pushed hard but hue kept tiny (0.02): large hue shifts recolor fur, which is a
+            # real species cue.
+            transforms.ColorJitter(brightness=0.35, contrast=0.35, saturation=0.25, hue=0.02),
+            # night IR / monochrome-flash frames are effectively grayscale (~15% night fraction)
+            transforms.RandomGrayscale(p=0.15),
+            # motion blur, fog, rain, out-of-focus triggers
+            transforms.RandomApply(
+                ModuleList([transforms.GaussianBlur(kernel_size=5, sigma=(0.1, 1.6))]), p=0.15
+            ),
+            # sensor / exposure variation
+            transforms.RandomAutocontrast(p=0.1),
+            transforms.RandomAdjustSharpness(sharpness_factor=1.6, p=0.1),
+        ]
+        # Occlusion -- animals are often partly hidden behind grass/branches; also stops the
+        # model over-relying on any single body part. Operates on the normalized tensor.
+        final_transforms = [
+            transforms.RandomErasing(p=0.30, scale=(0.02, 0.25), ratio=(0.3, 3.3)),
+        ]
+
+    elif config.extra_train_augmentations:
+        augment_transforms = [
+            transforms.RandomResizedCrop(size=(image_size, image_size), scale=(0.75, 1.0)),
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+            transforms.RandomHorizontalFlip(p=0.3),
+            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
+            transforms.RandomGrayscale(p=0.05),
+            transforms.RandomEqualize(p=0.05),
+            transforms.RandomAutocontrast(p=0.05),
+            transforms.RandomAdjustSharpness(sharpness_factor=0.9, p=0.05),  # < 1 is more blurry
+        ]
+
+        # add random erasing to the end of the pipeline
+        final_transforms = [
+            transforms.RandomErasing(p=0.25, scale=(0.02, 0.33), ratio=(0.3, 3.3)),
+        ]
+
+    # defaults simple transforms are specifically chosen for camera trap imagery
+    # - random perspective shift
+    # - random horizontal flip (no vertical flip; unlikely animals appear upside down cuz gravity)
+    # - random rotation
+    else:
+        augment_transforms = [
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+            transforms.RandomHorizontalFlip(p=0.3),
+            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
+        ]
+        final_transforms = []
+
+    return augment_transforms, final_transforms
+
+
 def resolve_training_image_size(config: ImageClassificationTrainingConfig):
     """Resolve the image size to train at.
 
@@ -296,36 +382,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         model_family, config.image_size
     )
 
-    if config.extra_train_augmentations:
-        augment_transforms = [
-            transforms.RandomResizedCrop(
-                size=(config.image_size, config.image_size), scale=(0.75, 1.0)
-            ),
-            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
-            transforms.RandomHorizontalFlip(p=0.3),
-            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
-            transforms.RandomGrayscale(p=0.05),
-            transforms.RandomEqualize(p=0.05),
-            transforms.RandomAutocontrast(p=0.05),
-            transforms.RandomAdjustSharpness(sharpness_factor=0.9, p=0.05),  # < 1 is more blurry
-        ]
-
-        # add random erasing to the end of the pipeline
-        final_transforms = [
-            transforms.RandomErasing(p=0.25, scale=(0.02, 0.33), ratio=(0.3, 3.3)),
-        ]
-
-    # defaults simple transforms are specifically chosen for camera trap imagery
-    # - random perspective shift
-    # - random horizontal flip (no vertical flip; unlikely animals appear upside down cuz gravity)
-    # - random rotation
-    else:
-        augment_transforms = [
-            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
-            transforms.RandomHorizontalFlip(p=0.3),
-            transforms.RandomApply(ModuleList([transforms.RandomRotation((-22, 22))]), p=0.2),
-        ]
-        final_transforms = []
+    augment_transforms, final_transforms = get_train_augmentations(config)
 
     validation_transforms = transforms.Compose(top_transforms + bottom_transforms)
     train_transforms = transforms.Compose(
@@ -374,6 +431,7 @@ def train(config: ImageClassificationTrainingConfig) -> pl.Trainer:
         num_workers=config.num_workers,
         detection_threshold=config.detections_threshold,
         crop_images=config.crop_images,
+        balanced_sampling=config.balanced_sampling,
     )
 
     loss_fn = torch.nn.CrossEntropyLoss()
