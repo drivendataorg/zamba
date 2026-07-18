@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+ - Fix MegaDetector-format image prediction output: classification categories are now emitted as string-ints (e.g. `"10"`) to match the keys in `classification_categories` and the (already correct) detection categories, per the MD spec. Also round confidence and bounding-box values to 4 decimal places and indent the JSON for readability.
  - Fix `zamba image train --batch-size` (and yaml `batch_size`) being ignored; the CLI was dropping the value before config construction.
  - Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official `lila.science` or `speciesnet`); those weights were immediately overwritten by the checkpoint ([PR #407](https://github.com/drivendataorg/zamba/pull/407)).
  - Preserve user-provided labels in image fine-tuning checkpoints and prediction outputs instead of exposing the temporary `species_` one-hot prefix.
