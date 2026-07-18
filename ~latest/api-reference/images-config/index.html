@@ -3297,6 +3297,27 @@ Helpful for imbalanced datasets. Defaults to False.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>balanced_sampling</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to up-sample rare classes with a class-balanced
+sampler (<code>WeightedRandomSampler</code>, inverse class-frequency weights) so every
+class is seen equally often per epoch. An alternative to <code>weighted_loss</code> for
+imbalanced data. Automatically applies a stronger train-time augmentation stack
+(taking precedence over <code>extra_train_augmentations</code>) so up-sampled rare classes
+are seen as diverse views instead of memorizable duplicates. Defaults to False.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>mlflow_tracking_uri</code>
             </td>
             <td>
@@ -3787,7 +3808,14 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 <span class="normal">524</span>
 <span class="normal">525</span>
 <span class="normal">526</span>
-<span class="normal">527</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImageClassificationTrainingConfig</span><span class="p">(</span><span class="n">ZambaImageConfig</span><span class="p">):</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ImageClassificationTrainingConfig</span><span class="p">(</span><span class="n">ZambaImageConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for running image classification training.</span>
 
 <span class="sd">    Args:</span>
@@ -3833,6 +3861,12 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 <span class="sd">            Defaults to current working directory.</span>
 <span class="sd">        weighted_loss (bool): Whether to use class-weighted loss during training.</span>
 <span class="sd">            Helpful for imbalanced datasets. Defaults to False.</span>
+<span class="sd">        balanced_sampling (bool): Whether to up-sample rare classes with a class-balanced</span>
+<span class="sd">            sampler (``WeightedRandomSampler``, inverse class-frequency weights) so every</span>
+<span class="sd">            class is seen equally often per epoch. An alternative to ``weighted_loss`` for</span>
+<span class="sd">            imbalanced data. Automatically applies a stronger train-time augmentation stack</span>
+<span class="sd">            (taking precedence over ``extra_train_augmentations``) so up-sampled rare classes</span>
+<span class="sd">            are seen as diverse views instead of memorizable duplicates. Defaults to False.</span>
 <span class="sd">        mlflow_tracking_uri (str, optional): URI for MLFlow tracking server.</span>
 <span class="sd">            Defaults to &#39;./mlruns&#39;.</span>
 <span class="sd">        from_scratch (bool): Whether to train the model from scratch (base weights)</span>
@@ -3880,6 +3914,7 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
     <span class="n">detections_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>
     <span class="n">checkpoint_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
     <span class="n">weighted_loss</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">balanced_sampling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">mlflow_tracking_uri</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;./mlruns&quot;</span>
     <span class="n">from_scratch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">use_default_model_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -4125,14 +4160,7 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 
             <details class="quote">
               <summary>Source code in <code>zamba/images/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">418</span>
 <span class="normal">419</span>
 <span class="normal">420</span>
 <span class="normal">421</span>
@@ -4221,7 +4249,14 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 <span class="normal">504</span>
 <span class="normal">505</span>
 <span class="normal">506</span>
-<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">preprocess_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;One hot encode and add splits.&quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels.&quot;</span><span class="p">)</span>
@@ -4339,14 +4374,7 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 
             <details class="quote">
               <summary>Source code in <code>zamba/images/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">383</span>
-<span class="normal">384</span>
-<span class="normal">385</span>
-<span class="normal">386</span>
-<span class="normal">387</span>
-<span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">390</span>
 <span class="normal">391</span>
 <span class="normal">392</span>
 <span class="normal">393</span>
@@ -4365,7 +4393,14 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 <span class="normal">406</span>
 <span class="normal">407</span>
 <span class="normal">408</span>
-<span class="normal">409</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_image_files</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate and load image files.&quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validating image files exist&quot;</span><span class="p">)</span>
@@ -4413,14 +4448,7 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 
             <details class="quote">
               <summary>Source code in <code>zamba/images/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">353</span>
 <span class="normal">354</span>
 <span class="normal">355</span>
 <span class="normal">356</span>
@@ -4428,7 +4456,14 @@ integer value. Useful for quick testing and debugging. Defaults to None.</p>
 <span class="normal">358</span>
 <span class="normal">359</span>
 <span class="normal">360</span>
-<span class="normal">361</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate and load labels&quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validating labels&quot;</span><span class="p">)</span>

@@ -2585,6 +2585,8 @@ no <code>save_dir</code> is specified and <code>save</code> is True, outputs wil
 <p>Directory for where to save the output files; defaults to current working directory.</p>
 <h4 id="weighted_loss-bool-optional"><code>weighted_loss (bool, optional)</code><a class="headerlink" href="#weighted_loss-bool-optional" title="Permanent link">&para;</a></h4>
 <p>Use weighted loss during training. Default value is False.</p>
+<h4 id="balanced_sampling-bool-optional"><code>balanced_sampling (bool, optional)</code><a class="headerlink" href="#balanced_sampling-bool-optional" title="Permanent link">&para;</a></h4>
+<p>Up-sample rare classes with a class-balanced sampler (<code>WeightedRandomSampler</code> with inverse class-frequency weights) so every class is seen equally often per epoch. An alternative to <code>weighted_loss</code> for imbalanced datasets. When enabled, it automatically applies a stronger train-time augmentation stack (taking precedence over <code>extra_train_augmentations</code>) so the up-sampled rare classes are seen as diverse views instead of memorizable duplicates. Default value is False.</p>
 <h4 id="mlflow_tracking_uri-str-optional"><code>mlflow_tracking_uri (str, optional)</code><a class="headerlink" href="#mlflow_tracking_uri-str-optional" title="Permanent link">&para;</a></h4>
 <p>MLFlow tracking URI. Default is "./mlruns".</p>
 <h4 id="from_scratch-bool-optional_1"><code>from_scratch (bool, optional)</code><a class="headerlink" href="#from_scratch-bool-optional_1" title="Permanent link">&para;</a></h4>
