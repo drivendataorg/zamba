@@ -29,7 +29,7 @@ def _datamodule(tmp_path, balanced):
         data_dir=tmp_path,
         annotations=_imbalanced_annotations(tmp_path),
         cache_dir=tmp_path,
-        crop_images=False,          # skip MegaDetector/crop preprocessing
+        crop_images=False,  # skip MegaDetector/crop preprocessing
         batch_size=16,
         num_workers=0,
         balanced_sampling=balanced,
@@ -69,8 +69,13 @@ def test_no_zero_division_when_class_absent_from_train(tmp_path):
     ann = _imbalanced_annotations(tmp_path)
     ann.loc[ann["label"] == 2, "split"] = "val"  # class 2 no longer in train
     dm = ImageClassificationDataModule(
-        data_dir=tmp_path, annotations=ann, cache_dir=tmp_path,
-        crop_images=False, batch_size=16, num_workers=0, balanced_sampling=True,
+        data_dir=tmp_path,
+        annotations=ann,
+        cache_dir=tmp_path,
+        crop_images=False,
+        batch_size=16,
+        num_workers=0,
+        balanced_sampling=True,
     )
     weights = np.asarray(dm.train_dataloader().sampler.weights)
     assert np.isfinite(weights).all()
