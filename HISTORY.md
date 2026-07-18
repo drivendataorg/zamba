@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+ - Add `zamba image train --balanced-sampling`: draws training batches with a class-balanced sampler (`WeightedRandomSampler` with inverse class-frequency weights) so each class is seen equally often per epoch, up-sampling rare classes at the input as an alternative to `--weighted-loss`. Enabling it automatically applies a stronger train-time augmentation stack (heavier than `--extra-train-augmentations`) so the up-sampled rare classes are seen as diverse views rather than memorizable duplicates; the augmentation is what makes up-sampling pay off on imbalanced data.
  - Fix MegaDetector-format image prediction output: classification categories are now emitted as string-ints (e.g. `"10"`) to match the keys in `classification_categories` and the (already correct) detection categories, per the MD spec. Also round confidence and bounding-box values to 4 decimal places and indent the JSON for readability.
  - Fix `zamba image train --batch-size` (and yaml `batch_size`) being ignored; the CLI was dropping the value before config construction.
  - Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official `lila.science` or `speciesnet`); those weights were immediately overwritten by the checkpoint ([PR #407](https://github.com/drivendataorg/zamba/pull/407)).

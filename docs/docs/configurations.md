@@ -549,6 +549,10 @@ Directory for where to save the output files; defaults to current working direct
 
 Use weighted loss during training. Default value is False.
 
+#### `balanced_sampling (bool, optional)`
+
+Up-sample rare classes with a class-balanced sampler (`WeightedRandomSampler` with inverse class-frequency weights) so every class is seen equally often per epoch. An alternative to `weighted_loss` for imbalanced datasets. When enabled, it automatically applies a stronger train-time augmentation stack (taking precedence over `extra_train_augmentations`) so the up-sampled rare classes are seen as diverse views instead of memorizable duplicates. Default value is False.
+
 #### `mlflow_tracking_uri (str, optional)`
 
 MLFlow tracking URI. Default is "./mlruns".

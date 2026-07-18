@@ -216,6 +216,7 @@ And there's so much more! You can also do things like:
 * Specify a different path where your model should be saved (`--save-dir`)
 * Adjust learning rate (`--lr`) or let `zamba` find an optimal learning rate automatically
 * Use weighted loss for imbalanced datasets (`--weighted-loss`)
+* Up-sample rare classes for imbalanced datasets, with paired augmentation for diversity (`--balanced-sampling`)
 * Enable extra data augmentations (`--extra-train-augmentations`)
 * Disable image cropping if your images are already cropped (`--no-crop-images`)
 
