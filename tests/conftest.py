@@ -68,6 +68,7 @@ if not _HAS_IMAGE:
         [
             "test_images.py",
             "test_image_file_handling.py",
+            "test_balanced_sampling.py",
         ]
     )
 

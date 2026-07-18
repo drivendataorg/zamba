@@ -11,6 +11,8 @@ from torchvision.transforms import transforms
 from zamba.images.data import ImageClassificationDataModule
 from zamba.images.manager import get_train_augmentations
 
+pytestmark = pytest.mark.image
+
 
 def _imbalanced_annotations(tmp_path):
     """Two common classes (100 each) and one rare class (5), already integer-encoded
