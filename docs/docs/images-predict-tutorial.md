@@ -137,10 +137,11 @@ If you've fine-tuned a model, you can select that model instead of a built-in mo
 
 ### 3. Choose the output format
 
-There are two options for how to format predictions:
+There are three options for how to format predictions:
 
 1. **CSV (default):** Return predictions with a row for each bounding box-filename combination and a column for each class label, with probabilities between 0 and 1. Bounding boxes are automatically created for each image, and each image can contain 0 or more bounding boxes (for example, if there are many rabbits in a single image). Cell `(i,j)` is the probability that species `j` is present in bounding box `i`.
 2. **MegaDetector:** Returns much the same information as above, but in a [JSON format](https://lila.science/megadetector-output-format) similar to the [COCO image format](https://lila.science/coco-camera-traps) that's been augmented to be more useful for camera trap data.
+3. **Camtrap DP (`camtrap_dp`):** Writes a [Camtrap DP](https://camtrap-dp.tdwg.org/) package *directory* (`datapackage.json`, `media.csv`, `observations.csv`, `deployments.csv`) with one observation per detection, including `observationType`, top predicted `scientificName`, `classificationProbability`, and relative bounding boxes. Only fields derivable from inference are populated — deployment, timestamp, and location fields are written as placeholders because they cannot be known from images alone, so the package is intended for downstream ingestion rather than strict spec validation. See [Camtrap DP compatibility](camtrap-dp.md) for details.
 
 Say we want to generate predictions for images in `example_images` in MegaDetector format:
 

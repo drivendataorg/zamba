@@ -438,7 +438,7 @@ Image size for the input of the classification model. Default is 224.
 
 #### `results_file_format (ResultsFormat, optional)`
 
-The format in which to output the predictions. Currently 'csv' and 'megadetector' JSON formats are supported. Default is 'csv'.
+The format in which to output the predictions. Options are `csv` (default), `megadetector` JSON, and `camtrap_dp` (a partial [Camtrap DP](https://camtrap-dp.tdwg.org/) package directory of `datapackage.json`, `media.csv`, `observations.csv`, and `deployments.csv`; deployment/timestamp/location fields are placeholders since they cannot be inferred from images).
 
 #### `results_file_name (Path, optional)`
 
@@ -475,11 +475,11 @@ Where to find the files listed in filepaths (or where to look if filepaths is no
 
 #### `labels (pd.DataFrame or FilePath, required)`
 
-Labels dataframe or path to CSV file containing labels.
+Labels dataframe or path to labels. CSV files must contain `filepath` and `label` columns. JSON files should use COCO or MegaDetector format (see `labels_format`). Camtrap DP packages are also supported via `labels_format=camtrap_dp`.
 
-#### `labels_format (BboxFormat, optional)`
+#### `labels_format (BboxInputFormat, optional)`
 
-Format for bounding box annotations. Defaults to BboxFormat.COCO.
+Format for bounding box annotations. Options are `coco` (default), `megadetector`, and `camtrap_dp`. For `camtrap_dp`, `labels` should be a Camtrap DP package directory, `datapackage.json`, or `.zip` archive.
 
 #### `checkpoint (FilePath, optional)`
 

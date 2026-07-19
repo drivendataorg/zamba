@@ -1,0 +1,8 @@
+observationID,deploymentID,mediaID,eventID,eventStart,eventEnd,observationLevel,observationType,cameraSetupType,scientificName,count,lifeStage,sex,behavior,individualID,individualPositionRadius,individualPositionAngle,individualSpeed,bboxX,bboxY,bboxWidth,bboxHeight,classificationMethod,classifiedBy,classificationTimestamp,classificationProbability,observationTags,observationComments
+obs1,dep1,m1,evt1,2020-05-30T04:57:37Z,2020-05-30T04:57:37Z,media,animal,,Felis catus,1,,,,,,,,0.1,0.2,0.3,0.4,human,,,,,
+obs2,dep1,m2,evt2,2020-05-30T04:57:40Z,2020-05-30T04:57:40Z,media,animal,,Canis aureus,1,,,,,,,,0.05,0.15,0.25,0.35,human,,,,,
+obs3,dep2,m3,evt3,2020-05-30T04:57:41Z,2020-05-30T04:57:41Z,media,animal,,Pan,1,,,,,,,,0.2,0.25,0.4,0.5,human,,,,,
+obs4,dep2,m4,evt4,2020-05-30T04:57:42Z,2020-05-30T04:57:42Z,media,animal,,Equus,1,,,,,,,,0.0,0.0,0.5,0.5,human,,,,,
+obs5,dep2,m5,evt5,2020-05-30T04:57:43Z,2020-05-30T04:57:43Z,media,animal,,Bos,1,,,,,,,,0.1,0.1,0.2,0.2,human,,,,,
+obs6,dep1,,evt6,2020-05-30T04:57:44Z,2020-05-30T04:57:50Z,event,animal,,Felis catus,1,,,,,,,,,,,,human,,,,,
+obs7,dep1,m1,evt7,2020-05-30T04:57:37Z,2020-05-30T04:57:37Z,media,animal,,Felis catus,1,,,,,,,,,,,,human,,,,,

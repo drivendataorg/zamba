@@ -20,6 +20,7 @@ nav:
   - "User Tutorials":
       - Classifying unlabeled images: "images-predict-tutorial.md"
       - Training a model on labeled images: "images-train-tutorial.md"
+      - Camtrap DP compatibility: "camtrap-dp.md"
       - Classifying unlabeled videos: "predict-tutorial.md"
       - Training a model on labeled videos: "train-tutorial.md"
       - Debugging: "debugging.md"

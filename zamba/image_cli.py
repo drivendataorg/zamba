@@ -112,7 +112,10 @@ def predict(
     ),
     results_file_format: ResultsFormat = typer.Option(
         None,
-        help="The format in which to output the predictions. Currently `csv` and `megadetector` JSON formats are supported.",
+        help=(
+            "The format in which to output the predictions. Options: `csv`, `megadetector` "
+            "JSON, and `camtrap_dp` (a partial Camtrap DP package directory)."
+        ),
     ),
     config: Path | None = typer.Option(
         None,
@@ -186,7 +189,14 @@ def train(
         help="Path to the images directory.",
     ),
     labels: Path = typer.Option(
-        None, exists=True, file_okay=True, dir_okay=False, help="Path to the labels."
+        None,
+        exists=True,
+        file_okay=True,
+        dir_okay=True,
+        help=(
+            "Path to labels: CSV/JSON file, or a Camtrap DP package directory / "
+            "datapackage.json / .zip when using --labels-format camtrap_dp."
+        ),
     ),
     model: ImageModelEnum = typer.Option(
         None,
@@ -240,7 +250,11 @@ def train(
         help="Use extra train augmentations.",
     ),
     labels_format: BboxInputFormat = typer.Option(
-        None, help="Format for bounding box annotations when labels are provided as JSON."
+        None,
+        help=(
+            "Format for bounding box annotations. Options: coco, megadetector, camtrap_dp. "
+            "Use camtrap_dp for a Camtrap DP package directory, datapackage.json, or .zip."
+        ),
     ),
     num_workers: int = typer.Option(
         None,

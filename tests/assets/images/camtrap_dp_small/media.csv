@@ -1,0 +1,6 @@
+mediaID,deploymentID,captureMethod,timestamp,filePath,filePublic,fileName,fileMediatype,exifData,favorite,mediaComments
+m1,dep1,activityDetection,2020-05-30T04:57:37Z,small_cat.jpg,true,small_cat.jpg,image/jpeg,,,
+m2,dep1,activityDetection,2020-05-30T04:57:40Z,wild_dog_jackal.jpg,true,wild_dog_jackal.jpg,image/jpeg,,,
+m3,dep2,activityDetection,2020-05-30T04:57:41Z,chimpanzee_bonobo.jpeg,true,chimpanzee_bonobo.jpeg,image/jpeg,,,
+m4,dep2,activityDetection,2020-05-30T04:57:42Z,https://example.com/remote.jpg,true,equid.webp,image/jpeg,,,
+m5,dep2,activityDetection,2020-05-30T04:57:43Z,skip_me.mp4,true,skip_me.mp4,video/mp4,,,

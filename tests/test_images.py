@@ -74,6 +74,11 @@ def megadetector_output_path():
 
 
 @pytest.fixture
+def camtrap_dp_path():
+    return ASSETS_DIR / "images/camtrap_dp_small"
+
+
+@pytest.fixture
 def dataframe_result_csv_path():
     return ASSETS_DIR / "images/df_result.csv"
 
@@ -555,6 +560,340 @@ def test_bbox_json_to_df_format_megadetector(megadetector_output_path):
 
     assert result.iloc[1]["label"] == "wolf"
     assert result.iloc[1]["label_id"] == "2"
+
+
+def test_camtrap_dp_to_df(camtrap_dp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    result = camtrap_dp_to_df(camtrap_dp_path)
+
+    assert len(result) == 4
+    assert set(["filepath", "label", "x1", "y1", "x2", "y2", "site"]).issubset(result.columns)
+
+    # Local filePath is preferred
+    assert result.loc[result["id"] == "obs1", "filepath"].iloc[0] == "small_cat.jpg"
+    assert result.loc[result["id"] == "obs1", "label"].iloc[0] == "Felis catus"
+    assert result.loc[result["id"] == "obs1", "site"].iloc[0] == "dep1"
+
+    # Relative bbox converted to xyxy
+    row = result.loc[result["id"] == "obs1"].iloc[0]
+    assert row["x1"] == pytest.approx(0.1)
+    assert row["y1"] == pytest.approx(0.2)
+    assert row["x2"] == pytest.approx(0.4)
+    assert row["y2"] == pytest.approx(0.6)
+
+    # Remote filePath falls back to fileName
+    assert result.loc[result["id"] == "obs4", "filepath"].iloc[0] == "equid.webp"
+
+    # Video media and event-level / missing-bbox observations are excluded
+    assert "obs5" not in set(result["id"])
+    assert "obs6" not in set(result["id"])
+    assert "obs7" not in set(result["id"])
+
+
+def test_camtrap_dp_to_df_from_datapackage_json(camtrap_dp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    result = camtrap_dp_to_df(camtrap_dp_path / "datapackage.json")
+    assert len(result) == 4
+
+
+def test_camtrap_dp_to_df_from_zip(camtrap_dp_path, tmp_path):
+    import zipfile
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    zip_path = tmp_path / "camtrap_dp.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        for path in camtrap_dp_path.iterdir():
+            zf.write(path, arcname=path.name)
+
+    result = camtrap_dp_to_df(zip_path)
+    assert len(result) == 4
+
+
+def test_camtrap_dp_observation_type_label_fallback(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    package = tmp_path / "pkg"
+    package.mkdir()
+    (package / "datapackage.json").write_text(
+        json.dumps(
+            {
+                "resources": [
+                    {"name": "media", "path": "media.csv"},
+                    {"name": "observations", "path": "observations.csv"},
+                ]
+            }
+        )
+    )
+    (package / "media.csv").write_text(
+        "mediaID,filePath,fileName,fileMediatype\n" "m1,small_cat.jpg,small_cat.jpg,image/jpeg\n"
+    )
+    (package / "observations.csv").write_text(
+        "observationID,mediaID,observationType,scientificName,bboxX,bboxY,bboxWidth,bboxHeight\n"
+        "o1,m1,human,,0.1,0.1,0.2,0.2\n"
+    )
+
+    result = camtrap_dp_to_df(package)
+    assert len(result) == 1
+    assert result.iloc[0]["label"] == "human"
+
+
+def test_camtrap_dp_to_df_boxless_fallback(tmp_path):
+    """A schema-complete package with empty bbox columns falls back to whole-image labels."""
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    package = tmp_path / "pkg"
+    package.mkdir()
+    (package / "datapackage.json").write_text(
+        json.dumps(
+            {
+                "resources": [
+                    {"name": "media", "path": "media.csv"},
+                    {"name": "observations", "path": "observations.csv"},
+                ]
+            }
+        )
+    )
+    (package / "media.csv").write_text(
+        "mediaID,deploymentID,filePath,fileName,fileMediatype\n"
+        "m1,dep1,small_cat.jpg,small_cat.jpg,image/jpeg\n"
+        "m2,dep1,wild_dog_jackal.jpg,wild_dog_jackal.jpg,image/jpeg\n"
+    )
+    # bbox columns exist (as in a real export) but are empty -> no usable boxes
+    (package / "observations.csv").write_text(
+        "observationID,deploymentID,mediaID,observationType,scientificName,"
+        "bboxX,bboxY,bboxWidth,bboxHeight\n"
+        "o1,dep1,m1,animal,Felis catus,,,,\n"
+        "o2,dep1,m2,animal,Canis aureus,,,,\n"
+    )
+
+    result = camtrap_dp_to_df(package)
+
+    assert len(result) == 2
+    # no box columns emitted, so downstream treats these as whole-image labels
+    assert not set(["x1", "y1", "x2", "y2"]).intersection(result.columns)
+    assert set(["filepath", "label", "site"]).issubset(result.columns)
+    assert result.loc[result["id"] == "o1", "label"].iloc[0] == "Felis catus"
+    assert result.loc[result["id"] == "o1", "site"].iloc[0] == "dep1"
+
+
+def test_results_to_camtrap_dp_round_trips(dataframe_result_csv_path, tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+    from zamba.images.result import results_to_camtrap_dp
+
+    df = pd.read_csv(dataframe_result_csv_path)
+    species = df.filter(like="species_").columns.tolist()
+
+    package_dir = results_to_camtrap_dp(df, species, tmp_path / "predictions_camtrap_dp")
+
+    for name in ["datapackage.json", "deployments.csv", "media.csv", "observations.csv"]:
+        assert (package_dir / name).exists()
+
+    observations = pd.read_csv(package_dir / "observations.csv")
+    assert len(observations) == len(df)
+    assert set(observations["observationType"]).issubset({"animal", "human", "vehicle", "unknown"})
+    # animal detections carry a predicted scientificName and probability
+    animal = observations[observations["observationType"] == "animal"]
+    assert animal["scientificName"].notna().all()
+    assert (animal["classificationProbability"] > 0).all()
+
+    # the emitted package is ingestible by our own Camtrap DP reader
+    reloaded = camtrap_dp_to_df(package_dir)
+    assert set(["filepath", "label", "x1", "y1", "x2", "y2"]).issubset(reloaded.columns)
+    assert len(reloaded) == (observations["bboxWidth"] > 0).sum()
+
+
+def _write_camtrap_package(package_dir, media_csv, observations_csv, resources=None):
+    """Write a minimal Camtrap DP package for testing and return its directory."""
+    package_dir.mkdir(parents=True, exist_ok=True)
+    if resources is None:
+        resources = [
+            {"name": "media", "path": "media.csv"},
+            {"name": "observations", "path": "observations.csv"},
+        ]
+    (package_dir / "datapackage.json").write_text(json.dumps({"resources": resources}))
+    (package_dir / "media.csv").write_text(media_csv)
+    (package_dir / "observations.csv").write_text(observations_csv)
+    return package_dir
+
+
+def test_bbox_json_to_df_camtrap_dp_rejects_in_memory_json():
+    from zamba.images.bbox import bbox_json_to_df
+
+    with pytest.raises(ValueError, match="must be loaded from a data package path"):
+        bbox_json_to_df({}, bbox_format=BboxInputFormat.CAMTRAP_DP)
+
+
+def test_camtrap_dp_to_df_rejects_unsupported_path(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    with pytest.raises(ValueError, match="must be a directory containing datapackage.json"):
+        camtrap_dp_to_df(tmp_path / "labels.txt")
+
+
+def test_camtrap_dp_to_df_directory_missing_datapackage(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    with pytest.raises(ValueError, match="missing datapackage.json"):
+        camtrap_dp_to_df(tmp_path)
+
+
+def test_read_camtrap_table_disk_variants(tmp_path):
+    from zamba.images.bbox import _read_camtrap_table
+
+    with pytest.raises(ValueError, match="missing required resource"):
+        _read_camtrap_table("media", {}, tmp_path)
+
+    with pytest.raises(ValueError, match="must include a 'path'"):
+        _read_camtrap_table("media", {"media": {"name": "media"}}, tmp_path)
+
+    with pytest.raises(ValueError, match="multiple paths"):
+        _read_camtrap_table(
+            "media", {"media": {"name": "media", "path": ["a.csv", "b.csv"]}}, tmp_path
+        )
+
+    with pytest.raises(ValueError, match="missing file"):
+        _read_camtrap_table("media", {"media": {"name": "media", "path": "nope.csv"}}, tmp_path)
+
+    # single-element list path is unwrapped and read from disk
+    (tmp_path / "media.csv").write_text("mediaID\nm1\n")
+    df = _read_camtrap_table(
+        "media", {"media": {"name": "media", "path": ["media.csv"]}}, tmp_path
+    )
+    assert df["mediaID"].tolist() == ["m1"]
+
+
+def test_read_camtrap_table_remote_path(mocker, tmp_path):
+    import zamba.images.bbox as bbox_mod
+    from zamba.images.bbox import _read_camtrap_table
+
+    read_mock = mocker.patch.object(
+        bbox_mod.pd, "read_csv", return_value=pd.DataFrame({"mediaID": ["m1"]})
+    )
+    url = "https://example.com/media.csv"
+    df = _read_camtrap_table("media", {"media": {"name": "media", "path": url}}, tmp_path)
+    read_mock.assert_called_once_with(url)
+    assert df["mediaID"].tolist() == ["m1"]
+
+
+def test_camtrap_dp_to_df_invalid_zip(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    bad_zip = tmp_path / "broken.zip"
+    bad_zip.write_bytes(b"not a real zip file")
+    with pytest.raises(ValueError, match="not a valid zip archive"):
+        camtrap_dp_to_df(bad_zip)
+
+
+def test_camtrap_dp_to_df_zip_without_datapackage(tmp_path):
+    import zipfile
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    zip_path = tmp_path / "no_dp.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr("media.csv", "mediaID\nm1\n")
+    with pytest.raises(ValueError, match="does not contain a datapackage.json"):
+        camtrap_dp_to_df(zip_path)
+
+
+def test_camtrap_dp_to_df_zip_missing_member(tmp_path):
+    import zipfile
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    zip_path = tmp_path / "missing_member.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr(
+            "datapackage.json",
+            json.dumps(
+                {
+                    "resources": [
+                        {"name": "media", "path": "media.csv"},
+                        {"name": "observations", "path": "observations.csv"},
+                    ]
+                }
+            ),
+        )
+        zf.writestr("observations.csv", "mediaID,bboxX,bboxY,bboxWidth,bboxHeight\n")
+        # media.csv referenced by datapackage.json but not included in the archive
+    with pytest.raises(ValueError, match="missing archive member"):
+        camtrap_dp_to_df(zip_path)
+
+
+def test_camtrap_dp_to_df_media_missing_mediaid(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    package = _write_camtrap_package(
+        tmp_path / "pkg",
+        media_csv="filePath,fileName,fileMediatype\nsmall_cat.jpg,small_cat.jpg,image/jpeg\n",
+        observations_csv="mediaID,scientificName\nm1,Felis catus\n",
+    )
+    with pytest.raises(ValueError, match="media table is missing required column 'mediaID'"):
+        camtrap_dp_to_df(package)
+
+
+def test_camtrap_dp_to_df_extension_fallback_without_mediatype(tmp_path):
+    """Without fileMediatype, media are filtered to images by file extension."""
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    package = _write_camtrap_package(
+        tmp_path / "pkg",
+        media_csv=("mediaID,fileName\nm1,small_cat.jpg\nm2,clip.mp4\n"),
+        # no observationID column, so id should fall back to mediaID
+        observations_csv=(
+            "deploymentID,mediaID,scientificName,bboxX,bboxY,bboxWidth,bboxHeight\n"
+            "dep1,m1,Felis catus,0.1,0.2,0.3,0.4\n"
+            "dep1,m2,Canis aureus,0.1,0.2,0.3,0.4\n"
+        ),
+    )
+    result = camtrap_dp_to_df(package)
+    # the .mp4 media row is dropped, so only the image observation survives
+    assert result["filepath"].tolist() == ["small_cat.jpg"]
+    # observations have no observationID column, so id falls back to mediaID
+    assert result["id"].tolist() == ["m1"]
+
+
+def test_camtrap_dp_to_df_no_media_match(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    package = _write_camtrap_package(
+        tmp_path / "pkg",
+        media_csv="mediaID,fileName,fileMediatype\nm1,small_cat.jpg,image/jpeg\n",
+        observations_csv=(
+            "mediaID,scientificName,bboxX,bboxY,bboxWidth,bboxHeight\n"
+            "m999,Felis catus,0.1,0.2,0.3,0.4\n"
+        ),
+    )
+    with pytest.raises(ValueError, match="No Camtrap DP observations matched image media"):
+        camtrap_dp_to_df(package)
+
+
+def test_camtrap_dp_to_df_no_usable_rows_when_label_missing(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    package = _write_camtrap_package(
+        tmp_path / "pkg",
+        media_csv="mediaID,fileName,fileMediatype\nm1,small_cat.jpg,image/jpeg\n",
+        # neither scientificName nor observationType -> no label -> row dropped
+        observations_csv="mediaID,bboxX,bboxY,bboxWidth,bboxHeight\nm1,0.1,0.2,0.3,0.4\n",
+    )
+    with pytest.raises(ValueError, match="No usable Camtrap DP rows"):
+        camtrap_dp_to_df(package)
+
+
+def test_camtrap_dp_to_df_no_usable_rows_when_filepath_missing(tmp_path):
+    from zamba.images.bbox import camtrap_dp_to_df
+
+    package = _write_camtrap_package(
+        tmp_path / "pkg",
+        # image mediatype but no filePath/fileName -> filepath resolves to None -> row dropped
+        media_csv="mediaID,fileMediatype\nm1,image/jpeg\n",
+        observations_csv=(
+            "mediaID,scientificName,bboxX,bboxY,bboxWidth,bboxHeight\nm1,Felis catus,0.1,0.2,0.3,0.4\n"
+        ),
+    )
+    with pytest.raises(ValueError, match="No usable Camtrap DP rows"):
+        camtrap_dp_to_df(package)
 
 
 def test_results_to_megadetector_format(dataframe_result_csv_path):

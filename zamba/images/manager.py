@@ -37,7 +37,7 @@ from zamba.images.config import (
     ResultsFormat,
 )
 from zamba.images.data import ImageClassificationDataModule, load_image, absolute_bbox, BboxLayout
-from zamba.images.result import results_to_megadetector_format
+from zamba.images.result import results_to_camtrap_dp, results_to_megadetector_format
 from zamba.models.instantiation import instantiate_model
 from zamba.models.utils import get_checkpoint_hparams
 from zamba.pytorch.transforms import resize_and_pad
@@ -327,6 +327,9 @@ def predict(config: ImageClassificationPredictConfig) -> None:
             save_path = save_path.with_suffix(".json")
             with open(save_path, "w") as f:
                 json.dump(megadetector_format_results.dict(), f, indent=1)
+        elif config.results_file_format == ResultsFormat.CAMTRAP_DP:
+            # Camtrap DP is a package directory, not a single file; use the result name's stem
+            save_path = results_to_camtrap_dp(df, output_species, config.save_dir / save_path.stem)
         logger.info(f"Results saved to {save_path}")
 
 
