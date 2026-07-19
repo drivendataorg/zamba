@@ -358,6 +358,8 @@
       
         
       
+        
+      
     
     
       
@@ -424,6 +426,27 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../camtrap-dp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Camtrap DP compatibility
   </span>
   
 
@@ -2337,6 +2360,7 @@
 <li>Fix <code>zamba image train --batch-size</code> (and yaml <code>batch_size</code>) being ignored; the CLI was dropping the value before config construction.</li>
 <li>Skip downloading ImageNet/timm pretrained weights when loading or finetuning from an image checkpoint (e.g. official <code>lila.science</code> or <code>speciesnet</code>); those weights were immediately overwritten by the checkpoint (<a href="https://github.com/drivendataorg/zamba/pull/407">PR #407</a>).</li>
 <li>Preserve user-provided labels in image fine-tuning checkpoints and prediction outputs instead of exposing the temporary <code>species_</code> one-hot prefix.</li>
+<li>Add <a href="https://camtrap-dp.tdwg.org/">Camtrap DP</a> support for image workflows. Train directly from a Camtrap DP package (directory with <code>datapackage.json</code>, a <code>datapackage.json</code> path, or a <code>.zip</code>) with <code>zamba image train --labels &lt;package&gt; --labels-format camtrap_dp</code>; observations join to media on <code>mediaID</code>, labels come from <code>scientificName</code> (falling back to <code>observationType</code>), and <code>deploymentID</code> maps to <code>site</code> for split allocation. Packages with relative bounding boxes train on crops; packages without boxes fall back to whole-image labels. Export predictions as a Camtrap DP package directory with <code>zamba image predict --results-file-format camtrap_dp</code>. See the <a href="../camtrap-dp/">Camtrap DP compatibility</a> page, including how to merge predictions into an existing package.</li>
 </ul>
 <h2 id="v272-2026-06-30">v2.7.2 (2026-06-30)<a class="headerlink" href="#v272-2026-06-30" title="Permanent link">&para;</a></h2>
 <ul>

@@ -360,6 +360,8 @@
       
         
       
+        
+      
     
     
       
@@ -502,6 +504,27 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../camtrap-dp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Camtrap DP compatibility
   </span>
   
 
@@ -2345,10 +2368,11 @@
 </div>
 </div>
 <h3 id="3-choose-the-output-format">3. Choose the output format<a class="headerlink" href="#3-choose-the-output-format" title="Permanent link">&para;</a></h3>
-<p>There are two options for how to format predictions:</p>
+<p>There are three options for how to format predictions:</p>
 <ol>
 <li><strong>CSV (default):</strong> Return predictions with a row for each bounding box-filename combination and a column for each class label, with probabilities between 0 and 1. Bounding boxes are automatically created for each image, and each image can contain 0 or more bounding boxes (for example, if there are many rabbits in a single image). Cell <code>(i,j)</code> is the probability that species <code>j</code> is present in bounding box <code>i</code>.</li>
 <li><strong>MegaDetector:</strong> Returns much the same information as above, but in a <a href="https://lila.science/megadetector-output-format">JSON format</a> similar to the <a href="https://lila.science/coco-camera-traps">COCO image format</a> that's been augmented to be more useful for camera trap data.</li>
+<li><strong>Camtrap DP (<code>camtrap_dp</code>):</strong> Writes a <a href="https://camtrap-dp.tdwg.org/">Camtrap DP</a> package <em>directory</em> (<code>datapackage.json</code>, <code>media.csv</code>, <code>observations.csv</code>, <code>deployments.csv</code>) with one observation per detection, including <code>observationType</code>, top predicted <code>scientificName</code>, <code>classificationProbability</code>, and relative bounding boxes. Only fields derivable from inference are populated — deployment, timestamp, and location fields are written as placeholders because they cannot be known from images alone, so the package is intended for downstream ingestion rather than strict spec validation. See <a href="../camtrap-dp/">Camtrap DP compatibility</a> for details.</li>
 </ol>
 <p>Say we want to generate predictions for images in <code>example_images</code> in MegaDetector format:</p>
 <div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">CLI</label><div class="tabbed-content">

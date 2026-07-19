@@ -16,7 +16,7 @@
         <link rel="prev" href="../images-predict-tutorial/">
       
       
-        <link rel="next" href="../predict-tutorial/">
+        <link rel="next" href="../camtrap-dp/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -360,6 +360,8 @@
       
         
       
+        
+      
     
     
       
@@ -524,6 +526,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../camtrap-dp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Camtrap DP compatibility
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -2300,7 +2323,7 @@
 <p>To run <code>zamba image train</code> in the command line, you must specify <code>labels</code> and <code>data_dir</code>.</p>
 <ul>
 <li>
-<p><strong><code>--labels PATH</code>:</strong> Path to a CSV or JSON file containing the image labels to use as ground truth during training. For CSV files, there must be columns for both <code>filepath</code> and <code>label</code>. Optionally, there can also be columns for <code>split</code> (which can have one of the three values for each row: <code>train</code>, <code>val</code>, or <code>test</code>) or <code>site</code> (which can contain any string identifying the location of the camera, used to allocate images to splits if not already specified). For JSON files, the format should be COCO or another supported bounding box format as specified by <code>--labels-format</code>.</p>
+<p><strong><code>--labels PATH</code>:</strong> Path to labels used as ground truth during training. For CSV files, there must be columns for both <code>filepath</code> and <code>label</code>. Optionally, there can also be columns for <code>split</code> (which can have one of the three values for each row: <code>train</code>, <code>val</code>, or <code>test</code>) or <code>site</code> (which can contain any string identifying the location of the camera, used to allocate images to splits if not already specified). For JSON files, the format should be COCO or MegaDetector as specified by <code>--labels-format</code>. For Camtrap DP packages, pass a package directory, <code>datapackage.json</code>, or <code>.zip</code> with <code>--labels-format camtrap_dp</code>.</p>
 </li>
 <li>
 <p><strong><code>--data-dir PATH</code>:</strong> Path to the folder containing your labeled images. If the image filepaths in the labels csv are not absolute, be sure to provide the <code>data-dir</code> to which the filepaths are relative.</p>
@@ -2426,6 +2449,29 @@
 </code></pre></div>
 </div>
 </div>
+<p>Supported bounding box label formats:</p>
+<ul>
+<li><strong><code>coco</code></strong> (default): COCO Camera Traps JSON</li>
+<li><strong><code>megadetector</code></strong>: MegaDetector batch output JSON with classifications</li>
+<li><strong><code>camtrap_dp</code></strong>: <a href="https://camtrap-dp.tdwg.org/">Camtrap DP</a> package (directory with <code>datapackage.json</code>, path to <code>datapackage.json</code>, or <code>.zip</code>). Labels use <code>scientificName</code> when present, otherwise <code>observationType</code>, and <code>deploymentID</code> is mapped to <code>site</code> for split allocation. Bounding boxes (<code>bboxX</code>, <code>bboxY</code>, <code>bboxWidth</code>, <code>bboxHeight</code>) are used when present; packages without boxes train on whole images. See <a href="../camtrap-dp/">Camtrap DP compatibility</a> for details.</li>
+</ul>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span>--data-dir<span class="w"> </span>example_images/<span class="w"> </span>--labels<span class="w"> </span>path/to/camtrap_dp/<span class="w"> </span>--labels-format<span class="w"> </span>camtrap_dp
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Python</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">,</span> <span class="n">BboxInputFormat</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">train</span>
+
+<span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s1">&#39;example_images/&#39;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="s1">&#39;path/to/camtrap_dp/&#39;</span><span class="p">,</span>
+    <span class="n">labels_format</span><span class="o">=</span><span class="n">BboxInputFormat</span><span class="o">.</span><span class="n">CAMTRAP_DP</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
 <h3 id="3-choose-a-model-for-training">3. Choose a model for training<a class="headerlink" href="#3-choose-a-model-for-training" title="Permanent link">&para;</a></h3>
 <p>Any of the image models that ship with <code>zamba</code> can be trained. Currently, <code>zamba</code> supports two image models:</p>
 <ul>
@@ -2434,11 +2480,11 @@
 </ul>
 <p>If you're training on entirely new species or new ecologies, we recommend starting with the <a href="../models/image-classification/#lila.science"><code>lila.science</code> model</a> as it has been trained on a diverse set of species.</p>
 <p>Add the model name to your command with <code>--model</code>. The <code>lila.science</code> model will be used if no model is specified. For example, if you want to train the <code>speciesnet</code> model:</p>
-<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">CLI</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">CLI</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span>--data-dir<span class="w"> </span>example_images/<span class="w"> </span>--labels<span class="w"> </span>example_labels.csv<span class="w"> </span>--model<span class="w"> </span>speciesnet
 </code></pre></div>
 </div>
-<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Python</label><div class="tabbed-content">
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
     <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_labels.csv&quot;</span><span class="p">,</span>
@@ -2450,11 +2496,11 @@
 </div>
 <h3 id="4-training-from-scratch-vs-finetuning">4. Training from scratch vs. finetuning<a class="headerlink" href="#4-training-from-scratch-vs-finetuning" title="Permanent link">&para;</a></h3>
 <p>By default, <code>zamba</code> will finetune from a pretrained model checkpoint. If you want to train a model from scratch (starting with only base ImageNet weights), use the <code>--from-scratch</code> flag:</p>
-<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">CLI</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">CLI</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span>--data-dir<span class="w"> </span>example_images/<span class="w"> </span>--labels<span class="w"> </span>example_labels.csv<span class="w"> </span>--from-scratch
 </code></pre></div>
 </div>
-<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Python</label><div class="tabbed-content">
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
     <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_labels.csv&quot;</span><span class="p">,</span>
@@ -2498,11 +2544,11 @@
 </ul>
 <h2 id="using-your-trained-model">Using your trained model<a class="headerlink" href="#using-your-trained-model" title="Permanent link">&para;</a></h2>
 <p>Once training is complete, you can use your trained model to make predictions on new images:</p>
-<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">CLI</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">CLI</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>predict<span class="w"> </span>--data-dir<span class="w"> </span>new_images/<span class="w"> </span>--checkpoint<span class="w"> </span>lila.science.ckpt
 </code></pre></div>
 </div>
-<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Python</label><div class="tabbed-content">
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
 
