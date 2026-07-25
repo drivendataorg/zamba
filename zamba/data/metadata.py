@@ -22,12 +22,13 @@ def roundrobin(*iterables):
             num_active -= 1
             nexts = itertools.cycle(itertools.islice(nexts, num_active))
 
-
 def create_site_specific_splits(
     site: pd.Series,
     proportions: Dict[str, int],
+    labels: pd.DataFrame = None,  # <--- Add this line
     random_state: Optional[Union[int, np.random.mtrand.RandomState]] = 989,
 ):
+
     """Splits sites into distinct groups whose sizes roughly matching the given proportions. Null
     sites are randomly assigned to groups using the provided proportions.
 
@@ -48,37 +49,64 @@ def create_site_specific_splits(
 
     """
 
+    # Calculate target ratios from the proportions dict (e.g., {'train': 2, 'val': 1} -> {train: 0.66, val: 0.33})
+    target_names = list(proportions.keys())
+    total_parts = sum(proportions.values())
+    target_ratios = {k: v / total_parts for k, v in proportions.items()}
+    
     assignments = {}
-    sites = site.value_counts(dropna=True).sort_values(ascending=False).index
-    n_subgroups = sum(proportions.values())
-    for i, subset in enumerate(
-        roundrobin(*([subset] * proportions[subset] for subset in proportions))
-    ):
-        for group in sites[i::n_subgroups]:
-            assignments[group] = subset
 
-    # Divide null sites among the groups
-    null_sites = site.isnull()
-    if null_sites.sum() > 0:
-        logger.debug(f"{null_sites.sum():,} null sites randomly assigned to groups.")
-        null_groups = []
-        for group, group_proportion in proportions.items():
-            null_group = f"{group}-{uuid4()}"
-            null_groups.append(null_group)
-            assignments[null_group] = group
+    if labels is None:
+        # FALLBACK: Original Round-Robin logic if no labels are provided
+        sites = site.value_counts(dropna=True).sort_values(ascending=False).index
+        n_subgroups = sum(proportions.values())
+        for i, subset in enumerate(
+            roundrobin(*([subset] * proportions[subset] for subset in proportions))
+        ):
+            for group in sites[i::n_subgroups]:
+                assignments[group] = subset
+    else:
+        # FIX: Label-Aware Iterative Stratification
+        # 1. Aggregate species counts per site
+        site_labels = labels.groupby(site).sum()
+        
+        # 2. Rank species by rarity (least frequent globally is prioritized)
+        label_rarity = site_labels.sum().sort_values().index
+        
+        remaining_sites = set(site_labels.index)
+        split_counts = pd.DataFrame(0, index=target_names, columns=site_labels.columns)
 
-        rng = (
-            np.random.RandomState(random_state) if isinstance(random_state, int) else random_state
-        )
-        site = site.copy()
-        site.loc[null_sites] = rng.choice(
-            null_groups,
-            p=np.asarray(list(proportions.values())) / sum(proportions.values()),
-            size=null_sites.sum(),
-            replace=True,
-        )
+        # 3. Greedy Assignment: Process rarest species first
+        for label in label_rarity:
+            # Find sites containing this rare species that aren't assigned yet
+            relevant_sites = [s for s in remaining_sites if site_labels.loc[s, label] > 0]
+            
+            for s in relevant_sites:
+                best_split = None
+                max_diff = -float('inf')
+                
+                # Assign to the split that is furthest behind its target for this specific label
+                for split in target_names:
+                    current_total_for_label = split_counts.sum(axis=0)[label]
+                    target_count = current_total_for_label * target_ratios[split]
+                    diff = target_count - split_counts.loc[split, label]
+                    
+                    if diff > max_diff:
+                        max_diff = diff
+                        best_split = split
+                
+                assignments[s] = best_split
+                split_counts.loc[best_split] += site_labels.loc[s]
+                remaining_sites.remove(s)
 
-    return site.replace(assignments)
+        # 4. Cleanup: Assign any remaining sites (those with no labels) to the first split
+        for s in list(remaining_sites):
+            assignments[s] = target_names[0]
+
+    # Map the site-level assignments back to every row in the original Series
+    return site.map(assignments)
+
+    
 
 
 def one_hot_to_labels(
