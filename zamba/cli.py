@@ -252,7 +252,7 @@ def predict(
     output_class_names: bool = typer.Option(
         None,
         help="If True, we just return a video and the name of the most likely class. If False, "
-        "we return a probability or indicator (depending on --proba_threshold) for every "
+        "we return a probability or indicator (depending on --proba-threshold) for every "
         "possible class.",
     ),
     num_workers: int = typer.Option(
