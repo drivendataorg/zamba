@@ -16,7 +16,7 @@ For using a YAML file with the Python package and other details, see the [YAML C
 
 === "CLI"
     ```console
-    zamba predict --data-dir example_vids/ --weight_download_region asia
+    zamba predict --data-dir example_vids/ --weight-download-region asia
     ```
 === "Python"
     In Python this can be specified in [`PredictConfig`](configurations.md#prediction-arguments) or [`TrainConfig`](configurations.md#training-arguments):

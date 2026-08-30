@@ -155,7 +155,7 @@ For images, all the above is true except the command is `zamba image train`.
 ## Downloading model weights
 
 **`zamba` needs to download the "weights" files for the models it uses to make predictions. On first run, it will download ~200-2000 MB of files with these weights depending which model you choose.**
-Once a model's weights are downloaded, `zamba` will use the local version and will not need to perform this download again. If you are not in the United States, we recommend running the above command with the additional flag either `--weight_download_region eu` or `--weight_download_region asia` depending on your location. The closer you are to the server, the faster the downloads will be.
+Once a model's weights are downloaded, `zamba` will use the local version and will not need to perform this download again. If you are not in the United States, we recommend running the above command with the additional flag either `--weight-download-region eu` or `--weight-download-region asia` depending on your location. The closer you are to the server, the faster the downloads will be.
 
 <a id='getting-help'></a>
 
@@ -212,7 +212,7 @@ Options:
                                   If True, we just return a video and the name
                                   of the most likely class. If False, we
                                   return a probability or indicator (depending
-                                  on --proba_threshold) for every possible
+                                  on --proba-threshold) for every possible
                                   class.
   --num-workers INTEGER           Number of subprocesses to use for data
                                   loading.
