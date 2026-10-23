@@ -2,7 +2,6 @@
 
 [![Docs Status](https://img.shields.io/badge/docs-stable-informational)](https://zamba.drivendata.org/docs/)
 [![tests](https://github.com/drivendataorg/zamba/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/drivendataorg/zamba/actions/workflows/tests.yml?query=branch%3Amaster)
-[![codecov](https://codecov.io/gh/drivendataorg/zamba/branch/master/graph/badge.svg)](https://codecov.io/gh/drivendataorg/zamba)
 <!-- [![PyPI](https://img.shields.io/pypi/v/zamba.svg)](https://pypi.org/project/zamba/) -->
 
 https://user-images.githubusercontent.com/46792169/138346340-98ee196a-5ecd-4753-b9df-380528091f9e.mp4
