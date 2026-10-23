@@ -214,13 +214,6 @@ jobs:
           uv pip install "detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose" --no-build-isolation
           make test-densepose
 
-      - name: Upload coverage to codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          fail_ci_if_error: ${{ (github.event_name == 'push' && true) || (github.event_name == 'pull_request' && true) || false }}
-
 
   test-install:
     # Fast smoke tests
