@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2559,7 +2605,7 @@ Defaults to True.</p>
 <span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BackboneFinetuneConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration containing parameters to be used for backbone finetuning.</span>
+<span class="w">    </span><span class="sd">"""Configuration containing parameters to be used for backbone finetuning.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        unfreeze_backbone_at_epoch (int, optional): Epoch at which the backbone</span>
@@ -2574,13 +2620,13 @@ Defaults to True.</p>
 <span class="sd">        train_bn (bool, optional): Make batch normalization trainable. Defaults to False.</span>
 <span class="sd">        verbose (bool, optional): Display current learning rate for model and backbone.</span>
 <span class="sd">            Defaults to True.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">unfreeze_backbone_at_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">backbone_initial_ratio_lr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span>
     <span class="n">multiplier</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">pre_train_bn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># freeze batch norm layers prior to finetuning</span>
-    <span class="n">train_bn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># don&#39;t train bn layers in unfrozen finetuning layers</span>
+    <span class="n">train_bn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># don't train bn layers in unfrozen finetuning layers</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -2745,34 +2791,34 @@ If None, mode will be inferred from monitor. Defaults to None.</p>
 <span class="normal">194</span>
 <span class="normal">195</span>
 <span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EarlyStoppingConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration containing parameters to be used for early stopping.</span>
+<span class="w">    </span><span class="sd">"""Configuration containing parameters to be used for early stopping.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        monitor (str): Metric to be monitored. Options are &quot;val_macro_f1&quot; or</span>
-<span class="sd">            &quot;val_loss&quot;. Defaults to &quot;val_macro_f1&quot;.</span>
+<span class="sd">        monitor (str): Metric to be monitored. Options are "val_macro_f1" or</span>
+<span class="sd">            "val_loss". Defaults to "val_macro_f1".</span>
 <span class="sd">        patience (int): Number of epochs with no improvement after which training</span>
 <span class="sd">            will be stopped. Defaults to 5.</span>
 <span class="sd">        verbose (bool): Verbosity mode. Defaults to True.</span>
-<span class="sd">        mode (str, optional): Options are &quot;min&quot; or &quot;max&quot;. In &quot;min&quot; mode, training</span>
+<span class="sd">        mode (str, optional): Options are "min" or "max". In "min" mode, training</span>
 <span class="sd">            will stop when the quantity monitored has stopped decreasing and in</span>
-<span class="sd">            &quot;max&quot; mode it will stop when the quantity monitored has stopped increasing.</span>
+<span class="sd">            "max" mode it will stop when the quantity monitored has stopped increasing.</span>
 <span class="sd">            If None, mode will be inferred from monitor. Defaults to None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">monitor</span><span class="p">:</span> <span class="n">MonitorEnum</span> <span class="o">=</span> <span class="s2">&quot;val_macro_f1&quot;</span>
+    <span class="n">monitor</span><span class="p">:</span> <span class="n">MonitorEnum</span> <span class="o">=</span> <span class="s2">"val_macro_f1"</span>
     <span class="n">patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@root_validator</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_mode</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;val_macro_f1&quot;</span><span class="p">:</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;val_loss&quot;</span><span class="p">:</span> <span class="s2">&quot;min&quot;</span><span class="p">}[</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;monitor&quot;</span><span class="p">)]</span>
-        <span class="n">user_mode</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"val_macro_f1"</span><span class="p">:</span> <span class="s2">"max"</span><span class="p">,</span> <span class="s2">"val_loss"</span><span class="p">:</span> <span class="s2">"min"</span><span class="p">}[</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"monitor"</span><span class="p">)]</span>
+        <span class="n">user_mode</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"mode"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">user_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"mode"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span>
         <span class="k">elif</span> <span class="n">user_mode</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Provided mode </span><span class="si">{</span><span class="n">user_mode</span><span class="si">}</span><span class="s2"> is incorrect for </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;monitor&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> monitor.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Provided mode </span><span class="si">{</span><span class="n">user_mode</span><span class="si">}</span><span class="s2"> is incorrect for </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'monitor'</span><span class="p">)</span><span class="si">}</span><span class="s2"> monitor."</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
@@ -2937,7 +2983,7 @@ Defaults to None.</p>
 <span class="normal">798</span>
 <span class="normal">799</span>
 <span class="normal">800</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ModelConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Contains all configs necessary to use a model for training or inference.</span>
+<span class="w">    </span><span class="sd">"""Contains all configs necessary to use a model for training or inference.</span>
 <span class="sd">    Must contain a train_config or a predict_config at a minimum.</span>
 
 <span class="sd">    Args:</span>
@@ -2948,7 +2994,7 @@ Defaults to None.</p>
 <span class="sd">            Defaults to None.</span>
 <span class="sd">        predict_config (PredictConfig, optional): An instantiated PredictConfig.</span>
 <span class="sd">            Defaults to None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">train_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TrainConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2959,27 +3005,27 @@ Defaults to None.</p>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">one_config_must_exist</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;predict_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must provide either `train_config` or `predict_config`.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"train_config"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">"predict_config"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Must provide either `train_config` or `predict_config`."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">values</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_default_video_loader_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;video_loader_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"video_loader_config"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">model_name</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_name</span>
-                <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;predict_config&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_name</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"train_config"</span><span class="p">]</span><span class="o">.</span><span class="n">model_name</span>
+                <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"train_config"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">values</span><span class="p">[</span><span class="s2">"predict_config"</span><span class="p">]</span><span class="o">.</span><span class="n">model_name</span>
             <span class="p">)</span>
 
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No video loader config specified. Using default for </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No video loader config specified. Using default for </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
-            <span class="n">config_file</span> <span class="o">=</span> <span class="n">MODELS_DIRECTORY</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">/config.yaml&quot;</span>
+            <span class="n">config_file</span> <span class="o">=</span> <span class="n">MODELS_DIRECTORY</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">/config.yaml"</span>
             <span class="k">with</span> <span class="n">config_file</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">config_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;video_loader_config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;video_loader_config&quot;</span><span class="p">])</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"video_loader_config"</span><span class="p">]</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">"video_loader_config"</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
@@ -3519,7 +3565,7 @@ inference regardless of this flag. Defaults to False.</p>
 <span class="normal">750</span>
 <span class="normal">751</span>
 <span class="normal">752</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PredictConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Configuration for using a video model for inference.</span>
 
 <span class="sd">    Args:</span>
@@ -3527,7 +3573,7 @@ inference regardless of this flag. Defaults to False.</p>
 <span class="sd">            inference. Defaults to the current working directory.</span>
 <span class="sd">        filepaths (FilePath, optional): Path to a CSV containing videos for inference, with</span>
 <span class="sd">            one row per video in the data_dir. There must be a column called</span>
-<span class="sd">            &#39;filepath&#39; (absolute or relative to the data_dir). If None, uses</span>
+<span class="sd">            'filepath' (absolute or relative to the data_dir). If None, uses</span>
 <span class="sd">            all files in data_dir. Defaults to None.</span>
 <span class="sd">        checkpoint (FilePath, optional): Path to a custom checkpoint file (.ckpt)</span>
 <span class="sd">            generated by zamba that can be used to generate predictions. If None,</span>
@@ -3557,8 +3603,8 @@ inference regardless of this flag. Defaults to False.</p>
 <span class="sd">            score as a single prediction for each video. If False, return probabilty</span>
 <span class="sd">            scores for each species. Defaults to False.</span>
 <span class="sd">        weight_download_region (str): s3 region to download pretrained weights from.</span>
-<span class="sd">            Options are &quot;us&quot; (United States), &quot;eu&quot; (Europe), or &quot;asia&quot; (Asia Pacific).</span>
-<span class="sd">            Defaults to &quot;us&quot;.</span>
+<span class="sd">            Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).</span>
+<span class="sd">            Defaults to "us".</span>
 <span class="sd">        skip_load_validation (bool): By default, zamba runs a check to verify that</span>
 <span class="sd">            all videos can be loaded and skips files that cannot be loaded. This can</span>
 <span class="sd">            be time intensive, depending on how many videos there are. If you are very</span>
@@ -3570,9 +3616,9 @@ inference regardless of this flag. Defaults to False.</p>
 <span class="sd">        deterministic (bool): If True, enable strict deterministic CUDA/cuDNN algorithms during</span>
 <span class="sd">            inference (best effort; may reduce GPU throughput). RNGs are always seeded for</span>
 <span class="sd">            inference regardless of this flag. Defaults to False.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModelEnum</span><span class="o">.</span><span class="n">time_distributed</span><span class="o">.</span><span class="n">value</span>
@@ -3585,34 +3631,34 @@ inference regardless of this flag. Defaults to False.</p>
     <span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">proba_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">output_class_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="s2">&quot;us&quot;</span>
+    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="s2">"us"</span>
     <span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="n">_validate_gpus</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">&quot;gpus&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">validate_gpus</span><span class="p">)</span>
+    <span class="n">_validate_gpus</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">"gpus"</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">validate_gpus</span><span class="p">)</span>
 
-    <span class="n">_validate_model_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">&quot;model_cache_dir&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_validate_model_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">"model_cache_dir"</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
         <span class="n">validate_model_cache_dir</span>
     <span class="p">)</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_dry_run_and_save</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
-            <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"dry_run"</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"save"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"save_dir"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
         <span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None.&quot;</span>
+                <span class="s2">"Cannot save when predicting with dry_run=True. Setting save=False and save_dir=None."</span>
             <span class="p">)</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"save"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"save_dir"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_save_dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="n">save_dir</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span>
-        <span class="n">save</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span>
+        <span class="n">save_dir</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"save_dir"</span><span class="p">]</span>
+        <span class="n">save</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"save"</span><span class="p">]</span>
 
         <span class="c1"># if no save_dir but save is True, use current working directory</span>
         <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">save</span><span class="p">:</span>
@@ -3621,11 +3667,11 @@ inference regardless of this flag. Defaults to False.</p>
         <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># check if files exist</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="p">(</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">&quot;zamba_predictions.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
-                <span class="ow">or</span> <span class="p">(</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">&quot;predict_configuration.yaml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
-            <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;overwrite&quot;</span><span class="p">]:</span>
+                <span class="p">(</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">"zamba_predictions.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">"predict_configuration.yaml"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+            <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">"overwrite"</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;zamba_predictions.csv and/or predict_configuration.yaml already exist in </span><span class="si">{</span><span class="n">save_dir</span><span class="si">}</span><span class="s2">. If you would like to overwrite, set overwrite=True&quot;</span>
+                    <span class="sa">f</span><span class="s2">"zamba_predictions.csv and/or predict_configuration.yaml already exist in </span><span class="si">{</span><span class="n">save_dir</span><span class="si">}</span><span class="s2">. If you would like to overwrite, set overwrite=True"</span>
                 <span class="p">)</span>
 
             <span class="c1"># make a directory if needed</span>
@@ -3635,8 +3681,8 @@ inference regardless of this flag. Defaults to False.</p>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">save</span><span class="p">:</span>
                 <span class="n">save</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_dir</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"save_dir"</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_dir</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"save"</span><span class="p">]</span> <span class="o">=</span> <span class="n">save</span>
 
         <span class="k">return</span> <span class="n">values</span>
 
@@ -3646,15 +3692,15 @@ inference regardless of this flag. Defaults to False.</p>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_proba_threshold</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;proba_threshold&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"proba_threshold"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"proba_threshold"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"proba_threshold"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Setting proba_threshold outside of the range (0, 1) will cause all probabilities to be rounded to the same value.&quot;</span>
+                    <span class="s2">"Setting proba_threshold outside of the range (0, 1) will cause all probabilities to be rounded to the same value."</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;output_class_names&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"output_class_names"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;`output_class_names` will be ignored because `proba_threshold` is specified.&quot;</span>
+                    <span class="s2">"`output_class_names` will be ignored because `proba_threshold` is specified."</span>
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 
@@ -3665,29 +3711,29 @@ inference regardless of this flag. Defaults to False.</p>
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_files</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="c1"># if globbing from data directory, already have valid dataframe</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># make into dataframe even if only one column for clearer indexing</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]))</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]))</span>
 
-        <span class="k">if</span> <span class="s2">&quot;filepath&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;filepaths&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain a `filepath` column.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"filepath"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">'filepaths'</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain a `filepath` column."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]]</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">"filepath"</span><span class="p">]]</span>
 
         <span class="c1"># can only contain one row per filepath</span>
         <span class="n">duplicated</span> <span class="o">=</span> <span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video."</span>
             <span class="p">)</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">"filepath"</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
             <span class="n">df</span><span class="o">=</span><span class="n">files_df</span><span class="p">,</span>
-            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;data_dir&quot;</span><span class="p">],</span>
-            <span class="n">skip_load_validation</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">],</span>
+            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"data_dir"</span><span class="p">],</span>
+            <span class="n">skip_load_validation</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"skip_load_validation"</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
@@ -3817,30 +3863,30 @@ scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,
 <span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SchedulerConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration containing parameters for a custom pytorch learning rate scheduler.</span>
+<span class="w">    </span><span class="sd">"""Configuration containing parameters for a custom pytorch learning rate scheduler.</span>
 <span class="sd">    See https://pytorch.org/docs/stable/optim.html for options.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        scheduler (str): Name of learning rate scheduler to use. See</span>
 <span class="sd">            https://pytorch.org/docs/stable/optim.html for options.</span>
 <span class="sd">        scheduler_params (dict, optional): Parameters passed to learning rate</span>
-<span class="sd">            scheduler upon initialization (eg. {&quot;milestones&quot;: [1], &quot;gamma&quot;: 0.5,</span>
-<span class="sd">            &quot;verbose&quot;: True}). Defaults to None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            scheduler upon initialization (eg. {"milestones": [1], "gamma": 0.5,</span>
+<span class="sd">            "verbose": True}). Defaults to None.</span>
+<span class="sd">    """</span>
 
     <span class="n">scheduler</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">scheduler_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"scheduler"</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_scheduler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">scheduler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">elif</span> <span class="n">scheduler</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">lr_scheduler</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Scheduler is not a `torch.optim.lr_scheduler`. &quot;</span>
-                <span class="s2">&quot;See https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py &quot;</span>
-                <span class="s2">&quot;for options.&quot;</span>
+                <span class="s2">"Scheduler is not a `torch.optim.lr_scheduler`. "</span>
+                <span class="s2">"See https://github.com/pytorch/pytorch/blob/master/torch/optim/lr_scheduler.py "</span>
+                <span class="s2">"for options."</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">scheduler</span>
@@ -4583,24 +4629,24 @@ not set, uses your default cache directory. Defaults to None.</p>
 <span class="normal">513</span>
 <span class="normal">514</span>
 <span class="normal">515</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TrainConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Configuration for training a video model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        labels (FilePath or pandas DataFrame): Path to a CSV or pandas DataFrame</span>
 <span class="sd">            containing labels for training, with one row per label. There must be</span>
-<span class="sd">            columns called &#39;filepath&#39; (absolute or relative to the data_dir) and</span>
-<span class="sd">            &#39;label&#39;, and optionally columns called &#39;split&#39; (&quot;train&quot;, &quot;val&quot;, or &quot;holdout&quot;)</span>
-<span class="sd">            and &#39;site&#39;. Labels must be specified to train a model.</span>
+<span class="sd">            columns called 'filepath' (absolute or relative to the data_dir) and</span>
+<span class="sd">            'label', and optionally columns called 'split' ("train", "val", or "holdout")</span>
+<span class="sd">            and 'site'. Labels must be specified to train a model.</span>
 <span class="sd">        data_dir (DirectoryPath): Path to a directory containing training</span>
 <span class="sd">            videos. Defaults to the current working directory.</span>
 <span class="sd">        checkpoint (FilePath, optional): Path to a custom checkpoint file (.ckpt)</span>
 <span class="sd">            generated by zamba that can be used to resume training. If None and from_scratch</span>
 <span class="sd">            is False, defaults to a pretrained model. Defaults to None.</span>
 <span class="sd">        scheduler_config (SchedulerConfig or str, optional): Config for setting up</span>
-<span class="sd">            the learning rate scheduler on the model. If &quot;default&quot;, uses scheduler</span>
+<span class="sd">            the learning rate scheduler on the model. If "default", uses scheduler</span>
 <span class="sd">            that was used for training. If None, will not use a scheduler.</span>
-<span class="sd">            Defaults to &quot;default&quot;.</span>
+<span class="sd">            Defaults to "default".</span>
 <span class="sd">        model_name (str, optional): Name of the model to use for training. Options are:</span>
 <span class="sd">            time_distributed, slowfast, european, blank_nonblank. Defaults to time_distributed.</span>
 <span class="sd">        dry_run (bool or int, Optional): Run one training and validation batch</span>
@@ -4629,14 +4675,14 @@ not set, uses your default cache directory. Defaults to None.</p>
 <span class="sd">            until early stopping criteria are met.</span>
 <span class="sd">        early_stopping_config (EarlyStoppingConfig, optional): Configuration for</span>
 <span class="sd">            early stopping, which monitors a metric during training and stops training</span>
-<span class="sd">            when the metric stops improving. Defaults to EarlyStoppingConfig(monitor=&#39;val_macro_f1&#39;,</span>
-<span class="sd">            patience=5, verbose=True, mode=&#39;max&#39;).</span>
+<span class="sd">            when the metric stops improving. Defaults to EarlyStoppingConfig(monitor='val_macro_f1',</span>
+<span class="sd">            patience=5, verbose=True, mode='max').</span>
 <span class="sd">        weight_download_region (str): s3 region to download pretrained weights from.</span>
-<span class="sd">            Options are &quot;us&quot; (United States), &quot;eu&quot; (Europe), or &quot;asia&quot; (Asia Pacific).</span>
-<span class="sd">            Defaults to &quot;us&quot;.</span>
+<span class="sd">            Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).</span>
+<span class="sd">            Defaults to "us".</span>
 <span class="sd">        split_proportions (dict): Proportions used to divide data into training,</span>
-<span class="sd">            validation, and holdout sets if a &quot;split&quot; column is not included in</span>
-<span class="sd">            labels. Defaults to {&quot;train&quot;: 3, &quot;val&quot;: 1, &quot;holdout&quot;: 1}.</span>
+<span class="sd">            validation, and holdout sets if a "split" column is not included in</span>
+<span class="sd">            labels. Defaults to {"train": 3, "val": 1, "holdout": 1}.</span>
 <span class="sd">        save_dir (Path, optional): Path to a directory where training files</span>
 <span class="sd">            will be saved. Files include the best model checkpoint (``model_name``.ckpt),</span>
 <span class="sd">            training configuration (configuration.yaml), Tensorboard logs</span>
@@ -4661,12 +4707,12 @@ not set, uses your default cache directory. Defaults to None.</p>
 <span class="sd">        model_cache_dir (Path, optional): Cache directory where downloaded model weights</span>
 <span class="sd">            will be saved. If None and the MODEL_CACHE_DIR environment variable is</span>
 <span class="sd">            not set, uses your default cache directory. Defaults to None.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">labels</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">FilePath</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
-    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FilePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">scheduler_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SchedulerConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+    <span class="n">scheduler_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SchedulerConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"default"</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModelEnum</span><span class="o">.</span><span class="n">time_distributed</span><span class="o">.</span><span class="n">value</span>
     <span class="n">dry_run</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
@@ -4676,8 +4722,8 @@ not set, uses your default cache directory. Defaults to None.</p>
     <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="n">max_epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">early_stopping_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EarlyStoppingConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">EarlyStoppingConfig</span><span class="p">()</span>
-    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="s2">&quot;us&quot;</span>
-    <span class="n">split_proportions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;holdout&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="s2">"us"</span>
+    <span class="n">split_proportions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"train"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"val"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"holdout"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
     <span class="n">save_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
     <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
@@ -4688,20 +4734,20 @@ not set, uses your default cache directory. Defaults to None.</p>
     <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
         <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="n">_validate_gpus</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">&quot;gpus&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">validate_gpus</span><span class="p">)</span>
+    <span class="n">_validate_gpus</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">"gpus"</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">validate_gpus</span><span class="p">)</span>
 
-    <span class="n">_validate_model_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">&quot;model_cache_dir&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_validate_model_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">"model_cache_dir"</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
         <span class="n">validate_model_cache_dir</span>
     <span class="p">)</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_from_scratch_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;from_scratch&quot;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If from_scratch=True, you cannot specify a checkpoint.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"from_scratch"</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"If from_scratch=True, you cannot specify a checkpoint."</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If from_scratch=True, model_name cannot be None.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"If from_scratch=True, model_name cannot be None."</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">values</span>
 
@@ -4709,165 +4755,165 @@ not set, uses your default cache directory. Defaults to None.</p>
         <span class="n">validate_model_name_and_checkpoint</span>
     <span class="p">)</span>
 
-    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;scheduler_config&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"scheduler_config"</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_scheduler_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scheduler_config</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">scheduler_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SchedulerConfig</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler_config</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">scheduler_config</span> <span class="o">!=</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Scheduler can either be &#39;default&#39;, None, or a SchedulerConfig.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scheduler_config</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">scheduler_config</span> <span class="o">!=</span> <span class="s2">"default"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Scheduler can either be 'default', None, or a SchedulerConfig."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">scheduler_config</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">turn_off_load_validation_if_dry_run</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;dry_run&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">]:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Turning off video loading check since dry_run=True.&quot;</span><span class="p">)</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"dry_run"</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">"skip_load_validation"</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Turning off video loading check since dry_run=True."</span><span class="p">)</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"skip_load_validation"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_filepaths_and_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Validating labels csv.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Validating labels csv."</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
-            <span class="k">else</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;filepath&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain `filepath` and `label` columns.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">([</span><span class="s2">"label"</span><span class="p">,</span> <span class="s2">"filepath"</span><span class="p">])</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">'labels'</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain `filepath` and `label` columns."</span><span class="p">)</span>
 
         <span class="c1"># subset to required and optional</span>
-        <span class="n">cols_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="s2">&quot;site&quot;</span><span class="p">,</span> <span class="s2">&quot;split&quot;</span><span class="p">]]</span>
+        <span class="n">cols_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"label"</span><span class="p">,</span> <span class="s2">"site"</span><span class="p">,</span> <span class="s2">"split"</span><span class="p">]]</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">cols_to_keep</span><span class="p">]</span>
 
         <span class="c1"># validate split column has no partial nulls or invalid values</span>
-        <span class="k">if</span> <span class="s2">&quot;split&quot;</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"split"</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="c1"># if split is entirely null, warn, drop column, and generate splits automatically</span>
             <span class="k">if</span> <span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Split column is entirely null. Will generate splits automatically using `split_proportions`.&quot;</span>
+                    <span class="s2">"Split column is entirely null. Will generate splits automatically using `split_proportions`."</span>
                 <span class="p">)</span>
-                <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;split&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">"split"</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="c1"># error if split column has null values</span>
             <span class="k">elif</span> <span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> row(s) with null `split`. Fill in these rows with either `train`, `val`, or `holdout`. Alternatively, do not include a `split` column in your labels and we&#39;ll generate splits for you using `split_proportions`.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> row(s) with null `split`. Fill in these rows with either `train`, `val`, or `holdout`. Alternatively, do not include a `split` column in your labels and we'll generate splits for you using `split_proportions`."</span>
                 <span class="p">)</span>
 
             <span class="c1"># otherwise check that split values are valid</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">({</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;holdout&quot;</span><span class="p">}):</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">({</span><span class="s2">"train"</span><span class="p">,</span> <span class="s2">"val"</span><span class="p">,</span> <span class="s2">"holdout"</span><span class="p">}):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Found the following invalid values for `split`: </span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">({</span><span class="s1">&#39;train&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;val&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;holdout&#39;</span><span class="p">})</span><span class="si">}</span><span class="s2">. `split` can only contain `train`, `val`, or `holdout.`&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Found the following invalid values for `split`: </span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">({</span><span class="s1">'train'</span><span class="p">,</span><span class="w"> </span><span class="s1">'val'</span><span class="p">,</span><span class="w"> </span><span class="s1">'holdout'</span><span class="p">})</span><span class="si">}</span><span class="s2">. `split` can only contain `train`, `val`, or `holdout.`"</span>
                 <span class="p">)</span>
 
-            <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">"split_proportions"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;Labels contains split column yet split_proportions are also provided. Split column in labels takes precedence.&quot;</span>
+                    <span class="s2">"Labels contains split column yet split_proportions are also provided. Split column in labels takes precedence."</span>
                 <span class="p">)</span>
                 <span class="c1"># set to None for clarity in final configuration.yaml</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"split_proportions"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># error if labels are entirely null</span>
         <span class="n">null_labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">null_labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Species cannot be null for all videos.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Species cannot be null for all videos."</span><span class="p">)</span>
 
         <span class="c1"># skip and warn about any videos without species label</span>
         <span class="k">elif</span> <span class="nb">sum</span><span class="p">(</span><span class="n">null_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">null_labels</span><span class="p">)</span><span class="si">}</span><span class="s2"> filepath(s) with no label. Will skip.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">null_labels</span><span class="p">)</span><span class="si">}</span><span class="s2"> filepath(s) with no label. Will skip."</span><span class="p">)</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="o">~</span><span class="n">null_labels</span><span class="p">]</span>
 
         <span class="c1"># check that all videos exist and can be loaded</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
             <span class="n">df</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
-            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;data_dir&quot;</span><span class="p">],</span>
-            <span class="n">skip_load_validation</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;skip_load_validation&quot;</span><span class="p">],</span>
+            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"data_dir"</span><span class="p">],</span>
+            <span class="n">skip_load_validation</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"skip_load_validation"</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_provided_species_and_use_default_model_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;If the model species are the desired output, the labels file must contain</span>
+<span class="w">        </span><span class="sd">"""If the model species are the desired output, the labels file must contain</span>
 <span class="sd">        a subset of the model species.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">provided_species</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">provided_species</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
         <span class="n">model_species</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
-            <span class="n">get_model_species</span><span class="p">(</span><span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">])</span>
+            <span class="n">get_model_species</span><span class="p">(</span><span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">])</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">provided_species</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">model_species</span><span class="p">):</span>
             <span class="c1"># if labels are not a subset, user cannot set use_default_model_labels to True</span>
-            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Conflicting information between `use_default_model_labels=True` and the &quot;</span>
-                    <span class="s2">&quot;species provided in labels file. &quot;</span>
-                    <span class="s2">&quot;If you want your model to predict all the zamba species, make sure your &quot;</span>
-                    <span class="s2">&quot;labels are a subset. The species in the labels file that are not &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;in the model species are </span><span class="si">{</span><span class="n">provided_species</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">model_species</span><span class="si">}</span><span class="s2">. &quot;</span>
-                    <span class="s2">&quot;If you want your model to only predict the species in your labels file, &quot;</span>
-                    <span class="s2">&quot;set `use_default_model_labels` to False.&quot;</span>
+                    <span class="s2">"Conflicting information between `use_default_model_labels=True` and the "</span>
+                    <span class="s2">"species provided in labels file. "</span>
+                    <span class="s2">"If you want your model to predict all the zamba species, make sure your "</span>
+                    <span class="s2">"labels are a subset. The species in the labels file that are not "</span>
+                    <span class="sa">f</span><span class="s2">"in the model species are </span><span class="si">{</span><span class="n">provided_species</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">model_species</span><span class="si">}</span><span class="s2">. "</span>
+                    <span class="s2">"If you want your model to only predict the species in your labels file, "</span>
+                    <span class="s2">"set `use_default_model_labels` to False."</span>
                 <span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1"># if labels are a subset, default to True if no value provided</span>
-        <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">preprocess_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;One hot encode, add splits, and check for binary case.</span>
+<span class="w">        </span><span class="sd">"""One hot encode, add splits, and check for binary case.</span>
 
-<span class="sd">        Replaces values[&#39;labels&#39;] with modified DataFrame.</span>
+<span class="sd">        Replaces values['labels'] with modified DataFrame.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            values: dictionary containing &#39;labels&#39; and other config info</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels into one hot encoded labels with one row per video.&quot;</span><span class="p">)</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+<span class="sd">            values: dictionary containing 'labels' and other config info</span>
+<span class="sd">        """</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Preprocessing labels into one hot encoded labels with one row per video."</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span>
 
         <span class="c1"># lowercase to facilitate subset checking</span>
-        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">labels</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
         <span class="n">model_species</span> <span class="o">=</span> <span class="n">get_model_species</span><span class="p">(</span>
-            <span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span>
+            <span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span>
-            <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">model_species</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">labels</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">model_species</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="p">)</span>
         <span class="c1"># one hot encode collapse to one row per video</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;species&quot;</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">])</span>
-            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;filepath&quot;</span><span class="p">)</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"species"</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"species"</span><span class="p">])</span>
+            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"filepath"</span><span class="p">)</span>
             <span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="p">)</span>
 
-        <span class="c1"># if no &quot;split&quot; column, set up train, val, and holdout split</span>
-        <span class="k">if</span> <span class="s2">&quot;split&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="c1"># if no "split" column, set up train, val, and holdout split</span>
+        <span class="k">if</span> <span class="s2">"split"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="n">make_split</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 
         <span class="c1"># if there are only two species columns and every video belongs to one of them,</span>
         <span class="c1"># keep only blank label if it exists to allow resuming of blank_nonblank model</span>
         <span class="c1"># otherwise drop the second species column so the problem is treated as a binary classification</span>
-        <span class="n">species_cols</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+        <span class="n">species_cols</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">"species_"</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
         <span class="n">sums</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">species_cols</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_cols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sums</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-            <span class="n">col_to_keep</span> <span class="o">=</span> <span class="s2">&quot;species_blank&quot;</span> <span class="k">if</span> <span class="s2">&quot;species_blank&quot;</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">else</span> <span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">col_to_keep</span> <span class="o">=</span> <span class="s2">"species_blank"</span> <span class="k">if</span> <span class="s2">"species_blank"</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">else</span> <span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">col_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">col_to_keep</span><span class="p">]</span>
 
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">col_to_keep</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">col_to_keep</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">col_to_drop</span><span class="p">)</span>
 
         <span class="c1"># filepath becomes column instead of index</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -4981,53 +5027,53 @@ not set, uses your default cache directory. Defaults to None.</p>
 <span class="normal">514</span>
 <span class="normal">515</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">preprocess_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;One hot encode, add splits, and check for binary case.</span>
+<span class="w">    </span><span class="sd">"""One hot encode, add splits, and check for binary case.</span>
 
-<span class="sd">    Replaces values[&#39;labels&#39;] with modified DataFrame.</span>
+<span class="sd">    Replaces values['labels'] with modified DataFrame.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        values: dictionary containing &#39;labels&#39; and other config info</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preprocessing labels into one hot encoded labels with one row per video.&quot;</span><span class="p">)</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span>
+<span class="sd">        values: dictionary containing 'labels' and other config info</span>
+<span class="sd">    """</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Preprocessing labels into one hot encoded labels with one row per video."</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span>
 
     <span class="c1"># lowercase to facilitate subset checking</span>
-    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">labels</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="n">model_species</span> <span class="o">=</span> <span class="n">get_model_species</span><span class="p">(</span>
-        <span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span>
+        <span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span>
-        <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">model_species</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">labels</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span>
+        <span class="n">labels</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">model_species</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="p">)</span>
     <span class="c1"># one hot encode collapse to one row per video</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;species&quot;</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">])</span>
-        <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;filepath&quot;</span><span class="p">)</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"label"</span><span class="p">:</span> <span class="s2">"species"</span><span class="p">}),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"species"</span><span class="p">])</span>
+        <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"filepath"</span><span class="p">)</span>
         <span class="o">.</span><span class="n">max</span><span class="p">()</span>
     <span class="p">)</span>
 
-    <span class="c1"># if no &quot;split&quot; column, set up train, val, and holdout split</span>
-    <span class="k">if</span> <span class="s2">&quot;split&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="c1"># if no "split" column, set up train, val, and holdout split</span>
+    <span class="k">if</span> <span class="s2">"split"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
         <span class="n">make_split</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 
     <span class="c1"># if there are only two species columns and every video belongs to one of them,</span>
     <span class="c1"># keep only blank label if it exists to allow resuming of blank_nonblank model</span>
     <span class="c1"># otherwise drop the second species column so the problem is treated as a binary classification</span>
-    <span class="n">species_cols</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">species_cols</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">"species_"</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
     <span class="n">sums</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">species_cols</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_cols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sums</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
-        <span class="n">col_to_keep</span> <span class="o">=</span> <span class="s2">&quot;species_blank&quot;</span> <span class="k">if</span> <span class="s2">&quot;species_blank&quot;</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">else</span> <span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">col_to_keep</span> <span class="o">=</span> <span class="s2">"species_blank"</span> <span class="k">if</span> <span class="s2">"species_blank"</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">else</span> <span class="n">species_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">col_to_drop</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">species_cols</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">col_to_keep</span><span class="p">]</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">col_to_keep</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Binary case detected so only one species column will be kept. Output will be the binary case of </span><span class="si">{</span><span class="n">col_to_keep</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">col_to_drop</span><span class="p">)</span>
 
     <span class="c1"># filepath becomes column instead of index</span>
-    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5083,33 +5129,33 @@ a subset of the model species.</p>
 <span class="normal">463</span>
 <span class="normal">464</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_provided_species_and_use_default_model_labels</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;If the model species are the desired output, the labels file must contain</span>
+<span class="w">    </span><span class="sd">"""If the model species are the desired output, the labels file must contain</span>
 <span class="sd">    a subset of the model species.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">provided_species</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">provided_species</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
     <span class="n">model_species</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
-        <span class="n">get_model_species</span><span class="p">(</span><span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">])</span>
+        <span class="n">get_model_species</span><span class="p">(</span><span class="n">checkpoint</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">],</span> <span class="n">model_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">])</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">provided_species</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">model_species</span><span class="p">):</span>
         <span class="c1"># if labels are not a subset, user cannot set use_default_model_labels to True</span>
-        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Conflicting information between `use_default_model_labels=True` and the &quot;</span>
-                <span class="s2">&quot;species provided in labels file. &quot;</span>
-                <span class="s2">&quot;If you want your model to predict all the zamba species, make sure your &quot;</span>
-                <span class="s2">&quot;labels are a subset. The species in the labels file that are not &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;in the model species are </span><span class="si">{</span><span class="n">provided_species</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">model_species</span><span class="si">}</span><span class="s2">. &quot;</span>
-                <span class="s2">&quot;If you want your model to only predict the species in your labels file, &quot;</span>
-                <span class="s2">&quot;set `use_default_model_labels` to False.&quot;</span>
+                <span class="s2">"Conflicting information between `use_default_model_labels=True` and the "</span>
+                <span class="s2">"species provided in labels file. "</span>
+                <span class="s2">"If you want your model to predict all the zamba species, make sure your "</span>
+                <span class="s2">"labels are a subset. The species in the labels file that are not "</span>
+                <span class="sa">f</span><span class="s2">"in the model species are </span><span class="si">{</span><span class="n">provided_species</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">model_species</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="s2">"If you want your model to only predict the species in your labels file, "</span>
+                <span class="s2">"set `use_default_model_labels` to False."</span>
             <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1"># if labels are a subset, default to True if no value provided</span>
-    <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;use_default_model_labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"use_default_model_labels"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">return</span> <span class="n">values</span>
 </code></pre></div></td></tr></table></div>
@@ -5177,21 +5223,21 @@ a subset of the model species.</p>
 <span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_files_exist_and_load</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span><span class="p">,</span> <span class="n">skip_load_validation</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether files exist and can be loaded with ffmpeg.</span>
+<span class="w">    </span><span class="sd">"""Check whether files exist and can be loaded with ffmpeg.</span>
 
 <span class="sd">    Extends the base check from config_common with an ffprobe load check.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">_check_files_exist</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">skip_load_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">bad_load</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_load_validation</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Checking that all videos can be loaded. If you&#39;re very confident all your &quot;</span>
-            <span class="s2">&quot;videos can be loaded, you can skip this with `skip_load_validation`, &quot;</span>
-            <span class="s2">&quot;but it&#39;s not recommended.&quot;</span>
+            <span class="s2">"Checking that all videos can be loaded. If you're very confident all your "</span>
+            <span class="s2">"videos can be loaded, you can skip this with `skip_load_validation`, "</span>
+            <span class="s2">"but it's not recommended."</span>
         <span class="p">)</span>
 
-        <span class="n">files_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        <span class="n">files_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">"filepath"</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">ffmpeg</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
@@ -5201,7 +5247,7 @@ a subset of the model species.</p>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bad_load</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Skipping </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bad_load</span><span class="p">)</span><span class="si">}</span><span class="s2"> file(s) that could not be loaded with ffmpeg.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Skipping </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">bad_load</span><span class="p">)</span><span class="si">}</span><span class="s2"> file(s) that could not be loaded with ffmpeg."</span>
             <span class="p">)</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">bad_load</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -5333,66 +5379,66 @@ a subset of the model species.</p>
 <span class="normal">576</span>
 <span class="normal">577</span>
 <span class="normal">578</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">make_split</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a split column to `labels`.</span>
+<span class="w">    </span><span class="sd">"""Add a split column to `labels`.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        labels: DataFrame with one row per video</span>
 <span class="sd">        values: dictionary with config info</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Dividing media files into train, val, and holdout sets using the following split proportions: </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;split_proportions&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="sa">f</span><span class="s2">"Dividing media files into train, val, and holdout sets using the following split proportions: </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">'split_proportions'</span><span class="p">]</span><span class="si">}</span><span class="s2">."</span>
     <span class="p">)</span>
 
     <span class="c1"># use site info if we have it</span>
-    <span class="k">if</span> <span class="s2">&quot;site&quot;</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using provided &#39;site&#39; column to do a site-specific split&quot;</span><span class="p">)</span>
-        <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_site_specific_splits</span><span class="p">(</span>
-            <span class="n">labels</span><span class="p">[</span><span class="s2">&quot;site&quot;</span><span class="p">],</span> <span class="n">proportions</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">"site"</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Using provided 'site' column to do a site-specific split"</span><span class="p">)</span>
+        <span class="n">labels</span><span class="p">[</span><span class="s2">"split"</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_site_specific_splits</span><span class="p">(</span>
+            <span class="n">labels</span><span class="p">[</span><span class="s2">"site"</span><span class="p">],</span> <span class="n">proportions</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"split_proportions"</span><span class="p">]</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># otherwise randomly allocate</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;No &#39;site&#39; column found so media files for each species will be randomly allocated across splits using provided split proportions.&quot;</span>
+            <span class="s2">"No 'site' column found so media files for each species will be randomly allocated across splits using provided split proportions."</span>
         <span class="p">)</span>
 
-        <span class="n">expected_splits</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">expected_splits</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="s2">"split_proportions"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
         <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SPLIT_SEED</span><span class="p">)</span>
 
         <span class="c1"># check we have at least as many videos per species as we have splits</span>
         <span class="c1"># labels are OHE at this point</span>
-        <span class="n">num_videos_per_species</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">num_videos_per_species</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">"species_"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="n">too_few</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">v</span>
+            <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"species_"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">v</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">num_videos_per_species</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">too_few</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Not all species have enough media files to allocate into the following splits: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2">. A minimum of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2"> media files per label is required. Found the following counts: </span><span class="si">{</span><span class="n">too_few</span><span class="si">}</span><span class="s2">. Either remove these labels or add more images/videos.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Not all species have enough media files to allocate into the following splits: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2">. A minimum of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">)</span><span class="si">}</span><span class="s2"> media files per label is required. Found the following counts: </span><span class="si">{</span><span class="n">too_few</span><span class="si">}</span><span class="s2">. Either remove these labels or add more images/videos."</span>
             <span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">labels</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">"species_"</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="n">species_df</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_df</span><span class="p">):</span>
                 <span class="c1"># within each species, seed splits by putting one video in each set and then allocate videos based on split proportions</span>
-                <span class="n">labels</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">species_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;split&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expected_splits</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span>
-                    <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
-                    <span class="n">weights</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;split_proportions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                <span class="n">labels</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">species_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s2">"split"</span><span class="p">]</span> <span class="o">=</span> <span class="n">expected_splits</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span>
+                    <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"split_proportions"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+                    <span class="n">weights</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"split_proportions"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
                     <span class="n">k</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">species_df</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_splits</span><span class="p">),</span>
                 <span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">labels</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># write splits.csv</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;splits.csv&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing out split information to </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"save_dir"</span><span class="p">]</span> <span class="o">/</span> <span class="s2">"splits.csv"</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Writing out split information to </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
     <span class="c1"># create the directory to save if we need to</span>
-    <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_dir&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">values</span><span class="p">[</span><span class="s2">"save_dir"</span><span class="p">]</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;split&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"split"</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5459,47 +5505,47 @@ a subset of the model species.</p>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">validate_model_name_and_checkpoint</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensures a checkpoint file or model name is provided.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Ensures a checkpoint file or model name is provided."""</span>
     <span class="c1"># lazily ensure video models are registered so available_models is populated</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">available_models</span><span class="p">,</span> <span class="n">ensure_registered</span>
 
     <span class="n">ensure_registered</span><span class="p">()</span>
 
-    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">)</span>
-    <span class="n">model_name</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_name&quot;</span><span class="p">)</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"checkpoint"</span><span class="p">)</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_name"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must provide either model_name or checkpoint path.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Must provide either model_name or checkpoint path."</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using checkpoint file: </span><span class="si">{</span><span class="n">checkpoint</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using checkpoint file: </span><span class="si">{</span><span class="n">checkpoint</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
         <span class="n">hparams</span> <span class="o">=</span> <span class="n">get_checkpoint_hparams</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">available_models</span><span class="p">[</span><span class="n">hparams</span><span class="p">[</span><span class="s2">&quot;model_class&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">_default_model_name</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">available_models</span><span class="p">[</span><span class="n">hparams</span><span class="p">[</span><span class="s2">"model_class"</span><span class="p">]]</span><span class="o">.</span><span class="n">_default_model_name</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
             <span class="c1"># No canonical model name on the class (e.g. image ImageClassifierModule).</span>
             <span class="c1"># Prefer the preprocessing family recorded on the checkpoint; otherwise keep</span>
             <span class="c1"># the user-provided model_name. (Note: image preprocessing is selected from the</span>
             <span class="c1"># loaded checkpoint, not from this string -- see zamba.images.manager.)</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">hparams</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_family&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">hparams</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;zamba_model&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">model_name</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">hparams</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_family"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">hparams</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"zamba_model"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">model_name</span>
             <span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;from_scratch&quot;</span><span class="p">):</span>
-            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_model_checkpoint_filename</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-            <span class="n">cached_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_cache_dir&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"from_scratch"</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_model_checkpoint_filename</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+            <span class="n">cached_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"model_cache_dir"</span><span class="p">])</span> <span class="o">/</span> <span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">cached_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cached_path</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cached_path</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">]</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Downloading weights for model &#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&#39; to </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;model_cache_dir&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Downloading weights for model '</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">' to </span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">'model_cache_dir'</span><span class="p">]</span><span class="si">}</span><span class="s2">."</span>
                 <span class="p">)</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
-                    <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;checkpoint&quot;</span><span class="p">]),</span>
-                    <span class="n">weight_region</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;weight_download_region&quot;</span><span class="p">],</span>
-                    <span class="n">destination_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;model_cache_dir&quot;</span><span class="p">],</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"checkpoint"</span><span class="p">]),</span>
+                    <span class="n">weight_region</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"weight_download_region"</span><span class="p">],</span>
+                    <span class="n">destination_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"model_cache_dir"</span><span class="p">],</span>
                 <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">values</span>

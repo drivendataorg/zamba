@@ -362,6 +362,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -428,6 +432,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2283,7 +2329,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.model_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict_model</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">PredictConfig</span>
 
-<span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">)</span>
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_vids/"</span><span class="p">)</span>
 <span class="n">predict_model</span><span class="p">(</span><span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
 <p>The only two arguments that can be passed to <code>predict_model</code> are <code>predict_config</code> and (optionally) <code>video_loader_config</code>. The first step is to instantiate <a href="../configurations/#prediction-arguments"><code>PredictConfig</code></a>. Optionally, you can also specify video loading arguments by instantiating and passing in <a href="../configurations/#video-loading-arguments"><code>VideoLoaderConfig</code></a>.</p>
@@ -2324,7 +2370,7 @@
 </code></pre></div>
 </div>
 <input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Python</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s1">&#39;example_vids/&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s1">'example_vids/'</span><span class="p">)</span>
 <span class="n">predict_model</span><span class="p">(</span><span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2339,7 +2385,7 @@
 </div>
 <input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s1">&#39;example_vids/&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;slowfast&#39;</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s1">'example_vids/'</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s1">'slowfast'</span>
 <span class="p">)</span>
 <span class="n">predict_model</span><span class="p">(</span><span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
@@ -2365,10 +2411,10 @@
 </div>
 <input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">,</span> <span class="n">proba_threshold</span><span class="o">=</span><span class="mf">0.5</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_vids/"</span><span class="p">,</span> <span class="n">proba_threshold</span><span class="o">=</span><span class="mf">0.5</span>
 <span class="p">)</span>
 <span class="n">predict_model</span><span class="p">(</span><span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;zamba_predictions.csv&quot;</span><span class="p">)</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"zamba_predictions.csv"</span><span class="p">)</span>
 <span class="n">predictions</span>
 </code></pre></div>
 <table>

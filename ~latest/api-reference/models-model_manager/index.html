@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2368,11 +2414,11 @@
 <span class="normal">326</span>
 <span class="normal">327</span>
 <span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ModelManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mediates loading, configuration, and logic of model calls.</span>
+<span class="w">    </span><span class="sd">"""Mediates loading, configuration, and logic of model calls.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        config (ModelConfig): Instantiated ModelConfig.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ModelConfig</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
@@ -2572,13 +2618,13 @@ If None, will use default for model specified in PredictConfig.</p>
     <span class="n">predict_config</span><span class="p">:</span> <span class="n">PredictConfig</span><span class="p">,</span>
     <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">VideoLoaderConfig</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predicts from a model and writes out predictions to a csv.</span>
+<span class="w">    </span><span class="sd">"""Predicts from a model and writes out predictions to a csv.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        predict_config (PredictConfig): Pydantic config for performing inference.</span>
 <span class="sd">        video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.</span>
 <span class="sd">            If None, will use default for model specified in PredictConfig.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">configure_inference_determinism</span><span class="p">(</span><span class="n">deterministic</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">deterministic</span><span class="p">)</span>
 
     <span class="c1"># get default VLC for model if not specified</span>
@@ -2594,7 +2640,7 @@ If None, will use default for model specified in PredictConfig.</p>
 
     <span class="n">data_module</span> <span class="o">=</span> <span class="n">ZambaVideoDataModule</span><span class="p">(</span>
         <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">,</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">MODEL_MAPPING</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="s2">&quot;transform&quot;</span><span class="p">],</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">MODEL_MAPPING</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="s2">"transform"</span><span class="p">],</span>
         <span class="n">predict_metadata</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">filepaths</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
         <span class="n">num_workers</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
@@ -2603,9 +2649,9 @@ If None, will use default for model specified in PredictConfig.</p>
     <span class="n">validate_species</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data_module</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No cache dir is specified. Videos will not be cached.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"No cache dir is specified. Videos will not be cached."</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Videos will be cached to </span><span class="si">{</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Videos will be cached to </span><span class="si">{</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
     <span class="n">accelerator</span><span class="p">,</span> <span class="n">devices</span> <span class="o">=</span> <span class="n">configure_accelerator_and_devices_from_gpus</span><span class="p">(</span><span class="n">predict_config</span><span class="o">.</span><span class="n">gpus</span><span class="p">)</span>
 
@@ -2614,25 +2660,25 @@ If None, will use default for model specified in PredictConfig.</p>
         <span class="n">devices</span><span class="o">=</span><span class="n">devices</span><span class="p">,</span>
         <span class="n">logger</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">fast_dev_run</span><span class="o">=</span><span class="n">predict_config</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
-        <span class="n">deterministic</span><span class="o">=</span><span class="s2">&quot;warn&quot;</span> <span class="k">if</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">deterministic</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="o">=</span><span class="s2">"warn"</span> <span class="k">if</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">deterministic</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">configuration</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;model_class&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">model_class</span><span class="p">,</span>
-        <span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">,</span>
-        <span class="s2">&quot;predict_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">predict_config</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;filepaths&quot;</span><span class="p">})),</span>
-        <span class="s2">&quot;inference_start_time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
-        <span class="s2">&quot;video_loader_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">json</span><span class="p">()),</span>
+        <span class="s2">"model_class"</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">model_class</span><span class="p">,</span>
+        <span class="s2">"species"</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">,</span>
+        <span class="s2">"predict_config"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">predict_config</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">"filepaths"</span><span class="p">})),</span>
+        <span class="s2">"inference_start_time"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s2">"video_loader_config"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">json</span><span class="p">()),</span>
     <span class="p">}</span>
 
     <span class="k">if</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">config_path</span> <span class="o">=</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">&quot;predict_configuration.yaml&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing out full configuration to </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">"predict_configuration.yaml"</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Writing out full configuration to </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
 
     <span class="n">dataloader</span> <span class="o">=</span> <span class="n">data_module</span><span class="o">.</span><span class="n">predict_dataloader</span><span class="p">()</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting prediction...&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Starting prediction..."</span><span class="p">)</span>
     <span class="n">probas</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloaders</span><span class="o">=</span><span class="n">dataloader</span><span class="p">)</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -2650,9 +2696,9 @@ If None, will use default for model specified in PredictConfig.</p>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">preds_path</span> <span class="o">=</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">&quot;zamba_predictions.csv&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving out predictions to </span><span class="si">{</span><span class="n">preds_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">preds_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">preds_path</span> <span class="o">=</span> <span class="n">predict_config</span><span class="o">.</span><span class="n">save_dir</span> <span class="o">/</span> <span class="s2">"zamba_predictions.csv"</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Saving out predictions to </span><span class="si">{</span><span class="n">preds_path</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">preds_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">df</span>
@@ -2876,13 +2922,13 @@ If None, will use default for model specified in TrainConfig.</p>
     <span class="n">train_config</span><span class="p">:</span> <span class="n">TrainConfig</span><span class="p">,</span>
     <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Trains a model.</span>
+<span class="w">    </span><span class="sd">"""Trains a model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        train_config (TrainConfig): Pydantic config for training.</span>
 <span class="sd">        video_loader_config (VideoLoaderConfig, optional): Pydantic config for preprocessing videos.</span>
 <span class="sd">            If None, will use default for model specified in TrainConfig.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># get default VLC for model if not specified</span>
     <span class="k">if</span> <span class="n">video_loader_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">ModelConfig</span><span class="p">(</span>
@@ -2901,7 +2947,7 @@ If None, will use default for model specified in TrainConfig.</p>
 
     <span class="n">data_module</span> <span class="o">=</span> <span class="n">ZambaVideoDataModule</span><span class="p">(</span>
         <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">,</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">MODEL_MAPPING</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="s2">&quot;transform&quot;</span><span class="p">],</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">MODEL_MAPPING</span><span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">][</span><span class="s2">"transform"</span><span class="p">],</span>
         <span class="n">train_metadata</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
         <span class="n">num_workers</span><span class="o">=</span><span class="n">train_config</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
@@ -2939,7 +2985,7 @@ If None, will use default for model specified in TrainConfig.</p>
         <span class="n">mode</span><span class="o">=</span><span class="p">(</span>
             <span class="n">train_config</span><span class="o">.</span><span class="n">early_stopping_config</span><span class="o">.</span><span class="n">mode</span>
             <span class="k">if</span> <span class="n">train_config</span><span class="o">.</span><span class="n">early_stopping_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="s2">&quot;min&quot;</span>
+            <span class="k">else</span> <span class="s2">"min"</span>
         <span class="p">),</span>
     <span class="p">)</span>
 
@@ -2963,17 +3009,17 @@ If None, will use default for model specified in TrainConfig.</p>
         <span class="n">strategy</span><span class="o">=</span><span class="p">(</span>
             <span class="n">DDPStrategy</span><span class="p">(</span><span class="n">find_unused_parameters</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">data_module</span><span class="o">.</span><span class="n">multiprocessing_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">train_config</span><span class="o">.</span><span class="n">gpus</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">else</span> <span class="s2">&quot;auto&quot;</span>
+            <span class="k">else</span> <span class="s2">"auto"</span>
         <span class="p">),</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No cache dir is specified. Videos will not be cached.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"No cache dir is specified. Videos will not be cached."</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Videos will be cached to </span><span class="si">{</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Videos will be cached to </span><span class="si">{</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">cache_dir</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">train_config</span><span class="o">.</span><span class="n">auto_lr_find</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finding best learning rate.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Finding best learning rate."</span><span class="p">)</span>
         <span class="n">tuner</span> <span class="o">=</span> <span class="n">Tuner</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
         <span class="n">tuner</span><span class="o">.</span><span class="n">lr_find</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">data_module</span><span class="p">)</span>
 
@@ -2983,40 +3029,40 @@ If None, will use default for model specified in TrainConfig.</p>
         <span class="n">git_hash</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">configuration</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;git_hash&quot;</span><span class="p">:</span> <span class="n">git_hash</span><span class="p">,</span>
-        <span class="s2">&quot;model_class&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">model_class</span><span class="p">,</span>
-        <span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">,</span>
-        <span class="s2">&quot;starting_learning_rate&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span>
-        <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">train_config</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;labels&quot;</span><span class="p">})),</span>
-        <span class="s2">&quot;training_start_time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
-        <span class="s2">&quot;video_loader_config&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">json</span><span class="p">()),</span>
+        <span class="s2">"git_hash"</span><span class="p">:</span> <span class="n">git_hash</span><span class="p">,</span>
+        <span class="s2">"model_class"</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">model_class</span><span class="p">,</span>
+        <span class="s2">"species"</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">species</span><span class="p">,</span>
+        <span class="s2">"starting_learning_rate"</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span>
+        <span class="s2">"train_config"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">train_config</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">"labels"</span><span class="p">})),</span>
+        <span class="s2">"training_start_time"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="s2">"video_loader_config"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">json</span><span class="p">()),</span>
     <span class="p">}</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">train_config</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
-        <span class="n">config_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;train_configuration.yaml&quot;</span>
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"train_configuration.yaml"</span>
         <span class="n">config_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing out full configuration to </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Writing out full configuration to </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">config_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">configuration</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting training...&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Starting training..."</span><span class="p">)</span>
     <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data_module</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">train_config</span><span class="o">.</span><span class="n">dry_run</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating metrics on holdout set.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Calculating metrics on holdout set."</span><span class="p">)</span>
             <span class="n">test_metrics</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span>
-                <span class="n">dataloaders</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">(),</span> <span class="n">ckpt_path</span><span class="o">=</span><span class="s2">&quot;best&quot;</span>
+                <span class="n">dataloaders</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">(),</span> <span class="n">ckpt_path</span><span class="o">=</span><span class="s2">"best"</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;test_metrics.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"test_metrics.json"</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">test_metrics</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating metrics on validation set.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Calculating metrics on validation set."</span><span class="p">)</span>
             <span class="n">val_metrics</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
-                <span class="n">dataloaders</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">(),</span> <span class="n">ckpt_path</span><span class="o">=</span><span class="s2">&quot;best&quot;</span>
+                <span class="n">dataloaders</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">(),</span> <span class="n">ckpt_path</span><span class="o">=</span><span class="s2">"best"</span>
             <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;val_metrics.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">logging_and_save_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"val_metrics.json"</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">val_metrics</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">trainer</span>

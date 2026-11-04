@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2416,28 +2462,28 @@
 
         <span class="n">transform</span> <span class="o">=</span> <span class="n">depth_transforms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">))</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running object detection on </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running object detection on </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span><span class="si">}</span><span class="s2"> videos."</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">video_filepath</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">filepaths</span><span class="p">):</span>
             <span class="c1"># get video array at 1 fps, use full size for detecting objects</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading video: </span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Loading video: </span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">arr</span> <span class="o">=</span> <span class="n">load_video_frames</span><span class="p">(</span><span class="n">video_filepath</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Video </span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2"> could not be loaded. Skipping.&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Video </span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2"> could not be loaded. Skipping."</span><span class="p">)</span>
                 <span class="k">continue</span>
 
             <span class="c1"># add video entry to cached dict with length (number of seconds since fps=1)</span>
             <span class="n">cached_frames</span><span class="p">[</span><span class="n">video_filepath</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">video_length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
 
             <span class="c1"># get detections in each frame</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detecting video: </span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Detecting video: </span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">detections_per_frame</span> <span class="o">=</span> <span class="n">mdlite</span><span class="o">.</span><span class="n">detect_video</span><span class="p">(</span><span class="n">video_arr</span><span class="o">=</span><span class="n">arr</span><span class="p">)</span>
 
             <span class="c1"># iterate over frames</span>
             <span class="k">for</span> <span class="n">frame_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">detections</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">detections_per_frame</span><span class="p">):</span>
                 <span class="c1"># if anything is detected in the frame, save out relevant frames</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span><span class="si">}</span><span class="s2"> detection(s) found at second </span><span class="si">{</span><span class="n">frame_idx</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span><span class="si">}</span><span class="s2"> detection(s) found at second </span><span class="si">{</span><span class="n">frame_idx</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
                     <span class="c1"># get frame indices around frame with detection</span>
                     <span class="n">min_frame</span> <span class="o">=</span> <span class="n">frame_idx</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span>
@@ -2446,7 +2492,7 @@
                     <span class="c1"># add relevant resized frames to dict if not already added</span>
                     <span class="c1"># if index is before start or after end of video, use an array of zeros</span>
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_frame</span><span class="p">,</span> <span class="n">max_frame</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;frame_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cached_frames</span><span class="p">[</span><span class="n">video_filepath</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="sa">f</span><span class="s2">"frame_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cached_frames</span><span class="p">[</span><span class="n">video_filepath</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                             <span class="k">try</span><span class="p">:</span>
                                 <span class="n">selected_frame</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                             <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
@@ -2455,7 +2501,7 @@
                                 <span class="p">)</span>
 
                             <span class="c1"># transform puts channels first and resizes</span>
-                            <span class="n">cached_frames</span><span class="p">[</span><span class="n">video_filepath</span><span class="p">][</span><span class="sa">f</span><span class="s2">&quot;frame_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span>
+                            <span class="n">cached_frames</span><span class="p">[</span><span class="n">video_filepath</span><span class="p">][</span><span class="sa">f</span><span class="s2">"frame_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span>
                                 <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">selected_frame</span><span class="p">)</span>
                             <span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 
@@ -2463,7 +2509,7 @@
 
                     <span class="c1"># iterate over detections in frame to create universal detection ID</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">detection</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">detections</span><span class="p">,</span> <span class="n">scores</span><span class="p">)):</span>
-                        <span class="n">universal_det_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">frame_idx</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="n">universal_det_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">frame_idx</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">video_filepath</span><span class="si">}</span><span class="s2">"</span>
 
                         <span class="c1"># save out bounding box and score info in case we want to mask out portions</span>
                         <span class="n">detection_dict</span><span class="p">[</span><span class="n">universal_det_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -2484,20 +2530,20 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detection_indices</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a detection index, returns a tuple containing the tensor of stacked frames,</span>
+<span class="w">        </span><span class="sd">"""Given a detection index, returns a tuple containing the tensor of stacked frames,</span>
 <span class="sd">        video filename, and time into the video for the target frame.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># get detection info</span>
         <span class="n">detection_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detection_indices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="n">det_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detection_dict</span><span class="p">[</span><span class="n">detection_idx</span><span class="p">]</span>
-        <span class="n">det_frame</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span>
-        <span class="n">det_video</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">&quot;video&quot;</span><span class="p">]</span>
+        <span class="n">det_frame</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">"frame"</span><span class="p">]</span>
+        <span class="n">det_video</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">"video"</span><span class="p">]</span>
 
         <span class="c1"># set up input array of frames within window of detection</span>
         <span class="c1"># frames are stacked channel-wise</span>
         <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">det_video</span><span class="p">][</span><span class="sa">f</span><span class="s2">&quot;frame_</span><span class="si">{</span><span class="n">det_frame</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">]</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">det_video</span><span class="p">][</span><span class="sa">f</span><span class="s2">"frame_</span><span class="si">{</span><span class="n">det_frame</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># to tensor and normalize</span>
@@ -2558,20 +2604,20 @@ video filename, and time into the video for the target frame.</p>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a detection index, returns a tuple containing the tensor of stacked frames,</span>
+<span class="w">    </span><span class="sd">"""Given a detection index, returns a tuple containing the tensor of stacked frames,</span>
 <span class="sd">    video filename, and time into the video for the target frame.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># get detection info</span>
     <span class="n">detection_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detection_indices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
     <span class="n">det_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detection_dict</span><span class="p">[</span><span class="n">detection_idx</span><span class="p">]</span>
-    <span class="n">det_frame</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span>
-    <span class="n">det_video</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">&quot;video&quot;</span><span class="p">]</span>
+    <span class="n">det_frame</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">"frame"</span><span class="p">]</span>
+    <span class="n">det_video</span> <span class="o">=</span> <span class="n">det_metadata</span><span class="p">[</span><span class="s2">"video"</span><span class="p">]</span>
 
     <span class="c1"># set up input array of frames within window of detection</span>
     <span class="c1"># frames are stacked channel-wise</span>
     <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">det_video</span><span class="p">][</span><span class="sa">f</span><span class="s2">&quot;frame_</span><span class="si">{</span><span class="n">det_frame</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">]</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">det_video</span><span class="p">][</span><span class="sa">f</span><span class="s2">"frame_</span><span class="si">{</span><span class="n">det_frame</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">]</span>
     <span class="p">)</span>
 
     <span class="c1"># to tensor and normalize</span>
@@ -2729,46 +2775,46 @@ video filename, and time into the video for the target frame.</p>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">),</span>
+        <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">"us"</span><span class="p">),</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
         <span class="n">tta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a depth estimation manager object</span>
+<span class="w">        </span><span class="sd">"""Create a depth estimation manager object</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            model_cache_dir (Path): Path for downloading and saving model weights.</span>
 <span class="sd">            gpus (int): Number of GPUs to use for inference.</span>
 <span class="sd">            weight_download_region (str): s3 region to download pretrained weights from.</span>
-<span class="sd">                Options are &quot;us&quot; (United States), &quot;eu&quot; (Europe), or &quot;asia&quot; (Asia Pacific).</span>
-<span class="sd">                Defaults to &quot;us&quot;.</span>
+<span class="sd">                Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).</span>
+<span class="sd">                Defaults to "us".</span>
 <span class="sd">            batch_size (int, optional): Batch size to use for inference. Defaults to 64.</span>
 <span class="sd">                Note: a batch is a set of frames, not videos, for the depth model.</span>
 <span class="sd">            tta (int, optional): Number of flips to apply for test time augmentation.</span>
 <span class="sd">            num_workers (int): Number of subprocesses to use for data loading. The maximum value is</span>
 <span class="sd">                the number of CPUs in the system. Defaults to 8.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tta</span> <span class="o">=</span> <span class="n">tta</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="n">num_workers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gpus</span> <span class="o">=</span> <span class="n">gpus</span>
 
-        <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span> <span class="o">=</span> <span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span> <span class="o">=</span> <span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">model_cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
-                <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">weight_download_region</span>
+                <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">weight_download_region</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpus</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">"cuda"</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">"cpu"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepaths</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate predictions for a list of video filepaths.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Generate predictions for a list of video filepaths."""</span>
 
         <span class="c1"># load model</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -2786,7 +2832,7 @@ video filename, and time into the video for the target frame.</p>
             <span class="n">persistent_workers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Generating depth predictions for detected animals.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Generating depth predictions for detected animals."</span><span class="p">)</span>
         <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">test_loader</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
@@ -2814,26 +2860,26 @@ video filename, and time into the video for the target frame.</p>
 
         <span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
             <span class="n">predictions</span><span class="p">,</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;distance&quot;</span><span class="p">],</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">,</span> <span class="s2">"distance"</span><span class="p">],</span>
         <span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
-            <span class="p">{</span><span class="s2">&quot;distance&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+            <span class="p">{</span><span class="s2">"distance"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
         <span class="p">)</span>  <span class="c1"># round to useful number of decimal places</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing output.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Processing output."</span><span class="p">)</span>
         <span class="c1"># post process to add nans for frames where no animal was detected</span>
         <span class="n">videos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">cached_frames</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="s2">&quot;video_length&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">videos</span><span class="p">]</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="s2">"video_length"</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">videos</span><span class="p">]</span>
 
         <span class="c1"># create one row per frame for duration of video</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">videos</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">lengths</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-        <span class="n">output</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">]</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">]</span>
 
         <span class="c1"># merge in predictions</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">"outer"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># create empty distance column</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">"distance"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -2854,7 +2900,7 @@ video filename, and time into the video for the target frame.</p>
 
 
 <h3 id="zamba.models.depth_estimation.depth_manager.DepthEstimationManager.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">gpus</span><span class="p">,</span> <span class="n">weight_download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">tta</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">gpus</span><span class="p">,</span> <span class="n">weight_download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s1">'us'</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">tta</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span></code>
 
 <a href="#zamba.models.depth_estimation.depth_manager.DepthEstimationManager.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3024,43 +3070,43 @@ the number of CPUs in the system. Defaults to 8.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">),</span>
+    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">"us"</span><span class="p">),</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
     <span class="n">tta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a depth estimation manager object</span>
+<span class="w">    </span><span class="sd">"""Create a depth estimation manager object</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        model_cache_dir (Path): Path for downloading and saving model weights.</span>
 <span class="sd">        gpus (int): Number of GPUs to use for inference.</span>
 <span class="sd">        weight_download_region (str): s3 region to download pretrained weights from.</span>
-<span class="sd">            Options are &quot;us&quot; (United States), &quot;eu&quot; (Europe), or &quot;asia&quot; (Asia Pacific).</span>
-<span class="sd">            Defaults to &quot;us&quot;.</span>
+<span class="sd">            Options are "us" (United States), "eu" (Europe), or "asia" (Asia Pacific).</span>
+<span class="sd">            Defaults to "us".</span>
 <span class="sd">        batch_size (int, optional): Batch size to use for inference. Defaults to 64.</span>
 <span class="sd">            Note: a batch is a set of frames, not videos, for the depth model.</span>
 <span class="sd">        tta (int, optional): Number of flips to apply for test time augmentation.</span>
 <span class="sd">        num_workers (int): Number of subprocesses to use for data loading. The maximum value is</span>
 <span class="sd">            the number of CPUs in the system. Defaults to 8.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tta</span> <span class="o">=</span> <span class="n">tta</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">=</span> <span class="n">num_workers</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">gpus</span> <span class="o">=</span> <span class="n">gpus</span>
 
-    <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span> <span class="o">=</span> <span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span> <span class="o">=</span> <span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">model_cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
-            <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">weight_download_region</span>
+            <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">weight_download_region</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpus</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">"cuda"</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">"cpu"</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3150,7 +3196,7 @@ the number of CPUs in the system. Defaults to 8.</p>
 <span class="normal">253</span>
 <span class="normal">254</span>
 <span class="normal">255</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepaths</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate predictions for a list of video filepaths.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Generate predictions for a list of video filepaths."""</span>
 
     <span class="c1"># load model</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_weights</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -3168,7 +3214,7 @@ the number of CPUs in the system. Defaults to 8.</p>
         <span class="n">persistent_workers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Generating depth predictions for detected animals.&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Generating depth predictions for detected animals."</span><span class="p">)</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
         <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">test_loader</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
@@ -3196,26 +3242,26 @@ the number of CPUs in the system. Defaults to 8.</p>
 
     <span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
         <span class="n">predictions</span><span class="p">,</span>
-        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;distance&quot;</span><span class="p">],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">,</span> <span class="s2">"distance"</span><span class="p">],</span>
     <span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
-        <span class="p">{</span><span class="s2">&quot;distance&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="p">{</span><span class="s2">"distance"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
     <span class="p">)</span>  <span class="c1"># round to useful number of decimal places</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing output.&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Processing output."</span><span class="p">)</span>
     <span class="c1"># post process to add nans for frames where no animal was detected</span>
     <span class="n">videos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">cached_frames</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-    <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="s2">&quot;video_length&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">videos</span><span class="p">]</span>
+    <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">cached_frames</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="s2">"video_length"</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">videos</span><span class="p">]</span>
 
     <span class="c1"># create one row per frame for duration of video</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">videos</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">lengths</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-    <span class="n">output</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">]</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">]</span>
 
     <span class="c1"># merge in predictions</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">"filepath"</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">"outer"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># create empty distance column</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"distance"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
             </details>

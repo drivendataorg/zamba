@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2369,7 +2415,7 @@
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ConvertHWCtoCHW</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert tensor from (0:H, 1:W, 2:C) to (2:C, 0:H, 1:W)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert tensor from (0:H, 1:W, 2:C) to (2:C, 0:H, 1:W)"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -2426,7 +2472,7 @@
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ConvertTCHWtoCTHW</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert tensor from (T, C, H, W) to (C, T, H, W)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert tensor from (T, C, H, W) to (C, T, H, W)"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -2483,7 +2529,7 @@
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ConvertTHWCtoCTHW</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert tensor from (0:T, 1:H, 2:W, 3:C) to (3:C, 0:T, 1:H, 2:W)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert tensor from (0:T, 1:H, 2:W, 3:C) to (3:C, 0:T, 1:H, 2:W)"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -2540,7 +2586,7 @@
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ConvertTHWCtoTCHW</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert tensor from (T, H, W, C) to (T, C, H, W)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert tensor from (T, H, W, C) to (T, C, H, W)"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vid</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">vid</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -2609,7 +2655,7 @@
 <span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PackSlowFastPathways</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates the slow and fast pathway inputs for the slowfast model.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Creates the slow and fast pathway inputs for the slowfast model."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -2739,12 +2785,12 @@ input tensor. If int, pad that dimension to at least that size. If None, do not 
 <span class="normal">85</span>
 <span class="normal">86</span>
 <span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PadDimensions</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pads a tensor to ensure a fixed output dimension for a give axis.</span>
+<span class="w">    </span><span class="sd">"""Pads a tensor to ensure a fixed output dimension for a give axis.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        dimension_sizes: A tuple of int or None the same length as the number of dimensions in the</span>
 <span class="sd">            input tensor. If int, pad that dimension to at least that size. If None, do not pad.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimension_sizes</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -2752,7 +2798,7 @@ input tensor. If int, pad that dimension to at least that size. If None, do not 
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_left_and_right_pad</span><span class="p">(</span><span class="n">original_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">padded_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes left and right pad size.</span>
+<span class="w">        </span><span class="sd">"""Computes left and right pad size.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            original_size (list, int): The original tensor size</span>
@@ -2760,7 +2806,7 @@ input tensor. If int, pad that dimension to at least that size. If None, do not 
 
 <span class="sd">        Returns:</span>
 <span class="sd">           Tuple[int]: Pad size for right and left. For odd padding size, the right = left + 1</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">original_size</span> <span class="o">&gt;=</span> <span class="n">padded_size</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
         <span class="n">pad</span> <span class="o">=</span> <span class="n">padded_size</span> <span class="o">-</span> <span class="n">original_size</span>
@@ -2900,7 +2946,7 @@ input tensor. If int, pad that dimension to at least that size. If None, do not 
 <span class="normal">73</span>
 <span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_left_and_right_pad</span><span class="p">(</span><span class="n">original_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">padded_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes left and right pad size.</span>
+<span class="w">    </span><span class="sd">"""Computes left and right pad size.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        original_size (list, int): The original tensor size</span>
@@ -2908,7 +2954,7 @@ input tensor. If int, pad that dimension to at least that size. If None, do not 
 
 <span class="sd">    Returns:</span>
 <span class="sd">       Tuple[int]: Pad size for right and left. For odd padding size, the right = left + 1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">original_size</span> <span class="o">&gt;=</span> <span class="n">padded_size</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
     <span class="n">pad</span> <span class="o">=</span> <span class="n">padded_size</span> <span class="o">-</span> <span class="n">original_size</span>

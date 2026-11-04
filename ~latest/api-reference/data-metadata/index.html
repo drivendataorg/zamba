@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2443,7 +2489,7 @@ train-val-holdout proportions.</p>
     <span class="n">proportions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="n">random_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">mtrand</span><span class="o">.</span><span class="n">RandomState</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">989</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Splits sites into distinct groups whose sizes roughly matching the given proportions. Null</span>
+<span class="w">    </span><span class="sd">"""Splits sites into distinct groups whose sizes roughly matching the given proportions. Null</span>
 <span class="sd">    sites are randomly assigned to groups using the provided proportions.</span>
 
 <span class="sd">    Args:</span>
@@ -2456,12 +2502,12 @@ train-val-holdout proportions.</p>
 <span class="sd">        Split data into groups where each site is in one and only one group with roughly 50-25-25</span>
 <span class="sd">        train-val-holdout proportions.</span>
 
-<span class="sd">        &gt;&gt;&gt; create_site_specific_splits(site, proportions={&quot;train&quot;: 2, &quot;val&quot;: 1, &quot;holdout&quot;: 1})</span>
+<span class="sd">        &gt;&gt;&gt; create_site_specific_splits(site, proportions={"train": 2, "val": 1, "holdout": 1})</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pd.Series: A series containing the resulting split, one element per observation.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">assignments</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">sites</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
@@ -2475,10 +2521,10 @@ train-val-holdout proportions.</p>
     <span class="c1"># Divide null sites among the groups</span>
     <span class="n">null_sites</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">null_sites</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">null_sites</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> null sites randomly assigned to groups.&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">null_sites</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> null sites randomly assigned to groups."</span><span class="p">)</span>
         <span class="n">null_groups</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">group_proportion</span> <span class="ow">in</span> <span class="n">proportions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">null_group</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">uuid4</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">null_group</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">uuid4</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">null_groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">null_group</span><span class="p">)</span>
             <span class="n">assignments</span><span class="p">[</span><span class="n">null_group</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span>
 
@@ -2529,7 +2575,7 @@ train-val-holdout proportions.</p>
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">roundrobin</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
-    <span class="s2">&quot;roundrobin(&#39;ABC&#39;, &#39;D&#39;, &#39;EF&#39;) --&gt; A D E B F C&quot;</span>
+    <span class="s2">"roundrobin('ABC', 'D', 'EF') --&gt; A D E B F C"</span>
     <span class="c1"># From https://docs.python.org/3/library/itertools.html#recipes</span>
     <span class="c1"># Recipe credited to George Sakkis</span>
     <span class="n">num_active</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iterables</span><span class="p">)</span>

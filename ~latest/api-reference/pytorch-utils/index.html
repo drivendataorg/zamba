@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2491,7 +2537,7 @@ dropout rate before the output.</p>
     <span class="n">output_dropout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output_activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Builds a multilayer perceptron.</span>
+<span class="w">    </span><span class="sd">"""Builds a multilayer perceptron.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input_size (int): Size of first input layer.</span>
@@ -2505,7 +2551,7 @@ dropout rate before the output.</p>
 <span class="sd">        output_activation (torch.nn.Module, optional): Activation layer after the final layer.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.nn.Sequential</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">hidden_layer_sizes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">hidden_layer_sizes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
 
@@ -2638,7 +2684,7 @@ rather than error). Disables cuDNN benchmark mode. May reduce GPU throughput.</p
     <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Seed RNGs for inference and optionally enable strict GPU determinism.</span>
+<span class="w">    </span><span class="sd">"""Seed RNGs for inference and optionally enable strict GPU determinism.</span>
 
 <span class="sd">    Seeding always runs so frame sampling and other stochastic preprocessing are</span>
 <span class="sd">    reproducible. When ``deterministic`` is True, also request deterministic CUDA/cuDNN</span>
@@ -2650,13 +2696,13 @@ rather than error). Disables cuDNN benchmark mode. May reduce GPU throughput.</p
 <span class="sd">        deterministic: If True, enable strict deterministic CUDA/cuDNN algorithms where</span>
 <span class="sd">            supported (best effort; some GPU ops may remain non-deterministic and will warn</span>
 <span class="sd">            rather than error). Disables cuDNN benchmark mode. May reduce GPU throughput.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">effective_seed</span> <span class="o">=</span> <span class="n">INFERENCE_SEED</span> <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">seed</span>
     <span class="n">pl</span><span class="o">.</span><span class="n">seed_everything</span><span class="p">(</span><span class="n">effective_seed</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">deterministic</span><span class="p">:</span>
         <span class="c1"># cuBLAS needs this for reproducible GEMMs; must be set before CUDA init.</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;CUBLAS_WORKSPACE_CONFIG&quot;</span><span class="p">,</span> <span class="s2">&quot;:4096:8&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"CUBLAS_WORKSPACE_CONFIG"</span><span class="p">,</span> <span class="s2">":4096:8"</span><span class="p">)</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">use_deterministic_algorithms</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">warn_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">False</span>
@@ -2700,15 +2746,15 @@ from PyTorch lr schedulers in 2.7).</p>
     <span class="n">scheduler_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return scheduler kwargs supported by the scheduler constructor.</span>
+<span class="w">    </span><span class="sd">"""Return scheduler kwargs supported by the scheduler constructor.</span>
 
 <span class="sd">    Configs and checkpoints may include deprecated args (e.g. ``verbose`` was removed</span>
 <span class="sd">    from PyTorch lr schedulers in 2.7).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{}</span>
     <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">scheduler_cls</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
-    <span class="n">supported</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">signature</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;self&quot;</span><span class="p">,</span> <span class="s2">&quot;optimizer&quot;</span><span class="p">}</span>
+    <span class="n">supported</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">signature</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="s2">"self"</span><span class="p">,</span> <span class="s2">"optimizer"</span><span class="p">}</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">supported</span><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>

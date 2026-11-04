@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2316,7 +2362,7 @@ zamba<span class="w"> </span>depth<span class="w"> </span>--data-dir<span class=
 </div>
 <input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.depth_estimation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DepthEstimationConfig</span>
-<span class="n">depth_conf</span> <span class="o">=</span> <span class="n">DepthEstimationConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;PATH_TO_VIDEOS&quot;</span><span class="p">)</span>
+<span class="n">depth_conf</span> <span class="o">=</span> <span class="n">DepthEstimationConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">"PATH_TO_VIDEOS"</span><span class="p">)</span>
 <span class="n">depth_conf</span><span class="o">.</span><span class="n">run_model</span><span class="p">()</span>
 </code></pre></div>
 </div>
@@ -2355,7 +2401,7 @@ zamba<span class="w"> </span>depth<span class="w"> </span>--data-dir<span class=
 <span class="go">│ --model-cache-dir                 PATH          Path to directory for downloading model   │</span>
 <span class="go">│                                                 weights. Alternatively, specify with      │</span>
 <span class="go">│                                                 environment variable `MODEL_CACHE_DIR`.   │</span>
-<span class="go">│                                                 If not specified, user&#39;s cache directory  │</span>
+<span class="go">│                                                 If not specified, user's cache directory  │</span>
 <span class="go">│                                                 is used.                                  │</span>
 <span class="go">│                                                 [default: None]                           │</span>
 <span class="go">│ --weight-download-region          [us|eu|asia]  Server region for downloading weights.    │</span>

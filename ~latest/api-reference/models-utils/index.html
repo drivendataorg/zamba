@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2274,13 +2320,13 @@
 <span class="normal">88</span>
 <span class="normal">89</span>
 <span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">configure_accelerator_and_devices_from_gpus</span><span class="p">(</span><span class="n">gpus</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Derive accelerator and number of devices for pl.Trainer from user-specified number of gpus.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Derive accelerator and number of devices for pl.Trainer from user-specified number of gpus."""</span>
     <span class="k">if</span> <span class="n">gpus</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">accelerator</span> <span class="o">=</span> <span class="s2">&quot;gpu&quot;</span>
+        <span class="n">accelerator</span> <span class="o">=</span> <span class="s2">"gpu"</span>
         <span class="n">devices</span> <span class="o">=</span> <span class="n">gpus</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">accelerator</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
-        <span class="n">devices</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+        <span class="n">accelerator</span> <span class="o">=</span> <span class="s2">"cpu"</span>
+        <span class="n">devices</span> <span class="o">=</span> <span class="s2">"auto"</span>
     <span class="k">return</span> <span class="n">accelerator</span><span class="p">,</span> <span class="n">devices</span>
 </code></pre></div></td></tr></table></div>
             </details>

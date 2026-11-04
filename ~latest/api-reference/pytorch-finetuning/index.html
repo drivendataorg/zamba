@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2383,9 +2429,9 @@ round: Precision for displaying learning rate
 <span class="normal">72</span>
 <span class="normal">73</span>
 <span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BackboneFinetuning</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">finetuning</span><span class="o">.</span><span class="n">BackboneFinetuning</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 
-<span class="sd">    Derived from PTL&#39;s built-in ``BackboneFinetuning``, but during the backbone freeze phase,</span>
+<span class="sd">    Derived from PTL's built-in ``BackboneFinetuning``, but during the backbone freeze phase,</span>
 <span class="sd">    choose whether to freeze batch norm layers, even if ``train_bn`` is True (i.e., even if we train them</span>
 <span class="sd">    during the backbone unfreeze phase).</span>
 
@@ -2425,18 +2471,18 @@ round: Precision for displaying learning rate
 <span class="sd">        &gt;&gt;&gt; backbone_finetuning = BackboneFinetuning(200, multiplicative)</span>
 <span class="sd">        &gt;&gt;&gt; trainer = Trainer(callbacks=[backbone_finetuning])</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pre_train_bn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">multiplier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;lambda_func&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">multiplier_factory</span><span class="p">(</span><span class="n">multiplier</span><span class="p">)</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"lambda_func"</span><span class="p">]</span> <span class="o">=</span> <span class="n">multiplier_factory</span><span class="p">(</span><span class="n">multiplier</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># choose whether to train batch norm layers prior to finetuning phase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_train_bn</span> <span class="o">=</span> <span class="n">pre_train_bn</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">freeze_before_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">&quot;pl.LightningModule&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">freeze_before_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pl_module</span><span class="p">:</span> <span class="s2">"pl.LightningModule"</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">(</span><span class="n">pl_module</span><span class="o">.</span><span class="n">backbone</span><span class="p">,</span> <span class="n">train_bn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_train_bn</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -2521,12 +2567,12 @@ rate multiplier.</p>
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">multiplier_factory</span><span class="p">(</span><span class="n">rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a function that returns a constant value for use in computing a constant learning</span>
+<span class="w">    </span><span class="sd">"""Returns a function that returns a constant value for use in computing a constant learning</span>
 <span class="sd">    rate multiplier.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        rate (float): Constant multiplier.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">multiplier</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">rate</span>

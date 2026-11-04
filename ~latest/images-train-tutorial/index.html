@@ -16,7 +16,7 @@
         <link rel="prev" href="../images-predict-tutorial/">
       
       
-        <link rel="next" href="../camtrap-dp/">
+        <link rel="next" href="../images-finetune-guide/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -362,6 +362,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -526,6 +530,48 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -2295,6 +2341,7 @@
 
 <h1 id="user-tutorial-training-a-model-on-labeled-images">User tutorial: Training a model on labeled images<a class="headerlink" href="#user-tutorial-training-a-model-on-labeled-images" title="Permanent link">&para;</a></h1>
 <p>This section walks through how to train an image classification model using <code>zamba</code>. If you are new to <code>zamba</code> and just want to classify some images as soon as possible, see the <a href="../quickstart/">Quickstart</a> guide.</p>
+<p>For practical recommendations from camera-trap experiments, see <a href="../images-finetune-guide/">Fine-tune image models effectively</a>.</p>
 <p>This tutorial goes over the steps for using <code>zamba</code> if:</p>
 <ul>
 <li>You already have <code>zamba</code> installed (for details see the <a href="../install/">Installation</a> page)</li>
@@ -2335,7 +2382,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationTrainingConfig</span>
 
 <span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_labels.csv&quot;</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="s2">"example_labels.csv"</span>
 <span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
 </code></pre></div>
@@ -2389,7 +2436,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationTrainingConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">train</span>
 
-<span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s1">&#39;example_images/&#39;</span><span class="p">)</span>
+<span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s1">'example_images/'</span><span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2416,9 +2463,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationTrainingConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">train</span>
 
-<span class="n">labels_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;example_labels.csv&#39;</span><span class="p">)</span>
+<span class="n">labels_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'example_labels.csv'</span><span class="p">)</span>
 <span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s1">&#39;example_images/&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels_dataframe</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s1">'example_images/'</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels_dataframe</span>
 <span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
 </code></pre></div></p>
@@ -2441,8 +2488,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">train</span>
 
 <span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s1">&#39;example_images/&#39;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s1">&#39;example_labels.json&#39;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s1">'example_images/'</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="s1">'example_labels.json'</span><span class="p">,</span>
     <span class="n">labels_format</span><span class="o">=</span><span class="n">BboxInputFormat</span><span class="o">.</span><span class="n">COCO</span>
 <span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
@@ -2464,8 +2511,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">train</span>
 
 <span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s1">&#39;example_images/&#39;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s1">&#39;path/to/camtrap_dp/&#39;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s1">'example_images/'</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="s1">'path/to/camtrap_dp/'</span><span class="p">,</span>
     <span class="n">labels_format</span><span class="o">=</span><span class="n">BboxInputFormat</span><span class="o">.</span><span class="n">CAMTRAP_DP</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
@@ -2486,9 +2533,9 @@
 </div>
 <input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_labels.csv&quot;</span><span class="p">,</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;speciesnet&quot;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="s2">"example_labels.csv"</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">"speciesnet"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
 </code></pre></div>
@@ -2502,8 +2549,8 @@
 </div>
 <input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_labels.csv&quot;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="s2">"example_labels.csv"</span><span class="p">,</span>
     <span class="n">from_scratch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
@@ -2514,7 +2561,7 @@
 <p>And there's so much more! You can also do things like:</p>
 <ul>
 <li>Specify your region for faster model download (<code>--weight-download-region</code>)</li>
-<li>Start training from a saved model checkpoint (<code>--checkpoint</code>)</li>
+<li>Start training from a saved model checkpoint (<code>--model-checkpoint</code>)</li>
 <li>Specify a different path where your model should be saved (<code>--save-dir</code>)</li>
 <li>Adjust learning rate (<code>--lr</code>) or let <code>zamba</code> find an optimal learning rate automatically</li>
 <li>Use weighted loss for imbalanced datasets (<code>--weighted-loss</code>)</li>
@@ -2531,8 +2578,8 @@
 <ul>
 <li><code>train_configuration.yaml</code>: The full model configuration used to generate the given model, including all training parameters. To continue training using the same configuration, or to train another model using the same configuration, you can pass in <code>train_configuration.yaml</code> (see <a href="../yaml-config/">Specifying Model Configurations with a YAML File</a>) along with the <code>labels</code> filepath.</li>
 <li><code>hparams.yaml</code>: Model hyperparameters. These are included in the checkpoint file as well.</li>
-<li><code>lila.science.ckpt</code> (or <code>{model_name}.ckpt</code>): Model checkpoint. You can continue training from this checkpoint by passing it to <code>zamba image train</code> with the <code>--checkpoint</code> flag:
-    <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span>--checkpoint<span class="w"> </span>lila.science.ckpt<span class="w"> </span>--data-dir<span class="w"> </span>example_images/<span class="w"> </span>--labels<span class="w"> </span>example_labels.csv
+<li><code>lila.science.ckpt</code> (or <code>{model_name}.ckpt</code>): Model checkpoint. You can fine-tune from this checkpoint by passing it to <code>zamba image train</code> with the <code>--model-checkpoint</code> flag:
+    <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span>--model-checkpoint<span class="w"> </span>lila.science.ckpt<span class="w"> </span>--data-dir<span class="w"> </span>example_images/<span class="w"> </span>--labels<span class="w"> </span>example_labels.csv
 </code></pre></div></li>
 <li><code>val_metrics.json</code>: The model's performance on the validation subset</li>
 <li><code>test_metrics.json</code>: The model's performance on the test (holdout) subset (if a test split was created)</li>
@@ -2553,8 +2600,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
 
 <span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;new_images/&quot;</span><span class="p">,</span>
-    <span class="n">checkpoint</span><span class="o">=</span><span class="s2">&quot;lila.science.ckpt&quot;</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"new_images/"</span><span class="p">,</span>
+    <span class="n">checkpoint</span><span class="o">=</span><span class="s2">"lila.science.ckpt"</span>
 <span class="p">)</span>
 <span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>

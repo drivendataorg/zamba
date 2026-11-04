@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2333,7 +2379,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 <span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TimeDistributed</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies `module` over `tdim` identically for each step, use `low_mem` to compute one at a time.</span>
+<span class="w">    </span><span class="sd">"""Applies `module` over `tdim` identically for each step, use `low_mem` to compute one at a time.</span>
 
 <span class="sd">    NOTE: vendored (with minor adaptations) from fastai:</span>
 <span class="sd">    https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/fastai/layers.py#L510-L544</span>
@@ -2342,7 +2388,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 <span class="sd">     - super.__init__() in init</span>
 <span class="sd">     - assign attributes in init</span>
 <span class="sd">     - inherit from torch.nn.Module rather than fastai.Module</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">low_mem</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tdim</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -2351,7 +2397,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
         <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">module</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="s2">&quot;input x with shape:(bs,seq_len,channels,width,height)&quot;</span>
+        <span class="s2">"input x with shape:(bs,seq_len,channels,width,height)"</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_mem</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_mem_forward</span><span class="p">(</span><span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2362,7 +2408,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_output</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">low_mem_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="s2">&quot;input x with shape:(bs,seq_len,channels,width,height)&quot;</span>
+        <span class="s2">"input x with shape:(bs,seq_len,channels,width,height)"</span>
         <span class="n">seq_len</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tdim</span><span class="p">]</span>
         <span class="n">args_split</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tdim</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">]</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2373,13 +2419,13 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tdim</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">format_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
-        <span class="s2">&quot;unstack from batchsize outputs&quot;</span>
+        <span class="s2">"unstack from batchsize outputs"</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">out_i</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="o">*</span><span class="n">out_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">for</span> <span class="n">out_i</span> <span class="ow">in</span> <span class="n">out</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="o">*</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TimeDistributed(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"TimeDistributed(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="si">}</span><span class="s2">)"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2415,7 +2461,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 <span class="normal">58</span>
 <span class="normal">59</span>
 <span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">format_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">):</span>
-    <span class="s2">&quot;unstack from batchsize outputs&quot;</span>
+    <span class="s2">"unstack from batchsize outputs"</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">out_i</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="o">*</span><span class="n">out_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">for</span> <span class="n">out_i</span> <span class="ow">in</span> <span class="n">out</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">bs</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="o">*</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
@@ -2450,7 +2496,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="s2">&quot;input x with shape:(bs,seq_len,channels,width,height)&quot;</span>
+    <span class="s2">"input x with shape:(bs,seq_len,channels,width,height)"</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_mem</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_mem_forward</span><span class="p">(</span><span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -2490,7 +2536,7 @@ https://github.com/fastai/fastai/blob/4b0785254fdece1a44859956b6e54eedb167a97e/f
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">low_mem_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="s2">&quot;input x with shape:(bs,seq_len,channels,width,height)&quot;</span>
+    <span class="s2">"input x with shape:(bs,seq_len,channels,width,height)"</span>
     <span class="n">seq_len</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tdim</span><span class="p">]</span>
     <span class="n">args_split</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tdim</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>

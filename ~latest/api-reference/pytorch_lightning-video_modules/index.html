@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2399,14 +2445,14 @@
 <span class="normal">217</span>
 <span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ZambaVideoClassificationLightningModule</span><span class="p">(</span><span class="n">ZambaClassificationLightningModule</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_train_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;val_macro_f1&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"val_macro_f1"</span><span class="p">:</span> <span class="p">{}}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;val_top_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">_accuracy&quot;</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">DEFAULT_TOP_K</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">}</span>
+                <span class="p">{</span><span class="sa">f</span><span class="s2">"val_top_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">_accuracy"</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">DEFAULT_TOP_K</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">}</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;val_accuracy&quot;</span><span class="p">:</span> <span class="p">{}})</span>
+            <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"val_accuracy"</span><span class="p">:</span> <span class="p">{}})</span>
 
         <span class="c1"># write hparams to hparams.yaml file, log metrics to tb hparams tab</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log_hyperparams</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hparams</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
@@ -2415,7 +2461,7 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
         <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;train_loss&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"train_loss"</span><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">training_step_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">loss</span>
 
@@ -2423,13 +2469,13 @@
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
         <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;val_loss&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"val_loss"</span><span class="p">,</span> <span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
 
         <span class="n">y_proba</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;y_true&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
-            <span class="s2">&quot;y_pred&quot;</span><span class="p">:</span> <span class="n">y_proba</span><span class="o">.</span><span class="n">round</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
-            <span class="s2">&quot;y_proba&quot;</span><span class="p">:</span> <span class="n">y_proba</span><span class="p">,</span>
+            <span class="s2">"y_true"</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+            <span class="s2">"y_pred"</span><span class="p">:</span> <span class="n">y_proba</span><span class="o">.</span><span class="n">round</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+            <span class="s2">"y_proba"</span><span class="p">:</span> <span class="n">y_proba</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
@@ -2446,9 +2492,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">aggregate_step_outputs</span><span class="p">(</span>
         <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-        <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;y_true&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;y_pred&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
-        <span class="n">y_proba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;y_proba&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
+        <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">output</span><span class="p">[</span><span class="s2">"y_true"</span><span class="p">]</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">output</span><span class="p">[</span><span class="s2">"y_pred"</span><span class="p">]</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
+        <span class="n">y_proba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">output</span><span class="p">[</span><span class="s2">"y_proba"</span><span class="p">]</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span>
 
@@ -2456,8 +2502,8 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">subset</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_macro_f1&quot;</span><span class="p">,</span>
-            <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_macro_f1"</span><span class="p">,</span>
+            <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">"macro"</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="c1"># if only two classes, skip top_k accuracy since not enough classes</span>
@@ -2465,7 +2511,7 @@
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">DEFAULT_TOP_K</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_top_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">_accuracy&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_top_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">_accuracy"</span><span class="p">,</span>
                         <span class="n">top_k_accuracy_score</span><span class="p">(</span>
                             <span class="n">y_true</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span>
                                 <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
@@ -2476,28 +2522,28 @@
                         <span class="p">),</span>
                     <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_accuracy&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_accuracy"</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">compute_species_specific_metrics</span><span class="p">(</span>
             <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span>
         <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;species/</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"species/</span><span class="si">{</span><span class="n">subset</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Aggregates validation_step outputs to compute and log the validation macro F1 and top K</span>
+<span class="w">        </span><span class="sd">"""Aggregates validation_step outputs to compute and log the validation macro F1 and top K</span>
 <span class="sd">        metrics.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            outputs (List[dict]): list of output dictionaries from each validation step</span>
 <span class="sd">                containing y_pred and y_true.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_step_outputs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validation_step_outputs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">compute_and_log_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_and_log_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">"val"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validation_step_outputs</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># free memory</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">on_test_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_step_outputs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_step_outputs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">compute_and_log_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_and_log_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">"test"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_step_outputs</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># free memory</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -2579,15 +2625,15 @@ containing y_pred and y_true.</p>
 <span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates validation_step outputs to compute and log the validation macro F1 and top K</span>
+<span class="w">    </span><span class="sd">"""Aggregates validation_step outputs to compute and log the validation macro F1 and top K</span>
 <span class="sd">    metrics.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        outputs (List[dict]): list of output dictionaries from each validation step</span>
 <span class="sd">            containing y_pred and y_true.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate_step_outputs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validation_step_outputs</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">compute_and_log_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">compute_and_log_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">"val"</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">validation_step_outputs</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># free memory</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2704,7 +2750,7 @@ containing y_pred and y_true.</p>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="n">transform</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span> <span class="o">=</span> <span class="n">default_transform</span><span class="p">,</span>
-        <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;VideoLoaderConfig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"VideoLoaderConfig"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">prefetch_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">train_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">predict_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2742,16 +2788,16 @@ containing y_pred and y_true.</p>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_dataloader_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build kwargs dict for DataLoader, omitting options invalid with num_workers=0.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Build kwargs dict for DataLoader, omitting options invalid with num_workers=0."""</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-            <span class="s2">&quot;num_workers&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
-            <span class="s2">&quot;shuffle&quot;</span><span class="p">:</span> <span class="n">shuffle</span><span class="p">,</span>
+            <span class="s2">"batch_size"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="s2">"num_workers"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
+            <span class="s2">"shuffle"</span><span class="p">:</span> <span class="n">shuffle</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;multiprocessing_context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiprocessing_context</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;prefetch_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefetch_factor</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;persistent_workers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"multiprocessing_context"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiprocessing_context</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"prefetch_factor"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefetch_factor</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"persistent_workers"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">kwargs</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">]:</span>

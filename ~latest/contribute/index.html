@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2192,14 +2238,14 @@ There you can find <a href="https://github.com/drivendataorg/zamba/issues">open 
 <p>With uv (recommended):
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/drivendataorg/zamba.git
 <span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>zamba
-<span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[image,video]&quot;</span><span class="w"> </span>--group<span class="w"> </span>dev
+<span class="gp">$ </span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[image,video]"</span><span class="w"> </span>--group<span class="w"> </span>dev
 </code></pre></div></p>
 <p>When installing from a clone, <code>[tool.uv]</code> in <code>pyproject.toml</code> already sets <code>torch-backend = "auto"</code> and the <code>protobuf</code> / <code>setuptools</code> overrides needed for both image and video extras. End users installing from PyPI need to pass <code>--torch-backend=auto</code> and <code>--overrides</code> manually; see <a href="../install/#uv-install-tips">Installing zamba</a>.</p>
 <p>Or use the Makefile target (which uses uv):
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>make<span class="w"> </span>requirements
 </code></pre></div></p>
 <p>With pip:
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[tests,image,video,docs]&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[tests,image,video,docs]"</span>
 </code></pre></div></p>
 <p>If your contribution is to the <a href="../models/densepose/">DensePose</a> model, install the DensePose dependencies from GitHub as described in the <a href="../models/densepose/#installation">DensePose installation</a> section.</p>
 <p>To build the documentation locally with uv, install the docs dependency group (e.g. <code>uv pip install -e . --group docs</code>). With pip, install the <code>docs</code> extra (e.g. <code>pip install -e ".[docs]"</code>).</p>

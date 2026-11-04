@@ -362,6 +362,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -428,6 +432,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2290,8 +2336,8 @@
 <input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Python</label><div class="tabbed-content">
 <p>In Python this can be specified in <a href="../configurations/#prediction-arguments"><code>PredictConfig</code></a> or <a href="../configurations/#training-arguments"><code>TrainConfig</code></a>:
 <div class="highlight"><pre><span></span><code><span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">,</span>
-    <span class="n">weight_download_region</span><span class="o">=</span><span class="s1">&#39;asia&#39;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_vids/"</span><span class="p">,</span>
+    <span class="n">weight_download_region</span><span class="o">=</span><span class="s1">'asia'</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div></p>
 </div>
@@ -2313,7 +2359,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">PredictConfig</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.model_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict_model</span>
 
-<span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">)</span>
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_vids/"</span><span class="p">)</span>
 
 <span class="hll"><span class="n">video_loader_config</span> <span class="o">=</span> <span class="n">VideoLoaderConfig</span><span class="p">(</span>
 </span><span class="hll">    <span class="n">model_input_height</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">model_input_width</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span>
@@ -2372,7 +2418,7 @@
 <div class="highlight"><pre><span></span><code><span class="nt">video_loader_config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">megadetector_lite_config</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">n_frames</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
-<span class="w">        </span><span class="nt">fill_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;score_sorted&quot;</span>
+<span class="w">        </span><span class="nt">fill_mode</span><span class="p">:</span><span class="w"> </span><span class="s">"score_sorted"</span>
 <span class="w">    </span><span class="c1"># ... other parameters</span>
 </code></pre></div>
 </div>
@@ -2384,14 +2430,14 @@
     <span class="n">crop_bottom_pixels</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">ensure_total_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="hll">    <span class="n">megadetector_lite_config</span><span class="o">=</span><span class="p">{</span>
-</span><span class="hll">        <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-</span><span class="hll">        <span class="s2">&quot;fill_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;score_sorted&quot;</span><span class="p">,</span>
-</span><span class="hll">        <span class="s2">&quot;n_frames&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+</span><span class="hll">        <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+</span><span class="hll">        <span class="s2">"fill_mode"</span><span class="p">:</span> <span class="s2">"score_sorted"</span><span class="p">,</span>
+</span><span class="hll">        <span class="s2">"n_frames"</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
 </span><span class="hll">    <span class="p">},</span>
 </span>    <span class="n">total_frames</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">train_config</span> <span class="o">=</span> <span class="n">TrainConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;example_labels.csv&quot;</span><span class="p">,)</span>
+<span class="n">train_config</span> <span class="o">=</span> <span class="n">TrainConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_vids/"</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="s2">"example_labels.csv"</span><span class="p">,)</span>
 
 <span class="n">train_model</span><span class="p">(</span><span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">,</span> <span class="n">train_config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
 </code></pre></div></p>
@@ -2418,7 +2464,7 @@
 </div>
 <input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_vids/"</span><span class="p">,</span>
     <span class="n">num_workers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="c1"># ... other parameters</span>
@@ -2443,7 +2489,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.model_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict_model</span>
 
 <span class="n">predict_config</span> <span class="o">=</span> <span class="n">PredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_vids/&quot;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_vids/"</span><span class="p">,</span>
     <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">predict_model</span><span class="p">(</span><span class="n">predict_config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>

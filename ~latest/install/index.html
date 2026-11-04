@@ -447,6 +447,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -513,6 +517,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2291,7 +2337,7 @@ GPU configurations.</p>
 </code></pre></div>
 <p>When installing from a clone of this repository, <code>torch-backend = "auto"</code> is already set in <code>pyproject.toml</code> under <code>[tool.uv]</code>, so <code>uv pip install -e ".[video]"</code> picks the right PyTorch build automatically.</p>
 <p>If you install <strong>both</strong> image and video extras (<code>zamba[video,image]</code>), dependency resolution can fail: megadetector's YOLOv5 stack pins <code>protobuf&lt;=3.20.1</code>, while video dependencies (via <code>onnx</code>) require <code>protobuf&gt;=3.20.2</code>. Pass dependency overrides when installing both extras:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>zamba-overrides.txt<span class="w"> </span>&lt;&lt;<span class="s1">&#39;EOF&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>&gt;<span class="w"> </span>zamba-overrides.txt<span class="w"> </span>&lt;&lt;<span class="s1">'EOF'</span>
 <span class="go">protobuf&gt;=3.20.2</span>
 <span class="go">setuptools&lt;82</span>
 <span class="go">EOF</span>
@@ -2353,7 +2399,7 @@ GPU configurations.</p>
 <h3 id="2-install-ffmpeg-for-video-workflows_1">2. Install FFmpeg for video workflows<a class="headerlink" href="#2-install-ffmpeg-for-video-workflows_1" title="Permanent link">&para;</a></h3>
 <p><a href="https://ffmpeg.org/ffmpeg.html">FFmpeg</a> is required for video workflows. Use FFmpeg &gt; 4.3 and &lt; 5. Install <a href="https://brew.sh/">Homebrew</a>, then run:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>brew<span class="w"> </span>install<span class="w"> </span>ffmpeg@4
-<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;/opt/homebrew/opt/ffmpeg@4/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
+<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="s1">'export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"'</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
 </code></pre></div>
 <p>Open a new terminal and check that FFmpeg is installed:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>ffmpeg<span class="w"> </span>-version

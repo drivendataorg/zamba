@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2721,17 +2767,17 @@
 <span class="normal">535</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DensePoseManager</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">model</span><span class="o">=</span><span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;chimps&quot;</span><span class="p">],</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">MODELS</span><span class="p">[</span><span class="s2">"chimps"</span><span class="p">],</span>
         <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">),</span>
+        <span class="n">download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s2">"us"</span><span class="p">),</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a DensePoseManager object.</span>
+<span class="w">        </span><span class="sd">"""Create a DensePoseManager object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        model : dict, optional (default MODELS[&#39;chimps&#39;])</span>
+<span class="sd">        model : dict, optional (default MODELS['chimps'])</span>
 <span class="sd">            A dictionary with the densepose model defintion like those defined in MODELS.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">DENSEPOSE_AVAILABLE</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">DENSEPOSE_INSTALL_MESSAGE</span><span class="p">)</span>
 
@@ -2741,34 +2787,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">get_cfg</span><span class="p">()</span>
         <span class="n">add_densepose_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">merge_from_file</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">merge_from_file</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">"config"</span><span class="p">])</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Available weights: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading weights </span><span class="si">{</span><span class="n">model</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">model_cache_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Available weights: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'*'</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloading weights </span><span class="si">{</span><span class="n">model</span><span class="p">[</span><span class="s1">'weights'</span><span class="p">]</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">model_cache_dir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">model_cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
-                <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">download_region</span>
+                <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">download_region</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">])</span>
 
         <span class="c1"># automatically use CPU if no cuda available</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">"cpu"</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;fvcore&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s2">&quot;CRITICAL&quot;</span><span class="p">)</span>  <span class="c1"># silence noisy detectron2 logging</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"fvcore"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s2">"CRITICAL"</span><span class="p">)</span>  <span class="c1"># silence noisy detectron2 logging</span>
         <span class="c1"># set up predictor with the configuration</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span> <span class="o">=</span> <span class="n">DefaultPredictor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
 
         <span class="c1"># we have a specific texture atlas for chimps with relevant regions</span>
         <span class="c1"># labeled that we can use instead of the default segmentation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;viz_class&quot;</span><span class="p">](</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">"viz_class"</span><span class="p">](</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span>
             <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;viz_class_kwargs&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="o">**</span><span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"viz_class_kwargs"</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="p">)</span>
 
         <span class="c1"># set up utilities for use with visualizer</span>
@@ -2781,13 +2827,13 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_embedder</span><span class="o">.</span><span class="n">has_embeddings</span><span class="p">(</span><span class="n">mesh_name</span><span class="p">)</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="s2">&quot;anatomy_color_mapping&quot;</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">&quot;anatomy_color_mapping&quot;</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"anatomy_color_mapping"</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">"anatomy_color_mapping"</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run inference to get the densepose results for an image.</span>
+<span class="w">        </span><span class="sd">"""Run inference to get the densepose results for an image.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2798,21 +2844,21 @@
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
 <span class="sd">            Returns the image array as passed or loaded and the the densepose Instances as results.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
-            <span class="n">image</span> <span class="o">=</span> <span class="n">read_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;BGR&quot;</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">read_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"BGR"</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">video</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run inference to get the densepose results for a video.</span>
+<span class="w">        </span><span class="sd">"""Run inference to get the densepose results for a video.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        video :</span>
 <span class="sd">            numpy array (uint8) of a a video in BGR layout with time dimension first or path to a video</span>
 <span class="sd">        video_loader_config : VideoLoaderConfig, optional</span>
-<span class="sd">            A video loader config for loading videos (uses all defaults except pix_fmt=&quot;bgr24&quot;)</span>
+<span class="sd">            A video loader config for loading videos (uses all defaults except pix_fmt="bgr24")</span>
 <span class="sd">        pbar : bool, optional</span>
 <span class="sd">            Whether to display a progress bar, by default True</span>
 
@@ -2820,18 +2866,18 @@
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
 <span class="sd">            Tuple of (video_array, list of densepose results per frame)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
             <span class="n">video</span> <span class="o">=</span> <span class="n">load_video_frames</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">)</span>
 
         <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span> <span class="k">if</span> <span class="n">pbar</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">x</span>
 
         <span class="k">return</span> <span class="n">video</span><span class="p">,</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">predict_image</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Frames&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">predict_image</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Frames"</span><span class="p">)</span>
         <span class="p">]</span>  <span class="c1"># just the predictions</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_arr</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Main call to DensePose for inference. Runs inference on an image array.</span>
+<span class="w">        </span><span class="sd">"""Main call to DensePose for inference. Runs inference on an image array.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2842,15 +2888,15 @@
 <span class="sd">        -------</span>
 <span class="sd">        Instances</span>
 <span class="sd">            Detection instances with boxes, scores, and densepose estimates.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="n">instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">image_arr</span><span class="p">)[</span><span class="s2">&quot;instances&quot;</span><span class="p">]</span>
+            <span class="n">instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">image_arr</span><span class="p">)[</span><span class="s2">"instances"</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">instances</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">serialize_video_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instances</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_embeddings</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">serialized</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;frames&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">"frames"</span><span class="p">:</span> <span class="p">[</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">serialize_image_output</span><span class="p">(</span>
                     <span class="n">frame_instances</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_embeddings</span><span class="o">=</span><span class="n">write_embeddings</span>
                 <span class="p">)</span>
@@ -2859,13 +2905,13 @@
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">serialized</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">serialized</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">serialize_image_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instances</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_embeddings</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the densepose output into Python-native objects that can</span>
+<span class="w">        </span><span class="sd">"""Convert the densepose output into Python-native objects that can</span>
 <span class="sd">            be written and read with json.</span>
 
 <span class="sd">        Parameters</span>
@@ -2874,18 +2920,18 @@
 <span class="sd">            The output from the densepose model</span>
 <span class="sd">        filename : (str, Path), optional</span>
 <span class="sd">            If not None, the filename to write the output to, by default None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instances</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span> <span class="o">=</span> <span class="n">instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">image_size</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">image_size</span>
 
-        <span class="n">boxes</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pred_boxes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tensor</span>
-        <span class="n">scores</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scores&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="n">labels</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pred_classes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">boxes</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pred_boxes"</span><span class="p">)</span><span class="o">.</span><span class="n">tensor</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"scores"</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pred_classes"</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">pose_result</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pred_densepose&quot;</span><span class="p">)</span>
+            <span class="n">pose_result</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pred_densepose"</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">pose_result</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -2893,22 +2939,22 @@
         <span class="n">write_embeddings</span> <span class="o">=</span> <span class="n">write_embeddings</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pose_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="n">serialized</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;instances&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">"instances"</span><span class="p">:</span> <span class="p">[</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;img_height&quot;</span><span class="p">:</span> <span class="n">img_height</span><span class="p">,</span>
-                    <span class="s2">&quot;img_width&quot;</span><span class="p">:</span> <span class="n">img_width</span><span class="p">,</span>
-                    <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="n">boxes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                    <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                        <span class="s2">&quot;mesh_name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_class_to_mesh_name</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                    <span class="s2">"img_height"</span><span class="p">:</span> <span class="n">img_height</span><span class="p">,</span>
+                    <span class="s2">"img_width"</span><span class="p">:</span> <span class="n">img_width</span><span class="p">,</span>
+                    <span class="s2">"box"</span><span class="p">:</span> <span class="n">boxes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                    <span class="s2">"score"</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"label"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">"value"</span><span class="p">:</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                        <span class="s2">"mesh_name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_class_to_mesh_name</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
                     <span class="p">},</span>
-                    <span class="s2">&quot;embedding&quot;</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="s2">"embedding"</span><span class="p">:</span> <span class="p">(</span>
                         <span class="n">pose_result</span><span class="o">.</span><span class="n">embedding</span><span class="p">[[</span><span class="n">i</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                         <span class="k">if</span> <span class="n">write_embeddings</span>
                         <span class="k">else</span> <span class="kc">None</span>
                     <span class="p">),</span>
-                    <span class="s2">&quot;segmentation&quot;</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="s2">"segmentation"</span><span class="p">:</span> <span class="p">(</span>
                         <span class="n">pose_result</span><span class="o">.</span><span class="n">coarse_segm</span><span class="p">[[</span><span class="n">i</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                         <span class="k">if</span> <span class="n">write_embeddings</span>
                         <span class="k">else</span> <span class="kc">None</span>
@@ -2919,36 +2965,36 @@
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">serialized</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">serialized</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">deserialize_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instances_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">instances_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
         <span class="c1"># handle image case</span>
         <span class="n">is_image</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="s2">&quot;frames&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instances_dict</span><span class="p">:</span>
-            <span class="n">instances_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;frames&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">instances_dict</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="s2">"frames"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instances_dict</span><span class="p">:</span>
+            <span class="n">instances_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"frames"</span><span class="p">:</span> <span class="p">[</span><span class="n">instances_dict</span><span class="p">]}</span>
             <span class="n">is_image</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">instances_dict</span><span class="p">[</span><span class="s2">&quot;frames&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">instances_dict</span><span class="p">[</span><span class="s2">"frames"</span><span class="p">]:</span>
             <span class="n">heights</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">segmentations</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span>
                 <span class="o">*</span><span class="p">[</span>
                     <span class="p">(</span>
-                        <span class="n">i</span><span class="p">[</span><span class="s2">&quot;img_height&quot;</span><span class="p">],</span>
-                        <span class="n">i</span><span class="p">[</span><span class="s2">&quot;img_width&quot;</span><span class="p">],</span>
-                        <span class="n">i</span><span class="p">[</span><span class="s2">&quot;box&quot;</span><span class="p">],</span>
-                        <span class="n">i</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">],</span>
-                        <span class="n">i</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
-                        <span class="n">i</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;embedding&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
-                        <span class="n">i</span><span class="p">[</span><span class="s2">&quot;segmentation&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;segmentation&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+                        <span class="n">i</span><span class="p">[</span><span class="s2">"img_height"</span><span class="p">],</span>
+                        <span class="n">i</span><span class="p">[</span><span class="s2">"img_width"</span><span class="p">],</span>
+                        <span class="n">i</span><span class="p">[</span><span class="s2">"box"</span><span class="p">],</span>
+                        <span class="n">i</span><span class="p">[</span><span class="s2">"score"</span><span class="p">],</span>
+                        <span class="n">i</span><span class="p">[</span><span class="s2">"label"</span><span class="p">][</span><span class="s2">"value"</span><span class="p">],</span>
+                        <span class="n">i</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">"embedding"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+                        <span class="n">i</span><span class="p">[</span><span class="s2">"segmentation"</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">"segmentation"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
                     <span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;instances&quot;</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">frame</span><span class="p">[</span><span class="s2">"instances"</span><span class="p">]</span>
                 <span class="p">]</span>
             <span class="p">)</span>
 
@@ -2972,7 +3018,7 @@
             <span class="k">return</span> <span class="n">frames</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">visualize_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize the pose information.</span>
+<span class="w">        </span><span class="sd">"""Visualize the pose information.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2987,7 +3033,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy array (unit8) BGR</span>
 <span class="sd">            DensePose outputs visualized on top of the image.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">bw_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_arr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
         <span class="n">bw_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">bw_image</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_extractor</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
@@ -2999,7 +3045,7 @@
         <span class="k">return</span> <span class="n">image_vis</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">anatomize_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visualized_img_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the pose information into the percent of pixels in the detection</span>
+<span class="w">        </span><span class="sd">"""Convert the pose information into the percent of pixels in the detection</span>
 <span class="sd">            bounding box that correspond to each part of the anatomy in an image.</span>
 
 <span class="sd">        Parameters</span>
@@ -3013,10 +3059,10 @@
 <span class="sd">        -------</span>
 <span class="sd">        pandas.DataFrame</span>
 <span class="sd">            DataFrame with percent of pixels of the bounding box that correspond to each anatomical part</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;No anatomy_color_mapping provided to track anatomy; did you mean to use a different MODEL?&quot;</span>
+                <span class="s2">"No anatomy_color_mapping provided to track anatomy; did you mean to use a different MODEL?"</span>
             <span class="p">)</span>
 
         <span class="c1"># no detections, return empty df for joining later (e.g., in anatomize_video)</span>
@@ -3040,10 +3086,10 @@
                 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
             <span class="p">}</span>
 
-            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
-            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
-            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"x"</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+            <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"w"</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
 
             <span class="n">all_detections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">detection_stats</span><span class="p">)</span>
 
@@ -3057,7 +3103,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">visualize_video</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize the pose information on a video</span>
+<span class="w">        </span><span class="sd">"""Visualize the pose information on a video</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -3079,7 +3125,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy array (unit8) BGR</span>
 <span class="sd">            DensePose outputs visualized on top of the image.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span> <span class="k">if</span> <span class="n">pbar</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">x</span>
 
         <span class="n">out_frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -3089,7 +3135,7 @@
                     <span class="n">output</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">image_arr</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span>
-                    <span class="nb">zip</span><span class="p">(</span><span class="n">video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Visualize frames&quot;</span>
+                    <span class="nb">zip</span><span class="p">(</span><span class="n">video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Visualize frames"</span>
                 <span class="p">)</span>
             <span class="p">]</span>
         <span class="p">)</span>
@@ -3111,15 +3157,15 @@
                 <span class="n">frame_height</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
 
             <span class="c1"># setup output for writing</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.mp4&quot;</span><span class="p">)</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">".mp4"</span><span class="p">)</span>
             <span class="n">out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span>
                 <span class="nb">str</span><span class="p">(</span><span class="n">output_path</span><span class="p">),</span>
-                <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="s2">&quot;mp4v&quot;</span><span class="p">),</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="s2">"mp4v"</span><span class="p">),</span>
                 <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fps</span><span class="p">)),</span>
                 <span class="p">(</span><span class="n">frame_width</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">),</span>
             <span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">out_frames</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Write frames&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">out_frames</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Write frames"</span><span class="p">):</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">frame_height</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">frame_width</span><span class="p">):</span>
                     <span class="n">f</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
                         <span class="n">f</span><span class="p">,</span>
@@ -3136,7 +3182,7 @@
         <span class="k">return</span> <span class="n">out_frames</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">anatomize_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visualized_video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the pose information into the percent of pixels in the detection</span>
+<span class="w">        </span><span class="sd">"""Convert the pose information into the percent of pixels in the detection</span>
 <span class="sd">            bounding box that correspond to each part of the anatomy in a video.</span>
 
 <span class="sd">        Parameters</span>
@@ -3150,13 +3196,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        numpy array (unit8) BGR</span>
 <span class="sd">            DensePose outputs visualized on top of the image.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">all_detections</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">visualized_video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">detection_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anatomize_image</span><span class="p">(</span><span class="n">visualized_video_arr</span><span class="p">[</span><span class="n">ix</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">outputs</span><span class="p">[</span><span class="n">ix</span><span class="p">])</span>
-            <span class="n">detection_df</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span>
-            <span class="n">detection_df</span><span class="p">[</span><span class="s2">&quot;seconds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span> <span class="o">/</span> <span class="n">fps</span>
+            <span class="n">detection_df</span><span class="p">[</span><span class="s2">"frame"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span>
+            <span class="n">detection_df</span><span class="p">[</span><span class="s2">"seconds"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span> <span class="o">/</span> <span class="n">fps</span>
             <span class="n">all_detections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">detection_df</span><span class="p">)</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_detections</span><span class="p">)</span>
@@ -3184,7 +3230,7 @@
 
 
 <h3 id="zamba.models.densepose.densepose_manager.DensePoseManager.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODELS</span><span class="p">[</span><span class="s1">&#39;chimps&#39;</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s1">&#39;us&#39;</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODELS</span><span class="p">[</span><span class="s1">'chimps'</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s1">'us'</span><span class="p">))</span></code>
 
 <a href="#zamba.models.densepose.densepose_manager.DensePoseManager.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3265,17 +3311,17 @@
 <span class="normal">154</span>
 <span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;chimps&quot;</span><span class="p">],</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">MODELS</span><span class="p">[</span><span class="s2">"chimps"</span><span class="p">],</span>
     <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">),</span>
+    <span class="n">download_region</span><span class="o">=</span><span class="n">RegionEnum</span><span class="p">(</span><span class="s2">"us"</span><span class="p">),</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a DensePoseManager object.</span>
+<span class="w">    </span><span class="sd">"""Create a DensePoseManager object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    model : dict, optional (default MODELS[&#39;chimps&#39;])</span>
+<span class="sd">    model : dict, optional (default MODELS['chimps'])</span>
 <span class="sd">        A dictionary with the densepose model defintion like those defined in MODELS.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">DENSEPOSE_AVAILABLE</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="n">DENSEPOSE_INSTALL_MESSAGE</span><span class="p">)</span>
 
@@ -3285,34 +3331,34 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">get_cfg</span><span class="p">()</span>
     <span class="n">add_densepose_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">merge_from_file</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">merge_from_file</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">"config"</span><span class="p">])</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Available weights: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading weights </span><span class="si">{</span><span class="n">model</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">model_cache_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Available weights: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">model_cache_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'*'</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloading weights </span><span class="si">{</span><span class="n">model</span><span class="p">[</span><span class="s1">'weights'</span><span class="p">]</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">model_cache_dir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">model_cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="n">download_weights</span><span class="p">(</span>
-            <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">download_region</span>
+            <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">],</span> <span class="n">model_cache_dir</span><span class="p">,</span> <span class="n">download_region</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_cache_dir</span> <span class="o">/</span> <span class="n">model</span><span class="p">[</span><span class="s2">"weights"</span><span class="p">])</span>
 
     <span class="c1"># automatically use CPU if no cuda available</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">"cpu"</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;fvcore&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s2">&quot;CRITICAL&quot;</span><span class="p">)</span>  <span class="c1"># silence noisy detectron2 logging</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"fvcore"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s2">"CRITICAL"</span><span class="p">)</span>  <span class="c1"># silence noisy detectron2 logging</span>
     <span class="c1"># set up predictor with the configuration</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span> <span class="o">=</span> <span class="n">DefaultPredictor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">)</span>
 
     <span class="c1"># we have a specific texture atlas for chimps with relevant regions</span>
     <span class="c1"># labeled that we can use instead of the default segmentation</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">&quot;viz_class&quot;</span><span class="p">](</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">"viz_class"</span><span class="p">](</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span>
         <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">MODEL</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;viz_class_kwargs&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+        <span class="o">**</span><span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"viz_class_kwargs"</span><span class="p">,</span> <span class="p">{}),</span>
     <span class="p">)</span>
 
     <span class="c1"># set up utilities for use with visualizer</span>
@@ -3325,8 +3371,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_embedder</span><span class="o">.</span><span class="n">has_embeddings</span><span class="p">(</span><span class="n">mesh_name</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="k">if</span> <span class="s2">&quot;anatomy_color_mapping&quot;</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">&quot;anatomy_color_mapping&quot;</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"anatomy_color_mapping"</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">"anatomy_color_mapping"</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
@@ -3414,7 +3460,7 @@ outputs :
 <span class="normal">421</span>
 <span class="normal">422</span>
 <span class="normal">423</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">anatomize_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visualized_img_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the pose information into the percent of pixels in the detection</span>
+<span class="w">    </span><span class="sd">"""Convert the pose information into the percent of pixels in the detection</span>
 <span class="sd">        bounding box that correspond to each part of the anatomy in an image.</span>
 
 <span class="sd">    Parameters</span>
@@ -3428,10 +3474,10 @@ outputs :
 <span class="sd">    -------</span>
 <span class="sd">    pandas.DataFrame</span>
 <span class="sd">        DataFrame with percent of pixels of the bounding box that correspond to each anatomical part</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;No anatomy_color_mapping provided to track anatomy; did you mean to use a different MODEL?&quot;</span>
+            <span class="s2">"No anatomy_color_mapping provided to track anatomy; did you mean to use a different MODEL?"</span>
         <span class="p">)</span>
 
     <span class="c1"># no detections, return empty df for joining later (e.g., in anatomize_video)</span>
@@ -3455,10 +3501,10 @@ outputs :
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">anatomy_color_mapping</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
         <span class="p">}</span>
 
-        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
-        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"x"</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"y"</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="n">detection_stats</span><span class="p">[</span><span class="s2">"w"</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
 
         <span class="n">all_detections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">detection_stats</span><span class="p">)</span>
 
@@ -3528,7 +3574,7 @@ outputs :
 <span class="normal">533</span>
 <span class="normal">534</span>
 <span class="normal">535</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">anatomize_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visualized_video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the pose information into the percent of pixels in the detection</span>
+<span class="w">    </span><span class="sd">"""Convert the pose information into the percent of pixels in the detection</span>
 <span class="sd">        bounding box that correspond to each part of the anatomy in a video.</span>
 
 <span class="sd">    Parameters</span>
@@ -3542,13 +3588,13 @@ outputs :
 <span class="sd">    -------</span>
 <span class="sd">    numpy array (unit8) BGR</span>
 <span class="sd">        DensePose outputs visualized on top of the image.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">all_detections</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">visualized_video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">detection_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anatomize_image</span><span class="p">(</span><span class="n">visualized_video_arr</span><span class="p">[</span><span class="n">ix</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">outputs</span><span class="p">[</span><span class="n">ix</span><span class="p">])</span>
-        <span class="n">detection_df</span><span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span>
-        <span class="n">detection_df</span><span class="p">[</span><span class="s2">&quot;seconds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span> <span class="o">/</span> <span class="n">fps</span>
+        <span class="n">detection_df</span><span class="p">[</span><span class="s2">"frame"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span>
+        <span class="n">detection_df</span><span class="p">[</span><span class="s2">"seconds"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ix</span> <span class="o">/</span> <span class="n">fps</span>
         <span class="n">all_detections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">detection_df</span><span class="p">)</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_detections</span><span class="p">)</span>
@@ -3601,7 +3647,7 @@ outputs :
 <span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_arr</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main call to DensePose for inference. Runs inference on an image array.</span>
+<span class="w">    </span><span class="sd">"""Main call to DensePose for inference. Runs inference on an image array.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3612,9 +3658,9 @@ outputs :
 <span class="sd">    -------</span>
 <span class="sd">    Instances</span>
 <span class="sd">        Detection instances with boxes, scores, and densepose estimates.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">image_arr</span><span class="p">)[</span><span class="s2">&quot;instances&quot;</span><span class="p">]</span>
+        <span class="n">instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="p">(</span><span class="n">image_arr</span><span class="p">)[</span><span class="s2">"instances"</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">instances</span>
 </code></pre></div></td></tr></table></div>
@@ -3661,7 +3707,7 @@ outputs :
 <span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">predict_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run inference to get the densepose results for an image.</span>
+<span class="w">    </span><span class="sd">"""Run inference to get the densepose results for an image.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3672,9 +3718,9 @@ outputs :
 <span class="sd">    -------</span>
 <span class="sd">    tuple</span>
 <span class="sd">        Returns the image array as passed or loaded and the the densepose Instances as results.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
-        <span class="n">image</span> <span class="o">=</span> <span class="n">read_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;BGR&quot;</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">read_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"BGR"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3733,14 +3779,14 @@ pbar : bool, optional
 <span class="normal">197</span>
 <span class="normal">198</span>
 <span class="normal">199</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">predict_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">video</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run inference to get the densepose results for a video.</span>
+<span class="w">    </span><span class="sd">"""Run inference to get the densepose results for a video.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    video :</span>
 <span class="sd">        numpy array (uint8) of a a video in BGR layout with time dimension first or path to a video</span>
 <span class="sd">    video_loader_config : VideoLoaderConfig, optional</span>
-<span class="sd">        A video loader config for loading videos (uses all defaults except pix_fmt=&quot;bgr24&quot;)</span>
+<span class="sd">        A video loader config for loading videos (uses all defaults except pix_fmt="bgr24")</span>
 <span class="sd">    pbar : bool, optional</span>
 <span class="sd">        Whether to display a progress bar, by default True</span>
 
@@ -3748,14 +3794,14 @@ pbar : bool, optional
 <span class="sd">    -------</span>
 <span class="sd">    tuple</span>
 <span class="sd">        Tuple of (video_array, list of densepose results per frame)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
         <span class="n">video</span> <span class="o">=</span> <span class="n">load_video_frames</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">)</span>
 
     <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span> <span class="k">if</span> <span class="n">pbar</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">x</span>
 
     <span class="k">return</span> <span class="n">video</span><span class="p">,</span> <span class="p">[</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">predict_image</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Frames&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predict_image</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">video</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Frames"</span><span class="p">)</span>
     <span class="p">]</span>  <span class="c1"># just the predictions</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3843,7 +3889,7 @@ filename : (str, Path), optional
 <span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">serialize_image_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instances</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">write_embeddings</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the densepose output into Python-native objects that can</span>
+<span class="w">    </span><span class="sd">"""Convert the densepose output into Python-native objects that can</span>
 <span class="sd">        be written and read with json.</span>
 
 <span class="sd">    Parameters</span>
@@ -3852,18 +3898,18 @@ filename : (str, Path), optional
 <span class="sd">        The output from the densepose model</span>
 <span class="sd">    filename : (str, Path), optional</span>
 <span class="sd">        If not None, the filename to write the output to, by default None</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">instances</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span> <span class="o">=</span> <span class="n">instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">image_size</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">image_size</span>
 
-    <span class="n">boxes</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pred_boxes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tensor</span>
-    <span class="n">scores</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scores&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pred_classes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">boxes</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pred_boxes"</span><span class="p">)</span><span class="o">.</span><span class="n">tensor</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"scores"</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pred_classes"</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">pose_result</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pred_densepose&quot;</span><span class="p">)</span>
+        <span class="n">pose_result</span> <span class="o">=</span> <span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pred_densepose"</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="n">pose_result</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -3871,22 +3917,22 @@ filename : (str, Path), optional
     <span class="n">write_embeddings</span> <span class="o">=</span> <span class="n">write_embeddings</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pose_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="n">serialized</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;instances&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"instances"</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">{</span>
-                <span class="s2">&quot;img_height&quot;</span><span class="p">:</span> <span class="n">img_height</span><span class="p">,</span>
-                <span class="s2">&quot;img_width&quot;</span><span class="p">:</span> <span class="n">img_width</span><span class="p">,</span>
-                <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="n">boxes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s2">&quot;mesh_name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_class_to_mesh_name</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                <span class="s2">"img_height"</span><span class="p">:</span> <span class="n">img_height</span><span class="p">,</span>
+                <span class="s2">"img_width"</span><span class="p">:</span> <span class="n">img_width</span><span class="p">,</span>
+                <span class="s2">"box"</span><span class="p">:</span> <span class="n">boxes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">"score"</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="s2">"label"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"value"</span><span class="p">:</span> <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"mesh_name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_class_to_mesh_name</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;embedding&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">"embedding"</span><span class="p">:</span> <span class="p">(</span>
                     <span class="n">pose_result</span><span class="o">.</span><span class="n">embedding</span><span class="p">[[</span><span class="n">i</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">write_embeddings</span>
                     <span class="k">else</span> <span class="kc">None</span>
                 <span class="p">),</span>
-                <span class="s2">&quot;segmentation&quot;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">"segmentation"</span><span class="p">:</span> <span class="p">(</span>
                     <span class="n">pose_result</span><span class="o">.</span><span class="n">coarse_segm</span><span class="p">[[</span><span class="n">i</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">write_embeddings</span>
                     <span class="k">else</span> <span class="kc">None</span>
@@ -3897,7 +3943,7 @@ filename : (str, Path), optional
     <span class="p">}</span>
 
     <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">serialized</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">serialized</span>
@@ -3958,7 +4004,7 @@ output_path : str or Path, optional
 <span class="normal">365</span>
 <span class="normal">366</span>
 <span class="normal">367</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">visualize_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualize the pose information.</span>
+<span class="w">    </span><span class="sd">"""Visualize the pose information.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3973,7 +4019,7 @@ output_path : str or Path, optional
 <span class="sd">    -------</span>
 <span class="sd">    numpy array (unit8) BGR</span>
 <span class="sd">        DensePose outputs visualized on top of the image.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">bw_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_arr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
     <span class="n">bw_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">bw_image</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_extractor</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
@@ -4103,7 +4149,7 @@ pbar : bool
 <span class="normal">504</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">visualize_video</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualize the pose information on a video</span>
+<span class="w">    </span><span class="sd">"""Visualize the pose information on a video</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -4125,7 +4171,7 @@ pbar : bool
 <span class="sd">    -------</span>
 <span class="sd">    numpy array (unit8) BGR</span>
 <span class="sd">        DensePose outputs visualized on top of the image.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span> <span class="k">if</span> <span class="n">pbar</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">x</span>
 
     <span class="n">out_frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -4135,7 +4181,7 @@ pbar : bool
                 <span class="n">output</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">image_arr</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span>
-                <span class="nb">zip</span><span class="p">(</span><span class="n">video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Visualize frames&quot;</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="n">video_arr</span><span class="p">,</span> <span class="n">outputs</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Visualize frames"</span>
             <span class="p">)</span>
         <span class="p">]</span>
     <span class="p">)</span>
@@ -4157,15 +4203,15 @@ pbar : bool
             <span class="n">frame_height</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">video_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
 
         <span class="c1"># setup output for writing</span>
-        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.mp4&quot;</span><span class="p">)</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">".mp4"</span><span class="p">)</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter</span><span class="p">(</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">output_path</span><span class="p">),</span>
-            <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="s2">&quot;mp4v&quot;</span><span class="p">),</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">VideoWriter_fourcc</span><span class="p">(</span><span class="o">*</span><span class="s2">"mp4v"</span><span class="p">),</span>
             <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fps</span><span class="p">)),</span>
             <span class="p">(</span><span class="n">frame_width</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">out_frames</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Write frames&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">out_frames</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Write frames"</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">frame_height</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">frame_width</span><span class="p">):</span>
                 <span class="n">f</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span>
                     <span class="n">f</span><span class="p">,</span>

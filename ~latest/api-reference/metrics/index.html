@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2325,7 +2371,7 @@ Args:
     <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes species-specific accuracy, F1, precision, and recall.</span>
+<span class="w">    </span><span class="sd">"""Computes species-specific accuracy, F1, precision, and recall.</span>
 <span class="sd">    Args:</span>
 <span class="sd">        y_true (np.ndarray): An array with shape (samples, species) where each value indicates</span>
 <span class="sd">            the presence of a species in a sample.</span>
@@ -2334,22 +2380,22 @@ Args:
 
 <span class="sd">    Yields:</span>
 <span class="sd">        str, int, float: The metric name, species label index, and metric value.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;The number of labels (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="si">}</span><span class="s2">) must match the number of columns in y_true (</span><span class="si">{</span><span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">).&quot;</span>
+            <span class="sa">f</span><span class="s2">"The number of labels (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="si">}</span><span class="s2">) must match the number of columns in y_true (</span><span class="si">{</span><span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)."</span>
         <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">index</span><span class="p">])</span>
-        <span class="k">yield</span> <span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span>
+        <span class="k">yield</span> <span class="s2">"accuracy"</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">index</span><span class="p">])</span>
+        <span class="k">yield</span> <span class="s2">"f1"</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="s2">"precision"</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span>
             <span class="n">y_true</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
         <span class="p">)</span>
-        <span class="k">yield</span> <span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="s2">"recall"</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">[:,</span> <span class="n">index</span><span class="p">],</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

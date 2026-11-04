@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2380,7 +2426,7 @@ time to the frames over the threshold</p>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FillModeEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum for frame filtering fill modes</span>
+<span class="w">    </span><span class="sd">"""Enum for frame filtering fill modes</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        repeat: Randomly resample qualifying frames to get to n_frames</span>
@@ -2388,12 +2434,12 @@ time to the frames over the threshold</p>
 <span class="sd">        weighted_euclidean: Sample the remaining frames weighted by their euclidean distance in</span>
 <span class="sd">            time to the frames over the threshold</span>
 <span class="sd">        weighted_prob: Sample the remaining frames weighted by their predicted probability</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">repeat</span> <span class="o">=</span> <span class="s2">&quot;repeat&quot;</span>
-    <span class="n">score_sorted</span> <span class="o">=</span> <span class="s2">&quot;score_sorted&quot;</span>
-    <span class="n">weighted_euclidean</span> <span class="o">=</span> <span class="s2">&quot;weighted_euclidean&quot;</span>
-    <span class="n">weighted_prob</span> <span class="o">=</span> <span class="s2">&quot;weighted_prob&quot;</span>
+    <span class="n">repeat</span> <span class="o">=</span> <span class="s2">"repeat"</span>
+    <span class="n">score_sorted</span> <span class="o">=</span> <span class="s2">"score_sorted"</span>
+    <span class="n">weighted_euclidean</span> <span class="o">=</span> <span class="s2">"weighted_euclidean"</span>
+    <span class="n">weighted_prob</span> <span class="o">=</span> <span class="s2">"weighted_prob"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2709,12 +2755,12 @@ time to the frames over the threshold</p>
         <span class="n">kwargs</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">=</span> <span class="n">LOCAL_MD_LITE_MODEL_KWARGS</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">MegadetectorLiteYoloXConfig</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;MegadetectorLite based on YOLOX.</span>
+<span class="w">        </span><span class="sd">"""MegadetectorLite based on YOLOX.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            path (pathlike): Path to trained YoloX model checkpoint (.pth extension)</span>
 <span class="sd">            config (MegadetectorLiteYoloXConfig): YoloX configuration</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">MegadetectorLiteYoloXConfig</span><span class="p">()</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -2727,7 +2773,7 @@ time to the frames over the threshold</p>
 
         <span class="n">ckpt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">yolox</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">ckpt</span><span class="p">,</span> <span class="n">weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">yolox</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">"model"</span><span class="p">])</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
@@ -2750,9 +2796,9 @@ time to the frames over the threshold</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process an image for the model, including scaling/padding the image, transposing from</span>
+<span class="w">        </span><span class="sd">"""Process an image for the model, including scaling/padding the image, transposing from</span>
 <span class="sd">        (height, width, channel) to (channel, height, width) and casting to float.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scale_and_pad_array</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_height</span><span class="p">),</span>
             <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
@@ -2760,9 +2806,9 @@ time to the frames over the threshold</p>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_preprocess_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">video</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process a video for the model, including resizing the frames in the video, transposing</span>
+<span class="w">        </span><span class="sd">"""Process a video for the model, including resizing the frames in the video, transposing</span>
 <span class="sd">        from (batch, height, width, channel) to (batch, channel, height, width) and casting to float.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">resized_video</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
             <span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">video</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_width</span><span class="p">),</span>
             <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
@@ -2772,7 +2818,7 @@ time to the frames over the threshold</p>
         <span class="k">return</span> <span class="n">resized_video</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">detect_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">video_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pbar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs object detection on an video.</span>
+<span class="w">        </span><span class="sd">"""Runs object detection on an video.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            video_arr (np.ndarray): An video array with dimensions (frames, height, width, channels).</span>
@@ -2784,7 +2830,7 @@ time to the frames over the threshold</p>
 <span class="sd">                object is the number of objects detected and the other 4 dimension are</span>
 <span class="sd">                (x1, y1, x2, y1). The second is an array of object detection confidence scores of</span>
 <span class="sd">                length (object) where object is the number of objects detected.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span> <span class="k">if</span> <span class="n">pbar</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
 
@@ -2815,7 +2861,7 @@ time to the frames over the threshold</p>
         <span class="k">return</span> <span class="n">detections</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">detect_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs object detection on an image.</span>
+<span class="w">        </span><span class="sd">"""Runs object detection on an image.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            img_arr (np.ndarray): An image array with dimensions (height, width, channels).</span>
@@ -2827,7 +2873,7 @@ time to the frames over the threshold</p>
 
 <span class="sd">            np.ndarray: An array of object detection confidence scores of length (object) where</span>
 <span class="sd">                object is the number of objects detected.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">(</span><span class="n">img_arr</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
@@ -2844,7 +2890,7 @@ time to the frames over the threshold</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">detections</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
                 <span class="n">output</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
-                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">,</span> <span class="s2">&quot;score1&quot;</span><span class="p">,</span> <span class="s2">&quot;score2&quot;</span><span class="p">,</span> <span class="s2">&quot;class_num&quot;</span><span class="p">],</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"x1"</span><span class="p">,</span> <span class="s2">"y1"</span><span class="p">,</span> <span class="s2">"x2"</span><span class="p">,</span> <span class="s2">"y2"</span><span class="p">,</span> <span class="s2">"score1"</span><span class="p">,</span> <span class="s2">"score2"</span><span class="p">,</span> <span class="s2">"class_num"</span><span class="p">],</span>
             <span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">score</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">score1</span> <span class="o">*</span> <span class="n">row</span><span class="o">.</span><span class="n">score2</span><span class="p">)</span>
 
             <span class="c1"># Transform bounding box to be in terms of the original image dimensions</span>
@@ -2852,18 +2898,18 @@ time to the frames over the threshold</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_width</span> <span class="o">/</span> <span class="n">original_width</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">image_height</span> <span class="o">/</span> <span class="n">original_height</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">ratio</span>
+            <span class="n">detections</span><span class="p">[[</span><span class="s2">"x1"</span><span class="p">,</span> <span class="s2">"y1"</span><span class="p">,</span> <span class="s2">"x2"</span><span class="p">,</span> <span class="s2">"y2"</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">ratio</span>
 
             <span class="c1"># Express bounding boxes in terms of proportions of original image dimensions</span>
-            <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">original_width</span>
-            <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">original_height</span>
+            <span class="n">detections</span><span class="p">[[</span><span class="s2">"x1"</span><span class="p">,</span> <span class="s2">"x2"</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">original_width</span>
+            <span class="n">detections</span><span class="p">[[</span><span class="s2">"y1"</span><span class="p">,</span> <span class="s2">"y2"</span><span class="p">]]</span> <span class="o">/=</span> <span class="n">original_height</span>
 
-            <span class="k">return</span> <span class="n">detections</span><span class="p">[[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;y2&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">detections</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">values</span>
+            <span class="k">return</span> <span class="n">detections</span><span class="p">[[</span><span class="s2">"x1"</span><span class="p">,</span> <span class="s2">"y1"</span><span class="p">,</span> <span class="s2">"x2"</span><span class="p">,</span> <span class="s2">"y2"</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">detections</span><span class="o">.</span><span class="n">score</span><span class="o">.</span><span class="n">values</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">filter_frames</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">detections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter video frames using megadetector lite.</span>
+<span class="w">        </span><span class="sd">"""Filter video frames using megadetector lite.</span>
 
 <span class="sd">        Which frames are returned depends on the fill_mode and how many frames are above the</span>
 <span class="sd">        confidence threshold. If more than n_frames are above the threshold, the top n_frames are</span>
@@ -2879,7 +2925,7 @@ time to the frames over the threshold</p>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            np.ndarray: An array of video frames of length n_frames or shorter</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># reduce to one score per frame</span>
         <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -2904,7 +2950,7 @@ time to the frames over the threshold</p>
             <span class="c1"># repeat frames that are above threshold to get to n_frames</span>
             <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;repeat&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"repeat"</span><span class="p">:</span>
                 <span class="n">repeated_indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
                     <span class="n">selected_indices</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">),</span>
@@ -2913,11 +2959,11 @@ time to the frames over the threshold</p>
                 <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">selected_indices</span><span class="p">,</span> <span class="n">repeated_indices</span><span class="p">))</span>
 
             <span class="c1"># take frames in sorted order up to n_frames, even if score is zero</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;score_sorted&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"score_sorted"</span><span class="p">:</span>
                 <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">_rank_frame_indices</span><span class="p">(</span><span class="n">scores</span><span class="p">)[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span><span class="p">]</span>
 
             <span class="c1"># sample up to n_frames, prefer points closer to frames with detection</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;weighted_euclidean&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"weighted_euclidean"</span><span class="p">:</span>
                 <span class="n">frame_scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="n">sample_from</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
                     <span class="n">frame_scores</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">frame_scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
@@ -2942,7 +2988,7 @@ time to the frames over the threshold</p>
                 <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">selected_indices</span><span class="p">,</span> <span class="n">sampled</span><span class="p">))</span>
 
             <span class="c1"># sample up to n_frames, weight by predicted probability - only if some frames have nonzero prob</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;weighted_prob&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"weighted_prob"</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="n">frame_scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="n">sample_from</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
                     <span class="n">frame_scores</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">frame_scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
@@ -3080,12 +3126,12 @@ time to the frames over the threshold</p>
     <span class="n">kwargs</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">=</span> <span class="n">LOCAL_MD_LITE_MODEL_KWARGS</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">MegadetectorLiteYoloXConfig</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;MegadetectorLite based on YOLOX.</span>
+<span class="w">    </span><span class="sd">"""MegadetectorLite based on YOLOX.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (pathlike): Path to trained YoloX model checkpoint (.pth extension)</span>
 <span class="sd">        config (MegadetectorLiteYoloXConfig): YoloX configuration</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">MegadetectorLiteYoloXConfig</span><span class="p">()</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -3098,7 +3144,7 @@ time to the frames over the threshold</p>
 
     <span class="n">ckpt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">yolox</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">ckpt</span><span class="p">,</span> <span class="n">weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">yolox</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="s2">"model"</span><span class="p">])</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
@@ -3216,7 +3262,7 @@ object is the number of objects detected.</p>
 <span class="normal">219</span>
 <span class="normal">220</span>
 <span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">detect_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs object detection on an image.</span>
+<span class="w">    </span><span class="sd">"""Runs object detection on an image.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        img_arr (np.ndarray): An image array with dimensions (height, width, channels).</span>
@@ -3228,7 +3274,7 @@ object is the number of objects detected.</p>
 
 <span class="sd">        np.ndarray: An array of object detection confidence scores of length (object) where</span>
 <span class="sd">            object is the number of objects detected.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">(</span><span class="n">img_arr</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
@@ -3374,7 +3420,7 @@ length (object) where object is the number of objects detected.</p>
 <span class="normal">195</span>
 <span class="normal">196</span>
 <span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">detect_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">video_arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pbar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs object detection on an video.</span>
+<span class="w">    </span><span class="sd">"""Runs object detection on an video.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        video_arr (np.ndarray): An video array with dimensions (frames, height, width, channels).</span>
@@ -3386,7 +3432,7 @@ length (object) where object is the number of objects detected.</p>
 <span class="sd">            object is the number of objects detected and the other 4 dimension are</span>
 <span class="sd">            (x1, y1, x2, y1). The second is an array of object detection confidence scores of</span>
 <span class="sd">            length (object) where object is the number of objects detected.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span> <span class="k">if</span> <span class="n">pbar</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
 
@@ -3622,7 +3668,7 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
 <span class="normal">351</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">filter_frames</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">detections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter video frames using megadetector lite.</span>
+<span class="w">    </span><span class="sd">"""Filter video frames using megadetector lite.</span>
 
 <span class="sd">    Which frames are returned depends on the fill_mode and how many frames are above the</span>
 <span class="sd">    confidence threshold. If more than n_frames are above the threshold, the top n_frames are</span>
@@ -3638,7 +3684,7 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
 
 <span class="sd">    Returns:</span>
 <span class="sd">        np.ndarray: An array of video frames of length n_frames or shorter</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># reduce to one score per frame</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -3663,7 +3709,7 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
         <span class="c1"># repeat frames that are above threshold to get to n_frames</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;repeat&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"repeat"</span><span class="p">:</span>
             <span class="n">repeated_indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
                 <span class="n">selected_indices</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">),</span>
@@ -3672,11 +3718,11 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
             <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">selected_indices</span><span class="p">,</span> <span class="n">repeated_indices</span><span class="p">))</span>
 
         <span class="c1"># take frames in sorted order up to n_frames, even if score is zero</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;score_sorted&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"score_sorted"</span><span class="p">:</span>
             <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">_rank_frame_indices</span><span class="p">(</span><span class="n">scores</span><span class="p">)[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n_frames</span><span class="p">]</span>
 
         <span class="c1"># sample up to n_frames, prefer points closer to frames with detection</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;weighted_euclidean&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"weighted_euclidean"</span><span class="p">:</span>
             <span class="n">frame_scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">sample_from</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
                 <span class="n">frame_scores</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">frame_scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
@@ -3701,7 +3747,7 @@ a tuple of the list of bounding boxes [array(x1, y1, x2, y2)] and the detection
             <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">selected_indices</span><span class="p">,</span> <span class="n">sampled</span><span class="p">))</span>
 
         <span class="c1"># sample up to n_frames, weight by predicted probability - only if some frames have nonzero prob</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">&quot;weighted_prob&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fill_mode</span> <span class="o">==</span> <span class="s2">"weighted_prob"</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
             <span class="n">frame_scores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">sample_from</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
                 <span class="n">frame_scores</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">frame_scores</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">selected_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
@@ -3930,7 +3976,7 @@ True.</p>
 <span class="normal">82</span>
 <span class="normal">83</span>
 <span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MegadetectorLiteYoloXConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for a MegadetectorLiteYoloX frame selection model</span>
+<span class="w">    </span><span class="sd">"""Configuration for a MegadetectorLiteYoloX frame selection model</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        confidence (float): Only consider object detections with this confidence or greater</span>
@@ -3939,23 +3985,23 @@ True.</p>
 <span class="sd">            determines how much to suppress similar bounding boxes.</span>
 <span class="sd">        image_width (int): Scale image to this width before sending to object detection model.</span>
 <span class="sd">        image_height (int): Scale image to this height before sending to object detection model.</span>
-<span class="sd">        device (str): Where to run the object detection model, &quot;cpu&quot; or &quot;cuda&quot;.</span>
+<span class="sd">        device (str): Where to run the object detection model, "cpu" or "cuda".</span>
 <span class="sd">        frame_batch_size (int): Number of frames to predict on at once.</span>
 <span class="sd">        n_frames (int, optional): Max number of frames to return. If None returns all frames above</span>
 <span class="sd">            the threshold. Defaults to None.</span>
 <span class="sd">        fill_mode (str, optional): Mode for upsampling if the number of frames above the threshold</span>
-<span class="sd">            is less than n_frames. Defaults to &quot;repeat&quot;.</span>
+<span class="sd">            is less than n_frames. Defaults to "repeat".</span>
 <span class="sd">        sort_by_time (bool, optional): Whether to sort the selected frames by time (original order)</span>
 <span class="sd">            before returning. If False, returns frames sorted by score (descending). Defaults to</span>
 <span class="sd">            True.</span>
 <span class="sd">        seed (int, optional): Random state for random number generator. Defaults to 55.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span>
     <span class="n">nms_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span>
     <span class="n">image_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">640</span>
     <span class="n">image_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">640</span>
-    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+    <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span>
     <span class="n">frame_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span>
     <span class="n">n_frames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">fill_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FillModeEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">FillModeEnum</span><span class="o">.</span><span class="n">score_sorted</span>
@@ -3963,7 +4009,7 @@ True.</p>
     <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">55</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
-        <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="s2">"forbid"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 

@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2295,8 +2341,8 @@
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p>DensePose dependencies are not distributed on PyPI (so they are not installed with <code>pip install zamba</code> or <code>uv pip install zamba</code>). Install them from GitHub after installing <a href="https://pytorch.org/get-started/locally/">PyTorch</a>. We recommend <a href="https://docs.astral.sh/uv/">uv</a> for installing packages:</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;detectron2 @ git+https://github.com/facebookresearch/detectron2.git&quot;</span>
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose&quot;</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"detectron2 @ git+https://github.com/facebookresearch/detectron2.git"</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"detectron2-densepose @ git+https://github.com/facebookresearch/detectron2@main#subdirectory=projects/DensePose"</span>
 </code></pre></div>
 <p>With pip: <code>pip install torch</code>, then the same <code>pip install "detectron2 @ ..."</code> and <code>pip install "detectron2-densepose @ ..."</code> commands.</p>
 <p>If you run <code>zamba densepose</code> without these installed, zamba will print these instructions and exit.</p>
@@ -2309,7 +2355,7 @@ zamba<span class="w"> </span>densepose<span class="w"> </span>--data-dir<span cl
 </div>
 <input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Python</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.models.densepose</span><span class="w"> </span><span class="kn">import</span> <span class="n">DensePoseConfig</span>
-<span class="n">densepose_conf</span> <span class="o">=</span> <span class="n">DensePoseConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;PATH_TO_VIDEOS&quot;</span><span class="p">,</span> <span class="n">render_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">densepose_conf</span> <span class="o">=</span> <span class="n">DensePoseConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">"PATH_TO_VIDEOS"</span><span class="p">,</span> <span class="n">render_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">densepose_conf</span><span class="o">.</span><span class="n">run_model</span><span class="p">()</span>
 </code></pre></div>
 </div>
@@ -2342,10 +2388,10 @@ zamba<span class="w"> </span>densepose<span class="w"> </span>--data-dir<span cl
 <span class="go">                                  Defaults to 1.0 (1 frame per second).</span>
 <span class="go">                                  [default: 1.0]</span>
 <span class="go">  --output-type [segmentation|chimp_anatomy]</span>
-<span class="go">                                  If &#39;chimp_anatomy&#39; will apply anatomy model</span>
+<span class="go">                                  If 'chimp_anatomy' will apply anatomy model</span>
 <span class="go">                                  from densepose to the rendering and create a</span>
 <span class="go">                                  CSV with the anatomy visible in each frame.</span>
-<span class="go">                                  If &#39;segmentation&#39;, will just output the</span>
+<span class="go">                                  If 'segmentation', will just output the</span>
 <span class="go">                                  segmented area where an animal is</span>
 <span class="go">                                  identified, which works for more species</span>
 <span class="go">                                  than chimpanzees.  [default: chimp_anatomy]</span>
@@ -2359,7 +2405,7 @@ zamba<span class="w"> </span>densepose<span class="w"> </span>--data-dir<span cl
 <span class="go">  --cache-dir PATH                Path to directory for model weights.</span>
 <span class="go">                                  Alternatively, specify with environment</span>
 <span class="go">                                  variable `ZAMBA_CACHE_DIR`. If not</span>
-<span class="go">                                  specified, user&#39;s cache directory is used.</span>
+<span class="go">                                  specified, user's cache directory is used.</span>
 <span class="go">  -y, --yes                       Skip confirmation of configuration and</span>
 <span class="go">                                  proceed right to prediction.</span>
 <span class="go">  --help                          Show this message and exit.</span>

@@ -362,6 +362,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -504,6 +508,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2283,7 +2329,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
 
-<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">)</span>
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">)</span>
 <span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
 <p>The only argument that can be passed to <code>predict</code> is <code>config</code>, so the only step is to instantiate an <a href="../configurations/#prediction-arguments"><code>ImageClassificationPredictConfig</code></a> and pass it to <code>predict</code>.</p>
@@ -2324,7 +2370,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">predict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
 
-<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">)</span>
+<span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">)</span>
 <span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2345,7 +2391,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
 
 <span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;speciesnet&quot;</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s2">"speciesnet"</span>
 <span class="p">)</span>
 <span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
@@ -2361,8 +2407,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span>
 
 <span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
-    <span class="n">checkpoint</span><span class="o">=</span><span class="s2">&quot;zamba-image-classification-dummy_modelepoch=00-val_loss=48.372.ckpt&quot;</span><span class="p">)</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span>
+    <span class="n">checkpoint</span><span class="o">=</span><span class="s2">"zamba-image-classification-dummy_modelepoch=00-val_loss=48.372.ckpt"</span><span class="p">)</span>
 <span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2379,19 +2425,19 @@
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>predict<span class="w"> </span>--data-dir<span class="w"> </span>example_image/<span class="w"> </span>--results-file-format<span class="w"> </span>megadetector
 <span class="gp">$ </span>cat<span class="w"> </span>zamba_predictions.json
 <span class="go">{</span>
-<span class="go">    &quot;info&quot;: {},</span>
-<span class="go">    &quot;detection_categories&quot;: { &quot;1&quot;: &quot;animal&quot;, &quot;2&quot;: &quot;person&quot;, &quot;3&quot;: &quot;vehicle&quot; },</span>
-<span class="go">    &quot;classification_categories&quot;: {</span>
-<span class="go">        &quot;0&quot;: &quot;species_acinonyx_jubatus&quot;,</span>
-<span class="go">        &quot;1&quot;: &quot;species_aepyceros_melampus&quot;,</span>
-<span class="go">        &quot;2&quot;: &quot;species_alcelaphus_buselaphus&quot;,</span>
+<span class="go">    "info": {},</span>
+<span class="go">    "detection_categories": { "1": "animal", "2": "person", "3": "vehicle" },</span>
+<span class="go">    "classification_categories": {</span>
+<span class="go">        "0": "species_acinonyx_jubatus",</span>
+<span class="go">        "1": "species_aepyceros_melampus",</span>
+<span class="go">        "2": "species_alcelaphus_buselaphus",</span>
 <span class="go">...</span>
 <span class="go">},</span>
-<span class="go">&quot;images&quot;: [ {</span>
-<span class="go">    &quot;file&quot;: &quot;1.jpg&quot;,</span>
-<span class="go">    &quot;detections&quot;: [</span>
-<span class="go">        { &quot;category&quot;: &quot;1&quot;, &quot;conf&quot;: 0.85, &quot;bbox&quot;: [ 0.7, 0.2, 0.12, 0.4 ],</span>
-<span class="go">            &quot;classifications&quot;: [ [ 88, 0.9355112910270691 ],</span>
+<span class="go">"images": [ {</span>
+<span class="go">    "file": "1.jpg",</span>
+<span class="go">    "detections": [</span>
+<span class="go">        { "category": "1", "conf": 0.85, "bbox": [ 0.7, 0.2, 0.12, 0.4 ],</span>
+<span class="go">            "classifications": [ [ 88, 0.9355112910270691 ],</span>
 <span class="go">...</span>
 </code></pre></div>
 </div>
@@ -2400,7 +2446,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">,</span> <span class="n">ResultsFormat</span>
 
 <span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span>
     <span class="n">results_file_format</span><span class="o">=</span><span class="n">ResultsFormat</span><span class="o">.</span><span class="n">MEGADETECTOR</span>
 </code></pre></div>
 </div>

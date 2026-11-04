@@ -1,0 +1,2638 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Zamba is a command-line tool built in Python to automatically identify the species seen in camera trap videos from sites in central Africa.">
+      
+      
+      
+        <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/images-finetune-guide/">
+      
+      
+        <link rel="prev" href="../images-train-tutorial/">
+      
+      
+        <link rel="next" href="../image-finetuning-results/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Fine-tuning image models effectively - Zamba</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../stylesheets/custom_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tutorial-fine-tune-image-models-effectively" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Zamba" class="md-header__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Zamba
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fine-tuning image models effectively
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/drivendataorg/zamba" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Zamba" class="md-nav__button md-logo" aria-label="Zamba" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Zamba
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/drivendataorg/zamba" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing zamba
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    User Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-predict-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Classifying unlabeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-train-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-benchmark-suggests" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the benchmark suggests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-prepare-the-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prepare the labels
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-test-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Test the workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-train-a-baseline-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Train a baseline model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-correct-class-imbalance" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Correct class imbalance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-evaluate-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Evaluate the model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-compare-speciesnet-when-necessary" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Compare SpeciesNet when necessary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-use-the-fine-tuned-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Use the fine-tuned model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagnose-poor-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagnose poor results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-first-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended first experiment
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../camtrap-dp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Camtrap DP compatibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../predict-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Classifying unlabeled videos
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train-tutorial/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Training a model on labeled videos
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extra-options/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guide to common optional parameters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../models/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Available Models
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Available Models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Image models
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Image models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/image-classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Species classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Video models
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Video models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/video-classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Species classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/blank-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blank detection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/depth/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Depth estimation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/densepose/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pose estimation (DensePose)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Shared components
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Shared components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/megadetector/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MegaDetector
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Advanced Options
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Options
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configurations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    All configuration options
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../yaml-config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using YAML configuration files
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../contribute/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Contribute to zamba
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Contribute to zamba
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../changelog/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Changelog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.data
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.data
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/data-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.data.metadata
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/data-video/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.data.video
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.images
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.images
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/images-config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.images.config
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/images-manager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.images.manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/images-classifier/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.images.classifier
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.models
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.config
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3_2" id="__nav_8_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.model.depth_estimation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.model.depth_estimation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/depth_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.depth_estimation.config
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/depth_manager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.depth_estimation.depth_manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3_3" id="__nav_8_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.models.densepose
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.models.densepose
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/densepose_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.densepose.config
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/densepose_manager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.densepose.densepose_manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-efficientnet_models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.efficientnet_models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-model_manager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.model_manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-slowfast_models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.slowfast_models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/models-utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.models.utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_4" id="__nav_8_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.object_detection
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_4">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.object_detection
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/object-detection-megadetector_lite_yolox/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.object_detection.yolox.megadetector_lite_yolox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.pytorch
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.pytorch
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-dataloaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.pytorch.dataloaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-finetuning/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.pytorch.finetuning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-layers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.pytorch.layers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-transforms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.pytorch.transforms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch-utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.pytorch.utils
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_6" id="__nav_8_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    zamba.pytorch_lightning
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_6">
+            <span class="md-nav__icon md-icon"></span>
+            zamba.pytorch_lightning
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/pytorch_lightning-video_modules/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.pytorch_lightning.video_modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/exceptions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.exceptions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/metrics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.metrics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    zamba.settings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-benchmark-suggests" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the benchmark suggests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-prepare-the-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prepare the labels
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-test-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Test the workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-train-a-baseline-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Train a baseline model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-correct-class-imbalance" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Correct class imbalance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-evaluate-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Evaluate the model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-compare-speciesnet-when-necessary" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Compare SpeciesNet when necessary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-use-the-fine-tuned-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Use the fine-tuned model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagnose-poor-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagnose poor results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-first-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended first experiment
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="tutorial-fine-tune-image-models-effectively">Tutorial: Fine-tune image models effectively<a class="headerlink" href="#tutorial-fine-tune-image-models-effectively" title="Permanent link">&para;</a></h1>
+<p>This tutorial turns an eight-dataset camera-trap benchmark into a practical first workflow. It is not an exact reproduction of the benchmark: the benchmark used a controlled optimizer, schedule, crop-selection, and evaluation recipe, while the commands below use the supported Zamba interface and defaults. See the <a href="../image-finetuning-results/#methods-and-definitions">experiment results</a> for the full protocol.</p>
+<p>The benchmark contains 258 distinct model evaluations represented by 264 result rows. Two zero-shot results are repeated across four training-image tiers for display. None of the eight LILA datasets was used to train the <code>lila.science</code> base model, although many species were represented in its training data and seven of the eight datasets come from continents that training data covered. Training sets used nested caps of 10, 100, 1,000, and 10,000 <strong>training images</strong> per class, plus separate validation and test images from other camera locations.</p>
+<p>The comparisons cover fine-tuning, ImageNet starts, linear probes, and a combined class-balanced-sampling-plus-augmentation setting. Two datasets also include DINOv3, BioCLIP, and a zero-shot vision-language model. Use the <a href="../image-finetuning-results/">interactive results</a> to inspect individual datasets, class results, methods, and citations. For every training option, see <a href="../images-train-tutorial/">Training a model on labeled images</a>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Prefer a graphical interface?</p>
+<p>Use <a href="https://www.zambacloud.com/">Zamba Cloud</a> to fine-tune a model and run predictions in a web browser. The data and evaluation recommendations in this tutorial also apply to Zamba Cloud.</p>
+</div>
+<p>Results will differ for other datasets. Treat these values as planning estimates and measure performance on data from your own camera sites.</p>
+<h2 id="what-the-benchmark-suggests">What the benchmark suggests<a class="headerlink" href="#what-the-benchmark-suggests" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Use 10 to 100 training images per class as a starting range, not a guarantee.</strong> Fine-tuned <code>lila.science</code> averaged about 0.74 reliable-class macro accuracy at 10 training images per class and 0.78 at 100. Individual-dataset results ranged from about 0.35 to 0.95 at 10 images and 0.43 to 0.98 at 100. Keep additional locations and images for validation and testing.</li>
+<li><strong>Add data selectively after the first run.</strong> Results changed less on average above 1,000 training images per class, but difficult classes and datasets varied substantially. Use validation and per-class errors to decide where 500 to 1,000 or more images are worthwhile.</li>
+<li><strong>Start from a wildlife model.</strong> The same <code>lila.science</code> architecture started from ImageNet averaged about 0.55 macro accuracy at 10 images per class, roughly 0.20 below the wildlife-pretrained start.</li>
+<li><strong>Try <code>lila.science</code> first.</strong> It had higher macro accuracy than fine-tuned SpeciesNet in 30 of 32 dataset-by-tier comparisons. It also uses 224×224 inputs; SpeciesNet uses 480×480 inputs and typically needs more GPU memory.</li>
+<li><strong>Prioritize site diversity.</strong> Classes present at more locations in the full source catalogs had higher accuracy. Collect across multiple camera sites before collecting many repeat images from the same sites.</li>
+<li><strong>Keep sites out of multiple splits.</strong> A location-disjoint test better represents performance at new camera sites.</li>
+<li><strong>Use compatible labels.</strong> Avoid mixing a broad label with one of its members, such as <code>squirrel</code> and <code>red_squirrel</code>.</li>
+<li><strong>Try the combined balanced setting when rare classes perform poorly.</strong> In the benchmark, inverse-frequency sampling and stronger augmentation were changed together. Specific classes with fewer than 200 training images gained about 0.13 accuracy at the 10,000-image cap; the experiment does not isolate which part caused the gain.</li>
+<li><strong>Inspect class-level errors.</strong> Aggregate accuracy can hide failures on rare classes.</li>
+</ul>
+<p>The headline macro statistic first averages qualifying classes within each dataset, excluding classes with fewer than 30 scored test crops, and then gives each of the eight dataset-level values equal weight. It is based on one training seed and nested training sets evaluated on shared holdouts, so the comparisons are correlated and do not measure training-to-training variance.</p>
+<h2 id="1-prepare-the-labels">1. Prepare the labels<a class="headerlink" href="#1-prepare-the-labels" title="Permanent link">&para;</a></h2>
+<p>Create a CSV file with <code>filepath</code>, <code>label</code>, and <code>site</code> columns.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>labels.csv
+<span class="go">filepath,label,site</span>
+<span class="go">site_01/fox_001.jpg,red_fox,site_01</span>
+<span class="go">site_02/bobcat_001.jpg,bobcat,site_02</span>
+<span class="go">site_11/fox_101.jpg,red_fox,site_11</span>
+<span class="go">site_12/bobcat_101.jpg,bobcat,site_12</span>
+<span class="go">site_21/fox_201.jpg,red_fox,site_21</span>
+<span class="go">site_22/bobcat_201.jpg,bobcat,site_22</span>
+</code></pre></div>
+<p>Zamba keeps each non-empty site ID in one split when the CSV contains a <code>site</code> column. Use complete, stable site IDs: rows with a missing site are assigned individually and can weaken the location holdout. Zamba creates the training, validation, and test splits.</p>
+<p>Use at least three camera sites for each class when possible. Three sites are necessary, but not sufficient, for automatic allocation to place a class in all three splits because site assignment is not stratified by class.</p>
+<p>After the first run, join <code>labels.csv</code> with the generated <code>splits.csv</code> by <code>filepath</code>. Make sure that each class occurs in all three splits. If necessary, add a <code>split</code> column with <code>train</code>, <code>val</code>, or <code>test</code> values. Make sure that one site does not occur in two splits.</p>
+<p>Clean the labels before training:</p>
+<ul>
+<li>Use one taxonomic level for related classes.</li>
+<li>Remove or relabel <code>unknown</code>, <code>other</code>, and <code>animal</code> when they are not intended prediction targets.</li>
+<li>Do not use a broad label and one of its members. For example, do not use both <code>squirrel</code> and <code>red_squirrel</code>.</li>
+<li>Merge species that people cannot identify reliably in the images.</li>
+<li>Check the labels of rare classes carefully.</li>
+</ul>
+<h2 id="2-test-the-workflow">2. Test the workflow<a class="headerlink" href="#2-test-the-workflow" title="Permanent link">&para;</a></h2>
+<p>First, run a small training job. The <code>--debug 3</code> option uses up to three images per class in each split.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>runs/check
+<span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data-dir<span class="w"> </span>images/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--labels<span class="w"> </span>labels.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>lila.science<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--debug<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-epochs<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--save-dir<span class="w"> </span>runs/check<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--yes
+</code></pre></div>
+<p>This job checks file paths, labels, image loading, and the training process. Do not use its metrics as final results.</p>
+<h2 id="3-train-a-baseline-model">3. Train a baseline model<a class="headerlink" href="#3-train-a-baseline-model" title="Permanent link">&para;</a></h2>
+<p>Use <code>lila.science</code> as the first model. It is the default image model and is trained on camera-trap data.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>runs/lila
+<span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data-dir<span class="w"> </span>images/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--labels<span class="w"> </span>labels.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>lila.science<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-epochs<span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--early-stopping-patience<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--save-dir<span class="w"> </span>runs/lila<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--yes
+</code></pre></div>
+<p>Do not add <code>--from-scratch</code>. The experiments found that pretrained wildlife models needed much less data than models trained from base ImageNet weights. This difference was largest when there were few labeled images.</p>
+<p>Zamba uses MegaDetector to create crop samples by default. One source image can produce more than one classifier sample when the detector returns multiple boxes, and an image with no detection produces no classifier sample. If the label file contains COCO or MegaDetector bounding boxes, Zamba uses those boxes instead. See <a href="../images-train-tutorial/#labels-with-bounding-boxes">Labels with bounding boxes</a>.</p>
+<p>The benchmark used a stricter, precomputed pipeline: it selected the highest-confidence animal box per image, stored a full-frame fallback for detector misses during training, and scored only held-out images where MegaDetector found an animal. Expect the supported commands here to differ from the published benchmark numbers.</p>
+<h2 id="4-correct-class-imbalance">4. Correct class imbalance<a class="headerlink" href="#4-correct-class-imbalance" title="Permanent link">&para;</a></h2>
+<p>First, count the training images for each class. Use class-balanced sampling if the counts have large differences.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>runs/lila-balanced
+<span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data-dir<span class="w"> </span>images/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--labels<span class="w"> </span>labels.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>lila.science<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--balanced-sampling<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-epochs<span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--early-stopping-patience<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--save-dir<span class="w"> </span>runs/lila-balanced<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--yes
+</code></pre></div>
+<p><code>--balanced-sampling</code> shows rare classes more often during training and applies stronger image augmentation. Treat it as one combined setting: the benchmark did not separate the effect of sampling from the effect of augmentation.</p>
+<p>Keep the first baseline run. Compare it with the combined-setting run on the same <strong>validation</strong> split. In the experiments, the combined setting improved rare-class and macro results. The cost to overall accuracy was small or absent, but the setting can decrease accuracy slightly when the data is already balanced.</p>
+<p>Do not also enable <code>--weighted-loss</code> in this first comparison; keep every other setting fixed.</p>
+<h2 id="5-evaluate-the-model">5. Evaluate the model<a class="headerlink" href="#5-evaluate-the-model" title="Permanent link">&para;</a></h2>
+<p>Select settings with validation metrics:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>cat<span class="w"> </span>runs/lila/val_metrics.json
+<span class="gp">$ </span>cat<span class="w"> </span>runs/lila-balanced/val_metrics.json
+</code></pre></div>
+<p>Use these metrics together:</p>
+<ul>
+<li><code>val_accuracy</code> gives equal weight to each scored crop. Common classes have a large effect on this value.</li>
+<li><code>val_recall</code> is macro recall. It gives equal weight to each class.</li>
+<li><code>val_f1</code> is macro F1. It also gives equal weight to each class.</li>
+</ul>
+<p>Prefer the model with good macro metrics when all classes are important. A high <code>val_accuracy</code> can hide failure on rare classes.</p>
+<p>After selecting one run, read its <code>test_metrics.json</code> once for the final check. These JSON files contain aggregate metrics, not per-class results. To diagnose individual classes, open the run in MLflow (<code>mlflow ui</code>) and inspect its test confusion-matrix artifact. Keep in mind that the current Zamba metrics are per detector crop, not necessarily per source image.</p>
+<h2 id="6-compare-speciesnet-when-necessary">6. Compare SpeciesNet when necessary<a class="headerlink" href="#6-compare-speciesnet-when-necessary" title="Permanent link">&para;</a></h2>
+<p>In these experiments, fine-tuned <code>lila.science</code> had higher macro accuracy than fine-tuned SpeciesNet on the same data in 30 of 32 comparisons. Train SpeciesNet when <code>lila.science</code> does not give sufficient results. Use the same labels and splits for a fair comparison.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>runs/speciesnet
+<span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data-dir<span class="w"> </span>images/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--labels<span class="w"> </span>labels.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>speciesnet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--max-epochs<span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--early-stopping-patience<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--save-dir<span class="w"> </span>runs/speciesnet<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--yes
+</code></pre></div>
+<p><code>lila.science</code> uses 224×224 images. SpeciesNet uses 480×480 images and usually needs more GPU memory. A new species does not require training from scratch. Fine-tune a pretrained model with the new labels first.</p>
+<h2 id="7-use-the-fine-tuned-model">7. Use the fine-tuned model<a class="headerlink" href="#7-use-the-fine-tuned-model" title="Permanent link">&para;</a></h2>
+<h3 id="keep-the-model-files">Keep the model files<a class="headerlink" href="#keep-the-model-files" title="Permanent link">&para;</a></h3>
+<p>Keep these files from the selected run:</p>
+<ul>
+<li>The <code>.ckpt</code> model checkpoint</li>
+<li><code>train_configuration.yaml</code></li>
+<li>The labels CSV</li>
+<li><code>splits.csv</code> when Zamba generated the splits</li>
+<li><code>val_metrics.json</code> and <code>test_metrics.json</code></li>
+</ul>
+<p>The configuration records how you trained the model. The source labels record the class names; <code>splits.csv</code> records automatically generated filepath-to-split assignments. Keep all of them with the checkpoint so future training cannot accidentally include the original test locations.</p>
+<h3 id="predict-on-future-images">Predict on future images<a class="headerlink" href="#predict-on-future-images" title="Permanent link">&para;</a></h3>
+<p>Use the checkpoint from the selected run.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>predictions
+<span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>predict<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data-dir<span class="w"> </span>new_images/<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--checkpoint<span class="w"> </span>runs/lila/lila.science.ckpt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--save-dir<span class="w"> </span>predictions<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--yes
+</code></pre></div>
+<p>Zamba writes the results to <code>predictions/zamba_predictions.csv</code>.</p>
+<p>Use the same image preparation method that you used for training. The example model used MegaDetector crops, so the prediction command keeps the default MegaDetector step.</p>
+<p>The checkpoint contains the trained class names. You do not need to provide the training labels CSV during prediction.</p>
+<h3 id="continue-training-with-more-images">Continue training with more images<a class="headerlink" href="#continue-training-with-more-images" title="Permanent link">&para;</a></h3>
+<p>You can fine-tune the saved weights further when you collect more images for exactly the same classes. Keep the original validation and test locations out of the new training data.</p>
+<p>The image-training CLI does not expose the setting that preserves an existing classification head, so use a YAML configuration. Set <code>use_default_model_labels: true</code>; otherwise the normal fine-tuning path replaces the head even when the class names match.</p>
+<div class="highlight"><span class="filename">resume.yaml</span><pre><span></span><code><span class="nt">train_config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">data_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">updated_images/</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">updated_labels.csv</span>
+<span class="w">  </span><span class="nt">checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">runs/lila/lila.science.ckpt</span>
+<span class="w">  </span><span class="nt">use_default_model_labels</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">max_epochs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span>
+<span class="w">  </span><span class="nt">early_stopping_patience</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">save_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">runs/lila-update</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>mkdir<span class="w"> </span>-p<span class="w"> </span>runs/lila-update
+<span class="gp">$ </span>zamba<span class="w"> </span>image<span class="w"> </span>train<span class="w"> </span>--config<span class="w"> </span>resume.yaml<span class="w"> </span>--yes
+</code></pre></div>
+<p>This loads the checkpoint weights, including the trained head, but starts a new trainer and optimizer rather than restoring the exact prior epoch and optimizer state. Compare the updated model with the previous model on the same validation locations, select one, and then report the selected model on the unchanged test locations.</p>
+<p>If you add, remove, or rename classes, start a new fine-tune from <code>lila.science</code> with the complete new label set. Do not preserve a head whose class set differs.</p>
+<h2 id="diagnose-poor-results">Diagnose poor results<a class="headerlink" href="#diagnose-poor-results" title="Permanent link">&para;</a></h2>
+<ul>
+<li>If validation results are high but test results are low, check for site leakage and limited site coverage.</li>
+<li>If common classes are good but rare classes are poor, use <code>--balanced-sampling</code>. Also collect more rare-class images.</li>
+<li>If related species are often confused, check the taxonomy. Merge labels when the visual difference is not reliable.</li>
+<li>If small animals are missing, check the MegaDetector crops. More classifier training data might not correct a detection problem.</li>
+<li>If more images do not improve results, check label quality and site diversity before you collect more data.</li>
+</ul>
+<h2 id="recommended-first-experiment">Recommended first experiment<a class="headerlink" href="#recommended-first-experiment" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Prepare clean labels from at least three sites per class.</li>
+<li>Start with approximately 100 training images per class, plus separate validation and test images from other sites.</li>
+<li>Train <code>lila.science</code> without <code>--from-scratch</code>.</li>
+<li>Train a second run with <code>--balanced-sampling</code> if the data is imbalanced.</li>
+<li>Select the model with validation macro metrics.</li>
+<li>Report final metrics from held-out camera sites.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

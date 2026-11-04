@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2552,11 +2598,11 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DensePoseConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for running dense pose on videos.</span>
+<span class="w">    </span><span class="sd">"""Configuration for running dense pose on videos.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        video_loader_config (VideoLoaderConfig): Configuration for loading videos</span>
-<span class="sd">        output_type (str): one of DensePoseOutputEnum (currently &quot;segmentation&quot; or &quot;chimp_anatomy&quot;).</span>
+<span class="sd">        output_type (str): one of DensePoseOutputEnum (currently "segmentation" or "chimp_anatomy").</span>
 <span class="sd">        render_output (bool): Whether to save a version of the video with the output overlaid on top.</span>
 <span class="sd">            Defaults to False.</span>
 <span class="sd">        embeddings_in_json (bool): Whether to save the embeddings matrices in the json of the</span>
@@ -2569,8 +2615,8 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
 <span class="sd">        cache_dir (Path, optional): Path for downloading and saving model weights. Defaults</span>
 <span class="sd">            to env var `MODEL_CACHE_DIR` or the OS app cache dir.</span>
 <span class="sd">        weight_download_region (RegionEnum, optional): region where to download weights; should</span>
-<span class="sd">            be one of RegionEnum (currently &#39;us&#39;, &#39;asia&#39;, and &#39;eu&#39;). Defaults to &#39;us&#39;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">            be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</span>
+<span class="sd">    """</span>
 
     <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">VideoLoaderConfig</span>
     <span class="n">output_type</span><span class="p">:</span> <span class="n">DensePoseOutputEnum</span>
@@ -2580,23 +2626,23 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
     <span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">save_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">)</span>
+    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">"us"</span><span class="p">)</span>
 
-    <span class="n">_validate_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">&quot;cache_dir&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_validate_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">"cache_dir"</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
         <span class="n">validate_model_cache_dir</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">run_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use this configuration to execute DensePose via the DensePoseManager&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Use this configuration to execute DensePose via the DensePoseManager"""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="p">,</span> <span class="n">DensePoseOutputEnum</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">=</span> <span class="n">DensePoseOutputEnum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="n">DensePoseOutputEnum</span><span class="o">.</span><span class="n">segmentation</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;animals&quot;</span><span class="p">]</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">"animals"</span><span class="p">]</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="n">DensePoseOutputEnum</span><span class="o">.</span><span class="n">chimp_anatomy</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;chimps&quot;</span><span class="p">]</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">"chimps"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_dir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_dir</span>
 
@@ -2604,27 +2650,27 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
             <span class="n">model</span><span class="p">,</span> <span class="n">model_cache_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">download_region</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_download_region</span>
         <span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Videos&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Videos"</span><span class="p">):</span>
             <span class="n">fp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
 
             <span class="n">vid_arr</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">dpm</span><span class="o">.</span><span class="n">predict_video</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_loader_config</span><span class="p">)</span>
 
             <span class="c1"># serialize the labels generated by densepose to json</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_labels.json&quot;</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_labels.json"</span>
             <span class="n">dpm</span><span class="o">.</span><span class="n">serialize_video_output</span><span class="p">(</span>
                 <span class="n">labels</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">write_embeddings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embeddings_in_json</span>
             <span class="p">)</span>
 
             <span class="c1"># re-render the video with the densepose labels visualized on top of the video</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_output</span><span class="p">:</span>
-                <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_video</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_video</span><span class="si">{</span><span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
                 <span class="n">visualized_video</span> <span class="o">=</span> <span class="n">dpm</span><span class="o">.</span><span class="n">visualize_video</span><span class="p">(</span>
                     <span class="n">vid_arr</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">fps</span>
                 <span class="p">)</span>
 
             <span class="c1"># write out the anatomy present in each frame to a csv for later analysis</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="n">DensePoseOutputEnum</span><span class="o">.</span><span class="n">chimp_anatomy</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_anatomy.csv&quot;</span>
+                <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_anatomy.csv"</span>
                 <span class="n">dpm</span><span class="o">.</span><span class="n">anatomize_video</span><span class="p">(</span>
                     <span class="n">visualized_video</span><span class="p">,</span>
                     <span class="n">labels</span><span class="p">,</span>
@@ -2639,26 +2685,26 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_files</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="c1"># if globbing from data directory, already have valid dataframe</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># make into dataframe even if only one column for clearer indexing</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]))</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]))</span>
 
-        <span class="k">if</span> <span class="s2">&quot;filepath&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;filepaths&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain a `filepath` column.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"filepath"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">'filepaths'</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain a `filepath` column."</span><span class="p">)</span>
 
         <span class="c1"># can only contain one row per filepath</span>
         <span class="n">duplicated</span> <span class="o">=</span> <span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> duplicate row(s) in filepaths csv. Dropping duplicates so predictions will have one row per video."</span>
             <span class="p">)</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">"filepath"</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
             <span class="n">df</span><span class="o">=</span><span class="n">files_df</span><span class="p">,</span>
-            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;data_dir&quot;</span><span class="p">],</span>
+            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"data_dir"</span><span class="p">],</span>
             <span class="n">skip_load_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
@@ -2737,16 +2783,16 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
 <span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use this configuration to execute DensePose via the DensePoseManager&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Use this configuration to execute DensePose via the DensePoseManager"""</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="p">,</span> <span class="n">DensePoseOutputEnum</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">=</span> <span class="n">DensePoseOutputEnum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="n">DensePoseOutputEnum</span><span class="o">.</span><span class="n">segmentation</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;animals&quot;</span><span class="p">]</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">"animals"</span><span class="p">]</span>
     <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="n">DensePoseOutputEnum</span><span class="o">.</span><span class="n">chimp_anatomy</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">&quot;chimps&quot;</span><span class="p">]</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">MODELS</span><span class="p">[</span><span class="s2">"chimps"</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_dir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_dir</span>
 
@@ -2754,27 +2800,27 @@ be one of RegionEnum (currently 'us', 'asia', and 'eu'). Defaults to 'us'.</p>
         <span class="n">model</span><span class="p">,</span> <span class="n">model_cache_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_dir</span><span class="p">,</span> <span class="n">download_region</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_download_region</span>
     <span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Videos&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Videos"</span><span class="p">):</span>
         <span class="n">fp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
 
         <span class="n">vid_arr</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">dpm</span><span class="o">.</span><span class="n">predict_video</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">video_loader_config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_loader_config</span><span class="p">)</span>
 
         <span class="c1"># serialize the labels generated by densepose to json</span>
-        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_labels.json&quot;</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_labels.json"</span>
         <span class="n">dpm</span><span class="o">.</span><span class="n">serialize_video_output</span><span class="p">(</span>
             <span class="n">labels</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">write_embeddings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embeddings_in_json</span>
         <span class="p">)</span>
 
         <span class="c1"># re-render the video with the densepose labels visualized on top of the video</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_output</span><span class="p">:</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_video</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_video</span><span class="si">{</span><span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">suffixes</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">visualized_video</span> <span class="o">=</span> <span class="n">dpm</span><span class="o">.</span><span class="n">visualize_video</span><span class="p">(</span>
                 <span class="n">vid_arr</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_loader_config</span><span class="o">.</span><span class="n">fps</span>
             <span class="p">)</span>
 
         <span class="c1"># write out the anatomy present in each frame to a csv for later analysis</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="n">DensePoseOutputEnum</span><span class="o">.</span><span class="n">chimp_anatomy</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_anatomy.csv&quot;</span>
+            <span class="n">output_path</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fp</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_denspose_anatomy.csv"</span>
             <span class="n">dpm</span><span class="o">.</span><span class="n">anatomize_video</span><span class="p">(</span>
                 <span class="n">visualized_video</span><span class="p">,</span>
                 <span class="n">labels</span><span class="p">,</span>

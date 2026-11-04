@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://zamba.drivendata.org/docs/~latest/camtrap-dp/">
       
       
-        <link rel="prev" href="../images-train-tutorial/">
+        <link rel="prev" href="../image-finetuning-results/">
       
       
         <link rel="next" href="../predict-tutorial/">
@@ -362,6 +362,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -428,6 +432,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2262,8 +2308,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">train</span>
 
 <span class="n">train_config</span> <span class="o">=</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;path/to/camtrap_dp/&quot;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="s2">"path/to/camtrap_dp/"</span><span class="p">,</span>
     <span class="n">labels_format</span><span class="o">=</span><span class="n">BboxInputFormat</span><span class="o">.</span><span class="n">CAMTRAP_DP</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">train</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">train_config</span><span class="p">)</span>
@@ -2293,7 +2339,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">,</span> <span class="n">ResultsFormat</span>
 
 <span class="n">predict_config</span> <span class="o">=</span> <span class="n">ImageClassificationPredictConfig</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="s2">&quot;example_images/&quot;</span><span class="p">,</span>
+    <span class="n">data_dir</span><span class="o">=</span><span class="s2">"example_images/"</span><span class="p">,</span>
     <span class="n">results_file_format</span><span class="o">=</span><span class="n">ResultsFormat</span><span class="o">.</span><span class="n">CAMTRAP_DP</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">predict_config</span><span class="p">)</span>
@@ -2308,35 +2354,35 @@
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># zamba prediction package</span>
-<span class="n">zamba_media</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;zamba_predictions/media.csv&quot;</span><span class="p">)</span>
-<span class="n">zamba_obs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;zamba_predictions/observations.csv&quot;</span><span class="p">)</span>
+<span class="n">zamba_media</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"zamba_predictions/media.csv"</span><span class="p">)</span>
+<span class="n">zamba_obs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"zamba_predictions/observations.csv"</span><span class="p">)</span>
 
 <span class="c1"># your existing Camtrap DP package</span>
-<span class="n">existing_media</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;my_package/media.csv&quot;</span><span class="p">)</span>
-<span class="n">existing_obs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;my_package/observations.csv&quot;</span><span class="p">)</span>
+<span class="n">existing_media</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"my_package/media.csv"</span><span class="p">)</span>
+<span class="n">existing_obs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"my_package/observations.csv"</span><span class="p">)</span>
 
 <span class="c1"># 1. build a lookup from image file -&gt; your real mediaID + deploymentID</span>
 <span class="c1">#    fileName is convenient; use filePath if file names are not unique across deployments</span>
-<span class="n">file_to_media</span> <span class="o">=</span> <span class="n">existing_media</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;fileName&quot;</span><span class="p">)[[</span><span class="s2">&quot;mediaID&quot;</span><span class="p">,</span> <span class="s2">&quot;deploymentID&quot;</span><span class="p">]]</span>
+<span class="n">file_to_media</span> <span class="o">=</span> <span class="n">existing_media</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"fileName"</span><span class="p">)[[</span><span class="s2">"mediaID"</span><span class="p">,</span> <span class="s2">"deploymentID"</span><span class="p">]]</span>
 
-<span class="c1"># 2. resolve each prediction&#39;s file, then remap onto your real IDs</span>
+<span class="c1"># 2. resolve each prediction's file, then remap onto your real IDs</span>
 <span class="n">predicted</span> <span class="o">=</span> <span class="n">zamba_obs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;fileName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;mediaID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">zamba_media</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;mediaID&quot;</span><span class="p">)[</span><span class="s2">&quot;fileName&quot;</span><span class="p">])</span>
-<span class="n">resolved</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;fileName&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">file_to_media</span><span class="p">[</span><span class="s2">&quot;mediaID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
-<span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;deploymentID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;fileName&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">file_to_media</span><span class="p">[</span><span class="s2">&quot;deploymentID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
-<span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;mediaID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolved</span>
-<span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;eventID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;mediaID&quot;</span><span class="p">]</span>  <span class="c1"># if you key events by media</span>
+<span class="n">predicted</span><span class="p">[</span><span class="s2">"fileName"</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">"mediaID"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">zamba_media</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"mediaID"</span><span class="p">)[</span><span class="s2">"fileName"</span><span class="p">])</span>
+<span class="n">resolved</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">"fileName"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">file_to_media</span><span class="p">[</span><span class="s2">"mediaID"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="n">predicted</span><span class="p">[</span><span class="s2">"deploymentID"</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">"fileName"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">file_to_media</span><span class="p">[</span><span class="s2">"deploymentID"</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="n">predicted</span><span class="p">[</span><span class="s2">"mediaID"</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolved</span>
+<span class="n">predicted</span><span class="p">[</span><span class="s2">"eventID"</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">"mediaID"</span><span class="p">]</span>  <span class="c1"># if you key events by media</span>
 
-<span class="c1"># 3. drop predictions whose image isn&#39;t in your package, and clean up the helper column</span>
-<span class="n">unmatched</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;mediaID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+<span class="c1"># 3. drop predictions whose image isn't in your package, and clean up the helper column</span>
+<span class="n">unmatched</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="s2">"mediaID"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">unmatched</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dropping </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">unmatched</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s2"> predictions with no matching media in the package&quot;</span><span class="p">)</span>
-<span class="n">predicted</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="o">~</span><span class="n">unmatched</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;fileName&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dropping </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">unmatched</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s2"> predictions with no matching media in the package"</span><span class="p">)</span>
+<span class="n">predicted</span> <span class="o">=</span> <span class="n">predicted</span><span class="p">[</span><span class="o">~</span><span class="n">unmatched</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">"fileName"</span><span class="p">)</span>
 
 <span class="c1"># 4. give the appended rows unique observationIDs, then concatenate</span>
-<span class="n">predicted</span><span class="p">[</span><span class="s2">&quot;observationID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;zamba-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">06d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predicted</span><span class="p">))]</span>
+<span class="n">predicted</span><span class="p">[</span><span class="s2">"observationID"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"zamba-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">06d</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predicted</span><span class="p">))]</span>
 <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">existing_obs</span><span class="p">,</span> <span class="n">predicted</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">combined</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;my_package/observations.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">combined</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"my_package/observations.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <p>Notes:</p>
 <ul>

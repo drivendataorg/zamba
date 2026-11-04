@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2402,22 +2448,22 @@ plus the resolved integer image size.</p>
 <span class="normal">128</span>
 <span class="normal">129</span>
 <span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_default_transforms</span><span class="p">(</span><span class="n">model_family</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the (top, bottom) eval transform lists for a preprocessing family.</span>
+<span class="w">    </span><span class="sd">"""Build the (top, bottom) eval transform lists for a preprocessing family.</span>
 
 <span class="sd">    The preprocessing is fully determined by ``model_family`` (and the resolved</span>
 <span class="sd">    ``image_size``), NOT by a model_name string on the config. This lets prediction</span>
 <span class="sd">    derive transforms directly from a loaded checkpoint. Returns the transform lists</span>
 <span class="sd">    plus the resolved integer image size.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># checkpoints may store image_size as a tuple (e.g. (480, 480)); normalize to int</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image_size</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
         <span class="n">image_size</span> <span class="o">=</span> <span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using default transforms for &#39;</span><span class="si">{</span><span class="n">model_family</span><span class="si">}</span><span class="s2">&#39; model family&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using default transforms for '</span><span class="si">{</span><span class="n">model_family</span><span class="si">}</span><span class="s2">' model family"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">model_family</span> <span class="o">==</span> <span class="n">ImageModelEnum</span><span class="o">.</span><span class="n">SPECIESNET</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
         <span class="c1"># speciesnet is trained on 480x480 images by default</span>
         <span class="k">if</span> <span class="n">image_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Image size not specified, using value from model checkpoint: 480&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Image size not specified, using value from model checkpoint: 480"</span><span class="p">)</span>
             <span class="n">image_size</span> <span class="o">=</span> <span class="mi">480</span>
 
         <span class="n">top_transforms</span> <span class="o">=</span> <span class="p">[</span>
@@ -2432,7 +2478,7 @@ plus the resolved integer image size.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># lila.science and generic models: pad to square + ImageNet-ish normalization</span>
         <span class="k">if</span> <span class="n">image_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Image size not specified, using default value: 224&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Image size not specified, using default value: 224"</span><span class="p">)</span>
             <span class="n">image_size</span> <span class="o">=</span> <span class="mi">224</span>
 
         <span class="n">top_transforms</span> <span class="o">=</span> <span class="p">[</span>
@@ -2470,8 +2516,8 @@ plus the resolved integer image size.</p>
 <span class="normal">83</span>
 <span class="normal">84</span>
 <span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_prediction_labels</span><span class="p">(</span><span class="n">classifier_module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return user-facing labels for new and legacy image checkpoints.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">classifier_module</span><span class="o">.</span><span class="n">hparams</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species_labels_are_user_provided&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return user-facing labels for new and legacy image checkpoints."""</span>
+    <span class="k">if</span> <span class="n">classifier_module</span><span class="o">.</span><span class="n">hparams</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"species_labels_are_user_provided"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">classifier_module</span><span class="o">.</span><span class="n">species</span>
     <span class="k">return</span> <span class="n">normalize_prediction_labels</span><span class="p">(</span><span class="n">classifier_module</span><span class="o">.</span><span class="n">species</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2598,7 +2644,7 @@ which must come last). Validation/test transforms never include either list.</p>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_train_augmentations</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the train-time augmentation lists that wrap the model&#39;s preprocessing.</span>
+<span class="w">    </span><span class="sd">"""Build the train-time augmentation lists that wrap the model's preprocessing.</span>
 
 <span class="sd">    Returns ``(augment_transforms, final_transforms)`` where ``augment_transforms`` operate</span>
 <span class="sd">    in PIL space (inserted between the ``top`` resize/pad and the ``bottom`` ToTensor +</span>
@@ -2619,7 +2665,7 @@ which must come last). Validation/test transforms never include either list.</p>
 <span class="sd">      precedence when both flags are set.</span>
 <span class="sd">    - ``extra_train_augmentations``: a moderate stack for imbalanced data without the sampler.</span>
 <span class="sd">    - default: a mild camera-trap-appropriate stack (perspective / flip / rotation).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">image_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span>
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">balanced_sampling</span><span class="p">:</span>
@@ -2705,8 +2751,8 @@ which must come last). Validation/test transforms never include either list.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalize_prediction_labels</span><span class="p">(</span><span class="n">species</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove the legacy one-hot-encoding prefix from checkpoint labels.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">label</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">&quot;species_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">species</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Remove the legacy one-hot-encoding prefix from checkpoint labels."""</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">label</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">"species_"</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">species</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2752,23 +2798,23 @@ checkpoint do we fall back to the configured <code>model_name</code>.</p>
 <span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">resolve_inference_family</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine the preprocessing family without trusting a (possibly stale/mangled)</span>
+<span class="w">    </span><span class="sd">"""Determine the preprocessing family without trusting a (possibly stale/mangled)</span>
 <span class="sd">    ``model_name`` default.</span>
 
 <span class="sd">    When a checkpoint is provided it is authoritative: the family is read from the</span>
-<span class="sd">    checkpoint&#39;s persisted ``model_family`` / legacy ``zamba_model`` hparam, falling</span>
+<span class="sd">    checkpoint's persisted ``model_family`` / legacy ``zamba_model`` hparam, falling</span>
 <span class="sd">    back to inference from the stored architecture name. Only when there is no</span>
 <span class="sd">    checkpoint do we fall back to the configured ``model_name``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">hp</span> <span class="o">=</span> <span class="n">get_checkpoint_hparams</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
-            <span class="n">family</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_family&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">hp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;zamba_model&quot;</span><span class="p">)</span>
+            <span class="n">family</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_family"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">hp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"zamba_model"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">family</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">family</span>
-            <span class="k">return</span> <span class="n">infer_model_family</span><span class="p">(</span><span class="n">hp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_name&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">infer_model_family</span><span class="p">(</span><span class="n">hp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_name"</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 -- fall back to model_name on any read error</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read family from checkpoint (</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">); using model_name.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not read family from checkpoint (</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">); using model_name."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infer_model_family</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2817,23 +2863,23 @@ scalar or a tuple; <code>get_default_transforms</code> normalizes it to an int.<
 <span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">resolve_training_image_size</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ImageClassificationTrainingConfig</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve the image size to train at.</span>
+<span class="w">    </span><span class="sd">"""Resolve the image size to train at.</span>
 
 <span class="sd">    An explicitly configured ``image_size`` always wins. Otherwise, when finetuning or</span>
-<span class="sd">    resuming from a checkpoint, the checkpoint&#39;s own ``image_size`` takes precedence over</span>
+<span class="sd">    resuming from a checkpoint, the checkpoint's own ``image_size`` takes precedence over</span>
 <span class="sd">    the preprocessing-family default, since a finetuned model may have been trained at a</span>
 <span class="sd">    non-default size. Returns ``None`` (deferring to the family default) only when there is</span>
 <span class="sd">    no explicit size and no usable size on the checkpoint. The returned value may be a</span>
 <span class="sd">    scalar or a tuple; ``get_default_transforms`` normalizes it to an int.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span>
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">checkpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">from_scratch</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">get_checkpoint_hparams</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;image_size&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">get_checkpoint_hparams</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"image_size"</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 -- fall back to the family default</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read image_size from checkpoint (</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">); using default.&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not read image_size from checkpoint (</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">); using default."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>

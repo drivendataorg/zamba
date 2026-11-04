@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2415,34 +2461,34 @@ in this column.</p>
     <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torchvision</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">video_loader_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VideoLoaderConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
-    <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;FfmpegZambaVideoDataset&quot;</span><span class="p">],</span>
-    <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;FfmpegZambaVideoDataset&quot;</span><span class="p">],</span>
-    <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;FfmpegZambaVideoDataset&quot;</span><span class="p">],</span>
-    <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;FfmpegZambaVideoDataset&quot;</span><span class="p">],</span>
+    <span class="n">Optional</span><span class="p">[</span><span class="s2">"FfmpegZambaVideoDataset"</span><span class="p">],</span>
+    <span class="n">Optional</span><span class="p">[</span><span class="s2">"FfmpegZambaVideoDataset"</span><span class="p">],</span>
+    <span class="n">Optional</span><span class="p">[</span><span class="s2">"FfmpegZambaVideoDataset"</span><span class="p">],</span>
+    <span class="n">Optional</span><span class="p">[</span><span class="s2">"FfmpegZambaVideoDataset"</span><span class="p">],</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets training and/or prediction datasets.</span>
+<span class="w">    </span><span class="sd">"""Gets training and/or prediction datasets.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        train_metadata (pathlike, optional): Path to a CSV or DataFrame with columns:</span>
 <span class="sd">          - filepath: path to a video, relative to `video_dir`</span>
 <span class="sd">          - label:, label of the species that appears in the video</span>
-<span class="sd">          - split (optional): If provided, &quot;train&quot;, &quot;val&quot;, or &quot;holdout&quot; indicating which dataset</span>
-<span class="sd">            split the video will be included in. If not provided, and a &quot;site&quot; column exists,</span>
+<span class="sd">          - split (optional): If provided, "train", "val", or "holdout" indicating which dataset</span>
+<span class="sd">            split the video will be included in. If not provided, and a "site" column exists,</span>
 <span class="sd">            generate a site-specific split. Otherwise, generate a random split using</span>
 <span class="sd">            `split_proportions`.</span>
-<span class="sd">          - site (optional): If no &quot;split&quot; column, generate a site-specific split using the values</span>
+<span class="sd">          - site (optional): If no "split" column, generate a site-specific split using the values</span>
 <span class="sd">            in this column.</span>
-<span class="sd">        predict_metadata (pathlike, optional): Path to a CSV or DataFrame with a &quot;filepath&quot; column.</span>
+<span class="sd">        predict_metadata (pathlike, optional): Path to a CSV or DataFrame with a "filepath" column.</span>
 <span class="sd">        transform (torchvision.transforms.transforms.Compose, optional)</span>
 <span class="sd">        video_loader_config (VideoLoaderConfig, optional)</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A tuple of (train_dataset, val_dataset, test_dataset, predict_dataset) where each dataset</span>
 <span class="sd">        can be None if not specified.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">predict_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># enable filtering the same way on all datasets</span>
-        <span class="n">predict_metadata</span><span class="p">[</span><span class="s2">&quot;species_&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">predict_metadata</span><span class="p">[</span><span class="s2">"species_"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">subset_metadata_or_none</span><span class="p">(</span>
         <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">subset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2453,16 +2499,16 @@ in this column.</p>
             <span class="n">metadata_subset</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">metadata</span><span class="o">.</span><span class="n">split</span> <span class="o">==</span> <span class="n">subset</span><span class="p">]</span> <span class="k">if</span> <span class="n">subset</span> <span class="k">else</span> <span class="n">metadata</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadata_subset</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">FfmpegZambaVideoDataset</span><span class="p">(</span>
-                    <span class="n">annotations</span><span class="o">=</span><span class="n">metadata_subset</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;filepath&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">),</span>
+                    <span class="n">annotations</span><span class="o">=</span><span class="n">metadata_subset</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"filepath"</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">"species"</span><span class="p">),</span>
                     <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
                     <span class="n">video_loader_config</span><span class="o">=</span><span class="n">video_loader_config</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">subset_metadata_or_none</span><span class="p">(</span><span class="n">train_metadata</span><span class="p">,</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span>
-    <span class="n">val_dataset</span> <span class="o">=</span> <span class="n">subset_metadata_or_none</span><span class="p">(</span><span class="n">train_metadata</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">)</span>
-    <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">subset_metadata_or_none</span><span class="p">(</span><span class="n">train_metadata</span><span class="p">,</span> <span class="s2">&quot;holdout&quot;</span><span class="p">)</span>
+    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">subset_metadata_or_none</span><span class="p">(</span><span class="n">train_metadata</span><span class="p">,</span> <span class="s2">"train"</span><span class="p">)</span>
+    <span class="n">val_dataset</span> <span class="o">=</span> <span class="n">subset_metadata_or_none</span><span class="p">(</span><span class="n">train_metadata</span><span class="p">,</span> <span class="s2">"val"</span><span class="p">)</span>
+    <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">subset_metadata_or_none</span><span class="p">(</span><span class="n">train_metadata</span><span class="p">,</span> <span class="s2">"holdout"</span><span class="p">)</span>
     <span class="n">predict_dataset</span> <span class="o">=</span> <span class="n">subset_metadata_or_none</span><span class="p">(</span><span class="n">predict_metadata</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">predict_dataset</span>

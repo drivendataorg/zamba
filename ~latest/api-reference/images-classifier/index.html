@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2279,14 +2325,14 @@ normalization); everything else uses the lila.science / generic pipeline.</p>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">infer_model_family</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Best-effort inference of the preprocessing family from a model/arch name.</span>
+<span class="w">    </span><span class="sd">"""Best-effort inference of the preprocessing family from a model/arch name.</span>
 
-<span class="sd">    Used as a fallback for legacy checkpoints that don&#39;t persist ``model_family``.</span>
+<span class="sd">    Used as a fallback for legacy checkpoints that don't persist ``model_family``.</span>
 <span class="sd">    Only SpeciesNet needs special preprocessing (480px bicubic resize, no</span>
 <span class="sd">    normalization); everything else uses the lila.science / generic pipeline.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="n">model_name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">ImageModelEnum</span><span class="o">.</span><span class="n">SPECIESNET</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;tf_efficientnetv2&quot;</span><span class="p">):</span>
+<span class="sd">    """</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="n">model_name</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">ImageModelEnum</span><span class="o">.</span><span class="n">SPECIESNET</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"tf_efficientnetv2"</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ImageModelEnum</span><span class="o">.</span><span class="n">SPECIESNET</span><span class="o">.</span><span class="n">value</span>
     <span class="k">return</span> <span class="n">ImageModelEnum</span><span class="o">.</span><span class="n">LILA_SCIENCE</span><span class="o">.</span><span class="n">value</span>
 </code></pre></div></td></tr></table></div>

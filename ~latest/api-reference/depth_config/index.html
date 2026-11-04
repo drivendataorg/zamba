@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2553,11 +2599,11 @@ found on the machine.</p>
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DepthEstimationConfig</span><span class="p">(</span><span class="n">ZambaBaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for running depth estimation on videos.</span>
+<span class="w">    </span><span class="sd">"""Configuration for running depth estimation on videos.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filepaths (FilePath, optional): Path to a CSV containing videos for inference, with one row per</span>
-<span class="sd">            video in the data_dir. There must be a column called &#39;filepath&#39; (absolute or</span>
+<span class="sd">            video in the data_dir. There must be a column called 'filepath' (absolute or</span>
 <span class="sd">            relative to the data_dir). If None, uses all files in data_dir. Defaults to None.</span>
 <span class="sd">        data_dir (DirectoryPath): Path to a directory containing videos for inference.</span>
 <span class="sd">            Defaults to the working directory.</span>
@@ -2570,20 +2616,20 @@ found on the machine.</p>
 <span class="sd">        model_cache_dir (Path, optional): Path for downloading and saving model weights.</span>
 <span class="sd">            Defaults to env var `MODEL_CACHE_DIR` or the OS app cache dir.</span>
 <span class="sd">        weight_download_region (str): s3 region to download pretrained weights from. Options are</span>
-<span class="sd">            &quot;us&quot; (United States), &quot;eu&quot; (Europe), or &quot;asia&quot; (Asia Pacific). Defaults to &quot;us&quot;.</span>
+<span class="sd">            "us" (United States), "eu" (Europe), or "asia" (Asia Pacific). Defaults to "us".</span>
 <span class="sd">        num_workers (int): Number of subprocesses to use for data loading. The maximum value is</span>
 <span class="sd">           the number of CPUs in the system. Defaults to 8.</span>
 <span class="sd">        gpus (int): Number of GPUs to use for inference. Defaults to all of the available GPUs</span>
 <span class="sd">            found on the machine.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">filepaths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">FilePath</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">data_dir</span><span class="p">:</span> <span class="n">DirectoryPath</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">save_to</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span>
     <span class="n">model_cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">&quot;us&quot;</span><span class="p">)</span>
+    <span class="n">weight_download_region</span><span class="p">:</span> <span class="n">RegionEnum</span> <span class="o">=</span> <span class="n">RegionEnum</span><span class="p">(</span><span class="s2">"us"</span><span class="p">)</span>
     <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span>
     <span class="n">gpus</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">GPUS_AVAILABLE</span>
 
@@ -2603,59 +2649,59 @@ found on the machine.</p>
         <span class="n">predictions</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_to</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">predictions</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_to</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Depth predictions saved to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">save_to</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Depth predictions saved to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">save_to</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">_get_filepaths</span> <span class="o">=</span> <span class="n">root_validator</span><span class="p">(</span><span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
         <span class="n">get_video_filepaths</span>
     <span class="p">)</span>
 
-    <span class="n">_validate_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">&quot;model_cache_dir&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+    <span class="n">_validate_cache_dir</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">"model_cache_dir"</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
         <span class="n">validate_model_cache_dir</span>
     <span class="p">)</span>
 
-    <span class="n">_validate_gpus</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">&quot;gpus&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">validate_gpus</span><span class="p">)</span>
+    <span class="n">_validate_gpus</span> <span class="o">=</span> <span class="n">validator</span><span class="p">(</span><span class="s2">"gpus"</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">validate_gpus</span><span class="p">)</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_save_to</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="n">save_to</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_to&quot;</span><span class="p">]</span>
+        <span class="n">save_to</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"save_to"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">save_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span> <span class="o">/</span> <span class="s2">&quot;depth_predictions.csv&quot;</span>
+            <span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span> <span class="o">/</span> <span class="s2">"depth_predictions.csv"</span>
         <span class="k">elif</span> <span class="n">save_to</span><span class="o">.</span><span class="n">suffix</span><span class="p">:</span>
             <span class="n">save_path</span> <span class="o">=</span> <span class="n">save_to</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">save_path</span> <span class="o">=</span> <span class="n">save_to</span> <span class="o">/</span> <span class="s2">&quot;depth_predictions.csv&quot;</span>
+            <span class="n">save_path</span> <span class="o">=</span> <span class="n">save_to</span> <span class="o">/</span> <span class="s2">"depth_predictions.csv"</span>
 
-        <span class="k">if</span> <span class="n">save_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;overwrite&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">save_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="p">[</span><span class="s2">"overwrite"</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2"> already exists. If you would like to overwrite, set overwrite=True.&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2"> already exists. If you would like to overwrite, set overwrite=True."</span>
             <span class="p">)</span>
 
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;save_to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_path</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"save_to"</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_path</span>
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_files</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="c1"># if globbing from data directory, already have valid dataframe</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># make into dataframe even if only one column for clearer indexing</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]))</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]))</span>
 
-        <span class="k">if</span> <span class="s2">&quot;filepath&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;filepaths&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain a `filepath` column.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"filepath"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">'filepaths'</span><span class="p">]</span><span class="si">}</span><span class="s2"> must contain a `filepath` column."</span><span class="p">)</span>
 
         <span class="c1"># can only contain one row per filepath</span>
         <span class="n">duplicated</span> <span class="o">=</span> <span class="n">files_df</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> duplicate row(s) in filepaths csv. Dropping duplicates.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="n">duplicated</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> duplicate row(s) in filepaths csv. Dropping duplicates."</span>
             <span class="p">)</span>
-            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+            <span class="n">files_df</span> <span class="o">=</span> <span class="n">files_df</span><span class="p">[[</span><span class="s2">"filepath"</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
-        <span class="n">values</span><span class="p">[</span><span class="s2">&quot;filepaths&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
+        <span class="n">values</span><span class="p">[</span><span class="s2">"filepaths"</span><span class="p">]</span> <span class="o">=</span> <span class="n">check_files_exist_and_load</span><span class="p">(</span>
             <span class="n">df</span><span class="o">=</span><span class="n">files_df</span><span class="p">,</span>
-            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;data_dir&quot;</span><span class="p">],</span>
+            <span class="n">data_dir</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"data_dir"</span><span class="p">],</span>
             <span class="n">skip_load_validation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># just check files exist</span>
         <span class="p">)</span><span class="o">.</span><span class="n">filepath</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 

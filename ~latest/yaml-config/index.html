@@ -360,6 +360,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -426,6 +430,48 @@
   
   <span class="md-ellipsis">
     Training a model on labeled images
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../images-finetune-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fine-tuning image models effectively
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-finetuning-results/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image fine-tuning experiment results
   </span>
   
 
@@ -2379,7 +2425,7 @@
 </code></pre></div>
 <p>The <code>ModelManager</code> class is used by <code>zamba</code>'s command line interface to handle preprocessing the filenames, loading the videos, training the model, performing inference, and saving predictions. Therefore any functionality available to the command line interface is accessible via the <code>ModelManager</code> class.</p>
 <p>To instantiate the <code>ModelManager</code> based on a configuration file saved at <code>video_config.yaml</code>:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">ModelManager</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s1">&#39;video_config.yaml&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">ModelManager</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s1">'video_config.yaml'</span><span class="p">)</span>
 </code></pre></div></p>
 <p>We can now run inference or model training without specifying any additional parameters, because they are already associated with our instance of the <code>ModelManager</code> class. To run inference or training:
 <div class="highlight"><pre><span></span><code><span class="n">manager</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span> <span class="c1"># inference</span>
@@ -2391,7 +2437,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZambaImagesManager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">zamba.images.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClassifictionPredictConfig</span>
 <span class="n">manager</span> <span class="o">=</span> <span class="n">ZambaImagesManager</span><span class="p">()</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">ImageClassifictionPredictConfig</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="s1">&#39;image_config.yaml&#39;</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">ImageClassifictionPredictConfig</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="s1">'image_config.yaml'</span><span class="p">)</span>
 <span class="n">manager</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="default-configurations">Default configurations<a class="headerlink" href="#default-configurations" title="Permanent link">&para;</a></h2>
