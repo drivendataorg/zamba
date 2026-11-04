@@ -2,6 +2,8 @@
 
 This section walks through how to train an image classification model using `zamba`. If you are new to `zamba` and just want to classify some images as soon as possible, see the [Quickstart](quickstart.md) guide.
 
+For practical recommendations from camera-trap experiments, see [Fine-tune image models effectively](images-finetune-guide.md).
+
 This tutorial goes over the steps for using `zamba` if:
 
 * You already have `zamba` installed (for details see the [Installation](install.md) page)

@@ -20,6 +20,8 @@ nav:
   - "User Tutorials":
       - Classifying unlabeled images: "images-predict-tutorial.md"
       - Training a model on labeled images: "images-train-tutorial.md"
+      - Fine-tuning image models effectively: "images-finetune-guide.md"
+      - Image fine-tuning experiment results: "image-finetuning-results.md"
       - Camtrap DP compatibility: "camtrap-dp.md"
       - Classifying unlabeled videos: "predict-tutorial.md"
       - Training a model on labeled videos: "train-tutorial.md"
