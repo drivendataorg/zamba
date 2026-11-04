@@ -2,6 +2,7 @@
   "use strict";
 
   const DATA_URL = "../assets/data/image-finetuning-results.json";
+  const SCHEMA_VERSION = 1;
   const PLOT_CONFIG = {
     responsive: true,
     displaylogo: false,
@@ -22,6 +23,12 @@
     "linearprobe-dinov3-concat": "#c49c94",
   };
   const SUMMARY_CONDITIONS = [
+    "finetune-lila",
+    "finetune-speciesnet",
+    "scratch-lila-arch",
+    "balanced-aug-lila",
+  ];
+  const REQUIRED_CONDITIONS = [
     "finetune-lila",
     "finetune-speciesnet",
     "scratch-lila-arch",
@@ -127,6 +134,117 @@
     return [...new Set(values)];
   }
 
+  function plotlyAvailable() {
+    return typeof window.Plotly !== "undefined";
+  }
+
+  function showChartUnavailable(id) {
+    const chart = byId(id);
+    chart.textContent = "Chart unavailable. The equivalent data tables and CSV downloads remain available.";
+    chart.classList.add("results-chart-unavailable");
+    chart.removeAttribute("role");
+  }
+
+  function validateData(data) {
+    if (!data || typeof data !== "object") throw new Error("invalid root object");
+    if (data.schema_version !== SCHEMA_VERSION) {
+      throw new Error(`unsupported schema version ${data.schema_version}`);
+    }
+    if (!/^[0-9a-f]{40}$/.test(data.source_commit || "")) {
+      throw new Error("missing source commit");
+    }
+    if (!data.methods || !Array.isArray(data.methods.training_tiers)) {
+      throw new Error("missing training tiers");
+    }
+    if (!Array.isArray(data.runs) || !Array.isArray(data.class_results)) {
+      throw new Error("missing result tables");
+    }
+    if (!data.condition_labels || !data.dataset_labels) {
+      throw new Error("missing labels");
+    }
+
+    const tiers = data.methods.training_tiers;
+    if (!tiers.length || tiers.some((tier) => !Number.isFinite(tier) || tier <= 0)) {
+      throw new Error("invalid training tiers");
+    }
+
+    const runKeys = new Set();
+    data.runs.forEach((row) => {
+      const key = `${row.dataset}\0${row.condition}\0${row.tier}`;
+      if (runKeys.has(key)) throw new Error(`duplicate run ${key.replaceAll("\0", "/")}`);
+      runKeys.add(key);
+      if (
+        !data.dataset_labels[row.dataset] ||
+        !data.condition_labels[row.condition] ||
+        !tiers.includes(row.tier)
+      ) {
+        throw new Error(`invalid run identity ${key.replaceAll("\0", "/")}`);
+      }
+      ["overall_accuracy", "macro_accuracy_reliable_classes"].forEach((metric) => {
+        if (!Number.isFinite(row[metric]) || row[metric] < 0 || row[metric] > 1) {
+          throw new Error(`invalid ${metric} for ${key.replaceAll("\0", "/")}`);
+        }
+      });
+    });
+
+    Object.keys(data.dataset_labels).forEach((dataset) => {
+      tiers.forEach((tier) => {
+        REQUIRED_CONDITIONS.forEach((condition) => {
+          if (!runKeys.has(`${dataset}\0${condition}\0${tier}`)) {
+            throw new Error(`missing run ${dataset}/${condition}/${tier}`);
+          }
+        });
+      });
+    });
+
+    const pairKeys = new Map();
+    const locationKeys = new Map([
+      [10, new Set()],
+      [10000, new Set()],
+    ]);
+    data.class_results.forEach((row) => {
+      if (!data.dataset_labels[row.dataset] || !tiers.includes(row.tier)) {
+        throw new Error(`invalid class result ${row.dataset}/${row.label}/${row.tier}`);
+      }
+      if (
+        ["finetune-lila", "balanced-aug-lila"].includes(row.condition) &&
+        row.quality === "specific"
+      ) {
+        if (
+          !Number.isFinite(row.accuracy) ||
+          row.accuracy < 0 ||
+          row.accuracy > 1 ||
+          !Number.isFinite(row.train_n)
+        ) {
+          throw new Error(`invalid paired class result ${row.dataset}/${row.label}/${row.tier}`);
+        }
+        const key = `${row.dataset}\0${row.label}\0${row.tier}`;
+        if (!pairKeys.has(key)) pairKeys.set(key, new Set());
+        pairKeys.get(key).add(row.condition);
+      }
+      if (
+        locationKeys.has(row.tier) &&
+        row.condition === "finetune-lila" &&
+        row.genuine &&
+        row.reliable &&
+        row.det_ok &&
+        Number.isFinite(row.n_loc) &&
+        Number.isFinite(row.accuracy)
+      ) {
+        locationKeys.get(row.tier).add(`${row.dataset}\0${row.label}`);
+      }
+    });
+    if (!pairKeys.size || [...pairKeys.values()].some((conditions) => conditions.size !== 2)) {
+      throw new Error("missing paired class results");
+    }
+    if (
+      locationKeys.get(10000).size < 3 ||
+      [...locationKeys.get(10000)].some((key) => !locationKeys.get(10).has(key))
+    ) {
+      throw new Error("missing location-comparison class results");
+    }
+  }
+
   function setOptions(select, values, labelFunction, includeAll = false) {
     select.replaceChildren();
     if (includeAll) {
@@ -172,13 +290,16 @@
     );
   }
 
-  function renderStaticTable(tableId, rows, columns) {
+  function renderStaticTable(tableId, rows, columns, captionText) {
     const table = byId(tableId);
     table.replaceChildren();
+    const caption = document.createElement("caption");
+    caption.textContent = captionText;
     const head = document.createElement("thead");
     const headRow = document.createElement("tr");
     columns.forEach((column) => {
       const cell = document.createElement("th");
+      cell.scope = "col";
       cell.textContent = column.label;
       headRow.append(cell);
     });
@@ -193,22 +314,39 @@
       });
       body.append(tableRow);
     });
-    table.append(head, body);
+    table.append(caption, head, body);
   }
 
-  function renderSortableTable(tableId, rows, columns, sortState, onSort) {
+  function renderSortableTable(tableId, rows, columns, sortState, onSort, captionText) {
     const table = byId(tableId);
     table.replaceChildren();
+    const caption = document.createElement("caption");
+    caption.textContent = captionText;
     const head = document.createElement("thead");
     const headRow = document.createElement("tr");
     columns.forEach((column) => {
       const cell = document.createElement("th");
       const button = document.createElement("button");
       const selected = sortState.key === column.key;
+      cell.scope = "col";
+      cell.setAttribute(
+        "aria-sort",
+        selected ? (sortState.direction > 0 ? "ascending" : "descending") : "none",
+      );
       button.type = "button";
       button.textContent = `${column.label}${
         selected ? (sortState.direction > 0 ? " ▲" : " ▼") : ""
       }`;
+      button.setAttribute(
+        "aria-label",
+        `Sort by ${column.label}${
+          selected
+            ? sortState.direction > 0
+              ? ", currently ascending"
+              : ", currently descending"
+            : ""
+        }`,
+      );
       button.addEventListener("click", () => onSort(column.key));
       cell.append(button);
       headRow.append(cell);
@@ -226,7 +364,7 @@
       });
       body.append(tableRow);
     });
-    table.append(head, body);
+    table.append(caption, head, body);
   }
 
   function sortRows(rows, sortState) {
@@ -323,10 +461,10 @@
     const commonMedian = median(commonPairs.map((row) => row.delta));
     const locations = locationGroups();
     byId("takeaway-data").textContent =
-      `Fine-tuned lila.science reached ${number(finetune10, 2)} macro accuracy at 10 images per class and ${number(
+      `Fine-tuned lila.science averaged ${number(finetune10, 2)} reliable-class macro accuracy at 10 training images per class and ${number(
         finetune100,
         2,
-      )} at 100. It was also ${number(finetune1000, 2)} at 1,000.`;
+      )} at 100. It was ${number(finetune1000, 2)} at 1,000, but individual datasets varied substantially.`;
     byId("takeaway-scratch").textContent =
       `The same architecture started from ImageNet reached ${number(scratch10, 2)} at 10 images per class, compared with ${number(
         finetune10,
@@ -343,15 +481,15 @@
     const few = locations[0];
     const many = locations[locations.length - 1];
     byId("takeaway-locations").textContent =
-      `With 10 training images for every class, many-location classes scored ${number(
+      `At the 10-image training cap, classes in the highest total-catalog-location group averaged ${number(
         many.accuracy10,
         2,
-      )} and few-location classes scored ${number(few.accuracy10, 2)}. Adding images up to 10,000 raised many-location classes to ${number(
-        many.accuracy10000,
+      )} accuracy and classes in the lowest group averaged ${number(
+        few.accuracy10,
         2,
-      )}. Few-location classes fell to ${number(few.accuracy10000, 2)}.`;
+      )}.`;
     byId("takeaway-balance").textContent =
-      `Classes with fewer than 200 training images gained ${signed(
+      `With inverse-frequency sampling plus stronger augmentation, classes with fewer than 200 training images gained ${signed(
         mean(rarePairs.map((row) => row.delta)),
         2,
       )} at the 10,000-image cap. Classes with 500 or more images changed by ${
@@ -377,13 +515,17 @@
     }));
     byId("scaling-caption").textContent =
       (macro
-        ? "Each point is the mean macro accuracy across the eight datasets. Macro accuracy gives each reliable class equal weight. "
-        : "Each point is the mean micro accuracy across the eight datasets. Micro accuracy gives each image equal weight. ") +
+        ? "Each point gives the eight datasets equal weight. Within a dataset, macro accuracy gives each reliable class equal weight and excludes classes with fewer than 30 scored test crops. "
+        : "Each point gives the eight datasets equal weight. Within a dataset, micro accuracy gives each scored crop equal weight. ") +
       "Fine-tuned lila.science stays above fine-tuned SpeciesNet on average at every cap " +
       `(${speciesnet.meanGaps.map((gap) => signed(gap, 2)).join(", ")}).` +
       (macro
         ? " The result can fall at 10,000 images per class when common classes dominate training."
         : "");
+    if (!plotlyAvailable()) {
+      showChartUnavailable("summary-scaling-chart");
+      return;
+    }
     Plotly.react(
       "summary-scaling-chart",
       traces,
@@ -436,28 +578,32 @@
         common10000.medianDelta,
       )}.`;
 
-    Plotly.react(
-      "sampling-group-chart",
-      tiers.map((tier, index) => ({
-        x: summaries[tier].map((group) => group.label),
-        y: summaries[tier].map((group) => group.meanDelta),
-        name: `${tier.toLocaleString()} image cap`,
-        type: "bar",
-        marker: { color: index === 0 ? "#8ecae6" : "#17becf" },
-        customdata: summaries[tier].map((group) => [group.count, group.medianDelta]),
-        hovertemplate:
-          "%{x}<br>mean change=%{y:.3f}<br>median=%{customdata[1]:.3f}" +
-          "<br>classes=%{customdata[0]}<extra>%{fullData.name}</extra>",
-      })),
-      plotLayout({
-        barmode: "group",
-        title: { text: "Mean accuracy change by class frequency", font: { size: 16 } },
-        xaxis: { title: "Actual training images" },
-        yaxis: { title: "Balanced minus baseline", zerolinewidth: 2 },
-        legend: { orientation: "h", y: -0.25 },
-      }),
-      PLOT_CONFIG,
-    );
+    if (plotlyAvailable()) {
+      Plotly.react(
+        "sampling-group-chart",
+        tiers.map((tier, index) => ({
+          x: summaries[tier].map((group) => group.label),
+          y: summaries[tier].map((group) => group.meanDelta),
+          name: `${tier.toLocaleString()} image cap`,
+          type: "bar",
+          marker: { color: index === 0 ? "#8ecae6" : "#17becf" },
+          customdata: summaries[tier].map((group) => [group.count, group.medianDelta]),
+          hovertemplate:
+            "%{x}<br>mean change=%{y:.3f}<br>median=%{customdata[1]:.3f}" +
+            "<br>classes=%{customdata[0]}<extra>%{fullData.name}</extra>",
+        })),
+        plotLayout({
+          barmode: "group",
+          title: { text: "Mean accuracy change by class frequency", font: { size: 16 } },
+          xaxis: { title: "Actual training images" },
+          yaxis: { title: "Combined setting minus baseline", zerolinewidth: 2 },
+          legend: { orientation: "h", y: -0.25 },
+        }),
+        PLOT_CONFIG,
+      );
+    } else {
+      showChartUnavailable("sampling-group-chart");
+    }
 
     renderStaticTable(
       "sampling-group-table",
@@ -475,6 +621,7 @@
         { key: "high", label: "Mean change at 10,000", format: (row) => signed(row.high) },
         { key: "median", label: "Median change at 10,000", format: (row) => signed(row.median) },
       ],
+      "Mean per-class accuracy change for the combined balanced-sampling-plus-augmentation setting versus the standard fine-tune.",
     );
     updateRareGains();
   }
@@ -485,15 +632,20 @@
     const rare = pairs
       .filter((row) => row.train_n < 200)
       .sort((a, b) => b.delta - a.delta);
-    renderStaticTable("rare-gain-table", rare.slice(0, 12), [
-      { key: "label", label: "Class" },
-      { key: "dataset", label: "Dataset", format: (row) => datasetLabel(row.dataset) },
-      { key: "train_n", label: "Train images", format: (row) => integer(row.train_n) },
-      { key: "support", label: "Test images", format: (row) => integer(row.support) },
-      { key: "baseline", label: "Baseline", format: (row) => number(row.baseline) },
-      { key: "balanced", label: "Balanced", format: (row) => number(row.balanced) },
-      { key: "delta", label: "Change", format: (row) => signed(row.delta) },
-    ]);
+    renderStaticTable(
+      "rare-gain-table",
+      rare.slice(0, 12),
+      [
+        { key: "label", label: "Class" },
+        { key: "dataset", label: "Dataset", format: (row) => datasetLabel(row.dataset) },
+        { key: "train_n", label: "Train images", format: (row) => integer(row.train_n) },
+        { key: "support", label: "Test images", format: (row) => integer(row.support) },
+        { key: "baseline", label: "Baseline", format: (row) => number(row.baseline) },
+        { key: "balanced", label: "Balanced + aug.", format: (row) => number(row.balanced) },
+        { key: "delta", label: "Change", format: (row) => signed(row.delta) },
+      ],
+      "The 12 largest gains among specific classes with fewer than 200 training images.",
+    );
 
     const traces = FREQUENCY_GROUPS.map((group) => {
       const rows = pairs.filter((row) => row.group === group.id);
@@ -510,13 +662,17 @@
           "train images=%{x:,}<br>change=%{y:.3f}<br>test images=%{customdata[2]:,}<extra></extra>",
       };
     });
+    if (!plotlyAvailable()) {
+      showChartUnavailable("sampling-class-chart");
+      return;
+    }
     Plotly.react(
       "sampling-class-chart",
       traces,
       plotLayout({
         title: { text: "Every specific class", font: { size: 16 } },
         xaxis: { title: "Actual training images", type: "log" },
-        yaxis: { title: "Accuracy change", zerolinewidth: 2 },
+        yaxis: { title: "Combined setting minus baseline", zerolinewidth: 2 },
         legend: { orientation: "h", y: -0.25 },
         hovermode: "closest",
       }),
@@ -559,7 +715,7 @@
     const locations = rows.map((row) => row.n_loc).sort((a, b) => a - b);
     const low = quantile(locations, 1 / 3);
     const high = quantile(locations, 2 / 3);
-    const labels = ["Few locations", "Medium coverage", "Many locations"];
+    const labels = ["Few catalog locations", "Medium coverage", "Many catalog locations"];
     return labels.map((label, index) => {
       const group = rows
         .filter((row) => {
@@ -589,27 +745,33 @@
     const few = groups[0];
     const many = groups[groups.length - 1];
     byId("location-summary").textContent =
-      `With 10 training images for every class, many-location classes scored ${number(
+      `At the 10-image training cap, classes in the highest total-catalog-location group averaged ${number(
         many.accuracy10,
         2,
-      )} and few-location classes scored ${number(
+      )} accuracy and classes in the lowest group averaged ${number(
         few.accuracy10,
         2,
-      )} (${integer(few.minLocations)}–${integer(few.maxLocations)} locations versus ${integer(
+      )} (${integer(few.minLocations)}–${integer(few.maxLocations)} catalog locations versus ${integer(
         many.minLocations,
-      )}–${integer(many.maxLocations)}). ` +
-      `At 10,000 images per class, many-location classes scored ${number(
+      )}–${integer(many.maxLocations)}). At the 10,000-image cap, those groups averaged ${number(
         many.accuracy10000,
         2,
-      )} and few-location classes scored ${number(few.accuracy10000, 2)}.`;
+      )} and ${number(
+        few.accuracy10000,
+        2,
+      )}, respectively.`;
     const locationHover =
       "%{x}<br>mean accuracy=%{y:.3f}<br>classes=%{customdata[0]}" +
-      "<br>locations=%{customdata[1]:,}–%{customdata[2]:,}<extra>%{fullData.name}</extra>";
+      "<br>catalog locations=%{customdata[1]:,}–%{customdata[2]:,}<extra>%{fullData.name}</extra>";
     const customdata = groups.map((group) => [
       group.count,
       group.minLocations,
       group.maxLocations,
     ]);
+    if (!plotlyAvailable()) {
+      showChartUnavailable("location-chart");
+      return;
+    }
     Plotly.react(
       "location-chart",
       [
@@ -634,8 +796,11 @@
       ],
       plotLayout({
         barmode: "group",
-        title: { text: "Fine-tuned lila.science, same classes", font: { size: 16 } },
-        xaxis: { title: "Camera-location groups" },
+        title: {
+          text: "Fine-tuned lila.science, grouped by full-catalog coverage",
+          font: { size: 16 },
+        },
+        xaxis: { title: "Total catalog-location groups" },
         yaxis: { title: "Mean class accuracy", range: [0, 1] },
         legend: { orientation: "h", y: -0.25 },
       }),
@@ -668,10 +833,10 @@
       { key: "label", label: "Class" },
       { key: "dataset", label: "Dataset", format: (value) => datasetLabel(value) },
       { key: "train_n", label: "Train images", format: integer },
-      { key: "n_loc", label: "Locations", format: integer },
+      { key: "n_loc", label: "Catalog locations", format: integer },
       { key: "support", label: "Test images", format: integer },
       { key: "baseline", label: "Baseline", format: number },
-      { key: "balanced", label: "Balanced", format: number },
+      { key: "balanced", label: "Balanced + aug.", format: number },
       { key: "delta", label: "Change", format: signed },
     ];
     const filtered = sortRows(selectedClassRows(), state.classSort);
@@ -689,6 +854,7 @@
         state.classPage = 0;
         renderClassTable();
       },
+      "Per-class standard fine-tune versus combined balanced-sampling-plus-augmentation results.",
     );
     byId("class-table-count").textContent =
       `${filtered.length.toLocaleString()} classes · page ${state.classPage + 1} of ${pageCount}`;
@@ -724,6 +890,10 @@
         };
       })
       .filter((trace) => trace.x.length);
+    if (!plotlyAvailable()) {
+      showChartUnavailable("detail-scaling-chart");
+      return;
+    }
     Plotly.react(
       "detail-scaling-chart",
       traces,
@@ -768,11 +938,18 @@
       { key: "n_scored_crops", label: "Scored crops", format: integer },
     ];
     const rows = sortRows(selectedRunRows(), state.runSort);
-    renderSortableTable("run-results-table", rows, columns, state.runSort, (key) => {
-      state.runSort.direction = state.runSort.key === key ? state.runSort.direction * -1 : 1;
-      state.runSort.key = key;
-      renderRunTable();
-    });
+    renderSortableTable(
+      "run-results-table",
+      rows,
+      columns,
+      state.runSort,
+      (key) => {
+        state.runSort.direction = state.runSort.key === key ? state.runSort.direction * -1 : 1;
+        state.runSort.key = key;
+        renderRunTable();
+      },
+      "All completed result rows matching the selected filters.",
+    );
     byId("run-table-count").textContent = `${rows.length} runs`;
   }
 
@@ -807,7 +984,7 @@
     );
     byId("rare-gain-tier").addEventListener("change", updateRareGains);
     document.querySelector(".results-details").addEventListener("toggle", (event) => {
-      if (event.target.open && typeof Plotly !== "undefined") {
+      if (event.target.open && plotlyAvailable()) {
         Plotly.Plots.resize("detail-scaling-chart");
       }
     });
@@ -823,15 +1000,13 @@
 
   async function initialize() {
     const status = byId("finetuning-results-status");
-    if (typeof Plotly === "undefined") {
-      status.textContent = "The chart library did not load. Open the detailed section to download the CSV files.";
-      status.classList.add("results-error");
-      return;
-    }
     try {
       const response = await fetch(DATA_URL);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      state.data = await response.json();
+      const data = await response.json();
+      validateData(data);
+      state.data = data;
+      byId("finetuning-source-commit").textContent = state.data.source_commit.slice(0, 12);
       initializeControls();
       updateTakeaways();
       updateSummaryScaling();
@@ -840,7 +1015,12 @@
       renderClassTable();
       updateDetailChart();
       renderRunTable();
-      status.remove();
+      if (plotlyAvailable()) {
+        status.remove();
+      } else {
+        status.textContent =
+          "Tables loaded. Charts are unavailable because the chart library did not load.";
+      }
     } catch (error) {
       status.textContent = `The data snapshot could not load (${error.message}).`;
       status.classList.add("results-error");

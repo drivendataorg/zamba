@@ -1,0 +1,9 @@
+slug,name,species_images,catalog_classes,n_locations,blank_images,blank_prevalence,multi_species_images,dropped_images,missing_image_records,location_source,eligible_classes,low_confidence_classes,continent,ecology_seen_by_lila,provenance_classes,species_seen_lila_train,genus_seen_lila_train,family_or_order_seen_lila_train,unseen_lila_train,pct_species_seen_lila_train,pct_in_lila_vocab,pct_in_speciesnet_vocab
+ammonitor-camera-traps,AMMonitor Camera Traps,630626,74,833,615270,0.3311,2006,610349,0,"{""location"": 630626}",41,4,North America,True,41,23,5,9,4,0.561,0.244,0.61
+biome-health-maasai-mara,Biome Health Project Maasai Mara 2018,34115,97,176,630,0.017,2160,170,0,"{""location"": 34115}",41,8,Africa,True,41,34,2,5,0,0.829,0.366,0.756
+california-small-animals,California Small Animals,947297,250,697,1126990,0.4947,9332,194452,0,"{""location"": 947297}",109,18,North America,True,109,6,16,78,9,0.055,0.101,0.193
+felidae-conservation-fund,Felidae Conservation Fund 2020-2025,356685,63,216,0,0.0,921,328,0,"{""location"": 356685}",37,6,North America,True,37,21,5,9,2,0.568,0.216,0.703
+nkhotakota-camera-traps,Nkhotakota Camera Traps,157024,44,69,164139,0.5056,422,3050,0,"{""location"": 157024}",34,6,Africa,True,34,24,4,4,2,0.706,0.265,0.647
+oregon-critters,Oregon Critters,90797,44,1597,8864,0.0887,0,248,0,"{""location"": 90797}",37,5,North America,True,37,16,6,12,3,0.432,0.189,0.649
+unsw-predators,UNSW Predators,131802,5,82,0,0.0,0,0,0,"{""location"": 131802}",5,0,Australia,False,5,3,1,0,1,0.6,0.0,0.8
+wsu-lynx,WSU Lynx,318121,24,635,877701,0.7281,80,9551,0,"{""location"": 318121}",20,0,North America,True,20,16,2,0,2,0.8,0.45,0.9

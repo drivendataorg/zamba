@@ -237,7 +237,7 @@ By default, `zamba` will finetune from a pretrained model checkpoint. If you wan
 And there's so much more! You can also do things like:
 
 * Specify your region for faster model download (`--weight-download-region`)
-* Start training from a saved model checkpoint (`--checkpoint`)
+* Start training from a saved model checkpoint (`--model-checkpoint`)
 * Specify a different path where your model should be saved (`--save-dir`)
 * Adjust learning rate (`--lr`) or let `zamba` find an optimal learning rate automatically
 * Use weighted loss for imbalanced datasets (`--weighted-loss`)
@@ -259,9 +259,9 @@ The training outputs include:
 
 * `train_configuration.yaml`: The full model configuration used to generate the given model, including all training parameters. To continue training using the same configuration, or to train another model using the same configuration, you can pass in `train_configuration.yaml` (see [Specifying Model Configurations with a YAML File](yaml-config.md)) along with the `labels` filepath.
 * `hparams.yaml`: Model hyperparameters. These are included in the checkpoint file as well.
-* `lila.science.ckpt` (or `{model_name}.ckpt`): Model checkpoint. You can continue training from this checkpoint by passing it to `zamba image train` with the `--checkpoint` flag:
+* `lila.science.ckpt` (or `{model_name}.ckpt`): Model checkpoint. You can fine-tune from this checkpoint by passing it to `zamba image train` with the `--model-checkpoint` flag:
     ```console
-    $ zamba image train --checkpoint lila.science.ckpt --data-dir example_images/ --labels example_labels.csv
+    $ zamba image train --model-checkpoint lila.science.ckpt --data-dir example_images/ --labels example_labels.csv
     ```
 * `val_metrics.json`: The model's performance on the validation subset
 * `test_metrics.json`: The model's performance on the test (holdout) subset (if a test split was created)

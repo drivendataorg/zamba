@@ -107,7 +107,8 @@ predict_configuration.yaml
 # Potential outputs
 *.ckpt
 *.csv
-# allowed csvs in tests/assets
+# Published documentation data and test fixtures
+!docs/docs/assets/data/image-finetuning-*.csv
 !tests/assets/**/*.csv
 
 

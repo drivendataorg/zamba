@@ -2,34 +2,36 @@
 
 We fine-tuned image classifiers on eight camera-trap datasets from [LILA BC](https://lila.science/datasets). None of these datasets was used to train the `lila.science` base model that ships with `zamba`, so the results evaluate fine-tuning on new data. Many of the species were already in that base model's training data, and seven of the eight datasets come from continents that training data already covered.
 
-Each camera location was placed in only one split: training, validation, or test. Within a dataset, the same classes were trained four times, with at most 10, 100, 1,000, and 10,000 images per class. Smaller caps are subsets of the larger ones. Scores use MegaDetector animal crops from the held-out locations. Macro accuracy gives each class equal weight.
+Each camera location was placed in only one split: training, validation, or test. Within a dataset, the same classes were trained four times, with at most 10, 100, 1,000, and 10,000 **training images** per class. Smaller caps are subsets of the larger ones; validation and test images are additional. Scores use MegaDetector animal crops from the held-out locations.
 
-The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, training those architectures from ImageNet weights, and class-balanced sampling. We also trained linear probes (a small linear classifier on top of a frozen base model, which can be very computationally efficient) for `lila.science` and SpeciesNet on every dataset. On two datasets we used DINOv3 and BioCLIP as frozen feature extractors with the same kind of classifier, and we scored a zero-shot vision-language model that used text prompts and no training images. The takeaways below are averages across all eight datasets. Charts for a single dataset, the full tables, and the file downloads are farther down the page. Practical steps are in the [fine-tuning tutorial](images-finetune-guide.md).
+The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, training those architectures from ImageNet weights, and a combined class-balanced-sampling-plus-augmentation setting. We also trained linear probes (a small linear classifier on top of a frozen base model) for `lila.science` and SpeciesNet on every dataset. On two datasets we used DINOv3 and BioCLIP as frozen feature extractors with the same kind of classifier, and we scored a zero-shot vision-language model that used text prompts and no training images.
 
-<p id="finetuning-results-status">Loading charts and tables…</p>
+The headline macro value first averages qualifying classes within each dataset, excluding classes with fewer than 30 scored test crops, and then gives each of the eight dataset-level values equal weight. The study used one training seed, nested training sets, and shared holdouts, so comparisons across tiers are correlated and do not include training-to-training uncertainty. Charts for individual datasets, full tables, downloads, and the exact benchmark recipe are below. Supported practical steps are in the [fine-tuning tutorial](images-finetune-guide.md).
+
+<p id="finetuning-results-status" role="status" aria-live="polite">Loading charts and tables…</p>
 
 ## Takeaways
 
 <div class="takeaway-grid">
   <article>
-    <h3>10–100 images per class is enough</h3>
-    <p id="takeaway-data">Fine-tuned <code>lila.science</code> reached 0.74 macro accuracy at 10 images per class and 0.78 at 100. It was also 0.78 at 1,000.</p>
+    <h3>10–100 training images per class is a useful start</h3>
+    <p id="takeaway-data">Fine-tuned <code>lila.science</code> averaged 0.74 reliable-class macro accuracy at 10 training images per class and 0.78 at 100. Individual datasets varied substantially.</p>
   </article>
   <article>
     <h3>An ImageNet start has lower accuracy</h3>
     <p id="takeaway-scratch">The same architecture started from ImageNet reached 0.55 at 10 images per class, compared with 0.74 for fine-tuning. At 1,000 images per class it was 0.74, still below fine-tuning at 0.78.</p>
   </article>
   <article>
-    <h3><code>lila.science</code> beats SpeciesNet and uses less compute</h3>
+    <h3><code>lila.science</code> wins more often and uses smaller inputs</h3>
     <p id="takeaway-speciesnet-detail">It had higher macro accuracy in 30 of 32 comparisons on the same data. The mean gap was +0.10 at 10 images per class. <code>lila.science</code> uses 224×224 images. SpeciesNet uses 480×480 images and more GPU memory.</p>
   </article>
   <article>
-    <h3>More locations beat more images</h3>
-    <p id="takeaway-locations">With 10 training images for every class, many-location classes scored 0.84 and few-location classes scored 0.71. Adding images up to 10,000 raised many-location classes to 0.94. Few-location classes fell to 0.57.</p>
+    <h3>Catalog location coverage is associated with accuracy</h3>
+    <p id="takeaway-locations">At the 10-image training cap, classes in the highest total-location group averaged 0.84 accuracy and classes in the lowest group averaged 0.71.</p>
   </article>
   <article>
-    <h3>Balanced sampling helps rare classes</h3>
-    <p id="takeaway-balance">Classes with fewer than 200 training images gained +0.13 at the 10,000-image cap. Classes with 500 or more images changed by about zero.</p>
+    <h3>The combined balanced setting helps rare classes</h3>
+    <p id="takeaway-balance">With inverse-frequency sampling and stronger augmentation, classes with fewer than 200 training images gained +0.13 at the 10,000-image cap. Classes with 500 or more images changed by about zero.</p>
   </article>
 </div>
 
@@ -47,17 +49,17 @@ The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, tra
   </label>
 </div>
 
-<p id="scaling-caption" class="results-caption">Each point is the mean across the eight datasets. Macro accuracy gives each reliable class equal weight. Micro accuracy gives each image equal weight.</p>
+<p id="scaling-caption" class="results-caption">Each point gives every dataset equal weight. Within a dataset, macro accuracy gives each reliable class equal weight; micro accuracy gives each scored crop equal weight.</p>
 
-<div id="summary-scaling-chart" class="results-chart" aria-label="Mean accuracy by training data tier"></div>
+<div id="summary-scaling-chart" class="results-chart" role="img" aria-label="Mean accuracy by training data tier" aria-describedby="scaling-caption"></div>
 
-## Balanced sampling rescued rare classes
+## The combined balanced setting helped rare classes
 
-<p id="sampling-summary">Balanced sampling gave rare classes a large accuracy gain. Well-represented classes changed very little.</p>
+<p id="sampling-summary">Inverse-frequency sampling plus stronger augmentation gave rare classes a large accuracy gain. Well-represented classes changed very little.</p>
 
-<div id="sampling-group-chart" class="results-chart" aria-label="Accuracy change by training-image frequency"></div>
+<div id="sampling-group-chart" class="results-chart" role="img" aria-label="Accuracy change by training-image frequency" aria-describedby="sampling-summary"></div>
 
-<div class="results-table-wrap">
+<div class="results-table-wrap" role="region" aria-label="Balanced-setting summary table" tabindex="0">
   <table id="sampling-group-table" class="results-table"></table>
 </div>
 
@@ -72,23 +74,23 @@ The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, tra
   </label>
 </div>
 
-<p class="results-caption">Specific classes with fewer than 200 actual training images. The table shows the 12 largest gains at the selected cap. A large change with few test images is less stable.</p>
+<p id="rare-gain-caption" class="results-caption">Specific classes with fewer than 200 actual training images. The table shows the 12 largest gains at the selected cap. A large change with few test images is less stable.</p>
 
-<div class="results-table-wrap">
+<div class="results-table-wrap" role="region" aria-label="Largest rare-class gains table" tabindex="0">
   <table id="rare-gain-table" class="results-table"></table>
 </div>
 
-<div id="sampling-class-chart" class="results-chart" aria-label="Accuracy change for each class"></div>
+<div id="sampling-class-chart" class="results-chart" role="img" aria-label="Accuracy change for each class" aria-describedby="rare-gain-caption"></div>
 
-## More locations beat more images
+## Accuracy by total catalog location coverage
 
-<p id="location-summary">With the same 10 training images, classes seen at more camera locations had higher accuracy. Adding images raised accuracy for classes already seen at many locations and lowered it for classes seen at few locations.</p>
+<p id="location-summary">Classes present at more locations across the full source catalog had higher average accuracy.</p>
 
-<div id="location-chart" class="results-chart" aria-label="Accuracy by camera locations at two training caps"></div>
+<div id="location-chart" class="results-chart" role="img" aria-label="Accuracy by total catalog locations at two training caps" aria-describedby="location-summary"></div>
 
-## Compare a class across both training methods
+## Compare a class across both training settings
 
-<p class="results-caption">Each row is one specific class. Baseline is the standard <code>lila.science</code> fine-tune. Balanced is the class-balanced run on the same data.</p>
+<p id="class-table-caption" class="results-caption">Each row is one specific class. Baseline is the standard <code>lila.science</code> fine-tune. Balanced plus augmentation is the combined setting on the same data. “Catalog locations” covers the full source catalog, not training locations at that tier.</p>
 
 <div class="results-controls">
   <label>Dataset
@@ -111,13 +113,13 @@ The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, tra
 </div>
 
 <div class="results-pager">
-  <span id="class-table-count" class="results-count"></span>
+  <span id="class-table-count" class="results-count" role="status" aria-live="polite"></span>
   <span>
     <button id="class-page-previous" class="md-button" type="button">Previous</button>
     <button id="class-page-next" class="md-button" type="button">Next</button>
   </span>
 </div>
-<div class="results-table-wrap">
+<div class="results-table-wrap" role="region" aria-label="Per-class comparison table" tabindex="0">
   <table id="class-results-table" class="results-table"></table>
 </div>
 
@@ -140,14 +142,14 @@ The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, tra
     <label>Comparison
       <select id="scaling-conditions">
         <option value="core">Fine-tune versus ImageNet start</option>
-        <option value="sampling">Standard versus balanced sampling</option>
+        <option value="sampling">Standard versus balanced sampling + augmentation</option>
         <option value="probes">Full fine-tune versus linear probe</option>
         <option value="external">External frozen and zero-shot models</option>
       </select>
     </label>
   </div>
-  <p id="detail-chart-note" class="results-caption"></p>
-  <div id="detail-scaling-chart" class="results-chart" aria-label="Accuracy for one dataset"></div>
+  <p id="detail-chart-note" class="results-caption" role="status" aria-live="polite"></p>
+  <div id="detail-scaling-chart" class="results-chart" role="img" aria-label="Accuracy for one dataset" aria-describedby="detail-chart-note"></div>
 
   <div class="results-controls">
     <label>Dataset
@@ -163,8 +165,8 @@ The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, tra
       <input id="run-table-search" type="search" placeholder="Dataset or condition">
     </label>
   </div>
-  <p id="run-table-count" class="results-count"></p>
-  <div class="results-table-wrap">
+  <p id="run-table-count" class="results-count" role="status" aria-live="polite"></p>
+  <div class="results-table-wrap" role="region" aria-label="Run results table" tabindex="0">
     <table id="run-results-table" class="results-table"></table>
   </div>
 
@@ -177,25 +179,34 @@ The main comparisons are fine-tuning `lila.science`, fine-tuning SpeciesNet, tra
 
 ## Methods and definitions
 
-* **Data:** Eight camera-trap datasets from [LILA BC](https://lila.science/datasets). Each class required at least three camera locations, 10 training images, and 10 test images.
-* **Splits:** Camera locations did not occur in more than one split. The target location split was 60% training, 15% validation, and 25% test.
-* **Tiers:** Training sets used nested caps of 10, 100, 1,000, and 10,000 images per class. A rare class could have fewer images than the cap.
-* **Inputs:** The classifiers used MegaDetector animal crops. Classification metrics include only test images with a detected animal.
-* **Reliable classes:** The reliable-class macro metric excludes classes with fewer than 30 scored test crops.
-* **Specific classes:** The sampling comparison keeps labels marked specific. It removes conflicting labels and broad catch-all labels. Each class has equal weight. The change is balanced-sampling accuracy minus the standard fine-tune.
-* **Location groups:** Quality-screened classes have a specific species label, at least 30 scored test crops, and at least an 85% MegaDetector detection rate. The chart divides those classes into three groups at the one-third and two-thirds points of the camera-location count. The same classes are shown at 10 and 10,000 training images. Every class had 10 training images in the low-data tier.
-* **Intervals:** Class accuracy intervals in the download are 95% Wilson score intervals.
-* **Balanced condition:** `balanced-aug-lila` uses inverse-frequency sampling with replacement and stronger camera-trap augmentations.
-* **Linear probes:** The backbone is frozen. A multinomial logistic-regression head is fitted to the extracted features.
-* **Zero shot:** `zeroshot-pe-core-g` uses text prompts and no training images. Its result is repeated at each displayed tier.
+### Data and evaluation
 
-The snapshot contains completed runs.
+* **Data:** Eight camera-trap datasets from [LILA BC](https://lila.science/datasets). Each class required at least three camera locations, 10 training images, and 10 test images.
+* **Splits:** A camera location did not occur in more than one split. The target split of locations was 60% training, 15% validation, and 25% test.
+* **Tiers:** Training sets used nested caps of 10, 100, 1,000, and 10,000 training images per class. A rare class could have fewer images than the cap. Validation and test images were separate from these counts.
+* **Inputs:** Precomputed detections supplied one crop per selected image: the highest-confidence MegaDetector animal box, or a full-frame fallback when no animal was detected. Classification metrics include only held-out images with a detected animal, so detector misses are counted separately rather than scored.
+* **Headline macro accuracy:** Within each dataset, the reliable-class metric is the unweighted mean of class accuracies after excluding classes with fewer than 30 scored test crops. A chart point is then the unweighted mean of those eight dataset-level values. It is not a global average in which every class across all datasets has equal weight.
+* **Specific classes:** The combined-setting comparison keeps labels marked specific and removes conflicting labels and broad catch-all labels. The change is combined-setting accuracy minus standard-fine-tune accuracy.
+* **Location groups:** Quality-screened classes have a specific species label, at least 30 scored test crops, and at least an 85% MegaDetector detection rate. Groups use the number of distinct locations where a class occurs in the **full source catalog**.
+* **Intervals:** Class accuracy intervals in the download are 95% Wilson score intervals for held-out crop outcomes. They do not cover training-seed or dataset-to-dataset uncertainty.
+
+### Training recipe
+
+* **Software:** The locked environment used Zamba 2.7.2. Experiment logic and snapshot provenance are recorded by the source commit shown in the citation below.
+* **Optimization:** Full fine-tunes used AdamW with weight decay 0.01. Learning rates were fixed at `1e-4` for both wildlife-pretrained models, `4e-4` for the `lila.science` architecture from ImageNet, and `6e-4` for the SpeciesNet architecture from ImageNet. A three-epoch linear warmup was followed by cosine decay over at most 40 epochs, with early-stopping patience 5. Stochastic weight averaging was disabled.
+* **Batches:** `lila.science` used 224×224 inputs and batch size 32. SpeciesNet used 480×480 inputs and batch size 8. The benchmark did not use gradient accumulation.
+* **Combined balanced condition:** `balanced-aug-lila` changed two things together: inverse-frequency sampling with replacement and stronger camera-trap augmentations. The results do not identify the effect of either component alone.
+* **Linear probes:** Zamba probes froze the backbone and trained only its classification head. BioCLIP and DINOv3 used frozen features with multinomial logistic regression.
+* **Zero shot:** `zeroshot-pe-core-g` used text prompts and no training images. Each of its two distinct evaluations is repeated at all four displayed tiers, so the snapshot has 264 result rows representing 258 distinct evaluations.
+* **Uncertainty:** Each trained condition used one seed (`42`). Tiers are nested and reuse the same holdout, so tier comparisons are correlated. No repeated-seed interval is available.
+
+These settings differ from the supported defaults in the [practical tutorial](images-finetune-guide.md); its commands are not a reproduction script.
 
 ## Citations
 
 Suggested citation for this evidence page:
 
-> DrivenData (2026). *Image fine-tuning experiment results*. Zamba documentation. Experiment snapshot `85d1a6bb3191`.
+> DrivenData (2026). *Image fine-tuning experiment results*. Zamba documentation. Experiment snapshot <code id="finetuning-source-commit">85d1a6bb3191</code>.
 
 Model, data, and method sources:
 
@@ -277,11 +288,21 @@ Model, data, and method sources:
   border: 1px solid var(--md-default-fg-color--lightest);
   margin: 0.5rem 0 1rem;
 }
+.results-table-wrap:focus {
+  outline: 2px solid var(--md-typeset-a-color);
+  outline-offset: 2px;
+}
 .results-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.68rem;
   white-space: nowrap;
+}
+.results-table caption {
+  padding: 0.45rem;
+  color: var(--md-default-fg-color--light);
+  text-align: left;
+  white-space: normal;
 }
 .results-table th {
   position: sticky;
@@ -329,6 +350,12 @@ Model, data, and method sources:
 .results-error {
   color: var(--md-typeset-a-color);
   font-weight: 700;
+}
+.results-chart-unavailable {
+  min-height: auto;
+  padding: 1rem;
+  color: var(--md-default-fg-color--light);
+  background: var(--md-code-bg-color);
 }
 @media (max-width: 44rem) {
   .results-controls label {
