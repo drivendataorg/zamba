@@ -107,12 +107,12 @@ See the [Quickstart](https://zamba.drivendata.org/docs/stable/quickstart/) page 
 
 Zamba defaults to training a model for classifying videos:
 ```console
-$ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save_dir my_trained_model
+$ zamba train --data-dir path/to/videos --labels path_to_labels.csv --save-dir my_trained_model
 ```
 
 Training a model for images is similar:
 ```console
-$ zamba image train --data-dir path/to/images --labels path_to_labels.csv --save_dir my_trained_model
+$ zamba image train --data-dir path/to/images --labels path_to_labels.csv --save-dir my_trained_model
 ```
 
 The newly trained model will be saved to the specified save directory. The folder will contain a model checkpoint as well as training configuration, model hyperparameters, and validation and test metrics. Run `zamba train --help` or `zamba image train --help` to list all possible options to pass to `train`.
