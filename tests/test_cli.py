@@ -8,6 +8,7 @@ from pytest_mock import mocker  # noqa: F401
 from typer.testing import CliRunner
 
 from zamba.cli import app  # noqa: E402
+from zamba.version import __version__  # noqa: E402
 
 from conftest import ASSETS_DIR, TEST_VIDEOS_DIR  # noqa: E402
 
@@ -115,6 +116,14 @@ def test_shared_cli_options(mocker, minimum_valid_train, minimum_valid_predict):
         result = runner.invoke(app, command + ["--gpus", "2"])
         assert result.exit_code == 1
         assert "Cannot use 2" in str(result.exc_info)
+
+
+@pytest.mark.video
+def test_version_is_logged(mocker, minimum_valid_predict):  # noqa: F811
+    mocker.patch("zamba.models.model_manager.ModelManager.predict", pred_mock)
+    result = runner.invoke(app, minimum_valid_predict)
+    assert result.exit_code == 0
+    assert f"zamba version {__version__}" in result.output
 
 
 @pytest.mark.video

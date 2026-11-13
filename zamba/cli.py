@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 from typing import Optional
 import warnings
 
@@ -404,6 +405,7 @@ def version_callback(version: bool):
 
 @app.callback()
 def main(
+    ctx: typer.Context,
     version: Optional[bool] = typer.Option(
         None,
         "--version",
@@ -415,6 +417,9 @@ def main(
     """Zamba is a tool built in Python to automatically identify the species seen
     in camera trap videos from sites in Africa and Europe. Visit
     https://zamba.drivendata.org/docs for more in-depth documentation."""
+    # log the running version first so old logs show which version produced them
+    if not ctx.resilient_parsing and "--help" not in sys.argv[1:]:
+        logger.info(f"zamba version {__version__}")
 
 
 @app.command()
